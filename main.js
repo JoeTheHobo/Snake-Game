@@ -22,6 +22,14 @@ function renderGame() {
         }
     }
 }
+function renderCells() {
+    for (let i = 0; i < updateCells.length; i++) {
+        $("a" + updateCells[i].y + "a" + updateCells[i].x).css({
+            background: map[updateCells[i].y][updateCells[i].x].color,
+        })
+    }
+    updateCells = [];
+}
 function renderPlayers() {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
@@ -74,8 +82,6 @@ function movePlayers() {
                     player.moving = player.moveQueue[0];
                 }
 
-                console.log(player.moving);
-
                 player.moveQueue.shift();
             }
             //Growing/Moving Tail
@@ -84,13 +90,18 @@ function movePlayers() {
                 player.growTail--;
             } else if(player.tail.length > 0) {
                 player.tail.unshift([player.pos.x,player.pos.y]);
+                updateCells.push({x: player.tail[player.tail.length-1][0],y: player.tail[player.tail.length-1][1]});
                 player.tail.pop();
             }
+
+            $("a" + player.pos.y+"a"+player.pos.x).css({background: map[player.pos.y][player.pos.x].color});
             //Move Player and make sure he can't go back on himself
             if (player.moving == "left") player.pos.x++;
             if (player.moving == "right") player.pos.x--;
             if (player.moving == "up") player.pos.y++;
             if (player.moving == "down") player.pos.y--;
+
+
 
 
             //Collision Testing
@@ -128,6 +139,8 @@ function movePlayers() {
                     }
                 }
             }
+
+
 
         }
         else{
@@ -256,11 +269,12 @@ function startGame(mapX,mapY) {
 
 
 
+    renderGame();
     let gameLoop = setInterval(function() {
-        renderGame();
+        renderCells();
         movePlayers();
         renderPlayers();
-    },1)
+    },1000/60)
 
 
 }

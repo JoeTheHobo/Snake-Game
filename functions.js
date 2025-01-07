@@ -1,5 +1,7 @@
 let map = [];
 let items = [];
+let updateCells = [];
+
 function getItem(name) {
     for (let i = 0; i < items.length; i++) {
         if (items[i].name == name) {
@@ -10,7 +12,16 @@ function getItem(name) {
 function spawn(name) { 
     for (let i = 0; i < items.length; i++) {
         if (items[i].name == name) {
-            map[rnd(gridY)-1][rnd(gridX)-1] = items[i];
+            let x = rnd(gridX)-1;
+            let y = rnd(gridY)-1
+
+
+            
+            map[y][x] = items[i];
+            updateCells.push({
+                x: x,
+                y: y,
+            })
             specialItemManager();
             return;
         }
