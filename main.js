@@ -304,3 +304,4 @@ function specialItemManager()
 
 
 startGame(gridX,gridY);
+console.log("hi")
