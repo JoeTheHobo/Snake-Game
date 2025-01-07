@@ -1,6 +1,7 @@
 items.push({
     name: "pellet",
     color: "yellow",
+    img: "snakeFood.png",
     onEat_deleteMe: true,
     canEat: true,
     onEat_func: function(player) {
@@ -15,6 +16,7 @@ items.push({
 items.push({
     name: "super_pellet",
     color: "green",
+    img: "snakeSuper.png",
     onEat_deleteMe: true,
     canEat: true,
     onEat_func: function(player) {
@@ -24,6 +26,7 @@ items.push({
 items.push({
     name: "turbo",
     color: "pink",
+    img: "speedPowerUp.png",
     onEat_deleteMe: true,
     canEat: true,
     onEat_func: function(player) {
@@ -44,6 +47,7 @@ items.push({
 items.push({
     name: "shield",
     color: "blue",
+    img: "shieldPowerUp.png",
     onEat_deleteMe: true,
     canEat: true,
     onEat_func: function(player) {

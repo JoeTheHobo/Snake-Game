@@ -1062,10 +1062,22 @@ Object.prototype.fadeIn = function(ms = 1000,whatHappensToMe = "visible") {
     },1)
 }
 Object.prototype.show = function(as = "block") {
-    this.style.display = as;
+    if (this.length) {
+        for (let i = 0; i < this.length; i++) {
+            this[i].show(as);
+        }
+    } else {
+        this.style.display = as;
+    }
 }
 Object.prototype.hide = function() {
-    this.style.display = "none";
+    if (this.length) {
+        for (let i = 0; i < this.length; i++) {
+            this[i].hide();
+        }
+    } else {
+        this.style.display = "none";
+    }
 }
 Object.prototype.getSize = function() {
     let node = this.cloneNode();

@@ -6,25 +6,36 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Untitled Document</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css'>
     
     <link rel="icon" href="favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <table id="game">
+    <div class="scene" id="scene_menu">
+        <div id="gameTitle">Snake Game</div>
+        <div class="pixel" id="button_startGame"><p>Start Game</p></div>
+    </div>
+    <div class="scene" id="scene_game">
+        <canvas id="game"></canvas>
+    </div>
 
-    </table>
-
+    
+    <div class="imageHolder">
+        <img src="img/snakeHead.png" id="img_snakeHead">
+        <img src="img/snakeBody.png" id="img_snakeBody">
+        <img src="img/snakeTail.png" id="img_snakeTail">
+        <img src="img/snakeTurn.png" id="img_snakeTurn">
+    </div>
+    
     <!--Insert All Library Sheets Below-->
     <script src='libraries/library_simple_v16.js'></script>
 
     <!--Insert All Your Sheets Below-->
     <script src="functions.js"></script>
     <script src="items.js"></script>
+    <script src="handelHTMLrequests.js"></script>
     <script src='main.js'></script>
 </body>
 </html>

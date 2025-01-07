@@ -15,8 +15,6 @@ function spawn(name) {
             let x = rnd(gridX)-1;
             let y = rnd(gridY)-1
 
-
-            
             map[y][x] = items[i];
             updateCells.push({
                 x: x,
@@ -28,3 +26,12 @@ function spawn(name) {
               
     }
 };
+
+
+function hideScenes() {
+    $(".scene").hide();
+}
+function setScene(scene) {
+    hideScenes();
+    $("scene_" + scene).show("flex");
+}
