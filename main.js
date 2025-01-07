@@ -184,6 +184,20 @@ function renderPlayers() {
                     drawImage($("img_snakeTurn"),"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
 
+
+                if (afterTail.x > tailX && beforeTail.x > tailX) {
+                    drawImage($("img_snakeBody"),"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                }
+                if (afterTail.x < tailX && beforeTail.x < tailX) {
+                    drawImage($("img_snakeBody"),"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                }
+                if (afterTail.y > tailY && beforeTail.y > tailY) {
+                    drawImage($("img_snakeBody"),"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                }
+                if (afterTail.y < tailY && beforeTail.y < tailY) {
+                    drawImage($("img_snakeBody"),"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                }
+
             } else {
                 drawImage($("img_snakeBody"),direction,tailX*gridSize,tailY*gridSize,gridSize,gridSize);
             }
