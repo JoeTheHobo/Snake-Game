@@ -114,6 +114,8 @@ function renderPlayers() {
         drawImage($("img_snakeHead"),player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
 
         for (let j = 0; j < player.tail.length; j++) {
+            if (j !== 0 && j !== player.tail.length-1) continue;
+
             let tailX = player.tail[j].x;
             let tailY = player.tail[j].y;
             let direction = player.tail[j].direction;
@@ -250,9 +252,8 @@ function movePlayers() {
                 updateCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y});
                 player.tail.pop();
             }
-            for (let k = 0; k < player.tail.length; k++) {
-                updateCells.push({x: player.tail[k].x,y: player.tail[k].y});
-            }
+            if (player.tail.length > 0)
+                updateCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y});
 
             ctx.fillStyle = map[player.pos.y][player.pos.x].color;
             ctx.fillRect(player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
