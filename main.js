@@ -375,6 +375,14 @@ function movePlayers() {
 
 function deletePlayer(playerID, player){
     if (player.shield == false){
+        //Delete Tail
+        for (let i = 0; i < player.tail.length; i++) {
+            updateCells.push({
+                x: player.tail[i].x,
+                y: player.tail[i].y,
+            })
+        }
+        //Delete Player
         if (playerID != 0)
             players.splice(playerID,playerID);
         else if (playerID == 0)
