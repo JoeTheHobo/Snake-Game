@@ -105,3 +105,16 @@ html {
           radial-gradient(circle at 0 100%, rgba(204,0,0,0) 14px, #000000 15px);
   }
   
+
+  #fps-counter {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+    color: green;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: Semi-transparent background */
+    padding: 5px;
+    border-radius: 5px;
+}

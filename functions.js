@@ -94,3 +94,53 @@ function setScene(scene) {
     hideScenes();
     $("scene_" + scene).show("flex");
 }
+
+
+class FrameRateCounter {
+    constructor() {
+        this.frames = 0;
+        this.lastTime = performance.now();
+        this.fps = 0;
+    }
+
+    /**
+     * Updates the frame count and calculates FPS if needed.
+     */
+    update() {
+        this.frames++;
+        const currentTime = performance.now();
+        const deltaTime = currentTime - this.lastTime;
+
+        // Update FPS every second
+        if (deltaTime >= 1000) {
+            this.fps = (this.frames / deltaTime) * 1000;
+            this.frames = 0;
+            this.lastTime = currentTime;
+        }
+    }
+
+    /**
+     * Returns the current FPS.
+     * @returns {number} The current frames per second.
+     */
+    getFPS() {
+        return this.fps;
+    }
+}
+
+const frameRateCounter = new FrameRateCounter();
+const fpsCounterElement = document.getElementById("fps-counter");
+
+function render() {
+    // Update the frame rate counter
+    frameRateCounter.update();
+
+    // Update the displayed FPS
+    fpsCounterElement.textContent = `FPS: ${frameRateCounter.getFPS().toFixed(2)}`;
+
+    // Call render recursively
+    requestAnimationFrame(render);
+}
+
+// Start the animation loop
+render();
