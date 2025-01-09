@@ -1,6 +1,7 @@
 let map = [];
 let items = [];
 let updateCells = [];
+let players = [];
 
 function getItem(name) {
     for (let i = 0; i < items.length; i++) {
@@ -23,6 +24,19 @@ function spawn(name) {
 
                 if (map[y][x].name == "air") {
                     foundSpot = true;
+                    checkingDistanceFromPlayersHead: for (let j = 0; j < players.length; j++) {
+                        let distance = calculateDistance(players[j].pos.x,players[j].pos.y,x,y);
+                        if (distance < 5) {
+                            foundSpot = false;
+                            break checkingDistanceFromPlayersHead;
+                        }
+                        for (let p = 0; p < players[j].tail.length; p++) {
+                            if (players[j].tail[p].x == x && players[j].tail[p].y == y) {
+                                foundSpot = false;
+                                break checkingDistanceFromPlayersHead;
+                            }
+                        }
+                    }
                 }
                 counter++;
                 if (counter > (gridX * gridY) ) {
@@ -34,9 +48,25 @@ function spawn(name) {
                 findingAnySpot: for (let k = 0; k < gridY; k++) {
                     for (let j = 0; j < gridX; j++) {
                         if (map[k][j].name == "air") {
-                            x = j;
-                            y = k;
-                            break findingAnySpot;
+                            let foundGoodSpot = true;
+                            checkingDistanceFromPlayersHead: for (let j = 0; j < players.length; j++) {
+                                let distance = calculateDistance(players[j].pos.x,players[j].pos.y,x,y);
+                                if (distance < 5) {
+                                    foundGoodSpot = false;
+                                    break checkingDistanceFromPlayersHead;
+                                }
+                                for (let p = 0; p < players[j].tail.length; p++) {
+                                    if (players[j].tail[p].x == x && players[j].tail[p].y == y) {
+                                        foundGoodSpot = false;
+                                        break checkingDistanceFromPlayersHead;
+                                    }
+                                }
+                            }
+                            if (foundGoodSpot) {{
+                                x = j;
+                                y = k;
+                                break findingAnySpot;
+                            }}
                         }
                     }
                 }
@@ -53,7 +83,9 @@ function spawn(name) {
               
     }
 };
-
+function calculateDistance(x1, y1, x2, y2) {
+    return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+}
 
 function hideScenes() {
     $(".scene").hide();

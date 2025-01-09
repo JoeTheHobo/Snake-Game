@@ -1,6 +1,5 @@
 ls.setID("snakegame");
 
-let players = [];
 let gs_playerCount = 2;
 let gridX = 50;
 let gridY = 30;
@@ -158,33 +157,84 @@ function renderPlayers() {
                     drawImage($("img_snakeBody"),"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
 
-                if (beforeTail.x < tailX && afterTail.y < tailY) { //Left and top
-                    drawImage($("img_snakeTurn"),"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                if (beforeTail.x < tailX && afterTail.y < tailY) { //Right And Top
+                    console.log(1,gridY,beforeTail.y,afterTail.y);
+                    if (beforeTail.x == 0 && afterTail.x > 1)
+                        drawImage($("img_snakeTurn"),"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    else if (afterTail.y == 0 && beforeTail.y > 1){
+                        console.log("1.5")
+                        drawImage($("img_snakeTurn"),"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    }
+                    else
+                        drawImage($("img_snakeTurn"),"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
-                if (beforeTail.x < tailX && afterTail.y > tailY) { //Left and Bottom
-                    drawImage($("img_snakeTurn"),"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                if (beforeTail.x < tailX && afterTail.y > tailY) { //Right and Bottom
+                    console.log(2);
+                    if (beforeTail.x == 0 && afterTail.x > 1)
+                        drawImage($("img_snakeTurn"),"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    else if(afterTail.y == 0 && beforeTail.y > 1)
+                        drawImage($("img_snakeTurn"),"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    else
+                        drawImage($("img_snakeTurn"),"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
-                if (beforeTail.x > tailX && afterTail.y < tailY) { //Right and top
-                    drawImage($("img_snakeTurn"),"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                if (beforeTail.x > tailX && afterTail.y < tailY) { //Left and top
+                    console.log(3);
+                    if (beforeTail.x == gridX-1 && afterTail.x < gridX-2)
+                        drawImage($("img_snakeTurn"),"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    else if (beforeTail.y == gridY-1 && afterTail.y < gridY-2)
+                        drawImage($("img_snakeTurn"),"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    else
+                        drawImage($("img_snakeTurn"),"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
-                if (beforeTail.x > tailX && afterTail.y > tailY) { //Right and bottom
-                    drawImage($("img_snakeTurn"),"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                if (beforeTail.x > tailX && afterTail.y > tailY) { //Left and bottom
+                    console.log(4);
+                    if (beforeTail.x == gridX-1 && afterTail.x < gridX-2)
+                        drawImage($("img_snakeTurn"),"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    else if (beforeTail.y == gridY-1 && afterTail.y < gridY-2)
+                        drawImage($("img_snakeTurn"),"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    else
+                        drawImage($("img_snakeTurn"),"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
 
                 if (beforeTail.y < tailY && afterTail.x < tailX) { //top and left
-                    drawImage($("img_snakeTurn"),"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    console.log(5);
+                    if (beforeTail.y == 0 && afterTail.y > 1)
+                        drawImage($("img_snakeTurn"),"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    else if (beforeTail.x == 0 && afterTail.x > 1)
+                        drawImage($("img_snakeTurn"),"bottom",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    else
+                        drawImage($("img_snakeTurn"),"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (beforeTail.y < tailY && afterTail.x > tailX) { //Top and right
-                    drawImage($("img_snakeTurn"),"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    
+                    console.log(6);
+                    if (beforeTail.y == 0 && afterTail.y > 1)
+                        drawImage($("img_snakeTurn"),"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    else if (beforeTail.x == 0 && afterTail.x > 1) 
+                        drawImage($("img_snakeTurn"),"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    else
+                        drawImage($("img_snakeTurn"),"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (beforeTail.y > tailY && afterTail.x < tailX) { //Bottom and left
-                    drawImage($("img_snakeTurn"),"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    console.log(7);
+                    if (beforeTail.y == gridY-1 && afterTail.y < gridY-2)
+                        drawImage($("img_snakeTurn"),"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    else if (beforeTail.x == gridX-1 && afterTail.x < gridX-2)
+                        drawImage($("img_snakeTurn"),"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    else
+                        drawImage($("img_snakeTurn"),"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (beforeTail.y > tailY && afterTail.x > tailX) { //Bottom and right
-                    drawImage($("img_snakeTurn"),"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    console.log(8);
+                    if (beforeTail.y == gridY-1 && afterTail.y < gridY-2)
+                        drawImage($("img_snakeTurn"),"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    else if (beforeTail.x == gridX-1 && afterTail.x < gridX-2)
+                        drawImage($("img_snakeTurn"),"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    else
+                        drawImage($("img_snakeTurn"),"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
 
-
+                //Going Off Screen
                 if (afterTail.x > tailX && beforeTail.x > tailX) {
                     drawImage($("img_snakeBody"),"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
