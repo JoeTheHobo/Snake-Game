@@ -454,6 +454,7 @@ function editPlayerScreen(player) {
         padding: "5px",
         width: "50%",
         height: "max-content",
+        height: "100%",
     })
     let input_name = flex_column.create("input");
     input_name.value = player.name;
@@ -495,15 +496,24 @@ function editPlayerScreen(player) {
     flex_column.css({
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "flex-start",
+        alignItems: "flex-start",
         padding: "5px",
-        width: "100%",
+        width: "50%",
         height: "max-content",
     })
+    flex_column2 = flex_row.create("div");
+    flex_column2.css({
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        padding: "5px",
+        width: "50%",
+        height: "max-content",
+    })
+
     
-    function addKeyBind(title,keyBind) {
-        let html_keyBindHolder = flex_column.create("div");
+    function addKeyBind(title,keyBind,column) {
+        let html_keyBindHolder = column == 1 ? flex_column.create("div") : flex_column2.create("div");
         html_keyBindHolder.css({
             display: "flex",
             flexDirection: "row",
@@ -515,6 +525,7 @@ function editPlayerScreen(player) {
         html_keyBindTitle.css({
             color: "#ddd",
             fontSize: "25px",
+            width: "100px",
         })
         let input_keyBind = html_keyBindHolder.create("input");
         
@@ -574,12 +585,12 @@ function editPlayerScreen(player) {
         })
     }
 
-    addKeyBind("Down Key","downKey");
-    addKeyBind("Up Key","upKey");
-    addKeyBind("Right Key","rightKey");
-    addKeyBind("Left Key","leftKey");
-    addKeyBind("Use Item 1","useItem1");
-    addKeyBind("Use Item 2","useItem2");
+    addKeyBind("Down Key","downKey",1);
+    addKeyBind("Up Key","upKey",1);
+    addKeyBind("Right Key","rightKey",1);
+    addKeyBind("Left Key","leftKey",1);
+    addKeyBind("Use Item 1","useItem1",2);
+    addKeyBind("Use Item 2","useItem2",2);
     
 
 
