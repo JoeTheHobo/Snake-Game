@@ -588,10 +588,10 @@ function editPlayerScreen(player) {
         })
     }
 
-    addKeyBind("Down Key","downKey",1);
-    addKeyBind("Up Key","upKey",1);
-    addKeyBind("Right Key","rightKey",1);
     addKeyBind("Left Key","leftKey",1);
+    addKeyBind("Down Key","downKey",1);
+    addKeyBind("Right Key","rightKey",1);
+    addKeyBind("Up Key","upKey",1);
     addKeyBind("Use Item 1","useItem1",2);
     addKeyBind("Use Item 2","useItem2",2);
     
