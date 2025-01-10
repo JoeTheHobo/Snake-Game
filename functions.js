@@ -90,6 +90,7 @@ function newPlayer(playerNumber) {
         color: rnd(360),
         moving: false,
         growTail: 0,
+        isDead: false,
         pos: {
             x: startx,
             y: starty, 

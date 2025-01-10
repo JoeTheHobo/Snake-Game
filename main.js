@@ -98,6 +98,8 @@ function renderPlayers() {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
 
+        if (player.isDead) continue;
+
         ctx.filter = `hue-rotate(${player.color}deg)`;
 
         drawImage($("img_snakeHead"),player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
@@ -366,11 +368,7 @@ function deletePlayer(playerID, player){
             })
         }
         //Delete Player
-        if (playerID != 0)
-            players.splice(playerID,playerID);
-        else if (playerID == 0)
-            players.shift();
-            gs_playerCount --;
+        player.isDead = true;
     }else{
         player.shield = false;
     }
@@ -410,6 +408,11 @@ document.body.onkeydown = function(e) {
 
 function startGame() {
     setScene("game");
+
+    //Ressurect All Players
+    for (let i = 0; i < players.length; i++) {
+        players[i].isDead = false;
+    }
 
     newMap();
     adjustCanvasSize();
