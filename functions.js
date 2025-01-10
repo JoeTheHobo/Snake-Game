@@ -16,6 +16,12 @@ let totalSpecialItems = 1;
 let keyBindVariable = [
     ["s","w","a","d","q","e"],
     ["5","8","4","6","7","9"],
+    ["k","i","j","l","u","o"],
+    ["g","t","f","h","r","y"],
+    ["z","z","z","z","z","z"],
+    ["z","z","z","z","z","z"],
+    ["z","z","z","z","z","z"],
+    ["z","z","z","z","z","z"],
 ];
 
 let playerNames1 = [
@@ -245,19 +251,27 @@ function loadPlayers() {
         padding: "5px",
     })
 
-    let html_newPlayerButton = html_playersHolder.create("div");
-    html_newPlayerButton.innerHTML = "Add Player";
-    html_newPlayerButton.css({
-        padding: "5px",
-        marginBottom: "5px",
-        fontSize: "20px",
-        userSelect: "none",
-        color: "white",
-        background: "black",
-        width: "max-content",
-        cursor: "pointer",
-        borderRadius: "3px",
-    })
+    if (gs_playerCount < 8) {
+        let html_newPlayerButton = html_playersHolder.create("div");
+        html_newPlayerButton.innerHTML = "Add Player";
+        html_newPlayerButton.css({
+            padding: "5px",
+            marginBottom: "5px",
+            fontSize: "20px",
+            userSelect: "none",
+            color: "white",
+            background: "black",
+            width: "max-content",
+            cursor: "pointer",
+            borderRadius: "3px",
+        })
+        html_newPlayerButton.on("click",function() {
+            gs_playerCount++;
+            newPlayer(gs_playerCount-1);
+            editPlayerScreen(players[gs_playerCount-1])
+        })
+    }
+    
 
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
@@ -332,6 +346,7 @@ function loadPlayers() {
         html_deleteSnake.playerID = i;
         html_deleteSnake.on("click",function() {
             players.splice(this.playerID,1);
+            gs_playerCount--;
             loadPlayers();
         })
         let html_deleteImage = html_deleteSnake.create("img");
