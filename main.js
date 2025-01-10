@@ -388,6 +388,8 @@ function newMap() {
 }
 //adds movement to a queue of max 3 moves
 document.body.onkeydown = function(e) {
+    if (!isActiveGame) return;
+
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
         if (e.key == player.leftKey && player.moveQueue.length < 4) {
@@ -418,6 +420,7 @@ function startGame() {
 
 
     renderGame();
+    isActiveGame = true;
     requestAnimationFrame(gameLoop);
 
 

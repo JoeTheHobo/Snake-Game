@@ -12,6 +12,7 @@ let specialItemHighChance = 6;
 let specialItemActiveChance = 4;
 let specialItemIteration = 0;
 let totalSpecialItems = 1;
+let isActiveGame = false;
 
 let keyBindVariable = [
     ["s","w","a","d","q","e"],
