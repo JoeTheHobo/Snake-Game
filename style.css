@@ -118,3 +118,13 @@ html {
     padding: 5px;
     border-radius: 5px;
 }
+
+
+
+.playersHolder {
+  width: 500px;
+  height: 500px;
+  background: rgb(78, 78, 78);
+  border-radius: 5px;
+
+}

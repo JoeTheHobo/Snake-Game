@@ -1,15 +1,5 @@
 ls.setID("snakegame");
 
-let gs_playerCount = 2;
-let gridX = 50;
-let gridY = 30;
-let gridSize = 20;
-let circleWalls = true;
-let specialItemLowChance = 1;
-let specialItemHighChance = 6;
-let specialItemActiveChance = 4;
-let specialItemIteration = 0;
-let totalSpecialItems = 1;
 
 //Setting Up Canvas
 let canvas = $("game");
@@ -262,13 +252,6 @@ function growPlayer(player,grow) {
     player.growTail = grow;
 }
 
-let keyBindVariable = [
-    ["s","w","a","d","q","e"],
-    ["5","8","4","6","7","9"],
-];
-let playerColors = ["0","90"
-]
-
 
 function movePlayers() {
     for (let i = 0; i < players.length; i++) {
@@ -393,63 +376,6 @@ function deletePlayer(playerID, player){
     }
 }
 
-function newPlayer(playerNumber) {
-    let foundSpace = false;
-    let startx,starty;
-    let counter = 0;
-    let gameCrashed = false;
-    while (foundSpace == false)  {
-        startx = rnd(gridX) - 1;
-        starty = rnd(gridY) - 1;
-
-        let foundPlayer = false;
-        findingPlayer: for (let i = 0; i < players.length; i++) {
-            if (players[i].pos.x == startx && players[i].pos.y == starty) {
-                foundPlayer = true;
-                break findingPlayer;
-            }
-        }
-        if (!foundPlayer) {
-            foundSpace = true;
-        }
-        counter++;
-        if (counter > gridX * gridY) {
-            //Table is full
-            foundSpace = true;
-            gameCrashed = true;
-        }
-    }
-    if (gameCrashed) {
-        console.log("Game Crashed")
-        return;
-    }
-
-    
-    let player = {
-        downKey: keyBindVariable[playerNumber][0],
-        upKey: keyBindVariable[playerNumber][1],
-        leftKey: keyBindVariable[playerNumber][2],
-        rightKey: keyBindVariable[playerNumber][3],
-        useItem1: keyBindVariable[playerNumber][4],
-        useItem2: keyBindVariable[playerNumber][5],
-        color: playerColors[playerNumber],
-        moving: false,
-        growTail: 0,
-        pos: {
-            x: startx,
-            y: starty, 
-        },
-        tail: [],
-        moveQueue: [],
-        prevMove: "start",
-        moveTik: 0,
-        moveSpeed: 6,
-        turboDuration: 0,
-        turboActive: false,
-        shield: false,
-    }
-    players.push(player);
-}
 function newMap() {
     map = [];
     for (let i = 0; i < gridY; i++) {
@@ -482,10 +408,6 @@ document.body.onkeydown = function(e) {
 
 function startGame() {
     setScene("game");
-    players = [];
-    for (let i = 0; i < gs_playerCount; i++){
-        newPlayer(i);
-    }
 
     newMap();
     adjustCanvasSize();
