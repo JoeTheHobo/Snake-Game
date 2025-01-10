@@ -653,7 +653,4 @@ function editPlayerScreen(player) {
     addKeyBind("Up Key","upKey",1);
     addKeyBind("Use Item 1","useItem1",2);
     addKeyBind("Use Item 2","useItem2",2);
-    
-
-
 }

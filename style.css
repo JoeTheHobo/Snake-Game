@@ -128,3 +128,7 @@ html {
   border-radius: 5px;
 
 }
+
+#playerCanvasHolder {
+  visibility: hidden;
+}
