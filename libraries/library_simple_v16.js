@@ -137,24 +137,14 @@ Object.prototype.css = function(obj,val) {
     }
     return this;
 }
-Object.prototype.on = function(what,func,option) {
+Object.prototype.on = function(what,func) {
     if (this.length) {
         for (let i = 0; i < this.length; i++) {
-            this[i].on(what,func,option)
+            this[i].on(what,func)
         }
     } else {
         let actions = what.split(" ");
-        if (option) {
-
-        }
         for (let i = 0; i < actions.length; i++) {
-            if (actions[i].orCompare("keydown","keyup") && option.keys) {
-                let keys = option.keys.toLowerCase();
-                this.addEventListener(actions[i],function(e) {
-                    if (keys.includes(e.key.toLowerCase())) func.call(this,e);
-                });
-                continue;
-            }
             this.addEventListener(actions[i],function(e) {
                 func.call(this,e);
             });
