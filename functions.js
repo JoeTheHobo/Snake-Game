@@ -467,6 +467,7 @@ function editPlayerScreen(player) {
         width: "90%",
         height: "40px",
         fontSize: "20px",
+        outline: "none",
     })
 
     flex_row = html_playersHolder.create("div");
@@ -549,38 +550,39 @@ function editPlayerScreen(player) {
                 input_keyBind.value = player.useItem2;
                 break;
         }
-        input_keyBind.maxLength = 1;
         input_keyBind.css({
-            width: "30px",
+            width: "80px",
             height: "30px",
             marginLeft: "5px",
             fontSize: "20px",
             textAlign: "center",
+            outlineColor: "blue",
+            caretColor: "transparent",
+            cursor: "pointer",
         })
         input_keyBind.player = player;
-        input_keyBind.on("input",function() {
-            if (this.value.length == 1) {
-                switch(keyBind) {
-                    case "downKey":
-                        this.player.downKey = this.value;
-                        break;
-                    case "upKey":
-                        this.player.upKey = this.value;
-                        break;
-                    case "rightKey":
-                        this.player.rightKey = this.value;
-                        break;
-                    case "leftKey":
-                        this.player.leftKey = this.value;
-                        break;
-                    case "useItem1":
-                        this.player.useItem1 = this.value;
-                        break;
-                    case "useItem2":
-                        this.player.useItem2 = this.value;
-                        break;
-                }
-                
+        input_keyBind.on("keydown",function(e) {
+            e.preventDefault();
+            this.value = e.key;
+            switch(keyBind) {
+                case "downKey":
+                    this.player.downKey = this.value;
+                    break;
+                case "upKey":
+                    this.player.upKey = this.value;
+                    break;
+                case "rightKey":
+                    this.player.rightKey = this.value;
+                    break;
+                case "leftKey":
+                    this.player.leftKey = this.value;
+                    break;
+                case "useItem1":
+                    this.player.useItem1 = this.value;
+                    break;
+                case "useItem2":
+                    this.player.useItem2 = this.value;
+                    break;
             }
         })
     }
