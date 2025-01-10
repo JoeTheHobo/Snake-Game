@@ -19,7 +19,7 @@ let keyBindVariable = [
     ["5","8","4","6","7","9"],
     ["k","i","j","l","u","o"],
     ["g","t","f","h","r","y"],
-    ["z","z","z","z","z","z"],
+    ["ArrowDown","ArrowUp","ArrowLeft","ArrowRight","Alt","Control"],
     ["z","z","z","z","z","z"],
     ["z","z","z","z","z","z"],
     ["z","z","z","z","z","z"],
