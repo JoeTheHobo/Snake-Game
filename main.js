@@ -100,7 +100,7 @@ function renderPlayers() {
 
         if (player.isDead) continue;
 
-        ctx.filter = `hue-rotate(${player.color}deg)`;
+        ctx.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`,
 
         drawImage($("img_snakeHead"),player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
 

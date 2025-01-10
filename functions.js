@@ -87,7 +87,9 @@ function newPlayer(playerNumber) {
         useItem1: keyBindVariable[playerNumber][4],
         useItem2: keyBindVariable[playerNumber][5],
         name: playerNames1.rnd() + playerNames2.rnd(),
-        color: rnd(360),
+        color: rnd(360), //Hue
+        color2: 0, //Brightness
+        color3: 100, //Contrast
         moving: false,
         growTail: 0,
         isDead: false,
@@ -304,7 +306,7 @@ function loadPlayers() {
         html_snakeImage.css({
             width: "100%",
             height: "100%",
-            filter: `hue-rotate(${player.color}deg)`,
+            filter: `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`,
         })
 
         let html_playerName = html_playerHolder.create("div");
@@ -428,23 +430,7 @@ function editPlayerScreen(player) {
     html_snakeImage.css({
         width: "100%",
         height: "100%",
-        filter: `hue-rotate(${player.color}deg)`,
-    })
-    let input_slider = flex_column.create("input");
-    input_slider.type = "range",
-    input_slider.min = 0,
-    input_slider.max = 360,
-    input_slider.css({
-        width: "80%",
-    })
-    input_slider.value = player.color;
-    input_slider.player = player;
-    input_slider.alter = html_snakeImage;
-    input_slider.on("input",function() {
-        this.player.color = this.value;
-        this.alter.css({
-            filter: `hue-rotate(${this.player.color}deg)`,
-        })
+        filter: `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`,
     })
 
     flex_column = flex_row.create("div");
@@ -472,6 +458,78 @@ function editPlayerScreen(player) {
         outline: "none",
     })
 
+
+    let html_title = flex_column.create("div");
+    html_title.innerHTML = "Hue";
+    html_title.css({
+        color: "white",
+        fontSize: "25px",
+    })
+    let input_slider = flex_column.create("input");
+    input_slider.type = "range",
+    input_slider.min = 0,
+    input_slider.max = 360,
+    input_slider.css({
+        width: "80%",
+    })
+    input_slider.value = player.color;
+    input_slider.player = player;
+    input_slider.alter = html_snakeImage;
+    input_slider.on("input",function() {
+        this.player.color = this.value;
+        this.alter.css({
+            filter: `hue-rotate(${this.player.color}deg) sepia(${this.player.color2}%) contrast(${this.player.color3}%)`,
+        })
+    })
+
+    html_title = flex_column.create("div");
+    html_title.innerHTML = "Sepia";
+    html_title.css({
+        color: "white",
+        fontSize: "25px",
+    })
+    input_slider = flex_column.create("input");
+    input_slider.type = "range",
+    input_slider.min = 0,
+    input_slider.max = 100,
+    input_slider.css({
+        width: "80%",
+    })
+    input_slider.value = player.color2;
+    input_slider.player = player;
+    input_slider.alter = html_snakeImage;
+    input_slider.on("input",function() {
+        this.player.color2 = this.value;
+        this.alter.css({
+            filter: `hue-rotate(${this.player.color}deg) sepia(${this.player.color2}%) contrast(${this.player.color3}%)`,
+        })
+    })
+
+    html_title = flex_column.create("div");
+    html_title.innerHTML = "Contrast";
+    html_title.css({
+        color: "white",
+        fontSize: "25px",
+    })
+    input_slider = flex_column.create("input");
+    input_slider.type = "range",
+    input_slider.min = 0,
+    input_slider.max = 200,
+    input_slider.css({
+        width: "80%",
+    })
+    input_slider.value = player.color3;
+    input_slider.player = player;
+    input_slider.alter = html_snakeImage;
+    input_slider.on("input",function() {
+        this.player.color3 = this.value;
+        this.alter.css({
+            filter: `hue-rotate(${this.player.color}deg) sepia(${this.player.color2}%) contrast(${this.player.color3}%)`,
+        })
+    })
+
+
+
     flex_row = html_playersHolder.create("div");
     flex_row.css({
         display: "flex",
@@ -481,7 +539,7 @@ function editPlayerScreen(player) {
         width: "100%",
         height: "30px",
     })
-    let html_title = flex_row.create("div");
+    html_title = flex_row.create("div");
     html_title.innerHTML = "Key Binds";
     html_title.css({
         color: "white",
