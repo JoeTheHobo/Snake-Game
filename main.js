@@ -496,13 +496,15 @@ function startGame() {
 
 
     renderGame();
-    let gameLoop = setInterval(function() {
-        renderCells();
-        movePlayers();
-        renderPlayers();
-    },1000/60)
+    requestAnimationFrame(gameLoop);
 
 
+}
+function gameLoop() {
+    renderCells();
+    movePlayers();
+    renderPlayers();
+    requestAnimationFrame(gameLoop);
 }
 
 function specialItemManager()
