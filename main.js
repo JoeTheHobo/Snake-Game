@@ -1,20 +1,7 @@
 ls.setID("snakegame");
 
 
-//Setting Up Canvas
-let canvas = $("game");
-let ctx = canvas.getContext("2d");
-function adjustCanvasSize() {
-    let width = gridX * gridSize;
-    let height = gridY * gridSize;
-    canvas.width = width;
-    canvas.height = height;
-    canvas.css({
-        width: width + "px",
-        height: height + "px",
-    })
-}
-//End Setting Up Canvas
+
 
 //Load All Item Images
 for (let i = 0; i < items.length; i++) {
@@ -28,7 +15,6 @@ for (let i = 0; i < items.length; i++) {
 
 
 function renderGame() {
-    ctx.fillStyle = getItem("air").color;
     ctx.fillRect(0,0,canvas.width,canvas.height);
     for (let i = 0; i < map.length; i++) {
         for (let j = 0; j < map[0].length; j++) {
@@ -45,13 +31,7 @@ function renderGame() {
 function renderCells() {
     for (let i = 0; i < updateCells.length; i++) {
         let mapCell = map[updateCells[i].y][updateCells[i].x];
-        if (mapCell.img) {
-            console.log();
-            ctx.drawImage($("item_" + mapCell.img.subset(0,".\\before")),updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
-        } else {
-            ctx.fillStyle = mapCell.color;
-            ctx.fillRect(updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize)
-        }
+        ctx.drawImage($("item_" + mapCell.img.subset(0,".\\before")),updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);        
     }
     updateCells = [];
 }
@@ -101,6 +81,17 @@ function renderPlayers() {
         if (player.isDead) continue;
 
         drawImage(player.canvas.head,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
+        
+        if (player.shield == 1){
+            let helmet = $(".imageHolder").create("img");
+            helmet.src = "img/" + "bronzeShield.png";
+            drawImage(helmet,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
+        }
+        if (player.shield == 2){
+            let helmet = $(".imageHolder").create("img");
+            helmet.src = "img/" + "silverShield.png";
+            drawImage(helmet,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
+        }
 
         for (let j = 0; j < player.tail.length; j++) {
             if (j !== 0 && j !== player.tail.length-1) continue;
@@ -254,6 +245,9 @@ function growPlayer(player,grow) {
 function movePlayers() {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
+        if (player.isDead){
+            continue;
+        }
         if (player.moveTik >= player.moveSpeed)
             {   
                 if (player.turboActive == true)
@@ -300,8 +294,12 @@ function movePlayers() {
             if (player.tail.length > 0)
                 updateCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y});
 
-            ctx.fillStyle = map[player.pos.y][player.pos.x].color;
-            ctx.fillRect(player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
+            updateCells.push({
+                x: player.pos.x,
+                y: player.pos.y
+            })
+            //ctx.fillStyle = map[player.pos.y][player.pos.x].color;
+            //ctx.fillRect(player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
             //Move Player and make sure he can't go back on himself
             if (player.moving == "left") player.pos.x--;
             if (player.moving == "right") player.pos.x++;
@@ -356,7 +354,7 @@ function movePlayers() {
 }
 
 function deletePlayer(playerID, player){
-    if (player.shield == false){
+    if (player.shield == 0){
         //Delete Tail
         for (let i = 0; i < player.tail.length; i++) {
             updateCells.push({
@@ -367,7 +365,7 @@ function deletePlayer(playerID, player){
         //Delete Player
         player.isDead = true;
     }else{
-        player.shield = false;
+        player.shield --;
     }
 }
 
@@ -440,13 +438,13 @@ function startGame() {
 
     newMap();
     adjustCanvasSize();
-
-    spawn("pellet");
-    spawn("pellet");
-    spawn("pellet");
-
-
     renderGame();
+    spawn("pellet");
+    spawn("pellet");
+    spawn("pellet");
+
+
+
     isActiveGame = true;
     requestAnimationFrame(gameLoop);
 
@@ -464,22 +462,32 @@ function specialItemManager()
     
     if (specialItemIteration >= specialItemActiveChance)
     {
-        let randomItem = rnd(1,4);
+        let randomItem = rnd(1,12);
         specialItemIteration = 0;
         specialItemActiveChance = rnd(specialItemLowChance,specialItemHighChance);
         switch(randomItem)
         {
             case 1:
+            case 2:
+            case 3:
                 spawn("turbo");
                 break;
-            case 2:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
                 spawn("super_pellet");
                 break;
-            case 3:
+            case 8:
+            case 9:
                 spawn("wall");
                 break;
-            case 4:
-                spawn("shield");
+            case 10:
+            case 11:
+                spawn("bronzeShield");
+                break;
+            case 12:
+                spawn("silverShield");
                 break;
             default:
                 console.log("No Item");

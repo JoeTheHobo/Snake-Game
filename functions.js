@@ -14,6 +14,21 @@ let specialItemIteration = 0;
 let totalSpecialItems = 1;
 let isActiveGame = false;
 
+//Setting Up Canvas
+let canvas = $("game");
+let ctx = canvas.getContext("2d");
+function adjustCanvasSize() {
+    let width = gridX * gridSize;
+    let height = gridY * gridSize;
+    canvas.width = width;
+    canvas.height = height;
+    canvas.css({
+        width: width + "px",
+        height: height + "px",
+    })
+}
+//End Setting Up Canvas
+
 window.on("resize",setResolution)
 function setResolution() {
     let height = window.screen.availHeight;
@@ -22,7 +37,7 @@ function setResolution() {
     let resolution = width/height;
     let size = (resolution * 13);
     gridSize = size;
-
+    adjustCanvasSize();
 }
 setResolution();
 
@@ -116,7 +131,7 @@ function newPlayer(playerNumber) {
         moveSpeed: 6,
         turboDuration: 0,
         turboActive: false,
-        shield: false,
+        shield: 0,
     }
     players.push(player);
 }

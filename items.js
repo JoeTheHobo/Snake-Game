@@ -11,7 +11,8 @@ items.push({
 })
 items.push({
     name: "air",
-    color: "#564f32",
+    img: "background.png",
+    color: "#6bd2fe",
 })
 items.push({
     name: "super_pellet",
@@ -37,6 +38,7 @@ items.push({
 })
 items.push({
     name: "wall",
+    img: "rock.png",
     color: "black",
     onEat_deleteMe: true,
     canEat: true,
@@ -45,12 +47,22 @@ items.push({
     },
 })
 items.push({
-    name: "shield",
+    name: "bronzeShield",
     color: "blue",
-    img: "shieldPowerUp.png",
+    img: "bronzeShield.png",
     onEat_deleteMe: true,
     canEat: true,
     onEat_func: function(player) {
-        player.shield = true;
+        player.shield = 1;
+    },
+})
+items.push({
+    name: "silverShield",
+    color: "blue",
+    img: "silverShield.png",
+    onEat_deleteMe: true,
+    canEat: true,
+    onEat_func: function(player) {
+        player.shield = 2;
     },
 })
