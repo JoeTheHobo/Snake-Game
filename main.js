@@ -336,6 +336,7 @@ function movePlayers() {
             //Check for Collisions
             for (let a = 0; a < players.length; a++){
                 let checkedPlayer = players[a];
+                if (checkedPlayer.isDead) continue;
                 for(let b = 0; b < checkedPlayer.tail.length; b++){
                     let tailPiece = checkedPlayer.tail[b];
                     if (player.pos.x == tailPiece.x && player.pos.y == tailPiece.y)
