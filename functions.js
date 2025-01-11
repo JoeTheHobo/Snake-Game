@@ -13,6 +13,8 @@ let specialItemActiveChance = 4;
 let specialItemIteration = 0;
 let totalSpecialItems = 1;
 let isActiveGame = false;
+let howManyItemsCanPlayersUse = 6;
+let mode_usingItemType = "scroll"; //direct - scroll
 
 //Setting Up Canvas
 let canvas = $("game");
@@ -42,14 +44,14 @@ function setResolution() {
 setResolution();
 
 let keyBindVariable = [
-    ["s","w","a","d","q","e"],
-    ["5","8","4","6","7","9"],
-    ["k","i","j","l","u","o"],
-    ["g","t","f","h","r","y"],
-    ["ArrowDown","ArrowUp","ArrowLeft","ArrowRight","Alt","Control"],
-    ["z","z","z","z","z","z"],
-    ["z","z","z","z","z","z"],
-    ["z","z","z","z","z","z"],
+    ["s","w","a","d","q","e","r"],
+    ["5","8","4","6","7","9","+"],
+    ["k","i","j","l","u","o","p"],
+    ["g","t","f","h","r","y","z"],
+    ["ArrowDown","ArrowUp","ArrowLeft","ArrowRight","Alt","Control","0"],
+    ["z","z","z","z","z","z","z"],
+    ["z","z","z","z","z","z","z"],
+    ["z","z","z","z","z","z","z"],
 ];
 
 let playerNames1 = [
@@ -74,7 +76,9 @@ function getItem(name) {
     }
 }
 
-function newPlayer(playerNumber) {
+
+function newPlayer() {
+    let playerNumber = players.length;
     let foundSpace = false;
     let startx,starty;
     let counter = 0;
@@ -113,6 +117,7 @@ function newPlayer(playerNumber) {
         rightKey: keyBindVariable[playerNumber][3],
         useItem1: keyBindVariable[playerNumber][4],
         useItem2: keyBindVariable[playerNumber][5],
+        fireItem: keyBindVariable[playerNumber][6],
         name: playerNames1.rnd() + playerNames2.rnd(),
         color: rnd(360), //Hue
         color2: 0, //Brightness
@@ -127,11 +132,13 @@ function newPlayer(playerNumber) {
         tail: [],
         moveQueue: [],
         prevMove: "start",
+        id: playerNumber,
         moveTik: 0,
         moveSpeed: 6,
         turboDuration: 0,
         turboActive: false,
         shield: 0,
+        items: [],
     }
     players.push(player);
 }
@@ -378,6 +385,9 @@ function loadPlayers() {
         html_deleteSnake.on("click",function() {
             players.splice(this.playerID,1);
             gs_playerCount--;
+            for (let i = 0; i < players.length; i++) {
+                players[i].id = i;
+            }
             loadPlayers();
         })
         let html_deleteImage = html_deleteSnake.create("img");
@@ -636,6 +646,9 @@ function editPlayerScreen(player) {
             case "useItem2":
                 input_keyBind.value = player.useItem2;
                 break;
+            case "fireItem":
+                input_keyBind.value = player.fireItem;
+                break;
         }
         input_keyBind.css({
             width: "80px",
@@ -670,6 +683,9 @@ function editPlayerScreen(player) {
                 case "useItem2":
                     this.player.useItem2 = this.value;
                     break;
+                case "fireItem":
+                    this.player.fireItem = this.value;
+                    break;
             }
         })
     }
@@ -680,4 +696,123 @@ function editPlayerScreen(player) {
     addKeyBind("Up Key","upKey",1);
     addKeyBind("Use Item 1","useItem1",2);
     addKeyBind("Use Item 2","useItem2",2);
+    addKeyBind("Fire Item","fireItem",2);
+}
+
+
+
+function drawPlayerBox(player) {
+    let index = player.id;
+    if ($("card" + index)) $("card" + index).remove();
+
+    let itemBoxHolderSize = 50;
+    let cardWidth;
+    cardWidth = howManyItemsCanPlayersUse * itemBoxHolderSize;
+    if (howManyItemsCanPlayersUse > 5) {
+        cardWidth = (index == 4 || index == 7) ? howManyItemsCanPlayersUse*itemBoxHolderSize : 5 * itemBoxHolderSize;
+    }
+
+    let cardTop = "", cardLeft = "", cardRight = "", cardBottom = "";
+
+    let card = $("playerCardsHolder").create("div");
+    card.id = "card" + index;
+    card.css({
+        display: "flex",
+        width: cardWidth,
+        height: "max-content",
+        background: "#444",
+        flexDirection: "column",
+        position: "absolute",
+        zIndex: 500,
+    })
+
+    let itemBoxesHolder = card.create("div");
+    itemBoxesHolder.css({
+        width: "100%",
+        background: "black",
+        
+    })
+    for (let i = 0; i < howManyItemsCanPlayersUse; i++) {
+        let itemHolder = itemBoxesHolder.create("div");
+        itemHolder.css({
+            width: itemBoxHolderSize - 4,
+            height: itemBoxHolderSize - 4,
+            border: player.selectingItem == i ? "2px solid gold" : "2px solid black",
+            background: "white",
+            display: "inline-block",
+        })
+
+        if (player.items[i]) {
+            let img = itemHolder.create("img");
+            img.src = "img/" + player.items[i].img;
+            img.css({
+                width: "100%",
+                height: "100%",
+            })
+        }
+    }
+
+    let playerImageHolder = card.create("div");
+    playerImageHolder.css({
+        position: "absolute",
+        left: 0,
+        right: 0,
+        bottom: "-" + (itemBoxHolderSize/1.1) + "px",
+        marginLeft: "auto",
+        marginRight: "auto",
+        background: player.isDead ? "red" : "white",
+        border: "3px solid black",
+        borderRadius: "50px",
+        width: itemBoxHolderSize + "px",
+        height: itemBoxHolderSize + "px",
+    })
+    let playerImage = playerImageHolder.create("img");
+    playerImage.src = "img/snakeHead.png";
+    playerImage.css({
+        width: "100%",
+        height: "100%",
+        filter: `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`,
+    })
+
+    //Set Card Position
+    switch(index) {
+        case 0:
+            cardTop = 5;
+            cardLeft = 5;
+            break;
+        case 1:
+            cardTop = 5;
+            cardRight = 5;
+            break;
+        case 2:
+            cardBottom = 5 + (itemBoxHolderSize* 0.9);
+            cardLeft = 5;
+            break;
+        case 3:
+            cardBottom = 5 + (itemBoxHolderSize* 0.9);
+            cardRight = 5;
+            break;
+        case 4:
+            cardTop = 5;
+            cardLeft = (window.innerWidth / 2) - (card.offsetWidth/2);
+            break;
+        case 5:
+            cardTop = (window.innerHeight / 2) - (card.offsetHeight/2);
+            cardLeft = 5;
+            break;
+        case 6:
+            cardTop = (window.innerHeight / 2) - (card.offsetHeight/2);
+            cardRight = 5;
+            break;
+        case 7:
+            cardBottom = 5 + (itemBoxHolderSize* 0.9);
+            cardLeft = (window.innerWidth / 2) - (card.offsetWidth/2);
+            break;
+    }
+    card.css({
+        top: cardTop,
+        left: cardLeft,
+        right: cardRight,
+        bottom: cardBottom,
+    })
 }

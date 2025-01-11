@@ -324,11 +324,21 @@ function movePlayers() {
 
             //Test Item Underplayer
             let mapItem = map[player.pos.y][player.pos.x];
-            if (mapItem.canEat == true) {
-                mapItem.onEat_func(player,i);
-            }
-            if (mapItem.onEat_deleteMe == true) {
-                map[player.pos.y][player.pos.x] = getItem("air");
+            if (mapItem.pickUp) {
+                if (player.items.length < howManyItemsCanPlayersUse) {
+                    player.items.push(mapItem);
+                    if (mapItem.onEat_deleteMe == true) {
+                        map[player.pos.y][player.pos.x] = getItem("air");
+                    }
+                    drawPlayerBox(player)
+                } 
+            } else {
+                if (mapItem.canEat == true) {
+                    mapItem.onEat_func(player,i);
+                }
+                if (mapItem.onEat_deleteMe == true) {
+                    map[player.pos.y][player.pos.x] = getItem("air");
+                }
             }
             
             //Check for Collisions
@@ -364,8 +374,9 @@ function deletePlayer(playerID, player){
         }
         //Delete Player
         player.isDead = true;
+        drawPlayerBox(player)
     }else{
-        player.shield --;
+        player.shield--;
     }
 }
 
@@ -382,6 +393,7 @@ function newMap() {
 //adds movement to a queue of max 3 moves
 document.body.onkeydown = function(e) {
     if (!isActiveGame) return;
+    e.preventDefault();
 
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
@@ -396,6 +408,29 @@ document.body.onkeydown = function(e) {
         }
         if (e.key == player.downKey && player.moveQueue.length < 4) {
             player.moveQueue.push("down");
+        }
+        if (e.key == player.useItem1) {
+            if (mode_usingItemType == "scroll") {
+                player.selectingItem--;
+                if (player.selectingItem < 0) player.selectingItem = howManyItemsCanPlayersUse-1;
+            }
+            drawPlayerBox(player);
+        }
+        if (e.key == player.useItem2) {
+            if (mode_usingItemType == "scroll") {
+                player.selectingItem++;
+                if (player.selectingItem > howManyItemsCanPlayersUse-1) player.selectingItem = 0;
+            }
+            drawPlayerBox(player);
+        }
+        if (e.key == player.fireItem) {
+            if (mode_usingItemType == "scroll") {
+                if (player.items[player.selectingItem]) {
+                    player.items[player.selectingItem].onEat_func(player);
+                    player.items.splice(player.selectingItem,1);
+                }
+            }
+            drawPlayerBox(player);
         }
     }
 }
@@ -429,9 +464,21 @@ function setUpPlayerCanvas() {
 function startGame() {
     setScene("game");
 
-    //Ressurect All Players
+    
+    $("playerCardsHolder").innerHTML = "";
+    $("playerCardsHolder").css({
+        visibility: "visible",
+    })
     for (let i = 0; i < players.length; i++) {
-        players[i].isDead = false;
+        let player = players[i];
+        //Ressurect Player
+        player.isDead = false;
+        //Set Player Selecting Item To 1
+        player.selectingItem = 0;
+        //Set Player Item Usage
+        player.howManyItemsCanIUse = howManyItemsCanPlayersUse;
+        //Draw Player's Card
+        drawPlayerBox(player);
     }
 
     setUpPlayerCanvas();
