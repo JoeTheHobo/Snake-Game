@@ -14,6 +14,18 @@ let specialItemIteration = 0;
 let totalSpecialItems = 1;
 let isActiveGame = false;
 
+window.on("resize",setResolution)
+function setResolution() {
+    let height = window.screen.availHeight;
+    let width = window.screen.availWidth;
+
+    let resolution = width/height;
+    let size = (resolution * 13);
+    gridSize = size;
+
+}
+setResolution();
+
 let keyBindVariable = [
     ["s","w","a","d","q","e"],
     ["5","8","4","6","7","9"],
