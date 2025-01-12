@@ -1,4 +1,3 @@
-ls.setID("snakegame");
 
 
 

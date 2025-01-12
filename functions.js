@@ -1,8 +1,10 @@
+ls.setID("snakegame");
+
 let map = [];
 let items = [];
 let updateCells = [];
-let players = [];
-let gs_playerCount = 2;
+let players = ls.get("players",[]);
+let gs_playerCount = players.length > 0 ? players.length : 1;
 let gridX = 50;
 let gridY = 30;
 let gridSize = 20;
@@ -148,6 +150,7 @@ function newPlayer() {
         status: [],
     }
     players.push(player);
+    ls.save("players",players);
 }
 function spawn(name) { 
     for (let i = 0; i < items.length; i++) {
@@ -234,11 +237,14 @@ function setScene(scene) {
     $("scene_" + scene).show("flex");
 }
 
-
-for (let i = 0; i < gs_playerCount; i++){
-    newPlayer(i);
+if (players.length == 0) {
+    for (let i = 0; i < gs_playerCount; i++){
+        newPlayer(i);
+    }
 }
 function loadPlayers() {
+    ls.save("players",players);
+
     let html_playersHolder = $(".playersHolder");
     html_playersHolder.innerHTML = "";
     html_playersHolder.css({
@@ -443,6 +449,8 @@ function editPlayerScreen(player) {
     input_name.on("input",function() {
         if (this.value !== "")
             this.player.name = this.value;
+        
+        ls.save("players",players);
     })
     input_name.css({
         width: "90%",
@@ -473,6 +481,7 @@ function editPlayerScreen(player) {
         this.alter.css({
             filter: `hue-rotate(${this.player.color}deg) sepia(${this.player.color2}%) contrast(${this.player.color3}%)`,
         })
+        ls.save("players",players);
     })
 
     html_title = flex_column.create("div");
@@ -496,6 +505,7 @@ function editPlayerScreen(player) {
         this.alter.css({
             filter: `hue-rotate(${this.player.color}deg) sepia(${this.player.color2}%) contrast(${this.player.color3}%)`,
         })
+        ls.save("players",players);
     })
 
     html_title = flex_column.create("div");
@@ -519,6 +529,7 @@ function editPlayerScreen(player) {
         this.alter.css({
             filter: `hue-rotate(${this.player.color}deg) sepia(${this.player.color2}%) contrast(${this.player.color3}%)`,
         })
+        ls.save("players",players);
     })
 
 
@@ -643,6 +654,7 @@ function editPlayerScreen(player) {
                     this.player.fireItem = this.value;
                     break;
             }
+            ls.save("players",players);
         })
     }
 
