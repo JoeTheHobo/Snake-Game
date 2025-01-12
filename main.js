@@ -139,7 +139,6 @@ function renderPlayers() {
                 }
 
                 if (beforeTail.x < tailX && afterTail.y < tailY) { //Right And Top
-                    console.log(1,gridY,beforeTail.y,afterTail.y);
                     if (beforeTail.x == 0 && afterTail.x > 1)
                         drawImage(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else if (afterTail.y == 0 && beforeTail.y > 1){
@@ -150,7 +149,6 @@ function renderPlayers() {
                         drawImage(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (beforeTail.x < tailX && afterTail.y > tailY) { //Right and Bottom
-                    console.log(2);
                     if (beforeTail.x == 0 && afterTail.x > 1)
                         drawImage(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else if(afterTail.y == 0 && beforeTail.y > 1)
@@ -159,7 +157,6 @@ function renderPlayers() {
                         drawImage(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (beforeTail.x > tailX && afterTail.y < tailY) { //Left and top
-                    console.log(3);
                     if (beforeTail.x == gridX-1 && afterTail.x < gridX-2)
                         drawImage(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else if (beforeTail.y == gridY-1 && afterTail.y < gridY-2)
@@ -168,7 +165,6 @@ function renderPlayers() {
                         drawImage(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (beforeTail.x > tailX && afterTail.y > tailY) { //Left and bottom
-                    console.log(4);
                     if (beforeTail.x == gridX-1 && afterTail.x < gridX-2)
                         drawImage(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else if (beforeTail.y == gridY-1 && afterTail.y < gridY-2)
@@ -178,7 +174,6 @@ function renderPlayers() {
                 }
 
                 if (beforeTail.y < tailY && afterTail.x < tailX) { //top and left
-                    console.log(5);
                     if (beforeTail.y == 0 && afterTail.y > 1)
                         drawImage(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else if (beforeTail.x == 0 && afterTail.x > 1)
@@ -187,8 +182,6 @@ function renderPlayers() {
                         drawImage(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (beforeTail.y < tailY && afterTail.x > tailX) { //Top and right
-                    
-                    console.log(6);
                     if (beforeTail.y == 0 && afterTail.y > 1)
                         drawImage(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else if (beforeTail.x == 0 && afterTail.x > 1) 
@@ -197,7 +190,6 @@ function renderPlayers() {
                         drawImage(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (beforeTail.y > tailY && afterTail.x < tailX) { //Bottom and left
-                    console.log(7);
                     if (beforeTail.y == gridY-1 && afterTail.y < gridY-2)
                         drawImage(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else if (beforeTail.x == gridX-1 && afterTail.x < gridX-2)
@@ -206,7 +198,6 @@ function renderPlayers() {
                         drawImage(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (beforeTail.y > tailY && afterTail.x > tailX) { //Bottom and right
-                    console.log(8);
                     if (beforeTail.y == gridY-1 && afterTail.y < gridY-2)
                         drawImage(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else if (beforeTail.x == gridX-1 && afterTail.x < gridX-2)
@@ -283,6 +274,7 @@ function movePlayers() {
                     direction: player.moving,
                 });
                 player.growTail--;
+                if (player.tail.length > player.longestTail) player.longestTail = player.tail.length;
             } else if(player.tail.length > 0) {
                 player.tail.unshift({
                     x: player.pos.x,
@@ -383,7 +375,35 @@ function movePlayers() {
         }        
     }
 }
+function endScreen() {
+    gameEnd = true;
+    $(".endGamePopup").show("flex");
+    let longestTail = players[0].longestTail;
+    let timeSurvived = players[0].timeSurvived;
+    let longestTailPlayer = players[0];
+    let timeSurvivedPlayer = players[0];
+    for (let i = 1; i < players.length; i++) {
+        if (players[i].longestTail > longestTail) {
+            longestTail = players[i].longestTail;
+            longestTailPlayer = players[i];
+        }
+        if (players[i].timeSurvived > timeSurvived) {
+            timeSurvived = players[i].timeSurvived;
+            timeSurvivedPlayer = players[i];
+        }
+    }
 
+    let minutes = (timeSurvived-(timeSurvived%60))/60;
+    let seconds = timeSurvived%60;
+
+
+    $(".longestTimePlayerImg").style.filter = `hue-rotate(${timeSurvivedPlayer.color}deg) sepia(${timeSurvivedPlayer.color2}%) contrast(${timeSurvivedPlayer.color3}%)`;
+    $(".longestTailPlayerImg").style.filter = `hue-rotate(${longestTailPlayer.color}deg) sepia(${longestTailPlayer.color2}%) contrast(${longestTailPlayer.color3}%)`;
+    $(".engGame_playerNameTime").innerHTML = timeSurvivedPlayer.name;
+    $(".engGame_playerTime").innerHTML = minutes + ":" + seconds + " Minutes";
+    $(".engGame_playerNameLength").innerHTML = longestTailPlayer.name;
+    $(".engGame_playerLength").innerHTML = (longestTail+1) + " Length";
+}
 function deletePlayer(playerID, player){
     if (player.shield == 0){
         //Delete Tail
@@ -395,7 +415,16 @@ function deletePlayer(playerID, player){
         }
         //Delete Player
         player.isDead = true;
+        player.timeSurvived = timer;
         drawPlayerBox(player)
+
+        let playersDead = 0;
+        for (let i = 0; i < players.length; i++) {
+            if (players[i].isDead) playersDead++;
+        }
+        if (playersDead == players.length) {
+            endScreen();
+        }
     }else{
         player.shield--;
         if (player.shield == 1) {
@@ -529,7 +558,8 @@ function setUpPlayerCanvas() {
 
 function startGame() {
     setScene("game");
-
+    $(".endGamePopup").hide();
+    gameEnd = false;
     
     $("playerCardsHolder").innerHTML = "";
     $("playerCardsHolder").css({
@@ -552,6 +582,19 @@ function startGame() {
         }
         //Draw Player's Card
         drawPlayerBox(player);
+
+        player.longestTail = 0;
+        player.timeSurvived = 0;
+        player.moving = false;
+        player.growTail = 0;
+        player.tail = [];
+        player.moveQueue = [];
+        player.prevMove = "start";
+        player.moveTik = 0;
+        player.moveSpeed = 6;
+        player.turboDuration = 0;
+        player.turboActive = false;
+        player.shield = 0;
     }
 
     setUpPlayerCanvas();
@@ -562,25 +605,35 @@ function startGame() {
     spawn("pellet");
     spawn("pellet");
     spawn("pellet");
+    /*
     spawn("turbo");
     spawn("turbo");
     spawn("silverShield");
     spawn("silverShield");
     spawn("bronzeShield");
     spawn("bronzeShield");
+    */
 
 
 
     isActiveGame = true;
     requestAnimationFrame(gameLoop);
-
-
+    
+    timer = 0;
+    
+    startTimer();
 }
+let timerInterval;
+function startTimer() {
+    timerInterval = setInterval(function() {
+        timer++;
+    },1000)
+} 
 function gameLoop() {
     renderCells();
     movePlayers();
     renderPlayers();
-    requestAnimationFrame(gameLoop);
+    if (!gameEnd) requestAnimationFrame(gameLoop);
 }
 
 function specialItemManager()

@@ -8,3 +8,6 @@ $("button_players").on("click",function() {
 $("button_mainMenu").on("click",function() {
     setScene("menu");
 })
+$("button_playAgain").on("click",function() {
+    startGame();
+})

@@ -104,20 +104,6 @@ html {
           radial-gradient(circle at 100% 100%, rgba(204,0,0,0) 14px, #000000 15px),
           radial-gradient(circle at 0 100%, rgba(204,0,0,0) 14px, #000000 15px);
   }
-  
-
-  #fps-counter {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 1000;
-    color: green;
-    font-size: 16px;
-    font-family: Arial, sans-serif;
-    background-color: rgba(0, 0, 0, 0.5); /* Optional: Semi-transparent background */
-    padding: 5px;
-    border-radius: 5px;
-}
 
 
 
@@ -141,4 +127,52 @@ html {
   top: 0;
   left: 0;
   z-index: 500;
+}
+
+.endGamePopup {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+  flex-direction: column;
+  align-items: center;
+  background: #333;
+  border-radius: 5px;
+  width: max-content;
+  height: max-content;
+  padding: 20px;
+  display: none;
+  z-index: 501;
+}
+.title {
+  color: white;
+  font-size: 100px;
+}
+.endGameHolder {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+}
+.header {
+  color: white;
+  font-size: 25px;
+}
+.engGame_playerImgHolder {
+  width: 50px;
+  height: 50px;
+  background: white;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+.engGame_playerImg {
+  width: 100%;
+}
+.endGame_text {
+  color: rgb(187, 187, 187);
+  font-size: 20px;
+  margin: 5px;
+  flex-grow: 1;
 }
