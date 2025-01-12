@@ -1,3 +1,4 @@
+let items = [];
 items.push({
     name: "pellet",
     color: "yellow",
@@ -9,12 +10,16 @@ items.push({
         growPlayer(player,1);
         spawn("pellet");
     },
+    onStartSpawn: 3,
+    gameModeMenu_selectedItem: false,
 })
 items.push({
     name: "air",
     img: "background.png",
     color: "#6bd2fe",
     pickUp: false,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
 })
 items.push({
     name: "super_pellet",
@@ -26,6 +31,8 @@ items.push({
     onEat_func: function(player) {
         growPlayer(player,5);
     },
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
 })
 items.push({
     name: "turbo",
@@ -40,6 +47,8 @@ items.push({
         player.moveSpeed = 3;
         addPlayerStatus(player,"turbo");
     },
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
 })
 items.push({
     name: "wall",
@@ -51,6 +60,8 @@ items.push({
     onEat_func: function(player,playerIndex) {
         deletePlayer(playerIndex, player);
     },
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
 })
 items.push({
     name: "bronzeShield", //(string) Name Of Item
@@ -64,6 +75,8 @@ items.push({
         player.shield = 1;
         addPlayerStatus(player,"bronzeShield");
     },
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
 })
 items.push({
     name: "silverShield",
@@ -77,4 +90,6 @@ items.push({
         removePlayerStatus(player,"bronzeShield");
         addPlayerStatus(player,"silverShield");
     },
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
 })

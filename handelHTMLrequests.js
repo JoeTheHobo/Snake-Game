@@ -11,3 +11,7 @@ $("button_mainMenu").on("click",function() {
 $("button_playAgain").on("click",function() {
     startGame();
 })
+$("button_gameMode").on("click",function() {
+    setScene("gameModes");
+    loadGameModes();
+})

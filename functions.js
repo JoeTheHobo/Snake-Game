@@ -1,9 +1,19 @@
 ls.setID("snakegame");
 
 let map = [];
-let items = [];
 let updateCells = [];
 let players = ls.get("players",[]);
+let gameModes = ls.get("gameModes",presetGameModes);
+if (gameModes == "") gameModes = presetGameModes;
+for (let i = 0; i < gameModes.length; i++) {
+    for (let j = 0; j < gameModes[i].items.length; j++) {
+        gameModes[i].items[j].onEat_func = getRealItem(gameModes[i].items[j].name).onEat_func;
+    }
+}
+let activeGameMode = ls.get("activeGameMode",0);
+if (!gameModes[activeGameMode]) activeGameMode = 0;
+ls.save("activeGameMode",activeGameMode);
+let currentGameMode = gameModes[activeGameMode];
 let gs_playerCount = players.length > 0 ? players.length : 1;
 let gridX = 50;
 let gridY = 30;
@@ -16,10 +26,6 @@ let specialItemIteration = 0;
 let totalSpecialItems = 1;
 let timer, gameEnd;
 let isActiveGame = false;
-let howManyItemsCanPlayersUse = 4;
-let mode_usingItemType = "scroll"; //direct/scroll
-if (mode_usingItemType == "direct") howManyItemsCanPlayersUse = 2;
-let mode_whenInventoryFullWhereDoItemsGo = "select"; //(noPickUp - Leaves Item On Ground) (select - Put Item Where user has their selection) (recycle - Items cycle through the inventory)
 
 //Setting Up Canvas
 let canvas = $("game");
@@ -72,11 +78,17 @@ let playerNames2 = [
     "Cactus", "Llama", "Cupcake", "Blobfish", "Banana"
 ];
 
-
-function getItem(name) {
+function getRealItem(name) {
     for (let i = 0; i < items.length; i++) {
         if (items[i].name == name) {
             return items[i];
+        }
+    }
+}
+function getItem(name) {
+    for (let i = 0; i < currentGameMode.items.length; i++) {
+        if (currentGameMode.items[i].name == name) {
+            return currentGameMode.items[i];
         }
     }
 }
@@ -152,9 +164,9 @@ function newPlayer() {
     players.push(player);
     ls.save("players",players);
 }
-function spawn(name) { 
-    for (let i = 0; i < items.length; i++) {
-        if (items[i].name == name) {
+function spawn(name,generateRandomItem = true) { 
+    for (let i = 0; i < currentGameMode.items.length; i++) {
+        if (currentGameMode.items[i].name == name) {
 
             let counter = 0;
             let foundSpot = false;
@@ -214,12 +226,12 @@ function spawn(name) {
                 }
             }
 
-            map[y][x] = items[i];
+            map[y][x] = currentGameMode.items[i];
             updateCells.push({
                 x: x,
                 y: y,
             })
-            specialItemManager();
+            if (generateRandomItem) specialItemManager();
             return;
         }
               
@@ -675,9 +687,9 @@ function drawPlayerBox(player) {
 
     let itemBoxHolderSize = 50;
     let cardWidth;
-    cardWidth = howManyItemsCanPlayersUse * itemBoxHolderSize;
-    if (howManyItemsCanPlayersUse > 5) {
-        cardWidth = (index == 4 || index == 7) ? howManyItemsCanPlayersUse*itemBoxHolderSize : 5 * itemBoxHolderSize;
+    cardWidth = currentGameMode.howManyItemsCanPlayersUse * itemBoxHolderSize;
+    if (currentGameMode.howManyItemsCanPlayersUse > 5) {
+        cardWidth = (index == 4 || index == 7) ? currentGameMode.howManyItemsCanPlayersUse*itemBoxHolderSize : 5 * itemBoxHolderSize;
     }
 
 
@@ -701,12 +713,12 @@ function drawPlayerBox(player) {
     })
 
 
-    for (let i = 0; i < howManyItemsCanPlayersUse; i++) {
+    for (let i = 0; i < currentGameMode.howManyItemsCanPlayersUse; i++) {
         let itemHolder = itemBoxesHolder.create("div");
 
         let borderColor = "2px solid black";
-        if (mode_whenInventoryFullWhereDoItemsGo == "recycle" && player.whenInventoryIsFullInsertItemsAt == i && !player.items.includes("empty")) borderColor = "2px solid blue";  
-        if (player.selectingItem == i && mode_usingItemType !== "direct") borderColor = "2px solid gold";
+        if (currentGameMode.mode_whenInventoryFullWhereDoItemsGo == "recycle" && player.whenInventoryIsFullInsertItemsAt == i && !player.items.includes("empty")) borderColor = "2px solid blue";  
+        if (player.selectingItem == i && currentGameMode.mode_usingItemType !== "direct") borderColor = "2px solid gold";
 
         itemHolder.css({
             width: itemBoxHolderSize - 4,
@@ -828,4 +840,279 @@ function drawPlayerBox(player) {
             width: "100%",
         })
     }
+}
+
+function loadGameModes() {
+    let html_gameModesHolder = $(".gameModesHolder");
+    html_gameModesHolder.innerHTML = `
+        <div class="button" id="gameModes_newGame">New Game Mode</div>
+        <div class="gameModesDiv"></div>
+    `;
+
+    $("gameModes_newGame").on("click",function() {
+        gameModes.push({
+            name: "Untitled",
+            howManyItemsCanPlayersUse: 2,
+            mode_usingItemType: "scroll",
+            mode_whenInventoryFullWhereDoItemsGo: "select",
+            atStartSpawnIn: [{
+                name: "pellet",
+                count: 3,
+            }],
+            items: cloneWithoutFunctions(items),
+        })
+        editGameMode(gameModes[gameModes.length-1]);
+        activeGameMode = gameModes.length - 1;
+        currentGameMode = gameModes[activeGameMode];
+        ls.save("activeGameMode",activeGameMode)
+        ls.save("gameModes",gameModes)
+    })
+
+    for (let i = 0; i < gameModes.length; i++) {
+        let holder = $(".gameModesDiv").create("div");
+        holder.className = "gm_holder" + " " + (activeGameMode == i ? "gm_activeGameMode" : "");
+        holder.i = i;
+        holder.on("click",function(e) {
+            activeGameMode = this.i;
+            ls.save("activeGameMode",activeGameMode);
+            if (e.target.className !== "gm_img")
+                loadGameModes();
+            currentGameMode = gameModes[activeGameMode];
+        })
+
+        let title = holder.create("div");
+        title.className = "gm_title";
+        title.innerHTML = gameModes[i].name;
+
+        let buttonsRight = holder.create("div");
+        buttonsRight.className = "gm_buttonsRight";
+
+        if (gameModes[i].canDelete !== false) {
+            let edit = buttonsRight.create("div");
+            edit.className = "gm_imgHolder";
+            let editImg = edit.create("img");
+            editImg.className = "gm_img";
+            editImg.src = "img/edit.png";
+            edit.gameMode = gameModes[i];
+            edit.on("click",function() {
+                editGameMode(this.gameMode);
+            })
+
+            let deleteHolder = buttonsRight.create("div");
+            deleteHolder.className = "gm_imgHolder";
+            let deleteImg = deleteHolder.create("img");
+            deleteImg.className = "gm_img";
+            deleteImg.src = "img/delete.png";
+            deleteHolder.i = i;
+            deleteHolder.on("click",function() {
+                gameModes.splice(this.i,1);
+                ls.save("gameModes",gameModes)
+                loadGameModes();
+            })
+        }
+
+        
+    }
+    
+
+
+}
+function editGameMode(gameMode) {
+    let html_gameModesHolder = $(".gameModesHolder");
+    html_gameModesHolder.innerHTML = `
+        <div class="backarrow" id="gameModes_backArrow"><--</div>
+        <div class="settingsHolder"></div>
+        <div class="onSpawnHolder"></div>
+    `;
+
+    $("gameModes_backArrow").on("click",loadGameModes)
+    
+    function addSetting(title,type,value,func,list) {
+        let holder = $(".settingsHolder").create("div");
+        holder.className = "settingHolder";
+        let settingsTitle = holder.create("div");
+        settingsTitle.className = "settingTitle";
+        settingsTitle.innerHTML = title;
+        
+        let settingsInput;
+        if (type == "input" || type == "number") {
+            settingsInput = holder.create("input");
+            settingsInput.className = "settingInput";
+            settingsInput.value = value;
+            settingsInput.id = "gm_" + title.toLowerCase().subset(0,"end","trim\\ ");
+            if (type == "number") settingsInput.type = "number";
+        }
+        if (type == "dropdown") {
+            settingsInput = holder.create("div");
+            settingsInput.className = "dropdown";
+
+            let button = settingsInput.create("button");
+            button.className = "dropbtn";
+            button.innerHTML = value;
+
+            let content = settingsInput.create("div");
+            content.className = "dropdown-content";
+
+            for (let i = 0; i < list.length; i++) {
+                let setting = content.create("div");
+                setting.button = button;
+                setting.innerHTML = list[i];
+                setting.on("click",function() {
+                    this.button.innerHTML = this.innerHTML;
+                    func(this.innerHTML);
+                })
+            }
+        }
+        settingsInput.on("input",function() {
+            func(this.value,this);
+        })
+        
+    }
+    addSetting("Game Mode Name","input",gameMode.name,function(value,input) {
+        if (value !== "")
+        gameMode.name = value;
+        ls.save("gameModes",gameModes);
+    });
+    addSetting("Inventory Slots","number",gameMode.howManyItemsCanPlayersUse,function(value,input) {
+        if (value < 0) input.value = 0;
+        if (value > 10) input.value = 10;
+
+        gameMode.howManyItemsCanPlayersUse = value;
+        ls.save("gameModes",gameModes);
+    });
+    addSetting("Using Items Type","dropdown",gameMode.mode_usingItemType,function(value) {
+        gameMode.mode_usingItemType = value;
+        if (value == "direct") {
+            $("gm_inventoryslots").value = 2;
+            gameMode.howManyItemsCanPlayersUse = 2;
+        }
+        ls.save("gameModes",gameModes);
+    },["direct","scroll"]);
+    addSetting("Full Inventory","dropdown",gameMode.mode_whenInventoryFullWhereDoItemsGo,function(value) {
+        gameMode.mode_whenInventoryFullWhereDoItemsGo = value;
+        ls.save("gameModes",gameModes);
+    },["noPickUp","select","recycle"]);
+
+
+    let html_onSpawnHolder = $(".onSpawnHolder");
+    let allItems = html_onSpawnHolder.create("div");
+    allItems.className = "allItems";
+    let itemEditor = html_onSpawnHolder.create("div");
+    itemEditor.className = "itemEditorHolder";
+    for (let i = 0; i < gameMode.items.length; i++) {
+        let item = gameMode.items[i];
+
+        let holder = allItems.create("div");
+        holder.className = "spawn_holder";
+        let imgHolder = holder.create("div");
+        imgHolder.className = "spawn_imageHolder" + " " + (item.gameModeMenu_selectedItem ? "spawn_itemSelected" : "");
+        let img = imgHolder.create("img");
+        img.className = "spawn_image";
+        img.src = "img/" + item.img;
+
+        imgHolder.gameMode = gameMode;
+        imgHolder.item = item;
+        imgHolder.on("click",function() {
+            for (let i = 0; i < this.gameMode.items.length; i++) {
+                this.gameMode.items[i].gameModeMenu_selectedItem = false;
+            }
+            this.item.gameModeMenu_selectedItem = true;
+            editGameMode(this.gameMode);
+        })
+
+        let name = holder.create("div");
+        name.className = "spawn_title";
+        name.innerHTML = item.name;
+
+        let input = holder.create("input");
+        input.className = "spawn_input";
+        input.type = "number";
+        input.value = Number(item.onStartSpawn);
+        input.item = item;
+
+        input.on("input",function() {
+            if (this.value < 0) this.value = 0;
+            item.onStartSpawn = Number(this.value);
+            ls.save("gameModes",gameModes);
+        })
+
+        if (item.gameModeMenu_selectedItem) {
+            gameMode_editItem(item,itemEditor,gameMode);
+        }
+    }
+}
+function gameMode_editItem(item,html_holder,gameMode) {
+    html_holder.innerHTML = "";
+
+    function addSetting(title,type,value,func,list) {
+        let holder = html_holder.create("div");
+        holder.className = "settingHolder";
+        let settingsTitle = holder.create("div");
+        settingsTitle.className = "settingTitle";
+        settingsTitle.innerHTML = title;
+        
+        let settingsInput;
+        if (type == "input" || type == "number") {
+            settingsInput = holder.create("input");
+            settingsInput.className = "settingInput";
+            settingsInput.value = value;
+            settingsInput.id = "gm_" + title.toLowerCase().subset(0,"end","trim\\ ");
+            if (type == "number") settingsInput.type = "number";
+        }
+        if (type == "dropdown") {
+            settingsInput = holder.create("div");
+            settingsInput.className = "dropdown";
+
+            let button = settingsInput.create("button");
+            button.className = "dropbtn";
+            button.innerHTML = value;
+
+            let content = settingsInput.create("div");
+            content.className = "dropdown-content";
+
+            for (let i = 0; i < list.length; i++) {
+                let setting = content.create("div");
+                setting.button = button;
+                setting.innerHTML = list[i];
+                setting.on("click",function() {
+                    this.button.innerHTML = this.innerHTML;
+                    func(this.innerHTML);
+                })
+            }
+        }
+        settingsInput.on("input",function() {
+            func(this.value,this);
+        })
+        
+    }
+    
+    
+    addSetting("Can Player Eat","dropdown",item.canEat,function(value) {
+        item.canEat = value == "true" ? true : false;
+        ls.save("gameModes",gameModes);
+        editGameMode(gameMode);
+    },["true","false"]);
+    if (item.canEat == true) {
+        addSetting("Delete On Eaten","dropdown",item.onEat_deleteMe,function(value) {
+        item.onEat_deleteMe = value == "true" ? true : false;
+        ls.save("gameModes",gameModes);
+        editGameMode(gameMode);
+        },["true","false"]);
+    }
+    if (item.canEat == true) {
+        addSetting("Pick Up Item","dropdown",item.pickUp,function(value) {
+        item.pickUp = value == "true" ? true : false;
+        ls.save("gameModes",gameModes);
+        editGameMode(gameMode);
+        },["true","false"]);
+    }
+    /*
+    if (item.pickUp == true && item.canEat) {
+        addSetting("Cant Use If Status","dropdown",item.cantUseIfStatus,function(value) {
+        item.cantUseIfStatus = value == "true" ? true : false;
+        ls.save("gameModes",gameModes);
+        editGameMode(gameMode);
+        },["true","false"]);
+    }
+    */
 }

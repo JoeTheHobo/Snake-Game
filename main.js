@@ -1,7 +1,3 @@
-
-
-
-
 //Load All Item Images
 for (let i = 0; i < items.length; i++) {
     if (!items[i].img) continue;
@@ -318,7 +314,7 @@ function movePlayers() {
             let mapItem = map[player.pos.y][player.pos.x];
             if (mapItem.pickUp) {
                 let pickedUpItem = false;
-                findingEmptyItemSlot: for (let k = 0; k < howManyItemsCanPlayersUse; k++) {
+                findingEmptyItemSlot: for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
                     if (player.items[k] == "empty") {
                         player.items[k] = mapItem;
                         if (mapItem.onEat_deleteMe == true) {
@@ -329,12 +325,11 @@ function movePlayers() {
                         break findingEmptyItemSlot;
                     }
                 }
-                if (!pickedUpItem && mode_whenInventoryFullWhereDoItemsGo !== "noPickUp") {
-                    if (mode_whenInventoryFullWhereDoItemsGo == "select") {
+                if (!pickedUpItem && currentGameMode.mode_whenInventoryFullWhereDoItemsGo !== "noPickUp") {
+                    if (currentGameMode.mode_whenInventoryFullWhereDoItemsGo == "select") {
                         player.items[player.selectingItem] = mapItem;
                     }
-                    if (mode_whenInventoryFullWhereDoItemsGo == "recycle") {
-                        console.log("ey")
+                    if (currentGameMode.mode_whenInventoryFullWhereDoItemsGo == "recycle") {
                         player.items[player.whenInventoryIsFullInsertItemsAt] = mapItem;
                         player.whenInventoryIsFullInsertItemsAt++;
                         if (player.whenInventoryIsFullInsertItemsAt > player.items.length-1) player.whenInventoryIsFullInsertItemsAt = 0;
@@ -437,7 +432,6 @@ function deletePlayer(playerID, player){
 }
 function removePlayerStatus(player,itemName) {
     findingStatus: for (let i = 0; i < player.status.length; i++) {
-        console.log(player.status[i],getItem(itemName).img);
         if (player.status[i] == getItem(itemName).img) {
             player.status.splice(i,1);
             break findingStatus;
@@ -481,29 +475,29 @@ document.body.onkeydown = function(e) {
             player.moveQueue.push("down");
         }
         if (e.key == player.useItem1) {
-            if (mode_usingItemType == "scroll") {
+            if (currentGameMode.mode_usingItemType == "scroll") {
                 player.selectingItem--;
-                if (player.selectingItem < 0) player.selectingItem = howManyItemsCanPlayersUse-1;
+                if (player.selectingItem < 0) player.selectingItem = currentGameMode.howManyItemsCanPlayersUse-1;
             }
-            if (mode_usingItemType == "direct") {
+            if (currentGameMode.mode_usingItemType == "direct") {
                 player.selectingItem = 0;
                 useItem(player);
             }
             drawPlayerBox(player);
         }
         if (e.key == player.useItem2) {
-            if (mode_usingItemType == "scroll") {
+            if (currentGameMode.mode_usingItemType == "scroll") {
                 player.selectingItem++;
-                if (player.selectingItem > howManyItemsCanPlayersUse-1) player.selectingItem = 0;
+                if (player.selectingItem > currentGameMode.howManyItemsCanPlayersUse-1) player.selectingItem = 0;
             }
-            if (mode_usingItemType == "direct") {
+            if (currentGameMode.mode_usingItemType == "direct") {
                 player.selectingItem = 1;
                 useItem(player);
             }
             drawPlayerBox(player);
         }
         if (e.key == player.fireItem) {
-            if (mode_usingItemType == "scroll") {
+            if (currentGameMode.mode_usingItemType == "scroll") {
                 if (player.items[player.selectingItem]) {
                     useItem(player);
                 }
@@ -572,11 +566,12 @@ function startGame() {
         //Set Player Selecting Item To 1
         player.selectingItem = 0;
         //Set Player Item Usage
-        player.howManyItemsCanIUse = howManyItemsCanPlayersUse;
+        player.howManyItemsCanIUse = currentGameMode.howManyItemsCanPlayersUse;
         player.whenInventoryIsFullInsertItemsAt = 0;
+        player.status = [];
         //Set All Player Items To Empty
         player.items = [];
-        for (let j = 0; j < howManyItemsCanPlayersUse; j++) {
+        for (let j = 0; j < currentGameMode.howManyItemsCanPlayersUse; j++) {
             player.items.push("empty");
         }
         //Draw Player's Card
@@ -596,22 +591,20 @@ function startGame() {
         player.shield = 0;
     }
 
+    specialItemIteration = 0;
+
     setUpPlayerCanvas();
 
     newMap();
     adjustCanvasSize();
     renderGame();
-    spawn("pellet");
-    spawn("pellet");
-    spawn("pellet");
-    /*
-    spawn("turbo");
-    spawn("turbo");
-    spawn("silverShield");
-    spawn("silverShield");
-    spawn("bronzeShield");
-    spawn("bronzeShield");
-    */
+
+    for (let i = 0; i < currentGameMode.items.length; i++) {
+        let item = currentGameMode.items[i];
+        for (let j = 0; j < Number(item.onStartSpawn); j++) {
+            spawn(item.name,false);
+        }
+    }
 
 
 
@@ -637,7 +630,6 @@ function gameLoop() {
 
 function specialItemManager()
 {
-    
     if (specialItemIteration >= specialItemActiveChance)
     {
         let randomItem = rnd(1,12);
