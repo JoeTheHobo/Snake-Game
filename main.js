@@ -255,6 +255,7 @@ function movePlayers() {
                     player.turboDuration --;
                     if (player.turboDuration <= 0) {
                         player.turboActive = false;
+                        removePlayerStatus(player,"turbo");
                         player.moveSpeed = 6;
                     }
                 }
@@ -325,13 +326,33 @@ function movePlayers() {
             //Test Item Underplayer
             let mapItem = map[player.pos.y][player.pos.x];
             if (mapItem.pickUp) {
-                if (player.items.length < howManyItemsCanPlayersUse) {
-                    player.items.push(mapItem);
+                let pickedUpItem = false;
+                findingEmptyItemSlot: for (let k = 0; k < howManyItemsCanPlayersUse; k++) {
+                    if (player.items[k] == "empty") {
+                        player.items[k] = mapItem;
+                        if (mapItem.onEat_deleteMe == true) {
+                            map[player.pos.y][player.pos.x] = getItem("air");
+                        }
+                        drawPlayerBox(player)
+                        pickedUpItem = true;
+                        break findingEmptyItemSlot;
+                    }
+                }
+                if (!pickedUpItem && mode_whenInventoryFullWhereDoItemsGo !== "noPickUp") {
+                    if (mode_whenInventoryFullWhereDoItemsGo == "select") {
+                        player.items[player.selectingItem] = mapItem;
+                    }
+                    if (mode_whenInventoryFullWhereDoItemsGo == "recycle") {
+                        console.log("ey")
+                        player.items[player.whenInventoryIsFullInsertItemsAt] = mapItem;
+                        player.whenInventoryIsFullInsertItemsAt++;
+                        if (player.whenInventoryIsFullInsertItemsAt > player.items.length-1) player.whenInventoryIsFullInsertItemsAt = 0;
+                    }
                     if (mapItem.onEat_deleteMe == true) {
                         map[player.pos.y][player.pos.x] = getItem("air");
                     }
                     drawPlayerBox(player)
-                } 
+                }
             } else {
                 if (mapItem.canEat == true) {
                     mapItem.onEat_func(player,i);
@@ -377,7 +398,28 @@ function deletePlayer(playerID, player){
         drawPlayerBox(player)
     }else{
         player.shield--;
+        if (player.shield == 1) {
+            removePlayerStatus(player,"silverShield");
+            addPlayerStatus(player,"bronzeShield");
+        }
+        if (player.shield == 0) {
+            removePlayerStatus(player,"bronzeShield");
+        }
     }
+}
+function removePlayerStatus(player,itemName) {
+    findingStatus: for (let i = 0; i < player.status.length; i++) {
+        console.log(player.status[i],getItem(itemName).img);
+        if (player.status[i] == getItem(itemName).img) {
+            player.status.splice(i,1);
+            break findingStatus;
+        }
+    }
+    drawPlayerBox(player);
+}
+function addPlayerStatus(player,itemName) {
+    player.status.push(getItem(itemName).img);
+    drawPlayerBox(player);
 }
 
 function newMap() {
@@ -393,7 +435,8 @@ function newMap() {
 //adds movement to a queue of max 3 moves
 document.body.onkeydown = function(e) {
     if (!isActiveGame) return;
-    e.preventDefault();
+    if (e.key !== "F5")
+        e.preventDefault();
 
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
@@ -414,6 +457,10 @@ document.body.onkeydown = function(e) {
                 player.selectingItem--;
                 if (player.selectingItem < 0) player.selectingItem = howManyItemsCanPlayersUse-1;
             }
+            if (mode_usingItemType == "direct") {
+                player.selectingItem = 0;
+                useItem(player);
+            }
             drawPlayerBox(player);
         }
         if (e.key == player.useItem2) {
@@ -421,18 +468,37 @@ document.body.onkeydown = function(e) {
                 player.selectingItem++;
                 if (player.selectingItem > howManyItemsCanPlayersUse-1) player.selectingItem = 0;
             }
+            if (mode_usingItemType == "direct") {
+                player.selectingItem = 1;
+                useItem(player);
+            }
             drawPlayerBox(player);
         }
         if (e.key == player.fireItem) {
             if (mode_usingItemType == "scroll") {
                 if (player.items[player.selectingItem]) {
-                    player.items[player.selectingItem].onEat_func(player);
-                    player.items.splice(player.selectingItem,1);
+                    useItem(player);
                 }
             }
             drawPlayerBox(player);
         }
     }
+}
+function useItem(player) {
+    if (player.status.includes(player.items[player.selectingItem].img)) return;
+    
+    let item = player.items[player.selectingItem];
+    if (item == "empty") return;
+    if (item.cantUseIfStatus) {
+        for (let i = 0; i < item.cantUseIfStatus.length; i++) {
+            let id = getItem(item.cantUseIfStatus[i]).img;
+            if (player.status.includes(id)) return;
+        }
+    }
+    
+
+    player.items[player.selectingItem].onEat_func(player);
+    player.items[player.selectingItem] = "empty";
 }
 
 function setUpPlayerCanvas() {
@@ -469,6 +535,7 @@ function startGame() {
     $("playerCardsHolder").css({
         visibility: "visible",
     })
+    //Resetting Players
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
         //Ressurect Player
@@ -477,6 +544,12 @@ function startGame() {
         player.selectingItem = 0;
         //Set Player Item Usage
         player.howManyItemsCanIUse = howManyItemsCanPlayersUse;
+        player.whenInventoryIsFullInsertItemsAt = 0;
+        //Set All Player Items To Empty
+        player.items = [];
+        for (let j = 0; j < howManyItemsCanPlayersUse; j++) {
+            player.items.push("empty");
+        }
         //Draw Player's Card
         drawPlayerBox(player);
     }
@@ -489,6 +562,12 @@ function startGame() {
     spawn("pellet");
     spawn("pellet");
     spawn("pellet");
+    spawn("turbo");
+    spawn("turbo");
+    spawn("silverShield");
+    spawn("silverShield");
+    spawn("bronzeShield");
+    spawn("bronzeShield");
 
 
 

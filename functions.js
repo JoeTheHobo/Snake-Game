@@ -13,8 +13,10 @@ let specialItemActiveChance = 4;
 let specialItemIteration = 0;
 let totalSpecialItems = 1;
 let isActiveGame = false;
-let howManyItemsCanPlayersUse = 6;
-let mode_usingItemType = "scroll"; //direct - scroll
+let howManyItemsCanPlayersUse = 4;
+let mode_usingItemType = "scroll"; //direct/scroll
+if (mode_usingItemType == "direct") howManyItemsCanPlayersUse = 2;
+let mode_whenInventoryFullWhereDoItemsGo = "select"; //(noPickUp - Leaves Item On Ground) (select - Put Item Where user has their selection) (recycle - Items cycle through the inventory)
 
 //Setting Up Canvas
 let canvas = $("game");
@@ -133,12 +135,14 @@ function newPlayer() {
         moveQueue: [],
         prevMove: "start",
         id: playerNumber,
+        whenInventoryIsFullInsertItemsAt: 0,
         moveTik: 0,
         moveSpeed: 6,
         turboDuration: 0,
         turboActive: false,
         shield: 0,
         items: [],
+        status: [],
     }
     players.push(player);
 }
@@ -712,7 +716,6 @@ function drawPlayerBox(player) {
         cardWidth = (index == 4 || index == 7) ? howManyItemsCanPlayersUse*itemBoxHolderSize : 5 * itemBoxHolderSize;
     }
 
-    let cardTop = "", cardLeft = "", cardRight = "", cardBottom = "";
 
     let card = $("playerCardsHolder").create("div");
     card.id = "card" + index;
@@ -732,17 +735,24 @@ function drawPlayerBox(player) {
         background: "black",
         
     })
+
+
     for (let i = 0; i < howManyItemsCanPlayersUse; i++) {
         let itemHolder = itemBoxesHolder.create("div");
+
+        let borderColor = "2px solid black";
+        if (mode_whenInventoryFullWhereDoItemsGo == "recycle" && player.whenInventoryIsFullInsertItemsAt == i && !player.items.includes("empty")) borderColor = "2px solid blue";  
+        if (player.selectingItem == i && mode_usingItemType !== "direct") borderColor = "2px solid gold";
+
         itemHolder.css({
             width: itemBoxHolderSize - 4,
             height: itemBoxHolderSize - 4,
-            border: player.selectingItem == i ? "2px solid gold" : "2px solid black",
+            border: borderColor,
             background: "white",
             display: "inline-block",
         })
 
-        if (player.items[i]) {
+        if (player.items[i] !== "empty") {
             let img = itemHolder.create("img");
             img.src = "img/" + player.items[i].img;
             img.css({
@@ -774,39 +784,59 @@ function drawPlayerBox(player) {
         filter: `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`,
     })
 
+    let cardTop = "", cardLeft = "", cardRight = "", cardBottom = "";
+    let statusTop = "", statusLeft = "", statusRight = "", statusBottom = "", statusFlex = "column";
     //Set Card Position
     switch(index) {
         case 0:
             cardTop = 5;
             cardLeft = 5;
+            statusTop = 5;
+            statusLeft = card.offsetWidth;
             break;
         case 1:
             cardTop = 5;
             cardRight = 5;
+            statusTop = 5;
+            statusRight = card.offsetWidth;
             break;
         case 2:
             cardBottom = 5 + (itemBoxHolderSize* 0.9);
             cardLeft = 5;
+            statusTop = 5;
+            statusLeft = card.offsetWidth;
             break;
         case 3:
             cardBottom = 5 + (itemBoxHolderSize* 0.9);
             cardRight = 5;
+            statusTop = 5;
+            statusRight = card.offsetWidth;
             break;
         case 4:
             cardTop = 5;
             cardLeft = (window.innerWidth / 2) - (card.offsetWidth/2);
+            statusFlex = "row";
+            statusTop = 5 + itemBoxHolderSize;
+            statusLeft = 5;
             break;
         case 5:
             cardTop = (window.innerHeight / 2) - (card.offsetHeight/2);
             cardLeft = 5;
+            statusTop = 5;
+            statusLeft = card.offsetWidth;
             break;
         case 6:
             cardTop = (window.innerHeight / 2) - (card.offsetHeight/2);
             cardRight = 5;
+            statusTop = 5;
+            statusRight = card.offsetWidth;
             break;
         case 7:
             cardBottom = 5 + (itemBoxHolderSize* 0.9);
             cardLeft = (window.innerWidth / 2) - (card.offsetWidth/2);
+            statusFlex = "row";
+            statusTop = 5 + itemBoxHolderSize;
+            statusLeft = 5;
             break;
     }
     card.css({
@@ -815,4 +845,23 @@ function drawPlayerBox(player) {
         right: cardRight,
         bottom: cardBottom,
     })
+
+    let statusHolder = card.create("div");
+    statusHolder.css({
+        position: "absolute",
+        width: "20px",
+        display: "flex",
+        flexDirection: statusFlex,
+        top: statusTop,
+        left: statusLeft,
+        bottom: statusBottom,
+        right: statusRight,
+    })
+    for (let i = 0; i < player.status.length; i++) {
+        let statusImage = statusHolder.create("img");
+        statusImage.src = "img/" + player.status[i];
+        statusImage.css({
+            width: "100%",
+        })
+    }
 }
