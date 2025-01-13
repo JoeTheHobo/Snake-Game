@@ -381,7 +381,7 @@ function useItemHelper(player,item) {
             }
         }
     }
-    if (onEat.turbo) {
+    if (onEat.giveturbo) {
         if (onEat.turbo.duration && onEat.turbo.moveSpeed) {
             player.turboActive = true;
             player.turboDuration = onEat.turbo.duration;
