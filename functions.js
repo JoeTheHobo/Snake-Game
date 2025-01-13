@@ -5,11 +5,6 @@ let updateCells = [];
 let players = ls.get("players",[]);
 let gameModes = ls.get("gameModes",presetGameModes);
 if (gameModes == "") gameModes = presetGameModes;
-for (let i = 0; i < gameModes.length; i++) {
-    for (let j = 0; j < gameModes[i].items.length; j++) {
-        gameModes[i].items[j].onEat_func = getRealItem(gameModes[i].items[j].name).onEat_func;
-    }
-}
 let activeGameMode = ls.get("activeGameMode",0);
 if (!gameModes[activeGameMode]) activeGameMode = 0;
 ls.save("activeGameMode",activeGameMode);

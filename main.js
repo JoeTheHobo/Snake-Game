@@ -341,7 +341,7 @@ function movePlayers() {
                 }
             } else {
                 if (mapItem.canEat == true) {
-                    mapItem.onEat_func(player,i);
+                    useItemHelper(player,mapItem);
                 }
                 if (mapItem.onEat_deleteMe == true) {
                     map[player.pos.y][player.pos.x] = getItem("air");
@@ -356,7 +356,7 @@ function movePlayers() {
                     let tailPiece = checkedPlayer.tail[b];
                     if (player.pos.x == tailPiece.x && player.pos.y == tailPiece.y)
                     {
-                        deletePlayer(i, player);
+                        deletePlayer(player);
                     }
                 }
             }
@@ -367,6 +367,40 @@ function movePlayers() {
         else{
             player.moveTik ++;
         }        
+    }
+}
+function useItemHelper(player,item) {
+    let onEat = item.onEat;
+    if (onEat.growPlayer > 0) {
+        growPlayer(player,onEat.growPlayer);
+    }
+    if (onEat.spawn) {
+        for (let i = 0; i < onEat.spawn.length; i++) {
+            for (let j = 0; j < onEat.spawn[i].count; j++) {
+                spawn(onEat.spawn[i].name);
+            }
+        }
+    }
+    if (onEat.turbo) {
+        player.turboActive = true;
+        player.turboDuration = onEat.turbo.durration;
+        player.moveSpeed = onEat.turbo.moveSpeed;
+    }
+    if (onEat.addStatus) {
+        for (let i = 0; i < onEat.addStatus.length; i++) {
+            addPlayerStatus(player,onEat.addStatus[i])
+        }
+    }
+    if (onEat.removeStatus) {
+        for (let i = 0; i < onEat.removeStatus.length; i++) {
+            removePlayerStatus(player,onEat.removeStatus[i])
+        }
+    }
+    if (onEat.deletePlayer) {
+        deletePlayer(player);
+    }
+    if (onEat.shield) {
+        player.shield = onEat.shield;
     }
 }
 function endScreen() {
@@ -398,7 +432,7 @@ function endScreen() {
     $(".engGame_playerNameLength").innerHTML = longestTailPlayer.name;
     $(".engGame_playerLength").innerHTML = (longestTail+1) + " Length";
 }
-function deletePlayer(playerID, player){
+function deletePlayer(player){
     if (player.shield == 0){
         //Delete Tail
         for (let i = 0; i < player.tail.length; i++) {
@@ -518,8 +552,7 @@ function useItem(player) {
         }
     }
     
-
-    player.items[player.selectingItem].onEat_func(player);
+    useItemHelper(player,player.items[player.selectingItem]);
     player.items[player.selectingItem] = "empty";
 }
 

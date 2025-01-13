@@ -6,9 +6,12 @@ items.push({
     onEat_deleteMe: true,
     canEat: true,
     pickUp: false,
-    onEat_func: function(player) {
-        growPlayer(player,1);
-        spawn("pellet");
+    onEat: {
+        growPlayer: 1,
+        spawn: [{
+            name: "pellet",
+            count: 1,
+        }],
     },
     onStartSpawn: 3,
     gameModeMenu_selectedItem: false,
@@ -28,8 +31,8 @@ items.push({
     onEat_deleteMe: true,
     canEat: true,
     pickUp: false,
-    onEat_func: function(player) {
-        growPlayer(player,5);
+    onEat: {
+        growPlayer: 5,
     },
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -41,11 +44,12 @@ items.push({
     onEat_deleteMe: true,
     canEat: true,
     pickUp: true,
-    onEat_func: function(player) {
-        player.turboActive = true;
-        player.turboDuration = 50;
-        player.moveSpeed = 3;
-        addPlayerStatus(player,"turbo");
+    onEat: {
+        turbo: {
+            durration: 50,
+            moveSpeed: 3,
+        },
+        addStatus: ["turbo"],
     },
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -57,8 +61,8 @@ items.push({
     onEat_deleteMe: true,
     canEat: true,
     pickUp: false,
-    onEat_func: function(player,playerIndex) {
-        deletePlayer(playerIndex, player);
+    onEat: {
+        deletePlayer: true,
     },
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -71,9 +75,9 @@ items.push({
     canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: true, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: ["silverShield"], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    onEat_func: function(player) { //(func(player)) When player uses item run this function
-        player.shield = 1;
-        addPlayerStatus(player,"bronzeShield");
+    onEat: {
+        shield: 1,
+        addStatus: ["bronzeShield"],
     },
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -85,10 +89,10 @@ items.push({
     pickUp: true,
     onEat_deleteMe: true,
     canEat: true,
-    onEat_func: function(player) {
-        player.shield = 2;
-        removePlayerStatus(player,"bronzeShield");
-        addPlayerStatus(player,"silverShield");
+    onEat: {
+        shield: 2,
+        addStatus: ["silverShield"],
+        removeStatus: ["bronzeShield"],
     },
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
