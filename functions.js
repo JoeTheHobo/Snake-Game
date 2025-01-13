@@ -1110,4 +1110,48 @@ function gameMode_editItem(item,html_holder,gameMode) {
         },["true","false"]);
     }
     */
+    if (item.canEat == true) {
+        addSetting("Grow Player","number",item.onEat.growPlayer,function(value) {
+        item.onEat.growPlayer = value;
+        ls.save("gameModes",gameModes);
+        editGameMode(gameMode);
+        });
+    }
+    if (item.canEat == true) {
+        addSetting("Give Shield","number",item.onEat.shield,function(value) {
+        item.onEat.shield = value;
+        ls.save("gameModes",gameModes);
+        editGameMode(gameMode);
+        });
+    }
+    if (item.canEat == true) {
+        addSetting("Give Turbo","dropdown",item.onEat.giveturbo,function(value) {
+        item.onEat.giveturbo = value == "true" ? true : false;
+        ls.save("gameModes",gameModes);
+        editGameMode(gameMode);
+        },["true","false"]);
+    }
+    if (item.canEat == true && item.onEat.giveturbo) {
+        addSetting("Turbo Duration","number",item.onEat.turbo.duration,function(value) {
+        if (value < 0) return;
+        item.onEat.turb.duration = value;
+        ls.save("gameModes",gameModes);
+        editGameMode(gameMode);
+        });
+    }
+    if (item.canEat == true && item.onEat.giveturbo) {
+        addSetting("Turbo Speed","number",item.onEat.turbo.moveSpeed,function(value) {
+        if (value < 0) return;
+        item.onEat.turb.moveSpeed = value;
+        ls.save("gameModes",gameModes);
+        editGameMode(gameMode);
+        });
+    }
+    if (item.canEat == true) {
+        addSetting("Kill Player","dropdown",item.onEat.deletePlayer,function(value) {
+        item.onEat.deletePlayer = value == "true" ? true : false;
+        ls.save("gameModes",gameModes);
+        editGameMode(gameMode);
+        },["true","false"]);
+    }
 }

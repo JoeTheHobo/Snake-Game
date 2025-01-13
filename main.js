@@ -401,7 +401,7 @@ function useItemHelper(player,item) {
     if (onEat.deletePlayer) {
         deletePlayer(player);
     }
-    if (onEat.shield) {
+    if (onEat.shield > 0) {
         player.shield = onEat.shield;
     }
 }

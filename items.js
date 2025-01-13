@@ -12,13 +12,13 @@ items.push({
             name: "pellet",
             count: 1,
         }],
-
-        shield: false,
+        shield: 0,
         addStatus: [],
         removeStatus: [],
+        giveturbo: false,
         turbo: {
-            //duration: 0,
-            //moveSpeed: 0,
+            duration: 50,
+            moveSpeed: 3,
         },
         deletePlayer: false,
     },
@@ -30,6 +30,19 @@ items.push({
     img: "background.png",
     color: "#6bd2fe",
     pickUp: false,
+    onEat: {
+        growPlayer: 0,
+        spawn: [],
+        shield: 0,
+        addStatus: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: {
+            duration: 50,
+            moveSpeed: 3,
+        },
+        deletePlayer: false,
+    },
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
 })
@@ -42,6 +55,17 @@ items.push({
     pickUp: false,
     onEat: {
         growPlayer: 5,
+
+        spawn: [],
+        shield: 0,
+        addStatus: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: {
+            duration: 50,
+            moveSpeed: 3,
+        },
+        deletePlayer: false,
     },
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -54,11 +78,18 @@ items.push({
     canEat: true,
     pickUp: true,
     onEat: {
+        giveturbo: true,
         turbo: {
             duration: 50,
             moveSpeed: 3,
         },
         addStatus: ["turbo"],
+
+        growPlayer: 0,
+        spawn: [],
+        shield: 0,
+        removeStatus: [],
+        deletePlayer: false,
     },
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -72,6 +103,17 @@ items.push({
     pickUp: false,
     onEat: {
         deletePlayer: true,
+
+        growPlayer: 0,
+        spawn: [],
+        shield: 0,
+        addStatus: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: {
+            duration: 50,
+            moveSpeed: 3,
+        },
     },
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -87,6 +129,16 @@ items.push({
     onEat: {
         shield: 1,
         addStatus: ["bronzeShield"],
+
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: {
+            duration: 50,
+            moveSpeed: 3,
+        },
+        deletePlayer: false,
     },
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -102,6 +154,15 @@ items.push({
         shield: 2,
         addStatus: ["silverShield"],
         removeStatus: ["bronzeShield"],
+
+        growPlayer: 0,
+        spawn: [],
+        giveturbo: false,
+        turbo: {
+            duration: 50,
+            moveSpeed: 3,
+        },
+        deletePlayer: false,
     },
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
