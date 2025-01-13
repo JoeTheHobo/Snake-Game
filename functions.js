@@ -1134,7 +1134,7 @@ function gameMode_editItem(item,html_holder,gameMode) {
     if (item.canEat == true && item.onEat.giveturbo) {
         addSetting("Turbo Duration","number",item.onEat.turbo.duration,function(value) {
         if (value < 0) return;
-        item.onEat.turb.duration = value;
+        item.onEat.turbo.duration = value;
         ls.save("gameModes",gameModes);
         editGameMode(gameMode);
         });
@@ -1142,7 +1142,7 @@ function gameMode_editItem(item,html_holder,gameMode) {
     if (item.canEat == true && item.onEat.giveturbo) {
         addSetting("Turbo Speed","number",item.onEat.turbo.moveSpeed,function(value) {
         if (value < 0) return;
-        item.onEat.turb.moveSpeed = value;
+        item.onEat.turbo.moveSpeed = value;
         ls.save("gameModes",gameModes);
         editGameMode(gameMode);
         });
