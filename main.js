@@ -382,9 +382,11 @@ function useItemHelper(player,item) {
         }
     }
     if (onEat.turbo) {
-        player.turboActive = true;
-        player.turboDuration = onEat.turbo.durration;
-        player.moveSpeed = onEat.turbo.moveSpeed;
+        if (onEat.turbo.duration && onEat.turbo.moveSpeed) {
+            player.turboActive = true;
+            player.turboDuration = onEat.turbo.duration;
+            player.moveSpeed = onEat.turbo.moveSpeed;
+        }
     }
     if (onEat.addStatus) {
         for (let i = 0; i < onEat.addStatus.length; i++) {

@@ -12,6 +12,15 @@ items.push({
             name: "pellet",
             count: 1,
         }],
+
+        shield: false,
+        addStatus: [],
+        removeStatus: [],
+        turbo: {
+            //duration: 0,
+            //moveSpeed: 0,
+        },
+        deletePlayer: false,
     },
     onStartSpawn: 3,
     gameModeMenu_selectedItem: false,
@@ -46,7 +55,7 @@ items.push({
     pickUp: true,
     onEat: {
         turbo: {
-            durration: 50,
+            duration: 50,
             moveSpeed: 3,
         },
         addStatus: ["turbo"],
