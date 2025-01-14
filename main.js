@@ -86,6 +86,7 @@ function renderPlayers() {
             drawImage(item.canvas,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
         }
 
+        production.renderTail.timeStart = performance.now();
         for (let j = 0; j < player.tail.length; j++) {
             if (j !== 0 && j !== player.tail.length-1) continue;
 
@@ -218,7 +219,7 @@ function renderPlayers() {
             }
             
         }
-
+        production.renderTail.times.push(performance.now() - production.renderTail.timeStart);
     }
 }
 function growPlayer(player,grow) {
@@ -662,7 +663,10 @@ function startGame() {
     isActiveGame = true;
 
     //For testing
-    setUpProductionHTML();
+    if (showPerformance) {
+        setUpProductionHTML();
+        $(".production").show("flex");
+    }
 
     requestAnimationFrame(gameLoop);
     
@@ -683,21 +687,31 @@ let production = {
         times: [],
         average: 0,
         timeStart: 0,
+        type: "dom",
     },
     renderCells: {
         times: [],
         average: 0,
         timeStart: 0,
+        type: "dom",
     },
     movePlayers: {
         times: [],
         average: 0,
         timeStart: 0,
+        type: "dom",
     },
     renderPlayers: {
         times: [],
         average: 0,
         timeStart: 0,
+        type: "dom",
+    },
+    renderTail: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        type: "sub",
     },
 }
 function setUpProductionHTML() {
@@ -708,7 +722,10 @@ function setUpProductionHTML() {
         let div = holder.create("div");
         div.className = "production_holder";
         let title = div.create("div");
-        title.className = "production_title";
+        if (entry[1].type == "dom")
+            title.className = "production_title";
+        if (entry[1].type == "sub")
+            title.className = "production_titleSub";
         title.innerHTML = entry[0];
         let value = holder.create("div");
         value.id = "production_" + entry[0];

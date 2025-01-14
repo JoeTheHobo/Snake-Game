@@ -438,7 +438,7 @@ html {
   border-radius: 5px;
   background: rgb(0, 0, 0);
   opacity: 0.6;
-  display: flex;
+  display: none;
   flex-direction: column;
   height: max-content;
   padding: 10px;
@@ -449,6 +449,10 @@ html {
   align-items: center;
 }
 .production_title {
+  color: rgb(73, 194, 73);
+  font-size: 20px;
+}
+.production_titleSub {
   color: green;
   font-size: 20px;
 }

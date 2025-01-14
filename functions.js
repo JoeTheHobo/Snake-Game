@@ -21,6 +21,7 @@ let specialItemIteration = 0;
 let totalSpecialItems = 1;
 let timer, gameEnd;
 let isActiveGame = false;
+let showPerformance = false;
 
 //Setting Up Canvas
 let canvas = $("game");
