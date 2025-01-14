@@ -1,4 +1,3 @@
-//testing if this updates
 //Load All Item Images
 for (let i = 0; i < items.length; i++) {
     if (!items[i].img) continue;
@@ -599,6 +598,7 @@ function setUpItemCanvas() {
     }
 }
 
+
 function startGame() {
     setScene("game");
     $(".endGamePopup").hide();
@@ -660,6 +660,10 @@ function startGame() {
 
 
     isActiveGame = true;
+
+    //For testing
+    setUpProductionHTML();
+
     requestAnimationFrame(gameLoop);
     
     timer = 0;
@@ -671,11 +675,75 @@ function startTimer() {
     timerInterval = setInterval(function() {
         timer++;
     },1000)
-} 
+}
+
+
+let production = {
+    gameLoop: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+    },
+    renderCells: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+    },
+    movePlayers: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+    },
+    renderPlayers: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+    },
+}
+function setUpProductionHTML() {
+    let holder = $(".production");
+    holder.innerHTML = "";
+    for (let i = 0; i < Object.entries(production).length; i++) {
+        let entry = Object.entries(production)[i];
+        let div = holder.create("div");
+        div.className = "production_holder";
+        let title = div.create("div");
+        title.className = "production_title";
+        title.innerHTML = entry[0];
+        let value = holder.create("div");
+        value.id = "production_" + entry[0];
+        value.className = "production_value";
+        value.innerHTML = entry[1].average.toFixed(2);
+    }
+}
+function updateProduction() {
+    for (let i = 0; i < Object.entries(production).length; i++) {
+        let entry = Object.entries(production)[i];
+        if (production[entry[0]].times.length > 100) {
+            production[entry[0]].times.shift();
+        }
+        production[entry[0]].average = production[entry[0]].times.avg();
+        $("production_" + entry[0]).innerHTML = production[entry[0]].average.toFixed(4) + "ms";
+    }
+}
 function gameLoop() {
+    production.gameLoop.timeStart = performance.now();
+
+    production.renderCells.timeStart = performance.now();
     renderCells();
+    production.renderCells.times.push(performance.now() - production.renderCells.timeStart);
+
+    production.movePlayers.timeStart = performance.now();
     movePlayers();
+    production.movePlayers.times.push(performance.now() - production.movePlayers.timeStart);
+    
+    production.renderPlayers.timeStart = performance.now();
     renderPlayers();
+    production.renderPlayers.times.push(performance.now() - production.renderPlayers.timeStart);
+
+    production.gameLoop.times.push(performance.now() - production.gameLoop.timeStart);
+
+    updateProduction();
     if (!gameEnd) requestAnimationFrame(gameLoop);
 }
 

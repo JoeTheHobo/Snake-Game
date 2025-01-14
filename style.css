@@ -423,3 +423,36 @@ html {
 .gm_img {
   width: 100%;
 }
+
+
+
+
+.production {
+  position: absolute;
+  z-index: 800;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 5px;
+  background: rgb(0, 0, 0);
+  opacity: 0.6;
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+  padding: 10px;
+}
+.production_holder {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.production_title {
+  color: green;
+  font-size: 20px;
+}
+.production_value {
+  color: white;
+  font-size: 20px;
+}
