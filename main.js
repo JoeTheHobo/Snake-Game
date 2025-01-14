@@ -1,3 +1,4 @@
+//testing if this updates
 //Load All Item Images
 for (let i = 0; i < items.length; i++) {
     if (!items[i].img) continue;
