@@ -30,13 +30,14 @@ function renderCells() {
     }
     updateCells = [];
 }
-function drawImage(image, direction, xPos, yPos, width, height) {
+function drawImage(image, direction, xPos, yPos, width, height,cnvs = canvas) {
     if (direction == false) direction = "up";
+    let diCtx = cnvs.getContext("2d"); 
     // Save the current canvas state
-    ctx.save();
+    diCtx.save();
 
     // Translate the canvas to the position where the image will be drawn
-    ctx.translate(xPos + width / 2, yPos + height / 2);
+    diCtx.translate(xPos + width / 2, yPos + height / 2);
 
     // Determine the rotation angle based on the direction
     let angle = 0;
@@ -55,27 +56,31 @@ function drawImage(image, direction, xPos, yPos, width, height) {
             break;
         default:
             console.error('Invalid direction. Use "up", "down", "right", or "left".');
-            ctx.restore();
+            diCtx.restore();
             return;
     }
 
     // Rotate the canvas
-    ctx.rotate((angle * Math.PI) / 180);
+    diCtx.rotate((angle * Math.PI) / 180);
 
     // Draw the image centered at the translated position
-    ctx.drawImage(image, -width / 2, -height / 2, width, height);
+    diCtx.drawImage(image, -width / 2, -height / 2, width, height);
 
     // Restore the canvas state
-    ctx.restore();
+    diCtx.restore();
 }
-
+function drawRotated(list,direction,xPos, yPos, width, height) {
+    if (direction == false) direction = "up";
+    let image = list[direction];
+    ctx.drawImage(image,xPos,yPos,width,height);
+}
 function renderPlayers() {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
 
         if (player.isDead) continue;
 
-        drawImage(player.canvas.head,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
+        drawRotated(player.canvas.head,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
         
         if (player.shield == 1){
             let item = getItem("bronzeShield");
@@ -116,7 +121,7 @@ function renderPlayers() {
             }
 
             if (j == player.tail.length - 1) {
-                drawImage(player.canvas.tail,direction,tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                drawRotated(player.canvas.tail,direction,tailX*gridSize,tailY*gridSize,gridSize,gridSize);
             } else if (beforeTail.exist && afterTail.exist) {
                 /* 
                     snakeTurn directions
@@ -126,96 +131,96 @@ function renderPlayers() {
                     down =  Bottom - Left
                 */
                 if (Math.abs(beforeTail.x - afterTail.x) == 2) {
-                    drawImage(player.canvas.body,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    drawRotated(player.canvas.body,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (Math.abs(beforeTail.y - afterTail.y) == 2) {
-                    drawImage(player.canvas.body,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    drawRotated(player.canvas.body,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
 
                 if (beforeTail.x < tailX && afterTail.y < tailY) { //Right And Top
                     if (beforeTail.x == 0 && afterTail.x > 1)
-                        drawImage(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else if (afterTail.y == 0 && beforeTail.y > 1){
                         console.log("1.5")
-                        drawImage(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     }
                     else
-                        drawImage(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (beforeTail.x < tailX && afterTail.y > tailY) { //Right and Bottom
                     if (beforeTail.x == 0 && afterTail.x > 1)
-                        drawImage(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else if(afterTail.y == 0 && beforeTail.y > 1)
-                        drawImage(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else
-                        drawImage(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (beforeTail.x > tailX && afterTail.y < tailY) { //Left and top
                     if (beforeTail.x == gridX-1 && afterTail.x < gridX-2)
-                        drawImage(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else if (beforeTail.y == gridY-1 && afterTail.y < gridY-2)
-                        drawImage(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else
-                        drawImage(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (beforeTail.x > tailX && afterTail.y > tailY) { //Left and bottom
                     if (beforeTail.x == gridX-1 && afterTail.x < gridX-2)
-                        drawImage(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else if (beforeTail.y == gridY-1 && afterTail.y < gridY-2)
-                        drawImage(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else
-                        drawImage(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
 
                 if (beforeTail.y < tailY && afterTail.x < tailX) { //top and left
                     if (beforeTail.y == 0 && afterTail.y > 1)
-                        drawImage(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else if (beforeTail.x == 0 && afterTail.x > 1)
-                        drawImage(player.canvas.turn,"bottom",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"bottom",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else
-                        drawImage(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (beforeTail.y < tailY && afterTail.x > tailX) { //Top and right
                     if (beforeTail.y == 0 && afterTail.y > 1)
-                        drawImage(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else if (beforeTail.x == 0 && afterTail.x > 1) 
-                        drawImage(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else
-                        drawImage(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (beforeTail.y > tailY && afterTail.x < tailX) { //Bottom and left
                     if (beforeTail.y == gridY-1 && afterTail.y < gridY-2)
-                        drawImage(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else if (beforeTail.x == gridX-1 && afterTail.x < gridX-2)
-                        drawImage(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else
-                        drawImage(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (beforeTail.y > tailY && afterTail.x > tailX) { //Bottom and right
                     if (beforeTail.y == gridY-1 && afterTail.y < gridY-2)
-                        drawImage(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else if (beforeTail.x == gridX-1 && afterTail.x < gridX-2)
-                        drawImage(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                     else
-                        drawImage(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                        drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
 
                 //Going Off Screen
                 if (afterTail.x > tailX && beforeTail.x > tailX) {
-                    drawImage(player.canvas.body,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    drawRotated(player.canvas.body,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (afterTail.x < tailX && beforeTail.x < tailX) {
-                    drawImage(player.canvas.body,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    drawRotated(player.canvas.body,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (afterTail.y > tailY && beforeTail.y > tailY) {
-                    drawImage(player.canvas.body,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    drawRotated(player.canvas.body,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
                 if (afterTail.y < tailY && beforeTail.y < tailY) {
-                    drawImage(player.canvas.body,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    drawRotated(player.canvas.body,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
                 }
 
             } else {
-                drawImage(player.canvas.body,direction,tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                drawRotated(player.canvas.body,direction,tailX*gridSize,tailY*gridSize,gridSize,gridSize);
             }
             
         }
@@ -563,21 +568,46 @@ function setUpPlayerCanvas() {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
 
-        function getCanvas(image) {
+        function getCanvas(image,direction) {
             let playerCanvas = html_playerCanvasHolder.create("canvas");
             let playerCtx = playerCanvas.getContext("2d");
             playerCanvas.width = image.width;
             playerCanvas.height = image.height;
-            playerCtx.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`,
-            playerCtx.drawImage(image,0,0);
+            playerCtx.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
+
+            if (direction) {
+                drawImage(image,direction,0,0,image.width,image.height,playerCanvas);
+            } else {
+                playerCtx.drawImage(image,0,0);
+            }
             return playerCanvas;
         }
 
         player.canvas = {
-            head: getCanvas($("img_snakeHead")),
-            body: getCanvas($("img_snakeBody")),
-            tail: getCanvas($("img_snakeTail")),
-            turn: getCanvas($("img_snakeTurn")),
+            body: {
+                left: getCanvas($("img_snakeBody"),"left"),
+                right: getCanvas($("img_snakeBody"),"right"),
+                up: getCanvas($("img_snakeBody"),"up"),
+                down: getCanvas($("img_snakeBody"),"down"),
+            },
+            tail: {
+                left: getCanvas($("img_snakeTail"),"left"),
+                right: getCanvas($("img_snakeTail"),"right"),
+                up: getCanvas($("img_snakeTail"),"up"),
+                down: getCanvas($("img_snakeTail"),"down"),
+            },
+            turn: {
+                left: getCanvas($("img_snakeTurn"),"left"),
+                right: getCanvas($("img_snakeTurn"),"right"),
+                up: getCanvas($("img_snakeTurn"),"up"),
+                down: getCanvas($("img_snakeTurn"),"down"),
+            },
+            head: {
+                left: getCanvas($("img_snakeHead"),"left"),
+                right: getCanvas($("img_snakeHead"),"right"),
+                up: getCanvas($("img_snakeHead"),"up"),
+                down: getCanvas($("img_snakeHead"),"down"),
+            }
         }
 
     }
@@ -736,7 +766,7 @@ function setUpProductionHTML() {
 function updateProduction() {
     for (let i = 0; i < Object.entries(production).length; i++) {
         let entry = Object.entries(production)[i];
-        if (production[entry[0]].times.length > 100) {
+        if (production[entry[0]].times.length > 1000) {
             production[entry[0]].times.shift();
         }
         production[entry[0]].average = production[entry[0]].times.avg();

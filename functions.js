@@ -27,27 +27,38 @@ let showPerformance = false;
 let canvas = $("game");
 let ctx = canvas.getContext("2d");
 function adjustCanvasSize() {
-    let width = gridX * gridSize;
-    let height = gridY * gridSize;
+    const width = gridX * gridSize;
+    const height = gridY * gridSize;
+
+    // Set the canvas dimensions in device pixels
     canvas.width = width;
     canvas.height = height;
-    canvas.css({
-        width: width + "px",
-        height: height + "px",
-    })
+
+    // Scale the canvas visually for the screen
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
 }
-//End Setting Up Canvas
 
-window.on("resize",setResolution)
 function setResolution() {
-    let height = window.screen.availHeight;
-    let width = window.screen.availWidth;
+    const screenHeight = window.innerHeight; // Available screen height
+    const screenWidth = window.innerWidth;   // Available screen width
 
-    let resolution = width/height;
-    let size = (resolution * 13);
-    gridSize = size;
+    const heightLimit = screenHeight - 250;  // Maximum canvas height
+    const widthLimit = screenWidth - 500;    // Maximum canvas width
+
+    // Calculate the largest `gridSize` that fits within the limits
+    const maxGridSizeWidth = Math.floor(widthLimit / gridX);
+    const maxGridSizeHeight = Math.floor(heightLimit / gridY);
+
+    // Use the smaller of the two to ensure the grid fits
+    gridSize = Math.min(maxGridSizeWidth, maxGridSizeHeight);
+
+    // Enforce a minimum grid size for usability
+    gridSize = Math.max(gridSize, 19); // Change 10 to a reasonable minimum size for your use case
+
     adjustCanvasSize();
 }
+window.on("resize",setResolution)
 setResolution();
 
 let keyBindVariable = [
