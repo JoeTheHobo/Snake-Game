@@ -584,6 +584,23 @@ function setUpPlayerCanvas() {
 
     }
 }
+function setUpItemCanvas() {
+    let html_itemCanvasHolder = $("itemCanvasHolder");
+    html_itemCanvasHolder.innerHTML = "";
+
+    for (let i = 0; i < currentGameMode.items.length; i++) {
+        function getCanvas(image) {
+            let itemCanvas = html_itemCanvasHolder.create("canvas");
+            let itemCtx = itemCanvas.getContext("2d");
+            itemCanvas.width = image.width;
+            itemCanvas.height = image.height;
+            itemCtx.drawImage(image,0,0);
+            return itemCanvas;
+        }
+
+        currentGameMode.items[i].canvas = getCanvas($("item_" + currentGameMode.items[i].img.subset(1,".\\before")));
+    }
+}
 
 function startGame() {
     setScene("game");
@@ -630,6 +647,7 @@ function startGame() {
     specialItemIteration = 0;
 
     setUpPlayerCanvas();
+    setUpItemCanvas();
 
     newMap();
     adjustCanvasSize();
