@@ -20,6 +20,7 @@ let specialItemActiveChance = 4;
 let specialItemIteration = 0;
 let totalSpecialItems = 1;
 let timer, gameEnd;
+let gamePaused = false;
 let isActiveGame = false;
 let showPerformance = false;
 
@@ -687,7 +688,11 @@ function editPlayerScreen(player) {
 }
 
 
-
+function pauseGame(displayPopup = true) {
+    gamePaused = true;
+    let html = $(".pauseGamePopup");
+    if (displayPopup) html.show("flex");
+}
 function drawPlayerBox(player) {
     let index = player.id;
     if ($("card" + index)) $("card" + index).remove();

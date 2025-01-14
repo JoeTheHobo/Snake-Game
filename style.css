@@ -130,7 +130,7 @@ html {
   z-index: 500;
 }
 
-.endGamePopup {
+.endGamePopup,.pauseGamePopup {
   position: absolute;
   left: 0;
   right: 0;
@@ -148,6 +148,7 @@ html {
   z-index: 501;
 }
 .title {
+  user-select: none;
   color: white;
   font-size: 100px;
 }

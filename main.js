@@ -500,6 +500,15 @@ document.body.onkeydown = function(e) {
     if (e.key !== "F5")
         e.preventDefault();
 
+    if (e.key == "Escape") {
+        if (gamePaused) {
+            $(".pauseGamePopup").hide();
+            gamePaused = false;
+            requestAnimationFrame(gameLoop);
+        }
+        else pauseGame();
+    }
+
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
         if (e.key == player.leftKey && player.moveQueue.length < 4) {
@@ -634,7 +643,8 @@ function startGame() {
     setScene("game");
     $(".endGamePopup").hide();
     gameEnd = false;
-    
+    gamePaused = false;
+    $(".pauseGamePopup").hide();
     $("playerCardsHolder").innerHTML = "";
     $("playerCardsHolder").css({
         visibility: "visible",
@@ -707,7 +717,8 @@ function startGame() {
 let timerInterval;
 function startTimer() {
     timerInterval = setInterval(function() {
-        timer++;
+        if (!gamePaused)
+            timer++;
     },1000)
 }
 
@@ -791,7 +802,7 @@ function gameLoop() {
     production.gameLoop.times.push(performance.now() - production.gameLoop.timeStart);
 
     updateProduction();
-    if (!gameEnd) requestAnimationFrame(gameLoop);
+    if (!gameEnd && !gamePaused) requestAnimationFrame(gameLoop);
 }
 
 function specialItemManager()
