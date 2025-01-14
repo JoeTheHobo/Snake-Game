@@ -27,7 +27,7 @@ function renderGame() {
 function renderCells() {
     for (let i = 0; i < updateCells.length; i++) {
         let mapCell = map[updateCells[i].y][updateCells[i].x];
-        ctx.drawImage($("item_" + mapCell.img.subset(0,".\\before")),updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);        
+        ctx.drawImage(mapCell.canvas,updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);        
     }
     updateCells = [];
 }
@@ -79,14 +79,12 @@ function renderPlayers() {
         drawImage(player.canvas.head,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
         
         if (player.shield == 1){
-            let helmet = $(".imageHolder").create("img");
-            helmet.src = "img/" + "bronzeShield.png";
-            drawImage(helmet,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
+            let item = getItem("bronzeShield");
+            drawImage(item.canvas,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
         }
         if (player.shield == 2){
-            let helmet = $(".imageHolder").create("img");
-            helmet.src = "img/" + "silverShield.png";
-            drawImage(helmet,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
+            let item = getItem("silverShield");
+            drawImage(item.canvas,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
         }
 
         for (let j = 0; j < player.tail.length; j++) {
@@ -597,8 +595,7 @@ function setUpItemCanvas() {
             itemCtx.drawImage(image,0,0);
             return itemCanvas;
         }
-
-        currentGameMode.items[i].canvas = getCanvas($("item_" + currentGameMode.items[i].img.subset(1,".\\before")));
+        currentGameMode.items[i].canvas = getCanvas($("item_" + currentGameMode.items[i].img.subset(0,".\\before")));
     }
 }
 
