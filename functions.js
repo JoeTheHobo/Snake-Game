@@ -288,6 +288,8 @@ function loadPlayers() {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
 
+        if (player.active !== true && player.active !== false) player.active = true;
+
         let html_playerHolder = html_playersHolder.create("div");
         html_playerHolder.css({
             width: "97%",
