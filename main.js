@@ -99,7 +99,7 @@ function renderPlayers() {
         let player = activePlayers[i];
 
         if (player.isDead) {
-            if (player.justDied) {
+            if (player.justDied && currentGameMode.snakeVanishOnDeath == false) {
                 player.justDied = false;
             } else continue;
         }
@@ -117,7 +117,7 @@ function renderPlayers() {
 
         production.renderTail.timeStart = performance.now();
         for (let j = 0; j < player.tail.length; j++) {
-            if (j !== 0 && j !== player.tail.length-1) continue;
+            if (j !== 0 && j !== player.tail.length-1 && !doColorRender) continue;
 
             let tailX = player.tail[j].x;
             let tailY = player.tail[j].y;
@@ -264,6 +264,7 @@ function renderPlayers() {
         }
         production.renderTail.times.push(performance.now() - production.renderTail.timeStart);
     }
+    doColorRender = false;
 }
 function growPlayer(player,grow) {
     player.growTail = grow;
@@ -411,7 +412,7 @@ function movePlayers() {
                     let tailPiece = checkedPlayer.tail[b];
                     if (player.pos.x == tailPiece.x && player.pos.y == tailPiece.y)
                     {
-                        deletePlayer(player);
+                        deletePlayer(player,checkedPlayer);
                     }
                 }
             }
@@ -459,14 +460,48 @@ function useItemHelper(player,item) {
     if (onEat.shield > 0) {
         player.shield = onEat.shield;
     }
+    if (onEat.canvasFilter.active == true) {
+        ctx_players.filter = onEat.canvasFilter.filter;
+        ctx_items.filter = onEat.canvasFilter.filter;
+        for (let i = 0; i < map.length; i++) {
+            for (let j = 0; j < map[0].length; j++) {
+                let mapTile = map[i][j].tile;
+                if (mapTile == false) continue;
+                updateCells.push({
+                    x: j,
+                    y: i,
+                })
+            }
+        }
+        doColorRender = true;
+        setTimeout(function() {
+            ctx_players.filter = "none";
+            ctx_items.filter = "none";
+
+            for (let i = 0; i < map.length; i++) {
+                for (let j = 0; j < map[0].length; j++) {
+                    let mapTile = map[i][j].tile;
+                    if (mapTile == false) continue;
+                    updateCells.push({
+                        x: j,
+                        y: i,
+                    })
+                }
+            }
+            doColorRender = true;
+        },onEat.canvasFilter.duration)
+    }
 }
 function endScreen() {
     gameEnd = true;
     $(".endGamePopup").show("flex");
     let longestTail = activePlayers[0].longestTail;
     let timeSurvived = activePlayers[0].timeSurvived;
+    let mostKills = activePlayers[0].playerKills;
+
     let longestTailPlayer = activePlayers[0];
     let timeSurvivedPlayer = activePlayers[0];
+    let mostKillsPlayer = activePlayers[0];
     for (let i = 1; i < activePlayers.length; i++) {
         if (activePlayers[i].longestTail > longestTail) {
             longestTail = activePlayers[i].longestTail;
@@ -476,21 +511,38 @@ function endScreen() {
             timeSurvived = activePlayers[i].timeSurvived;
             timeSurvivedPlayer = activePlayers[i];
         }
+        if (activePlayers[i].playerKills > mostKills) {
+            mostKills = activePlayers[i].mostKills;
+            mostKillsPlayer = activePlayers[i];
+        }
     }
 
     let minutes = (timeSurvived-(timeSurvived%60))/60;
     let seconds = timeSurvived%60;
 
+    if ((seconds + "").length == 1) seconds = "0" + seconds;
+
 
     $(".longestTimePlayerImg").style.filter = `hue-rotate(${timeSurvivedPlayer.color}deg) sepia(${timeSurvivedPlayer.color2}%) contrast(${timeSurvivedPlayer.color3}%)`;
     $(".longestTailPlayerImg").style.filter = `hue-rotate(${longestTailPlayer.color}deg) sepia(${longestTailPlayer.color2}%) contrast(${longestTailPlayer.color3}%)`;
+    $(".mostKillsImg").style.filter = `hue-rotate(${mostKillsPlayer.color}deg) sepia(${mostKillsPlayer.color2}%) contrast(${mostKillsPlayer.color3}%)`;
     $(".engGame_playerNameTime").innerHTML = timeSurvivedPlayer.name;
     $(".engGame_playerTime").innerHTML = minutes + ":" + seconds + " Minutes";
     $(".engGame_playerNameLength").innerHTML = longestTailPlayer.name;
     $(".engGame_playerLength").innerHTML = (longestTail+1) + " Length";
+    $(".engGame_playerNameKills").innerHTML = mostKillsPlayer.name;
+    $(".engGame_playerKills").innerHTML = (mostKills) + " Kill" + (mostKills > 1 ? "s" : "");
+
+    if (activePlayers.length > 0 && mostKills > 0) {
+        $("snakeKillsStat").show("flex");
+    } else {
+        $("snakeKillsStat").hide();
+    }
 }
-function deletePlayer(player){
+function deletePlayer(player,playerWhoKilled){
     if (player.shield == 0){
+        if (playerWhoKilled) playerWhoKilled.playerKills++;
+
         //Delete Tail
         if (currentGameMode.snakeVanishOnDeath) {
             for (let i = 0; i < player.tail.length; i++) {
@@ -711,6 +763,7 @@ function startGame() {
     $("playerCardsHolder").css({
         visibility: "visible",
     })
+    doColorRender = false;
     //Resetting Players
     activePlayers = [];
     for (let i = 0; i < players.length; i++) {
@@ -747,6 +800,8 @@ function startGame() {
         player.turboDuration = 0;
         player.turboActive = false;
         player.shield = 0;
+        
+        player.playerKills = 0;
 
         //Spawn Players
         spawn(player);
@@ -792,6 +847,7 @@ function startGame() {
 }
 let timerInterval;
 function startTimer() {
+    clearInterval(timerInterval)
     timerInterval = setInterval(function() {
         if (!gamePaused)
             timer++;
@@ -893,42 +949,26 @@ function gameLoop() {
 
 function specialItemManager()
 {
-    if (specialItemIteration >= specialItemActiveChance)
-    {
-        let randomItem = rnd(1,12);
+    if (specialItemIteration >= specialItemActiveChance) {
         specialItemIteration = 0;
         specialItemActiveChance = rnd(specialItemLowChance,specialItemHighChance);
-        switch(randomItem)
-        {
-            case 1:
-            case 2:
-            case 3:
-                spawn("turbo");
-                break;
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-                spawn("super_pellet");
-                break;
-            case 8:
-            case 9:
-                spawn("wall");
-                break;
-            case 10:
-            case 11:
-                spawn("bronzeShield");
-                break;
-            case 12:
-                spawn("silverShield");
-                break;
-            default:
-                console.log("No Item");
-                break;
+        // Calculate the total weight
+        const totalWeight = items.reduce((sum, item) => sum + item.specialSpawnWeight, 0);
+
+        // Generate a random number between 0 and totalWeight
+        const randomWeight = Math.random() * totalWeight;
+
+        // Find the item corresponding to the random weight
+        let cumulativeWeight = 0;
+        findingItem: for (const item of items) {
+            cumulativeWeight += item.specialSpawnWeight;
+            if (randomWeight < cumulativeWeight) {
+                spawn(item.name);
+                break findingItem;
+            }
         }
-    }
-    else
-    {
+
+    } else {
         specialItemIteration ++;
     }
 }

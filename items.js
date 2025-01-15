@@ -21,9 +21,16 @@ items.push({
             moveSpeed: 3,
         },
         deletePlayer: false,
+        canvasFilter: {
+            active: false,
+            filter: false,
+            duration: false,
+        }
     },
+    showInEditor: true,
     onStartSpawn: 3,
     gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
 })
 items.push({
     name: "super_pellet",
@@ -45,9 +52,16 @@ items.push({
             moveSpeed: 3,
         },
         deletePlayer: false,
+        canvasFilter: {
+            active: false,
+            filter: false,
+            duration: false,
+        }
     },
+    showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 50,
 })
 items.push({
     name: "turbo",
@@ -69,9 +83,16 @@ items.push({
         shield: 0,
         removeStatus: [],
         deletePlayer: false,
+        canvasFilter: {
+            active: false,
+            filter: false,
+            duration: false,
+        }
     },
+    showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 20,
 })
 items.push({
     name: "wall",
@@ -93,9 +114,16 @@ items.push({
             duration: 50,
             moveSpeed: 3,
         },
+        canvasFilter: {
+            active: false,
+            filter: false,
+            duration: false,
+        }
     },
+    showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 20,
 })
 items.push({
     name: "bronzeShield", //(string) Name Of Item
@@ -118,9 +146,16 @@ items.push({
             moveSpeed: 3,
         },
         deletePlayer: false,
+        canvasFilter: {
+            active: false,
+            filter: false,
+            duration: false,
+        }
     },
+    showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 20,
 })
 items.push({
     name: "silverShield",
@@ -142,7 +177,44 @@ items.push({
             moveSpeed: 3,
         },
         deletePlayer: false,
+        canvasFilter: {
+            active: false,
+            filter: false,
+            duration: false,
+        }
     },
+    showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 10,
+})
+items.push({
+    name: "lamp", //(string) Name Of Item
+    img: "Lamp.png", //(string) Image name
+    onEat_deleteMe: true, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
+    canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    onEat: {
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: {
+            duration: 50,
+            moveSpeed: 3,
+        },
+        deletePlayer: false,
+        canvasFilter: {
+            active: true,
+            filter: "invert(100%)",
+            duration: 5000,
+        }
+    },
+    showInEditor: false,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 1,
 })

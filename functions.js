@@ -24,8 +24,9 @@ let totalSpecialItems = 1;
 let timer, gameEnd;
 let gamePaused = false;
 let isActiveGame = false;
-let showPerformance = true;
+let showPerformance = false;
 let currentBackground = "background.jpg";
+let doColorRender = false;
 
 
 //Fix game Modes
@@ -34,6 +35,17 @@ for (let i = 0; i < gameModes.length; i++) {
     if (gameModes[i].snakeVanishOnDeath == undefined) {
         gameModes[i].snakeVanishOnDeath = true;
         ls.save("gameModes",gameModes);
+    }
+    //Fix Items
+    for (let j = 0; j < gameModes[i].items.length; j++) {
+        let item = gameModes[i].items[j];
+        if (!item.onEat.canvasFilter) {
+            item.onEat.canvasFilter = {
+                active: false,
+                filter: false,
+                duration: false,
+            }
+        }
     }
 }
 
@@ -1044,6 +1056,8 @@ function editGameMode(gameMode) {
     for (let i = 0; i < gameMode.items.length; i++) {
         let item = gameMode.items[i];
 
+        if (!item.showInEditor) continue;
+
         let holder = allItems.create("div");
         holder.className = "spawn_holder";
         let imgHolder = holder.create("div");
@@ -1164,19 +1178,12 @@ function gameMode_editItem(item,html_holder,gameMode) {
         editGameMode(gameMode);
         });
     }
-    if (item.canEat == true) {
+    if (item.canEat == true && item.onEat.shield > 0) {
         addSetting("Give Shield","number",item.onEat.shield,function(value) {
         item.onEat.shield = value;
         ls.save("gameModes",gameModes);
         editGameMode(gameMode);
         });
-    }
-    if (item.canEat == true) {
-        addSetting("Give Turbo","dropdown",item.onEat.giveturbo,function(value) {
-        item.onEat.giveturbo = value == "true" ? true : false;
-        ls.save("gameModes",gameModes);
-        editGameMode(gameMode);
-        },["true","false"]);
     }
     if (item.canEat == true && item.onEat.giveturbo) {
         addSetting("Turbo Duration","number",item.onEat.turbo.duration,function(value) {
@@ -1193,12 +1200,5 @@ function gameMode_editItem(item,html_holder,gameMode) {
         ls.save("gameModes",gameModes);
         editGameMode(gameMode);
         });
-    }
-    if (item.canEat == true) {
-        addSetting("Kill Player","dropdown",item.onEat.deletePlayer,function(value) {
-        item.onEat.deletePlayer = value == "true" ? true : false;
-        ls.save("gameModes",gameModes);
-        editGameMode(gameMode);
-        },["true","false"]);
     }
 }
