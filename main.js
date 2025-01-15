@@ -75,8 +75,8 @@ function drawRotated(list,direction,xPos, yPos, width, height) {
     ctx.drawImage(image,xPos,yPos,width,height);
 }
 function renderPlayers() {
-    for (let i = 0; i < players.length; i++) {
-        let player = players[i];
+    for (let i = 0; i < activePlayers.length; i++) {
+        let player = activePlayers[i];
 
         if (player.isDead) continue;
 
@@ -233,8 +233,8 @@ function growPlayer(player,grow) {
 
 
 function movePlayers() {
-    for (let i = 0; i < players.length; i++) {
-        let player = players[i];
+    for (let i = 0; i < activePlayers.length; i++) {
+        let player = activePlayers[i];
         if (player.isDead){
             continue;
         }
@@ -353,8 +353,8 @@ function movePlayers() {
             }
             
             //Check for Collisions
-            for (let a = 0; a < players.length; a++){
-                let checkedPlayer = players[a];
+            for (let a = 0; a < activePlayers.length; a++){
+                let checkedPlayer = activePlayers[a];
                 if (checkedPlayer.isDead) continue;
                 for(let b = 0; b < checkedPlayer.tail.length; b++){
                     let tailPiece = checkedPlayer.tail[b];
@@ -412,18 +412,18 @@ function useItemHelper(player,item) {
 function endScreen() {
     gameEnd = true;
     $(".endGamePopup").show("flex");
-    let longestTail = players[0].longestTail;
-    let timeSurvived = players[0].timeSurvived;
-    let longestTailPlayer = players[0];
-    let timeSurvivedPlayer = players[0];
-    for (let i = 1; i < players.length; i++) {
-        if (players[i].longestTail > longestTail) {
-            longestTail = players[i].longestTail;
-            longestTailPlayer = players[i];
+    let longestTail = activePlayers[0].longestTail;
+    let timeSurvived = activePlayers[0].timeSurvived;
+    let longestTailPlayer = activePlayers[0];
+    let timeSurvivedPlayer = activePlayers[0];
+    for (let i = 1; i < activePlayers.length; i++) {
+        if (activePlayers[i].longestTail > longestTail) {
+            longestTail = activePlayers[i].longestTail;
+            longestTailPlayer = activePlayers[i];
         }
-        if (players[i].timeSurvived > timeSurvived) {
-            timeSurvived = players[i].timeSurvived;
-            timeSurvivedPlayer = players[i];
+        if (activePlayers[i].timeSurvived > timeSurvived) {
+            timeSurvived = activePlayers[i].timeSurvived;
+            timeSurvivedPlayer = activePlayers[i];
         }
     }
 
@@ -453,10 +453,10 @@ function deletePlayer(player){
         drawPlayerBox(player)
 
         let playersDead = 0;
-        for (let i = 0; i < players.length; i++) {
-            if (players[i].isDead) playersDead++;
+        for (let i = 0; i < activePlayers.length; i++) {
+            if (activePlayers[i].isDead) playersDead++;
         }
-        if (playersDead == players.length) {
+        if (playersDead == activePlayers.length) {
             endScreen();
         }
     }else{
@@ -509,8 +509,8 @@ document.body.onkeydown = function(e) {
         else pauseGame();
     }
 
-    for (let i = 0; i < players.length; i++) {
-        let player = players[i];
+    for (let i = 0; i < activePlayers.length; i++) {
+        let player = activePlayers[i];
         if (e.key == player.leftKey && player.moveQueue.length < 4) {
             player.moveQueue.push("left");
         }
@@ -574,8 +574,8 @@ function useItem(player) {
 function setUpPlayerCanvas() {
     let html_playerCanvasHolder = $("playerCanvasHolder");
     html_playerCanvasHolder.innerHTML = "";
-    for (let i = 0; i < players.length; i++) {
-        let player = players[i];
+    for (let i = 0; i < activePlayers.length; i++) {
+        let player = activePlayers[i];
 
         function getCanvas(image,direction) {
             let playerCanvas = html_playerCanvasHolder.create("canvas");
@@ -650,8 +650,12 @@ function startGame() {
         visibility: "visible",
     })
     //Resetting Players
+    activePlayers = [];
     for (let i = 0; i < players.length; i++) {
-        let player = players[i];
+        if (players[i].active) activePlayers.push(players[i]);
+    }
+    for (let i = 0; i < activePlayers.length; i++) {
+        let player = activePlayers[i];
         //Ressurect Player
         player.isDead = false;
         //Set Player Selecting Item To 1

@@ -15,7 +15,9 @@ function pluginsIncludes(name,version) {
     })
 } 
 
-
+Array.prototype.insert = function ( index, ...items ) {
+    this.splice( index, 0, ...items );
+};
 Object.prototype.classRemove = function(classes) {
     if (this.length == undefined) {
         [this].classRemove(classes);

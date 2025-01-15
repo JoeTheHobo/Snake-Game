@@ -3,6 +3,7 @@ ls.setID("snakegame");
 let map = [];
 let updateCells = [];
 let players = ls.get("players",[]);
+let activePlayers;
 let gameModes = ls.get("gameModes",presetGameModes);
 if (gameModes == "") gameModes = presetGameModes;
 let activeGameMode = ls.get("activeGameMode",0);
@@ -61,17 +62,6 @@ function setResolution() {
 }
 window.on("resize",setResolution)
 setResolution();
-
-let keyBindVariable = [
-    ["s","w","a","d","q","e","r"],
-    ["5","8","4","6","7","9","+"],
-    ["k","i","j","l","u","o","p"],
-    ["g","t","f","h","r","y","z"],
-    ["ArrowDown","ArrowUp","ArrowLeft","ArrowRight","Alt","Control","0"],
-    ["z","z","z","z","z","z","z"],
-    ["z","z","z","z","z","z","z"],
-    ["z","z","z","z","z","z","z"],
-];
 
 let playerNames1 = [
     "Squabbling", "Terrifying", "Witty", "Sassy", "Mysterious",
@@ -136,13 +126,13 @@ function newPlayer() {
 
     
     let player = {
-        downKey: keyBindVariable[playerNumber][0],
-        upKey: keyBindVariable[playerNumber][1],
-        leftKey: keyBindVariable[playerNumber][2],
-        rightKey: keyBindVariable[playerNumber][3],
-        useItem1: keyBindVariable[playerNumber][4],
-        useItem2: keyBindVariable[playerNumber][5],
-        fireItem: keyBindVariable[playerNumber][6],
+        downKey: "s",
+        upKey: "w",
+        leftKey: "a",
+        rightKey: "d",
+        useItem1: "q",
+        useItem2: "e",
+        fireItem: "r",
         name: playerNames1.rnd() + playerNames2.rnd(),
         color: rnd(360), //Hue
         color2: 0, //Brightness
@@ -168,6 +158,7 @@ function newPlayer() {
         shield: 0,
         items: [],
         status: [],
+        active: true, 
     }
     players.push(player);
     ls.save("players",players);
@@ -186,14 +177,14 @@ function spawn(name,generateRandomItem = true) {
 
                 if (map[y][x].name == "air") {
                     foundSpot = true;
-                    checkingDistanceFromPlayersHead: for (let j = 0; j < players.length; j++) {
-                        let distance = calculateDistance(players[j].pos.x,players[j].pos.y,x,y);
+                    checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
+                        let distance = calculateDistance(players[j].pos.x,activePlayers[j].pos.y,x,y);
                         if (distance < 5) {
                             foundSpot = false;
                             break checkingDistanceFromPlayersHead;
                         }
-                        for (let p = 0; p < players[j].tail.length; p++) {
-                            if (players[j].tail[p].x == x && players[j].tail[p].y == y) {
+                        for (let p = 0; p < activePlayers[j].tail.length; p++) {
+                            if (activePlayers[j].tail[p].x == x && activePlayers[j].tail[p].y == y) {
                                 foundSpot = false;
                                 break checkingDistanceFromPlayersHead;
                             }
@@ -211,14 +202,14 @@ function spawn(name,generateRandomItem = true) {
                     for (let j = 0; j < gridX; j++) {
                         if (map[k][j].name == "air") {
                             let foundGoodSpot = true;
-                            checkingDistanceFromPlayersHead: for (let j = 0; j < players.length; j++) {
-                                let distance = calculateDistance(players[j].pos.x,players[j].pos.y,x,y);
+                            checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
+                                let distance = calculateDistance(activePlayers[j].pos.x,activePlayers[j].pos.y,x,y);
                                 if (distance < 5) {
                                     foundGoodSpot = false;
                                     break checkingDistanceFromPlayersHead;
                                 }
-                                for (let p = 0; p < players[j].tail.length; p++) {
-                                    if (players[j].tail[p].x == x && players[j].tail[p].y == y) {
+                                for (let p = 0; p < activePlayers[j].tail.length; p++) {
+                                    if (activePlayers[j].tail[p].x == x && activePlayers[j].tail[p].y == y) {
                                         foundGoodSpot = false;
                                         break checkingDistanceFromPlayersHead;
                                     }
@@ -269,28 +260,29 @@ function loadPlayers() {
     html_playersHolder.innerHTML = "";
     html_playersHolder.css({
         padding: "5px",
+        overflowY: "scroll",
+        overflowX: "hidden",
     })
 
-    if (gs_playerCount < 8) {
-        let html_newPlayerButton = html_playersHolder.create("div");
-        html_newPlayerButton.innerHTML = "Add Player";
-        html_newPlayerButton.css({
-            padding: "5px",
-            marginBottom: "5px",
-            fontSize: "20px",
-            userSelect: "none",
-            color: "white",
-            background: "black",
-            width: "max-content",
-            cursor: "pointer",
-            borderRadius: "3px",
-        })
-        html_newPlayerButton.on("click",function() {
-            gs_playerCount++;
-            newPlayer(gs_playerCount-1);
-            editPlayerScreen(players[gs_playerCount-1])
-        })
-    }
+    let html_newPlayerButton = html_playersHolder.create("div");
+    html_newPlayerButton.innerHTML = "Add Player";
+    html_newPlayerButton.css({
+        padding: "5px",
+        marginBottom: "5px",
+        fontSize: "20px",
+        userSelect: "none",
+        color: "white",
+        background: "black",
+        width: "max-content",
+        cursor: "pointer",
+        borderRadius: "3px",
+    })
+    html_newPlayerButton.on("click",function() {
+        gs_playerCount++;
+        newPlayer(gs_playerCount-1);
+        if (gs_playerCount > 8) players[gs_playerCount-1].active = false;
+        editPlayerScreen(players[gs_playerCount-1])
+    })
     
 
     for (let i = 0; i < players.length; i++) {
@@ -301,7 +293,7 @@ function loadPlayers() {
             width: "97%",
             padding: "5px",
             marginBottom: "5px",
-            background: "black",
+            background: player.active ? "black" : "rgb(70, 69, 69)",
             height: "40px",
             borderRadius: "3px",
             display: "flex",
@@ -334,52 +326,59 @@ function loadPlayers() {
             color: "white",
         })
 
-        let html_editSnake = html_playerHolder.create("div");
-        html_editSnake.css({
-            background: "#333",
-            borderRadius: "5px",
-            width: "38px",
-            height: "38px",
-            cursor: "pointer",
-            marginLeft: "auto",
-        })
-        html_editSnake.playerID = i;
-        html_editSnake.on("click",function() {
-            editPlayerScreen(players[this.playerID])
-        })
-        let html_editImage = html_editSnake.create("img");
-        html_editImage.src = "img/edit.png";
-        html_editImage.css({
-            width: "100%",
-            height: "100%",
-        })
+        let buttonsRight = html_playerHolder.create("div");
+        buttonsRight.className = "gm_buttonsRight";
 
-        let html_deleteSnake = html_playerHolder.create("div");
-        html_deleteSnake.css({
-            background: "#333",
-            borderRadius: "5px",
-            width: "38px",
-            height: "38px",
-            marginLeft: "5px",
-            cursor: "pointer",
-        })
-        html_deleteSnake.playerID = i;
-        html_deleteSnake.on("click",function() {
-            players.splice(this.playerID,1);
+        function makeRightButton(src,func) {
+            let html_editSnake = buttonsRight.create("div");
+            html_editSnake.className = "gm_imgHolder";
+            html_editSnake.playerID = i;
+            html_editSnake.on("click",function() {
+                func(this.playerID);
+            })
+            let html_editImage = html_editSnake.create("img");
+            html_editImage.src = "img/" + src;
+            html_editImage.className = "gm_img";
+        }
+
+        makeRightButton("arrowDown.png",function(playerID) {
+            let player = players.splice(playerID,1);
+            players.insert(playerID+1,player[0]);
+            loadPlayers();
+        });
+        makeRightButton("arrow.png",function(playerID) {
+            let player = players.splice(playerID,1);
+            players.insert(playerID-1,player[0]);
+            loadPlayers();
+        });
+        makeRightButton("edit.png",function(playerID) {
+            editPlayerScreen(players[playerID])
+        });
+        makeRightButton("delete.png",function(playerID) {
+            players.splice(playerID,1);
             gs_playerCount--;
             for (let i = 0; i < players.length; i++) {
                 players[i].id = i;
             }
             loadPlayers();
-        })
-        let html_deleteImage = html_deleteSnake.create("img");
-        html_deleteImage.src = "img/delete.png";
-        html_deleteImage.css({
-            width: "100%",
-            height: "100%",
-        })
+        });
+        if (player.active) {
+            makeRightButton("eyeOpen.png",function(playerID) {
+                players[playerID].active = false;
+                loadPlayers();
+            });
+        } else {
+            makeRightButton("eyeClosed.png",function(playerID) {
+                let activePlayers = 0;
+                for (let i = 0; i < players.length; i++) {
+                    if (players[i].active) activePlayers++;
+                }
+                if (activePlayers == 8) return;
 
-
+                players[playerID].active = true;
+                loadPlayers();
+            });
+        }
     }
 }
 function editPlayerScreen(player) {

@@ -418,6 +418,7 @@ html {
   border: 3px solid black;
   background: white;
   margin-right: 5px;
+  cursor: pointer;
 }
 .gm_imgHolder:hover {
   background: rgb(194, 194, 194);
