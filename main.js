@@ -533,7 +533,7 @@ function endScreen() {
     $(".engGame_playerNameKills").innerHTML = mostKillsPlayer.name;
     $(".engGame_playerKills").innerHTML = (mostKills) + " Kill" + (mostKills > 1 ? "s" : "");
 
-    if (activePlayers.length > 0 && mostKills > 0) {
+    if (activePlayers.length > 1 && mostKills > 0) {
         $("snakeKillsStat").show("flex");
     } else {
         $("snakeKillsStat").hide();
@@ -541,7 +541,7 @@ function endScreen() {
 }
 function deletePlayer(player,playerWhoKilled){
     if (player.shield == 0){
-        if (playerWhoKilled) playerWhoKilled.playerKills++;
+        if (playerWhoKilled) if (playerWhoKilled.name !== player.name) playerWhoKilled.playerKills++;
 
         //Delete Tail
         if (currentGameMode.snakeVanishOnDeath) {
