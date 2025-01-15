@@ -2,6 +2,7 @@ ls.setID("snakegame");
 
 let map = [];
 let updateCells = [];
+let updateSnakeCells = [];
 let players = ls.get("players",[]);
 let activePlayers;
 let gameModes = ls.get("gameModes",presetGameModes);
@@ -23,22 +24,51 @@ let totalSpecialItems = 1;
 let timer, gameEnd;
 let gamePaused = false;
 let isActiveGame = false;
-let showPerformance = false;
+let showPerformance = true;
+let currentBackground = "background.jpg";
+
+
+//Fix game Modes
+for (let i = 0; i < gameModes.length; i++) {
+    //1/15/25
+    if (gameModes[i].snakeVanishOnDeath == undefined) {
+        gameModes[i].snakeVanishOnDeath = true;
+        ls.save("gameModes",gameModes);
+    }
+}
 
 //Setting Up Canvas
-let canvas = $("game");
-let ctx = canvas.getContext("2d");
+let canvas_background = $("render_background");
+let ctx_background = canvas_background.getContext("2d");
+let canvas_tiles = $("render_tiles");
+let ctx_tiles = canvas_tiles.getContext("2d");
+let canvas_items = $("render_items");
+let ctx_items = canvas_items.getContext("2d");
+let canvas_players = $("render_players");
+let ctx_players = canvas_players.getContext("2d");
 function adjustCanvasSize() {
     const width = gridX * gridSize;
     const height = gridY * gridSize;
 
     // Set the canvas dimensions in device pixels
-    canvas.width = width;
-    canvas.height = height;
+    canvas_background.width = width;
+    canvas_background.height = height;
+    canvas_tiles.width = width;
+    canvas_tiles.height = height;
+    canvas_items.width = width;
+    canvas_items.height = height;
+    canvas_players.width = width;
+    canvas_players.height = height;
 
     // Scale the canvas visually for the screen
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
+    canvas_background.style.width = `${width}px`;
+    canvas_background.style.height = `${height}px`;
+    canvas_tiles.style.width = `${width}px`;
+    canvas_tiles.style.height = `${height}px`;
+    canvas_items.style.width = `${width}px`;
+    canvas_items.style.height = `${height}px`;
+    canvas_players.style.width = `${width}px`;
+    canvas_players.style.height = `${height}px`;
 }
 
 function setResolution() {
@@ -90,7 +120,13 @@ function getItem(name) {
         }
     }
 }
-
+function getTile(name) {
+    for (let i = 0; i < tiles.length; i++) {
+        if (tiles[i].name == name) {
+            return tiles[i];
+        }
+    }
+}
 
 function newPlayer() {
     let playerNumber = players.length;
@@ -98,27 +134,6 @@ function newPlayer() {
     let startx,starty;
     let counter = 0;
     let gameCrashed = false;
-    while (foundSpace == false)  {
-        startx = rnd(gridX) - 1;
-        starty = rnd(gridY) - 1;
-
-        let foundPlayer = false;
-        findingPlayer: for (let i = 0; i < players.length; i++) {
-            if (players[i].pos.x == startx && players[i].pos.y == starty) {
-                foundPlayer = true;
-                break findingPlayer;
-            }
-        }
-        if (!foundPlayer) {
-            foundSpace = true;
-        }
-        counter++;
-        if (counter > gridX * gridY) {
-            //Table is full
-            foundSpace = true;
-            gameCrashed = true;
-        }
-    }
     if (gameCrashed) {
         console.log("Game Crashed")
         return;
@@ -141,8 +156,8 @@ function newPlayer() {
         growTail: 0,
         isDead: false,
         pos: {
-            x: startx,
-            y: starty, 
+            x: 0,
+            y: 0, 
         },
         tail: [],
         moveQueue: [],
@@ -164,76 +179,85 @@ function newPlayer() {
     ls.save("players",players);
 }
 function spawn(name,generateRandomItem = true) { 
+    let itemIndex = false;
     for (let i = 0; i < currentGameMode.items.length; i++) {
         if (currentGameMode.items[i].name == name) {
+            itemIndex = i;
+        }
+    }
 
-            let counter = 0;
-            let foundSpot = false;
-            let x,y;
-            while (foundSpot == false) {
+    let counter = 0;
+    let foundSpot = false;
+    let x,y;
+    while (foundSpot == false) {
 
-                x = rnd(gridX)-1;
-                y = rnd(gridY)-1
+        x = rnd(gridX)-1;
+        y = rnd(gridY)-1;
+        if (map[y][x].item == false && map[y][x].tile.canSpawn) {
+            foundSpot = true;
+            checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
+                let distance = calculateDistance(players[j].pos.x,activePlayers[j].pos.y,x,y);
+                if (distance < 5) {
+                    foundSpot = false;
+                    break checkingDistanceFromPlayersHead;
+                }
+                for (let p = 0; p < activePlayers[j].tail.length; p++) {
+                    if (activePlayers[j].tail[p].x == x && activePlayers[j].tail[p].y == y) {
+                        foundSpot = false;
+                        break checkingDistanceFromPlayersHead;
+                    }
+                }
+            }
+        }
+        counter++;
+        if (counter > (gridX * gridY) ) {
+            foundSpot = "couldn't find any";
+        }
+    }
 
-                if (map[y][x].name == "air") {
-                    foundSpot = true;
+    if (foundSpot == "couldn't find any") {
+        findingAnySpot: for (let k = 0; k < gridY; k++) {
+            for (let j = 0; j < gridX; j++) {
+                if (map[k][j].item == false && map[k][j].tile.canSpawn) {
+                    let foundGoodSpot = true;
                     checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
-                        let distance = calculateDistance(players[j].pos.x,activePlayers[j].pos.y,x,y);
+                        let distance = calculateDistance(activePlayers[j].pos.x,activePlayers[j].pos.y,x,y);
                         if (distance < 5) {
-                            foundSpot = false;
+                            foundGoodSpot = false;
                             break checkingDistanceFromPlayersHead;
                         }
                         for (let p = 0; p < activePlayers[j].tail.length; p++) {
                             if (activePlayers[j].tail[p].x == x && activePlayers[j].tail[p].y == y) {
-                                foundSpot = false;
+                                foundGoodSpot = false;
                                 break checkingDistanceFromPlayersHead;
                             }
                         }
                     }
-                }
-                counter++;
-                if (counter > (gridX * gridY) ) {
-                    foundSpot = "couldn't find any";
-                }
-            }
-
-            if (foundSpot == "couldn't find any") {
-                findingAnySpot: for (let k = 0; k < gridY; k++) {
-                    for (let j = 0; j < gridX; j++) {
-                        if (map[k][j].name == "air") {
-                            let foundGoodSpot = true;
-                            checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
-                                let distance = calculateDistance(activePlayers[j].pos.x,activePlayers[j].pos.y,x,y);
-                                if (distance < 5) {
-                                    foundGoodSpot = false;
-                                    break checkingDistanceFromPlayersHead;
-                                }
-                                for (let p = 0; p < activePlayers[j].tail.length; p++) {
-                                    if (activePlayers[j].tail[p].x == x && activePlayers[j].tail[p].y == y) {
-                                        foundGoodSpot = false;
-                                        break checkingDistanceFromPlayersHead;
-                                    }
-                                }
-                            }
-                            if (foundGoodSpot) {{
-                                x = j;
-                                y = k;
-                                break findingAnySpot;
-                            }}
-                        }
-                    }
+                    if (foundGoodSpot) {{
+                        x = j;
+                        y = k;
+                        foundSpot = true;
+                        break findingAnySpot;
+                    }}
                 }
             }
+        }
+    }
 
-            map[y][x] = currentGameMode.items[i];
+    if (foundSpot == true) {
+        if (itemIndex === false) {
+            name.pos.x = x;
+            name.pos.y = y;
+        } else {
+            map[y][x].item = currentGameMode.items[itemIndex];
             updateCells.push({
                 x: x,
                 y: y,
             })
             if (generateRandomItem) specialItemManager();
-            return;
         }
-              
+    } else {
+        console.log("No Available Spot To Spawn");
     }
 };
 function calculateDistance(x1, y1, x2, y2) {
@@ -867,6 +891,7 @@ function loadGameModes() {
             name: "Untitled",
             howManyItemsCanPlayersUse: 2,
             mode_usingItemType: "scroll",
+            snakeVanishOnDeath: true,
             mode_whenInventoryFullWhereDoItemsGo: "select",
             atStartSpawnIn: [{
                 name: "pellet",
@@ -1005,6 +1030,10 @@ function editGameMode(gameMode) {
         gameMode.mode_whenInventoryFullWhereDoItemsGo = value;
         ls.save("gameModes",gameModes);
     },["noPickUp","select","recycle"]);
+    addSetting("Snake Vanish On Death","dropdown",gameMode.snakeVanishOnDeath,function(value) {
+        gameMode.snakeVanishOnDeath = value == "true" ? true : false;
+        ls.save("gameModes",gameModes);
+    },["true","false"]);
 
 
     let html_onSpawnHolder = $(".onSpawnHolder");

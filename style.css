@@ -22,13 +22,25 @@ html {
     align-items: center;
 }
 
-#game {
+.game_canvas {
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
     top: 0;
     margin: auto;
+}
+#render_background {
+  z-index: 401;
+}
+#render_tiles {
+  z-index: 402;
+}
+#render_items {
+  z-index: 403;
+}
+#render_players {
+  z-index: 404;
 }
 
   #gameTitle {

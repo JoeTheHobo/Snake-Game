@@ -26,27 +26,6 @@ items.push({
     gameModeMenu_selectedItem: false,
 })
 items.push({
-    name: "air",
-    img: "background.png",
-    color: "#6bd2fe",
-    pickUp: false,
-    onEat: {
-        growPlayer: 0,
-        spawn: [],
-        shield: 0,
-        addStatus: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: {
-            duration: 50,
-            moveSpeed: 3,
-        },
-        deletePlayer: false,
-    },
-    onStartSpawn: 0,
-    gameModeMenu_selectedItem: false,
-})
-items.push({
     name: "super_pellet",
     color: "green",
     img: "snakeSuper.png",

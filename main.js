@@ -6,31 +6,51 @@ for (let i = 0; i < items.length; i++) {
     img.src = "img/" + items[i].img;
     img.id = "item_" + items[i].img.subset(0,".\\before");
 }
+for (let i = 0; i < tiles.length; i++) {
+    if (!tiles[i].img) continue;
+
+    let img = $(".imageHolder").create("img");
+    img.src = "img/" + tiles[i].img;
+    img.id = "tile_" + tiles[i].name;
+}
 //End Load All Item Images
 
 
 function renderGame() {
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+    renderTiles();
+    ctx_items.clearRect(0,0,canvas_items.width,canvas_items.height);
     for (let i = 0; i < map.length; i++) {
         for (let j = 0; j < map[0].length; j++) {
-            let mapItem = map[i][j];
-
-            updateCells.push({
-                x: j,
-                y: i,
-            });
+            if (map[i][j].tile == false) continue;
         }
     }
     renderCells();
 }
+function renderTiles() {
+    ctx_tiles.clearRect(0,0,canvas_tiles.width,canvas_tiles.height);
+    for (let i = 0; i < map.length; i++) {
+        for (let j = 0; j < map[0].length; j++) {
+            let mapTile = map[i][j].tile;
+            ctx_tiles.drawImage($("tile_" + mapTile.name),j*gridSize,i*gridSize,gridSize,gridSize);      
+        }
+    }
+}
 function renderCells() {
     for (let i = 0; i < updateCells.length; i++) {
-        let mapCell = map[updateCells[i].y][updateCells[i].x];
-        ctx.drawImage(mapCell.canvas,updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);        
+        let mapCell = map[updateCells[i].y][updateCells[i].x].item;
+        ctx_items.clearRect(updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
+        if (mapCell == false) continue;
+        ctx_items.drawImage(mapCell.canvas,updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);        
     }
     updateCells = [];
 }
-function drawImage(image, direction, xPos, yPos, width, height,cnvs = canvas) {
+function deleteSnakeCells() {
+    for (let i = 0; i < updateSnakeCells.length; i++) {
+        ctx_players.clearRect(updateSnakeCells[i].x*gridSize,updateSnakeCells[i].y*gridSize,gridSize,gridSize);
+    }
+    updateSnakeCells = [];
+}
+function drawImage(image, direction, xPos, yPos, width, height,cnvs = canvas_players) {
     if (direction == false) direction = "up";
     let diCtx = cnvs.getContext("2d"); 
     // Save the current canvas state
@@ -72,23 +92,27 @@ function drawImage(image, direction, xPos, yPos, width, height,cnvs = canvas) {
 function drawRotated(list,direction,xPos, yPos, width, height) {
     if (direction == false) direction = "up";
     let image = list[direction];
-    ctx.drawImage(image,xPos,yPos,width,height);
+    ctx_players.drawImage(image,xPos,yPos,width,height);
 }
 function renderPlayers() {
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
 
-        if (player.isDead) continue;
-
+        if (player.isDead) {
+            if (player.justDied) {
+                player.justDied = false;
+            } else continue;
+        }
         drawRotated(player.canvas.head,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
+        
         
         if (player.shield == 1){
             let item = getItem("bronzeShield");
-            drawImage(item.canvas,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
+            drawImage(item.canvas,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize,canvas_players);
         }
         if (player.shield == 2){
             let item = getItem("silverShield");
-            drawImage(item.canvas,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
+            drawImage(item.canvas,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize,canvas_players);
         }
 
         production.renderTail.timeStart = performance.now();
@@ -252,7 +276,7 @@ function movePlayers() {
         if (player.isDead){
             continue;
         }
-        if (player.moveTik >= player.moveSpeed)
+        if (player.moveTik >= (player.moveSpeed/map[player.pos.y][player.pos.x].tile.changePlayerSpeed))
             {   
                 if (player.turboActive == true)
                 {
@@ -294,13 +318,13 @@ function movePlayers() {
                     y: player.pos.y,
                     direction: player.moving,
                 });
-                updateCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y});
+                updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y});
                 player.tail.pop();
             }
             if (player.tail.length > 0)
-                updateCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y});
+                updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y});
 
-            updateCells.push({
+            updateSnakeCells.push({
                 x: player.pos.x,
                 y: player.pos.y
             })
@@ -329,14 +353,18 @@ function movePlayers() {
             }
 
             //Test Item Underplayer
-            let mapItem = map[player.pos.y][player.pos.x];
+            let mapItem = map[player.pos.y][player.pos.x].item;
             if (mapItem.pickUp) {
                 let pickedUpItem = false;
                 findingEmptyItemSlot: for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
                     if (player.items[k] == "empty") {
                         player.items[k] = mapItem;
                         if (mapItem.onEat_deleteMe == true) {
-                            map[player.pos.y][player.pos.x] = getItem("air");
+                            map[player.pos.y][player.pos.x].item = false;
+                            updateCells.push({
+                                x: player.pos.x,
+                                y: player.pos.y,
+                            })
                         }
                         drawPlayerBox(player)
                         pickedUpItem = true;
@@ -353,7 +381,11 @@ function movePlayers() {
                         if (player.whenInventoryIsFullInsertItemsAt > player.items.length-1) player.whenInventoryIsFullInsertItemsAt = 0;
                     }
                     if (mapItem.onEat_deleteMe == true) {
-                        map[player.pos.y][player.pos.x] = getItem("air");
+                        map[player.pos.y][player.pos.x].item = false;
+                        updateCells.push({
+                            x: player.pos.x,
+                            y: player.pos.y,
+                        })
                     }
                     drawPlayerBox(player)
                 }
@@ -362,14 +394,19 @@ function movePlayers() {
                     useItemHelper(player,mapItem);
                 }
                 if (mapItem.onEat_deleteMe == true) {
-                    map[player.pos.y][player.pos.x] = getItem("air");
+                    map[player.pos.y][player.pos.x].item = false;
+                    updateCells.push({
+                        x: player.pos.x,
+                        y: player.pos.y,
+                    })
+                    
                 }
             }
             
             //Check for Collisions
             for (let a = 0; a < activePlayers.length; a++){
                 let checkedPlayer = activePlayers[a];
-                if (checkedPlayer.isDead) continue;
+                if (checkedPlayer.isDead && currentGameMode.snakeVanishOnDeath == true) continue;
                 for(let b = 0; b < checkedPlayer.tail.length; b++){
                     let tailPiece = checkedPlayer.tail[b];
                     if (player.pos.x == tailPiece.x && player.pos.y == tailPiece.y)
@@ -455,14 +492,17 @@ function endScreen() {
 function deletePlayer(player){
     if (player.shield == 0){
         //Delete Tail
-        for (let i = 0; i < player.tail.length; i++) {
-            updateCells.push({
-                x: player.tail[i].x,
-                y: player.tail[i].y,
-            })
+        if (currentGameMode.snakeVanishOnDeath) {
+            for (let i = 0; i < player.tail.length; i++) {
+                updateSnakeCells.push({
+                    x: player.tail[i].x,
+                    y: player.tail[i].y,
+                })
+            }
         }
         //Delete Player
         player.isDead = true;
+        player.justDied = true;
         player.timeSurvived = timer;
         drawPlayerBox(player)
 
@@ -503,7 +543,10 @@ function newMap() {
     for (let i = 0; i < gridY; i++) {
         let arr = [];
         for (let j = 0; j < gridX; j++) {
-            arr.push(getItem("air"));
+            arr.push({
+                tile: getTile("grass"),
+                item: false,
+            })
         }
         map.push(arr);
     }
@@ -648,6 +691,10 @@ function setUpItemCanvas() {
             itemCtx.drawImage(image,0,0);
             return itemCanvas;
         }
+        if (!$("item_" + currentGameMode.items[i].img.subset(0,".\\before"))) {
+            console.warn("Outdated Item/Tile: " + currentGameMode.items[i].name);
+            continue;
+        }
         currentGameMode.items[i].canvas = getCanvas($("item_" + currentGameMode.items[i].img.subset(0,".\\before")));
     }
 }
@@ -655,6 +702,7 @@ function setUpItemCanvas() {
 
 function startGame() {
     setScene("game");
+    newMap();
     $(".endGamePopup").hide();
     gameEnd = false;
     gamePaused = false;
@@ -672,6 +720,7 @@ function startGame() {
         let player = activePlayers[i];
         //Ressurect Player
         player.isDead = false;
+        player.justDied = false;
         //Set Player Selecting Item To 1
         player.selectingItem = 0;
         //Set Player Item Usage
@@ -698,6 +747,9 @@ function startGame() {
         player.turboDuration = 0;
         player.turboActive = false;
         player.shield = 0;
+
+        //Spawn Players
+        spawn(player);
     }
 
     specialItemIteration = 0;
@@ -705,7 +757,13 @@ function startGame() {
     setUpPlayerCanvas();
     setUpItemCanvas();
 
-    newMap();
+    //Draw On Background canvas
+    let backgroundImage = new Image();
+    backgroundImage.src = "img/" + currentBackground;
+    backgroundImage.onload = function() {
+        ctx_background.drawImage(backgroundImage,0,0,canvas_background.width,canvas_background.height);
+    }
+
     adjustCanvasSize();
     renderGame();
 
@@ -755,6 +813,12 @@ let production = {
         type: "dom",
     },
     movePlayers: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        type: "dom",
+    },
+    deleteSnakeCells: {
         times: [],
         average: 0,
         timeStart: 0,
@@ -813,6 +877,10 @@ function gameLoop() {
     movePlayers();
     production.movePlayers.times.push(performance.now() - production.movePlayers.timeStart);
     
+    production.deleteSnakeCells.timeStart = performance.now();
+    deleteSnakeCells();
+    production.deleteSnakeCells.times.push(performance.now() - production.deleteSnakeCells.timeStart);
+
     production.renderPlayers.timeStart = performance.now();
     renderPlayers();
     production.renderPlayers.times.push(performance.now() - production.renderPlayers.timeStart);

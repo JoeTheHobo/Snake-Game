@@ -8,6 +8,7 @@ $("button_players").on("click",function() {
 $("button_mainMenu").on("click",function() {
     setScene("menu");
     $(".production").show("none");
+    isActiveGame = false;
 })
 $("button_playAgain").on("click",function() {
     startGame();
