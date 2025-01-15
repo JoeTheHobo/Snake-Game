@@ -123,6 +123,67 @@ function renderPlayers() {
             if (j == player.tail.length - 1) {
                 drawRotated(player.canvas.tail,direction,tailX*gridSize,tailY*gridSize,gridSize,gridSize);
             } else if (beforeTail.exist && afterTail.exist) {
+                let tail = {
+                    left: {
+                        active: false,
+                        distance: 0,
+                    },
+                    right: {
+                        active: false,
+                        distance: 0,
+                    },
+                    up: {
+                        active: false,
+                        distance: 0,
+                    },
+                    down: {
+                        active: false,
+                        distance: 0,
+                    },
+                }
+
+                if (beforeTail.exist) {
+                    if (beforeTail.x < tailX) {
+                        tail.left.active = true;
+                        tail.left.distance = tailX - beforeTail.x;
+                    }
+                    if (beforeTail.x > tailX) {
+                        tail.right.active = true;
+                        tail.right.distance = beforeTail.x - tailX;
+                    }
+                    if (afterTail.x < tailX) {
+                        tail.left.active = true;
+                        tail.left.distance = tailX - afterTail.x;
+                    }
+                    if (afterTail.x > tailX) {
+                        tail.right.active = true;
+                        tail.right.distance = afterTail.x - tailX;
+                    }
+                    if (beforeTail.y < tailY) {
+                        tail.up.active = true;
+                        tail.up.distance = tailY - beforeTail.y;
+                    }
+                    if (beforeTail.y > tailY) {
+                        tail.down.active = true;
+                        tail.down.distance = beforeTail.y - tailY;
+                    }
+                    if (afterTail.y < tailY) {
+                        tail.up.active = true;
+                        tail.up.distance = tailY - afterTail.y;
+                    }
+                    if (afterTail.y > tailY) {
+                        tail.down.active = true;
+                        tail.down.distance = afterTail.y - tailY;
+                    }
+                }
+
+
+                if (Math.abs(beforeTail.x - afterTail.x) == 2) {
+                    drawRotated(player.canvas.body,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                }
+                if (Math.abs(beforeTail.y - afterTail.y) == 2) {
+                    drawRotated(player.canvas.body,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                }
                 /* 
                     snakeTurn directions
                     up = Top - Right
@@ -130,80 +191,33 @@ function renderPlayers() {
                     right = Right - Bottom
                     down =  Bottom - Left
                 */
-                if (Math.abs(beforeTail.x - afterTail.x) == 2) {
-                    drawRotated(player.canvas.body,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                }
-                if (Math.abs(beforeTail.y - afterTail.y) == 2) {
-                    drawRotated(player.canvas.body,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                }
+                
+                if (tail.left.active && tail.up.active) if (tail.left.distance == 1 && tail.up.distance == 1)
+                    drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                if (tail.left.active && tail.down.active) if (tail.left.distance == 1 && tail.down.distance == 1)
+                    drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                if (tail.right.active && tail.up.active) if (tail.right.distance == 1 && tail.up.distance == 1)
+                    drawRotated(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                if (tail.right.active && tail.down.active) if (tail.right.distance == 1 && tail.down.distance == 1)
+                    drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
 
-                if (beforeTail.x < tailX && afterTail.y < tailY) { //Right And Top
-                    if (beforeTail.x == 0 && afterTail.x > 1)
-                        drawRotated(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                    else if (afterTail.y == 0 && beforeTail.y > 1){
-                        console.log("1.5")
-                        drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                    }
-                    else
-                        drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                }
-                if (beforeTail.x < tailX && afterTail.y > tailY) { //Right and Bottom
-                    if (beforeTail.x == 0 && afterTail.x > 1)
-                        drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                    else if(afterTail.y == 0 && beforeTail.y > 1)
-                        drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                    else
-                        drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                }
-                if (beforeTail.x > tailX && afterTail.y < tailY) { //Left and top
-                    if (beforeTail.x == gridX-1 && afterTail.x < gridX-2)
-                        drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                    else if (beforeTail.y == gridY-1 && afterTail.y < gridY-2)
-                        drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                    else
-                        drawRotated(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                }
-                if (beforeTail.x > tailX && afterTail.y > tailY) { //Left and bottom
-                    if (beforeTail.x == gridX-1 && afterTail.x < gridX-2)
-                        drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                    else if (beforeTail.y == gridY-1 && afterTail.y < gridY-2)
-                        drawRotated(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                    else
-                        drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                }
+                if (tail.left.active && tail.up.active) if (tail.left.distance == 1 && tail.up.distance > 1)
+                    drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                if (tail.right.active && tail.up.active) if (tail.right.distance == 1 && tail.up.distance > 1)
+                    drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                if (tail.left.active && tail.down.active) if (tail.left.distance == 1 && tail.down.distance > 1)
+                    drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                if (tail.right.active && tail.down.active) if (tail.right.distance == 1 && tail.down.distance > 1)
+                    drawRotated(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
 
-                if (beforeTail.y < tailY && afterTail.x < tailX) { //top and left
-                    if (beforeTail.y == 0 && afterTail.y > 1)
-                        drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                    else if (beforeTail.x == 0 && afterTail.x > 1)
-                        drawRotated(player.canvas.turn,"bottom",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                    else
-                        drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                }
-                if (beforeTail.y < tailY && afterTail.x > tailX) { //Top and right
-                    if (beforeTail.y == 0 && afterTail.y > 1)
-                        drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                    else if (beforeTail.x == 0 && afterTail.x > 1) 
-                        drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                    else
-                        drawRotated(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                }
-                if (beforeTail.y > tailY && afterTail.x < tailX) { //Bottom and left
-                    if (beforeTail.y == gridY-1 && afterTail.y < gridY-2)
-                        drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                    else if (beforeTail.x == gridX-1 && afterTail.x < gridX-2)
-                        drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                    else
-                        drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                }
-                if (beforeTail.y > tailY && afterTail.x > tailX) { //Bottom and right
-                    if (beforeTail.y == gridY-1 && afterTail.y < gridY-2)
-                        drawRotated(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                    else if (beforeTail.x == gridX-1 && afterTail.x < gridX-2)
-                        drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                    else
-                        drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                }
+                if (tail.left.active && tail.up.active) if (tail.left.distance > 1 && tail.up.distance == 1)
+                    drawRotated(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                if (tail.right.active && tail.up.active) if (tail.right.distance > 1 && tail.up.distance == 1)
+                    drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                if (tail.left.active && tail.down.active) if (tail.left.distance > 1 && tail.down.distance == 1)
+                    drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                if (tail.right.active && tail.down.active) if (tail.right.distance > 1 && tail.down.distance == 1)
+                    drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
 
                 //Going Off Screen
                 if (afterTail.x > tailX && beforeTail.x > tailX) {
