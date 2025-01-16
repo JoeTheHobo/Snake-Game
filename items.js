@@ -33,6 +33,7 @@ items.push({
     specialSpawnWeight: 0,
     teleport: false,
     spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
 })
 items.push({
     name: "super_pellet",
@@ -66,6 +67,7 @@ items.push({
     specialSpawnWeight: 50,
     teleport: false,
     spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
 })
 items.push({
     name: "turbo",
@@ -99,6 +101,7 @@ items.push({
     specialSpawnWeight: 20,
     teleport: false,
     spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
 })
 items.push({
     name: "wall",
@@ -132,6 +135,7 @@ items.push({
     specialSpawnWeight: 20,
     teleport: false,
     spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
 })
 items.push({
     name: "wall2",
@@ -164,6 +168,7 @@ items.push({
     specialSpawnWeight: 10,
     teleport: false,
     spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
 })
 items.push({
     name: "bronzeShield", //(string) Name Of Item
@@ -198,6 +203,7 @@ items.push({
     specialSpawnWeight: 20,
     teleport: false,
     spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
 })
 items.push({
     name: "silverShield",
@@ -231,6 +237,7 @@ items.push({
     specialSpawnWeight: 10,
     teleport: false,
     spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
 })
 items.push({
     name: "goldShield",
@@ -263,6 +270,7 @@ items.push({
     specialSpawnWeight: 0,
     teleport: false,
     spawnCount: 5, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
 })
 items.push({
     name: "lamp", //(string) Name Of Item
@@ -295,6 +303,7 @@ items.push({
     specialSpawnWeight: 1,
     teleport: false,
     spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
 })
 items.push({
     name: "snakeHole", //(string) Name Of Item
@@ -317,9 +326,10 @@ items.push({
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 1,
+    specialSpawnWeight: 4,
     teleport: 0, //Teleport ID
-    spawnCount: 4, //How Many To Spawn In When Spawning
+    spawnCount: 2, //How Many To Spawn In When Spawning
+    spawnLimit: 1, //How many times can spawn durring session
 })
 items.push({
     name: "snakeHole2", //(string) Name Of Item
@@ -342,9 +352,9 @@ items.push({
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 1,
+    specialSpawnWeight: 4,
     teleport: 1, //Teleport ID
-    spawnCount: 4, //How Many To Spawn In When Spawning
+    spawnLimit: 1, //How many times can spawn durring session
 })
 items.push({
     name: "snakeHole3", //(string) Name Of Item
@@ -367,7 +377,8 @@ items.push({
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 1,
+    specialSpawnWeight: 4,
     teleport: 2, //Teleport ID
-    spawnCount: 4, //How Many To Spawn In When Spawning
+    spawnCount: 2, //How Many To Spawn In When Spawning
+    spawnLimit: 1, //How many times can spawn durring session
 })

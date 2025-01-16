@@ -205,13 +205,22 @@ function renderPlayers() {
                     }
                 }
 
+                let image = player.canvas.head;
+                let direction = "right";
 
-                if (Math.abs(beforeTail.x - afterTail.x) == 2) {
-                    drawRotated(player.canvas.body,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                let goingThroughHole = false;
+                if (map[tailY][tailX].item.teleport >= 0) goingThroughHole = true;
+                if (goingThroughHole) {
+                    tail.up = {
+                        active: false,
+                        distance: 1,
+                    };
+                    tail.down = {
+                        active: false,
+                        distance: 1,
+                    };
                 }
-                if (Math.abs(beforeTail.y - afterTail.y) == 2) {
-                    drawRotated(player.canvas.body,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                }
+                
                 /* 
                     snakeTurn directions
                     up = Top - Right
@@ -219,47 +228,67 @@ function renderPlayers() {
                     right = Right - Bottom
                     down =  Bottom - Left
                 */
+                if (tail.left.active && tail.up.active) if (tail.left.distance == 1 && tail.up.distance == 1) {
+                    image = player.canvas.turn; direction = "left";
+                }
+                if (tail.left.active && tail.down.active) if (tail.left.distance == 1 && tail.down.distance == 1) {
+                    image = player.canvas.turn; direction = "down";
+                }
+                if (tail.right.active && tail.up.active) if (tail.right.distance == 1 && tail.up.distance == 1) {
+                    image = player.canvas.turn; direction = "up";
+                }
+                if (tail.right.active && tail.down.active) if (tail.right.distance == 1 && tail.down.distance == 1) {
+                    image = player.canvas.turn; direction = "right";
+                }
+                if (tail.left.active && tail.up.active) if (tail.left.distance == 1 && tail.up.distance > 1) {
+                    image = player.canvas.turn; direction = "down";
+                }
+                if (tail.right.active && tail.up.active) if (tail.right.distance == 1 && tail.up.distance > 1) {
+                    image = player.canvas.turn; direction = "right";
+                }
+                if (tail.left.active && tail.down.active) if (tail.left.distance == 1 && tail.down.distance > 1) {
+                    image = player.canvas.turn; direction = "left";
+                }
+                if (tail.right.active && tail.down.active) if (tail.right.distance == 1 && tail.down.distance > 1) {
+                    image = player.canvas.turn; direction = "up";
+                } 
+
+                if (tail.left.active && tail.up.active) if (tail.left.distance > 1 && tail.up.distance == 1) {
+                    image = player.canvas.turn; direction = "up";
+                }
+                if (tail.right.active && tail.up.active) if (tail.right.distance > 1 && tail.up.distance == 1) {
+                    image = player.canvas.turn; direction = "left";
+                }
+                if (tail.left.active && tail.down.active) if (tail.left.distance > 1 && tail.down.distance == 1) {
+                    image = player.canvas.turn; direction = "right";
+                }
+                if (tail.right.active && tail.down.active) if (tail.right.distance > 1 && tail.down.distance == 1) {
+                    image = player.canvas.turn; direction = "down";
+                }
                 
-                if (tail.left.active && tail.up.active) if (tail.left.distance == 1 && tail.up.distance == 1)
-                    drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                if (tail.left.active && tail.down.active) if (tail.left.distance == 1 && tail.down.distance == 1)
-                    drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                if (tail.right.active && tail.up.active) if (tail.right.distance == 1 && tail.up.distance == 1)
-                    drawRotated(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                if (tail.right.active && tail.down.active) if (tail.right.distance == 1 && tail.down.distance == 1)
-                    drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
 
-                if (tail.left.active && tail.up.active) if (tail.left.distance == 1 && tail.up.distance > 1)
-                    drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                if (tail.right.active && tail.up.active) if (tail.right.distance == 1 && tail.up.distance > 1)
-                    drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                if (tail.left.active && tail.down.active) if (tail.left.distance == 1 && tail.down.distance > 1)
-                    drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                if (tail.right.active && tail.down.active) if (tail.right.distance == 1 && tail.down.distance > 1)
-                    drawRotated(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-
-                if (tail.left.active && tail.up.active) if (tail.left.distance > 1 && tail.up.distance == 1)
-                    drawRotated(player.canvas.turn,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                if (tail.right.active && tail.up.active) if (tail.right.distance > 1 && tail.up.distance == 1)
-                    drawRotated(player.canvas.turn,"left",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                if (tail.left.active && tail.down.active) if (tail.left.distance > 1 && tail.down.distance == 1)
-                    drawRotated(player.canvas.turn,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-                if (tail.right.active && tail.down.active) if (tail.right.distance > 1 && tail.down.distance == 1)
-                    drawRotated(player.canvas.turn,"down",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                if (Math.abs(beforeTail.x - afterTail.x) == 2) {
+                    image = player.canvas.body; direction = "right";
+                }
+                if (Math.abs(beforeTail.y - afterTail.y) == 2) {
+                    image = player.canvas.body; direction = "up";
+                }
 
                 //Going Off Screen
                 if (afterTail.x > tailX && beforeTail.x > tailX) {
-                    drawRotated(player.canvas.body,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    image = player.canvas.body; direction = "right";
                 }
                 if (afterTail.x < tailX && beforeTail.x < tailX) {
-                    drawRotated(player.canvas.body,"right",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    image = player.canvas.body; direction = "right";
                 }
                 if (afterTail.y > tailY && beforeTail.y > tailY) {
-                    drawRotated(player.canvas.body,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    image = player.canvas.body; direction = "up";
                 }
                 if (afterTail.y < tailY && beforeTail.y < tailY) {
-                    drawRotated(player.canvas.body,"up",tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                    image = player.canvas.body; direction = "up";
                 }
+
+                drawRotated(image,direction,tailX*gridSize,tailY*gridSize,gridSize,gridSize);
 
             } else {
                 drawRotated(player.canvas.body,direction,tailX*gridSize,tailY*gridSize,gridSize,gridSize);
@@ -281,18 +310,19 @@ function movePlayers() {
         if (player.isDead){
             continue;
         }
-        if (player.moveTik >= (player.moveSpeed/map[player.pos.y][player.pos.x].tile.changePlayerSpeed))
-            {   
-                if (player.turboActive == true)
-                {
-                    player.turboDuration --;
-                    if (player.turboDuration <= 0) {
-                        player.turboActive = false;
-                        removePlayerStatus(player,"turbo");
-                        player.moveSpeed = 6;
-                    }
+        if (player.moveTik >= (player.moveSpeed/map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
+            if (player.turboActive == true) {
+                player.turboDuration --;
+                if (player.turboDuration <= 0) {
+                    player.turboActive = false;
+                    removePlayerStatus(player,"turbo");
+                    player.moveSpeed = 6;
                 }
-                player.moveTik = 0
+            }
+            player.moveTik = 0
+
+            
+
             //check the movement queue
             if (player.moveQueue.length != 0){
                 if(player.moving == "left" && player.moveQueue[0] != "right" || 
@@ -329,10 +359,13 @@ function movePlayers() {
             if (player.tail.length > 0)
                 updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y});
 
+            
+
             updateSnakeCells.push({
                 x: player.pos.x,
                 y: player.pos.y
             })
+
             //ctx.fillStyle = map[player.pos.y][player.pos.x].color;
             //ctx.fillRect(player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
             //Move Player and make sure he can't go back on himself
@@ -341,6 +374,17 @@ function movePlayers() {
             if (player.moving == "up") player.pos.y--;
             if (player.moving == "down") player.pos.y++;
 
+            //Teleport Player If Needed
+            if (_type(player.justTeleported).type == "object") {
+                updateSnakeCells.push({
+                    x: player.pos.x,
+                    y: player.pos.y,
+                })
+                deleteSnakeCells();
+                player.pos.x = player.justTeleported.x;
+                player.pos.y = player.justTeleported.y;
+                player.justTeleported = true;
+            }
 
             //Collision Testing
             //Test If Player Hits Wall
@@ -412,9 +456,10 @@ function movePlayers() {
                         if (!map[z][h].item) continue;
                         if (player.pos.x == h || player.pos.y == z) continue;
                         if (map[z][h].item.teleport === mapItem.teleport) {
-                            player.justTeleported = true;
-                            player.pos.y = z;
-                            player.pos.x = h;
+                            player.justTeleported = {
+                                x: h,
+                                y: z,
+                            }
                             break findingPortal;
                         } 
                     }
@@ -993,7 +1038,17 @@ function specialItemManager()
         specialItemIteration = 0;
         specialItemActiveChance = rnd(specialItemLowChance,specialItemHighChance);
         // Calculate the total weight
-        const totalWeight = items.reduce((sum, item) => sum + item.specialSpawnWeight, 0);
+        let totalWeight = 0;
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].spawnLimit >= 0) {
+                if (items[i].spawnLimit > 0) {
+                    items[i].spawnLimit--;
+                } else {
+                    continue;
+                }
+            }
+            totalWeight += items[i].specialSpawnWeight;
+        }
 
         // Generate a random number between 0 and totalWeight
         const randomWeight = Math.random() * totalWeight;
