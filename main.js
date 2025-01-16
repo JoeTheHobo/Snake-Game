@@ -1042,7 +1042,7 @@ function specialItemManager()
         // Calculate the total weight
         let totalWeight = 0;
         for (let i = 0; i < items.length; i++) {
-            if (!isNaN(items[i].spawnLimit)) {
+            if (items[i].spawnLimit === 0 || items[i].spawnLimit >= 1) {
                 if (items[i].spawnLimit > 0) {
                     items[i].spawnLimit--;
                 } else {
@@ -1056,7 +1056,6 @@ function specialItemManager()
         // Generate a random number between 0 and totalWeight
         const randomWeight = Math.random() * totalWeight;
 
-        console.log(totalWeight,randomWeight)
         // Find the item corresponding to the random weight
         let cumulativeWeight = 0;
         findingItem: for (const item of items) {
