@@ -1203,20 +1203,23 @@ function loadBoards() {
     `;
 
     $("gameModes_newBoard").on("click",function() {
-        boards.push({
-            name: "Untitled",
-            map: [],
-            width: 0,
-            height: 0,
-            background: false,
-        })
-        boardSettings(boards[boards.length-1]);
-        currentBoardIndex = boards.length - 1;
-        currentBoard = boards[currentBoardIndex];
-        ls.save("currentBoardIndex",currentBoardIndex);
-        ls.save("currentBoard",currentBoard);
+        boardSettings();
     })
 }
-function boardSettings(board) {
-    
+function boardSettings() {
+    $(".settingsInputHeight").value = 30;
+    $(".settingsInputWidth").value = 50;
+}
+function createBoard() {
+    boards.push({
+        name: "Untitled",
+        map: [],
+        width: $(".settingsInputWidth").value,
+        height: $(".settingsInputHeight").value,
+        background: false,
+    })
+    currentBoardIndex = boards.length - 1;
+    currentBoard = boards[currentBoardIndex];
+    ls.save("currentBoardIndex",currentBoardIndex);
+    ls.save("currentBoard",currentBoard);
 }
