@@ -114,6 +114,10 @@ function renderPlayers() {
             let item = getItem("silverShield");
             drawImage(item.canvas,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize,canvas_players);
         }
+        if (player.shield == 3){
+            let item = getItem("goldShield");
+            drawImage(item.canvas,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize,canvas_players);
+        }
 
         production.renderTail.timeStart = performance.now();
         for (let j = 0; j < player.tail.length; j++) {

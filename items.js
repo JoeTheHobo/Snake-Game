@@ -189,6 +189,36 @@ items.push({
     specialSpawnWeight: 10,
 })
 items.push({
+    name: "goldShield",
+    img: "goldShield.png",
+    pickUp: true,
+    onEat_deleteMe: true,
+    canEat: true,
+    onEat: {
+        shield: 3,
+        addStatus: ["goldShield"],
+        removeStatus: ["bronzeShield","silverShield"],
+
+        growPlayer: 0,
+        spawn: [],
+        giveturbo: false,
+        turbo: {
+            duration: 50,
+            moveSpeed: 3,
+        },
+        deletePlayer: false,
+        canvasFilter: {
+            active: false,
+            filter: false,
+            duration: false,
+        }
+    },
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 5,
+})
+items.push({
     name: "lamp", //(string) Name Of Item
     img: "Lamp.png", //(string) Image name
     onEat_deleteMe: true, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
