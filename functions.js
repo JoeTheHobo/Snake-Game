@@ -34,12 +34,33 @@ let doColorRender = false;
 
 //Fix game Modes
 for (let i = 0; i < gameModes.length; i++) {
-    //1/15/25
-    if (gameModes[i].snakeVanishOnDeath == undefined) {
-        gameModes[i].snakeVanishOnDeath = true;
-        ls.save("gameModes",gameModes);
+    for (let j = 0; j < gameModes[i].items.length; j++) {
+        let item = gameModes[i].items[j];
+        let realItem = getRealItem(item.name);
+        for (const [key, value] of Object.entries(realItem)) {
+            if (item[key] === undefined) {
+                item[key] = value;
+            }
+        }
+
+        
+    }
+    for (let k = 0; k < items.length; k++) {
+        let realItem = items[k];
+        let found = false;
+        finding: for (let p = 0; p < gameModes[i].items.length; p++) {
+            let item = gameModes[i].items[p];
+            if (item.name == realItem.name) {
+                found = true;
+                break finding;
+            }
+        }
+        if (!found) {
+            gameModes[i].items.push(realItem);
+        }
     }
 }
+ls.save("gameModes",gameModes);
 
 //Setting Up Canvas
 let canvas_background = $("render_background");
