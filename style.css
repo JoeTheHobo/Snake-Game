@@ -74,7 +74,9 @@ html {
   .pixel:active {
     top: 2px;
   }
-  
+  a {
+   cursor: url('./img/pointer.cur'), auto;
+  }
   .pixel {
     line-height: 0;
     
