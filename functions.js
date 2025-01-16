@@ -5,6 +5,9 @@ let updateCells = [];
 let updateSnakeCells = [];
 let players = ls.get("players",[]);
 let activePlayers;
+let boards = ls.get("boards",[]);
+let currentBoardIndex = ls.get("currentBoardIndex",0);
+let currentBoard = ls.get("currentBoard",boards[currentBoardIndex]);
 let gameModes = ls.get("gameModes",presetGameModes);
 if (gameModes == "") gameModes = presetGameModes;
 let activeGameMode = ls.get("activeGameMode",0);
@@ -884,7 +887,7 @@ function loadGameModes() {
     let html_gameModesHolder = $(".gameModesHolder");
     html_gameModesHolder.innerHTML = `
         <div class="button" id="gameModes_newGame">New Game Mode</div>
-        <div class="gameModesDiv"></div>
+        <div class="gameModesDiv listHolderDiv"></div>
     `;
 
     $("gameModes_newGame").on("click",function() {
@@ -1190,4 +1193,27 @@ function gameMode_editItem(item,html_holder,gameMode) {
         editGameMode(gameMode);
         });
     }
+}
+
+function loadBoards() {
+    let html_gameModesHolder = $(".gameModesHolder");
+    html_gameModesHolder.innerHTML = `
+        <div class="button" id="gameModes_newBoard">New Board</div>
+        <div class="boardsDiv listHolderDiv"></div>
+    `;
+
+    $("gameModes_newBoard").on("click",function() {
+        boards.push({
+            name: "Untitled",
+            map: [],
+            width: 0,
+            height: 0,
+            background: false,
+        })
+        editMap(boards[boards.length-1]);
+        currentBoardIndex = boards.length - 1;
+        currentBoard = boards[currentBoardIndex];
+        ls.save("currentBoardIndex",currentBoardIndex);
+        ls.save("currentBoard",currentBoard);
+    })
 }

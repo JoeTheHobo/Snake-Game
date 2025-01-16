@@ -17,3 +17,7 @@ $("button_gameMode").on("click",function() {
     setScene("gameModes");
     loadGameModes();
 })
+$("button_boards").on("click",function() {
+    setScene("boardList");
+    loadBoards();
+})
