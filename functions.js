@@ -1196,8 +1196,8 @@ function gameMode_editItem(item,html_holder,gameMode) {
 }
 
 function loadBoards() {
-    let html_gameModesHolder = $(".gameModesHolder");
-    html_gameModesHolder.innerHTML = `
+    let html_boardList = $(".boardListHolder");
+    html_boardList.innerHTML = `
         <div class="button" id="gameModes_newBoard">New Board</div>
         <div class="boardsDiv listHolderDiv"></div>
     `;
@@ -1210,10 +1210,13 @@ function loadBoards() {
             height: 0,
             background: false,
         })
-        editMap(boards[boards.length-1]);
+        boardSettings(boards[boards.length-1]);
         currentBoardIndex = boards.length - 1;
         currentBoard = boards[currentBoardIndex];
         ls.save("currentBoardIndex",currentBoardIndex);
         ls.save("currentBoard",currentBoard);
     })
+}
+function boardSettings(board) {
+    
 }
