@@ -36,17 +36,6 @@ for (let i = 0; i < gameModes.length; i++) {
         gameModes[i].snakeVanishOnDeath = true;
         ls.save("gameModes",gameModes);
     }
-    //Fix Items
-    for (let j = 0; j < gameModes[i].items.length; j++) {
-        let item = gameModes[i].items[j];
-        if (!item.onEat.canvasFilter) {
-            item.onEat.canvasFilter = {
-                active: false,
-                filter: false,
-                duration: false,
-            }
-        }
-    }
 }
 
 //Setting Up Canvas
