@@ -408,7 +408,6 @@ function movePlayers() {
                 }
             }
             if (mapItem.teleport !== undefined && mapItem.teleport !== false && !player.justTeleported) {
-
                 findingPortal: for (let z = 0; z < map.length; z++) {
                     for (let h = 0; h < map[z].length; h++) {
                         if (!map[z][h].item) continue;
