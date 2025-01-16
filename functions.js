@@ -299,7 +299,7 @@ function loadPlayers() {
         color: "white",
         background: "black",
         width: "max-content",
-        cursor: "pointer",
+        cursor: "url('./img/pointer.cur'), auto;",
         borderRadius: "3px",
     })
     html_newPlayerButton.on("click",function() {
@@ -442,7 +442,7 @@ function editPlayerScreen(player) {
         background: "black",
         width: "30px",
         textAlign: "center",
-        cursor: "pointer",
+        cursor: "url('./img/pointer.cur'), auto;",
         borderRadius: "3px",
     })
 
@@ -671,7 +671,7 @@ function editPlayerScreen(player) {
             textAlign: "center",
             outlineColor: "blue",
             caretColor: "transparent",
-            cursor: "pointer",
+            cursor: "url('./img/pointer.cur'), auto;",
         })
         input_keyBind.player = player;
         input_keyBind.on("keydown",function(e) {
