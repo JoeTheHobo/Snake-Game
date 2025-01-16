@@ -475,3 +475,27 @@ html {
   color: white;
   font-size: 20px;
 }
+
+.bugHolder {
+  position: absolute;
+  z-index: 900;
+  right: 15px;
+  bottom: 15px;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  background: rgb(197, 197, 197);
+  border: 1px solid black;
+  border-radius: 50px;
+}
+.bugHolder:hover {
+  background: rgb(241, 241, 241);
+}
+#bugA {
+  width: 100%;
+  height: 100%;
+}
+#bugImage {
+  width: 100%;
+  height: 100%;
+}
