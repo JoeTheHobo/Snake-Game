@@ -364,7 +364,7 @@ function movePlayers() {
                 findingEmptyItemSlot: for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
                     if (player.items[k] == "empty") {
                         player.items[k] = mapItem;
-                        if (mapItem.onEat_deleteMe == true) {
+                        if (mapItem.onEat_deleteMe !== undefined && mapItem.onEat_deleteMe !== false) {
                             map[player.pos.y][player.pos.x].item = false;
                             updateCells.push({
                                 x: player.pos.x,
@@ -385,7 +385,7 @@ function movePlayers() {
                         player.whenInventoryIsFullInsertItemsAt++;
                         if (player.whenInventoryIsFullInsertItemsAt > player.items.length-1) player.whenInventoryIsFullInsertItemsAt = 0;
                     }
-                    if (mapItem.onEat_deleteMe == true) {
+                    if (mapItem.onEat_deleteMe !== undefined && mapItem.onEat_deleteMe !== false) {
                         map[player.pos.y][player.pos.x].item = false;
                         updateCells.push({
                             x: player.pos.x,
@@ -398,13 +398,12 @@ function movePlayers() {
                 if (mapItem.canEat == true) {
                     useItemHelper(player,mapItem);
                 }
-                if (mapItem.onEat_deleteMe == true) {
+                if (mapItem.onEat_deleteMe !== undefined && mapItem.onEat_deleteMe !== false) {
                     map[player.pos.y][player.pos.x].item = false;
                     updateCells.push({
                         x: player.pos.x,
                         y: player.pos.y,
                     })
-                    
                 }
             }
             if (mapItem.teleport !== undefined && mapItem.teleport !== false && !player.justTeleported) {
@@ -475,7 +474,7 @@ function useItemHelper(player,item) {
         }
     }
     if (onEat.deletePlayer) {
-        deletePlayer(player);
+        deletePlayer(player,undefined,item);
     }
     if (onEat.shield > 0) {
         player.shield = onEat.shield;
@@ -559,8 +558,8 @@ function endScreen() {
         $("snakeKillsStat").hide();
     }
 }
-function deletePlayer(player,playerWhoKilled){
-    if (player.shield == 0){
+function deletePlayer(player,playerWhoKilled,item){
+    if (player.shield < 1){
         if (playerWhoKilled) if (playerWhoKilled.name !== player.name) playerWhoKilled.playerKills++;
 
         //Delete Tail
@@ -585,18 +584,34 @@ function deletePlayer(player,playerWhoKilled){
         if (playersDead == activePlayers.length) {
             endScreen();
         }
-    }else{
-        player.shield--;
+    } else {
+        if (item) {
+            if (item.onEat_deleteMe) {
+                if (item.onEat_deleteMe === true) player.shield--;
+                else player.shield -= item.onEat_deleteMe;
+            }
+        } else {
+            player.shield--;
+
+        }
         if (player.shield == 2) {
             removePlayerStatus(player,"goldShield");
+            removePlayerStatus(player,"bronzeShield");
+
             addPlayerStatus(player,"silverShield");
         }
         if (player.shield == 1) {
+            removePlayerStatus(player,"goldShield");
             removePlayerStatus(player,"silverShield");
+
             addPlayerStatus(player,"bronzeShield");
         }
         if (player.shield == 0) {
+            removePlayerStatus(player,"silverShield");
             removePlayerStatus(player,"bronzeShield");
+        }
+        if (player.shield < 0) {
+            deletePlayer(player)
         }
     }
 }

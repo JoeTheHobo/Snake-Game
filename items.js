@@ -134,6 +134,38 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
 })
 items.push({
+    name: "wall2",
+    img: "rock2.png",
+    onEat_deleteMe: 2,
+    canEat: true,
+    pickUp: false,
+    onEat: {
+        deletePlayer: true,
+
+        growPlayer: 0,
+        spawn: [],
+        shield: 0,
+        addStatus: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: {
+            duration: 50,
+            moveSpeed: 3,
+        },
+        canvasFilter: {
+            active: false,
+            filter: false,
+            duration: false,
+        }
+    },
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 20,
+    teleport: false,
+    spawnCount: 1, //How Many To Spawn In When Spawning
+})
+items.push({
     name: "bronzeShield", //(string) Name Of Item
     color: "blue", //(string) OutDated No Point In Using
     img: "bronzeShield.png", //(string) Image name
