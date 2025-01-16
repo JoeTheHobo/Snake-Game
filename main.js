@@ -208,17 +208,23 @@ function renderPlayers() {
                 let image = player.canvas.head;
                 let direction = "right";
 
-                let goingThroughHole = false;
-                if (map[tailY][tailX].item.teleport >= 0) goingThroughHole = true;
-                if (goingThroughHole) {
+                let playerIsOnPortal = false;
+                if (map[tailY][tailX].item.teleport >= 0) {
+                    playerIsOnPortal = true;
                     tail.up = {
                         active: false,
                         distance: 1,
                     };
                     tail.down = {
-                        active: false,
+                        active: true,
                         distance: 1,
                     };
+                    if (afterTail.y + 1 == tailY) {
+                        tail.up.active = true;
+                        tail.left.active = false;
+                        tail.right.active = false;
+                    }
+
                 }
                 
                 /* 
@@ -267,10 +273,10 @@ function renderPlayers() {
                 }
                 
 
-                if (Math.abs(beforeTail.x - afterTail.x) == 2) {
+                if (Math.abs(beforeTail.x - afterTail.x) == 2 && !playerIsOnPortal) {
                     image = player.canvas.body; direction = "right";
                 }
-                if (Math.abs(beforeTail.y - afterTail.y) == 2) {
+                if (Math.abs(beforeTail.y - afterTail.y) == 2 && !playerIsOnPortal) {
                     image = player.canvas.body; direction = "up";
                 }
 
@@ -376,10 +382,6 @@ function movePlayers() {
 
             //Teleport Player If Needed
             if (_type(player.justTeleported).type == "object") {
-                updateSnakeCells.push({
-                    x: player.pos.x,
-                    y: player.pos.y,
-                })
                 deleteSnakeCells();
                 player.pos.x = player.justTeleported.x;
                 player.pos.y = player.justTeleported.y;
