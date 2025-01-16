@@ -17,3 +17,10 @@ tiles.push({
     changePlayerSpeed: 1, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
 })
+/*
+tiles.push({
+    name: "pathway",
+    img: "pathway.png",
+    changePlayerSpeed: 1.5, //Player Speed Times This Number
+    canSpawn: true, //If Items can spawn on tile
+})*/

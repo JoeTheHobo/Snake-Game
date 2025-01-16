@@ -31,6 +31,8 @@ items.push({
     onStartSpawn: 3,
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
+    teleport: false,
+    spawnCount: 1, //How Many To Spawn In When Spawning
 })
 items.push({
     name: "super_pellet",
@@ -62,6 +64,8 @@ items.push({
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 50,
+    teleport: false,
+    spawnCount: 1, //How Many To Spawn In When Spawning
 })
 items.push({
     name: "turbo",
@@ -93,6 +97,8 @@ items.push({
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 20,
+    teleport: false,
+    spawnCount: 1, //How Many To Spawn In When Spawning
 })
 items.push({
     name: "wall",
@@ -124,6 +130,8 @@ items.push({
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 20,
+    teleport: false,
+    spawnCount: 1, //How Many To Spawn In When Spawning
 })
 items.push({
     name: "bronzeShield", //(string) Name Of Item
@@ -156,6 +164,8 @@ items.push({
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 20,
+    teleport: false,
+    spawnCount: 1, //How Many To Spawn In When Spawning
 })
 items.push({
     name: "silverShield",
@@ -187,6 +197,8 @@ items.push({
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 10,
+    teleport: false,
+    spawnCount: 1, //How Many To Spawn In When Spawning
 })
 items.push({
     name: "goldShield",
@@ -216,7 +228,9 @@ items.push({
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 5,
+    specialSpawnWeight: 0,
+    teleport: false,
+    spawnCount: 5, //How Many To Spawn In When Spawning
 })
 items.push({
     name: "lamp", //(string) Name Of Item
@@ -247,4 +261,81 @@ items.push({
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 1,
+    teleport: false,
+    spawnCount: 1, //How Many To Spawn In When Spawning
+})
+items.push({
+    name: "snakeHole", //(string) Name Of Item
+    img: "snakeHole1.png", //(string) Image name
+    onEat_deleteMe: false, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    onEat: {
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: false,
+        canvasFilter: false,
+    },
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    teleport: 0, //Teleport ID
+    spawnCount: 2, //How Many To Spawn In When Spawning
+})
+items.push({
+    name: "snakeHole2", //(string) Name Of Item
+    img: "snakeHole2.png", //(string) Image name
+    onEat_deleteMe: false, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    onEat: {
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: false,
+        canvasFilter: false,
+    },
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    teleport: 1, //Teleport ID
+    spawnCount: 2, //How Many To Spawn In When Spawning
+})
+items.push({
+    name: "snakeHole3", //(string) Name Of Item
+    img: "snakeHole3.png", //(string) Image name
+    onEat_deleteMe: false, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    onEat: {
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: false,
+        canvasFilter: false,
+    },
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    teleport: 2, //Teleport ID
+    spawnCount: 2, //How Many To Spawn In When Spawning
 })

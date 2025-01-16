@@ -407,6 +407,23 @@ function movePlayers() {
                     
                 }
             }
+            if (mapItem.teleport !== undefined && mapItem.teleport !== false && !player.justTeleported) {
+
+                findingPortal: for (let z = 0; z < map.length; z++) {
+                    for (let h = 0; h < map[z].length; h++) {
+                        if (!map[z][h].item) continue;
+                        if (player.pos.x == h || player.pos.y == z) continue;
+                        if (map[z][h].item.teleport === mapItem.teleport) {
+                            player.justTeleported = true;
+                            player.pos.y = z;
+                            player.pos.x = h;
+                            break findingPortal;
+                        } 
+                    }
+                }
+            } else {
+                player.justTeleported = false;
+            }
             
             //Check for Collisions
             for (let a = 0; a < activePlayers.length; a++){
@@ -425,7 +442,7 @@ function movePlayers() {
 
         }
         else{
-            player.moveTik ++;
+            player.moveTik++;
         }        
     }
 }
@@ -571,6 +588,10 @@ function deletePlayer(player,playerWhoKilled){
         }
     }else{
         player.shield--;
+        if (player.shield == 2) {
+            removePlayerStatus(player,"goldShield");
+            addPlayerStatus(player,"silverShield");
+        }
         if (player.shield == 1) {
             removePlayerStatus(player,"silverShield");
             addPlayerStatus(player,"bronzeShield");
@@ -780,6 +801,7 @@ function startGame() {
         player.justDied = false;
         //Set Player Selecting Item To 1
         player.selectingItem = 0;
+        player.justTeleported = false;
         //Set Player Item Usage
         player.howManyItemsCanIUse = currentGameMode.howManyItemsCanPlayersUse;
         player.whenInventoryIsFullInsertItemsAt = 0;

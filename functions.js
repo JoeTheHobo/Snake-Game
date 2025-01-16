@@ -50,6 +50,8 @@ let canvas_items = $("render_items");
 let ctx_items = canvas_items.getContext("2d");
 let canvas_players = $("render_players");
 let ctx_players = canvas_players.getContext("2d");
+let canvas_overhangs = $("render_overhangs");
+let ctx_overhangs = canvas_players.getContext("2d");
 function adjustCanvasSize() {
     const width = gridX * gridSize;
     const height = gridY * gridSize;
@@ -63,6 +65,8 @@ function adjustCanvasSize() {
     canvas_items.height = height;
     canvas_players.width = width;
     canvas_players.height = height;
+    canvas_overhangs.width = width;
+    canvas_overhangs.height = height;
 
     // Scale the canvas visually for the screen
     canvas_background.style.width = `${width}px`;
@@ -73,6 +77,8 @@ function adjustCanvasSize() {
     canvas_items.style.height = `${height}px`;
     canvas_players.style.width = `${width}px`;
     canvas_players.style.height = `${height}px`;
+    canvas_overhangs.style.width = `${width}px`;
+    canvas_overhangs.style.height = `${height}px`;
 }
 
 function setResolution() {
@@ -134,15 +140,11 @@ function getTile(name) {
 
 function newPlayer() {
     let playerNumber = players.length;
-    let foundSpace = false;
-    let startx,starty;
-    let counter = 0;
     let gameCrashed = false;
     if (gameCrashed) {
         console.log("Game Crashed")
         return;
     }
-
     
     let player = {
         downKey: "s",
@@ -182,13 +184,25 @@ function newPlayer() {
     players.push(player);
     ls.save("players",players);
 }
-function spawn(name,generateRandomItem = true) { 
+function spawn(name,generateRandomItem = true,counting = false) {
     let itemIndex = false;
+    let item;
     for (let i = 0; i < currentGameMode.items.length; i++) {
         if (currentGameMode.items[i].name == name) {
             itemIndex = i;
+            item = currentGameMode.items[i];
         }
     }
+    if (itemIndex) {
+        if (item.spawnCount == undefined) item.spawnCount = 1;
+        if (counting == false) {
+            for (let i = 0; i < item.spawnCount; i++) {
+                spawn(name,generateRandomItem,true);
+            }
+            return;
+        }
+    }
+        
 
     let counter = 0;
     let foundSpot = false;
