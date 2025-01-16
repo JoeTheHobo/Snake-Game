@@ -319,7 +319,7 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 1,
     teleport: 0, //Teleport ID
-    spawnCount: 2, //How Many To Spawn In When Spawning
+    spawnCount: 4, //How Many To Spawn In When Spawning
 })
 items.push({
     name: "snakeHole2", //(string) Name Of Item
@@ -344,7 +344,7 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 1,
     teleport: 1, //Teleport ID
-    spawnCount: 2, //How Many To Spawn In When Spawning
+    spawnCount: 4, //How Many To Spawn In When Spawning
 })
 items.push({
     name: "snakeHole3", //(string) Name Of Item
@@ -369,5 +369,5 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 1,
     teleport: 2, //Teleport ID
-    spawnCount: 2, //How Many To Spawn In When Spawning
+    spawnCount: 4, //How Many To Spawn In When Spawning
 })
