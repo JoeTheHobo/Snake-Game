@@ -161,7 +161,7 @@ items.push({
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 20,
+    specialSpawnWeight: 10,
     teleport: false,
     spawnCount: 1, //How Many To Spawn In When Spawning
 })
@@ -317,7 +317,7 @@ items.push({
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
+    specialSpawnWeight: 1,
     teleport: 0, //Teleport ID
     spawnCount: 2, //How Many To Spawn In When Spawning
 })
@@ -342,7 +342,7 @@ items.push({
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
+    specialSpawnWeight: 1,
     teleport: 1, //Teleport ID
     spawnCount: 2, //How Many To Spawn In When Spawning
 })
@@ -367,7 +367,7 @@ items.push({
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
+    specialSpawnWeight: 1,
     teleport: 2, //Teleport ID
     spawnCount: 2, //How Many To Spawn In When Spawning
 })
