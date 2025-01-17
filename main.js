@@ -828,7 +828,7 @@ function setUpItemCanvas() {
 
 function startGame() {
     setScene("game");
-    map = newMap(tileX,tileY);
+    map = newMap(gridX,gridY);
     $(".endGamePopup").hide();
     gameEnd = false;
     gamePaused = false;

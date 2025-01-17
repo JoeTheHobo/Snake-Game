@@ -65,6 +65,8 @@ function me_updateCell(x,y) {
         me_ctx.strokeStyle = "blue";
         me_ctx.strokeRect(gridSize*x,gridSize*y,gridSize,gridSize);
     }
+
+    ls.save("boards",boards);
 }
 $("me_canvas").on("mousemove",function(e) {
     let rect = me_canvas.getBoundingClientRect();

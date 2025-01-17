@@ -1261,6 +1261,50 @@ function loadBoards() {
     $("gameModes_newBoard").on("click",function() {
         boardSettings();
     })
+
+    for (let i = 0; i < boards.length; i++) {
+        
+        let holder = $(".listHolderDiv").create("div");
+        holder.className = "gm_holder" + " " + (currentBoardIndex == i ? "gm_activeGameMode" : "");
+        holder.i = i;
+        holder.on("click",function(e) {
+            activeGameMode = this.i;
+            ls.save("activeGameMode",activeGameMode);
+            if (e.target.className !== "gm_img")
+                loadGameModes();
+            currentGameMode = gameModes[activeGameMode];
+        })
+
+        let title = holder.create("div");
+        title.className = "gm_title";
+        title.innerHTML = boards[i].name;
+
+        let buttonsRight = holder.create("div");
+        buttonsRight.className = "gm_buttonsRight";
+
+        let edit = buttonsRight.create("div");
+        edit.className = "gm_imgHolder";
+        let editImg = edit.create("img");
+        editImg.className = "gm_img";
+        editImg.src = "img/edit.png";
+        edit.board = boards[i];
+        edit.on("click",function() {
+            openMapEditor(this.board);
+        })
+
+        let deleteHolder = buttonsRight.create("div");
+        deleteHolder.className = "gm_imgHolder";
+        let deleteImg = deleteHolder.create("img");
+        deleteImg.className = "gm_img";
+        deleteImg.src = "img/delete.png";
+        deleteHolder.i = i;
+        deleteHolder.on("click",function() {
+            boards.splice(this.i,1);
+            ls.save("boards",gameModes)
+            loadBoards;
+        })
+
+    }
 }
 function boardSettings() {
     $(".settingsInputHeight").value = 30;
@@ -1284,6 +1328,7 @@ function createBoard() {
     currentBoard = boards[currentBoardIndex];
     ls.save("currentBoardIndex",currentBoardIndex);
     ls.save("currentBoard",currentBoard);
+    ls.save("boards",boards)
     
     openMapEditor(currentBoard);
 }
