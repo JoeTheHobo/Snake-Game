@@ -217,7 +217,7 @@ function renderPlayers() {
                 let direction = "right";
 
                 let playerIsOnPortal = false;
-                if (currentBoard.map[tailY][tailX].item.teleport >= 0) {
+                if (_type(currentBoard.map[tailY][tailX].item.teleport).type == "number") {
                     playerIsOnPortal = true;
                     tail.up = {
                         active: false,
