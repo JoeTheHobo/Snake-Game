@@ -4,7 +4,7 @@ for (let i = 0; i < items.length; i++) {
 
     let img = $(".imageHolder").create("img");
     img.src = "img/" + items[i].img;
-    img.id = "item_" + items[i].img.subset(0,".\\before");
+    img.id = "item_" + items[i].name;
 }
 for (let i = 0; i < tiles.length; i++) {
     if (!tiles[i].img) continue;
@@ -676,19 +676,7 @@ function addPlayerStatus(player,itemName) {
     drawPlayerBox(player);
 }
 
-function newMap() {
-    map = [];
-    for (let i = 0; i < gridY; i++) {
-        let arr = [];
-        for (let j = 0; j < gridX; j++) {
-            arr.push({
-                tile: getTile("grass"),
-                item: false,
-            })
-        }
-        map.push(arr);
-    }
-}
+
 //adds movement to a queue of max 3 moves
 document.body.onkeydown = function(e) {
     if (!isActiveGame) return;
@@ -829,18 +817,18 @@ function setUpItemCanvas() {
             itemCtx.drawImage(image,0,0);
             return itemCanvas;
         }
-        if (!$("item_" + currentGameMode.items[i].img.subset(0,".\\before"))) {
+        if (!$("item_" + currentGameMode.items[i].name)) {
             console.warn("Outdated Item/Tile: " + currentGameMode.items[i].name);
             continue;
         }
-        currentGameMode.items[i].canvas = getCanvas($("item_" + currentGameMode.items[i].img.subset(0,".\\before")));
+        currentGameMode.items[i].canvas = getCanvas($("item_" + currentGameMode.items[i].name));
     }
 }
 
 
 function startGame() {
     setScene("game");
-    newMap();
+    map = newMap(tileX,tileY);
     $(".endGamePopup").hide();
     gameEnd = false;
     gamePaused = false;

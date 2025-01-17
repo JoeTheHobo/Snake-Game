@@ -73,6 +73,9 @@ let canvas_players = $("render_players");
 let ctx_players = canvas_players.getContext("2d");
 let canvas_overhangs = $("render_overhangs");
 let ctx_overhangs = canvas_players.getContext("2d");
+
+let me_canvas = $("me_canvas");
+let me_ctx = me_canvas.getContext("2d");
 function adjustCanvasSize() {
     const width = gridX * gridSize;
     const height = gridY * gridSize;
@@ -88,6 +91,8 @@ function adjustCanvasSize() {
     canvas_players.height = height;
     canvas_overhangs.width = width;
     canvas_overhangs.height = height;
+    me_canvas.width = width;
+    me_canvas.height = height;
 
     // Scale the canvas visually for the screen
     canvas_background.style.width = `${width}px`;
@@ -100,9 +105,11 @@ function adjustCanvasSize() {
     canvas_players.style.height = `${height}px`;
     canvas_overhangs.style.width = `${width}px`;
     canvas_overhangs.style.height = `${height}px`;
+    me_canvas.style.width = `${width}px`;
+    me_canvas.style.height = `${height}px`;
 }
 
-function setResolution() {
+function setResolution(gridx = gridX,gridy = gridY) {
     const screenHeight = window.innerHeight; // Available screen height
     const screenWidth = window.innerWidth;   // Available screen width
 
@@ -110,8 +117,8 @@ function setResolution() {
     const widthLimit = screenWidth - 500;    // Maximum canvas width
 
     // Calculate the largest `gridSize` that fits within the limits
-    const maxGridSizeWidth = Math.floor(widthLimit / gridX);
-    const maxGridSizeHeight = Math.floor(heightLimit / gridY);
+    const maxGridSizeWidth = Math.floor(widthLimit / gridx);
+    const maxGridSizeHeight = Math.floor(heightLimit / gridy);
 
     // Use the smaller of the two to ensure the grid fits
     gridSize = Math.min(maxGridSizeWidth, maxGridSizeHeight);
@@ -158,7 +165,20 @@ function getTile(name) {
         }
     }
 }
-
+function newMap(width,height) {
+    newMap = [];
+    for (let i = 0; i < height; i++) {
+        let arr = [];
+        for (let j = 0; j < width; j++) {
+            arr.push({
+                tile: getTile("grass"),
+                item: false,
+            })
+        }
+        newMap.push(arr);
+    }
+    return newMap;
+}
 function newPlayer() {
     let playerNumber = players.length;
     let gameCrashed = false;
@@ -1231,6 +1251,7 @@ function gameMode_editItem(item,html_holder,gameMode) {
 }
 
 function loadBoards() {
+    $(".boardSettings").hide();
     let html_boardList = $(".boardListHolder");
     html_boardList.innerHTML = `
         <div class="button" id="gameModes_newBoard">New Board</div>
@@ -1244,17 +1265,25 @@ function loadBoards() {
 function boardSettings() {
     $(".settingsInputHeight").value = 30;
     $(".settingsInputWidth").value = 50;
+    $(".boardSettings").show("flex");
 }
 function createBoard() {
+    let width = $(".settingsInputWidth").value;
+    let height = $(".settingsInputHeight").value;
     boards.push({
-        name: "Untitled",
-        map: [],
-        width: $(".settingsInputWidth").value,
-        height: $(".settingsInputHeight").value,
+        name: $(".settingsInputName").value,
+        width: width,
+        height: height,
         background: false,
+        map: newMap(width,height),
+
+        mouseOver: false,
     })
+
     currentBoardIndex = boards.length - 1;
     currentBoard = boards[currentBoardIndex];
     ls.save("currentBoardIndex",currentBoardIndex);
     ls.save("currentBoard",currentBoard);
+    
+    openMapEditor(currentBoard);
 }

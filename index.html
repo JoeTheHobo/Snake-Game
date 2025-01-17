@@ -80,6 +80,10 @@
         <div class="boardListHolder listHolder"></div>
         <div class="boardSettings">
             <div class="valueHolder">
+                <div class="settingTitle">Name</div>
+                <input class="settingInput settingsInputName" value="Untitled">
+            </div>
+            <div class="valueHolder">
                 <div class="settingTitle">Width</div>
                 <input class="settingInput settingsInputWidth" value="50" type="number">
             </div>
@@ -91,6 +95,25 @@
                 <div class="pixel" id="button_cancelBoard"><p>Cancel</p></div>
                 <div class="pixel" id="button_createBoard"><p>Create</p></div>
             </div>
+        </div>
+    </div>
+    <div class="scene" id="scene_mapEditor">
+        <div class="me_top">
+            <div id="me_button"><--</div>
+            <div id="me_playButton">Play Game!</div>
+            <div id="me_floatRight">
+                <div class="me_dropdown" id="me_itemsDropDown">
+                    <div class="me_dropdownTitle">Items</div>
+                    <div class="me_dropdownContent me_itemsContent"></div>
+                </div>
+                <div class="me_dropdown" id="me_tilesDropDown">
+                    <div class="me_dropdownTitle">Tiles</div>
+                    <div class="me_dropdownContent me_tilesContent"></div>
+                </div>
+            </div>
+        </div>
+        <div class="me_bottom">
+            <canvas id="me_canvas" oncontextmenu="return false"></canvas>
         </div>
     </div>
 
@@ -119,6 +142,7 @@
     <script src="items.js"></script>
     <script src="presetGameModes.js"></script>
     <script src="functions.js"></script>
+    <script src="mapEditor.js"></script>
     <script src="handelHTMLrequests.js"></script>
     <script src='main.js'></script>
 </body>
