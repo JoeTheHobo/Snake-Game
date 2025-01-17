@@ -42,6 +42,9 @@ let showPerformance = false;
 let currentBackground = "background.jpg";
 let doColorRender = false;
 
+const perfectFrameTime = 1000 / 60;
+let deltaTime = 0;
+let lastTimestamp = 0;
 
 //Fix game Modes
 for (let i = 0; i < gameModes.length; i++) {
@@ -150,7 +153,7 @@ function setResolution(gridx = gridX, gridy = gridY) {
 
     adjustCanvasSize();
 }
-
+playerCardsHolder
 window.on("resize",setResolution)
 setResolution();
 

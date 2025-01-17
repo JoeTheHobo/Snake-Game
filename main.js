@@ -837,20 +837,34 @@ function setUpItemCanvas() {
 function startGame() {
     setScene("game");
     $(".endGamePopup").hide();
-    gameEnd = false;
-    gamePaused = false;
     $(".pauseGamePopup").hide();
     $("playerCardsHolder").innerHTML = "";
-    $("playerCardsHolder").css({
-        visibility: "visible",
-    })
+    $("playerCardsHolder").style.visibility = "visible";
+    //For testing
+    if (showPerformance) {
+        setUpProductionHTML();
+        $(".production").show("flex");
+    }
+
+    gamePaused = false;
     currentBoard.map = structuredClone(currentBoard.originalMap);
     doColorRender = false;
-    //Resetting Players
     activePlayers = [];
+    specialItemIteration = 0;
+    isActiveGame = true;
+
+    //Draw On Background canvas
+    let backgroundImage = new Image();
+    backgroundImage.src = "img/" + currentBackground;
+    backgroundImage.onload = function() {
+        ctx_background.drawImage(backgroundImage,0,0,canvas_background.width,canvas_background.height);
+    }
+
     for (let i = 0; i < players.length; i++) {
         if (players[i].active) activePlayers.push(players[i]);
     }
+
+    //Resetting Players
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
         player.isPlayer = true;
@@ -895,18 +909,8 @@ function startGame() {
         spawn(player);
     }
 
-    specialItemIteration = 0;
-
     setUpPlayerCanvas();
     setUpItemCanvas();
-
-    //Draw On Background canvas
-    let backgroundImage = new Image();
-    backgroundImage.src = "img/" + currentBackground;
-    backgroundImage.onload = function() {
-        ctx_background.drawImage(backgroundImage,0,0,canvas_background.width,canvas_background.height);
-    }
-
     adjustCanvasSize();
     renderGame();
 
@@ -917,19 +921,12 @@ function startGame() {
         }
     }
 
-
-
-    isActiveGame = true;
-
-    //For testing
-    if (showPerformance) {
-        setUpProductionHTML();
-        $(".production").show("flex");
-    }
-
     gameEnd = true;
     setTimeout(function() {
         gameEnd = false;
+
+        deltaTime = 0;
+        lastTimestamp = 0;
         requestAnimationFrame(gameLoop);
     
         timer = 0;
@@ -1013,7 +1010,10 @@ function updateProduction() {
         $("production_" + entry[0]).innerHTML = production[entry[0]].average.toFixed(4) + "ms";
     }
 }
-function gameLoop() {
+function gameLoop(timestamp) {
+    deltaTime = (timestamp - lastTimestamp) / perfectFrameTime;
+    lastTimestamp = timestamp;
+
     production.gameLoop.timeStart = performance.now();
 
     production.renderCells.timeStart = performance.now();

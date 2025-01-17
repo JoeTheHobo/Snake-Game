@@ -464,3 +464,117 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
 })
+items.push({
+    name: "blueKey", //(string) Name Of Item
+    img: "blueKey.png", //(string) Image name
+    onEat_deleteMe: true, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
+    canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    onEat: {
+        addStatus: ["blueKey"],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: false,
+        canvasFilter: false,
+    },
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 5,
+    visible: true, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+})
+items.push({
+    name: "redKey", //(string) Name Of Item
+    img: "redKey.png", //(string) Image name
+    onEat_deleteMe: true, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
+    canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    onEat: {
+        addStatus: ["blueKey"],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: false,
+        canvasFilter: false,
+    },
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 5,
+    visible: true, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+})
+items.push({
+    name: "greenKey", //(string) Name Of Item
+    img: "greenKey.png", //(string) Image name
+    onEat_deleteMe: true, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
+    canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    onEat: {
+        addStatus: ["blueKey"],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: false,
+        canvasFilter: false,
+    },
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 5,
+    visible: true, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+})
+items.push({
+    name: "blueLock", //(string) Name Of Item
+    img: "blueLock.png", //(string) Image name
+    onEat_deleteMe: ["blueKey"], //(true/false) If A player Collides with Item Either Delete it or Keep it on board
+    canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    onEat: {
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: ["blueKey"],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: true,
+        canvasFilter: false,
+    },
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+
+
+})
