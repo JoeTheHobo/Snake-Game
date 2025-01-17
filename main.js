@@ -46,6 +46,7 @@ function renderCells() {
     for (let i = 0; i < updateCells.length; i++) {
         let mapCell = currentBoard.map[updateCells[i].y][updateCells[i].x].item;
         ctx_items.clearRect(updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
+        if (!mapCell.visible) continue;
         if (mapCell == false) continue;
         ctx_items.drawImage(mapCell.canvas,updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);        
     }
@@ -852,6 +853,7 @@ function startGame() {
     }
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
+        player.isPlayer = true;
         //Ressurect Player
         player.isDead = false;
         player.justDied = false;
@@ -885,6 +887,10 @@ function startGame() {
         
         player.playerKills = 0;
 
+        player.pos = {
+            x: false,
+            y: false,
+        }
         //Spawn Players
         spawn(player);
     }

@@ -237,15 +237,16 @@ function newPlayer() {
     ls.save("players",players);
 }
 function spawn(name,generateRandomItem = true,counting = false) {
+    let isPlayer = name.isPlayer;
     let itemIndex = false;
     let item;
-    for (let i = 0; i < currentGameMode.items.length; i++) {
-        if (currentGameMode.items[i].name == name) {
-            itemIndex = i;
-            item = currentGameMode.items[i];
+    if (!isPlayer) {
+        for (let i = 0; i < currentGameMode.items.length; i++) {
+            if (currentGameMode.items[i].name == name) {
+                itemIndex = i;
+                item = currentGameMode.items[i];
+            }
         }
-    }
-    if (itemIndex) {
         if (item.spawnCount == undefined) item.spawnCount = 1;
         if (counting == false) {
             for (let i = 0; i < item.spawnCount; i++) {
@@ -260,28 +261,48 @@ function spawn(name,generateRandomItem = true,counting = false) {
     let foundSpot = false;
     let x,y;
     while (foundSpot == false) {
-
-        x = rnd(gridX)-1;
-        y = rnd(gridY)-1;
-        if (currentBoard.map[y][x].item == false && currentBoard.map[y][x].tile.canSpawn) {
-            foundSpot = true;
-            checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
-                let distance = calculateDistance(players[j].pos.x,activePlayers[j].pos.y,x,y);
-                if (distance < 5) {
-                    foundSpot = false;
-                    break checkingDistanceFromPlayersHead;
-                }
-                for (let p = 0; p < activePlayers[j].tail.length; p++) {
-                    if (activePlayers[j].tail[p].x == x && activePlayers[j].tail[p].y == y) {
-                        foundSpot = false;
-                        break checkingDistanceFromPlayersHead;
+        if (isPlayer) {
+            findingSpawner: for (let k = 0; k < gridY; k++) {
+                for (let j = 0; j < gridX; j++) {
+                    if (currentBoard.map[k][j].item === false) continue;
+                    if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
+                    let playerOnIt = false;
+                    for (let i = 0; i < activePlayers.length; i++) {
+                        if (activePlayers[i].pos.x == j && activePlayers[i].pos.y == k) playerOnIt = true;
                     }
+                    if (playerOnIt) continue;
+
+                    x = j;
+                    y = k;
+                    foundSpot = true;
+                    break findingSpawner;
                 }
             }
         }
-        counter++;
-        if (counter > (gridX * gridY) ) {
-            foundSpot = "couldn't find any";
+        
+        if (foundSpot === false) {
+            x = rnd(gridX)-1;
+            y = rnd(gridY)-1;
+            if (currentBoard.map[y][x].item == false && currentBoard.map[y][x].tile.canSpawn) {
+                foundSpot = true;
+                checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
+                    let distance = calculateDistance(players[j].pos.x,activePlayers[j].pos.y,x,y);
+                    if (distance < 5) {
+                        foundSpot = false;
+                        break checkingDistanceFromPlayersHead;
+                    }
+                    for (let p = 0; p < activePlayers[j].tail.length; p++) {
+                        if (activePlayers[j].tail[p].x == x && activePlayers[j].tail[p].y == y) {
+                            foundSpot = false;
+                            break checkingDistanceFromPlayersHead;
+                        }
+                    }
+                }
+            }
+            counter++;
+            if (counter > (gridX * gridY) ) {
+                foundSpot = "couldn't find any";
+            }
         }
     }
 
@@ -315,7 +336,7 @@ function spawn(name,generateRandomItem = true,counting = false) {
     }
 
     if (foundSpot == true) {
-        if (itemIndex === false) {
+        if (isPlayer) {
             name.pos.x = x;
             name.pos.y = y;
         } else {

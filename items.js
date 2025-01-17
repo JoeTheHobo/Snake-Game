@@ -32,8 +32,10 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     teleport: false,
+    visible: true, //If show when playing
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
 })
 items.push({
     name: "super_pellet",
@@ -66,8 +68,10 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 50,
     teleport: false,
+    visible: true, //If show when playing
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
 })
 items.push({
     name: "turbo",
@@ -100,8 +104,10 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 20,
     teleport: false,
+    visible: true, //If show when playing
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
 })
 items.push({
     name: "wall",
@@ -134,8 +140,10 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 20,
     teleport: false,
+    visible: true, //If show when playing
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
 })
 items.push({
     name: "wall2",
@@ -167,8 +175,10 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 10,
     teleport: false,
+    visible: true, //If show when playing
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
 })
 items.push({
     name: "bronzeShield", //(string) Name Of Item
@@ -202,8 +212,10 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 20,
     teleport: false,
+    visible: true, //If show when playing
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
 })
 items.push({
     name: "silverShield",
@@ -236,8 +248,10 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 10,
     teleport: false,
+    visible: true, //If show when playing
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
 })
 items.push({
     name: "goldShield",
@@ -269,8 +283,10 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     teleport: false,
+    visible: true, //If show when playing
     spawnCount: 5, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
 })
 items.push({
     name: "lamp", //(string) Name Of Item
@@ -302,8 +318,10 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 1,
     teleport: false,
+    visible: true, //If show when playing
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
 })
 items.push({
     name: "snakeHole", //(string) Name Of Item
@@ -327,9 +345,11 @@ items.push({
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 4,
+    visible: true, //If show when playing
     teleport: 0, //Teleport ID
     spawnCount: 2, //How Many To Spawn In When Spawning
     spawnLimit: 1, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
 })
 items.push({
     name: "snakeHole2", //(string) Name Of Item
@@ -353,8 +373,10 @@ items.push({
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 4,
+    visible: true, //If show when playing
     teleport: 1, //Teleport ID
     spawnLimit: 1, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
 })
 items.push({
     name: "snakeHole3", //(string) Name Of Item
@@ -378,7 +400,38 @@ items.push({
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 4,
+    visible: true, //If show when playing
     teleport: 2, //Teleport ID
     spawnCount: 2, //How Many To Spawn In When Spawning
     spawnLimit: 1, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+})
+
+items.push({
+    name: "spawn", //(string) Name Of Item
+    img: "spawn.png", //(string) Image name
+    onEat_deleteMe: false, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    onEat: {
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: false,
+        canvasFilter: false,
+    },
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: false, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: true, //Spawn players on this tile
 })
