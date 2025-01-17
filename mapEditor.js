@@ -51,14 +51,14 @@ function me_loadDropdown(holder,group,name) {
 }
 function renderMapEditorCanvas() {
     me_ctx.clearRect(0,0,me_canvas.width,me_canvas.height)
-    for (let i = 0; i < board.map.length; i++) {
-        for (let j = 0; j < board.map[i].length; j++) {
+    for (let i = 0; i < board.originalMap.length; i++) {
+        for (let j = 0; j < board.originalMap[i].length; j++) {
             me_updateCell(j,i)
         }
     }
 }
 function me_updateCell(x,y) {
-    let cell = board.map[y][x];
+    let cell = board.originalMap[y][x];
 
     if (cell.tile) {
         me_ctx.drawImage($("tile_" + cell.tile.name),gridSize*x,gridSize*y,gridSize,gridSize);
@@ -80,22 +80,22 @@ $("me_canvas").on("mousemove",function(e) {
     mouseX = Math.floor(x/gridSize);
     mouseY = Math.floor(y/gridSize);
 
-    for (const row of board.map) {
+    for (const row of board.originalMap) {
         for (const cell of row) {
             cell.mouseOver = false;
         }
     }
 
-    if (!board.map[mouseY]) return;
-    else if (!board.map[mouseY][mouseX]) return;
+    if (!board.originalMap[mouseY]) return;
+    else if (!board.originalMap[mouseY][mouseX]) return;
 
-    board.map[mouseY][mouseX].mouseOver = true;
+    board.originalMap[mouseY][mouseX].mouseOver = true;
 
     if ((mouseDown || rightMouse) && selectedItem) {
         if (rightMouse) {
-            board.map[mouseY][mouseX][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
+            board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
         } else {
-            board.map[mouseY][mouseX][selectedItem.type] = selectedItem.content;
+            board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.content;
         }
         me_updateCell(mouseX,mouseY);
         $("saveStatus").innerHTML = "Board Is Not Saved";
@@ -121,7 +121,7 @@ $("me_canvas").on("mouseup",function(e) {
 })
 $("me_canvas").on("click",function(e) {
     if (selectedItem) {
-        board.map[mouseY][mouseX][selectedItem.type] = selectedItem.content;
+        board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.content;
         renderMapEditorCanvas();
         $("saveStatus").innerHTML = "Board Is Not Saved";
     }
@@ -144,3 +144,9 @@ function saveBoard() {
 
     html_saveStatus.innerHTML = "Board Saved";
 }
+
+$("me_button").on("click",function() {
+    saveBoard();
+    setScene("boardList");
+    loadBoards();
+})

@@ -1,19 +1,30 @@
 ls.setID("snakegame");
 
-let map = [];
 let updateCells = [];
 let updateSnakeCells = [];
 let players = ls.get("players",[]);
 let activePlayers;
+
 let boards = ls.get("boards",[]);
+let realBoards = [];
+for (let i = 0; i < boards.length; i++) {
+    if (boards[i].cantEdit !== true) realBoards.push(boards[i]);
+}
+boards = realBoards;
+boards = presetBoards.concat(boards);
 let currentBoardIndex = ls.get("currentBoardIndex",0);
+if (currentBoardIndex > boards.length - 1) currentBoardIndex = 0;
 let currentBoard = ls.get("currentBoard",boards[currentBoardIndex]);
+
+
 let gameModes = ls.get("gameModes",presetGameModes);
 if (gameModes == "") gameModes = presetGameModes;
 let activeGameMode = ls.get("activeGameMode",0);
 if (!gameModes[activeGameMode]) activeGameMode = 0;
 ls.save("activeGameMode",activeGameMode);
 let currentGameMode = gameModes[activeGameMode];
+
+
 let gs_playerCount = players.length > 0 ? players.length : 1;
 let gridX = 50;
 let gridY = 30;
@@ -252,7 +263,7 @@ function spawn(name,generateRandomItem = true,counting = false) {
 
         x = rnd(gridX)-1;
         y = rnd(gridY)-1;
-        if (map[y][x].item == false && map[y][x].tile.canSpawn) {
+        if (currentBoard.map[y][x].item == false && currentBoard.map[y][x].tile.canSpawn) {
             foundSpot = true;
             checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
                 let distance = calculateDistance(players[j].pos.x,activePlayers[j].pos.y,x,y);
@@ -277,7 +288,7 @@ function spawn(name,generateRandomItem = true,counting = false) {
     if (foundSpot == "couldn't find any") {
         findingAnySpot: for (let k = 0; k < gridY; k++) {
             for (let j = 0; j < gridX; j++) {
-                if (map[k][j].item == false && map[k][j].tile.canSpawn) {
+                if (currentBoard.map[k][j].item == false && currentBoard.map[k][j].tile.canSpawn) {
                     let foundGoodSpot = true;
                     checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
                         let distance = calculateDistance(activePlayers[j].pos.x,activePlayers[j].pos.y,x,y);
@@ -308,7 +319,7 @@ function spawn(name,generateRandomItem = true,counting = false) {
             name.pos.x = x;
             name.pos.y = y;
         } else {
-            map[y][x].item = currentGameMode.items[itemIndex];
+            currentBoard.map[y][x].item = currentGameMode.items[itemIndex];
             updateCells.push({
                 x: x,
                 y: y,
@@ -1003,7 +1014,11 @@ function loadGameModes() {
             deleteHolder.i = i;
             deleteHolder.on("click",function() {
                 gameModes.splice(this.i,1);
+                activeGameMode = 0;
+                currentGameMode = gameModes[activeGameMode];
+
                 ls.save("gameModes",gameModes)
+                ls.save("activeGameMode",activeGameMode)
                 loadGameModes();
             })
         }
@@ -1034,7 +1049,7 @@ function editGameMode(gameMode) {
         let settingsInput;
         if (type == "input" || type == "number") {
             settingsInput = holder.create("input");
-            settingsInput.className = "settingInput";
+            settingsInput.className = type == "input" ? "settingsInputFull" : "settingInput";
             settingsInput.value = value;
             settingsInput.id = "gm_" + title.toLowerCase().subset(0,"end","trim\\ ");
             if (type == "number") settingsInput.type = "number";
@@ -1269,11 +1284,14 @@ function loadBoards() {
         holder.className = "gm_holder" + " " + (currentBoardIndex == i ? "gm_activeGameMode" : "");
         holder.i = i;
         holder.on("click",function(e) {
-            activeGameMode = this.i;
-            ls.save("activeGameMode",activeGameMode);
+            currentBoardIndex = this.i;
+            currentBoard = boards[currentBoardIndex];
+            ls.save("currentBoardIndex",currentBoardIndex);
+            ls.save("currentBoard",currentBoard);
+            ls.save("boards",boards)
             if (e.target.className !== "gm_img")
-                loadGameModes();
-            currentGameMode = gameModes[activeGameMode];
+                loadBoards();
+
         })
 
         let title = holder.create("div");
@@ -1283,27 +1301,33 @@ function loadBoards() {
         let buttonsRight = holder.create("div");
         buttonsRight.className = "gm_buttonsRight";
 
-        let edit = buttonsRight.create("div");
-        edit.className = "gm_imgHolder";
-        let editImg = edit.create("img");
-        editImg.className = "gm_img";
-        editImg.src = "img/edit.png";
-        edit.board = boards[i];
-        edit.on("click",function() {
-            openMapEditor(this.board);
-        })
-
-        let deleteHolder = buttonsRight.create("div");
-        deleteHolder.className = "gm_imgHolder";
-        let deleteImg = deleteHolder.create("img");
-        deleteImg.className = "gm_img";
-        deleteImg.src = "img/delete.png";
-        deleteHolder.i = i;
-        deleteHolder.on("click",function() {
-            boards.splice(this.i,1);
-            ls.save("boards",gameModes)
-            loadBoards();
-        })
+        if (boards[i].cantEdit !== true) {
+            let edit = buttonsRight.create("div");
+            edit.className = "gm_imgHolder";
+            let editImg = edit.create("img");
+            editImg.className = "gm_img";
+            editImg.src = "img/edit.png";
+            edit.board = boards[i];
+            edit.on("click",function() {
+                openMapEditor(this.board);
+            })
+    
+            let deleteHolder = buttonsRight.create("div");
+            deleteHolder.className = "gm_imgHolder";
+            let deleteImg = deleteHolder.create("img");
+            deleteImg.className = "gm_img";
+            deleteImg.src = "img/delete.png";
+            deleteHolder.i = i;
+            deleteHolder.on("click",function() {
+                currentBoardIndex = 0;
+                currentBoard = boards[currentBoardIndex];
+                boards.splice(this.i,1);
+                ls.save("boards",gameModes)
+                ls.save("currentBoardIndex",currentBoardIndex);
+                ls.save("currentBoard",currentBoard);
+                loadBoards();
+            })
+        }
 
     }
 }
@@ -1327,6 +1351,8 @@ function createBoard() {
 
     currentBoardIndex = boards.length - 1;
     currentBoard = boards[currentBoardIndex];
+    currentBoard.originalMap = currentBoard.map;
+
     ls.save("currentBoardIndex",currentBoardIndex);
     ls.save("currentBoard",currentBoard);
     ls.save("boards",boards)

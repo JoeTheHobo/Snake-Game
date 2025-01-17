@@ -1,5 +1,6 @@
 $("button_startGame").on("click",function() {
     startGame();
+    $(".button_mapEditorHolder").hide();
 })
 $("button_players").on("click",function() {
     setScene("players");
@@ -12,6 +13,7 @@ $("button_mainMenu").on("click",function() {
 })
 $("button_playAgain").on("click",function() {
     startGame();
+    $(".button_mapEditorHolder").hide();
 })
 $("button_gameMode").on("click",function() {
     setScene("gameModes");
@@ -27,7 +29,10 @@ $("button_cancelBoard").on("click",function() {
 $("button_createBoard").on("click",function() {
     createBoard();
 })
-$("me_button").on("click",function() {
-    setScene("boardList");
-    loadBoards();
+$("me_playButton").on("click",function() {
+    startGame();
+    $(".button_mapEditorHolder").show();
+})
+$("button_mapEditor").on("click",function() {
+    openMapEditor(currentBoard);
 })

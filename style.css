@@ -533,6 +533,13 @@ html {
   width: 50%;
   text-align: right;
 }
+.settingsInputFull {
+  width: 100px;
+  outline: none;
+  height: 30px;
+  text-align: center;
+  font-size: 16px;
+}
 .settingInput {
   width: 30px;
   outline: none;
@@ -689,4 +696,17 @@ html {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
+}
+
+.button_mapEditorHolder {
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  top: 20px;
+  right: 0;
+  left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: max-content;
+
 }

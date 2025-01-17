@@ -19,25 +19,32 @@ for (let i = 0; i < tiles.length; i++) {
 function renderGame() {
     renderTiles();
     ctx_items.clearRect(0,0,canvas_items.width,canvas_items.height);
-    for (let i = 0; i < map.length; i++) {
-        for (let j = 0; j < map[0].length; j++) {
-            if (map[i][j].tile == false) continue;
+    for (let i = 0; i < currentBoard.map.length; i++) {
+        for (let j = 0; j < currentBoard.map[0].length; j++) {
+            if (currentBoard.map[i][j].item !== false) {
+                currentBoard.map[i][j].item = getItem(currentBoard.map[i][j].item.name);
+                updateCells.push({
+                    x: j,
+                    y: i,
+                })
+            }
+            if (currentBoard.map[i][j].tile == false) continue;
         }
     }
     renderCells();
 }
 function renderTiles() {
     ctx_tiles.clearRect(0,0,canvas_tiles.width,canvas_tiles.height);
-    for (let i = 0; i < map.length; i++) {
-        for (let j = 0; j < map[0].length; j++) {
-            let mapTile = map[i][j].tile;
+    for (let i = 0; i < currentBoard.map.length; i++) {
+        for (let j = 0; j < currentBoard.map[0].length; j++) {
+            let mapTile = currentBoard.map[i][j].tile;
             ctx_tiles.drawImage($("tile_" + mapTile.name),j*gridSize,i*gridSize,gridSize,gridSize);      
         }
     }
 }
 function renderCells() {
     for (let i = 0; i < updateCells.length; i++) {
-        let mapCell = map[updateCells[i].y][updateCells[i].x].item;
+        let mapCell = currentBoard.map[updateCells[i].y][updateCells[i].x].item;
         ctx_items.clearRect(updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
         if (mapCell == false) continue;
         ctx_items.drawImage(mapCell.canvas,updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);        
@@ -209,7 +216,7 @@ function renderPlayers() {
                 let direction = "right";
 
                 let playerIsOnPortal = false;
-                if (map[tailY][tailX].item.teleport >= 0) {
+                if (currentBoard.map[tailY][tailX].item.teleport >= 0) {
                     playerIsOnPortal = true;
                     tail.up = {
                         active: false,
@@ -316,7 +323,7 @@ function movePlayers() {
         if (player.isDead){
             continue;
         }
-        if (player.moveTik >= (player.moveSpeed/map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
+        if (player.moveTik >= (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             if (player.turboActive == true) {
                 player.turboDuration --;
                 if (player.turboDuration <= 0) {
@@ -404,14 +411,14 @@ function movePlayers() {
             }
 
             //Test Item Underplayer
-            let mapItem = map[player.pos.y][player.pos.x].item;
+            let mapItem = currentBoard.map[player.pos.y][player.pos.x].item;
             if (mapItem.pickUp) {
                 let pickedUpItem = false;
                 findingEmptyItemSlot: for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
                     if (player.items[k] == "empty") {
                         player.items[k] = mapItem;
                         if (mapItem.onEat_deleteMe !== undefined && mapItem.onEat_deleteMe !== false) {
-                            map[player.pos.y][player.pos.x].item = false;
+                            currentBoard.map[player.pos.y][player.pos.x].item = false;
                             updateCells.push({
                                 x: player.pos.x,
                                 y: player.pos.y,
@@ -432,7 +439,7 @@ function movePlayers() {
                         if (player.whenInventoryIsFullInsertItemsAt > player.items.length-1) player.whenInventoryIsFullInsertItemsAt = 0;
                     }
                     if (mapItem.onEat_deleteMe !== undefined && mapItem.onEat_deleteMe !== false) {
-                        map[player.pos.y][player.pos.x].item = false;
+                        currentBoard.map[player.pos.y][player.pos.x].item = false;
                         updateCells.push({
                             x: player.pos.x,
                             y: player.pos.y,
@@ -445,7 +452,7 @@ function movePlayers() {
                     useItemHelper(player,mapItem);
                 }
                 if (mapItem.onEat_deleteMe !== undefined && mapItem.onEat_deleteMe !== false) {
-                    map[player.pos.y][player.pos.x].item = false;
+                    currentBoard.map[player.pos.y][player.pos.x].item = false;
                     updateCells.push({
                         x: player.pos.x,
                         y: player.pos.y,
@@ -453,11 +460,11 @@ function movePlayers() {
                 }
             }
             if (mapItem.teleport !== undefined && mapItem.teleport !== false && !player.justTeleported) {
-                findingPortal: for (let z = 0; z < map.length; z++) {
-                    for (let h = 0; h < map[z].length; h++) {
-                        if (!map[z][h].item) continue;
+                findingPortal: for (let z = 0; z < currentBoard.map.length; z++) {
+                    for (let h = 0; h < currentBoard.map[z].length; h++) {
+                        if (!currentBoard.map[z][h].item) continue;
                         if (player.pos.x == h || player.pos.y == z) continue;
-                        if (map[z][h].item.teleport === mapItem.teleport) {
+                        if (currentBoard.map[z][h].item.teleport === mapItem.teleport) {
                             player.justTeleported = {
                                 x: h,
                                 y: z,
@@ -529,9 +536,9 @@ function useItemHelper(player,item) {
     if (onEat.canvasFilter.active == true) {
         ctx_players.filter = onEat.canvasFilter.filter;
         ctx_items.filter = onEat.canvasFilter.filter;
-        for (let i = 0; i < map.length; i++) {
-            for (let j = 0; j < map[0].length; j++) {
-                let mapTile = map[i][j].tile;
+        for (let i = 0; i < currentBoard.map.length; i++) {
+            for (let j = 0; j < currentBoard.map[0].length; j++) {
+                let mapTile = currentBoard.map[i][j].tile;
                 if (mapTile == false) continue;
                 updateCells.push({
                     x: j,
@@ -544,9 +551,9 @@ function useItemHelper(player,item) {
             ctx_players.filter = "none";
             ctx_items.filter = "none";
 
-            for (let i = 0; i < map.length; i++) {
-                for (let j = 0; j < map[0].length; j++) {
-                    let mapTile = map[i][j].tile;
+            for (let i = 0; i < currentBoard.map.length; i++) {
+                for (let j = 0; j < currentBoard.map[0].length; j++) {
+                    let mapTile = currentBoard.map[i][j].tile;
                     if (mapTile == false) continue;
                     updateCells.push({
                         x: j,
@@ -828,7 +835,6 @@ function setUpItemCanvas() {
 
 function startGame() {
     setScene("game");
-    map = newMap(gridX,gridY);
     $(".endGamePopup").hide();
     gameEnd = false;
     gamePaused = false;
@@ -837,6 +843,7 @@ function startGame() {
     $("playerCardsHolder").css({
         visibility: "visible",
     })
+    currentBoard.map = structuredClone(currentBoard.originalMap);
     doColorRender = false;
     //Resetting Players
     activePlayers = [];
