@@ -7,6 +7,7 @@ let mouseDown = false;
 let rightMouse = false;
 let mouseX;
 let mouseY;
+let saveInterval;
 
 function openMapEditor(boardComingIn) {
     board = boardComingIn;
@@ -17,6 +18,11 @@ function openMapEditor(boardComingIn) {
 
     setResolution(board.width,board.height);
     renderMapEditorCanvas();
+
+    saveBoard();
+    saveInterval = setInterval(function() {
+        saveBoard();
+    },60000)
 }
 function me_loadDropdown(holder,group,name) {
     holder.innerHTML = "";
@@ -65,8 +71,6 @@ function me_updateCell(x,y) {
         me_ctx.strokeStyle = "blue";
         me_ctx.strokeRect(gridSize*x,gridSize*y,gridSize,gridSize);
     }
-
-    ls.save("boards",boards);
 }
 $("me_canvas").on("mousemove",function(e) {
     let rect = me_canvas.getBoundingClientRect();
@@ -94,6 +98,7 @@ $("me_canvas").on("mousemove",function(e) {
             board.map[mouseY][mouseX][selectedItem.type] = selectedItem.content;
         }
         me_updateCell(mouseX,mouseY);
+        $("saveStatus").innerHTML = "Board Is Not Saved";
     }
 
     renderMapEditorCanvas();
@@ -118,9 +123,24 @@ $("me_canvas").on("click",function(e) {
     if (selectedItem) {
         board.map[mouseY][mouseX][selectedItem.type] = selectedItem.content;
         renderMapEditorCanvas();
+        $("saveStatus").innerHTML = "Board Is Not Saved";
     }
 })
 $("me_canvas").on("mouseleave",function(e) {
     mouseDown = false;
     rightMouse = false;
 })
+document.addEventListener('keydown', (event) => {
+    // Check if Ctrl and S are pressed
+    if (event.ctrlKey && event.key === 's') {
+        event.preventDefault(); // Prevent the default save action
+        saveBoard();
+    }
+});
+
+function saveBoard() {
+    let html_saveStatus = $("saveStatus");
+    ls.save("boards",boards);
+
+    html_saveStatus.innerHTML = "Board Saved";
+}

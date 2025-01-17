@@ -770,10 +770,14 @@ window.ls = {
     get: function(saveName,elseReturn = false,byPass) {
         let add = ls.uniqueID ? "/ui/" + ls.uniqueID + "/ui/" : "";
         if (byPass) add = "";
+        try {
+            if (localStorage.getItem(add+saveName) == null || localStorage.getItem(add+saveName) == undefined) return elseReturn;
+            else if (localStorage.getItem(add+saveName) == "undefined") return undefined;
+            else return JSON.parse(localStorage.getItem(add+saveName));
+        } catch {
+            console.log("Local Storage Skipped")
+        }
         
-        if (localStorage.getItem(add+saveName) == null || localStorage.getItem(add+saveName) == undefined) return elseReturn;
-        else if (localStorage.getItem(add+saveName) == "undefined") return undefined;
-        else return JSON.parse(localStorage.getItem(add+saveName));
     },
     clear: function(deleteAll = false) {
         if (deleteAll) localStorage.clear();

@@ -27,3 +27,7 @@ $("button_cancelBoard").on("click",function() {
 $("button_createBoard").on("click",function() {
     createBoard();
 })
+$("me_button").on("click",function() {
+    setScene("boardList");
+    loadBoards();
+})

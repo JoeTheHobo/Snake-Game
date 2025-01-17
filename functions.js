@@ -1255,16 +1255,17 @@ function loadBoards() {
     let html_boardList = $(".boardListHolder");
     html_boardList.innerHTML = `
         <div class="button" id="gameModes_newBoard">New Board</div>
-        <div class="boardsDiv listHolderDiv"></div>
     `;
 
     $("gameModes_newBoard").on("click",function() {
         boardSettings();
     })
 
+    let masterHolder = html_boardList.create("div");
+    masterHolder.className = "listHolderDiv";
     for (let i = 0; i < boards.length; i++) {
         
-        let holder = $(".listHolderDiv").create("div");
+        let holder = masterHolder.create("div");
         holder.className = "gm_holder" + " " + (currentBoardIndex == i ? "gm_activeGameMode" : "");
         holder.i = i;
         holder.on("click",function(e) {
@@ -1301,7 +1302,7 @@ function loadBoards() {
         deleteHolder.on("click",function() {
             boards.splice(this.i,1);
             ls.save("boards",gameModes)
-            loadBoards;
+            loadBoards();
         })
 
     }
