@@ -27,6 +27,8 @@ function openMapEditor(boardComingIn) {
 function me_loadDropdown(holder,group,name) {
     holder.innerHTML = "";
     for (let i = 0; i < group.length; i++) {
+        if (group[i].showInEditor == false) continue;
+
         let itemHolder = holder.create("div");
         itemHolder.className = "me_itemHolder";
         let itemImage = itemHolder.create("img");
