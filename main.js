@@ -921,11 +921,15 @@ function startGame() {
         $(".production").show("flex");
     }
 
-    requestAnimationFrame(gameLoop);
+    gameEnd = true;
+    setTimeout(function() {
+        gameEnd = false;
+        requestAnimationFrame(gameLoop);
     
-    timer = 0;
-    
-    startTimer();
+        timer = 0;
+        
+        startTimer();
+    },1000/60);
 }
 let timerInterval;
 function startTimer() {
@@ -935,7 +939,6 @@ function startTimer() {
             timer++;
     },1000)
 }
-
 
 let production = {
     gameLoop: {
