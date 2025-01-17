@@ -120,25 +120,37 @@ function adjustCanvasSize() {
     me_canvas.style.height = `${height}px`;
 }
 
-function setResolution(gridx = gridX,gridy = gridY) {
+function setResolution(gridx = gridX, gridy = gridY) {
     const screenHeight = window.innerHeight; // Available screen height
     const screenWidth = window.innerWidth;   // Available screen width
 
     const heightLimit = screenHeight - 250;  // Maximum canvas height
     const widthLimit = screenWidth - 500;    // Maximum canvas width
 
+    // Calculate the aspect ratio of the grid
+    const aspectRatio = gridx / gridy;
+
     // Calculate the largest `gridSize` that fits within the limits
-    const maxGridSizeWidth = Math.floor(widthLimit / gridx);
-    const maxGridSizeHeight = Math.floor(heightLimit / gridy);
+    let maxGridSizeWidth = Math.floor(widthLimit / gridx);
+    let maxGridSizeHeight = Math.floor(heightLimit / gridy);
+
+    // Match the scaling to preserve the aspect ratio
+    if (maxGridSizeWidth / maxGridSizeHeight > aspectRatio) {
+        maxGridSizeWidth = Math.floor(maxGridSizeHeight * aspectRatio);
+    } else {
+        maxGridSizeHeight = Math.floor(maxGridSizeWidth / aspectRatio);
+    }
 
     // Use the smaller of the two to ensure the grid fits
     gridSize = Math.min(maxGridSizeWidth, maxGridSizeHeight);
 
-    // Enforce a minimum grid size for usability
-    gridSize = Math.max(gridSize, 19); // Change 10 to a reasonable minimum size for your use case
+    // Enforce a minimum and maximum grid size for usability
+    gridSize = Math.max(gridSize, 19); // Set a reasonable minimum
+    gridSize = Math.min(gridSize, 100); // Set a reasonable maximum for wide screens
 
     adjustCanvasSize();
 }
+
 window.on("resize",setResolution)
 setResolution();
 
