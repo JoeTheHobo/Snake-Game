@@ -1290,11 +1290,35 @@ function loadBoards() {
     $(".boardSettings").hide();
     let html_boardList = $(".boardListHolder");
     html_boardList.innerHTML = `
-        <div class="button" id="gameModes_newBoard">New Board</div>
+        <div class="lb_row">
+            <div class="button2" id="gameModes_newBoard">New Board</div>
+            <div class="button2" id="gameModes_import">Import World</div>
+        </div>
     `;
-
+    $(".lb_row").css({
+        display: "flex",
+        flexDirection: "row",
+    })
     $("gameModes_newBoard").on("click",function() {
         boardSettings();
+    })
+    $("gameModes_import").on("click",function() {
+         // Create an input element of type file
+      const input = document.createElement('input');
+      input.type = 'file';
+
+      // When the user selects a file
+      input.addEventListener('change', (event) => {
+        const file = event.target.files[0]; // Get the first selected file
+        if (file) {
+          readFileContent(file); // Read the content of the file
+        } else {
+          alert('No file selected!');
+        }
+      });
+
+      // Programmatically click the input to open the file dialog
+      input.click();
     })
 
     let masterHolder = html_boardList.create("div");
@@ -1323,6 +1347,17 @@ function loadBoards() {
         buttonsRight.className = "gm_buttonsRight";
 
         if (boards[i].cantEdit !== true) {
+            
+            let share = buttonsRight.create("div");
+            share.className = "gm_imgHolder";
+            let shareImg = share.create("img");
+            shareImg.className = "gm_img";
+            shareImg.src = "img/share.png";
+            share.board = boards[i];
+            share.on("click",function() {
+                downloadTextFile(this.board.name,JSON.stringify(this.board));
+            })
+
             let edit = buttonsRight.create("div");
             edit.className = "gm_imgHolder";
             let editImg = edit.create("img");
@@ -1380,3 +1415,49 @@ function createBoard() {
     
     openMapEditor(currentBoard);
 }
+function downloadTextFile(filename, text) {
+    // Create a Blob with the text
+    const blob = new Blob([text], { type: 'text/plain' });
+    
+    // Create a link element
+    const link = document.createElement('a');
+    
+    // Set the download attribute with the filename
+    link.download = filename;
+    
+    // Create a URL for the Blob and set it as the href of the link
+    link.href = window.URL.createObjectURL(blob);
+    
+    // Programmatically click the link to trigger the download
+    link.click();
+    
+    // Clean up the URL object after the download is triggered
+    window.URL.revokeObjectURL(link.href);
+  }
+
+  function readFileContent(file) {
+    const reader = new FileReader();
+    
+    // Event listener to handle the load event (file reading completed)
+    reader.onload = function(event) {
+      const content = event.target.result; // The file content as a string
+        importMap(content); // Display the content
+    };
+
+    // Read the file as text
+    reader.readAsText(file);
+  }
+  function importMap(textFile) {
+    try {
+        let board = JSON.parse(textFile);
+        boards.push(board);
+        currentBoardIndex = boards.length - 1;
+        currentBoard = boards[currentBoardIndex];
+        ls.save("boards",gameModes)
+        ls.save("currentBoardIndex",currentBoardIndex);
+        ls.save("currentBoard",currentBoard);
+        loadBoards();
+    } catch {
+        console.warn("Incorect File")
+    }
+  }

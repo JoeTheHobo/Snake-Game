@@ -710,3 +710,18 @@ html {
   width: max-content;
 
 }
+
+.button2 {
+  height: 20px;
+  width: max-content;
+  line-height: 20px;
+  font-size: 20px;
+  padding: 10px;
+  border-radius: 3px;
+  text-align: center;
+  color: white;
+  background: black;
+  cursor: url('./img/pointer.cur'), auto;
+  user-select: none;
+  margin: 5px;
+}

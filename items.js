@@ -435,3 +435,32 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: true, //Spawn players on this tile
 })
+
+items.push({
+    name: "clear", //(string) Name Of Item
+    img: "noZone.png", //(string) Image name
+    onEat_deleteMe: false, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    onEat: {
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: false,
+        canvasFilter: false,
+    },
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: false, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+})

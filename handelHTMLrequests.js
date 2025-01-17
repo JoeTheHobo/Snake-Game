@@ -35,4 +35,5 @@ $("me_playButton").on("click",function() {
 })
 $("button_mapEditor").on("click",function() {
     openMapEditor(currentBoard);
+    isActiveGame = false;
 })
