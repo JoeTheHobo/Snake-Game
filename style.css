@@ -578,7 +578,7 @@ html {
   align-items: center;
   height: 100%;
   user-select: none;
-  width: 300px;
+  width: 500px;
 }
 #saveStatus {
   margin-left: 15px;
@@ -728,3 +728,12 @@ html {
   margin: 5px;
 }
 
+
+#me_name {
+  outline: none;
+  width: 150px;
+  height: 30px;
+  text-align: center;
+  font-size: 20px;
+  margin-left: 10px;
+}

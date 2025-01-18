@@ -21,6 +21,7 @@ let fill = {
 function openMapEditor(boardComingIn) {
     board = boardComingIn;
     setScene("mapEditor");
+    $("me_name").value = board.name;
 
     me_loadDropdown($(".me_itemsContent"),items,"item_");
     me_loadDropdown($(".me_tilesContent"),tiles,"tile_");
@@ -283,4 +284,9 @@ $("me_button").on("click",function() {
     saveBoard();
     setScene("boardList");
     loadBoards();
+})
+$("me_name").on("input",function() {
+    if (this.value == "") return;
+    board.name = this.value;
+    ls.save("boards",boards);
 })

@@ -1,6 +1,6 @@
 ls.setID("snakegame");
 
-let showPerformance = true;
+let showPerformance = false;
 
 let updateCells = [];
 let updateSnakeCells = [];

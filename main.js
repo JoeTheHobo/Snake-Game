@@ -863,7 +863,13 @@ function startGame() {
     }
 
     gamePaused = false;
-    currentBoard.map = structuredClone(currentBoard.originalMap);
+    try {
+        currentBoard.map = structuredClone(currentBoard.originalMap);
+    } catch {
+        console.log(currentBoard.originalMap);
+        currentBoard.map = structuredClone(currentBoard.originalMap);
+    }
+    
     doColorRender = false;
     activePlayers = [];
     specialItemIteration = 0;
