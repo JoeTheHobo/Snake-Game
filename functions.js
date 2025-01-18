@@ -155,7 +155,7 @@ setResolution();
 
 
 function newMap(width,height) {
-    newMap = [];
+    _newMap = [];
     for (let i = 0; i < height; i++) {
         let arr = [];
         for (let j = 0; j < width; j++) {
@@ -164,9 +164,9 @@ function newMap(width,height) {
                 item: false,
             })
         }
-        newMap.push(arr);
+        _newMap.push(arr);
     }
-    return newMap;
+    return _newMap;
 }
 
 let playerNames1 = [
