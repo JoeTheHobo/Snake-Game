@@ -277,7 +277,7 @@ function tool_fill() {
 }
 function saveBoard() {
     let html_saveStatus = $("saveStatus");
-    ls.save("boards",boards);
+    saveBoards();
 
     html_saveStatus.innerHTML = "Board Saved";
 }
@@ -290,5 +290,5 @@ $("me_button").on("click",function() {
 $("me_name").on("input",function() {
     if (this.value == "") return;
     board.name = this.value;
-    ls.save("boards",boards);
+    saveBoards();
 })
