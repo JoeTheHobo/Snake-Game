@@ -1,9 +1,10 @@
 ls.setID("snakegame");
 
-let needsToBeReset = ls.get("reset",true);
+let forceReset = 1;
+let needsToBeReset = ls.get("reset" + forceReset,true);
 if (needsToBeReset) {
     ls.clear();
-    ls.save("reset",false);
+    ls.save("reset" + forceReset,false);
 }
 
 let showPerformance = false;
@@ -1469,6 +1470,7 @@ function downloadTextFile(filename, text) {
     ls.save("boards",newBoards)
   }
   function shortenBoard(oldBoard) {
+    console.log(oldBoard)
     let board = structuredClone(oldBoard);
     board.map = [];
 
