@@ -8,7 +8,7 @@ tiles.push({
 })
 tiles.push({
     name: "sand",
-    img: "tile_sand.png",
+    img: "tilesand.png",
     changePlayerSpeed: 0.5, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 2,
@@ -27,3 +27,27 @@ tiles.push({
     canSpawn: true, //If Items can spawn on tile
     id: 4,
 })
+tiles.push({
+    name: "planks",
+    img: "tileplanks.png",
+    changePlayerSpeed: 1, //Player Speed Times This Number
+    canSpawn: true, //If Items can spawn on tile
+    id: 5,
+})
+tiles.push({
+    name: "water",
+    img: "tilewater.png",
+    changePlayerSpeed: 0.5, //Player Speed Times This Number
+    canSpawn: true, //If Items can spawn on tile
+    id: 6,
+})
+tiles.push({
+    name: "flower",
+    img: "flower.png",
+    changePlayerSpeed: 1, //Player Speed Times This Number
+    canSpawn: true, //If Items can spawn on tile
+    id: 7,
+})
+
+
+
