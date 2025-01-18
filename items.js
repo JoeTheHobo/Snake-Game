@@ -3,7 +3,6 @@ items.push({
     name: "pellet",
     color: "yellow",
     img: "snakeFood.png",
-    onEat_deleteMe: true,
     canEat: true,
     pickUp: false,
     onEat: {
@@ -36,12 +35,17 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+
+    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    damage: 0, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 items.push({
     name: "super_pellet",
     color: "green",
     img: "snakeSuper.png",
-    onEat_deleteMe: true,
     canEat: true,
     pickUp: false,
     onEat: {
@@ -72,12 +76,16 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+
+    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    damage: 0, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 items.push({
     name: "turbo",
-    color: "pink",
     img: "speedPowerUp.png",
-    onEat_deleteMe: true,
     canEat: true,
     pickUp: true,
     onEat: {
@@ -108,13 +116,18 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+
+    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    damage: 0, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 items.push({
     name: "wall",
     img: "rock.png",
     color: "black",
-    onEat_deleteMe: true,
-    canEat: true,
+    canEat: false,
     pickUp: false,
     onEat: {
         deletePlayer: true,
@@ -144,12 +157,17 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+
+    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    damage: 1, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 items.push({
     name: "wall2",
     img: "rock2.png",
-    onEat_deleteMe: 2,
-    canEat: true,
+    canEat: false,
     pickUp: false,
     onEat: {
         deletePlayer: true,
@@ -179,12 +197,17 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+
+    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    damage: 2, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 items.push({
     name: "bronzeShield", //(string) Name Of Item
     color: "blue", //(string) OutDated No Point In Using
     img: "bronzeShield.png", //(string) Image name
-    onEat_deleteMe: true, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
     canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: true, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: ["silverShield"], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
@@ -216,13 +239,18 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+
+    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    damage: 0, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 items.push({
     name: "silverShield",
     color: "blue",
     img: "silverShield.png",
     pickUp: true,
-    onEat_deleteMe: true,
     canEat: true,
     onEat: {
         shield: 2,
@@ -252,6 +280,12 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+
+    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    damage: 0, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 items.push({
     name: "goldShield",
@@ -287,11 +321,16 @@ items.push({
     spawnCount: 5, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+    
+    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    damage: 0, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 items.push({
     name: "lamp", //(string) Name Of Item
     img: "Lamp.png", //(string) Image name
-    onEat_deleteMe: true, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
     canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
@@ -322,11 +361,16 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+
+    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    damage: 0, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 items.push({
     name: "snakeHole", //(string) Name Of Item
     img: "snakeHole1.png", //(string) Image name
-    onEat_deleteMe: false, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
@@ -350,11 +394,16 @@ items.push({
     spawnCount: 2, //How Many To Spawn In When Spawning
     spawnLimit: 1, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+    
+    destructible: [], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    damage: 0, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 items.push({
     name: "snakeHole2", //(string) Name Of Item
     img: "snakeHole2.png", //(string) Image name
-    onEat_deleteMe: false, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
@@ -377,11 +426,16 @@ items.push({
     teleport: 1, //Teleport ID
     spawnLimit: 1, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+
+    destructible: [], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    damage: 0, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 items.push({
     name: "snakeHole3", //(string) Name Of Item
     img: "snakeHole3.png", //(string) Image name
-    onEat_deleteMe: false, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
@@ -405,12 +459,17 @@ items.push({
     spawnCount: 2, //How Many To Spawn In When Spawning
     spawnLimit: 1, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+
+    destructible: [], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    damage: 0, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 
 items.push({
     name: "spawn", //(string) Name Of Item
     img: "spawn.png", //(string) Image name
-    onEat_deleteMe: false, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
@@ -434,12 +493,17 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: true, //Spawn players on this tile
+
+    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    damage: 0, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 
 items.push({
     name: "clear", //(string) Name Of Item
     img: "noZone.png", //(string) Image name
-    onEat_deleteMe: false, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
@@ -463,11 +527,16 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+
+    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    damage: 0, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 items.push({
     name: "blueKey", //(string) Name Of Item
     img: "blueKey.png", //(string) Image name
-    onEat_deleteMe: true, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
     canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
@@ -491,11 +560,16 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+
+    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    damage: 0, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 items.push({
     name: "redKey", //(string) Name Of Item
     img: "redKey.png", //(string) Image name
-    onEat_deleteMe: true, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
     canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
@@ -518,12 +592,16 @@ items.push({
     teleport: false, //Teleport ID
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
+    spawnPlayerHere: false, //Spawn players on this tiledestructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    
+    damage: 0, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 items.push({
     name: "greenKey", //(string) Name Of Item
     img: "greenKey.png", //(string) Image name
-    onEat_deleteMe: true, //(true/false) If A player Collides with Item Either Delete it or Keep it on board
     canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
@@ -547,25 +625,17 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+
+    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    damage: 0, //How much damage to inflict to play when collided with
+    onDelete: { //Ran when item is destroyed
+        removeStatus: [], //Remove any status
+    }
 })
 items.push({
     name: "blueLock", //(string) Name Of Item
     img: "blueLock.png", //(string) Image name
-    onEat_deleteMe: ["blueKey"], //(true/false) If A player Collides with Item Either Delete it or Keep it on board
-    canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    onEat: {
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: ["blueKey"],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: true,
-        canvasFilter: false,
-    },
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -576,5 +646,27 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
 
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    onEat: {
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: true,
+        canvasFilter: false,
+    },
+
+
+
+    destructible: ["blueKey"],
+    damage: 0,
+    onDelete: {
+        removeStatus: ["blueKey"],
+
+    }
 
 })

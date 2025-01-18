@@ -1,5 +1,7 @@
 ls.setID("snakegame");
 
+let showPerformance = true;
+
 let updateCells = [];
 let updateSnakeCells = [];
 let players = ls.get("players",[]);
@@ -38,7 +40,6 @@ let totalSpecialItems = 1;
 let timer, gameEnd;
 let gamePaused = false;
 let isActiveGame = false;
-let showPerformance = false;
 let currentBackground = "background.jpg";
 let doColorRender = false;
 
@@ -978,7 +979,7 @@ function drawPlayerBox(player) {
     })
     for (let i = 0; i < player.status.length; i++) {
         let statusImage = statusHolder.create("img");
-        statusImage.src = "img/" + player.status[i];
+        statusImage.src = "img/" + getRealItem(player.status[i]).img;
         statusImage.css({
             width: "100%",
         })

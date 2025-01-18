@@ -412,71 +412,7 @@ function movePlayers() {
             }
 
             //Test Item Underplayer
-            let mapItem = currentBoard.map[player.pos.y][player.pos.x].item;
-            if (mapItem.pickUp) {
-                let pickedUpItem = false;
-                findingEmptyItemSlot: for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
-                    if (player.items[k] == "empty") {
-                        player.items[k] = mapItem;
-                        if (mapItem.onEat_deleteMe !== undefined && mapItem.onEat_deleteMe !== false) {
-                            currentBoard.map[player.pos.y][player.pos.x].item = false;
-                            updateCells.push({
-                                x: player.pos.x,
-                                y: player.pos.y,
-                            })
-                        }
-                        drawPlayerBox(player)
-                        pickedUpItem = true;
-                        break findingEmptyItemSlot;
-                    }
-                }
-                if (!pickedUpItem && currentGameMode.mode_whenInventoryFullWhereDoItemsGo !== "noPickUp") {
-                    if (currentGameMode.mode_whenInventoryFullWhereDoItemsGo == "select") {
-                        player.items[player.selectingItem] = mapItem;
-                    }
-                    if (currentGameMode.mode_whenInventoryFullWhereDoItemsGo == "recycle") {
-                        player.items[player.whenInventoryIsFullInsertItemsAt] = mapItem;
-                        player.whenInventoryIsFullInsertItemsAt++;
-                        if (player.whenInventoryIsFullInsertItemsAt > player.items.length-1) player.whenInventoryIsFullInsertItemsAt = 0;
-                    }
-                    if (mapItem.onEat_deleteMe !== undefined && mapItem.onEat_deleteMe !== false) {
-                        currentBoard.map[player.pos.y][player.pos.x].item = false;
-                        updateCells.push({
-                            x: player.pos.x,
-                            y: player.pos.y,
-                        })
-                    }
-                    drawPlayerBox(player)
-                }
-            } else {
-                if (mapItem.canEat == true) {
-                    useItemHelper(player,mapItem);
-                }
-                if (mapItem.onEat_deleteMe !== undefined && mapItem.onEat_deleteMe !== false) {
-                    currentBoard.map[player.pos.y][player.pos.x].item = false;
-                    updateCells.push({
-                        x: player.pos.x,
-                        y: player.pos.y,
-                    })
-                }
-            }
-            if (mapItem.teleport !== undefined && mapItem.teleport !== false && !player.justTeleported) {
-                findingPortal: for (let z = 0; z < currentBoard.map.length; z++) {
-                    for (let h = 0; h < currentBoard.map[z].length; h++) {
-                        if (!currentBoard.map[z][h].item) continue;
-                        if (player.pos.x == h || player.pos.y == z) continue;
-                        if (currentBoard.map[z][h].item.teleport === mapItem.teleport) {
-                            player.justTeleported = {
-                                x: h,
-                                y: z,
-                            }
-                            break findingPortal;
-                        } 
-                    }
-                }
-            } else {
-                player.justTeleported = false;
-            }
+            testItemUnderPlayer(player);
             
             //Check for Collisions
             for (let a = 0; a < activePlayers.length; a++){
@@ -490,14 +426,90 @@ function movePlayers() {
                     }
                 }
             }
-
-
-
         }
-        else{
+        else {
             player.moveTik++;
-        }        
+        }
     }
+}
+function testItemUnderPlayer(player) {
+    let mapItem = currentBoard.map[player.pos.y][player.pos.x].item;
+    if (!mapItem) return;
+
+    if (mapItem.pickUp) {
+        let pickedUpItem = false;
+        findingEmptyItemSlot: for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
+            if (player.items[k] == "empty") {
+                player.items[k] = mapItem;
+                drawPlayerBox(player)
+                pickedUpItem = true;
+                break findingEmptyItemSlot;
+            }
+        }
+        if (!pickedUpItem && currentGameMode.mode_whenInventoryFullWhereDoItemsGo !== "noPickUp") {
+            if (currentGameMode.mode_whenInventoryFullWhereDoItemsGo == "select") {
+                player.items[player.selectingItem] = mapItem;
+            }
+            if (currentGameMode.mode_whenInventoryFullWhereDoItemsGo == "recycle") {
+                player.items[player.whenInventoryIsFullInsertItemsAt] = mapItem;
+                player.whenInventoryIsFullInsertItemsAt++;
+                if (player.whenInventoryIsFullInsertItemsAt > player.items.length-1) player.whenInventoryIsFullInsertItemsAt = 0;
+            }
+            drawPlayerBox(player)
+        }
+    } else if (mapItem.canEat == true) {
+        useItemHelper(player,mapItem);
+    }
+
+    if (mapItem.teleport !== undefined && mapItem.teleport !== false && !player.justTeleported) {
+        findingPortal: for (let z = 0; z < currentBoard.map.length; z++) {
+            for (let h = 0; h < currentBoard.map[z].length; h++) {
+                if (!currentBoard.map[z][h].item) continue;
+                if (player.pos.x == h || player.pos.y == z) continue;
+                if (currentBoard.map[z][h].item.teleport === mapItem.teleport) {
+                    player.justTeleported = {
+                        x: h,
+                        y: z,
+                    }
+                    break findingPortal;
+                } 
+            }
+        }
+    } else {
+        player.justTeleported = false;
+    }
+
+    let itemIsDelete = false;
+    checking: for (let i = 0; i < mapItem.destructible.length; i++) {
+        let status = mapItem.destructible[i];
+        let deleteMe = false;
+        if (status == "yes") deleteMe = true;
+        if (player.status.includes(status)) deleteMe = true;
+
+        if (deleteMe) {
+            itemIsDelete = true;
+            //Hurt Player
+            deletePlayer(player,false,mapItem);
+
+            //Checking On Eat Delete Me Object From Item
+            if (mapItem.onDelete) {
+                if (mapItem.onDelete.removeStatus.length > 0) {
+                    for (let j = 0; j < mapItem.onDelete.removeStatus.length; j++) {
+                        removePlayerStatus(player,mapItem.onDelete.removeStatus[j]);
+                    }
+                }    
+            }
+
+            //Delete Item
+            currentBoard.map[player.pos.y][player.pos.x].item = false;
+            updateCells.push({
+                x: player.pos.x,
+                y: player.pos.y,
+            })
+            break checking;
+        }
+    }
+    if (!itemIsDelete) deletePlayer(player);
 }
 function useItemHelper(player,item) {
     let onEat = item.onEat;
@@ -614,7 +626,13 @@ function endScreen() {
     }
 }
 function deletePlayer(player,playerWhoKilled,item){
-    if (player.shield < 1){
+    let damage;
+    if (item) damage = item.damage;
+    if (playerWhoKilled) damage = playerWhoKilled.bodyArmor;
+    if (!item && !playerWhoKilled) damage = (player.shield+1);
+    player.shield -= damage;
+
+    if (player.shield < 0){
         if (playerWhoKilled) if (playerWhoKilled.name !== player.name) playerWhoKilled.playerKills++;
 
         //Delete Tail
@@ -639,40 +657,32 @@ function deletePlayer(player,playerWhoKilled,item){
         if (playersDead == activePlayers.length) {
             endScreen();
         }
-    } else {
-        if (item) {
-            if (item.onEat_deleteMe) {
-                if (item.onEat_deleteMe === true) player.shield--;
-                else player.shield -= item.onEat_deleteMe;
-            }
-        } else {
-            player.shield--;
+        return;
+    }
 
-        }
-        if (player.shield == 2) {
-            removePlayerStatus(player,"goldShield");
-            removePlayerStatus(player,"bronzeShield");
+    if (player.shield == 2) {
+        removePlayerStatus(player,"silverShield");
+        removePlayerStatus(player,"bronzeShield");
+        removePlayerStatus(player,"goldShield");
 
-            addPlayerStatus(player,"silverShield");
-        }
-        if (player.shield == 1) {
-            removePlayerStatus(player,"goldShield");
-            removePlayerStatus(player,"silverShield");
+        addPlayerStatus(player,"silverShield");
+    }
+    if (player.shield == 1) {
+        removePlayerStatus(player,"silverShield");
+        removePlayerStatus(player,"bronzeShield");
+        removePlayerStatus(player,"goldShield");
 
-            addPlayerStatus(player,"bronzeShield");
-        }
-        if (player.shield == 0) {
-            removePlayerStatus(player,"silverShield");
-            removePlayerStatus(player,"bronzeShield");
-        }
-        if (player.shield < 0) {
-            deletePlayer(player)
-        }
+        addPlayerStatus(player,"bronzeShield");
+    }
+    if (player.shield == 0) {
+        removePlayerStatus(player,"silverShield");
+        removePlayerStatus(player,"bronzeShield");
+        removePlayerStatus(player,"goldShield");
     }
 }
 function removePlayerStatus(player,itemName) {
     findingStatus: for (let i = 0; i < player.status.length; i++) {
-        if (player.status[i] == getItem(itemName).img) {
+        if (player.status[i] == getItem(itemName).name) {
             player.status.splice(i,1);
             break findingStatus;
         }
@@ -680,7 +690,7 @@ function removePlayerStatus(player,itemName) {
     drawPlayerBox(player);
 }
 function addPlayerStatus(player,itemName) {
-    player.status.push(getItem(itemName).img);
+    player.status.push(getItem(itemName).name);
     drawPlayerBox(player);
 }
 
@@ -871,6 +881,7 @@ function startGame() {
         //Ressurect Player
         player.isDead = false;
         player.justDied = false;
+        player.bodyArmor = 1;
         //Set Player Selecting Item To 1
         player.selectingItem = 0;
         player.justTeleported = false;
