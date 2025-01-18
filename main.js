@@ -869,6 +869,10 @@ function startGame() {
     } catch {
         console.warn(currentBoard.originalMap);
     }
+
+    gridX = currentBoard.map[0].length;
+    gridY = currentBoard.map.length;
+    setResolution(gridX,gridY);
     
     doColorRender = false;
     activePlayers = [];
@@ -934,7 +938,6 @@ function startGame() {
 
     setUpPlayerCanvas();
     setUpItemCanvas();
-    adjustCanvasSize();
     renderGame();
 
     for (let i = 0; i < currentGameMode.items.length; i++) {

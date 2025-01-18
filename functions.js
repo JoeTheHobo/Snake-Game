@@ -41,7 +41,6 @@ let currentGameMode = gameModes[activeGameMode];
 let gs_playerCount = players.length > 0 ? players.length : 1;
 let gridX = 50;
 let gridY = 30;
-let gridSize = 20;
 let circleWalls = true;
 let specialItemLowChance = 1;
 let specialItemHighChance = 6;
@@ -53,6 +52,26 @@ let gamePaused = false;
 let isActiveGame = false;
 let currentBackground = "background.jpg";
 let doColorRender = false;
+
+
+const getPPI = () => {
+    // Screen dimensions in inches (calculated using screen width and height in pixels and the screen diagonal in inches)
+    const screenWidth = window.screen.width; // Screen width in pixels
+    const screenHeight = window.screen.height; // Screen height in pixels
+    const screenDiagonalInches = 15.6; // Example for a 15.6-inch screen diagonal. Replace with actual size if known.
+  
+    const screenDiagonalPixels = Math.sqrt(screenWidth ** 2 + screenHeight ** 2);
+    return screenDiagonalPixels / screenDiagonalInches;
+  };
+  const inchesToPixels = (inches, ppi) => inches * ppi;
+  const setPhysicalSize = (sizeInInches) => {
+    const ppi = getPPI();
+    const sizeInPixels = inchesToPixels(sizeInInches, ppi);
+    return sizeInPixels;
+  };
+
+  let gridSize = Math.floor(setPhysicalSize(.15));
+  
 
 const perfectFrameTime = 1000 / 60;
 let deltaTime = 0;
@@ -102,9 +121,9 @@ let ctx_overhangs = canvas_players.getContext("2d");
 
 let me_canvas = $("me_canvas");
 let me_ctx = me_canvas.getContext("2d");
-function adjustCanvasSize() {
-    const width = gridX * gridSize;
-    const height = gridY * gridSize;
+function adjustCanvasSize(gridx,gridy) {
+    const width = gridx * gridSize;
+    const height = gridy * gridSize;
 
     // Set the canvas dimensions in device pixels
     canvas_background.width = width;
@@ -121,53 +140,18 @@ function adjustCanvasSize() {
     me_canvas.height = height;
 
     // Scale the canvas visually for the screen
-    canvas_background.style.width = `${width}px`;
-    canvas_background.style.height = `${height}px`;
-    canvas_tiles.style.width = `${width}px`;
-    canvas_tiles.style.height = `${height}px`;
-    canvas_items.style.width = `${width}px`;
-    canvas_items.style.height = `${height}px`;
-    canvas_players.style.width = `${width}px`;
-    canvas_players.style.height = `${height}px`;
-    canvas_overhangs.style.width = `${width}px`;
-    canvas_overhangs.style.height = `${height}px`;
-    me_canvas.style.width = `${width}px`;
-    me_canvas.style.height = `${height}px`;
+    $(".game_canvas").css({
+        width: `${width}px`,
+        height: `${height}px`,
+    })
 }
 
 function setResolution(gridx = gridX, gridy = gridY) {
-    const screenHeight = window.innerHeight; // Available screen height
-    const screenWidth = window.innerWidth;   // Available screen width
-
-    const heightLimit = screenHeight - 250;  // Maximum canvas height
-    const widthLimit = screenWidth - 500;    // Maximum canvas width
-
-    // Calculate the aspect ratio of the grid
-    const aspectRatio = gridx / gridy;
-
-    // Calculate the largest `gridSize` that fits within the limits
-    let maxGridSizeWidth = Math.floor(widthLimit / gridx);
-    let maxGridSizeHeight = Math.floor(heightLimit / gridy);
-
-    // Match the scaling to preserve the aspect ratio
-    if (maxGridSizeWidth / maxGridSizeHeight > aspectRatio) {
-        maxGridSizeWidth = Math.floor(maxGridSizeHeight * aspectRatio);
-    } else {
-        maxGridSizeHeight = Math.floor(maxGridSizeWidth / aspectRatio);
-    }
-
-    // Use the smaller of the two to ensure the grid fits
-    gridSize = Math.min(maxGridSizeWidth, maxGridSizeHeight);
-
-    // Enforce a minimum and maximum grid size for usability
-    gridSize = Math.max(gridSize, 19); // Set a reasonable minimum
-    gridSize = Math.min(gridSize, 100); // Set a reasonable maximum for wide screens
-
-    adjustCanvasSize();
+    adjustCanvasSize(gridx,gridy);
 }
-playerCardsHolder
 window.on("resize",setResolution)
 setResolution();
+
 
 
 function newMap(width,height) {
@@ -1476,7 +1460,7 @@ function shortenBoard(oldBoard) {
     oldBoard.map = [];
     let board = structuredClone(oldBoard);
 
-    let newMap = [];
+    let _newMap = [];
     for (let i = 0; i < board.originalMap.length; i++) {
         let row = [];
         for (let j = 0; j < board.originalMap[i].length; j++) {
@@ -1488,9 +1472,9 @@ function shortenBoard(oldBoard) {
             }
             row.push(newCell);
         }
-        newMap.push(row);
+        _newMap.push(row);
     }
-    board.originalMap = newMap;
+    board.originalMap = _newMap;
 
     board.originalMap = shortenMap(board.originalMap)
 
@@ -1508,7 +1492,7 @@ function fixBoard(oldBoard) {
 }
 
 function shortenMap(map) {
-    let newMap = [];
+    let _newMap = [];
     for (let i = 0; i < map.length; i++) {
         let row = [];
         let s_tiles = [];
@@ -1550,12 +1534,12 @@ function shortenMap(map) {
 
         row.push(s_tiles);
         row.push(s_items);
-        newMap.push(row);
+        _newMap.push(row);
     }
-    return newMap;
+    return _newMap;
 }
 function decompressMap(map) {
-    let newMap = [];
+    let _newMap = [];
     for (let i = 0; i < map.length; i++) {
         let row = [];
 
@@ -1581,9 +1565,9 @@ function decompressMap(map) {
             })
         }
 
-        newMap.push(row);
+        _newMap.push(row);
     }
-    return newMap;
+    return _newMap;
 }
 
 function getByID(id,type) {
