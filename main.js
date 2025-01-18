@@ -57,6 +57,7 @@ function renderCells() {
 }
 function deleteSnakeCells() {
     for (let i = 0; i < updateSnakeCells.length; i++) {
+        if (updateSnakeCells[i].player.isDead) continue;
         ctx_players.clearRect(updateSnakeCells[i].x*gridSize,updateSnakeCells[i].y*gridSize,gridSize,gridSize);
     }
     updateSnakeCells = [];
@@ -324,9 +325,8 @@ function growPlayer(player,grow) {
 function movePlayers() {
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
-        if (player.isDead){
-            continue;
-        }
+        
+        if (player.isDead) continue;
         
         if ((player.moveTik*deltaTime) >= (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             if (player.turboActive == true) {
@@ -371,17 +371,18 @@ function movePlayers() {
                     y: player.pos.y,
                     direction: player.moving,
                 });
-                updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y});
+                updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
                 player.tail.pop();
             }
             if (player.tail.length > 0)
-                updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y});
+                updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
 
             
 
             updateSnakeCells.push({
                 x: player.pos.x,
-                y: player.pos.y
+                y: player.pos.y,
+                player: player
             })
 
             //ctx.fillStyle = map[player.pos.y][player.pos.x].color;
@@ -401,7 +402,7 @@ function movePlayers() {
             }
 
             //Collision Testing
-            //Test If Player Hits Wall
+            //Test If Player Hits Edge
             if (player.pos.x > gridX-1) {
                 if (circleWalls) player.pos.x = 0;
             }
@@ -418,7 +419,7 @@ function movePlayers() {
             //Test Item Underplayer
             testItemUnderPlayer(player);
             
-            //Check for Collisions
+            //Check for Player Collisions
             for (let a = 0; a < activePlayers.length; a++){
                 let checkedPlayer = activePlayers[a];
                 if (checkedPlayer.isDead && currentGameMode.snakeVanishOnDeath == true) continue;
@@ -650,6 +651,7 @@ function deletePlayer(player,playerWhoKilled,item){
                 updateSnakeCells.push({
                     x: player.tail[i].x,
                     y: player.tail[i].y,
+                    player: player
                 })
             }
         }
