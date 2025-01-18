@@ -1447,32 +1447,32 @@ function downloadTextFile(filename, text) {
     reader.readAsText(file);
   }
   function importMap(textFile) {
+    let board = JSON.parse(textFile);
+    board = fixBoard(board);
+    boards.push(board);
+    currentBoardIndex = boards.length - 1;
+    currentBoard = boards[currentBoardIndex];
+
+    saveBoards();
+    ls.save("currentBoardIndex",currentBoardIndex);
+    loadBoards();
     try {
-        let board = JSON.parse(textFile);
-        board = fixBoard(board);
-        boards.push(board);
-        currentBoardIndex = boards.length - 1;
-        currentBoard = boards[currentBoardIndex];
-        saveBoards();
-        ls.save("currentBoardIndex",currentBoardIndex);
-        loadBoards();
     } catch {
         console.warn("Incorect File")
     }
   }
-  function saveBoards() {
-    let newBoards = [];
-    for (let i = 0; i < boards.length; i++) {
-        if (!boards[i].cantEdit) {
-            newBoards.push(shortenBoard(boards[i]));
-        }
+function saveBoards() {
+let newBoards = [];
+for (let i = 0; i < boards.length; i++) {
+    if (!boards[i].cantEdit) {
+        newBoards.push(shortenBoard(boards[i]));
     }
-    ls.save("boards",newBoards)
-  }
-  function shortenBoard(oldBoard) {
-    console.log(oldBoard)
+}
+ls.save("boards",newBoards)
+}
+function shortenBoard(oldBoard) {
+    oldBoard.map = [];
     let board = structuredClone(oldBoard);
-    board.map = [];
 
     let newMap = [];
     for (let i = 0; i < board.originalMap.length; i++) {
@@ -1481,8 +1481,8 @@ function downloadTextFile(filename, text) {
             let cell = board.originalMap[i][j];
             let newCell = {
                 mouseOver: false,
-                tile: cell.tile.name,
-                item: cell.item.name ? cell.item.name : false,
+                tile: cell.tile.id,
+                item: cell.item.id ? cell.item.id : 0,
             }
             row.push(newCell);
         }
@@ -1490,29 +1490,107 @@ function downloadTextFile(filename, text) {
     }
     board.originalMap = newMap;
 
+    board.originalMap = shortenMap(board.originalMap)
+
     return board;
-  }
-  function fixBoard(oldBoard) {
-    if (_type(oldBoard.originalMap[0][0].tile).type !== "string") return oldBoard;
+}
+function fixBoard(oldBoard) {
+    if (_type(oldBoard.originalMap[0][0]).type !== "array") return oldBoard;
 
     let board = structuredClone(oldBoard);
     board.map = [];
 
-    let newMap = [];
-    for (let i = 0; i < board.originalMap.length; i++) {
-        let row = [];
-        for (let j = 0; j < board.originalMap[i].length; j++) {
-            let cell = board.originalMap[i][j];
-            let newCell = {
-                mouseOver: false,
-                tile: getTile(cell.tile),
-                item: cell.item == false ? false : getRealItem(cell.item),
-            }
-            row.push(newCell);
-        }
-        newMap.push(row);
-    }
-    board.originalMap = newMap;
+    board.originalMap = decompressMap(board.originalMap);
 
     return board;
-  }
+}
+
+function shortenMap(map) {
+    let newMap = [];
+    for (let i = 0; i < map.length; i++) {
+        let row = [];
+        let s_tiles = [];
+        let s_items = [];
+        for(let j = 0; j < map[i].length; j++) {
+            s_tiles.push(map[i][j].tile);
+            s_items.push(map[i][j].item);
+        }
+
+        function combineCells(array) {
+            let newTiles = [];
+            let current = false;
+            let count;
+            for (let i = 0; i < array.length; i++) {
+                if (current === false) {
+                    current = array[i];
+                    count = 1;
+                    continue;
+                }
+                if (array[i] !== current) {
+                    newTiles.push([current,count]);
+                    current = array[i];
+                    count = 1;
+                    continue;
+                }
+                if (array[i] === current) {
+                    count++;
+                    continue;
+                }
+            }
+            newTiles.push([current,count]);
+
+            return newTiles;
+        }
+
+        s_tiles = combineCells(s_tiles);
+        s_items = combineCells(s_items);
+
+
+        row.push(s_tiles);
+        row.push(s_items);
+        newMap.push(row);
+    }
+    return newMap;
+}
+function decompressMap(map) {
+    let newMap = [];
+    for (let i = 0; i < map.length; i++) {
+        let row = [];
+
+        let _tiles = [];
+        let _items = [];
+
+        for (let j = 0; j < map[i][0].length; j++) {
+            for (let k = 0; k < map[i][0][j][1]; k++) {
+                _tiles.push(map[i][0][j][0]);
+            }
+        }
+        for (let j = 0; j < map[i][1].length; j++) {
+            for (let k = 0; k < map[i][1][j][1]; k++) {
+                _items.push(map[i][1][j][0]);
+            }
+        }
+
+        for (let j = 0; j < _tiles.length; j++) {
+            row.push({
+                mouseOver: false,
+                tile: getByID(_tiles[j],tiles),
+                item: getByID(_items[j],items),
+            })
+        }
+
+        newMap.push(row);
+    }
+    return newMap;
+}
+
+function getByID(id,type) {
+    let toReturn = false;
+    searching: for (let i = 0; i < type.length; i++) {
+        if (type[i].id === id) {
+            toReturn = type[i];
+            break searching;
+        }
+    }
+    return toReturn;
+}

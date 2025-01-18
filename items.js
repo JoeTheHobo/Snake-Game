@@ -40,7 +40,8 @@ items.push({
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    id: 1,
 })
 items.push({
     name: "super_pellet",
@@ -81,10 +82,12 @@ items.push({
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    id: 2,
 })
 items.push({
     name: "turbo",
+    id: 3,
     img: "speedPowerUp.png",
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     canEat: true,
@@ -126,6 +129,7 @@ items.push({
 })
 items.push({
     name: "wall",
+    id: 4,
     img: "rock.png",
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     canEat: false,
@@ -167,6 +171,7 @@ items.push({
 })
 items.push({
     name: "wall2",
+    id: 5,
     img: "rock2.png",
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     canEat: false,
@@ -208,7 +213,7 @@ items.push({
 })
 items.push({
     name: "bronzeShield", //(string) Name Of Item
-    color: "blue", //(string) OutDated No Point In Using
+    id: 6,
     img: "bronzeShield.png", //(string) Image name
     canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: true, //(true/false) Does the item go into thep players inventory or is it used immediently
@@ -250,7 +255,7 @@ items.push({
 })
 items.push({
     name: "silverShield",
-    color: "blue",
+    id: 7,
     img: "silverShield.png",
     pickUp: true,
     canEat: true,
@@ -292,6 +297,7 @@ items.push({
 })
 items.push({
     name: "goldShield",
+    id: 8,
     img: "goldShield.png",
     pickUp: true,
     onEat_deleteMe: true,
@@ -334,6 +340,7 @@ items.push({
 })
 items.push({
     name: "lamp", //(string) Name Of Item
+    id: 9,
     img: "Lamp.png", //(string) Image name
     canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
@@ -374,6 +381,7 @@ items.push({
 })
 items.push({
     name: "snakeHole", //(string) Name Of Item
+    id: 10,
     img: "snakeHole1.png", //(string) Image name
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
@@ -407,6 +415,7 @@ items.push({
 })
 items.push({
     name: "snakeHole2", //(string) Name Of Item
+    id: 11,
     img: "snakeHole2.png", //(string) Image name
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
@@ -440,6 +449,7 @@ items.push({
 })
 items.push({
     name: "snakeHole3", //(string) Name Of Item
+    id: 12,
     img: "snakeHole3.png", //(string) Image name
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
@@ -474,6 +484,7 @@ items.push({
 
 items.push({
     name: "spawn", //(string) Name Of Item
+    id: 13,
     img: "spawn.png", //(string) Image name
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
@@ -508,6 +519,7 @@ items.push({
 
 items.push({
     name: "clear", //(string) Name Of Item
+    id: 14,
     img: "noZone.png", //(string) Image name
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
@@ -541,6 +553,7 @@ items.push({
 })
 items.push({
     name: "blueKey", //(string) Name Of Item
+    id: 15,
     img: "blueKey.png", //(string) Image name
     canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
@@ -574,6 +587,7 @@ items.push({
 })
 items.push({
     name: "redKey", //(string) Name Of Item
+    id: 16,
     img: "redKey.png", //(string) Image name
     canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
@@ -607,6 +621,7 @@ items.push({
 })
 items.push({
     name: "greenKey", //(string) Name Of Item
+    id: 17,
     img: "greenKey.png", //(string) Image name
     canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
@@ -640,6 +655,7 @@ items.push({
 })
 items.push({
     name: "blueLock", //(string) Name Of Item
+    id: 18,
     img: "blueLock.png", //(string) Image name
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
@@ -675,6 +691,7 @@ items.push({
 })
 items.push({
     name: "redLock", //(string) Name Of Item
+    id: 19,
     img: "redLock.png", //(string) Image name
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
@@ -710,6 +727,7 @@ items.push({
 })
 items.push({
     name: "greenLock", //(string) Name Of Item
+    id: 20,
     img: "greenLock.png", //(string) Image name
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
@@ -745,6 +763,7 @@ items.push({
 })
 items.push({
     name: "stoneWall", //(string) Name Of Item
+    id: 21,
     img: "stoneWall.jpg", //(string) Image name
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
