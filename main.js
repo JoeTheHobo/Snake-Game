@@ -21,15 +21,17 @@ function renderGame() {
     ctx_items.clearRect(0,0,canvas_items.width,canvas_items.height);
     for (let i = 0; i < currentBoard.map.length; i++) {
         for (let j = 0; j < currentBoard.map[0].length; j++) {
-            if (currentBoard.map[i][j].item !== false) {
-                currentBoard.map[i][j].item = getItem(currentBoard.map[i][j].item.name);
-                if (currentBoard.map[i][j].item.spawnLimit > 0) currentBoard.map[i][j].item.spawnLimit--; 
+            let cell = currentBoard.map[i][j]; 
+            cell.item = getItem(cell.item.name);
+            if (cell.item == undefined) cell.item = false; //Prolly Will Need To Resolve Issue Later
+            if (cell.item !== false) {
+                if (cell.item.spawnLimit > 0) cell.item.spawnLimit--; 
                 updateCells.push({
                     x: j,
                     y: i,
                 })
             }
-            if (currentBoard.map[i][j].tile == false) continue;
+            if (cell.tile == false) continue;
         }
     }
     renderCells();
@@ -325,6 +327,7 @@ function movePlayers() {
         if (player.isDead){
             continue;
         }
+
         if ((player.moveTik*deltaTime) >= (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             if (player.turboActive == true) {
                 player.turboDuration --;
@@ -832,15 +835,15 @@ function setUpItemCanvas() {
     let html_itemCanvasHolder = $("itemCanvasHolder");
     html_itemCanvasHolder.innerHTML = "";
 
+    function getCanvas(image) {
+        let itemCanvas = html_itemCanvasHolder.create("canvas");
+        let itemCtx = itemCanvas.getContext("2d");
+        itemCanvas.width = image.width;
+        itemCanvas.height = image.height;
+        itemCtx.drawImage(image,0,0);
+        return itemCanvas;
+    }
     for (let i = 0; i < currentGameMode.items.length; i++) {
-        function getCanvas(image) {
-            let itemCanvas = html_itemCanvasHolder.create("canvas");
-            let itemCtx = itemCanvas.getContext("2d");
-            itemCanvas.width = image.width;
-            itemCanvas.height = image.height;
-            itemCtx.drawImage(image,0,0);
-            return itemCanvas;
-        }
         if (!$("item_" + currentGameMode.items[i].name)) {
             console.warn("Outdated Item/Tile: " + currentGameMode.items[i].name);
             continue;
@@ -866,8 +869,7 @@ function startGame() {
     try {
         currentBoard.map = structuredClone(currentBoard.originalMap);
     } catch {
-        console.log(currentBoard.originalMap);
-        currentBoard.map = structuredClone(currentBoard.originalMap);
+        console.warn(currentBoard.originalMap);
     }
     
     doColorRender = false;

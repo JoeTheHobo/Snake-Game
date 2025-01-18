@@ -6,7 +6,6 @@ let updateCells = [];
 let updateSnakeCells = [];
 let players = ls.get("players",[]);
 let activePlayers;
-
 let boards = ls.get("boards",[]);
 let realBoards = [];
 for (let i = 0; i < boards.length; i++) {
@@ -14,6 +13,11 @@ for (let i = 0; i < boards.length; i++) {
 }
 boards = realBoards;
 boards = presetBoards.concat(boards);
+if (boards.length) {
+    for (let i = 0; i < boards.length; i++) {
+        boards[i] = fixBoard(boards[i]);
+    }
+}
 let currentBoardIndex = ls.get("currentBoardIndex",0);
 if (currentBoardIndex > boards.length - 1) currentBoardIndex = 0;
 let currentBoard = boards[currentBoardIndex];
@@ -1345,8 +1349,7 @@ function loadBoards() {
             shareImg.src = "img/share.png";
             share.board = boards[i];
             share.on("click",function() {
-                this.board.map = [];
-                downloadTextFile(this.board.name,JSON.stringify(this.board));
+                downloadTextFile(this.board.name,JSON.stringify(shortenBoard(this.board)));
             })
 
             let edit = buttonsRight.create("div");
@@ -1439,6 +1442,7 @@ function downloadTextFile(filename, text) {
   function importMap(textFile) {
     try {
         let board = JSON.parse(textFile);
+        board = fixBoard(board);
         boards.push(board);
         currentBoardIndex = boards.length - 1;
         currentBoard = boards[currentBoardIndex];
@@ -1453,9 +1457,54 @@ function downloadTextFile(filename, text) {
     let newBoards = [];
     for (let i = 0; i < boards.length; i++) {
         if (!boards[i].cantEdit) {
-            boards[i].map = [];
-            newBoards.push(boards[i]);
+            newBoards.push(shortenBoard(boards[i]));
         }
     }
     ls.save("boards",newBoards)
+  }
+  function shortenBoard(oldBoard) {
+    let board = structuredClone(oldBoard);
+    board.map = [];
+
+    let newMap = [];
+    for (let i = 0; i < board.originalMap.length; i++) {
+        let row = [];
+        for (let j = 0; j < board.originalMap[i].length; j++) {
+            let cell = board.originalMap[i][j];
+            let newCell = {
+                mouseOver: false,
+                tile: cell.tile.name,
+                item: cell.item.name ? cell.item.name : false,
+            }
+            row.push(newCell);
+        }
+        newMap.push(row);
+    }
+    board.originalMap = newMap;
+
+    return board;
+  }
+  function fixBoard(oldBoard) {
+    if (_type(oldBoard.originalMap[0][0].tile).type !== "string") return oldBoard;
+
+    let board = structuredClone(oldBoard);
+    board.map = [];
+
+    let newMap = [];
+    for (let i = 0; i < board.originalMap.length; i++) {
+        let row = [];
+        for (let j = 0; j < board.originalMap[i].length; j++) {
+            let cell = board.originalMap[i][j];
+            let newCell = {
+                mouseOver: false,
+                tile: getTile(cell.tile),
+                item: cell.item == false ? false : getRealItem(cell.item),
+            }
+            row.push(newCell);
+        }
+        newMap.push(row);
+    }
+    board.originalMap = newMap;
+
+    return board;
   }
