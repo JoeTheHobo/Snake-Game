@@ -1,9 +1,9 @@
 let items = [];
 items.push({
     name: "pellet",
-    color: "yellow",
     img: "snakeFood.png",
     canEat: true,
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     pickUp: false,
     onEat: {
         growPlayer: 1,
@@ -44,8 +44,8 @@ items.push({
 })
 items.push({
     name: "super_pellet",
-    color: "green",
     img: "snakeSuper.png",
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     canEat: true,
     pickUp: false,
     onEat: {
@@ -86,6 +86,7 @@ items.push({
 items.push({
     name: "turbo",
     img: "speedPowerUp.png",
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     canEat: true,
     pickUp: true,
     onEat: {
@@ -126,7 +127,7 @@ items.push({
 items.push({
     name: "wall",
     img: "rock.png",
-    color: "black",
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     canEat: false,
     pickUp: false,
     onEat: {
@@ -167,6 +168,7 @@ items.push({
 items.push({
     name: "wall2",
     img: "rock2.png",
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     canEat: false,
     pickUp: false,
     onEat: {
@@ -210,7 +212,7 @@ items.push({
     img: "bronzeShield.png", //(string) Image name
     canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: true, //(true/false) Does the item go into thep players inventory or is it used immediently
-    cantUseIfStatus: ["silverShield"], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    cantUseIfStatus: ["bronzeShield","silverShield"], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onEat: {
         shield: 1,
         addStatus: ["bronzeShield"],
@@ -252,6 +254,7 @@ items.push({
     img: "silverShield.png",
     pickUp: true,
     canEat: true,
+    cantUseIfStatus: ["goldShield","silverShield"], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onEat: {
         shield: 2,
         addStatus: ["silverShield"],
@@ -293,6 +296,7 @@ items.push({
     pickUp: true,
     onEat_deleteMe: true,
     canEat: true,
+    cantUseIfStatus: ["goldShield"], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onEat: {
         shield: 3,
         addStatus: ["goldShield"],
@@ -315,10 +319,10 @@ items.push({
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
+    specialSpawnWeight: 5,
     teleport: false,
     visible: true, //If show when playing
-    spawnCount: 5, //How Many To Spawn In When Spawning
+    spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
     
@@ -554,7 +558,7 @@ items.push({
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 5,
+    specialSpawnWeight: 0,
     visible: true, //If show when playing
     teleport: false, //Teleport ID
     spawnCount: 1, //How Many To Spawn In When Spawning
@@ -587,7 +591,7 @@ items.push({
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 5,
+    specialSpawnWeight: 0,
     visible: true, //If show when playing
     teleport: false, //Teleport ID
     spawnCount: 1, //How Many To Spawn In When Spawning
@@ -619,7 +623,7 @@ items.push({
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 5,
+    specialSpawnWeight: 0,
     visible: true, //If show when playing
     teleport: false, //Teleport ID
     spawnCount: 1, //How Many To Spawn In When Spawning

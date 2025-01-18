@@ -1240,56 +1240,31 @@ function gameMode_editItem(item,html_holder,gameMode) {
         })
         
     }
-    
-    
-    addSetting("Can Player Eat","dropdown",item.canEat,function(value) {
-        item.canEat = value == "true" ? true : false;
+
+    addSetting("Spawn Rate","number",item.specialSpawnWeight,function(value) {
+        item.specialSpawnWeight = Number(value);
+        if (value < 0) return;
         ls.save("gameModes",gameModes);
-        editGameMode(gameMode);
-    },["true","false"]);
-    if (item.canEat == true) {
-        addSetting("Delete On Eaten","dropdown",item.onEat_deleteMe,function(value) {
-        item.onEat_deleteMe = value == "true" ? true : false;
-        ls.save("gameModes",gameModes);
-        editGameMode(gameMode);
-        },["true","false"]);
-    }
-    if (item.canEat == true) {
-        addSetting("Pick Up Item","dropdown",item.pickUp,function(value) {
-        item.pickUp = value == "true" ? true : false;
-        ls.save("gameModes",gameModes);
-        editGameMode(gameMode);
-        },["true","false"]);
-    }
-    /*
-    if (item.pickUp == true && item.canEat) {
-        addSetting("Cant Use If Status","dropdown",item.cantUseIfStatus,function(value) {
-        item.cantUseIfStatus = value == "true" ? true : false;
-        ls.save("gameModes",gameModes);
-        editGameMode(gameMode);
-        },["true","false"]);
-    }
-    */
+    });
+
     if (item.canEat == true) {
         addSetting("Grow Player","number",item.onEat.growPlayer,function(value) {
-        item.onEat.growPlayer = value;
-        ls.save("gameModes",gameModes);
-        editGameMode(gameMode);
+            if (value < 0) return;
+            item.onEat.growPlayer = Number(value);
+            ls.save("gameModes",gameModes);
         });
     }
     if (item.canEat == true && item.onEat.shield > 0) {
         addSetting("Give Shield","number",item.onEat.shield,function(value) {
-        item.onEat.shield = value;
-        ls.save("gameModes",gameModes);
-        editGameMode(gameMode);
+            item.onEat.shield = Number(value);
+            ls.save("gameModes",gameModes);
         });
     }
     if (item.canEat == true && item.onEat.giveturbo) {
         addSetting("Turbo Duration","number",item.onEat.turbo.duration,function(value) {
         if (value < 0) return;
-        item.onEat.turbo.duration = value;
+        item.onEat.turbo.duration = Number(value);
         ls.save("gameModes",gameModes);
-        editGameMode(gameMode);
         });
     }
     if (item.canEat == true && item.onEat.giveturbo) {
@@ -1297,7 +1272,6 @@ function gameMode_editItem(item,html_holder,gameMode) {
         if (value < 0) return;
         item.onEat.turbo.moveSpeed = value;
         ls.save("gameModes",gameModes);
-        editGameMode(gameMode);
         });
     }
 }

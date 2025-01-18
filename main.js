@@ -761,9 +761,9 @@ function useItem(player) {
     
     let item = player.items[player.selectingItem];
     if (item == "empty") return;
-    if (item.cantUseIfStatus) {
+    if (item.cantUseIfStatus.length > 0) {
         for (let i = 0; i < item.cantUseIfStatus.length; i++) {
-            let id = getItem(item.cantUseIfStatus[i]).img;
+            let id = item.cantUseIfStatus[i];
             if (player.status.includes(id)) return;
         }
     }
