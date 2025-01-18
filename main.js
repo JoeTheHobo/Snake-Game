@@ -23,6 +23,7 @@ function renderGame() {
         for (let j = 0; j < currentBoard.map[0].length; j++) {
             if (currentBoard.map[i][j].item !== false) {
                 currentBoard.map[i][j].item = getItem(currentBoard.map[i][j].item.name);
+                if (currentBoard.map[i][j].item.spawnLimit > 0) currentBoard.map[i][j].item.spawnLimit--; 
                 updateCells.push({
                     x: j,
                     y: i,
@@ -480,9 +481,14 @@ function testItemUnderPlayer(player) {
     }
 
     let itemIsDelete = false;
+
     checking: for (let i = 0; i < mapItem.destructible.length; i++) {
         let status = mapItem.destructible[i];
         let deleteMe = false;
+        if (status === false) {
+            itemIsDelete = true;
+            break checking;
+        }
         if (status == "yes") deleteMe = true;
         if (player.status.includes(status)) deleteMe = true;
 
@@ -1056,24 +1062,19 @@ function specialItemManager()
         specialItemActiveChance = rnd(specialItemLowChance,specialItemHighChance);
         // Calculate the total weight
         let totalWeight = 0;
-        for (let i = 0; i < items.length; i++) {
-            if (items[i].spawnLimit === 0 || items[i].spawnLimit >= 1) {
-                if (items[i].spawnLimit > 0) {
-                    items[i].spawnLimit--;
-                } else {
-                    continue;
-                }
-            }
-            totalWeight += items[i].specialSpawnWeight;
+        for (let i = 0; i < currentGameMode.items.length; i++) {
+            if (currentGameMode.items[i].spawnLimit < 1 && _type(currentGameMode.items[i].spawnLimit).type == "number") continue;
+            totalWeight += currentGameMode.items[i].specialSpawnWeight;
         }
-
 
         // Generate a random number between 0 and totalWeight
         const randomWeight = Math.random() * totalWeight;
 
         // Find the item corresponding to the random weight
         let cumulativeWeight = 0;
-        findingItem: for (const item of items) {
+        findingItem: for (const item of currentGameMode.items) {
+            if (item.spawnLimit < 1 && _type(item.spawnLimit).type == "number") continue;
+
             cumulativeWeight += item.specialSpawnWeight;
             if (randomWeight < cumulativeWeight) {
                 spawn(item.name);

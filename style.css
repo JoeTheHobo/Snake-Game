@@ -663,7 +663,9 @@ html {
 }
 .me_goldBorder {
   border: 3px solid gold !important;
-
+}
+.me_fullSpawnLimit {
+  background: red;
 }
 
 .me_bottom {
@@ -725,3 +727,4 @@ html {
   user-select: none;
   margin: 5px;
 }
+

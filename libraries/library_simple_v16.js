@@ -55,7 +55,12 @@ Array.prototype.classRemove = function(classes) {
     let list = classes.split(" ")
     repeat(this,(object,i) => {
         repeat(list,(name,i) => {
-            object.classList.remove(name);
+            try {
+                object.classList.remove(name);
+            } catch {
+                
+            }
+            
         })
     })
     return this;

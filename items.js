@@ -399,7 +399,7 @@ items.push({
     spawnLimit: 1, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
     
-    destructible: [], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    destructible: [false], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
@@ -428,10 +428,11 @@ items.push({
     specialSpawnWeight: 4,
     visible: true, //If show when playing
     teleport: 1, //Teleport ID
+    spawnCount: 2, //How Many To Spawn In When Spawning
     spawnLimit: 1, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
 
-    destructible: [], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    destructible: [false], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
@@ -464,7 +465,7 @@ items.push({
     spawnLimit: 1, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
 
-    destructible: [], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    destructible: [false], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
