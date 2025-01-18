@@ -1469,7 +1469,7 @@ function downloadTextFile(filename, text) {
         boards.push(board);
         currentBoardIndex = boards.length - 1;
         currentBoard = boards[currentBoardIndex];
-        ls.save("boards",gameModes)
+        ls.save("boards",boards);
         ls.save("currentBoardIndex",currentBoardIndex);
         ls.save("currentBoard",currentBoard);
         loadBoards();

@@ -660,13 +660,80 @@ items.push({
         canvasFilter: false,
     },
 
-
-
     destructible: ["blueKey"],
     damage: 0,
     onDelete: {
         removeStatus: ["blueKey"],
 
     }
+})
+items.push({
+    name: "redLock", //(string) Name Of Item
+    img: "redLock.png", //(string) Image name
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
 
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    onEat: {
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: true,
+        canvasFilter: false,
+    },
+
+    destructible: ["redKey"],
+    damage: 0,
+    onDelete: {
+        removeStatus: ["redKey"],
+
+    }
+})
+items.push({
+    name: "greenLock", //(string) Name Of Item
+    img: "greenLock.png", //(string) Image name
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    onEat: {
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: true,
+        canvasFilter: false,
+    },
+
+    destructible: ["greenKey"],
+    damage: 0,
+    onDelete: {
+        removeStatus: ["greenKey"],
+
+    }
 })
