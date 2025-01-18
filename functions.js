@@ -1,5 +1,11 @@
 ls.setID("snakegame");
 
+let needsToBeReset = ls.get("reset",true);
+if (needsToBeReset) {
+    ls.clear();
+    ls.save("reset",false);
+}
+
 let showPerformance = false;
 
 let updateCells = [];
