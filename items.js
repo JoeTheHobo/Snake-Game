@@ -579,7 +579,7 @@ items.push({
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onEat: {
-        addStatus: ["blueKey"],
+        addStatus: ["redKey"],
         shield: 0,
         growPlayer: 0,
         spawn: [],
@@ -599,6 +599,7 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tiledestructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     
+    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
