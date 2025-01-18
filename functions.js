@@ -1,6 +1,6 @@
 ls.setID("snakegame");
 
-let forceReset = 1;
+let forceReset = 2;
 let needsToBeReset = ls.get("reset" + forceReset,true);
 if (needsToBeReset) {
     ls.clear();
@@ -169,6 +169,22 @@ playerCardsHolder
 window.on("resize",setResolution)
 setResolution();
 
+
+function newMap(width,height) {
+    newMap = [];
+    for (let i = 0; i < height; i++) {
+        let arr = [];
+        for (let j = 0; j < width; j++) {
+            arr.push({
+                tile: getTile("grass"),
+                item: false,
+            })
+        }
+        newMap.push(arr);
+    }
+    return newMap;
+}
+
 let playerNames1 = [
     "Squabbling", "Terrifying", "Witty", "Sassy", "Mysterious",
     "Jolly", "Spunky", "Clumsy", "Grumpy", "Cheeky",
@@ -202,20 +218,6 @@ function getTile(name) {
             return tiles[i];
         }
     }
-}
-function newMap(width,height) {
-    newMap = [];
-    for (let i = 0; i < height; i++) {
-        let arr = [];
-        for (let j = 0; j < width; j++) {
-            arr.push({
-                tile: getTile("grass"),
-                item: false,
-            })
-        }
-        newMap.push(arr);
-    }
-    return newMap;
 }
 function newPlayer() {
     let playerNumber = players.length;
@@ -1401,7 +1403,7 @@ function createBoard() {
         height: height,
         background: false,
         map: newMap(width,height),
-
+        id: Date.now() + "_" + rnd(1000),
         mouseOver: false,
     })
 
