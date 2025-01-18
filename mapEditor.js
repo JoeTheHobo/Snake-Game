@@ -227,6 +227,7 @@ $("me_canvas").on("mouseleave",function(e) {
     rightMouse = false;
 })
 document.on('keydown', (e) => {
+    if ($("scene_mapEditor").style.display == "none") return;
     // Check if Ctrl and S are pressed
     if (e.ctrlKey && e.key === 's') {
         e.preventDefault(); // Prevent the default save action
@@ -237,6 +238,7 @@ document.on('keydown', (e) => {
     if (shiftDown) renderMapEditorCanvas();
 });
 document.on("keyup",function(e) {
+    if ($("scene_mapEditor").style.display == "none") return;
     shiftDown = e.shiftKey;
     
     if (!shiftDown) {

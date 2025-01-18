@@ -16,7 +16,7 @@ boards = realBoards;
 boards = presetBoards.concat(boards);
 let currentBoardIndex = ls.get("currentBoardIndex",0);
 if (currentBoardIndex > boards.length - 1) currentBoardIndex = 0;
-let currentBoard = ls.get("currentBoard",boards[currentBoardIndex]);
+let currentBoard = boards[currentBoardIndex];
 
 
 let gameModes = ls.get("gameModes",presetGameModes);
@@ -1323,8 +1323,7 @@ function loadBoards() {
             currentBoardIndex = this.i;
             currentBoard = boards[currentBoardIndex];
             ls.save("currentBoardIndex",currentBoardIndex);
-            ls.save("currentBoard",currentBoard);
-            ls.save("boards",boards)
+            saveBoards();
             if (e.target.className !== "gm_img")
                 loadBoards();
 
@@ -1346,6 +1345,7 @@ function loadBoards() {
             shareImg.src = "img/share.png";
             share.board = boards[i];
             share.on("click",function() {
+                this.board.map = [];
                 downloadTextFile(this.board.name,JSON.stringify(this.board));
             })
 
@@ -1369,9 +1369,8 @@ function loadBoards() {
                 currentBoardIndex = 0;
                 currentBoard = boards[currentBoardIndex];
                 boards.splice(this.i,1);
-                ls.save("boards",gameModes)
+                saveBoards();
                 ls.save("currentBoardIndex",currentBoardIndex);
-                ls.save("currentBoard",currentBoard);
                 loadBoards();
             })
         }
@@ -1401,8 +1400,7 @@ function createBoard() {
     currentBoard.originalMap = currentBoard.map;
 
     ls.save("currentBoardIndex",currentBoardIndex);
-    ls.save("currentBoard",currentBoard);
-    ls.save("boards",boards)
+    saveBoards();
     
     openMapEditor(currentBoard);
 }
@@ -1444,11 +1442,20 @@ function downloadTextFile(filename, text) {
         boards.push(board);
         currentBoardIndex = boards.length - 1;
         currentBoard = boards[currentBoardIndex];
-        ls.save("boards",boards);
+        saveBoards();
         ls.save("currentBoardIndex",currentBoardIndex);
-        ls.save("currentBoard",currentBoard);
         loadBoards();
     } catch {
         console.warn("Incorect File")
     }
+  }
+  function saveBoards() {
+    let newBoards = [];
+    for (let i = 0; i < boards.length; i++) {
+        if (!boards[i].cantEdit) {
+            boards[i].map = [];
+            newBoards.push(boards[i]);
+        }
+    }
+    ls.save("boards",newBoards)
   }
