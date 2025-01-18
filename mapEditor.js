@@ -86,6 +86,9 @@ function renderMapEditorCanvas() {
 
     if (fill.pointA && !fill.pointB) {
         me_ctx.strokeStyle = "purple";
+        let startX = fill.pointA.x * gridSize;
+        let startY = fill.pointA.y * gridSize;
+
         let width = ((mouseX) - fill.pointA.x)*gridSize;
         let height = ((mouseY) - fill.pointA.y)*gridSize;
 
@@ -94,7 +97,15 @@ function renderMapEditorCanvas() {
         if (mouseY > fill.pointA.y) height += gridSize;
         if (height == 0) height = gridSize;
 
-        me_ctx.strokeRect(fill.pointA.x*gridSize,fill.pointA.y*gridSize,width,height);
+        if (mouseX < fill.pointA.x) {
+            startX += gridSize;
+            width -= gridSize;
+        }
+        if (mouseY < fill.pointA.y) {
+            startY += gridSize;
+            height -= gridSize;
+        }
+        me_ctx.strokeRect(startX,startY,width,height);
     }
 }
 function me_updateCell(x,y) {
