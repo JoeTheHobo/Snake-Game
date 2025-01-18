@@ -30,8 +30,11 @@ function openMapEditor(boardComingIn) {
     renderMapEditorCanvas();
 
     saveBoard();
+
+    clearInterval(saveInterval);
     saveInterval = setInterval(function() {
-        saveBoard();
+        if (!isActiveGame)
+            saveBoard();
     },60000)
 }
 function me_loadDropdown(holder,group,name) {

@@ -327,7 +327,7 @@ function movePlayers() {
         if (player.isDead){
             continue;
         }
-
+        
         if ((player.moveTik*deltaTime) >= (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             if (player.turboActive == true) {
                 player.turboDuration --;
@@ -465,11 +465,11 @@ function testItemUnderPlayer(player) {
         useItemHelper(player,mapItem);
     }
 
-    if (mapItem.teleport !== undefined && mapItem.teleport !== false && !player.justTeleported) {
+    if (_type(mapItem.teleport).type == "number" && !player.justTeleported) {
         findingPortal: for (let z = 0; z < currentBoard.map.length; z++) {
             for (let h = 0; h < currentBoard.map[z].length; h++) {
                 if (!currentBoard.map[z][h].item) continue;
-                if (player.pos.x == h || player.pos.y == z) continue;
+                if (player.pos.x == h && player.pos.y == z) continue;
                 if (currentBoard.map[z][h].item.teleport === mapItem.teleport) {
                     player.justTeleported = {
                         x: h,
@@ -1036,6 +1036,7 @@ function updateProduction() {
     }
 }
 function gameLoop(timestamp) {
+    if (!isActiveGame) return;
     deltaTime = (timestamp - lastTimestamp) / perfectFrameTime;
     lastTimestamp = timestamp;
 
