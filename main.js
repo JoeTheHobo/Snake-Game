@@ -223,20 +223,16 @@ function renderPlayers() {
                 let playerIsOnPortal = false;
                 if (_type(currentBoard.map[tailY][tailX].item.teleport).type == "number") {
                     playerIsOnPortal = true;
-                    tail.up = {
-                        active: false,
-                        distance: 1,
-                    };
                     tail.down = {
                         active: true,
                         distance: 1,
                     };
-                    if (afterTail.y + 1 == tailY) {
+                    if (afterTail.y + 1 == tailY || beforeTail.y + 1 == tailY) {
                         tail.up.active = true;
+                        tail.up.distance = 1;
                         tail.left.active = false;
                         tail.right.active = false;
                     }
-
                 }
                 
                 /* 
@@ -285,11 +281,11 @@ function renderPlayers() {
                 }
                 
 
-                if (Math.abs(beforeTail.x - afterTail.x) == 2 && !playerIsOnPortal) {
-                    image = player.canvas.body; direction = "right";
-                }
-                if (Math.abs(beforeTail.y - afterTail.y) == 2 && !playerIsOnPortal) {
+                if (tail.up.active && tail.down.active) if (tail.up.distance == 1 && tail.down.distance == 1) {
                     image = player.canvas.body; direction = "up";
+                }
+                if (tail.left.active && tail.right.active) if (tail.right.distance == 1 && tail.left.distance == 1) {
+                    image = player.canvas.body; direction = "right";
                 }
 
                 //Going Off Screen
