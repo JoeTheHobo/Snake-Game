@@ -149,6 +149,10 @@ $("me_canvas").on("mousemove",function(e) {
 
     board.originalMap[mouseY][mouseX].mouseOver = true;
     
+    if (shiftDown && fill.pointA !== false) {
+        return;
+    }
+
     if ((mouseDown || rightMouse) && selectedItem) {
         if (rightMouse) {
             board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
@@ -171,6 +175,15 @@ $("me_canvas").on("mousedown",function(e) {
 
     rightMouse = isRightMB;
     mouseDown = true;
+    
+    if (shiftDown && fill.pointA == false) {
+        fill.pointA = {
+            x: mouseX,
+            y: mouseY,
+        }
+        renderMapEditorCanvas();
+        return;
+    }
 })
 $("me_canvas").on("mouseup",function(e) {
     mouseDown = false;
