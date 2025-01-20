@@ -2,6 +2,8 @@ let selectedItem = {
     type: "item",
     content: getRealItem("pellet"),
     canEdit: true,
+    path: false,
+    cell: {...getRealItem("pellet")},
 }
 let board;
 let mouseDown = false;
@@ -18,6 +20,7 @@ let fill = {
     delete: false,
 }
 
+loadObjectMenu();
 function openMapEditor(boardComingIn) {
     board = boardComingIn;
     setScene("mapEditor");
@@ -59,10 +62,16 @@ function me_loadDropdown(holder,group,name) {
                 type: this.type,
                 content: this.content,
                 canEdit: true,
+                path: false,
+                cell: {...this.content},
             }
+
+            
 
             $(".me_itemHolder").classRemove("me_goldBorder");
             this.classList.add("me_goldBorder");
+
+            loadObjectMenu();
         })
     }
 }
@@ -308,3 +317,172 @@ $("me_name").on("input",function() {
     board.name = this.value;
     saveBoards();
 })
+
+function loadObjectMenu() {
+    $(".me_ih_image").src = "img/" + selectedItem.cell.img;
+    let holder = $(".me_ih_settings");
+    holder.innerHTML = "";
+    $(".me_ih_name").innerHTML = selectedItem.cell.name;
+
+    function addSetting(title,type,value,path) {
+        let settingHolder = holder.create("div");
+        settingHolder.className = "settingHolder";
+        let html_title = settingHolder.create("div");
+        html_title.className = "settingTitle";
+        html_title.innerHTML = title;
+
+        if (type == "status") {
+            let imgHolder = settingHolder.create("div");
+            imgHolder.css({
+                width: "50px",
+                height: "50px",
+                background: "white",
+                cursor: "url('./img/pointer.cur'), auto",
+                borderRadius: "5px",
+                border: "2px solid black",
+            })
+
+            if (value.subset(0,5) == "player") {
+                if (value.subset(0,6) == "player_") {
+                    let text = imgHolder.create("div");
+                    text.innerHTML = "P" + value.subset("_\\after","end"); 
+                    text.css({
+                        width: "100%",
+                        color: "black",
+                        fontWeight: "bold",
+                        fontSize: "25px",
+                        lineHeight: "50px",
+                        textAlign: "center",
+                    })
+                }
+                if (value == "player") {
+                    let text = imgHolder.create("div");
+                    text.innerHTML = "P"; 
+                    text.css({
+                        width: "100%",
+                        color: "black",
+                        fontWeight: "bold",
+                        fontSize: "25px",
+                        lineHeight: "50px",
+                        textAlign: "center",
+                    })
+                }
+            } else {
+                let img = imgHolder.create("img");
+                img.css({
+                    width: "100%",
+                    height: "100%",
+                })
+                let src;
+                src = "img/" + getRealItem(value).img;
+    
+                img.src = src;
+            }
+
+            imgHolder.path = path;
+            imgHolder.on("click",function() {
+                selectedItem.path = this.path;
+                $(".statusSelectionScreen").show("flex");
+            })
+        }
+    }
+
+    let object = selectedItem.cell;
+
+    if (object.boardDestructible[0] !== "yes") {
+        addSetting("Board Status Required","status",object.boardDestructible[0],["boardDestructible",0]);
+    }
+    if (object.destructible.length > 0) {
+        if (object.destructible[0] !== "yes" && object.destructible[0] !== false) {
+            addSetting("Player Status Required","status",object.destructible[0],["destructible",0]);
+        }
+    }
+    if (object.canCollide) {
+        if (object.onCollision.switchBoardStatus !== false && object.onCollision.switchBoardStatus !== undefined) {
+            addSetting("Toggle Board Status","status",object.onCollision.switchBoardStatus,["onCollision","switchBoardStatus"]);
+        }
+        if (object.onCollision.addBoardStatus !== false && object.onCollision.addBoardStatus !== undefined) {
+            addSetting("Add Board Status","status",object.onCollision.addBoardStatus,["onCollision","addBoardStatus"]);
+        }
+        if (object.onCollision.setBoardStatus !== false && object.onCollision.setBoardStatus !== undefined) {
+            addSetting("Set Board Status","status",object.onCollision.setBoardStatus,["onCollision","setBoardStatus"]);
+        }
+        if (object.onCollision.removeBoardStatus !== false && object.onCollision.removeBoardStatus !== undefined) {
+            addSetting("Remove Board Status","status",object.onCollision.removeBoardStatus,["onCollision","removeBoardStatus"]);
+        }
+    }
+}
+
+loadStatusSelectionScreen();
+function loadStatusSelectionScreen() {
+    let holder = $(".statusSelectionHolder");
+
+    function createStatus(object) {
+        let value = object;
+
+        let imgHolder = holder.create("div");
+        imgHolder.css({
+            width: "50px",
+            height: "50px",
+            background: "white",
+            cursor: "url('./img/pointer.cur'), auto",
+            borderRadius: "5px",
+            border: "2px solid black",
+            display: "inline-block",
+        })
+        if (_type(value).type == "string") {
+            imgHolder.status = "player";
+
+            if (value.length == 2) imgHolder.status = "player_" + value.charAt(1);
+
+            let text = imgHolder.create("div");
+            text.innerHTML = value; 
+            text.css({
+                width: "100%",
+                color: "black",
+                fontWeight: "bold",
+                fontSize: "25px",
+                lineHeight: "50px",
+                textAlign: "center",
+            })
+        } else {
+            imgHolder.status = value.name;
+            let img = imgHolder.create("img");
+            img.css({
+                width: "100%",
+                height: "100%",
+            })
+            let src;
+            src = "img/" + value.img;
+    
+            img.src = src;
+        }
+
+        imgHolder.on("click",function() {
+            if (selectedItem.path.length == 2) {
+                selectedItem.cell[selectedItem.path[0]][selectedItem.path[1]] = this.status;
+            }
+            if (selectedItem.path.length == 1) {
+                selectedItem.cell[selectedItem.path[0]] = this.status;
+            }
+            $(".statusSelectionScreen").hide();
+            loadObjectMenu();
+        })
+    }
+
+    createStatus("P");
+    createStatus("P0");
+    createStatus("P1");
+    createStatus("P2");
+    createStatus("P3");
+    createStatus("P4");
+    createStatus("P5");
+    createStatus("P6");
+    createStatus("P7");
+    for (let i = 0; i < items.length; i++) {
+        createStatus(items[i]);
+    }
+    for (let i = 0; i < tiles.length; i++) {
+        createStatus(tiles[i]);
+    }
+}

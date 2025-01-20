@@ -5,6 +5,14 @@ for (let i = 0; i < items.length; i++) {
     let img = $(".imageHolder").create("img");
     img.src = "img/" + items[i].img;
     img.id = "item_" + items[i].name;
+
+    if (items[i].onCollision) {
+        if (items[i].onCollision.switchImage) {
+            img = $(".imageHolder").create("img");
+            img.src = "img/" + items[i].onCollision.switchImage;
+            img.id = "item_" + items[i].name + "_switch";
+        }
+    }
 }
 for (let i = 0; i < tiles.length; i++) {
     if (!tiles[i].img) continue;
@@ -22,14 +30,16 @@ function renderGame() {
     for (let i = 0; i < currentBoard.map.length; i++) {
         for (let j = 0; j < currentBoard.map[0].length; j++) {
             let cell = currentBoard.map[i][j]; 
-            cell.item = getItem(cell.item.name);
-            if (cell.item == undefined) cell.item = false; //Prolly Will Need To Resolve Issue Later
             if (cell.item !== false) {
-                if (cell.item.spawnLimit > 0) cell.item.spawnLimit--; 
-                updateCells.push({
-                    x: j,
-                    y: i,
-                })
+                cell.item = {...getItem(cell.item.name)};
+                if (cell.item == undefined) cell.item = false; //Prolly Will Need To Resolve Issue Later
+                if (cell.item !== false) {
+                    if (cell.item.spawnLimit > 0) cell.item.spawnLimit--; 
+                    updateCells.push({
+                        x: j,
+                        y: i,
+                    })
+                }
             }
             if (cell.tile == false) continue;
         }
@@ -316,8 +326,6 @@ function renderPlayers() {
 function growPlayer(player,grow) {
     player.growTail = grow;
 }
-
-
 function movePlayers() {
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
@@ -368,7 +376,20 @@ function movePlayers() {
                     direction: player.moving,
                 });
                 updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
+                
+
+                let tail = player.tail[player.tail.length-1];
+                if (currentBoard.map[tail.y][tail.x].item) {
+                    let mapItem = currentBoard.map[tail.y][tail.x].item;
+                    if (mapItem.canCollide) runItemFunction(player,mapItem,"offCollision");
+                }
+                
                 player.tail.pop();
+            } else {
+                if (currentBoard.map[player.pos.y][player.pos.x].item) {
+                    let mapItem = currentBoard.map[player.pos.y][player.pos.x].item;
+                    if (mapItem.canCollide) runItemFunction(player,mapItem,"offCollision");
+                }
             }
             if (player.tail.length > 0)
                 updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
@@ -480,42 +501,123 @@ function testItemUnderPlayer(player) {
         player.justTeleported = false;
     }
 
-    let itemIsDelete = false;
+    if (mapItem.canCollide) {
+        runItemFunction(player,mapItem,"onCollision");
+    }
 
-    checking: for (let i = 0; i < mapItem.destructible.length; i++) {
-        let status = mapItem.destructible[i];
-        let deleteMe = false;
-        if (status === false) {
-            itemIsDelete = true;
+    let itemIsDelete = false;
+    let worldStatusPass = false;
+    checking: for (let i = 0; i < mapItem.boardDestructible.length; i++) {
+        if (mapItem.boardDestructible[i] == "yes")  {
+            worldStatusPass = true;
             break checking;
         }
-        if (status == "yes") deleteMe = true;
-        if (player.status.includes(status)) deleteMe = true;
-
-        if (deleteMe) {
-            itemIsDelete = true;
-            //Hurt Player
-            deletePlayer(player,false,mapItem);
-
-            //Checking On Eat Delete Me Object From Item
-            if (mapItem.onDelete) {
-                if (mapItem.onDelete.removeStatus.length > 0) {
-                    for (let j = 0; j < mapItem.onDelete.removeStatus.length; j++) {
-                        removePlayerStatus(player,mapItem.onDelete.removeStatus[j]);
-                    }
-                }    
-            }
-
-            //Delete Item
-            currentBoard.map[player.pos.y][player.pos.x].item = false;
-            updateCells.push({
-                x: player.pos.x,
-                y: player.pos.y,
-            })
+        if (currentBoard.boardStatus.includes(mapItem.boardDestructible[i])) {
+            worldStatusPass = true;
             break checking;
         }
     }
+    if (worldStatusPass) {
+        checking: for (let i = 0; i < mapItem.destructible.length; i++) {
+            let status = mapItem.destructible[i];
+            let deleteMe = false;
+            if (status === false) {
+                itemIsDelete = true;
+                break checking;
+            }
+            if (status == "yes") deleteMe = true;
+            if (player.status.includes(status)) deleteMe = true;
+    
+            if (deleteMe) {
+                itemIsDelete = true;
+                //Hurt Player
+                deletePlayer(player,false,mapItem);
+    
+                if (mapItem.deleteOnDestruct == false) {
+                    break checking;
+                }
+    
+                //Checking On Eat Delete Me Object From Item
+                if (mapItem.onDelete) {
+                    if (mapItem.onDelete.removeStatus.length > 0) {
+                        for (let j = 0; j < mapItem.onDelete.removeStatus.length; j++) {
+                            removePlayerStatus(player,mapItem.onDelete.removeStatus[j]);
+                        }
+                    }    
+                }
+    
+                //Delete Item
+                currentBoard.map[player.pos.y][player.pos.x].item = false;
+                updateCells.push({
+                    x: player.pos.x,
+                    y: player.pos.y,
+                })
+                break checking;
+            }
+        }
+    }
     if (!itemIsDelete) deletePlayer(player);
+}
+function runItemFunction(player,item,type) {
+    if (!type) return;
+
+    let collision;
+    if (type == "onCollision") collision = item.onCollision;
+    if (type == "offCollision") collision = item.offCollision;
+
+    if (!collision) return;
+
+    if (item.switchStatus == false) {
+        item.switchStatus = true;
+    } else {
+        item.switchStatus = false;
+    }
+
+    if (collision.switchImage) {
+        if (item.switchStatus === true) {
+            item.canvas = item.canvas2;
+        } else {
+            item.canvas = item.canvas1;
+        }
+        updateCells.push({
+            x: player.pos.x,
+            y: player.pos.y,
+        })
+    }
+    if (collision.switchBoardStatus) {
+        if (item.switchStatus === true) {
+            addBoardStatus(collision.switchBoardStatus,player);
+        } else {
+            removeBoardStatus(collision.switchBoardStatus,player);
+        }
+    }
+    if (collision.addBoardStatus) {
+        addBoardStatus(collision.addBoardStatus,player);
+    }
+    if (collision.removeBoardStatus) {
+        removeBoardStatus(collision.removeBoardStatus,player);
+    }
+    if (collision.setBoardStatus) {
+        let status = collision.setBoardStatus;
+        if (collision.setBoardStatus == "player") status = "player_" + player.name;
+
+        if (item.sendingBoardStatus === status) return;
+
+        if (item.sendingBoardStatus !== false) {
+            removeBoardStatus(item.sendingBoardStatus,player);
+        }
+
+        item.sendingBoardStatus = status;
+        addBoardStatus(status,player);
+    }
+    if (collision.changeHue) {
+        item.canvas = getItemCanvas($("item_" + item.name),collision.changeHue,player);
+
+        updateCells.push({
+            x: player.pos.x,
+            y: player.pos.y,
+        })
+    }
 }
 function useItemHelper(player,item) {
     let onEat = item.onEat;
@@ -552,6 +654,9 @@ function useItemHelper(player,item) {
     if (onEat.shield > 0) {
         player.shield = onEat.shield;
     }
+    if (onEat.winGame === true) {
+        endScreen(player);
+    }
     if (onEat.canvasFilter.active == true) {
         ctx_players.filter = onEat.canvasFilter.filter;
         ctx_items.filter = onEat.canvasFilter.filter;
@@ -584,13 +689,21 @@ function useItemHelper(player,item) {
         },onEat.canvasFilter.duration)
     }
 }
-function endScreen() {
+function endScreen(player = false) {
     gameEnd = true;
+    isActiveGame = false;
     $(".endGamePopup").show("flex");
+
+    //Kill Any Non Dead Snakes
+    for (let i = 0; i < activePlayers.length; i++) {
+        if (!activePlayers[i].isDead) {
+            deletePlayer(activePlayers[i],false,false,true);
+        }
+    }
+
     let longestTail = activePlayers[0].longestTail;
     let timeSurvived = activePlayers[0].timeSurvived;
     let mostKills = activePlayers[0].playerKills;
-
     let longestTailPlayer = activePlayers[0];
     let timeSurvivedPlayer = activePlayers[0];
     let mostKillsPlayer = activePlayers[0];
@@ -630,15 +743,23 @@ function endScreen() {
     } else {
         $("snakeKillsStat").hide();
     }
+
+    $("winnerStat").hide();
+    if (player) {
+        $("winnerStat").show("flex");
+        $(".winnerPlayerImg").style.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
+        $(".engGame_playerNameWinner").innerHTML = player.name;
+
+    }
 }
-function deletePlayer(player,playerWhoKilled,item){
+function deletePlayer(player,playerWhoKilled,item,instaKill = false){
     let damage;
     if (item) damage = item.damage;
     if (playerWhoKilled) damage = playerWhoKilled.bodyArmor;
     if (!item && !playerWhoKilled) damage = (player.shield+1);
     player.shield -= damage;
 
-    if (player.shield < 0){
+    if (player.shield < 0 || instaKill){
         if (playerWhoKilled) if (playerWhoKilled.name !== player.name) playerWhoKilled.playerKills++;
 
         //Delete Tail
@@ -699,6 +820,21 @@ function removePlayerStatus(player,itemName) {
 function addPlayerStatus(player,itemName) {
     player.status.push(getItem(itemName).name);
     drawPlayerBox(player);
+}
+function removeBoardStatus(status,player) {
+    if (status == "player") status = "player_" + player.name;
+
+    checking: for (let i = 0; i < currentBoard.boardStatus.length; i++) {
+        if (currentBoard.boardStatus[i] == status) {
+            currentBoard.boardStatus.splice(i,1);
+            break checking;
+        }
+    }
+}
+function addBoardStatus(status,player) {
+    if (status == "player") status = "player_" + player.name;
+
+    currentBoard.boardStatus.push(status);
 }
 
 
@@ -833,21 +969,38 @@ function setUpItemCanvas() {
     let html_itemCanvasHolder = $("itemCanvasHolder");
     html_itemCanvasHolder.innerHTML = "";
 
-    function getCanvas(image) {
-        let itemCanvas = html_itemCanvasHolder.create("canvas");
-        let itemCtx = itemCanvas.getContext("2d");
-        itemCanvas.width = image.width;
-        itemCanvas.height = image.height;
-        itemCtx.drawImage(image,0,0);
-        return itemCanvas;
-    }
     for (let i = 0; i < currentGameMode.items.length; i++) {
-        if (!$("item_" + currentGameMode.items[i].name)) {
-            console.warn("Outdated Item/Tile: " + currentGameMode.items[i].name);
-            continue;
+        currentGameMode.items[i].canvas = getItemCanvas($("item_" + currentGameMode.items[i].name));
+
+        if (currentGameMode.items[i].onCollision) {
+            currentGameMode.items[i].switchStatus = false;
+            if (currentGameMode.items[i].onCollision.switchImage) {
+                currentGameMode.items[i].canvas1 = getItemCanvas($("item_" + currentGameMode.items[i].name));
+                currentGameMode.items[i].canvas2 = getItemCanvas($("item_" + currentGameMode.items[i].name + "_switch"));
+            }
         }
-        currentGameMode.items[i].canvas = getCanvas($("item_" + currentGameMode.items[i].name));
+        currentGameMode.items[i].sendingBoardStatus = false;
     }
+}
+function getItemCanvas(image,filter = "",player) {
+    let html_itemCanvasHolder = $("itemCanvasHolder");
+
+    let itemCanvas = html_itemCanvasHolder.create("canvas");
+    let itemCtx = itemCanvas.getContext("2d");
+
+    if (filter == "player") {
+        filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
+    }
+
+    itemCanvas.width = image.width;
+    itemCanvas.height = image.height;
+    itemCtx.drawImage(image,0,0);
+
+    if (filter !== "") {
+        itemCtx.filter = filter;
+        itemCtx.drawImage(image,0,0);
+    }
+    return itemCanvas;
 }
 
 
@@ -873,6 +1026,8 @@ function startGame() {
     gridX = currentBoard.map[0].length;
     gridY = currentBoard.map.length;
     setResolution(gridX,gridY);
+
+    currentBoard.boardStatus = [];
     
     doColorRender = false;
     activePlayers = [];
@@ -904,7 +1059,7 @@ function startGame() {
         //Set Player Item Usage
         player.howManyItemsCanIUse = currentGameMode.howManyItemsCanPlayersUse;
         player.whenInventoryIsFullInsertItemsAt = 0;
-        player.status = [];
+        player.status = ["player_" + i];
         //Set All Player Items To Empty
         player.items = [];
         for (let j = 0; j < currentGameMode.howManyItemsCanPlayersUse; j++) {

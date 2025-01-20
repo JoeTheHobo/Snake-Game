@@ -1,11 +1,18 @@
 ls.setID("snakegame");
 
-let forceReset = 2;
+let forceReset = 3;
 let needsToBeReset = ls.get("reset" + forceReset,true);
 if (needsToBeReset) {
     ls.clear();
     ls.save("reset" + forceReset,false);
 }
+let forceGMReset = 4;
+needsToBeReset = ls.get("resetGM" + forceGMReset,true);
+if (needsToBeReset) {
+    ls.save("gameModes",[]);
+    ls.save("resetGM" + forceGMReset,false);
+}
+
 
 let showPerformance = false;
 
@@ -141,6 +148,10 @@ function adjustCanvasSize(gridx,gridy) {
 
     // Scale the canvas visually for the screen
     $(".game_canvas").css({
+        width: `${width}px`,
+        height: `${height}px`,
+    })
+    $(".edit_canvas").css({
         width: `${width}px`,
         height: `${height}px`,
     })
@@ -976,6 +987,8 @@ function drawPlayerBox(player) {
         right: statusRight,
     })
     for (let i = 0; i < player.status.length; i++) {
+        if (player.status[i].subset(0,6) == "player_") continue;
+
         let statusImage = statusHolder.create("img");
         statusImage.src = "img/" + getRealItem(player.status[i]).img;
         statusImage.css({
@@ -1458,6 +1471,11 @@ ls.save("boards",newBoards)
 }
 function shortenBoard(oldBoard) {
     oldBoard.map = [];
+    try {
+        structuredClone(oldBoard);
+    } catch {
+        console.log(oldBoard);
+    }
     let board = structuredClone(oldBoard);
 
     let _newMap = [];

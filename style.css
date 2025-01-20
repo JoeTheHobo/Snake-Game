@@ -24,7 +24,15 @@ html {
 }
 
 .game_canvas {
-    position: absolute;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+}
+.edit_canvas {
+    position: relative;
     left: 0;
     right: 0;
     bottom: 0;
@@ -657,6 +665,7 @@ html {
   border: 3px solid black;
   cursor: url('./img/pointer.cur'), auto;
   display: inline-block;
+  color: white;
 }
 .me_itemHolder:hover {
   border: 3px solid blue;
@@ -670,13 +679,50 @@ html {
 
 .me_bottom {
   height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.me_canvasHolder {
+  width: 80%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-#me_canvas {
-
+.me_objectHolder {
+  height: 100%;
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgb(31, 31, 31);
+  color: white;
+}
+.me_ih_imageHolder {
+  width: 50%;
+  aspect-ratio : 1 / 1;
+  background: white;
+  border-radius: 5px;
+  margin-top: 15px;
+}
+.me_ih_image {
+  height: 100%;
+  width: 100%;
+}
+.me_ih_name {
+  font-size: 30px;
+  margin-top: 5px;
+  user-select: none;
+}
+.me_ih_settings {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 15px;
 }
 
 
@@ -745,5 +791,28 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+}
+
+
+.statusSelectionScreen {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  display: none;
+  flex-direction: column;
+  width: 70%;
+  height: 60%;
+  border-radius: 5px;
+  background: gray;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.statusSelectionHolder {
+  width: 100%;
+  height: 100%;
+  display: block;
 
 }

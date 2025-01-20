@@ -35,6 +35,14 @@
         <div class="endGamePopup">
             <div class="title">Game Over</div>
 
+            <div id="winnerStat" class="header">Winner Winner Chicken Dinner</div>
+            <div id="winnerStat" class="endGameHolder">
+                <div class="engGame_playerImgHolder">
+                    <img class="engGame_playerImg winnerPlayerImg" src="img/snakeHead.png">
+                </div>
+                <div class="endGame_text engGame_playerNameWinner">SlitheringShank</div>
+            </div>
+
             <div class="header">Alive Longest</div>
             <div class="endGameHolder">
                 <div class="engGame_playerImgHolder">
@@ -121,7 +129,19 @@
         </div>
         <div class="me_toolbar"></div>
         <div class="me_bottom">
-            <canvas class="game_canvas" id="me_canvas"></canvas>
+            <div class="me_canvasHolder">
+                <canvas class="edit_canvas" id="me_canvas"></canvas>
+            </div>
+            <div class="me_objectHolder">
+                <div class="me_ih_imageHolder">
+                    <img src="img/rock2.png" class="me_ih_image">
+                </div>
+                <div class="me_ih_name">Pellet</div>
+                <div class="me_ih_settings"></div>
+            </div>
+        </div>
+        <div class="statusSelectionScreen">
+            <div class="statusSelectionHolder"></div>
         </div>
     </div>
 
