@@ -44,7 +44,6 @@ function renderGame() {
             if (cell.tile == false) continue;
         }
     }
-    renderCells();
 }
 function renderTiles() {
     ctx_tiles.clearRect(0,0,canvas_tiles.width,canvas_tiles.height);
@@ -62,6 +61,15 @@ function renderCells() {
         if (!mapCell.visible) continue;
         if (mapCell == false) continue;
         ctx_items.drawImage(mapCell.canvas,updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
+
+        if (mapCell.renderStatusPath.length > 0) {
+            let name = mapCell;
+            for (let j = 0; j < mapCell.renderStatusPath.length; j++) {
+                name = name[mapCell.renderStatusPath[j]];
+            }
+            let change = 1.5;
+            ctx_items.drawImage(getItem(name).canvas,(updateCells[i].x*gridSize) + (gridSize/2) - (gridSize/change/2),updateCells[i].y*gridSize + (gridSize/2) - (gridSize/change/2),gridSize/change,gridSize/change);
+        }
     }
     updateCells = [];
 }
@@ -830,11 +838,15 @@ function removeBoardStatus(status,player) {
             break checking;
         }
     }
+
+    loadBoardStatus();
 }
 function addBoardStatus(status,player) {
     if (status == "player") status = "player_" + player.name;
 
     currentBoard.boardStatus.push(status);
+
+    loadBoardStatus();
 }
 
 
@@ -1017,6 +1029,7 @@ function startGame() {
     }
 
     gamePaused = false;
+
     try {
         currentBoard.map = structuredClone(currentBoard.originalMap);
     } catch {
@@ -1094,6 +1107,9 @@ function startGame() {
     setUpPlayerCanvas();
     setUpItemCanvas();
     renderGame();
+    fixItemDifferences(currentBoard.map);
+    renderCells();
+    loadBoardStatus();
 
     for (let i = 0; i < currentGameMode.items.length; i++) {
         let item = currentGameMode.items[i];
@@ -1252,4 +1268,8 @@ function specialItemManager()
     }
 }
 
+
+
+
 setScene("menu")
+

@@ -38,6 +38,7 @@ items.push({
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
@@ -83,6 +84,7 @@ items.push({
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
@@ -129,6 +131,7 @@ items.push({
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
@@ -174,6 +177,7 @@ items.push({
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 1, //How much damage to inflict to play when collided with
@@ -219,6 +223,7 @@ items.push({
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 2, //How much damage to inflict to play when collided with
@@ -264,6 +269,7 @@ items.push({
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
@@ -309,6 +315,7 @@ items.push({
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
@@ -355,6 +362,7 @@ items.push({
     
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
@@ -399,6 +407,7 @@ items.push({
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
@@ -436,6 +445,7 @@ items.push({
     
     destructible: [false], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
@@ -473,6 +483,7 @@ items.push({
 
     destructible: [false], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
@@ -510,6 +521,7 @@ items.push({
 
     destructible: [false], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
@@ -548,6 +560,7 @@ items.push({
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
@@ -586,6 +599,7 @@ items.push({
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
@@ -623,6 +637,7 @@ items.push({
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
@@ -660,6 +675,7 @@ items.push({
     
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
@@ -697,6 +713,7 @@ items.push({
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
@@ -735,6 +752,7 @@ items.push({
 
     destructible: ["blueKey"],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
@@ -774,6 +792,7 @@ items.push({
 
     destructible: ["redKey"],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
@@ -813,6 +832,7 @@ items.push({
 
     destructible: ["greenKey"],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
@@ -852,6 +872,7 @@ items.push({
 
     destructible: [],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
@@ -897,6 +918,7 @@ items.push({
 
     destructible: [false],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: ["onCollision","switchBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
@@ -943,6 +965,7 @@ items.push({
 
     destructible: [false],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: ["onCollision","removeBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
@@ -989,6 +1012,7 @@ items.push({
 
     destructible: [false],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: ["onCollision","addBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
@@ -1038,6 +1062,7 @@ items.push({
 
     destructible: [false],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
@@ -1089,6 +1114,7 @@ items.push({
 
     destructible: [false],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: ["onCollision","setBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
@@ -1143,6 +1169,7 @@ items.push({
 
     destructible: [false],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: ["onCollision","addBoardStatus"], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
@@ -1197,6 +1224,7 @@ items.push({
 
     destructible: ["player_0"],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: ["destructible"], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: false,
     damage: 0,
@@ -1251,6 +1279,7 @@ items.push({
 
     destructible: ["yes"], //Leave Blank If Nothing can Destroy This. "yes" - Anyone can destroy this
     boardDestructible: ["switch"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: ["boardDestructible"], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: false,
     damage: 0,

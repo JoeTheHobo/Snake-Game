@@ -31,6 +31,12 @@ html {
   top: 0;
   margin: auto;
 }
+.boardStatusHolder {
+  position: absolute;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+}
 .edit_canvas {
     position: relative;
     left: 0;
@@ -55,6 +61,7 @@ html {
   #gameTitle {
     color: white;
     font-size: 90px;
+    user-select: none;
 
   }
   .pixel {

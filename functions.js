@@ -1,6 +1,6 @@
 ls.setID("snakegame");
 
-let forceReset = 3;
+let forceReset = 4;
 let needsToBeReset = ls.get("reset" + forceReset,true);
 if (needsToBeReset) {
     ls.clear();
@@ -77,7 +77,7 @@ const getPPI = () => {
     return sizeInPixels;
   };
 
-  let gridSize = Math.floor(setPhysicalSize(.15));
+  let gridSize = Math.floor(setPhysicalSize(.19));
   
 
 const perfectFrameTime = 1000 / 60;
@@ -154,6 +154,14 @@ function adjustCanvasSize(gridx,gridy) {
     $(".edit_canvas").css({
         width: `${width}px`,
         height: `${height}px`,
+    })
+
+    //Fix Board Status Position
+    let offset = $(".game_canvas")[0].getBoundingClientRect();
+    $(".boardStatusHolder").css({
+        top: offset.bottom + "px",
+        left: offset.left + "px",
+        width: width,
     })
 }
 
@@ -1461,13 +1469,13 @@ function downloadTextFile(filename, text) {
     }
   }
 function saveBoards() {
-let newBoards = [];
-for (let i = 0; i < boards.length; i++) {
-    if (!boards[i].cantEdit) {
-        newBoards.push(shortenBoard(boards[i]));
+    let newBoards = [];
+    for (let i = 0; i < boards.length; i++) {
+        if (!boards[i].cantEdit) {
+            newBoards.push(shortenBoard(boards[i]));
+        }
     }
-}
-ls.save("boards",newBoards)
+    ls.save("boards",newBoards)
 }
 function shortenBoard(oldBoard) {
     oldBoard.map = [];
@@ -1597,4 +1605,90 @@ function getByID(id,type) {
         }
     }
     return toReturn;
+}
+function findItemDifferences(map) {
+    let allDifferences = [];
+    for (let i = 0; i < map.length; i++) {
+        for (let j = 0; j < map[i].length; j++) {
+            let item = map[i][j].item;
+            if (!item) continue;
+
+            let realItem = getRealItem(item.name);
+            let differences = compareObjects(realItem,item);
+            if (differences.length == 0) continue;
+
+            allDifferences.push({
+                differences: differences,
+                x: j,
+                y: i,
+            })
+        }
+    }
+    console.log("3.1.5",currentBoard.itemDifferences)
+    return allDifferences;
+}
+function compareObjects(obj1, obj2, path = []) {
+    let differences = [];
+  
+    // Check keys in obj1
+    for (let key in obj1) {
+      if (Object.prototype.hasOwnProperty.call(obj1, key)) {
+        if (!Object.prototype.hasOwnProperty.call(obj2, key)) {
+          differences.push([...path, key, undefined]); // Key missing in obj2
+        } else if (typeof obj1[key] === "object" && obj1[key] !== null && typeof obj2[key] === "object" && obj2[key] !== null) {
+          // Recursively check nested objects
+          differences = differences.concat(compareObjects(obj1[key], obj2[key], [...path, key]));
+        } else if (obj1[key] !== obj2[key]) {
+          differences.push([...path, key, obj2[key]]);
+        }
+      }
+    }
+    // Check keys in obj2 that aren't in obj1
+    for (let key in obj2) {
+        if (Object.prototype.hasOwnProperty.call(obj2, key) && !Object.prototype.hasOwnProperty.call(obj1, key)) {
+        differences.push([...path, key, obj2[key]]);
+        }
+    }
+
+    return differences;
+}
+
+function loadBoardStatus() {
+    let holder = $(".boardStatusHolder");
+    holder.innerHTML = "";
+
+    for (let i = 0; i < currentBoard.boardStatus.length; i++) {
+        let status = currentBoard.boardStatus[i];
+        let imgHolder = holder.create("div");
+        imgHolder.css({
+            width: "25px",
+            height: "25px",
+            margin: "2px",
+            borderRadius: "5px",
+            border: "2px solid black",
+            background: "white",
+        })
+
+        let img = imgHolder.create("img");
+        img.src = "img/" + getRealItem(status).img;
+        img.css({
+            width: "100%",
+            height: "100%",
+        })
+    }
+}
+
+
+function fixItemDifferences(map) {
+    for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
+        let d = currentBoard.itemDifferences[i];
+        let pos = map[d.y][d.x].item;
+        for (let j = 0; j < d.differences.length; j++) {
+            let change = d.differences[j];
+            if (change.length == 3) {
+                pos[change[0]][change[1]] = change[2];
+            }
+            if (change.length == 2) pos[change[0]] = change[1];
+        }
+    }
 }

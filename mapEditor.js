@@ -23,6 +23,7 @@ let fill = {
 loadObjectMenu();
 function openMapEditor(boardComingIn) {
     board = boardComingIn;
+    console.log(1,currentBoard.itemDifferences)
     setScene("mapEditor");
     $("me_name").value = board.name;
 
@@ -31,8 +32,12 @@ function openMapEditor(boardComingIn) {
 
     setResolution(board.width,board.height);
     renderMapEditorCanvas();
-
-    saveBoard();
+    console.log(2,currentBoard.itemDifferences)
+    fixItemDifferences(currentBoard.originalMap);
+    console.log(3,currentBoard.itemDifferences)
+    
+    saveBoard(true);
+    console.log(4,currentBoard.itemDifferences)
 
     clearInterval(saveInterval);
     saveInterval = setInterval(function() {
@@ -55,7 +60,7 @@ function me_loadDropdown(holder,group,name) {
         })
 
         itemHolder.type = name.subset(0,"_\\before");
-        itemHolder.content = group[i];
+        itemHolder.content = JSON.parse(JSON.stringify(group[i]));
         itemHolder.id = "me_" + name + group[i].name;
         itemHolder.on("click",function() {
             selectedItem = {
@@ -63,9 +68,9 @@ function me_loadDropdown(holder,group,name) {
                 content: this.content,
                 canEdit: true,
                 path: false,
-                cell: {...this.content},
+                cell: {...JSON.parse(JSON.stringify(this.content))},
             }
-
+            
             
 
             $(".me_itemHolder").classRemove("me_goldBorder");
@@ -131,6 +136,15 @@ function me_updateCell(x,y) {
     if (cell.item) {
         itemCounts.push("item_" + cell.item.name);
         me_ctx.drawImage($("item_" + cell.item.name),gridSize*x,gridSize*y,gridSize,gridSize);
+        
+        if (cell.item.renderStatusPath.length > 0) {
+            let name = cell.item;
+            for (let j = 0; j < cell.item.renderStatusPath.length; j++) {
+                name = name[cell.item.renderStatusPath[j]];
+            }
+            let change = 1.5;
+            me_ctx.drawImage($("item_" + getItem(name).name),(x*gridSize) + (gridSize/2) - (gridSize/change/2),y*gridSize + (gridSize/2) - (gridSize/change/2),gridSize/change,gridSize/change);
+        }
     }
 
     if (cell.mouseOver) {
@@ -166,7 +180,7 @@ $("me_canvas").on("mousemove",function(e) {
         if (rightMouse) {
             board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
         } else if (selectedItem.canEdit) {
-            board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.content;
+            board.originalMap[mouseY][mouseX][selectedItem.type] = JSON.parse(JSON.stringify(selectedItem.cell));
         }
         $("saveStatus").innerHTML = "Board Is Not Saved";
     }
@@ -242,7 +256,7 @@ $("me_canvas").on("click",function(e) {
     }
 
     if (selectedItem && selectedItem.canEdit) {
-        board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.content;
+        board.originalMap[mouseY][mouseX][selectedItem.type] = JSON.parse(JSON.stringify(selectedItem.cell));
         renderMapEditorCanvas();
         $("saveStatus").innerHTML = "Board Is Not Saved";
     }
@@ -288,7 +302,7 @@ function tool_fill() {
     for (let i = upY; i < bottomY+1; i++) {
         for (let j = leftX; j < rightX+1; j++) {
             if (fill.delete) board.originalMap[i][j][selectedItem.type] = false;
-            else board.originalMap[i][j][selectedItem.type] = selectedItem.content;
+            else board.originalMap[i][j][selectedItem.type] = selectedItem.cell;
         }
     }
 
@@ -300,8 +314,9 @@ function tool_fill() {
         delete: false,
     }
 }
-function saveBoard() {
+function saveBoard(saveDifferences = false) {
     let html_saveStatus = $("saveStatus");
+    currentBoard.itemDifferences = findItemDifferences(currentBoard.originalMap);
     saveBoards();
 
     html_saveStatus.innerHTML = "Board Saved";
@@ -374,7 +389,7 @@ function loadObjectMenu() {
                     height: "100%",
                 })
                 let src;
-                src = "img/" + getRealItem(value).img;
+                if (selectedItem.type == "item") src = "img/" + getRealItem(value).img;
     
                 img.src = src;
             }
@@ -388,6 +403,8 @@ function loadObjectMenu() {
     }
 
     let object = selectedItem.cell;
+    
+    if (selectedItem.type == "tile") return;
 
     if (object.boardDestructible[0] !== "yes") {
         addSetting("Board Status Required","status",object.boardDestructible[0],["boardDestructible",0]);
@@ -417,7 +434,7 @@ loadStatusSelectionScreen();
 function loadStatusSelectionScreen() {
     let holder = $(".statusSelectionHolder");
 
-    function createStatus(object) {
+    function createStatus(object,type) {
         let value = object;
 
         let imgHolder = holder.create("div");
@@ -457,7 +474,6 @@ function loadStatusSelectionScreen() {
     
             img.src = src;
         }
-
         imgHolder.on("click",function() {
             if (selectedItem.path.length == 2) {
                 selectedItem.cell[selectedItem.path[0]][selectedItem.path[1]] = this.status;
@@ -481,8 +497,5 @@ function loadStatusSelectionScreen() {
     createStatus("P7");
     for (let i = 0; i < items.length; i++) {
         createStatus(items[i]);
-    }
-    for (let i = 0; i < tiles.length; i++) {
-        createStatus(tiles[i]);
     }
 }
