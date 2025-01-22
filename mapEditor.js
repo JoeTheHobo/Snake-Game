@@ -476,8 +476,10 @@ function loadObjectMenu() {
         if (object.onCollision.removeBoardStatus !== false && object.onCollision.removeBoardStatus !== undefined) {
             addSetting("Remove Board Status","status",object.onCollision.removeBoardStatus,["onCollision","removeBoardStatus"]);
         }
-        if (object.offCollision.removeBoardStatus !== false && object.offCollision.removeBoardStatus !== undefined) {
-            addSetting("Remove Board Status","status",object.offCollision.removeBoardStatus,["offCollision","removeBoardStatus"]);
+        if (object.offCollision) {
+            if (object.offCollision.removeBoardStatus !== false && object.offCollision.removeBoardStatus !== undefined) {
+                addSetting("Remove Board Status","status",object.offCollision.removeBoardStatus,["offCollision","removeBoardStatus"]);
+            }
         }
     }
     if (object.name == "boardLockedCell")
