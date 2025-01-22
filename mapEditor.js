@@ -3,7 +3,7 @@ let selectedItem = {
     content: getRealItem("pellet"),
     canEdit: true,
     path: false,
-    cell: {...getRealItem("pellet")},
+    cell: cloneObject(getRealItem("pellet")),
 }
 let board;
 let mouseDown = false;
@@ -21,9 +21,24 @@ let fill = {
 }
 
 loadObjectMenu();
+function fixItemDifferencesMapEditor(map) {
+    if (!currentBoard.itemDifferences) return;
+    for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
+        let d = currentBoard.itemDifferences[i];
+        let pos = structuredClone(map[d.y][d.x].item);
+        if (!pos) continue;
+        for (let j = 0; j < d.differences.length; j++) {
+            let change = d.differences[j]; 
+            if (change.length == 3) {
+                pos[change[0]][change[1]] = change[2];
+            }
+            if (change.length == 2) pos[change[0]] = change[1];
+        }
+        map[d.y][d.x].item = pos;
+    }
+}
 function openMapEditor(boardComingIn) {
     board = boardComingIn;
-    console.log(1,currentBoard.itemDifferences)
     setScene("mapEditor");
     $("me_name").value = board.name;
 
@@ -32,12 +47,11 @@ function openMapEditor(boardComingIn) {
 
     setResolution(board.width,board.height);
     renderMapEditorCanvas();
-    console.log(2,currentBoard.itemDifferences)
-    fixItemDifferences(currentBoard.originalMap);
-    console.log(3,currentBoard.itemDifferences)
-    
+    console.log(6,currentBoard.itemDifferences,items[28].boardDestructible);
+    fixItemDifferencesMapEditor(currentBoard.originalMap);
+    console.log(7,currentBoard.itemDifferences,items[28].boardDestructible);
     saveBoard(true);
-    console.log(4,currentBoard.itemDifferences)
+    console.log(8,currentBoard.itemDifferences,items[28].boardDestructible);
 
     clearInterval(saveInterval);
     saveInterval = setInterval(function() {
@@ -60,18 +74,16 @@ function me_loadDropdown(holder,group,name) {
         })
 
         itemHolder.type = name.subset(0,"_\\before");
-        itemHolder.content = JSON.parse(JSON.stringify(group[i]));
+        itemHolder.content = cloneObject(group[i]);
         itemHolder.id = "me_" + name + group[i].name;
         itemHolder.on("click",function() {
             selectedItem = {
                 type: this.type,
-                content: this.content,
+                content: structuredClone(this.content),
                 canEdit: true,
                 path: false,
-                cell: {...JSON.parse(JSON.stringify(this.content))},
+                cell: structuredClone(this.content),
             }
-            
-            
 
             $(".me_itemHolder").classRemove("me_goldBorder");
             this.classList.add("me_goldBorder");
@@ -97,7 +109,7 @@ function renderMapEditorCanvas() {
         }
         let count = itemCounts.reduce((acc, item) => (item === ("item_" + items[i].name) ? acc + 1 : acc), 0);
         if (count === (items[i].spawnLimit*items[i].spawnCount)) {
-            if (selectedItem.content.name === items[i].name && selectedItem.type == "item") selectedItem.canEdit = false;
+            if (selectedItem.cell.name === items[i].name && selectedItem.type == "item") selectedItem.canEdit = false;
             $("me_item_" + items[i].name).classAdd("me_fullSpawnLimit");
         }
     }
@@ -180,7 +192,7 @@ $("me_canvas").on("mousemove",function(e) {
         if (rightMouse) {
             board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
         } else if (selectedItem.canEdit) {
-            board.originalMap[mouseY][mouseX][selectedItem.type] = JSON.parse(JSON.stringify(selectedItem.cell));
+            board.originalMap[mouseY][mouseX][selectedItem.type] = structuredClone(selectedItem.cell);
         }
         $("saveStatus").innerHTML = "Board Is Not Saved";
     }
@@ -233,7 +245,7 @@ $("me_canvas").on("contextmenu",function(e) {
         return;
     }
 
-    board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
+    board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.type == "tile" ? cloneObject(getTile("clear")) : false;
     renderMapEditorCanvas();
 })
 $("me_canvas").on("click",function(e) {
@@ -256,7 +268,7 @@ $("me_canvas").on("click",function(e) {
     }
 
     if (selectedItem && selectedItem.canEdit) {
-        board.originalMap[mouseY][mouseX][selectedItem.type] = JSON.parse(JSON.stringify(selectedItem.cell));
+        board.originalMap[mouseY][mouseX][selectedItem.type] = structuredClone(selectedItem.cell);
         renderMapEditorCanvas();
         $("saveStatus").innerHTML = "Board Is Not Saved";
     }
@@ -302,7 +314,7 @@ function tool_fill() {
     for (let i = upY; i < bottomY+1; i++) {
         for (let j = leftX; j < rightX+1; j++) {
             if (fill.delete) board.originalMap[i][j][selectedItem.type] = false;
-            else board.originalMap[i][j][selectedItem.type] = selectedItem.cell;
+            else board.originalMap[i][j][selectedItem.type] = cloneObject(selectedItem.cell);
         }
     }
 
@@ -496,6 +508,6 @@ function loadStatusSelectionScreen() {
     createStatus("P6");
     createStatus("P7");
     for (let i = 0; i < items.length; i++) {
-        createStatus(items[i]);
+        createStatus(structuredClone(items[i]));
     }
 }

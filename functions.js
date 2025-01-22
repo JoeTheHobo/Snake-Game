@@ -1,6 +1,6 @@
 ls.setID("snakegame");
 
-let forceReset = 4;
+let forceReset = 5;
 let needsToBeReset = ls.get("reset" + forceReset,true);
 if (needsToBeReset) {
     ls.clear();
@@ -1680,9 +1680,11 @@ function loadBoardStatus() {
 
 
 function fixItemDifferences(map) {
+    if (!currentBoard.itemDifferences) return;
     for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
         let d = currentBoard.itemDifferences[i];
-        let pos = map[d.y][d.x].item;
+        let pos = (map[d.y][d.x].item);
+        if (!pos) continue;
         for (let j = 0; j < d.differences.length; j++) {
             let change = d.differences[j];
             if (change.length == 3) {
@@ -1690,5 +1692,14 @@ function fixItemDifferences(map) {
             }
             if (change.length == 2) pos[change[0]] = change[1];
         }
+        map[d.y][d.x].item = pos;
     }
+}
+function cloneObject(object) {
+    try {
+        return {...JSON.parse(JSON.stringify(object))};
+    } catch {
+        console.warn("Structed Clone Failed On:",object);
+    }
+    
 }

@@ -31,9 +31,11 @@ function renderGame() {
         for (let j = 0; j < currentBoard.map[0].length; j++) {
             let cell = currentBoard.map[i][j]; 
             if (cell.item !== false) {
-                cell.item = {...getItem(cell.item.name)};
+                cell.item = cloneObject(getItem(cell.item.name));
                 if (cell.item == undefined) cell.item = false; //Prolly Will Need To Resolve Issue Later
                 if (cell.item !== false) {
+                    console.log(getItem(cell.item.name))
+                    cell.item.canvas = getItem(cell.item.name).canvas;
                     if (cell.item.spawnLimit > 0) cell.item.spawnLimit--; 
                     updateCells.push({
                         x: j,
@@ -60,6 +62,7 @@ function renderCells() {
         ctx_items.clearRect(updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
         if (!mapCell.visible) continue;
         if (mapCell == false) continue;
+        console.log(mapCell)
         ctx_items.drawImage(mapCell.canvas,updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
 
         if (mapCell.renderStatusPath.length > 0) {
