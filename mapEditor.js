@@ -444,7 +444,7 @@ function loadObjectMenu() {
                 if (this.type == "statusPlayer") {
                     $(".nonPlayer").hide();
                 } else {
-                    $(".nonPlayer").show();
+                    $(".nonPlayer").show("inline-block");
                 }
                 $(".statusSelectionScreen").show("flex");
             })
@@ -459,7 +459,7 @@ function loadObjectMenu() {
         addSetting("Board Status Required","status",object.boardDestructible[0],["boardDestructible",0]);
     }
     if (object.destructible.length > 0) {
-        if (object.destructible[0] !== "yes" && object.destructible[0] !== false) {
+        if (object.destructible[0] !== "yes" && object.destructible[0] !== false && object.name !== "blueLock" && object.name !== "redLock" && object.name !== "greenLock") {
             addSetting("Player Status Required","status",object.destructible[0],["destructible",0]);
         }
     }
@@ -476,8 +476,12 @@ function loadObjectMenu() {
         if (object.onCollision.removeBoardStatus !== false && object.onCollision.removeBoardStatus !== undefined) {
             addSetting("Remove Board Status","status",object.onCollision.removeBoardStatus,["onCollision","removeBoardStatus"]);
         }
+        if (object.offCollision.removeBoardStatus !== false && object.offCollision.removeBoardStatus !== undefined) {
+            addSetting("Remove Board Status","status",object.offCollision.removeBoardStatus,["offCollision","removeBoardStatus"]);
+        }
     }
-    addSetting("Board Status Required","number",object.boardDestructibleCountRequired,["boardDestructibleCountRequired"]);
+    if (object.name == "boardLockedCell")
+        addSetting("Board Status Required","number",object.boardDestructibleCountRequired,["boardDestructibleCountRequired"]);
 
     if (object.spawnPlayerID) {
         addSetting("Spawn Player ID","statusPlayer",object.spawnPlayerID,["spawnPlayerID"]);
@@ -553,6 +557,7 @@ function loadStatusSelectionScreen() {
     createStatus("P6");
     createStatus("P7");
     for (let i = 0; i < items.length; i++) {
+        if (!items[i].showInEditor) continue;
         createStatus(structuredClone(items[i]));
     }
 }

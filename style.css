@@ -821,7 +821,13 @@ html {
 }
 .statusSelectionHolder {
   width: 100%;
-  height: 100%;
-  display: block;
-
+  height: auto; /* Allow dynamic height based on content */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start; /* Align items to the top of the row */
+  gap: 1px; /* Optional: Adjust spacing between items */
+}
+.statusSelectionHolder div:hover {
+  border: 2px solid blue !important;
 }

@@ -820,7 +820,6 @@ function addPlayerStatus(player,itemName) {
 }
 function removeBoardStatus(status,player) {
     if (status == "player") status = "player_" + player.id;
-
     checking: for (let i = 0; i < currentBoard.boardStatus.length; i++) {
         if (currentBoard.boardStatus[i] == status) {
             currentBoard.boardStatus.splice(i,1);
