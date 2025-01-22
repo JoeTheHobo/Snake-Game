@@ -47,11 +47,8 @@ function openMapEditor(boardComingIn) {
 
     setResolution(board.width,board.height);
     renderMapEditorCanvas();
-    console.log(6,currentBoard.itemDifferences,items[28].boardDestructible);
     fixItemDifferencesMapEditor(currentBoard.originalMap);
-    console.log(7,currentBoard.itemDifferences,items[28].boardDestructible);
     saveBoard(true);
-    console.log(8,currentBoard.itemDifferences,items[28].boardDestructible);
 
     clearInterval(saveInterval);
     saveInterval = setInterval(function() {
@@ -147,15 +144,26 @@ function me_updateCell(x,y) {
     }
     if (cell.item) {
         itemCounts.push("item_" + cell.item.name);
-        me_ctx.drawImage($("item_" + cell.item.name),gridSize*x,gridSize*y,gridSize,gridSize);
-        
+        me_ctx.drawImage(getItemCanvas(cell.item.name),gridSize*x,gridSize*y,gridSize,gridSize);
         if (cell.item.renderStatusPath.length > 0) {
             let name = cell.item;
             for (let j = 0; j < cell.item.renderStatusPath.length; j++) {
                 name = name[cell.item.renderStatusPath[j]];
             }
             let change = 1.5;
-            me_ctx.drawImage($("item_" + getItem(name).name),(x*gridSize) + (gridSize/2) - (gridSize/change/2),y*gridSize + (gridSize/2) - (gridSize/change/2),gridSize/change,gridSize/change);
+            if (name == "player") name = cell.item.name;
+            if (_type(name).type == "array") name = name[0];
+
+            if (name.subset(0,5) == "player") {
+                if (name !== "player") {
+                    me_ctx.fillStyle = "black";
+                    me_ctx.font = "20px Arial";
+                    name = "P" + name.subset("_\\after","end");
+                    me_ctx.fillText(name,(x*gridSize) + (gridSize/2) - (gridSize/change/2),y*gridSize + (gridSize/2) - (gridSize/change/2)+(gridSize/2),gridSize/change,gridSize/change);
+                }
+            } else {
+                me_ctx.drawImage(getItemCanvas(getItem(name).name),(x*gridSize) + (gridSize/2) - (gridSize/change/2),y*gridSize + (gridSize/2) - (gridSize/change/2),gridSize/change,gridSize/change);
+            }
         }
     }
 
@@ -289,7 +297,7 @@ document.on('keydown', (e) => {
     if (shiftDown) renderMapEditorCanvas();
 });
 document.on("keyup",function(e) {
-    if ($("scene_mapEditor").style.display == "none") return;
+    if ($("scene_mapEditor").style.display == "none" || $("scene_mapEditor").style.display == "") return;
     shiftDown = e.shiftKey;
     
     if (!shiftDown) {
@@ -358,7 +366,30 @@ function loadObjectMenu() {
         html_title.className = "settingTitle";
         html_title.innerHTML = title;
 
-        if (type == "status") {
+        if (type == "number") {
+            let input = settingHolder.create("input");
+            input.type = "number",
+            input.css({
+                width: "45px",
+                height: "45px",
+                textAlign: "center",
+                outline: "none",
+                fontSize: "16px",
+                borderRadius: "5px",
+            })
+            input.value = value
+            
+            input.path = path;
+            input.on("input",function() {
+                if (this.path.length == 2) {
+                    selectedItem.cell[this.path[0]][this.path[1]] = this.value;
+                }
+                if (this.path.length == 1) {
+                    selectedItem.cell[this.path[0]] = this.value;
+                }
+            })
+        }
+        if (type.subset(0,5) == "status") {
             let imgHolder = settingHolder.create("div");
             imgHolder.css({
                 width: "50px",
@@ -407,8 +438,14 @@ function loadObjectMenu() {
             }
 
             imgHolder.path = path;
+            imgHolder.type = type;
             imgHolder.on("click",function() {
                 selectedItem.path = this.path;
+                if (this.type == "statusPlayer") {
+                    $(".nonPlayer").hide();
+                } else {
+                    $(".nonPlayer").show();
+                }
                 $(".statusSelectionScreen").show("flex");
             })
         }
@@ -440,6 +477,11 @@ function loadObjectMenu() {
             addSetting("Remove Board Status","status",object.onCollision.removeBoardStatus,["onCollision","removeBoardStatus"]);
         }
     }
+    addSetting("Board Status Required","number",object.boardDestructibleCountRequired,["boardDestructibleCountRequired"]);
+
+    if (object.spawnPlayerID) {
+        addSetting("Spawn Player ID","statusPlayer",object.spawnPlayerID,["spawnPlayerID"]);
+    }
 }
 
 loadStatusSelectionScreen();
@@ -459,6 +501,9 @@ function loadStatusSelectionScreen() {
             border: "2px solid black",
             display: "inline-block",
         })
+        if (_type(value).type !== "string") {
+            imgHolder.className = "nonPlayer";   
+        }
         if (_type(value).type == "string") {
             imgHolder.status = "player";
 

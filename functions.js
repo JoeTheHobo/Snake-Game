@@ -46,8 +46,6 @@ let currentGameMode = gameModes[activeGameMode];
 
 
 let gs_playerCount = players.length > 0 ? players.length : 1;
-let gridX = 50;
-let gridY = 30;
 let circleWalls = true;
 let specialItemLowChance = 1;
 let specialItemHighChance = 6;
@@ -77,7 +75,7 @@ const getPPI = () => {
     return sizeInPixels;
   };
 
-  let gridSize = Math.floor(setPhysicalSize(.19));
+  let gridSize = Math.floor(setPhysicalSize(.17));
   
 
 const perfectFrameTime = 1000 / 60;
@@ -165,11 +163,78 @@ function adjustCanvasSize(gridx,gridy) {
     })
 }
 
-function setResolution(gridx = gridX, gridy = gridY) {
+for (let i = 0; i < tiles.length; i++) {
+    if (!tiles[i].img) continue;
+
+    let img = $(".imageHolder").create("img");
+    img.src = "img/" + tiles[i].img;
+    img.id = "tile_" + tiles[i].name;
+}
+//End Load All Item Images
+let itemCanvas = [];
+function setUpItemCanvas() {
+    let html_itemCanvasHolder = $("itemCanvasHolder");
+    html_itemCanvasHolder.innerHTML = "";
+
+    for (let i = 0; i < items.length; i++) {
+        addItemCanvas(items[i],items[i].img,items[i].name);
+
+        if (items[i].onCollision) {
+            if (items[i].onCollision.switchImage) {
+                addItemCanvas(items[i],items[i].onCollision.switchImage,items[i].name + "_switch");
+            }
+        }
+    }
+}
+function makeItemCanvas(image,filter = "",player) {
+    let html_itemCanvasHolder = $("itemCanvasHolder");
+
+    let itemCanvas = html_itemCanvasHolder.create("canvas");
+    let itemCtx = itemCanvas.getContext("2d");
+
+    if (filter == "player") {
+        filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
+    }
+
+    itemCanvas.width = image.width;
+    itemCanvas.height = image.height;
+    itemCtx.drawImage(image,0,0);
+
+    if (filter !== "") {
+        itemCtx.filter = filter;
+        itemCtx.drawImage(image,0,0);
+    }
+    return itemCanvas;
+}
+function addItemCanvas(item,itemImg,name,filter = "",player) {
+    if ($("item_" + name)) return;
+
+    let img = $(".imageHolder").create("img");
+    img.src = "img/" + itemImg;
+    img.id = "item_" + name;
+
+    img.onload = function() {
+        let obj = {
+            name: name,
+            canvas: makeItemCanvas($("item_" + name),filter,player),
+        }
+        itemCanvas.push(obj);
+    }
+
+}
+setUpItemCanvas();
+function getItemCanvas(itemName) {
+    for (let i = 0; i < itemCanvas.length; i++) {
+        if (itemCanvas[i].name === itemName) return itemCanvas[i].canvas;
+    }
+}
+
+
+
+
+function setResolution(gridx, gridy) {
     adjustCanvasSize(gridx,gridy);
 }
-window.on("resize",setResolution)
-setResolution();
 
 
 
@@ -295,10 +360,14 @@ function spawn(name,generateRandomItem = true,counting = false) {
     let x,y;
     while (foundSpot == false) {
         if (isPlayer) {
-            findingSpawner: for (let k = 0; k < gridY; k++) {
-                for (let j = 0; j < gridX; j++) {
+            
+            findingExactSpawner: for (let k = 0; k < currentBoard.map.length; k++) {
+                for (let j = 0; j < currentBoard.map[0].length; j++) {
                     if (currentBoard.map[k][j].item === false) continue;
                     if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
+                    if (currentBoard.map[k][j].item.spawnPlayerID == "player" || currentBoard.map[k][j].item.spawnPlayerID === undefined) continue;
+                    if (Number(currentBoard.map[k][j].item.spawnPlayerID.subset("_\\after","end")) !== Number(name.id)) continue;
+
                     let playerOnIt = false;
                     for (let i = 0; i < activePlayers.length; i++) {
                         if (activePlayers[i].pos.x == j && activePlayers[i].pos.y == k) playerOnIt = true;
@@ -308,14 +377,56 @@ function spawn(name,generateRandomItem = true,counting = false) {
                     x = j;
                     y = k;
                     foundSpot = true;
-                    break findingSpawner;
+                    break findingExactSpawner;
+                    
+                }
+            }
+            if (!foundSpot) {
+
+                findingSpawner: for (let k = 0; k < currentBoard.map.length; k++) {
+                    for (let j = 0; j < currentBoard.map[0].length; j++) {
+                        if (currentBoard.map[k][j].item === false) continue;
+                        if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
+                        if (currentBoard.map[k][j].item.spawnPlayerID !== "player") continue;
+                        
+                        let playerOnIt = false;
+                        for (let i = 0; i < activePlayers.length; i++) {
+                            if (activePlayers[i].pos.x == j && activePlayers[i].pos.y == k) playerOnIt = true;
+                        }
+                        if (playerOnIt) continue;
+                        
+                        x = j;
+                        y = k;
+                        foundSpot = true;
+                        break findingSpawner;
+                    }
+                }
+
+                
+                if (!foundSpot) {
+                    findingSpawner: for (let k = 0; k < currentBoard.map.length; k++) {
+                        for (let j = 0; j < currentBoard.map[0].length; j++) {
+                            if (currentBoard.map[k][j].item === false) continue;
+                            if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
+                            let playerOnIt = false;
+                            for (let i = 0; i < activePlayers.length; i++) {
+                                if (activePlayers[i].pos.x == j && activePlayers[i].pos.y == k) playerOnIt = true;
+                            }
+                            if (playerOnIt) continue;
+        
+                            x = j;
+                            y = k;
+                            foundSpot = true;
+                            break findingSpawner;
+                        }
+                    }
                 }
             }
         }
         
         if (foundSpot === false) {
-            x = rnd(gridX)-1;
-            y = rnd(gridY)-1;
+            x = rnd(currentBoard.map[0].length)-1;
+            y = rnd(currentBoard.map.length)-1;
             if (currentBoard.map[y][x].item == false && currentBoard.map[y][x].tile.canSpawn) {
                 foundSpot = true;
                 checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
@@ -333,15 +444,15 @@ function spawn(name,generateRandomItem = true,counting = false) {
                 }
             }
             counter++;
-            if (counter > (gridX * gridY) ) {
+            if (counter > (currentBoard.map.length * currentBoard.map[0].length) ) {
                 foundSpot = "couldn't find any";
             }
         }
     }
 
     if (foundSpot == "couldn't find any") {
-        findingAnySpot: for (let k = 0; k < gridY; k++) {
-            for (let j = 0; j < gridX; j++) {
+        findingAnySpot: for (let k = 0; k < currentBoard.map.length; k++) {
+            for (let j = 0; j < currentBoard.mapcurrentBoard.map[0].length; j++) {
                 if (currentBoard.map[k][j].item == false && currentBoard.map[k][j].tile.canSpawn) {
                     let foundGoodSpot = true;
                     checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
@@ -1624,7 +1735,6 @@ function findItemDifferences(map) {
             })
         }
     }
-    console.log("3.1.5",currentBoard.itemDifferences)
     return allDifferences;
 }
 function compareObjects(obj1, obj2, path = []) {
@@ -1669,12 +1779,41 @@ function loadBoardStatus() {
             background: "white",
         })
 
-        let img = imgHolder.create("img");
-        img.src = "img/" + getRealItem(status).img;
-        img.css({
-            width: "100%",
-            height: "100%",
-        })
+        if (status.subset(0,5) == "player") {
+            if (status.subset(0,6) == "player_") {
+                let text = imgHolder.create("div");
+                text.innerHTML = "P" + status.subset("_\\after","end"); 
+                text.css({
+                    width: "100%",
+                    color: "black",
+                    fontWeight: "bold",
+                    fontSize: "25px",
+                    lineHeight: "50px",
+                    textAlign: "center",
+                })
+            }
+            if (status == "player") {
+                let text = imgHolder.create("div");
+                text.innerHTML = "P"; 
+                text.css({
+                    width: "100%",
+                    color: "black",
+                    fontWeight: "bold",
+                    fontSize: "25px",
+                    lineHeight: "50px",
+                    textAlign: "center",
+                })
+            }
+        } else {
+            let img = imgHolder.create("img");
+            img.src = "img/" + getRealItem(status).img;
+            img.css({
+                width: "100%",
+                height: "100%",
+            })
+        }
+
+        
     }
 }
 
@@ -1697,7 +1836,7 @@ function fixItemDifferences(map) {
 }
 function cloneObject(object) {
     try {
-        return {...JSON.parse(JSON.stringify(object))};
+        return structuredClone(object);
     } catch {
         console.warn("Structed Clone Failed On:",object);
     }

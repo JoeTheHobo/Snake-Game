@@ -557,6 +557,7 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: true, //Spawn players on this tile
+    spawnPlayerID: "player", //Tells which player to spawn here. "player" for all players
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
