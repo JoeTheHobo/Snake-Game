@@ -20,6 +20,13 @@ let fill = {
     delete: false,
 }
 
+let tool = "draw";
+let toolColors = {
+    draw: "blue",
+    fill: "purple",
+    select: "lightblue",
+}
+
 loadObjectMenu();
 function fixItemDifferencesMapEditor(map) {
     if (!currentBoard.itemDifferences) return;
@@ -168,8 +175,7 @@ function me_updateCell(x,y) {
     }
 
     if (cell.mouseOver) {
-        if (shiftDown) me_ctx.strokeStyle = "purple"; 
-        else me_ctx.strokeStyle = "blue";
+        me_ctx.strokeStyle = toolColors[tool]; 
         me_ctx.strokeRect(gridSize*x,gridSize*y,gridSize,gridSize);
     }
 }
@@ -187,22 +193,29 @@ $("me_canvas").on("mousemove",function(e) {
         }
     }
 
+    //If Cursor Is Off Screen
     if (!board.originalMap[mouseY]) return;
     else if (!board.originalMap[mouseY][mouseX]) return;
 
     board.originalMap[mouseY][mouseX].mouseOver = true;
     
-    if (shiftDown && fill.pointA !== false) {
+    if (tool == "fill" && fill.pointA !== false) {
         return;
     }
 
-    if ((mouseDown || rightMouse) && selectedItem) {
-        if (rightMouse) {
-            board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
-        } else if (selectedItem.canEdit) {
-            board.originalMap[mouseY][mouseX][selectedItem.type] = structuredClone(selectedItem.cell);
+    if (tool == "draw") {
+        if ((mouseDown || rightMouse) && selectedItem) {
+            if (rightMouse) {
+                board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
+            } else if (selectedItem.canEdit) {
+                board.originalMap[mouseY][mouseX][selectedItem.type] = structuredClone(selectedItem.cell);
+            }
+            $("saveStatus").innerHTML = "Board Is Not Saved";
         }
-        $("saveStatus").innerHTML = "Board Is Not Saved";
+    }
+    
+    if (tool == "select") {
+
     }
 
     renderMapEditorCanvas();
@@ -219,7 +232,7 @@ $("me_canvas").on("mousedown",function(e) {
     rightMouse = isRightMB;
     mouseDown = true;
     
-    if (shiftDown && fill.pointA == false) {
+    if (tool == "fill" && fill.pointA == false) {
         fill.pointA = {
             x: mouseX,
             y: mouseY,
@@ -257,7 +270,7 @@ $("me_canvas").on("contextmenu",function(e) {
     renderMapEditorCanvas();
 })
 $("me_canvas").on("click",function(e) {
-    if (shiftDown && fill.pointA == false) {
+    if (tool == "fill" && fill.pointA == false) {
         fill.pointA = {
             x: mouseX,
             y: mouseY,
@@ -265,7 +278,7 @@ $("me_canvas").on("click",function(e) {
         renderMapEditorCanvas();
         return;
     }
-    if (shiftDown && fill.pointB == false) {
+    if (tool == "fill" && fill.pointB == false) {
         fill.delete = false;
         fill.pointB = {
             x: mouseX,
@@ -275,11 +288,36 @@ $("me_canvas").on("click",function(e) {
         return;
     }
 
-    if (selectedItem && selectedItem.canEdit) {
-        board.originalMap[mouseY][mouseX][selectedItem.type] = structuredClone(selectedItem.cell);
-        renderMapEditorCanvas();
-        $("saveStatus").innerHTML = "Board Is Not Saved";
+    if (tool == "draw") {
+        if (selectedItem && selectedItem.canEdit) {
+            board.originalMap[mouseY][mouseX][selectedItem.type] = structuredClone(selectedItem.cell);
+            renderMapEditorCanvas();
+            $("saveStatus").innerHTML = "Board Is Not Saved";
+        }
     }
+    
+    if (tool == "select") {
+        if (board.originalMap[mouseY][mouseX][selectedItem.type] === false) {
+            selectedItem = {
+                type: "item",
+                content: getRealItem("pellet"),
+                canEdit: true,
+                path: false,
+                cell: cloneObject(getRealItem("pellet")),
+            }
+        } else {
+            selectedItem = {
+                type: selectedItem.item,
+                content: getRealItem(board.originalMap[mouseY][mouseX][selectedItem.type].name),
+                canEdit: true,
+                path: false,
+                cell: board.originalMap[mouseY][mouseX][selectedItem.type],
+            }
+        }
+        
+        loadObjectMenu();
+    }
+
 })
 $("me_canvas").on("mouseleave",function(e) {
     mouseDown = false;
@@ -292,15 +330,27 @@ document.on('keydown', (e) => {
         e.preventDefault(); // Prevent the default save action
         saveBoard();
     }
+    if (!e.ctrlKey && e.key === 's') {
+        tool = "select";
+        renderMapEditorCanvas();
+    }
+    if (e.key == "d") {
+        tool = "draw";
+        renderMapEditorCanvas();
+    }
     
     shiftDown = e.shiftKey;
-    if (shiftDown) renderMapEditorCanvas();
+    if (shiftDown) {
+        tool = "fill";
+        renderMapEditorCanvas();
+    }
 });
 document.on("keyup",function(e) {
     if ($("scene_mapEditor").style.display == "none" || $("scene_mapEditor").style.display == "") return;
     shiftDown = e.shiftKey;
     
     if (!shiftDown) {
+        if (tool == "fill") tool = "draw";
         fill = {
             pointA: false,
             pointB: false,
