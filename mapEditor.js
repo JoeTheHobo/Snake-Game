@@ -19,6 +19,8 @@ let fill = {
     pointB: false,
     delete: false,
 }
+let forwardHistory;
+let history;
 
 let tool = "draw";
 let subTool = "brush";
@@ -56,6 +58,10 @@ function fixItemDifferencesMapEditor(map) {
 function openMapEditor(boardComingIn) {
     board = boardComingIn;
     copiedCells = [];
+    history = [];
+    forwardHistory = [];
+    $(".redo_tool").style.opacity = "0.5";
+    $(".undo_tool").style.opacity = "0.5";
     setScene("mapEditor");
     $("me_name").value = board.name;
 
@@ -74,6 +80,7 @@ function openMapEditor(boardComingIn) {
         if (!isActiveGame)
             saveBoard();
     },60000)
+    addHistory();
 }
 function me_loadDropdown(holder,group,name) {
     holder.innerHTML = "";
@@ -316,6 +323,7 @@ $("me_canvas").on("mouseup",function(e) {
     if (tool == "draw" || tool == "eraser") {
         if (subTool == "shape") {
             tool_fill();
+            addHistory();
         }
         if (subTool == "brush") {
             if (selectedItem) {
@@ -324,9 +332,10 @@ $("me_canvas").on("mouseup",function(e) {
                 } else if (selectedItem.canEdit) {
                     board.originalMap[mouseY][mouseX][selectedItem.type] = structuredClone(selectedItem.cell);
                 }
-                $("saveStatus").innerHTML = "Board Is Not Saved";
+                addHistory();
             }
         }
+        $("saveStatus").innerHTML = "Board Is Not Saved";
     }
     if (tool == "select") {
         $(".subTool_select").show();
@@ -371,6 +380,14 @@ document.on('keydown', (e) => {
             x: mouseX,
             y: mouseY,
         };
+    }
+    if (e.ctrlKey && e.key === 'z') {
+        e.preventDefault(); // Prevent the default save action
+        runTool("undo");
+    }
+    if (e.ctrlKey && e.key === 'y') {
+        e.preventDefault(); // Prevent the default save action
+        runTool("redo");
     }
 });
 document.on("keyup",function(e) {
@@ -654,8 +671,8 @@ function setTool(tool2) {
     tool = tool2;
 
     if (tool == "draw" || tool == "eraser") {
+        $(".subToolHolder").hide();
         $(".subTool_draw").show();
-        $(".subTool_select").hide();
         setSubTool("brush");
         selectedCells = {
             selecting: false,
@@ -671,12 +688,17 @@ function setTool(tool2) {
         }
     }
     if (tool == "select") {
-        $(".subTool_draw").hide();
-        $(".subTool_select").hide();
+        $(".subToolHolder").hide();
     }
     if (tool == "bucket") {
-        $(".subTool_draw").hide();
-        $(".subTool_select").hide();
+        $(".subToolHolder").hide();
+        $(".subTool_bucket").show();
+        setSubTool("bucket");
+    }
+    if (tool == "move") {
+        $(".subToolHolder").hide();
+        $(".subTool_" + tool).show();
+        setSubTool("move");
     }
 
     $(".toolBarToolHolder").classRemove("toolIsSelected");
@@ -711,11 +733,15 @@ function runTool(type) {
         let newBoard = flipHorizontally(getArrayOfSelection());
         let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
         paste(leftX,upY,newBoard);
+        addHistory();
+        $("saveStatus").innerHTML = "Board Is Not Saved";
     }
     if (type == "reflectY") {
         let newBoard = flipVertically(getArrayOfSelection());
         let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
         paste(leftX,upY,newBoard);
+        addHistory();
+        $("saveStatus").innerHTML = "Board Is Not Saved";
     }
     if (type == "delete") {
         let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
@@ -725,9 +751,13 @@ function runTool(type) {
             }
         }
         renderMapEditorCanvas();
+        addHistory();
+        $("saveStatus").innerHTML = "Board Is Not Saved";
     }
     if (type == "fill") {
         tool_fill();
+        addHistory();
+        $("saveStatus").innerHTML = "Board Is Not Saved";
     }
     if (type == "copy") {
         copiedCells = getArrayOfSelection();
@@ -736,6 +766,33 @@ function runTool(type) {
     if (type == "paste") {
         let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
         paste(leftX,upY,copiedCells)
+        addHistory();
+        $("saveStatus").innerHTML = "Board Is Not Saved";
+    }
+    if (type == "undo") {
+        if (history.length < 2) return;
+
+        forwardHistory.push(history.pop());
+        currentBoard.originalMap = history[history.length-1];
+        $(".redo_tool").style.opacity = "1";
+        if (history.length < 2) {
+            $(".undo_tool").style.opacity = "0.5";
+        }
+        renderMapEditorCanvas();
+        $("saveStatus").innerHTML = "Board Is Not Saved";
+    }
+    if (type == "redo") {
+        if (forwardHistory.length < 1) return;
+        currentBoard.originalMap = forwardHistory[forwardHistory.length - 1];
+        history.push(forwardHistory[forwardHistory.length - 1]);
+        forwardHistory.pop();
+
+        $(".undo_tool").style.opacity = "1";
+        if (forwardHistory.length == 0) {
+            $(".redo_tool").style.opacity = "0.5";
+        }
+        renderMapEditorCanvas();
+        $("saveStatus").innerHTML = "Board Is Not Saved";
     }
 }
 function paste(x,y,map) {
@@ -776,4 +833,15 @@ function makeSquare(start, end) {
     }
 
     return { x, y };
+}
+function addHistory() {
+    console.log("hmm");
+    forwardHistory = [];
+    history.push(structuredClone(currentBoard.originalMap));
+    if (history.length > 30) history.splice(0,1);
+
+    $(".undo_tool").style.opacity = "1";
+    $(".redo_tool").style.opacity = "0.5";
+
+    if (history.length < 2) $(".undo_tool").style.opacity = "0.5";
 }
