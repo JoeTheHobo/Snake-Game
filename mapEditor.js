@@ -667,7 +667,13 @@ function loadStatusSelectionScreen() {
 }
 
 function setTool(tool2) {
-    if (tool === tool2) return;
+    if (tool === tool2) {
+        if (tool == "draw" || tool == "eraser") {
+            if (subTool == "brush") setSubTool("shape");
+            else setSubTool("brush");
+        }
+        return;
+    }
     tool = tool2;
 
     if (tool == "draw" || tool == "eraser") {
