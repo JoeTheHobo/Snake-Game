@@ -363,7 +363,7 @@ document.on('keydown', (e) => {
     if (!e.ctrlKey && e.key === 's') {
         setTool("select");
     }
-    if (e.key == "d") {
+    if (!e.ctrlKey && e.key == "d") {
         setTool("draw");
     }
     if (e.key == "b") {
@@ -380,6 +380,24 @@ document.on('keydown', (e) => {
             x: mouseX,
             y: mouseY,
         };
+    }
+    if (e.ctrlKey && e.key === 'd') {
+        e.preventDefault(); // Prevent the default save action
+        selectedCells = {
+            selecting: false,
+            shape: false,
+            start: {
+                x: false,
+                y: false,
+            },
+            end: {
+                x: false,
+                y: false,
+            },
+        }
+        renderMapEditorCanvas();
+        $(".subTool_select").hide();
+
     }
     if (e.ctrlKey && e.key === 'z') {
         e.preventDefault(); // Prevent the default save action
@@ -841,7 +859,6 @@ function makeSquare(start, end) {
     return { x, y };
 }
 function addHistory() {
-    console.log("hmm");
     forwardHistory = [];
     history.push(structuredClone(currentBoard.originalMap));
     if (history.length > 30) history.splice(0,1);
