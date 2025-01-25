@@ -213,7 +213,7 @@ function me_updateCell(x,y) {
                     me_ctx.fillText(name,(x*(gridSize*zoom)) + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),y*(gridSize*zoom) + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2)+((gridSize*zoom)/2),(gridSize*zoom)/change,(gridSize*zoom)/change);
                 }
             } else {
-                me_ctx.drawImage(getItemCanvas(getItem(name).name),Xpos + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),yPos + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),(gridSize*zoom)/change,(gridSize*zoom)/change);
+                me_ctx.drawImage(getItemCanvas(getItem(name).name),Xpos + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),Ypos + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),(gridSize*zoom)/change,(gridSize*zoom)/change);
             }
         }
     }
@@ -349,8 +349,6 @@ $("me_canvas").on("mousedown",function(e) {
     renderMapEditorCanvas();
 })
 $("me_canvas").on("mouseup",function(e) {
-    mouseDown = false;
-    rightMouse = false;
 
     if (mouseDown === true && (tool == "draw" || tool == "eraser")) {
         if (subTool == "shape") {
@@ -370,6 +368,7 @@ $("me_canvas").on("mouseup",function(e) {
         $("saveStatus").innerHTML = "Board Is Not Saved";
         renderMapEditorCanvas();
     }
+
     if (tool == "select" && mouseDown === true) {
         $(".subTool_select").show();
         if (copiedCells.length == 0) $(".pastingTool").hide();
@@ -423,6 +422,8 @@ $("me_canvas").on("mouseup",function(e) {
         renderMapEditorCanvas();
     }
 
+    mouseDown = false;
+    rightMouse = false;
     
 })
 
