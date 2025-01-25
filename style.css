@@ -857,6 +857,7 @@ html {
   border-radius: 5px;
   background: gray;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  z-index: 3;
 }
 .statusSelectionHolder {
   width: 100%;
@@ -869,4 +870,15 @@ html {
 }
 .statusSelectionHolder div:hover {
   border: 2px solid blue !important;
+}
+
+.me_packHolder {
+  user-select: none;
+}
+.me_packTitle {
+  color: black;
+  font-size: 30px;
+}
+.me_packItems {
+
 }

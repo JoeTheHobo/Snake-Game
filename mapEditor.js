@@ -13,7 +13,6 @@ let mouseY;
 let saveInterval;
 let itemCounts;
 
-let shiftDown = false;
 let fill = {
     pointA: false,
     pointB: false,
@@ -60,6 +59,7 @@ function fixItemDifferencesMapEditor(map) {
 }
 function openMapEditor(boardComingIn) {
     board = boardComingIn;
+    currentBoard.originalMap = forceAllCellsToBeTheirOwn(board.originalMap);
     copiedCells = [];
     history = [];
     forwardHistory = [];
@@ -91,36 +91,51 @@ function openMapEditor(boardComingIn) {
     addHistory();
 }
 function me_loadDropdown(holder,group,name) {
+    let pack = getPacks(group);
     holder.innerHTML = "";
-    for (let i = 0; i < group.length; i++) {
-        if (group[i].showInEditor == false) continue;
 
-        let itemHolder = holder.create("div");
-        itemHolder.className = "me_itemHolder";
-        let itemImage = itemHolder.create("img");
-        itemImage.src = $(name + group[i].name).src;
-        itemImage.css({
-            width: "100%",
-            height: "100%",
-        })
+    for (let j = 0; j < pack.length; j++) {
+        if (pack[j].name == "Hidden") continue;
 
-        itemHolder.type = name.subset(0,"_\\before");
-        itemHolder.content = cloneObject(group[i]);
-        itemHolder.id = "me_" + name + group[i].name;
-        itemHolder.on("click",function() {
-            selectedItem = {
-                type: this.type,
-                content: structuredClone(this.content),
-                canEdit: true,
-                path: false,
-                cell: structuredClone(this.content),
-            }
+        let packHolder = holder.create("div");
+        packHolder.className = "me_packHolder";
+        let packTitle = packHolder.create("div");
+        packTitle.className = "me_packTitle";
+        packTitle.innerHTML = pack[j].name;
 
-            $(".me_itemHolder").classRemove("me_goldBorder");
-            this.classList.add("me_goldBorder");
+        let itemsHolder = packHolder.create("div");
+        itemsHolder.className = "me_packItems";
 
-            loadObjectMenu();
-        })
+        for (let i = 0; i < pack[j].items.length; i++) {
+            let item = pack[j].items[i];
+            if (item.showInEditor == false) continue;
+            
+            let itemHolder = itemsHolder.create("div");
+            itemHolder.className = "me_itemHolder";
+            let itemImage = itemHolder.create("img");
+            itemImage.src = $(name + item.name).src;
+            itemImage.css({
+                width: "100%",
+                height: "100%",
+            })
+    
+            itemHolder.type = name.subset(0,"_\\before");
+            itemHolder.content = cloneObject(item);
+            itemHolder.id = "me_" + name + item.name;
+            itemHolder.on("click",function() {
+                selectedItem = {
+                    type: this.type,
+                    content: structuredClone(this.content),
+                    canEdit: true,
+                    path: false,
+                    cell: structuredClone(this.content),
+                }
+                $(".me_itemHolder").classRemove("me_goldBorder");
+                this.classList.add("me_goldBorder");
+    
+                loadObjectMenu();
+            })
+        }
     }
 }
 function renderMapEditorCanvas() {
@@ -316,17 +331,25 @@ $("me_canvas").on("mousedown",function(e) {
     
     if (tool == "select" && mouseDown === true) {
         $(".subTool_select").hide();
-        selectedCells = {
-            selecting: true,
-            shape: false,
-            start: {
+        if (aligning) {
+            selectedCells.end = {
                 x: mouseX,
                 y: mouseY,
-            },
-            end: {
-                x: mouseX,
-                y: mouseY,
-            },
+            }
+            renderMapEditorCanvas();
+        } else {
+            selectedCells = {
+                selecting: true,
+                shape: false,
+                start: {
+                    x: mouseX,
+                    y: mouseY,
+                },
+                end: {
+                    x: mouseX,
+                    y: mouseY,
+                },
+            }
         }
     }
     if (tool == "draw" || tool == "eraser") {
@@ -373,6 +396,21 @@ $("me_canvas").on("mouseup",function(e) {
         $(".subTool_select").show();
         if (copiedCells.length == 0) $(".pastingTool").hide();
         else $(".pastingTool").show();
+        
+        let selectingOneCell = isSelectingOneCell();
+        if (selectingOneCell) {
+            if (currentBoard.originalMap[mouseY][mouseX][selectedItem.type] !== false) {
+                selectedItem = {
+                    type: selectedItem.type,
+                    content: structuredClone(currentBoard.originalMap[mouseY][mouseX][selectedItem.type]),
+                    canEdit: true,
+                    path: false,
+                    cell: structuredClone(currentBoard.originalMap[mouseY][mouseX][selectedItem.type]),
+                }
+                loadObjectMenu();
+            }
+        }
+           
     }
     if (tool == "bucket" && mouseDown === true) {
         if (subTool == "bucket") {
@@ -516,6 +554,34 @@ document.on('keydown', (e) => {
         $(".subTool_select").hide();
 
     }
+    if (e.ctrlKey && e.key === 'a') {
+        e.preventDefault(); // Prevent the default save action
+        if (tool == "select") {
+            selectedCells.selecting = true;
+            selectedCells.start = {
+                x: 0,
+                y: 0,
+            };
+            selectedCells.end = {
+                x: currentBoard.originalMap[0].length - 1,
+                y: currentBoard.originalMap.length - 1,
+            }
+        }
+        renderMapEditorCanvas();
+    }
+    if (e.ctrlKey && e.key === 'c') {
+        e.preventDefault(); // Prevent the default save action
+        if (selectedCells.selecting) {
+            copiedCells = getArrayOfSelection();
+            $(".pastingTool").show();
+        }
+    }
+    if (e.ctrlKey && e.key === 'v') {
+        if (copiedCells.length > 0 && selectedCells.selecting) {
+            let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
+            paste(leftX,upY,copiedCells);
+        }
+    }
     if (e.ctrlKey && e.key === 'z') {
         e.preventDefault(); // Prevent the default save action
         runTool("undo");
@@ -618,11 +684,15 @@ function loadObjectMenu() {
             
             input.path = path;
             input.on("input",function() {
+                let selectingOneCell = isSelectingOneCell();
+
                 if (this.path.length == 2) {
                     selectedItem.cell[this.path[0]][this.path[1]] = this.value;
+                    if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][this.path[0]][this.path[1]] = this.value;
                 }
                 if (this.path.length == 1) {
                     selectedItem.cell[this.path[0]] = this.value;
+                    if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][this.path[0]] = this.value;
                 }
             })
         }
@@ -726,7 +796,16 @@ function loadObjectMenu() {
         addSetting("Spawn Player ID","statusPlayer",object.spawnPlayerID,["spawnPlayerID"]);
     }
 }
-
+function isSelectingOneCell() {
+    if (selectedCells.selecting) {
+        if (selectedCells.start.x == selectedCells.end.x) {
+            if (selectedCells.start.y == selectedCells.end.y) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 loadStatusSelectionScreen();
 function loadStatusSelectionScreen() {
     let holder = $(".statusSelectionHolder");
@@ -775,12 +854,17 @@ function loadStatusSelectionScreen() {
             img.src = src;
         }
         imgHolder.on("click",function() {
+            let selectingOneCell = isSelectingOneCell();
+            
             if (selectedItem.path.length == 2) {
                 selectedItem.cell[selectedItem.path[0]][selectedItem.path[1]] = this.status;
+                if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][selectedItem.path[0]][selectedItem.path[1]] = this.status;
             }
             if (selectedItem.path.length == 1) {
                 selectedItem.cell[selectedItem.path[0]] = this.status;
+                if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][selectedItem.path[0]] = this.status;
             }
+            renderMapEditorCanvas();
             $(".statusSelectionScreen").hide();
             loadObjectMenu();
         })
@@ -806,6 +890,10 @@ function setTool(tool2) {
         if (tool == "draw" || tool == "eraser") {
             if (subTool == "brush") setSubTool("shape");
             else setSubTool("brush");
+        }
+        if (tool == "bucket") {
+            if (subTool == "bucket") setSubTool("global_bucket");
+            else setSubTool("bucket");
         }
         return;
     }
@@ -874,15 +962,11 @@ function runTool(type) {
         let newBoard = flipHorizontally(getArrayOfSelection());
         let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
         paste(leftX,upY,newBoard);
-        addHistory();
-        $("saveStatus").innerHTML = "Board Is Not Saved";
     }
     if (type == "reflectY") {
         let newBoard = flipVertically(getArrayOfSelection());
         let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
         paste(leftX,upY,newBoard);
-        addHistory();
-        $("saveStatus").innerHTML = "Board Is Not Saved";
     }
     if (type == "delete") {
         let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
@@ -907,8 +991,6 @@ function runTool(type) {
     if (type == "paste") {
         let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
         paste(leftX,upY,copiedCells)
-        addHistory();
-        $("saveStatus").innerHTML = "Board Is Not Saved";
     }
     if (type == "undo") {
         if (history.length < 2) return;
@@ -951,11 +1033,15 @@ function runTool(type) {
 }
 function paste(x,y,map) {
     for (let i = y; i < y+map.length; i++) {
+        if (i > currentBoard.originalMap.length-1) continue;
         for (let j = x; j < x+map[0].length; j++) {
+            if (j > currentBoard.originalMap[0].length-1) continue;
             currentBoard.originalMap[i][j] = cloneObject(map[i-y][j-x]);
         }
     }
     renderMapEditorCanvas();
+    addHistory();
+    $("saveStatus").innerHTML = "Board Is Not Saved";
 }
 function flipHorizontally(array) {
     return array.map(row => row.reverse());
@@ -1049,4 +1135,26 @@ function useBucketTool(grid = currentBoard.originalMap, row = mouseY, col = mous
     fill(row, col);
 
     return grid; // Return the modified grid
+}
+
+function getPacks(list) {
+    let packs = [];
+    let packNameList = [];
+    for (let i = 0; i < list.length; i++) {
+        if (packNameList.includes(list[i].pack)) {
+            for (let j = 0; j < packs.length; j++) {
+                if (packs[j].name == list[i].pack) {
+                    packs[j].items.push(list[i]);
+                }
+            }
+        } else {
+            let newPack = {
+                name: list[i].pack,
+                items: [list[i]],
+            }
+            packs.push(newPack);
+            packNameList.push(list[i].pack);
+        }
+    }
+    return packs;
 }

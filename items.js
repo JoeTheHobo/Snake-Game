@@ -46,6 +46,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     id: 1,
+    pack: "Food",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "super_pellet",
@@ -92,6 +93,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     id: 2,
+    pack: "Food",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "turbo",
@@ -137,7 +139,8 @@ items.push({
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "wall",
@@ -183,7 +186,8 @@ items.push({
     damage: 1, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "wall2",
@@ -229,7 +233,8 @@ items.push({
     damage: 2, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "bronzeShield", //(string) Name Of Item
@@ -275,7 +280,8 @@ items.push({
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "silverShield",
@@ -321,7 +327,8 @@ items.push({
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "goldShield",
@@ -368,7 +375,8 @@ items.push({
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "lamp", //(string) Name Of Item
@@ -413,7 +421,8 @@ items.push({
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Hidden",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "snakeHole", //(string) Name Of Item
@@ -451,7 +460,8 @@ items.push({
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "snakeHole2", //(string) Name Of Item
@@ -489,7 +499,8 @@ items.push({
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "snakeHole3", //(string) Name Of Item
@@ -527,7 +538,8 @@ items.push({
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
 })
 
 items.push({
@@ -567,7 +579,8 @@ items.push({
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Mechanics",//Which Item Pack Does This Group To (For Map Editor)
 })
 
 items.push({
@@ -606,7 +619,8 @@ items.push({
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Mechanics",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "blueKey", //(string) Name Of Item
@@ -644,7 +658,8 @@ items.push({
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "redKey", //(string) Name Of Item
@@ -682,7 +697,8 @@ items.push({
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "greenKey", //(string) Name Of Item
@@ -720,7 +736,8 @@ items.push({
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "blueLock", //(string) Name Of Item
@@ -760,7 +777,8 @@ items.push({
     onDelete: {
         removeStatus: ["blueKey"],
 
-    }
+    },
+    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "redLock", //(string) Name Of Item
@@ -800,7 +818,8 @@ items.push({
     onDelete: {
         removeStatus: ["redKey"],
 
-    }
+    },
+    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "greenLock", //(string) Name Of Item
@@ -840,7 +859,8 @@ items.push({
     onDelete: {
         removeStatus: ["greenKey"],
 
-    }
+    },
+    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "stoneWall", //(string) Name Of Item
@@ -880,7 +900,8 @@ items.push({
     onDelete: {
         removeStatus: [],
 
-    }
+    },
+    pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "switch", //(string) Name Of Item
@@ -926,7 +947,8 @@ items.push({
     onDelete: {
         removeStatus: [],
 
-    }
+    },
+    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "button", //(string) Name Of Item
@@ -973,7 +995,8 @@ items.push({
     onDelete: {
         removeStatus: [],
 
-    }
+    },
+    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "buttonAdd", //(string) Name Of Item
@@ -1020,7 +1043,8 @@ items.push({
     onDelete: {
         removeStatus: [],
 
-    }
+    },
+    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })
 
 items.push({
@@ -1070,7 +1094,8 @@ items.push({
     onDelete: {
         removeStatus: [],
 
-    }
+    },
+    pack: "Mechanics",//Which Item Pack Does This Group To (For Map Editor)
 })
 
 items.push({
@@ -1122,7 +1147,8 @@ items.push({
     onDelete: {
         removeStatus: [],
 
-    }
+    },
+    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })
 
 items.push({
@@ -1177,7 +1203,8 @@ items.push({
     onDelete: {
         removeStatus: [],
 
-    }
+    },
+    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "lockedCell", //(string) Name Of Item
@@ -1232,7 +1259,8 @@ items.push({
     onDelete: {
         removeStatus: [],
 
-    }
+    },
+    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "boardLockedCell", //(string) Name Of Item
@@ -1287,5 +1315,6 @@ items.push({
     onDelete: {
         removeStatus: [],
 
-    }
+    },
+    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })

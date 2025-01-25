@@ -55,8 +55,10 @@ let totalSpecialItems = 1;
 let timer, gameEnd;
 let gamePaused = false;
 let isActiveGame = false;
-let currentBackground = "background.jpg";
 let doColorRender = false;
+
+let backgrounds = ["background.jpg"];
+let currentBackground = backgrounds[0];
 
 
 const getPPI = () => {
@@ -1842,4 +1844,15 @@ function cloneObject(object) {
         console.warn("Structed Clone Failed On:",object);
     }
     
+}
+function forceAllCellsToBeTheirOwn(map) {
+    let newMap = [];
+    for (let i = 0; i < map.length; i++) {
+        let row = [];
+        for (let j = 0; j < map[i].length; j++) {
+            row.push(cloneObject(map[i][j]));
+        }
+        newMap.push(row);
+    }
+    return newMap;
 }
