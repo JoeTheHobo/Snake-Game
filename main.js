@@ -315,7 +315,7 @@ function renderPlayers() {
     doColorRender = false;
 }
 function growPlayer(player,grow) {
-    player.growTail = grow;
+    player.growTail += grow;
 }
 function movePlayers() {
     for (let i = 0; i < activePlayers.length; i++) {
