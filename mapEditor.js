@@ -37,6 +37,9 @@ let selectedCells  = {
     },
 }
 let copiedCells = [];
+let zoom = 1;
+let xChange = 0;
+let yChange = 0;
 
 loadObjectMenu();
 function fixItemDifferencesMapEditor(map) {
@@ -60,6 +63,7 @@ function openMapEditor(boardComingIn) {
     copiedCells = [];
     history = [];
     forwardHistory = [];
+    zoom = 1;
     $(".redo_tool").style.opacity = "0.5";
     $(".undo_tool").style.opacity = "0.5";
     setScene("mapEditor");
@@ -68,12 +72,16 @@ function openMapEditor(boardComingIn) {
     me_loadDropdown($(".me_itemsContent"),items,"item_");
     me_loadDropdown($(".me_tilesContent"),tiles,"tile_");
 
-    setResolution(board.width,board.height);
+    adjustCanvasSize(board.width,board.height,zoom);
     renderMapEditorCanvas();
     fixItemDifferencesMapEditor(currentBoard.originalMap);
     saveBoard(true);
     tool = false;
     setTool("draw");
+
+    xChange = ($(".me_canvasHolder").offsetWidth - $(".edit_canvas").offsetWidth)/2;
+    yChange = ($(".me_canvasHolder").offsetHeight - $(".edit_canvas").offsetHeight)/2;
+    adjustCanvasPosition();
 
     clearInterval(saveInterval);
     saveInterval = setInterval(function() {
@@ -148,24 +156,24 @@ function renderMapEditorCanvas() {
     }
 }
 function getRectPos(pos1,pos2) {
-    let startX = pos1.x * gridSize;
-    let startY = pos1.y * gridSize;
+    let startX = pos1.x * (gridSize*zoom);
+    let startY = pos1.y * (gridSize*zoom);
 
-    let width = ((pos2.x) - pos1.x)*gridSize;
-    let height = ((pos2.y) - pos1.y)*gridSize;
+    let width = ((pos2.x) - pos1.x)*(gridSize*zoom);
+    let height = ((pos2.y) - pos1.y)*(gridSize*zoom);
 
-    if (pos2.x > pos1.x) width += gridSize;
-    if (width == 0) width = gridSize;
-    if (pos2.y > pos1.y) height += gridSize;
-    if (height == 0) height = gridSize;
+    if (pos2.x > pos1.x) width += (gridSize*zoom);
+    if (width == 0) width = (gridSize*zoom);
+    if (pos2.y > pos1.y) height += (gridSize*zoom);
+    if (height == 0) height = (gridSize*zoom);
 
     if (pos2.x < pos1.x) {
-        startX += gridSize;
-        width -= gridSize;
+        startX += (gridSize*zoom);
+        width -= (gridSize*zoom);
     }
     if (pos2.y < pos1.y) {
-        startY += gridSize;
-        height -= gridSize;
+        startY += (gridSize*zoom);
+        height -= (gridSize*zoom);
     }
 
     return {
@@ -178,13 +186,16 @@ function getRectPos(pos1,pos2) {
 function me_updateCell(x,y) {
     let cell = board.originalMap[y][x];
 
+    let Xpos = ((gridSize*zoom)*x)
+    let Ypos = ((gridSize*zoom)*y);
+
     if (cell.tile) {
         itemCounts.push("tile_" + cell.tile.name);
-        me_ctx.drawImage($("tile_" + cell.tile.name),gridSize*x,gridSize*y,gridSize,gridSize);
+        me_ctx.drawImage($("tile_" + cell.tile.name),Xpos,Ypos,(gridSize*zoom),(gridSize*zoom));
     }
     if (cell.item) {
         itemCounts.push("item_" + cell.item.name);
-        me_ctx.drawImage(getItemCanvas(cell.item.name),gridSize*x,gridSize*y,gridSize,gridSize);
+        me_ctx.drawImage(getItemCanvas(cell.item.name),Xpos,Ypos,(gridSize*zoom),(gridSize*zoom));
         if (cell.item.renderStatusPath.length > 0) {
             let name = cell.item;
             for (let j = 0; j < cell.item.renderStatusPath.length; j++) {
@@ -199,26 +210,51 @@ function me_updateCell(x,y) {
                     me_ctx.fillStyle = "black";
                     me_ctx.font = "20px Arial";
                     name = "P" + name.subset("_\\after","end");
-                    me_ctx.fillText(name,(x*gridSize) + (gridSize/2) - (gridSize/change/2),y*gridSize + (gridSize/2) - (gridSize/change/2)+(gridSize/2),gridSize/change,gridSize/change);
+                    me_ctx.fillText(name,(x*(gridSize*zoom)) + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),y*(gridSize*zoom) + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2)+((gridSize*zoom)/2),(gridSize*zoom)/change,(gridSize*zoom)/change);
                 }
             } else {
-                me_ctx.drawImage(getItemCanvas(getItem(name).name),(x*gridSize) + (gridSize/2) - (gridSize/change/2),y*gridSize + (gridSize/2) - (gridSize/change/2),gridSize/change,gridSize/change);
+                me_ctx.drawImage(getItemCanvas(getItem(name).name),Xpos + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),yPos + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),(gridSize*zoom)/change,(gridSize*zoom)/change);
             }
         }
     }
 
     if (cell.mouseOver) {
         me_ctx.strokeStyle = "blue"; 
-        me_ctx.strokeRect(gridSize*x,gridSize*y,gridSize,gridSize);
+        me_ctx.strokeRect((gridSize*zoom)*x,(gridSize*zoom)*y,(gridSize*zoom),(gridSize*zoom));
     }
 }
-$("me_canvas").on("mousemove",function(e) {
+var mouseDirection = {
+    y: 0,
+    x: 0,
+};
+var oldMouseX = 0;
+var oldMouseY = 0;
+mousemovemethod = function (e) {
+    mouseDirection = {
+        y: e.pageY - oldMouseY,
+        x: e.pageX - oldMouseX,
+    }
+
+    oldMouseX = e.pageX;
+    oldMouseY = e.pageY;
+
+    if ((tool == "move" && mouseDown === true) || mouseDown == "wheel") {
+        xChange += mouseDirection.x;
+        yChange += mouseDirection.y;
+        adjustCanvasPosition();
+    }
+}
+$(".me_canvasHolder").on('mousemove', mousemovemethod);
+function adjustMousePos(e) {
     let rect = me_canvas.getBoundingClientRect();
     let x = e.clientX - rect.left;
     let y = e.clientY - rect.top;
 
-    mouseX = Math.floor(x/gridSize);
-    mouseY = Math.floor(y/gridSize);
+    mouseX = Math.floor(x/(gridSize*zoom));
+    mouseY = Math.floor(y/(gridSize*zoom));
+}
+$("me_canvas").on("mousemove",function(e) {
+    adjustMousePos(e);
 
     for (const row of board.originalMap) {
         for (const cell of row) {
@@ -232,10 +268,7 @@ $("me_canvas").on("mousemove",function(e) {
 
     board.originalMap[mouseY][mouseX].mouseOver = true;
     
-    if (tool == "bucket") {
-        
-    }
-    if (tool == "draw" || tool == "eraser") {
+    if ((tool == "draw" || tool == "eraser")) {
         if (subTool == "shape") {
             selectedCells.end = {
                 x: mouseX,
@@ -247,7 +280,7 @@ $("me_canvas").on("mousemove",function(e) {
             }
         }
         if (subTool == "brush") {
-            if ((mouseDown || rightMouse) && selectedItem) {
+            if (((mouseDown===true) || rightMouse) && selectedItem) {
                 if (rightMouse || tool == "eraser") {
                     board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
                 } else if (selectedItem.canEdit) {
@@ -258,14 +291,15 @@ $("me_canvas").on("mousemove",function(e) {
         }
     }
     
-    if (tool == "select" && mouseDown) {
+    if (tool == "select" && mouseDown === true) {
         selectedCells.end = {
             x: mouseX,
             y: mouseY,
         }
     }
 
-    renderMapEditorCanvas();
+    if (mouseDown !== "wheel")
+        renderMapEditorCanvas();
 })
 $("me_canvas").on("mousedown",function(e) {
     var isRightMB;
@@ -276,10 +310,11 @@ $("me_canvas").on("mousedown",function(e) {
     else if ("button" in e)  // IE, Opera 
         isRightMB = e.button == 2; 
 
+
     rightMouse = isRightMB;
-    mouseDown = true;
+    mouseDown = e.which == 2 ? "wheel" : true;
     
-    if (tool == "select" && mouseDown) {
+    if (tool == "select" && mouseDown === true) {
         $(".subTool_select").hide();
         selectedCells = {
             selecting: true,
@@ -310,9 +345,6 @@ $("me_canvas").on("mousedown",function(e) {
             }
         }
     }
-    if (tool == "bucket") {
-
-    }
     
     renderMapEditorCanvas();
 })
@@ -320,7 +352,7 @@ $("me_canvas").on("mouseup",function(e) {
     mouseDown = false;
     rightMouse = false;
 
-    if (tool == "draw" || tool == "eraser") {
+    if (mouseDown === true && (tool == "draw" || tool == "eraser")) {
         if (subTool == "shape") {
             tool_fill();
             addHistory();
@@ -336,16 +368,97 @@ $("me_canvas").on("mouseup",function(e) {
             }
         }
         $("saveStatus").innerHTML = "Board Is Not Saved";
+        renderMapEditorCanvas();
     }
-    if (tool == "select") {
+    if (tool == "select" && mouseDown === true) {
         $(".subTool_select").show();
         if (copiedCells.length == 0) $(".pastingTool").hide();
         else $(".pastingTool").show();
     }
+    if (tool == "bucket" && mouseDown === true) {
+        if (subTool == "bucket") {
+            useBucketTool();
+            addHistory();
+            $("saveStatus").innerHTML = "Board Is Not Saved";
+        }
+        if (subTool == "global_bucket") {
+            let insideOfSelection = false;
+            let selectionMap;
+            if (selectedCells.selecting) {
+                let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
+                if (mouseY >= upY && mouseY <= bottomY) {
+                    if (mouseX >= leftX && mouseX <= rightX) insideOfSelection = true;
+                }
+                selectionMap = {
+                    upY: upY,
+                    leftX: leftX,
+                    rightX: rightX,
+                    bottomY: bottomY,
+                }
+            }
+            const Control = currentBoard.originalMap[mouseY][mouseX][selectedItem.type];
+            for (let i = 0; i < currentBoard.originalMap.length; i++) {
+                for (let j = 0; j < currentBoard.originalMap[i].length; j++) {
+                    let cell = currentBoard.originalMap[i][j][selectedItem.type];
+                    if (Control == false) {
+                        if (cell !== false) continue;
+                    } else {
+                        if (cell.name !== Control.name) continue;
+                    }
+                    if (insideOfSelection) {
+                        if (i < selectionMap.upY || j < selectionMap.leftX || i > selectionMap.bottomY || j > selectionMap.rightX) continue;
+                    } else {
+                        if (selectedCells.selecting) {
+                            if (i >= selectionMap.upY && j >= selectionMap.leftX && i <= selectionMap.bottomY && j <= selectionMap.rightX) continue;
+                        }
+                    }
+                    
+                    currentBoard.originalMap[i][j][selectedItem.type] = cloneObject(selectedItem.cell);
+                }
+            }
+            
+            addHistory();
+            $("saveStatus").innerHTML = "Board Is Not Saved";
+        }
+        renderMapEditorCanvas();
+    }
 
-    renderMapEditorCanvas();
+    
 })
 
+$(".me_canvasHolder").on("wheel",function(e) {
+    const delta = Math.sign(e.deltaY);
+    let oldXY = {
+        x: mouseX,
+        y: mouseY,
+    }
+
+    changeZoom(delta);
+
+    adjustMousePos(e);
+
+    let xDif = mouseX - oldXY.x;
+    let yDif = mouseY - oldXY.y;
+
+    xChange += xDif*(gridSize*zoom)
+    yChange += yDif*(gridSize*zoom)
+
+    adjustCanvasPosition();
+});
+function adjustCanvasPosition() {
+    $(".edit_canvas").style.marginLeft = xChange + "px";
+    $(".edit_canvas").style.marginTop = yChange + "px";
+}
+function changeZoom(delta) {
+    if (delta < 0) zoom += 0.1;
+    if (delta > 0) zoom -= 0.1;
+    if (delta === 0) zoom = 1;
+
+    if (zoom < 0.1) zoom = 0.1;
+
+    adjustCanvasSize(board.width,board.height,zoom);
+    renderMapEditorCanvas();
+}
 $("me_canvas").on("mouseleave",function(e) {
     mouseDown = false;
     rightMouse = false;
@@ -371,6 +484,9 @@ document.on('keydown', (e) => {
     }
     if (e.key == "e") {
         setTool("eraser");
+    }
+    if (e.key == "m") {
+        setTool("move");
     }
     if (e.key == "Delete" && tool == "select" && selectedCells.selecting == true) {
         runTool('delete');
@@ -818,6 +934,19 @@ function runTool(type) {
         renderMapEditorCanvas();
         $("saveStatus").innerHTML = "Board Is Not Saved";
     }
+    if (type == "zoomIn") {
+        changeZoom(-1);
+    }
+    if (type == "zoomOut") {
+        changeZoom(1);
+    }
+    if (type == "zoomZero") {
+        changeZoom(0);
+        xChange = ($(".me_canvasHolder").offsetWidth - $(".edit_canvas").offsetWidth)/2;
+        yChange = ($(".me_canvasHolder").offsetHeight - $(".edit_canvas").offsetHeight)/2;
+        adjustCanvasPosition();
+
+    }
 }
 function paste(x,y,map) {
     for (let i = y; i < y+map.length; i++) {
@@ -867,4 +996,56 @@ function addHistory() {
     $(".redo_tool").style.opacity = "0.5";
 
     if (history.length < 2) $(".undo_tool").style.opacity = "0.5";
+}
+function useBucketTool(grid = currentBoard.originalMap, row = mouseY, col = mouseX, ) {
+    let insideOfSelection = false;
+    let selectionMap;
+    if (selectedCells.selecting) {
+        let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
+        if (row >= upY && row <= bottomY) {
+            if (col >= leftX && col <= rightX) insideOfSelection = true;
+        }
+        selectionMap = {
+            upY: upY,
+            leftX: leftX,
+            rightX: rightX,
+            bottomY: bottomY,
+        }
+    }
+
+    const controlValue = grid[row][col][selectedItem.type]; // Store the initial control value
+    if (controlValue !== false)
+        if (controlValue.name === selectedItem.cell.name) return; // Prevent infinite recursion if the selected value matches the control value
+
+    // Helper function for recursion
+    function fill(r, c) {
+        // Base cases: Check if out of bounds or value doesn't match control value
+        if (r < 0 || c < 0 || r >= grid.length || c >= grid[0].length) return;
+        if (controlValue !== false) {
+            if (grid[r][c][selectedItem.type].name !== controlValue.name) return;
+        } else if (grid[r][c][selectedItem.type] !== controlValue) {
+            return;
+        }
+        if (insideOfSelection) {
+            if (r < selectionMap.upY || c < selectionMap.leftX || r > selectionMap.bottomY || c > selectionMap.rightX) return;
+        } else {
+            if (selectedCells.selecting) {
+                if (r >= selectionMap.upY && c >= selectionMap.leftX && r <= selectionMap.bottomY && c <= selectionMap.rightX) return;
+            }
+        }
+
+        // Replace the current cell with the selected value
+        grid[r][c][selectedItem.type] = cloneObject(selectedItem.cell);
+
+        // Recursively fill in all four directions (up, down, left, right)
+        fill(r - 1, c); // Up
+        fill(r + 1, c); // Down
+        fill(r, c - 1); // Left
+        fill(r, c + 1); // Right
+    }
+
+    // Start the recursive fill
+    fill(row, col);
+
+    return grid; // Return the modified grid
 }

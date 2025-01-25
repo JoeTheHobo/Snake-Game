@@ -126,9 +126,10 @@ let ctx_overhangs = canvas_players.getContext("2d");
 
 let me_canvas = $("me_canvas");
 let me_ctx = me_canvas.getContext("2d");
-function adjustCanvasSize(gridx,gridy) {
-    const width = gridx * gridSize;
-    const height = gridy * gridSize;
+me_ctx.imageSmoothingEnabled = false;
+function adjustCanvasSize(gridx,gridy,zoom = 1) {
+    const width = Math.ceil(gridx * gridSize * zoom);
+    const height = Math.ceil(gridy * gridSize * zoom);
 
     // Set the canvas dimensions in device pixels
     canvas_background.width = width;
