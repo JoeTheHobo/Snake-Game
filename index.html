@@ -13,6 +13,46 @@
 </head>
 <body>
 
+    <div class="scene" id="scene_newMenu">
+        <img src="img/main_menu_background.jpg" class="menu_background">
+        
+        <img src="img/logo.png" class="logo_image">
+        <div class="menu_holder">
+            <div class="menu_top">
+                <div onclick="loadServersHTML()" id="servers_tab" class="menu_tab menu_tab_selected">Servers</div>
+                <div id="snake_tab" class="menu_tab">Your Snake</div>
+                <div id="boards_tab" class="menu_tab">Your Boards</div>
+                <div id="gameModes_tab" class="menu_tab">Your Game Modes</div>
+
+                <div class="menu_right">
+                    <div class="account_name">Guest#2242</div>
+                    <a class="signinLink" href="">Login/Sign up</a>
+                </div>
+            </div>
+
+            <div class="menu_content content_servers">
+                <div class="servers_servers_holder"></div>
+                <div class="servers_bottom">
+                    <div id="joinServer" class="servers_button servers_button_inactive">Join Server</div>
+                    <div id="hostServer" class="servers_button">Host Server</div>
+                    <div class="flex-right">
+                        <div class="servers_invite_holder">
+                            <input class="servers_invite_input" placeholder="Invite Code.." type="text">
+                            <div class="servers_invite_button">Go</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="scene" id="scene_waiting">
+        <img src="img/main_menu_background.jpg" class="menu_background">
+
+        
+
+    </div>
+
     <div class="scene" id="scene_menu">
         <div id="gameTitle">Snake Game</div>
         <div class="pixel" id="button_startGame"><p>Start Game</p></div>
@@ -209,6 +249,7 @@
     <script src="presetGameModes.js"></script>
     <script src="presetBoards.js"></script>
     <script src="functions.js"></script>
+    <script src="menuScreen.js"></script>
     <script src="mapEditor.js"></script>
     <script src="handelHTMLrequests.js"></script>
     <script src='main.js'></script>

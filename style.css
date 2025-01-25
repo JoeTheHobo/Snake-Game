@@ -882,3 +882,239 @@ html {
 .me_packItems {
 
 }
+
+
+
+
+#scene_newMenu {
+  
+}
+.menu_background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(2px);
+  -webkit-filter: blur(2px);
+  z-index: 0;
+  object-fit: cover;
+
+}
+.logo_image {
+  height: auto;
+  position: relative;
+  
+  /* Create the blur effect using a mask */
+  mask-image: radial-gradient(circle, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: radial-gradient(circle, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+  
+  /* Optional: Clip the image so it doesn't overflow the blurred mask */
+  overflow: hidden;
+}
+
+.menu_holder {
+  margin-top: 25px;
+  z-index: 1;
+  width: 70%;
+  height: 60%;
+  border-radius: 5px;
+  background: rgb(19, 19, 19);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+.menu_top {
+  width: 100%;
+  height: 45px;
+  background: rgb(32, 32, 32);
+  border-bottom: 1px solid rgb(160, 160, 160);;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+.menu_tab {
+  height: 90%;
+  line-height: 45px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  background: rgb(165, 165, 165);
+  margin-left: 1px;
+  color: black;
+  font-size: 20px;
+  cursor: url('./img/pointer.cur'), auto;
+  transition: all .1s ease;
+  user-select: none;
+}
+.menu_tab:hover {
+  background: rgb(194, 194, 194);
+}
+.menu_tab_selected {
+  background: white !important;
+}
+.menu_right {
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  align-items: center;
+  margin-right: 10px;
+}
+.account_name {
+  color: white;
+  margin-right: 10px;
+  font-size: 20px;
+}
+.signinLink {
+  font-size: 17px;
+  color: rgb(65, 147, 255);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.flex-right {
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  align-items: center;
+  margin-right: 10px;
+}
+.menu_content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.servers_bottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: row;
+  height: 60px;
+  align-items: center;
+  padding: 20px;
+
+}
+.servers_button {
+  width: 190px;
+  user-select: none;
+  cursor: url('./img/pointer.cur'), auto;
+  height: 44px;
+  margin-right: 20px;
+  text-align: center;
+  line-height: 44px;
+  background: #D9D9D9;
+  font-size: 30px;
+}
+.servers_button:hover {
+  background: #a0a0a0;
+
+}
+.servers_button_inactive { 
+  opacity: 0.5;
+  background: #D9D9D9 !important;
+  cursor: url('./img/cursor.cur'), auto;
+
+}
+
+.servers_invite_holder {
+  display: flex;
+  flex-direction: row;
+}
+.servers_invite_input {
+  height: 44px;
+  outline: none;
+  border: none;
+  width: 190px;
+  font-size: 30px;
+  font-family: VT323;
+  text-align: center;
+}
+.servers_invite_button {
+  width: 44px;
+  height: 46px;
+  background: #202020;
+  color: white;
+  text-align: center;
+  line-height: 46px;
+  font-size: 30px;
+  user-select: none;
+  cursor: url('./img/pointer.cur'), auto;
+}
+.servers_invite_button:hover {
+  background: #1a1a1a;
+
+}
+
+.content_servers {
+
+}
+.servers_servers_holder {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  box-sizing: border-box; /* Ensure padding is included in the element's width */
+}
+.server_holder {
+  border: 3px solid white;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: white;
+  position: relative;
+  user-select: none;
+  cursor: url('./img/pointer.cur'), auto;
+  margin-bottom: 5px;
+}
+.server_holder:hover {
+  border: 3px solid rgb(64, 64, 209);
+}
+.serverSelected {
+  border: 3px solid rgb(64, 64, 209);
+
+}
+.server_column {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px;
+  height: 100%;
+}
+.server_canvas {
+  aspect-ratio: 16/9;
+  height: 90%;
+  background: white;
+  margin-left: 5px;
+}
+.server_board_name {
+  font-size: 30px;
+  flex-grow: 1; /* default 0 */
+}
+.server_host_name {
+  font-size: 20px;
+  flex-grow: 1; /* default 0 */
+
+}
+.server_game_mode_name {
+  font-size: 17px;
+  flex-grow: 1; /* default 0 */
+
+}
+.server_active_players {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 30px;
+}
+.server_board_author {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+
+}

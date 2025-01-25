@@ -508,6 +508,10 @@ function hideScenes() {
 function setScene(scene) {
     hideScenes();
     $("scene_" + scene).show("flex");
+
+    if (scene == "newMenu") {
+        loadServersHTML();
+    }
 }
 
 if (players.length == 0) {
