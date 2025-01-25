@@ -708,7 +708,7 @@ items.push({
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onEat: {
-        addStatus: ["blueKey"],
+        addStatus: ["greenKey"],
         shield: 0,
         growPlayer: 0,
         spawn: [],
