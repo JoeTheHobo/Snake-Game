@@ -5,6 +5,7 @@ tiles.push({
     changePlayerSpeed: 1, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 1,
+    pack: "Regular Speed",//Which Item Pack Does This Group To (For Map Editor)
 })
 tiles.push({
     name: "sand",
@@ -12,6 +13,7 @@ tiles.push({
     changePlayerSpeed: 0.5, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 2,
+    pack: "Slow Speed",//Which Item Pack Does This Group To (For Map Editor)
 })
 tiles.push({
     name: "clear",
@@ -19,6 +21,7 @@ tiles.push({
     changePlayerSpeed: 1, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 3,
+    pack: "Regular Speed",//Which Item Pack Does This Group To (For Map Editor)
 })
 tiles.push({
     name: "pathway",
@@ -26,6 +29,7 @@ tiles.push({
     changePlayerSpeed: 1.5, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 4,
+    pack: "Fast Speed",//Which Item Pack Does This Group To (For Map Editor)
 })
 tiles.push({
     name: "planks",
@@ -33,6 +37,7 @@ tiles.push({
     changePlayerSpeed: 1, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 5,
+    pack: "Regular Speed",//Which Item Pack Does This Group To (For Map Editor)
 })
 tiles.push({
     name: "water",
@@ -40,6 +45,7 @@ tiles.push({
     changePlayerSpeed: 0.5, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 6,
+    pack: "Slow Speed",//Which Item Pack Does This Group To (For Map Editor)
 })
 tiles.push({
     name: "flower",
@@ -47,6 +53,7 @@ tiles.push({
     changePlayerSpeed: 1, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 7,
+    pack: "Regular Speed",//Which Item Pack Does This Group To (For Map Editor)
 })
 
 

@@ -37,11 +37,16 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
     },
     id: 1,
+    pack: "Food",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "super_pellet",
@@ -79,11 +84,16 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
     },
     id: 2,
+    pack: "Food",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "turbo",
@@ -122,10 +132,15 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "wall",
@@ -164,10 +179,15 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 1, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "wall2",
@@ -206,10 +226,15 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 2, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "bronzeShield", //(string) Name Of Item
@@ -248,10 +273,15 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "silverShield",
@@ -290,10 +320,15 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "goldShield",
@@ -333,10 +368,15 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
     
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "lamp", //(string) Name Of Item
@@ -374,10 +414,15 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Hidden",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "snakeHole", //(string) Name Of Item
@@ -408,10 +453,15 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
     
     destructible: [false], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "snakeHole2", //(string) Name Of Item
@@ -442,10 +492,15 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     destructible: [false], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "snakeHole3", //(string) Name Of Item
@@ -476,10 +531,15 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     destructible: [false], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
 })
 
 items.push({
@@ -509,12 +569,18 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: true, //Spawn players on this tile
+    spawnPlayerID: "player", //Tells which player to spawn here. "player" for all players
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Mechanics",//Which Item Pack Does This Group To (For Map Editor)
 })
 
 items.push({
@@ -546,10 +612,15 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Mechanics",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "blueKey", //(string) Name Of Item
@@ -580,10 +651,15 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "redKey", //(string) Name Of Item
@@ -614,10 +690,15 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tiledestructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "greenKey", //(string) Name Of Item
@@ -627,7 +708,7 @@ items.push({
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onEat: {
-        addStatus: ["blueKey"],
+        addStatus: ["greenKey"],
         shield: 0,
         growPlayer: 0,
         spawn: [],
@@ -648,10 +729,15 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
     onDelete: { //Ran when item is destroyed
         removeStatus: [], //Remove any status
-    }
+    },
+    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "blueLock", //(string) Name Of Item
@@ -683,11 +769,16 @@ items.push({
     },
 
     destructible: ["blueKey"],
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
     onDelete: {
         removeStatus: ["blueKey"],
 
-    }
+    },
+    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "redLock", //(string) Name Of Item
@@ -719,11 +810,16 @@ items.push({
     },
 
     destructible: ["redKey"],
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
     onDelete: {
         removeStatus: ["redKey"],
 
-    }
+    },
+    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "greenLock", //(string) Name Of Item
@@ -755,11 +851,16 @@ items.push({
     },
 
     destructible: ["greenKey"],
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
     onDelete: {
         removeStatus: ["greenKey"],
 
-    }
+    },
+    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "stoneWall", //(string) Name Of Item
@@ -791,9 +892,429 @@ items.push({
     },
 
     destructible: [],
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
     onDelete: {
-        removeStatus: ["greenKey"],
+        removeStatus: [],
 
-    }
+    },
+    pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
+})
+items.push({
+    name: "switch", //(string) Name Of Item
+    id: 22,
+    img: "switchOff.png", //(string) Image name
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    onEat: {
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: true,
+        canvasFilter: false,
+    },
+
+    canCollide: true, //If You should look at any colliding properties
+    onCollision: { //When collisionType collides do these
+        switchImage: "switchOn.png", //Switch Between these images
+        switchBoardStatus: "switch", //Switch Between giving these status'
+    },
+
+    destructible: [false],
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: ["onCollision","switchBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
+    damage: 0,
+    onDelete: {
+        removeStatus: [],
+
+    },
+    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+})
+items.push({
+    name: "button", //(string) Name Of Item
+    id: 23,
+    img: "button.png", //(string) Image name
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    onEat: {
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: true,
+        canvasFilter: false,
+    },
+
+    canCollide: true, //If You should look at any colliding properties
+    onCollision: { //When collisionType collides do these
+        switchImage: false, //Switch Between these images
+        switchBoardStatus: false, //Switch Between giving these status
+        removeBoardStatus: "button", //Add a status To the Board;
+    },
+
+    destructible: [false],
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: ["onCollision","removeBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
+    damage: 0,
+    onDelete: {
+        removeStatus: [],
+
+    },
+    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+})
+items.push({
+    name: "buttonAdd", //(string) Name Of Item
+    id: 24,
+    img: "buttonAdd.png", //(string) Image name
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    onEat: {
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: true,
+        canvasFilter: false,
+    },
+
+    canCollide: true, //If You should look at any colliding properties
+    onCollision: { //When collisionType collides do these
+        switchImage: false, //Switch Between these images
+        switchBoardStatus: false, //Switch Between giving these status
+        addBoardStatus: "button", //Add a status To the Board;
+    },
+
+    destructible: [false],
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: ["onCollision","addBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
+    damage: 0,
+    onDelete: {
+        removeStatus: [],
+
+    },
+    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+})
+
+items.push({
+    name: "crown", //(string) Name Of Item
+    id: 25,
+    img: "crown.png", //(string) Image name
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+
+    canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    onEat: {
+        winGame: true, //When Picked Up Does Game End?
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: true,
+        canvasFilter: false,
+    },
+
+    canCollide: false, //If You should look at any colliding properties
+    onCollision: { //When collisionType collides do these
+        switchImage: false, //Switch Between these images
+        switchBoardStatus: false, //Switch Between giving these status
+        addBoardStatus: false, //Add a status To the Board;
+        removeBoardStatus: false, //Remove a status To the Board;
+    },
+
+    destructible: [false],
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
+    damage: 0,
+    onDelete: {
+        removeStatus: [],
+
+    },
+    pack: "Mechanics",//Which Item Pack Does This Group To (For Map Editor)
+})
+
+items.push({
+    name: "flag", //(string) Name Of Item
+    id: 26,
+    img: "flag.png", //(string) Image name
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    onEat: {
+        winGame: false, //When Picked Up Does Game End?
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: true,
+        canvasFilter: false,
+    },
+
+    canCollide: true, //If You should look at any colliding properties
+    onCollision: { //When collisionType collides do these
+        switchImage: false, //Switch Between these images
+        switchBoardStatus: false, //Switch Between giving these status
+        addBoardStatus: false, //Add a status To the Board;
+        removeBoardStatus: false, //Remove a status To the Board;
+        setBoardStatus: "player", //Sets its world status to this, can only send out one status
+        changeHue: "player", //Change hue to this.
+    },
+
+    destructible: [false],
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: ["onCollision","setBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
+    damage: 0,
+    onDelete: {
+        removeStatus: [],
+
+    },
+    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+})
+
+items.push({
+    name: "preassurePlate", //(string) Name Of Item
+    id: 27,
+    img: "pressureplate.png", //(string) Image name
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    onEat: {
+        winGame: false, //When Picked Up Does Game End?
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: true,
+        canvasFilter: false,
+    },
+
+    canCollide: true, //If You should look at any colliding properties
+    onCollision: { //When snake collides do these
+        switchImage: false, //Switch Between these images
+        switchBoardStatus: false, //Switch Between giving these status
+        addBoardStatus: "preassurePlate", //Add a status To the Board;
+        removeBoardStatus: false, //Remove a status To the Board;
+        setBoardStatus: false, //Sets its world status to this, can only send out one status
+        changeHue: false, //Change hue to this.
+    },
+    offCollision: { //When snake leaves item
+        removeBoardStatus: "preassurePlate", //Remove a status To the Board;
+    },
+
+    destructible: [false],
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: ["onCollision","addBoardStatus"], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
+    damage: 0,
+    onDelete: {
+        removeStatus: [],
+
+    },
+    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+})
+items.push({
+    name: "lockedCell", //(string) Name Of Item
+    id: 28,
+    img: "lockedCell.png", //(string) Image name
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    onEat: {
+        winGame: false, //When Picked Up Does Game End?
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: true,
+        canvasFilter: false,
+    },
+
+    canCollide: false, //If You should look at any colliding properties
+    onCollision: { //When snake collides do these
+        switchImage: false, //Switch Between Main Image and This Image
+        switchBoardStatus: false, //Switch Between giving these status
+        addBoardStatus: false, //Add a status To the Board;
+        removeBoardStatus: false, //Remove a status To the Board;
+        setBoardStatus: false, //Sets its world status to this, can only send out one status
+        changeHue: false, //Change hue to this.
+    },
+    offCollision: { //When snake leaves item
+        removeBoardStatus: false, //Remove a status To the Board;
+    },
+
+
+    destructible: ["player_0"],
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: ["destructible"], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: false,
+    damage: 0,
+    onDelete: {
+        removeStatus: [],
+
+    },
+    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+})
+items.push({
+    name: "boardLockedCell", //(string) Name Of Item
+    id: 29,
+    img: "boardLockedCell.png", //(string) Image name
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    onEat: {
+        winGame: false, //When Picked Up Does Game End?
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: true,
+        canvasFilter: false,
+    },
+
+    canCollide: false, //If You should look at any colliding properties
+    onCollision: { //When snake collides do these
+        switchImage: false, //Switch Between Main Image and This Image
+        switchBoardStatus: false, //Switch Between giving these status
+        addBoardStatus: false, //Add a status To the Board;
+        removeBoardStatus: false, //Remove a status To the Board;
+        setBoardStatus: false, //Sets its world status to this, can only send out one status
+        changeHue: false, //Change hue to this.
+    },
+    offCollision: { //When snake leaves item
+        removeBoardStatus: false, //Remove a status To the Board;
+    },
+
+
+    destructible: ["yes"], //Leave Blank If Nothing can Destroy This. "yes" - Anyone can destroy this
+    boardDestructible: ["switch"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: ["boardDestructible"], //Path to which status to render on top of item, leave blank if no render
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: false,
+    damage: 0,
+    onDelete: {
+        removeStatus: [],
+
+    },
+    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })

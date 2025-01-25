@@ -1,11 +1,18 @@
 ls.setID("snakegame");
 
-let forceReset = 2;
+let forceReset = 5;
 let needsToBeReset = ls.get("reset" + forceReset,true);
 if (needsToBeReset) {
     ls.clear();
     ls.save("reset" + forceReset,false);
 }
+let forceGMReset = 4;
+needsToBeReset = ls.get("resetGM" + forceGMReset,true);
+if (needsToBeReset) {
+    ls.save("gameModes",[]);
+    ls.save("resetGM" + forceGMReset,false);
+}
+
 
 let showPerformance = false;
 
@@ -39,8 +46,6 @@ let currentGameMode = gameModes[activeGameMode];
 
 
 let gs_playerCount = players.length > 0 ? players.length : 1;
-let gridX = 50;
-let gridY = 30;
 let circleWalls = true;
 let specialItemLowChance = 1;
 let specialItemHighChance = 6;
@@ -50,8 +55,10 @@ let totalSpecialItems = 1;
 let timer, gameEnd;
 let gamePaused = false;
 let isActiveGame = false;
-let currentBackground = "background.jpg";
 let doColorRender = false;
+
+let backgrounds = ["background.jpg"];
+let currentBackground = backgrounds[0];
 
 
 const getPPI = () => {
@@ -70,7 +77,7 @@ const getPPI = () => {
     return sizeInPixels;
   };
 
-  let gridSize = Math.floor(setPhysicalSize(.15));
+  let gridSize = Math.floor(setPhysicalSize(.17));
   
 
 const perfectFrameTime = 1000 / 60;
@@ -121,9 +128,10 @@ let ctx_overhangs = canvas_players.getContext("2d");
 
 let me_canvas = $("me_canvas");
 let me_ctx = me_canvas.getContext("2d");
-function adjustCanvasSize(gridx,gridy) {
-    const width = gridx * gridSize;
-    const height = gridy * gridSize;
+me_ctx.imageSmoothingEnabled = false;
+function adjustCanvasSize(gridx,gridy,zoom = 1) {
+    const width = Math.ceil(gridx * gridSize * zoom);
+    const height = Math.ceil(gridy * gridSize * zoom);
 
     // Set the canvas dimensions in device pixels
     canvas_background.width = width;
@@ -144,13 +152,92 @@ function adjustCanvasSize(gridx,gridy) {
         width: `${width}px`,
         height: `${height}px`,
     })
+    $(".edit_canvas").css({
+        width: `${width}px`,
+        height: `${height}px`,
+    })
+
+    //Fix Board Status Position
+    let offset = $(".game_canvas")[0].getBoundingClientRect();
+    $(".boardStatusHolder").css({
+        top: offset.bottom + "px",
+        left: offset.left + "px",
+        width: width,
+    })
 }
 
-function setResolution(gridx = gridX, gridy = gridY) {
+for (let i = 0; i < tiles.length; i++) {
+    if (!tiles[i].img) continue;
+
+    let img = $(".imageHolder").create("img");
+    img.src = "img/" + tiles[i].img;
+    img.id = "tile_" + tiles[i].name;
+}
+//End Load All Item Images
+let itemCanvas = [];
+function setUpItemCanvas() {
+    let html_itemCanvasHolder = $("itemCanvasHolder");
+    html_itemCanvasHolder.innerHTML = "";
+
+    for (let i = 0; i < items.length; i++) {
+        addItemCanvas(items[i],items[i].img,items[i].name);
+
+        if (items[i].onCollision) {
+            if (items[i].onCollision.switchImage) {
+                addItemCanvas(items[i],items[i].onCollision.switchImage,items[i].name + "_switch");
+            }
+        }
+    }
+}
+function makeItemCanvas(image,filter = "",player) {
+    let html_itemCanvasHolder = $("itemCanvasHolder");
+
+    let itemCanvas = html_itemCanvasHolder.create("canvas");
+    let itemCtx = itemCanvas.getContext("2d");
+
+    if (filter == "player") {
+        filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
+    }
+
+    itemCanvas.width = image.width;
+    itemCanvas.height = image.height;
+    itemCtx.drawImage(image,0,0);
+
+    if (filter !== "") {
+        itemCtx.filter = filter;
+        itemCtx.drawImage(image,0,0);
+    }
+    return itemCanvas;
+}
+function addItemCanvas(item,itemImg,name,filter = "",player) {
+    if ($("item_" + name)) return;
+
+    let img = $(".imageHolder").create("img");
+    img.src = "img/" + itemImg;
+    img.id = "item_" + name;
+
+    img.onload = function() {
+        let obj = {
+            name: name,
+            canvas: makeItemCanvas($("item_" + name),filter,player),
+        }
+        itemCanvas.push(obj);
+    }
+
+}
+setUpItemCanvas();
+function getItemCanvas(itemName) {
+    for (let i = 0; i < itemCanvas.length; i++) {
+        if (itemCanvas[i].name === itemName) return itemCanvas[i].canvas;
+    }
+}
+
+
+
+
+function setResolution(gridx, gridy) {
     adjustCanvasSize(gridx,gridy);
 }
-window.on("resize",setResolution)
-setResolution();
 
 
 
@@ -276,10 +363,14 @@ function spawn(name,generateRandomItem = true,counting = false) {
     let x,y;
     while (foundSpot == false) {
         if (isPlayer) {
-            findingSpawner: for (let k = 0; k < gridY; k++) {
-                for (let j = 0; j < gridX; j++) {
+            
+            findingExactSpawner: for (let k = 0; k < currentBoard.map.length; k++) {
+                for (let j = 0; j < currentBoard.map[0].length; j++) {
                     if (currentBoard.map[k][j].item === false) continue;
                     if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
+                    if (currentBoard.map[k][j].item.spawnPlayerID == "player" || currentBoard.map[k][j].item.spawnPlayerID === undefined) continue;
+                    if (Number(currentBoard.map[k][j].item.spawnPlayerID.subset("_\\after","end")) !== Number(name.id)) continue;
+
                     let playerOnIt = false;
                     for (let i = 0; i < activePlayers.length; i++) {
                         if (activePlayers[i].pos.x == j && activePlayers[i].pos.y == k) playerOnIt = true;
@@ -289,14 +380,56 @@ function spawn(name,generateRandomItem = true,counting = false) {
                     x = j;
                     y = k;
                     foundSpot = true;
-                    break findingSpawner;
+                    break findingExactSpawner;
+                    
+                }
+            }
+            if (!foundSpot) {
+
+                findingSpawner: for (let k = 0; k < currentBoard.map.length; k++) {
+                    for (let j = 0; j < currentBoard.map[0].length; j++) {
+                        if (currentBoard.map[k][j].item === false) continue;
+                        if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
+                        if (currentBoard.map[k][j].item.spawnPlayerID !== "player") continue;
+                        
+                        let playerOnIt = false;
+                        for (let i = 0; i < activePlayers.length; i++) {
+                            if (activePlayers[i].pos.x == j && activePlayers[i].pos.y == k) playerOnIt = true;
+                        }
+                        if (playerOnIt) continue;
+                        
+                        x = j;
+                        y = k;
+                        foundSpot = true;
+                        break findingSpawner;
+                    }
+                }
+
+                
+                if (!foundSpot) {
+                    findingSpawner: for (let k = 0; k < currentBoard.map.length; k++) {
+                        for (let j = 0; j < currentBoard.map[0].length; j++) {
+                            if (currentBoard.map[k][j].item === false) continue;
+                            if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
+                            let playerOnIt = false;
+                            for (let i = 0; i < activePlayers.length; i++) {
+                                if (activePlayers[i].pos.x == j && activePlayers[i].pos.y == k) playerOnIt = true;
+                            }
+                            if (playerOnIt) continue;
+        
+                            x = j;
+                            y = k;
+                            foundSpot = true;
+                            break findingSpawner;
+                        }
+                    }
                 }
             }
         }
         
         if (foundSpot === false) {
-            x = rnd(gridX)-1;
-            y = rnd(gridY)-1;
+            x = rnd(currentBoard.map[0].length)-1;
+            y = rnd(currentBoard.map.length)-1;
             if (currentBoard.map[y][x].item == false && currentBoard.map[y][x].tile.canSpawn) {
                 foundSpot = true;
                 checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
@@ -314,15 +447,15 @@ function spawn(name,generateRandomItem = true,counting = false) {
                 }
             }
             counter++;
-            if (counter > (gridX * gridY) ) {
+            if (counter > (currentBoard.map.length * currentBoard.map[0].length) ) {
                 foundSpot = "couldn't find any";
             }
         }
     }
 
     if (foundSpot == "couldn't find any") {
-        findingAnySpot: for (let k = 0; k < gridY; k++) {
-            for (let j = 0; j < gridX; j++) {
+        findingAnySpot: for (let k = 0; k < currentBoard.map.length; k++) {
+            for (let j = 0; j < currentBoard.mapcurrentBoard.map[0].length; j++) {
                 if (currentBoard.map[k][j].item == false && currentBoard.map[k][j].tile.canSpawn) {
                     let foundGoodSpot = true;
                     checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
@@ -976,6 +1109,8 @@ function drawPlayerBox(player) {
         right: statusRight,
     })
     for (let i = 0; i < player.status.length; i++) {
+        if (player.status[i].subset(0,6) == "player_") continue;
+
         let statusImage = statusHolder.create("img");
         statusImage.src = "img/" + getRealItem(player.status[i]).img;
         statusImage.css({
@@ -1448,16 +1583,21 @@ function downloadTextFile(filename, text) {
     }
   }
 function saveBoards() {
-let newBoards = [];
-for (let i = 0; i < boards.length; i++) {
-    if (!boards[i].cantEdit) {
-        newBoards.push(shortenBoard(boards[i]));
+    let newBoards = [];
+    for (let i = 0; i < boards.length; i++) {
+        if (!boards[i].cantEdit) {
+            newBoards.push(shortenBoard(boards[i]));
+        }
     }
-}
-ls.save("boards",newBoards)
+    ls.save("boards",newBoards)
 }
 function shortenBoard(oldBoard) {
     oldBoard.map = [];
+    try {
+        structuredClone(oldBoard);
+    } catch {
+        console.log(oldBoard);
+    }
     let board = structuredClone(oldBoard);
 
     let _newMap = [];
@@ -1579,4 +1719,140 @@ function getByID(id,type) {
         }
     }
     return toReturn;
+}
+function findItemDifferences(map) {
+    let allDifferences = [];
+    for (let i = 0; i < map.length; i++) {
+        for (let j = 0; j < map[i].length; j++) {
+            let item = map[i][j].item;
+            if (!item) continue;
+
+            let realItem = getRealItem(item.name);
+            let differences = compareObjects(realItem,item);
+            if (differences.length == 0) continue;
+
+            allDifferences.push({
+                differences: differences,
+                x: j,
+                y: i,
+            })
+        }
+    }
+    return allDifferences;
+}
+function compareObjects(obj1, obj2, path = []) {
+    let differences = [];
+  
+    // Check keys in obj1
+    for (let key in obj1) {
+      if (Object.prototype.hasOwnProperty.call(obj1, key)) {
+        if (!Object.prototype.hasOwnProperty.call(obj2, key)) {
+          differences.push([...path, key, undefined]); // Key missing in obj2
+        } else if (typeof obj1[key] === "object" && obj1[key] !== null && typeof obj2[key] === "object" && obj2[key] !== null) {
+          // Recursively check nested objects
+          differences = differences.concat(compareObjects(obj1[key], obj2[key], [...path, key]));
+        } else if (obj1[key] !== obj2[key]) {
+          differences.push([...path, key, obj2[key]]);
+        }
+      }
+    }
+    // Check keys in obj2 that aren't in obj1
+    for (let key in obj2) {
+        if (Object.prototype.hasOwnProperty.call(obj2, key) && !Object.prototype.hasOwnProperty.call(obj1, key)) {
+        differences.push([...path, key, obj2[key]]);
+        }
+    }
+
+    return differences;
+}
+
+function loadBoardStatus() {
+    let holder = $(".boardStatusHolder");
+    holder.innerHTML = "";
+
+    for (let i = 0; i < currentBoard.boardStatus.length; i++) {
+        let status = currentBoard.boardStatus[i];
+        let imgHolder = holder.create("div");
+        imgHolder.css({
+            width: "25px",
+            height: "25px",
+            margin: "2px",
+            borderRadius: "5px",
+            border: "2px solid black",
+            background: "white",
+        })
+
+        if (status.subset(0,5) == "player") {
+            if (status.subset(0,6) == "player_") {
+                let text = imgHolder.create("div");
+                text.innerHTML = "P" + status.subset("_\\after","end"); 
+                text.css({
+                    width: "100%",
+                    color: "black",
+                    fontWeight: "bold",
+                    fontSize: "25px",
+                    lineHeight: "50px",
+                    textAlign: "center",
+                })
+            }
+            if (status == "player") {
+                let text = imgHolder.create("div");
+                text.innerHTML = "P"; 
+                text.css({
+                    width: "100%",
+                    color: "black",
+                    fontWeight: "bold",
+                    fontSize: "25px",
+                    lineHeight: "50px",
+                    textAlign: "center",
+                })
+            }
+        } else {
+            let img = imgHolder.create("img");
+            img.src = "img/" + getRealItem(status).img;
+            img.css({
+                width: "100%",
+                height: "100%",
+            })
+        }
+
+        
+    }
+}
+
+
+function fixItemDifferences(map) {
+    if (!currentBoard.itemDifferences) return;
+    for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
+        let d = currentBoard.itemDifferences[i];
+        let pos = (map[d.y][d.x].item);
+        if (!pos) continue;
+        for (let j = 0; j < d.differences.length; j++) {
+            let change = d.differences[j];
+            if (change.length == 3) {
+                pos[change[0]][change[1]] = change[2];
+            }
+            if (change.length == 2) pos[change[0]] = change[1];
+        }
+        map[d.y][d.x].item = pos;
+    }
+}
+function cloneObject(object) {
+    try {
+        return structuredClone(object);
+    } catch {
+        console.warn("Structed Clone Failed On:",object);
+    }
+    
+}
+function forceAllCellsToBeTheirOwn(map) {
+    let newMap = [];
+    for (let i = 0; i < map.length; i++) {
+        let row = [];
+        for (let j = 0; j < map[i].length; j++) {
+            row.push(cloneObject(map[i][j]));
+        }
+        newMap.push(row);
+    }
+    return newMap;
 }

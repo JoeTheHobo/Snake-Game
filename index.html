@@ -31,9 +31,19 @@
         <canvas class="game_canvas" id="render_players"></canvas>
         <canvas class="game_canvas" id="render_overhangs"></canvas>
 
+        <div class="boardStatusHolder"></div>
+
         <div id="playerCardsHolder"></div>
         <div class="endGamePopup">
             <div class="title">Game Over</div>
+
+            <div id="winnerStat" class="header">Winner Winner Chicken Dinner</div>
+            <div id="winnerStat" class="endGameHolder">
+                <div class="engGame_playerImgHolder">
+                    <img class="engGame_playerImg winnerPlayerImg" src="img/snakeHead.png">
+                </div>
+                <div class="endGame_text engGame_playerNameWinner">SlitheringShank</div>
+            </div>
 
             <div class="header">Alive Longest</div>
             <div class="endGameHolder">
@@ -117,11 +127,59 @@
                     <div class="me_dropdownTitle">Tiles</div>
                     <div class="me_dropdownContent me_tilesContent"></div>
                 </div>
+                <div class="me_dropdown" id="me_tilesDropDown">
+                    <div class="me_dropdownTitle">Backgrounds</div>
+                    <div class="me_dropdownContent me_backgroundContent"></div>
+                </div>
             </div>
         </div>
-        <div class="me_toolbar"></div>
+        <div class="me_toolbar">
+            <div class="toolbar_tools">
+                <div class="toolBarToolHolder undo_tool" title="Shortcut: Control + Z"><img src="img/tool_undo.png" id="tool_undo" onclick="runTool('undo')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder redo_tool" title="Shortcut: Control + Y"><img src="img/tool_redo.png" id="tool_redo" onclick="runTool('redo')" class="toolBarToolImg"></div>
+            </div>
+            <div class="toolbar_tools">
+                <div class="toolBarToolHolder" title="Shortcut: D"><img src="img/tool_draw.png" id="tool_draw" onclick="setTool('draw')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder" title="Shortcut: S"><img src="img/tool_select.png" id="tool_select" onclick="setTool('select')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder" title="Shortcut: E"><img src="img/tool_eraser.png" id="tool_eraser" onclick="setTool('eraser')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder" title="Shortcut: B"><img src="img/tool_bucket.png" id="tool_bucket" onclick="setTool('bucket')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder" title="Shortcut: M"><img src="img/tool_move.png" id="tool_move" onclick="setTool('move')" class="toolBarToolImg"></div>
+            </div>
+            <div class="toolbar_subtools">
+                <div class="toolBarToolHolder subToolHolder subTool_draw"><img src="img/tool_brush.png" id="subTool_brush" onclick="setSubTool('brush')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_draw"><img src="img/tool_shape.png" id="subTool_shape" onclick="setSubTool('shape')" class="toolBarToolImg"></div>
+
+                <div class="toolBarToolHolder subToolHolder subTool_select" title="Shortcut: Control + C"><img src="img/tool_copy.png" id="subTool_copy" onclick="runTool('copy')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_select pastingTool" title="Shortcut: Control + V"><img src="img/tool_paste.png" id="subTool_paste" onclick="runTool('paste')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_select"><img src="img/tool_bucket.png" id="subTool_fill" onclick="runTool('fill')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_select"><img src="img/tool_reflectX.png" id="subTool_reflectX" onclick="runTool('reflectX')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_select"><img src="img/tool_reflectY.png" id="subTool_reflectY" onclick="runTool('reflectY')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_select" title="Shortcut: Delete Key"><img src="img/tool_delete.png" id="subTool_delete" onclick="runTool('delete')" class="toolBarToolImg"></div>
+                
+                <div class="toolBarToolHolder subToolHolder subTool_bucket" title="Shortcut: B"><img src="img/tool_bucket.png" id="subTool_bucket" onclick="setSubTool('bucket')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_bucket" title="Shortcut: B"><img src="img/tool_globalFill.png" id="subTool_global_bucket" onclick="setSubTool('global_bucket')" class="toolBarToolImg"></div>
+                
+                <div class="toolBarToolHolder subToolHolder subTool_move" title="Shortcut: Middle Mouse Button And Drag"><img src="img/tool_move.png" id="subTool_move" onclick="setSubTool('move')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_move"><img src="img/zoomZero.png" id="subTool_zoomZero" onclick="runTool('zoomZero')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_move" title="Shortcut: Mouse Wheel Down"><img src="img/tool_zoomout.png" id="subTool_zoomOut" onclick="runTool('zoomOut')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_move" title="Shortcut: Mouse Wheel Up"><img src="img/tool_zoomin.png" id="subTool_zoomIn" onclick="runTool('zoomIn')" class="toolBarToolImg"></div>
+
+            </div>
+        </div>
         <div class="me_bottom">
-            <canvas class="game_canvas" id="me_canvas"></canvas>
+            <div class="me_canvasHolder">
+                <canvas class="edit_canvas" id="me_canvas"></canvas>
+            </div>
+            <div class="me_objectHolder">
+                <div class="me_ih_imageHolder">
+                    <img src="img/rock2.png" class="me_ih_image">
+                </div>
+                <div class="me_ih_name">Pellet</div>
+                <div class="me_ih_settings"></div>
+            </div>
+        </div>
+        <div class="statusSelectionScreen">
+            <div class="statusSelectionHolder"></div>
         </div>
     </div>
 

@@ -1,28 +1,13 @@
-//Load All Item Images
-for (let i = 0; i < items.length; i++) {
-    if (!items[i].img) continue;
-
-    let img = $(".imageHolder").create("img");
-    img.src = "img/" + items[i].img;
-    img.id = "item_" + items[i].name;
-}
-for (let i = 0; i < tiles.length; i++) {
-    if (!tiles[i].img) continue;
-
-    let img = $(".imageHolder").create("img");
-    img.src = "img/" + tiles[i].img;
-    img.id = "tile_" + tiles[i].name;
-}
-//End Load All Item Images
-
-
 function renderGame() {
     renderTiles();
     ctx_items.clearRect(0,0,canvas_items.width,canvas_items.height);
     for (let i = 0; i < currentBoard.map.length; i++) {
         for (let j = 0; j < currentBoard.map[0].length; j++) {
             let cell = currentBoard.map[i][j]; 
-            cell.item = getItem(cell.item.name);
+
+            if (cell.item === false) continue;
+
+            cell.item = cloneObject(getItem(cell.item.name));
             if (cell.item == undefined) cell.item = false; //Prolly Will Need To Resolve Issue Later
             if (cell.item !== false) {
                 if (cell.item.spawnLimit > 0) cell.item.spawnLimit--; 
@@ -31,10 +16,8 @@ function renderGame() {
                     y: i,
                 })
             }
-            if (cell.tile == false) continue;
         }
     }
-    renderCells();
 }
 function renderTiles() {
     ctx_tiles.clearRect(0,0,canvas_tiles.width,canvas_tiles.height);
@@ -51,7 +34,25 @@ function renderCells() {
         ctx_items.clearRect(updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
         if (!mapCell.visible) continue;
         if (mapCell == false) continue;
-        ctx_items.drawImage(mapCell.canvas,updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
+
+        ctx_items.drawImage(getItemCanvas(mapCell.name + mapCell.canvasTag),updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
+
+        if (mapCell.renderStatusPath.length > 0) {
+            let name = mapCell;
+            for (let j = 0; j < mapCell.renderStatusPath.length; j++) {
+                name = name[mapCell.renderStatusPath[j]];
+            }
+            let change = 1.5;
+            if (_type(name).type == "array") name = name[0];
+            if (name.subset(0,5) == "player") {
+                if (name == "player") continue;
+                ctx_items.fillStyle = "black";
+                ctx_items.font = "20px Arial";
+                name = "P" + name.subset("_\\after","end");
+                ctx_items.fillText(name,(updateCells[i].x*gridSize) + (gridSize/2) - (gridSize/change/2),updateCells[i].y*gridSize + (gridSize/2) - (gridSize/change/2)+(gridSize/2),gridSize/change,gridSize/change);
+            } else 
+                ctx_items.drawImage(getItemCanvas(name),(updateCells[i].x*gridSize) + (gridSize/2) - (gridSize/change/2),updateCells[i].y*gridSize + (gridSize/2) - (gridSize/change/2),gridSize/change,gridSize/change);
+        }
     }
     updateCells = [];
 }
@@ -120,15 +121,15 @@ function renderPlayers() {
         
         if (player.shield == 1){
             let item = getItem("bronzeShield");
-            drawImage(item.canvas,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize,canvas_players);
+            drawImage(getItemCanvas(item.name),player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize,canvas_players);
         }
         if (player.shield == 2){
             let item = getItem("silverShield");
-            drawImage(item.canvas,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize,canvas_players);
+            drawImage(getItemCanvas(item.name),player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize,canvas_players);
         }
         if (player.shield == 3){
             let item = getItem("goldShield");
-            drawImage(item.canvas,player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize,canvas_players);
+            drawImage(getItemCanvas(item.name),player.moving,player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize,canvas_players);
         }
 
         production.renderTail.timeStart = performance.now();
@@ -314,10 +315,8 @@ function renderPlayers() {
     doColorRender = false;
 }
 function growPlayer(player,grow) {
-    player.growTail = grow;
+    player.growTail += grow;
 }
-
-
 function movePlayers() {
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
@@ -368,7 +367,20 @@ function movePlayers() {
                     direction: player.moving,
                 });
                 updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
+                
+
+                let tail = player.tail[player.tail.length-1];
+                if (currentBoard.map[tail.y][tail.x].item) {
+                    let mapItem = currentBoard.map[tail.y][tail.x].item;
+                    if (mapItem.canCollide) runItemFunction(player,mapItem,"offCollision");
+                }
+                
                 player.tail.pop();
+            } else {
+                if (currentBoard.map[player.pos.y][player.pos.x].item) {
+                    let mapItem = currentBoard.map[player.pos.y][player.pos.x].item;
+                    if (mapItem.canCollide) runItemFunction(player,mapItem,"offCollision");
+                }
             }
             if (player.tail.length > 0)
                 updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
@@ -399,17 +411,17 @@ function movePlayers() {
 
             //Collision Testing
             //Test If Player Hits Edge
-            if (player.pos.x > gridX-1) {
+            if (player.pos.x > currentBoard.map[0].length-1) {
                 if (circleWalls) player.pos.x = 0;
             }
             if (player.pos.x < 0) {
-                if (circleWalls) player.pos.x = gridX-1;
+                if (circleWalls) player.pos.x = currentBoard.map[0].length-1;
             }
-            if (player.pos.y > gridY-1) {
+            if (player.pos.y > currentBoard.map.length-1) {
                 if (circleWalls) player.pos.y = 0;
             }
             if (player.pos.y < 0) {
-                if (circleWalls) player.pos.y = gridY-1;
+                if (circleWalls) player.pos.y = currentBoard.map.length-1;
             }
 
             //Test Item Underplayer
@@ -480,42 +492,129 @@ function testItemUnderPlayer(player) {
         player.justTeleported = false;
     }
 
+    if (mapItem.canCollide) {
+        runItemFunction(player,mapItem,"onCollision");
+    }
+
     let itemIsDelete = false;
-
-    checking: for (let i = 0; i < mapItem.destructible.length; i++) {
-        let status = mapItem.destructible[i];
-        let deleteMe = false;
-        if (status === false) {
-            itemIsDelete = true;
-            break checking;
+    let worldStatusPass = false;
+    let boardStatusCount = 0;
+    for (let i = 0; i < mapItem.boardDestructible.length; i++) {
+        if (mapItem.boardDestructible[i] == "yes")  {
+            worldStatusPass = true;
+            boardStatusCount++;
+            continue;
         }
-        if (status == "yes") deleteMe = true;
-        if (player.status.includes(status)) deleteMe = true;
-
-        if (deleteMe) {
-            itemIsDelete = true;
-            //Hurt Player
-            deletePlayer(player,false,mapItem);
-
-            //Checking On Eat Delete Me Object From Item
-            if (mapItem.onDelete) {
-                if (mapItem.onDelete.removeStatus.length > 0) {
-                    for (let j = 0; j < mapItem.onDelete.removeStatus.length; j++) {
-                        removePlayerStatus(player,mapItem.onDelete.removeStatus[j]);
-                    }
-                }    
+        if (currentBoard.boardStatus.includes(mapItem.boardDestructible[i])) {
+            for (let j = 0; j < currentBoard.boardStatus.length; j++) {
+                if (currentBoard.boardStatus[j] === mapItem.boardDestructible[i]) boardStatusCount++;
             }
-
-            //Delete Item
-            currentBoard.map[player.pos.y][player.pos.x].item = false;
-            updateCells.push({
-                x: player.pos.x,
-                y: player.pos.y,
-            })
-            break checking;
+            continue;
+        }
+    }
+    worldStatusPass = boardStatusCount >= Number(mapItem.boardDestructibleCountRequired);
+    if (worldStatusPass) {
+        checking: for (let i = 0; i < mapItem.destructible.length; i++) {
+            let status = mapItem.destructible[i];
+            let deleteMe = false;
+            if (status === false) {
+                itemIsDelete = true;
+                break checking;
+            }
+            if (status == "yes") deleteMe = true;
+            if (player.status.includes(status)) deleteMe = true;
+    
+            if (deleteMe) {
+                itemIsDelete = true;
+                //Hurt Player
+                deletePlayer(player,false,mapItem);
+    
+                if (mapItem.deleteOnDestruct == false) {
+                    break checking;
+                }
+    
+                //Checking On Eat Delete Me Object From Item
+                if (mapItem.onDelete) {
+                    if (mapItem.onDelete.removeStatus.length > 0) {
+                        for (let j = 0; j < mapItem.onDelete.removeStatus.length; j++) {
+                            removePlayerStatus(player,mapItem.onDelete.removeStatus[j]);
+                        }
+                    }    
+                }
+    
+                //Delete Item
+                currentBoard.map[player.pos.y][player.pos.x].item = false;
+                updateCells.push({
+                    x: player.pos.x,
+                    y: player.pos.y,
+                })
+                break checking;
+            }
         }
     }
     if (!itemIsDelete) deletePlayer(player);
+}
+function runItemFunction(player,item,type) {
+    if (!type) return;
+
+    let collision;
+    if (type == "onCollision") collision = item.onCollision;
+    if (type == "offCollision") collision = item.offCollision;
+
+    if (!collision) return;
+
+    if (item.switchStatus == false || item.switchStatus == undefined) {
+        item.switchStatus = true;
+    } else {
+        item.switchStatus = false;
+    }
+
+    if (collision.switchImage) {
+        if (item.switchStatus === true) {
+            item.canvasTag = "_switch";
+        } else {
+            item.canvasTag = "";
+        }
+        updateCells.push({
+            x: player.pos.x,
+            y: player.pos.y,
+        })
+    }
+    if (collision.switchBoardStatus) {
+        if (item.switchStatus === true) {
+            addBoardStatus(collision.switchBoardStatus,player);
+        } else {
+            removeBoardStatus(collision.switchBoardStatus,player);
+        }
+    }
+    if (collision.addBoardStatus) {
+        addBoardStatus(collision.addBoardStatus,player);
+    }
+    if (collision.removeBoardStatus) {
+        removeBoardStatus(collision.removeBoardStatus,player);
+    }
+    if (collision.setBoardStatus) {
+        let status = collision.setBoardStatus;
+        if (collision.setBoardStatus == "player") status = "player_" + player.id;
+
+        if (item.sendingBoardStatus === status) return;
+
+        if (item.sendingBoardStatus !== false) {
+            removeBoardStatus(item.sendingBoardStatus,player);
+        }
+
+        item.sendingBoardStatus = status;
+        addBoardStatus(status,player);
+    }
+    if (collision.changeHue) {
+        addItemCanvas(item,item.img,item.name + "_" + player.name,collision.changeHue,player);
+        item.canvasTag = "_" + player.name; 
+
+        updateCells.push({
+            x: player.pos.x,
+            y: player.pos.y,
+        })
+    }
 }
 function useItemHelper(player,item) {
     let onEat = item.onEat;
@@ -552,6 +651,9 @@ function useItemHelper(player,item) {
     if (onEat.shield > 0) {
         player.shield = onEat.shield;
     }
+    if (onEat.winGame === true) {
+        endScreen(player);
+    }
     if (onEat.canvasFilter.active == true) {
         ctx_players.filter = onEat.canvasFilter.filter;
         ctx_items.filter = onEat.canvasFilter.filter;
@@ -584,13 +686,21 @@ function useItemHelper(player,item) {
         },onEat.canvasFilter.duration)
     }
 }
-function endScreen() {
+function endScreen(player = false) {
     gameEnd = true;
+    isActiveGame = false;
     $(".endGamePopup").show("flex");
+
+    //Kill Any Non Dead Snakes
+    for (let i = 0; i < activePlayers.length; i++) {
+        if (!activePlayers[i].isDead) {
+            deletePlayer(activePlayers[i],false,false,true);
+        }
+    }
+
     let longestTail = activePlayers[0].longestTail;
     let timeSurvived = activePlayers[0].timeSurvived;
     let mostKills = activePlayers[0].playerKills;
-
     let longestTailPlayer = activePlayers[0];
     let timeSurvivedPlayer = activePlayers[0];
     let mostKillsPlayer = activePlayers[0];
@@ -630,15 +740,23 @@ function endScreen() {
     } else {
         $("snakeKillsStat").hide();
     }
+
+    $("winnerStat").hide();
+    if (player) {
+        $("winnerStat").show("flex");
+        $(".winnerPlayerImg").style.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
+        $(".engGame_playerNameWinner").innerHTML = player.name;
+
+    }
 }
-function deletePlayer(player,playerWhoKilled,item){
+function deletePlayer(player,playerWhoKilled,item,instaKill = false){
     let damage;
     if (item) damage = item.damage;
     if (playerWhoKilled) damage = playerWhoKilled.bodyArmor;
     if (!item && !playerWhoKilled) damage = (player.shield+1);
     player.shield -= damage;
 
-    if (player.shield < 0){
+    if (player.shield < 0 || instaKill){
         if (playerWhoKilled) if (playerWhoKilled.name !== player.name) playerWhoKilled.playerKills++;
 
         //Delete Tail
@@ -699,6 +817,24 @@ function removePlayerStatus(player,itemName) {
 function addPlayerStatus(player,itemName) {
     player.status.push(getItem(itemName).name);
     drawPlayerBox(player);
+}
+function removeBoardStatus(status,player) {
+    if (status == "player") status = "player_" + player.id;
+    checking: for (let i = 0; i < currentBoard.boardStatus.length; i++) {
+        if (currentBoard.boardStatus[i] == status) {
+            currentBoard.boardStatus.splice(i,1);
+            break checking;
+        }
+    }
+
+    loadBoardStatus();
+}
+function addBoardStatus(status,player) {
+    if (status == "player") status = "player_" + player.id;
+
+    currentBoard.boardStatus.push(status);
+
+    loadBoardStatus();
 }
 
 
@@ -829,26 +965,6 @@ function setUpPlayerCanvas() {
 
     }
 }
-function setUpItemCanvas() {
-    let html_itemCanvasHolder = $("itemCanvasHolder");
-    html_itemCanvasHolder.innerHTML = "";
-
-    function getCanvas(image) {
-        let itemCanvas = html_itemCanvasHolder.create("canvas");
-        let itemCtx = itemCanvas.getContext("2d");
-        itemCanvas.width = image.width;
-        itemCanvas.height = image.height;
-        itemCtx.drawImage(image,0,0);
-        return itemCanvas;
-    }
-    for (let i = 0; i < currentGameMode.items.length; i++) {
-        if (!$("item_" + currentGameMode.items[i].name)) {
-            console.warn("Outdated Item/Tile: " + currentGameMode.items[i].name);
-            continue;
-        }
-        currentGameMode.items[i].canvas = getCanvas($("item_" + currentGameMode.items[i].name));
-    }
-}
 
 
 function startGame() {
@@ -864,15 +980,16 @@ function startGame() {
     }
 
     gamePaused = false;
+
     try {
         currentBoard.map = structuredClone(currentBoard.originalMap);
     } catch {
         console.warn(currentBoard.originalMap);
     }
 
-    gridX = currentBoard.map[0].length;
-    gridY = currentBoard.map.length;
-    setResolution(gridX,gridY);
+    setResolution(currentBoard.map[0].length,currentBoard.map.length);
+
+    currentBoard.boardStatus = [];
     
     doColorRender = false;
     activePlayers = [];
@@ -889,7 +1006,6 @@ function startGame() {
     for (let i = 0; i < players.length; i++) {
         if (players[i].active) activePlayers.push(players[i]);
     }
-
     //Resetting Players
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
@@ -904,7 +1020,7 @@ function startGame() {
         //Set Player Item Usage
         player.howManyItemsCanIUse = currentGameMode.howManyItemsCanPlayersUse;
         player.whenInventoryIsFullInsertItemsAt = 0;
-        player.status = [];
+        player.status = ["player_" + i];
         //Set All Player Items To Empty
         player.items = [];
         for (let j = 0; j < currentGameMode.howManyItemsCanPlayersUse; j++) {
@@ -933,12 +1049,22 @@ function startGame() {
             y: false,
         }
         //Spawn Players
-        spawn(player);
+    }
+
+    //Reset Items
+    for (let i = 0; i < currentGameMode.items.length; i++) {
+        currentGameMode.items[i].canvasTag = "";
     }
 
     setUpPlayerCanvas();
-    setUpItemCanvas();
     renderGame();
+    fixItemDifferences(currentBoard.map);
+    renderCells();
+    loadBoardStatus();
+
+    for (let i = 0; i < activePlayers.length; i++) {
+        spawn(activePlayers[i]);
+    }
 
     for (let i = 0; i < currentGameMode.items.length; i++) {
         let item = currentGameMode.items[i];
@@ -1097,4 +1223,8 @@ function specialItemManager()
     }
 }
 
+
+
+
 setScene("menu")
+
