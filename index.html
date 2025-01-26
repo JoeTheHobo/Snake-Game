@@ -20,7 +20,7 @@
         <div class="menu_holder">
             <div class="menu_top">
                 <div onclick="loadServersHTML()" id="servers_tab" class="menu_tab menu_tab_selected">Servers</div>
-                <div id="snake_tab" class="menu_tab">Your Snake</div>
+                <div onclick="loadCustomizeSnakeScreen()" id="snake_tab" class="menu_tab">Your Snake</div>
                 <div id="boards_tab" class="menu_tab">Your Boards</div>
                 <div id="gameModes_tab" class="menu_tab">Your Game Modes</div>
 
@@ -42,6 +42,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="menu_content content_snake">
+
             </div>
 
         </div>
@@ -191,6 +194,7 @@
 
                 <div class="toolBarToolHolder subToolHolder subTool_select" title="Shortcut: Control + C"><img src="img/tool_copy.png" id="subTool_copy" onclick="runTool('copy')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_select pastingTool" title="Shortcut: Control + V"><img src="img/tool_paste.png" id="subTool_paste" onclick="runTool('paste')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_select" title="Shortcut: Control + X"><img src="img/tool_cut.png" id="subTool_cut" onclick="runTool('cut')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_select"><img src="img/tool_bucket.png" id="subTool_fill" onclick="runTool('fill')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_select"><img src="img/tool_reflectX.png" id="subTool_reflectX" onclick="runTool('reflectX')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_select"><img src="img/tool_reflectY.png" id="subTool_reflectY" onclick="runTool('reflectY')" class="toolBarToolImg"></div>
@@ -204,6 +208,10 @@
                 <div class="toolBarToolHolder subToolHolder subTool_move" title="Shortcut: Mouse Wheel Down"><img src="img/tool_zoomout.png" id="subTool_zoomOut" onclick="runTool('zoomOut')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_move" title="Shortcut: Mouse Wheel Up"><img src="img/tool_zoomin.png" id="subTool_zoomIn" onclick="runTool('zoomIn')" class="toolBarToolImg"></div>
 
+            </div>
+            
+            <div class="toolbar_extra">
+                <div class="toolBarToolHolder2 show_grid_tool" title="Shortcut: Control + G"><img src="img/tool_show_grid.png" id="tool_show_grid" onclick="runTool('show_grid')" class="toolBarToolImg"></div>
             </div>
         </div>
         <div class="me_bottom">
@@ -241,6 +249,7 @@
     <div id="itemCanvasHolder"></div>
 
     <!--Insert All Library Sheets Below-->
+    <script src="https://cdn.jsdelivr.net/npm/pako/dist/pako.min.js"></script>
     <script src='libraries/library_simple_v16.js'></script>
 
     <!--Insert All Your Sheets Below-->

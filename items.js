@@ -24,7 +24,8 @@ items.push({
             active: false,
             filter: false,
             duration: false,
-        }
+        },
+        playSound: ["eat",2], //Write the name of sound, and how many different Files there are.
     },
     showInEditor: true,
     onStartSpawn: 3,
@@ -35,6 +36,10 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+    soundFolder: "mouse",
+    onSpawn: { //When item spawns run these
+        playSound: ["spawn",1], //Write the name of sound, and how many different Files there are.
+    },
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
@@ -177,6 +182,11 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+
+    soundFolder: "rock",
+    onSpawn: { //When item spawns run these
+        playSound: ["spawn",1], //Write the name of sound, and how many different Files there are.
+    },
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what

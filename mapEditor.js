@@ -39,12 +39,18 @@ let copiedCells = [];
 let zoom = 1;
 let xChange = 0;
 let yChange = 0;
+let showGrid = false;
 
 loadObjectMenu();
 function fixItemDifferencesMapEditor(map) {
     if (!currentBoard.itemDifferences) return;
     for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
-        let d = currentBoard.itemDifferences[i];
+        let e = currentBoard.itemDifferences[i];
+        let d = {
+            differences: e[0],
+            x: e[1],
+            y: e[2],
+        }
         let pos = structuredClone(map[d.y][d.x].item);
         if (!pos) continue;
         for (let j = 0; j < d.differences.length; j++) {
@@ -64,6 +70,7 @@ function openMapEditor(boardComingIn) {
     history = [];
     forwardHistory = [];
     zoom = 1;
+    showGrid = false;
     $(".redo_tool").style.opacity = "0.5";
     $(".undo_tool").style.opacity = "0.5";
     setScene("mapEditor");
@@ -168,6 +175,35 @@ function renderMapEditorCanvas() {
     if (selectedCells.shape) {
         let obj = getRectPos(selectedCells.start,selectedCells.end);
         me_ctx.strokeRect(obj.startX,obj.startY,obj.width,obj.height);
+    }
+
+
+    if (showGrid) {
+        function drawLine(type,color,pos) {
+            pos = ((gridSize*zoom)*pos)
+            
+            let x1 = type == "x" ? 0 : pos;
+            let x2 = type == "x" ? me_canvas.width : pos;
+            let y1 = type == "y" ? 0 : pos;
+            let y2 = type == "y" ? me_canvas.height : pos;
+
+            me_ctx.strokeStyle = color;
+    
+            me_ctx.beginPath();
+            me_ctx.moveTo(x1, y1);
+            me_ctx.lineTo(x2, y2);
+            me_ctx.stroke();
+        }
+        //Draw Extra Lines
+        drawLine("y","gray",board.originalMap[0].length / 4);
+        drawLine("x","gray",board.originalMap.length / 4);
+        drawLine("y","gray",board.originalMap[0].length-(board.originalMap[0].length / 4));
+        drawLine("x","gray",board.originalMap.length-(board.originalMap.length / 4));
+
+        //Draw Center Lines
+        drawLine("y","black",board.originalMap[0].length / 2);
+        drawLine("x","black",board.originalMap.length / 2);
+
     }
 }
 function getRectPos(pos1,pos2) {
@@ -590,6 +626,14 @@ document.on('keydown', (e) => {
         e.preventDefault(); // Prevent the default save action
         runTool("redo");
     }
+    if (e.ctrlKey && e.key === 'g') {
+        e.preventDefault(); // Prevent the default save action
+        runTool("show_grid");
+    }
+    if (e.ctrlKey && e.key === 'x') {
+        e.preventDefault(); // Prevent the default save action
+        runTool("cut");
+    }
 });
 document.on("keyup",function(e) {
     if ($("scene_mapEditor").style.display == "none" || $("scene_mapEditor").style.display == "") return;
@@ -984,6 +1028,10 @@ function runTool(type) {
         addHistory();
         $("saveStatus").innerHTML = "Board Is Not Saved";
     }
+    if (type == "cut") {
+        runTool("copy");
+        runTool("delete");
+    }
     if (type == "copy") {
         copiedCells = getArrayOfSelection();
         $(".pastingTool").show();
@@ -1029,6 +1077,13 @@ function runTool(type) {
         yChange = ($(".me_canvasHolder").offsetHeight - $(".edit_canvas").offsetHeight)/2;
         adjustCanvasPosition();
 
+    }
+    if (type == "show_grid") {
+        showGrid = showGrid == false ? true : false;
+        renderMapEditorCanvas();
+
+        if (showGrid) $(".show_grid_tool").classAdd("toolIsSelected");
+        else $(".show_grid_tool").classRemove("toolIsSelected");
     }
 }
 function paste(x,y,map) {

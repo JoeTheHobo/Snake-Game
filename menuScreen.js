@@ -63,3 +63,7 @@ function loadServerCreation() {
     servers.push(server);
 
 }
+
+function loadCustomizeSnakeScreen() {
+    
+}

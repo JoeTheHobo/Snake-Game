@@ -1,6 +1,6 @@
 ls.setID("snakegame");
 
-let forceReset = 5;
+let forceReset = 6;
 let needsToBeReset = ls.get("reset" + forceReset,true);
 if (needsToBeReset) {
     ls.clear();
@@ -21,6 +21,10 @@ let updateSnakeCells = [];
 let players = ls.get("players",[]);
 let activePlayers;
 let boards = ls.get("boards",[]);
+if (_type(boards).type == "string") {
+    compressed = JSON.parse(boards);
+    boards = JSON.parse(pako.ungzip(compressed, { to: 'string' }));
+}
 let realBoards = [];
 for (let i = 0; i < boards.length; i++) {
     if (boards[i].cantEdit !== true) realBoards.push(boards[i]);
@@ -511,6 +515,7 @@ function setScene(scene) {
 
     if (scene == "newMenu") {
         loadServersHTML();
+        $(".content_servers").show("flex");
     }
 }
 
@@ -1481,7 +1486,26 @@ function loadBoards() {
             shareImg.src = "img/share.png";
             share.board = boards[i];
             share.on("click",function() {
-                downloadTextFile(this.board.name,JSON.stringify(shortenBoard(this.board)));
+                
+                try {
+                    const encoder = new TextEncoder();
+                    const shortenBoardResult = shortenBoard(this.board);
+                  
+                    if (!shortenBoardResult) {
+                      throw new Error('shortenBoard(this.board) returned invalid data.');
+                    }
+                  
+                    const jsonString = JSON.stringify(shortenBoardResult);
+                    const encodedText = encoder.encode(jsonString);
+                  
+                  
+                    const compressed = pako.gzip(encodedText);
+
+                    downloadTextFile(this.board.name,JSON.stringify(compressed));
+                  
+                  } catch (error) {
+                    console.error('Error during compression:', error);
+                  }
             })
 
             let edit = buttonsRight.create("div");
@@ -1573,6 +1597,10 @@ function downloadTextFile(filename, text) {
   }
   function importMap(textFile) {
     let board = JSON.parse(textFile);
+    let decompressed = pako.ungzip(board, { to: 'string' });
+
+    board = JSON.parse(decompressed);
+
     board = fixBoard(board);
     boards.push(board);
     currentBoardIndex = boards.length - 1;
@@ -1593,15 +1621,27 @@ function saveBoards() {
             newBoards.push(shortenBoard(boards[i]));
         }
     }
+    if (newBoards.length > 0) {
+        const encoder = new TextEncoder();
+        const shortenBoardResult = newBoards;
+    
+        if (!shortenBoardResult) {
+        throw new Error('shortenBoard(this.board) returned invalid data.');
+        }
+    
+        const jsonString = JSON.stringify(shortenBoardResult);
+        const encodedText = encoder.encode(jsonString);
+    
+    
+        const compressed = pako.gzip(encodedText);
+
+        newBoards = JSON.stringify(compressed);
+    }
     ls.save("boards",newBoards)
 }
 function shortenBoard(oldBoard) {
     oldBoard.map = [];
-    try {
-        structuredClone(oldBoard);
-    } catch {
-        console.log(oldBoard);
-    }
+    structuredClone(oldBoard);
     let board = structuredClone(oldBoard);
 
     let _newMap = [];
@@ -1612,7 +1652,7 @@ function shortenBoard(oldBoard) {
             let newCell = {
                 mouseOver: false,
                 tile: cell.tile.id,
-                item: cell.item.id ? cell.item.id : 0,
+                item: cell.item?.id || 0,
             }
             row.push(newCell);
         }
@@ -1735,11 +1775,7 @@ function findItemDifferences(map) {
             let differences = compareObjects(realItem,item);
             if (differences.length == 0) continue;
 
-            allDifferences.push({
-                differences: differences,
-                x: j,
-                y: i,
-            })
+            allDifferences.push([differences,j,i]);
         }
     }
     return allDifferences;
@@ -1828,7 +1864,12 @@ function loadBoardStatus() {
 function fixItemDifferences(map) {
     if (!currentBoard.itemDifferences) return;
     for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
-        let d = currentBoard.itemDifferences[i];
+        let e = currentBoard.itemDifferences[i];
+        let d = {
+            differences: e[0],
+            x: e[1],
+            y: e[2],
+        }
         let pos = (map[d.y][d.x].item);
         if (!pos) continue;
         for (let j = 0; j < d.differences.length; j++) {
