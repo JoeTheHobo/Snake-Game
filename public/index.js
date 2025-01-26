@@ -3,8 +3,11 @@ const socket = io();
 //const player = new Player(x, y);
 //const players = {};
 const playersInServer = [];
-let lobbies = [];
-let localAccount = {};
+let frontEndLobbies = [];
+const localAccount = {
+    id: false,
+
+};
 socket.on('updatePlayers', (backendAccounts) => {
     for (const id in backendAccounts){
         const backendAccount = backendAccounts[id];
@@ -43,17 +46,25 @@ socket.on('updatePlayers', (backendAccounts) => {
             playersInServer.isDead;
         }
     }
+    
+    setScene("newMenu");
 })
 
 socket.on("setPlayer", (id, backendAccounts) =>{
-    localAccount = backendAccounts[id];
+    if (localAccount.id !== false) return;
+    localAccount.id = backendAccounts[id].id;
+
 });
 
-socket.on("updateLobbies", (onlineLobbies) =>{
-    lobbies = onlineLobbies;
-    console.log(lobbies);
+socket.on("updateLobbies", (onlineLobbies,isPlayerJoining) =>{
+    frontEndLobbies = onlineLobbies;
+    loadServersHTML();
+    if (isPlayerJoining) setScene("waiting");
 })
 
 function updateLobbyToServer(lobby){
     socket.emit("newLobby", (lobby));  
+}
+function server_joinLobby(lobby) {
+    socket.emit("joinLobby",lobby,localAccount.id);
 }

@@ -4,8 +4,8 @@ function loadServersHTML() {
     let holder = $(".servers_servers_holder");
     holder.innerHTML = "";
 
-    for (let i = 0; i < lobbies.length; i++) {
-        let server = lobbies[i];
+    for (let i = 0; i < frontEndLobbies.length; i++) {
+        let server = frontEndLobbies[i];
         let server_holder = holder.create("div");
         server_holder.classAdd("server_holder");
         if (serverSelected.id == serverSelected) server_holder.classAdd("serverSelected");
@@ -52,6 +52,7 @@ function loadServerCreation() {
 
 
     let lobby = {
+        players: [localAccount.id],
         board: boards[Number(prompt())],
         host: localAccount.id,
         gameMode: gameModes[0],
@@ -59,5 +60,7 @@ function loadServerCreation() {
         playerCount: 1,
         id: Date.now() + "_" + rnd(5000),
     }
-    updateLobbyToServer();  
+    updateLobbyToServer(lobby);  
+
+    setScene("waiting");
 }

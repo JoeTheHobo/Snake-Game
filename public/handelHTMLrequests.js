@@ -55,3 +55,9 @@ $(".menu_tab").on("click",function() {
 $("hostServer").on("click",function() {
     loadServerCreation();
 })
+$("refreshServers").on("click",function() {
+    loadServersHTML();
+})
+$("joinServer").on("click",function() {
+    server_joinLobby(serverSelected);
+})

@@ -511,11 +511,12 @@ function hideScenes() {
 function setScene(scene) {
     hideScenes();
     $("scene_" + scene).show("flex");
-
+    console.log(0)
     if (scene == "newMenu") {
         loadServersHTML();
         $(".account_name").innerHTML = localAccount.id; 
     }
+
 }
 
 if (players.length == 0) {

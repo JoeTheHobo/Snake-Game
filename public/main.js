@@ -1216,5 +1216,3 @@ function specialItemManager()
         specialItemIteration ++;
     }
 }
-
-setScene("newMenu")

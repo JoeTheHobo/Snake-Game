@@ -94,7 +94,6 @@ app.get('/', (req, res) => {
 })
 
 const lobbies = [];
-
 const onlineAccounts = {};
 
 
@@ -143,15 +142,35 @@ io.on('connection', (socket) => {
     }
 
     io.emit("updateLobbies", lobbies);
-    io.emit('updatePlayers', onlineAccounts)
     io.emit('setPlayer', socket.id, onlineAccounts);
-    
+    io.emit('updatePlayers', onlineAccounts)
+ 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
         console.log("A user disconnected due to " + reason);
         delete onlineAccounts[socket.id];
         io.emit('updatePlayers', onlineAccounts);
     }) 
+
+    socket.on("newLobby", (lobby) =>{
+        console.log("here"+lobby);
+        lobbies.push(lobby);
+        io.emit("updateLobbies", lobbies);
+    })
+
+    socket.on("joinLobby",(lobbyID,playerID) => {
+        searchingLobbies: for (let i = 0; i < lobbies.length; i++) {
+            let lobby = lobbies[i];
+            if (lobbyID === lobby.id) {
+                if (lobby.playerCount + 1 <= lobby.playerMax) {
+                    lobby.playerCount++;
+                    lobby.players.push(playerID);
+                    io.emit("updateLobbies", lobbies, "joining");
+                }
+                break searchingLobbies;
+            }
+        }
+    })
 
     console.log(onlineAccounts);
 });
@@ -160,12 +179,6 @@ server.listen(port, () => {
     console.log('app listening on port' + port);
 }) 
 
-io.on("newLobby", (lobby) =>{
-    console.log("here"+lobby);
-    lobbies.push(lobby);
-    io.emit("updateLobbies", lobbies);
-})
- 
 
 
 
