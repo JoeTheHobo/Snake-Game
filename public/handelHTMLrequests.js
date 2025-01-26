@@ -37,3 +37,21 @@ $("button_mapEditor").on("click",function() {
     openMapEditor(currentBoard);
     isActiveGame = false;
 })
+
+
+$(".menu_tab").on("click",function() {
+    $(".menu_tab").classRemove("menu_tab_selected");
+    this.classAdd("menu_tab_selected");
+    $(".menu_content").hide();
+    let value = this.id.subset(0,"_\\before");
+    $(".content_" + value).show("flex");
+
+    if (value == "servers") {
+        serverSelected = false;
+        $(".server_holder").className = "server_holder";
+        $("joinServer").classAdd("servers_button_inactive");
+    }
+})
+$("hostServer").on("click",function() {
+    loadServerCreation();
+})

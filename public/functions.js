@@ -1,11 +1,18 @@
 ls.setID("snakegame");
 
-let forceReset = 1;
+let forceReset = 6;
 let needsToBeReset = ls.get("reset" + forceReset,true);
 if (needsToBeReset) {
     ls.clear();
     ls.save("reset" + forceReset,false);
 }
+let forceGMReset = 5;
+needsToBeReset = ls.get("resetGM" + forceGMReset,true);
+if (needsToBeReset) {
+    ls.save("gameModes",[]);
+    ls.save("resetGM" + forceGMReset,false);
+}
+
 
 let showPerformance = false;
 
@@ -39,9 +46,6 @@ let currentGameMode = gameModes[activeGameMode];
 
 
 let gs_playerCount = players.length > 0 ? players.length : 1;
-let gridX = 50;
-let gridY = 30;
-let gridSize = 20;
 let circleWalls = true;
 let specialItemLowChance = 1;
 let specialItemHighChance = 6;
@@ -51,8 +55,30 @@ let totalSpecialItems = 1;
 let timer, gameEnd;
 let gamePaused = false;
 let isActiveGame = false;
-let currentBackground = "background.jpg";
 let doColorRender = false;
+
+let backgrounds = ["background.jpg"];
+let currentBackground = backgrounds[0];
+
+
+const getPPI = () => {
+    // Screen dimensions in inches (calculated using screen width and height in pixels and the screen diagonal in inches)
+    const screenWidth = window.screen.width; // Screen width in pixels
+    const screenHeight = window.screen.height; // Screen height in pixels
+    const screenDiagonalInches = 15.6; // Example for a 15.6-inch screen diagonal. Replace with actual size if known.
+  
+    const screenDiagonalPixels = Math.sqrt(screenWidth ** 2 + screenHeight ** 2);
+    return screenDiagonalPixels / screenDiagonalInches;
+  };
+  const inchesToPixels = (inches, ppi) => inches * ppi;
+  const setPhysicalSize = (sizeInInches) => {
+    const ppi = getPPI();
+    const sizeInPixels = inchesToPixels(sizeInInches, ppi);
+    return sizeInPixels;
+  };
+
+  let gridSize = Math.floor(setPhysicalSize(.17));
+  
 
 const perfectFrameTime = 1000 / 60;
 let deltaTime = 0;
@@ -88,6 +114,7 @@ for (let i = 0; i < gameModes.length; i++) {
 }
 ls.save("gameModes",gameModes);
 
+
 //Setting Up Canvas
 let canvas_background = $("render_background");
 let ctx_background = canvas_background.getContext("2d");
@@ -102,9 +129,10 @@ let ctx_overhangs = canvas_players.getContext("2d");
 
 let me_canvas = $("me_canvas");
 let me_ctx = me_canvas.getContext("2d");
-function adjustCanvasSize() {
-    const width = gridX * gridSize;
-    const height = gridY * gridSize;
+me_ctx.imageSmoothingEnabled = false;
+function adjustCanvasSize(gridx,gridy,zoom = 1) {
+    const width = Math.ceil(gridx * gridSize * zoom);
+    const height = Math.ceil(gridy * gridSize * zoom);
 
     // Set the canvas dimensions in device pixels
     canvas_background.width = width;
@@ -121,53 +149,108 @@ function adjustCanvasSize() {
     me_canvas.height = height;
 
     // Scale the canvas visually for the screen
-    canvas_background.style.width = `${width}px`;
-    canvas_background.style.height = `${height}px`;
-    canvas_tiles.style.width = `${width}px`;
-    canvas_tiles.style.height = `${height}px`;
-    canvas_items.style.width = `${width}px`;
-    canvas_items.style.height = `${height}px`;
-    canvas_players.style.width = `${width}px`;
-    canvas_players.style.height = `${height}px`;
-    canvas_overhangs.style.width = `${width}px`;
-    canvas_overhangs.style.height = `${height}px`;
-    me_canvas.style.width = `${width}px`;
-    me_canvas.style.height = `${height}px`;
+    $(".game_canvas").css({
+        width: `${width}px`,
+        height: `${height}px`,
+    })
+    $(".edit_canvas").css({
+        width: `${width}px`,
+        height: `${height}px`,
+    })
+
+    //Fix Board Status Position
+    let offset = $(".game_canvas")[0].getBoundingClientRect();
+    $(".boardStatusHolder").css({
+        top: offset.bottom + "px",
+        left: offset.left + "px",
+        width: width,
+    })
 }
 
-function setResolution(gridx = gridX, gridy = gridY) {
-    const screenHeight = window.innerHeight; // Available screen height
-    const screenWidth = window.innerWidth;   // Available screen width
+for (let i = 0; i < tiles.length; i++) {
+    if (!tiles[i].img) continue;
 
-    const heightLimit = screenHeight - 250;  // Maximum canvas height
-    const widthLimit = screenWidth - 500;    // Maximum canvas width
+    let img = $(".imageHolder").create("img");
+    img.src = "img/" + tiles[i].img;
+    img.id = "tile_" + tiles[i].name;
+}
+//End Load All Item Images
+let itemCanvas = [];
+function setUpItemCanvas() {
+    let html_itemCanvasHolder = $("itemCanvasHolder");
+    html_itemCanvasHolder.innerHTML = "";
 
-    // Calculate the aspect ratio of the grid
-    const aspectRatio = gridx / gridy;
+    for (let i = 0; i < items.length; i++) {
+        addItemCanvas(items[i],items[i].img,items[i].name);
 
-    // Calculate the largest `gridSize` that fits within the limits
-    let maxGridSizeWidth = Math.floor(widthLimit / gridx);
-    let maxGridSizeHeight = Math.floor(heightLimit / gridy);
+        if (items[i].onCollision) {
+            if (items[i].onCollision.switchImage) {
+                addItemCanvas(items[i],items[i].onCollision.switchImage,items[i].name + "_switch");
+            }
+        }
+    }
+}
+function makeItemCanvas(image,filter = "",player) {
+    let html_itemCanvasHolder = $("itemCanvasHolder");
 
-    // Match the scaling to preserve the aspect ratio
-    if (maxGridSizeWidth / maxGridSizeHeight > aspectRatio) {
-        maxGridSizeWidth = Math.floor(maxGridSizeHeight * aspectRatio);
-    } else {
-        maxGridSizeHeight = Math.floor(maxGridSizeWidth / aspectRatio);
+    let itemCanvas = html_itemCanvasHolder.create("canvas");
+    let itemCtx = itemCanvas.getContext("2d");
+
+    if (filter == "player") {
+        filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
     }
 
-    // Use the smaller of the two to ensure the grid fits
-    gridSize = Math.min(maxGridSizeWidth, maxGridSizeHeight);
+    itemCanvas.width = image.width;
+    itemCanvas.height = image.height;
+    itemCtx.drawImage(image,0,0);
 
-    // Enforce a minimum and maximum grid size for usability
-    gridSize = Math.max(gridSize, 19); // Set a reasonable minimum
-    gridSize = Math.min(gridSize, 100); // Set a reasonable maximum for wide screens
-
-    adjustCanvasSize();
+    if (filter !== "") {
+        itemCtx.filter = filter;
+        itemCtx.drawImage(image,0,0);
+    }
+    return itemCanvas;
 }
-playerCardsHolder
-window.on("resize",setResolution)
-setResolution();
+function addItemCanvas(item,itemImg,name,filter = "",player) {
+    if ($("item_" + name)) return;
+
+    let img = $(".imageHolder").create("img");
+    img.src = "img/" + itemImg;
+    img.id = "item_" + name;
+
+    img.onload = function() {
+        let obj = {
+            name: name,
+            canvas: makeItemCanvas($("item_" + name),filter,player),
+        }
+        itemCanvas.push(obj);
+    }
+
+}
+setUpItemCanvas();
+function getItemCanvas(itemName) {
+    for (let i = 0; i < itemCanvas.length; i++) {
+        if (itemCanvas[i].name === itemName) return itemCanvas[i].canvas;
+    }
+}
+
+function setResolution(gridx, gridy) {
+    adjustCanvasSize(gridx,gridy);
+}
+
+function newMap(width,height) {
+    _newMap = [];
+    for (let i = 0; i < height; i++) {
+        let arr = [];
+        for (let j = 0; j < width; j++) {
+            arr.push({
+                tile: getTile("grass"),
+                item: false,
+            })
+        }
+        _newMap.push(arr);
+    }
+    return _newMap;
+}
 
 let playerNames1 = [
     "Squabbling", "Terrifying", "Witty", "Sassy", "Mysterious",
@@ -202,20 +285,6 @@ function getTile(name) {
             return tiles[i];
         }
     }
-}
-function newMap(width,height) {
-    newMap = [];
-    for (let i = 0; i < height; i++) {
-        let arr = [];
-        for (let j = 0; j < width; j++) {
-            arr.push({
-                tile: getTile("grass"),
-                item: false,
-            })
-        }
-        newMap.push(arr);
-    }
-    return newMap;
 }
 function newPlayer() {
     let playerNumber = players.length;
@@ -290,38 +359,83 @@ function spawn(name,generateRandomItem = true,counting = false) {
     let x,y;
     while (foundSpot == false) {
         if (isPlayer) {
-            findingSpawner: for (let k = 0; k < gridY; k++) {
-                for (let j = 0; j < gridX; j++) {
+            
+            findingExactSpawner: for (let k = 0; k < currentBoard.map.length; k++) {
+                for (let j = 0; j < currentBoard.map[0].length; j++) {
                     if (currentBoard.map[k][j].item === false) continue;
                     if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
+                    if (currentBoard.map[k][j].item.spawnPlayerID == "player" || currentBoard.map[k][j].item.spawnPlayerID === undefined) continue;
+                    if (Number(currentBoard.map[k][j].item.spawnPlayerID.subset("_\\after","end")) !== Number(name.id)) continue;
+
                     let playerOnIt = false;
-                    for (let i = 0; i < playersInServer.length; i++) {
-                        if (playersInServer[i].pos.x == j && playersInServer[i].pos.y == k) playerOnIt = true;
+                    for (let i = 0; i < activePlayers.length; i++) {
+                        if (activePlayers[i].pos.x == j && activePlayers[i].pos.y == k) playerOnIt = true;
                     }
                     if (playerOnIt) continue;
 
                     x = j;
                     y = k;
                     foundSpot = true;
-                    break findingSpawner;
+                    break findingExactSpawner;
+                    
+                }
+            }
+            if (!foundSpot) {
+
+                findingSpawner: for (let k = 0; k < currentBoard.map.length; k++) {
+                    for (let j = 0; j < currentBoard.map[0].length; j++) {
+                        if (currentBoard.map[k][j].item === false) continue;
+                        if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
+                        if (currentBoard.map[k][j].item.spawnPlayerID !== "player") continue;
+                        
+                        let playerOnIt = false;
+                        for (let i = 0; i < activePlayers.length; i++) {
+                            if (activePlayers[i].pos.x == j && activePlayers[i].pos.y == k) playerOnIt = true;
+                        }
+                        if (playerOnIt) continue;
+                        
+                        x = j;
+                        y = k;
+                        foundSpot = true;
+                        break findingSpawner;
+                    }
+                }
+
+                
+                if (!foundSpot) {
+                    findingSpawner: for (let k = 0; k < currentBoard.map.length; k++) {
+                        for (let j = 0; j < currentBoard.map[0].length; j++) {
+                            if (currentBoard.map[k][j].item === false) continue;
+                            if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
+                            let playerOnIt = false;
+                            for (let i = 0; i < activePlayers.length; i++) {
+                                if (activePlayers[i].pos.x == j && activePlayers[i].pos.y == k) playerOnIt = true;
+                            }
+                            if (playerOnIt) continue;
+        
+                            x = j;
+                            y = k;
+                            foundSpot = true;
+                            break findingSpawner;
+                        }
+                    }
                 }
             }
         }
         
-
         if (foundSpot === false) {
-            x = rnd(gridX)-1;
-            y = rnd(gridY)-1;
+            x = rnd(currentBoard.map[0].length)-1;
+            y = rnd(currentBoard.map.length)-1;
             if (currentBoard.map[y][x].item == false && currentBoard.map[y][x].tile.canSpawn) {
                 foundSpot = true;
-                checkingDistanceFromPlayersHead: for (let j = 0; j < playersInServer.length; j++) {
-                    let distance = calculateDistance(playersInServer[j].pos.x,playersInServer[j].pos.y,x,y);
+                checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
+                    let distance = calculateDistance(players[j].pos.x,activePlayers[j].pos.y,x,y);
                     if (distance < 5) {
                         foundSpot = false;
                         break checkingDistanceFromPlayersHead;
                     }
-                    for (let p = 0; p < playersInServer[j].tail.length; p++) {
-                        if (playersInServer[j].tail[p].x == x && playersInServer[j].tail[p].y == y) {
+                    for (let p = 0; p < activePlayers[j].tail.length; p++) {
+                        if (activePlayers[j].tail[p].x == x && activePlayers[j].tail[p].y == y) {
                             foundSpot = false;
                             break checkingDistanceFromPlayersHead;
                         }
@@ -329,30 +443,30 @@ function spawn(name,generateRandomItem = true,counting = false) {
                 }
             }
             counter++;
-            if (counter > (gridX * gridY) ) {
+            if (counter > (currentBoard.map.length * currentBoard.map[0].length) ) {
                 foundSpot = "couldn't find any";
             }
         }
     }
 
     if (foundSpot == "couldn't find any") {
-        findingAnySpot: for (let k = 0; k < gridY; k++) {
-            for (let j = 0; j < gridX; j++) {
+        findingAnySpot: for (let k = 0; k < currentBoard.map.length; k++) {
+            for (let j = 0; j < currentBoard.mapcurrentBoard.map[0].length; j++) {
                 if (currentBoard.map[k][j].item == false && currentBoard.map[k][j].tile.canSpawn) {
                     let foundGoodSpot = true;
-                    checkingDistanceFromPlayersHead: for (let j = 0; j < playersInServer.length; j++) {
-                        let distance = calculateDistance(playersInServer[j].pos.x,playersInServer[j].pos.y,x,y);
+                    checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
+                        let distance = calculateDistance(activePlayers[j].pos.x,activePlayers[j].pos.y,x,y);
                         if (distance < 5) {
                             foundGoodSpot = false;
                             break checkingDistanceFromPlayersHead;
                         }
-                        for (let p = 0; p < playersInServer[j].tail.length; p++) {
-                            if (playersInServer[j].tail[p].x == x && playersInServer[j].tail[p].y == y) {
+                        for (let p = 0; p < activePlayers[j].tail.length; p++) {
+                            if (activePlayers[j].tail[p].x == x && activePlayers[j].tail[p].y == y) {
                                 foundGoodSpot = false;
                                 break checkingDistanceFromPlayersHead;
                             }
                         }
-                    } 
+                    }
                     if (foundGoodSpot) {{
                         x = j;
                         y = k;
@@ -383,6 +497,10 @@ function spawn(name,generateRandomItem = true,counting = false) {
         console.log("No Available Spot To Spawn");
     }
 };
+
+
+
+
 function calculateDistance(x1, y1, x2, y2) {
     return Math.abs(x1 - x2) + Math.abs(y1 - y2);
 }
@@ -393,6 +511,10 @@ function hideScenes() {
 function setScene(scene) {
     hideScenes();
     $("scene_" + scene).show("flex");
+
+    if (scene == "newMenu") {
+        loadServersHTML();
+    }
 }
 
 if (players.length == 0) {
@@ -1292,6 +1414,8 @@ function gameMode_editItem(item,html_holder,gameMode) {
     }
 }
 
+
+
 function loadBoards() {
     $(".boardSettings").hide();
     let html_boardList = $(".boardListHolder");
@@ -1405,7 +1529,7 @@ function createBoard() {
         height: height,
         background: false,
         map: newMap(width,height),
-
+        id: Date.now() + "_" + rnd(1000),
         mouseOver: false,
     })
 
@@ -1466,19 +1590,24 @@ function downloadTextFile(filename, text) {
     }
   }
 function saveBoards() {
-let newBoards = [];
-for (let i = 0; i < boards.length; i++) {
-    if (!boards[i].cantEdit) {
-        newBoards.push(shortenBoard(boards[i]));
+    let newBoards = [];
+    for (let i = 0; i < boards.length; i++) {
+        if (!boards[i].cantEdit) {
+            newBoards.push(shortenBoard(boards[i]));
+        }
     }
-}
-ls.save("boards",newBoards)
+    ls.save("boards",newBoards)
 }
 function shortenBoard(oldBoard) {
     oldBoard.map = [];
+    try {
+        structuredClone(oldBoard);
+    } catch {
+        console.log(oldBoard);
+    }
     let board = structuredClone(oldBoard);
 
-    let newMap = [];
+    let _newMap = [];
     for (let i = 0; i < board.originalMap.length; i++) {
         let row = [];
         for (let j = 0; j < board.originalMap[i].length; j++) {
@@ -1490,9 +1619,9 @@ function shortenBoard(oldBoard) {
             }
             row.push(newCell);
         }
-        newMap.push(row);
+        _newMap.push(row);
     }
-    board.originalMap = newMap;
+    board.originalMap = _newMap;
 
     board.originalMap = shortenMap(board.originalMap)
 
@@ -1597,4 +1726,141 @@ function getByID(id,type) {
         }
     }
     return toReturn;
+}
+
+function findItemDifferences(map) {
+    let allDifferences = [];
+    for (let i = 0; i < map.length; i++) {
+        for (let j = 0; j < map[i].length; j++) {
+            let item = map[i][j].item;
+            if (!item) continue;
+
+            let realItem = getRealItem(item.name);
+            let differences = compareObjects(realItem,item);
+            if (differences.length == 0) continue;
+
+            allDifferences.push({
+                differences: differences,
+                x: j,
+                y: i,
+            })
+        }
+    }
+    return allDifferences;
+}
+function compareObjects(obj1, obj2, path = []) {
+    let differences = [];
+  
+    // Check keys in obj1
+    for (let key in obj1) {
+      if (Object.prototype.hasOwnProperty.call(obj1, key)) {
+        if (!Object.prototype.hasOwnProperty.call(obj2, key)) {
+          differences.push([...path, key, undefined]); // Key missing in obj2
+        } else if (typeof obj1[key] === "object" && obj1[key] !== null && typeof obj2[key] === "object" && obj2[key] !== null) {
+          // Recursively check nested objects
+          differences = differences.concat(compareObjects(obj1[key], obj2[key], [...path, key]));
+        } else if (obj1[key] !== obj2[key]) {
+          differences.push([...path, key, obj2[key]]);
+        }
+      }
+    }
+    // Check keys in obj2 that aren't in obj1
+    for (let key in obj2) {
+        if (Object.prototype.hasOwnProperty.call(obj2, key) && !Object.prototype.hasOwnProperty.call(obj1, key)) {
+        differences.push([...path, key, obj2[key]]);
+        }
+    }
+
+    return differences;
+}
+
+function loadBoardStatus() {
+    let holder = $(".boardStatusHolder");
+    holder.innerHTML = "";
+
+    for (let i = 0; i < currentBoard.boardStatus.length; i++) {
+        let status = currentBoard.boardStatus[i];
+        let imgHolder = holder.create("div");
+        imgHolder.css({
+            width: "25px",
+            height: "25px",
+            margin: "2px",
+            borderRadius: "5px",
+            border: "2px solid black",
+            background: "white",
+        })
+
+        if (status.subset(0,5) == "player") {
+            if (status.subset(0,6) == "player_") {
+                let text = imgHolder.create("div");
+                text.innerHTML = "P" + status.subset("_\\after","end"); 
+                text.css({
+                    width: "100%",
+                    color: "black",
+                    fontWeight: "bold",
+                    fontSize: "25px",
+                    lineHeight: "50px",
+                    textAlign: "center",
+                })
+            }
+            if (status == "player") {
+                let text = imgHolder.create("div");
+                text.innerHTML = "P"; 
+                text.css({
+                    width: "100%",
+                    color: "black",
+                    fontWeight: "bold",
+                    fontSize: "25px",
+                    lineHeight: "50px",
+                    textAlign: "center",
+                })
+            }
+        } else {
+            let img = imgHolder.create("img");
+            img.src = "img/" + getRealItem(status).img;
+            img.css({
+                width: "100%",
+                height: "100%",
+            })
+        }
+
+        
+    }
+}
+
+
+function fixItemDifferences(map) {
+    if (!currentBoard.itemDifferences) return;
+    for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
+        let d = currentBoard.itemDifferences[i];
+        let pos = (map[d.y][d.x].item);
+        if (!pos) continue;
+        for (let j = 0; j < d.differences.length; j++) {
+            let change = d.differences[j];
+            if (change.length == 3) {
+                pos[change[0]][change[1]] = change[2];
+            }
+            if (change.length == 2) pos[change[0]] = change[1];
+        }
+        map[d.y][d.x].item = pos;
+    }
+}
+function cloneObject(object) {
+    try {
+        return structuredClone(object);
+    } catch {
+        console.warn("Structed Clone Failed On:",object);
+    }
+    
+}
+function forceAllCellsToBeTheirOwn(map) {
+    let newMap = [];
+    for (let i = 0; i < map.length; i++) {
+        let row = [];
+        for (let j = 0; j < map[i].length; j++) {
+            row.push(cloneObject(map[i][j]));
+        }
+        newMap.push(row);
+    }
+    return newMap;
 }
