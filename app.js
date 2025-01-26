@@ -93,9 +93,9 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 })
 
-const onlineAccounts = {
+const lobbies = [];
 
-}
+const onlineAccounts = {};
 
 
 
@@ -141,7 +141,10 @@ io.on('connection', (socket) => {
         gameModes: [],
         boards: [],
     }
+
+    io.emit("updateLobbies", lobbies);
     io.emit('updatePlayers', onlineAccounts)
+    io.emit('setPlayer', socket.id, onlineAccounts);
     
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
@@ -156,6 +159,12 @@ io.on('connection', (socket) => {
 server.listen(port, () => {
     console.log('app listening on port' + port);
 }) 
+
+io.on("newLobby", (lobby) =>{
+    console.log("here"+lobby);
+    lobbies.push(lobby);
+    io.emit("updateLobbies", lobbies);
+})
  
 
 

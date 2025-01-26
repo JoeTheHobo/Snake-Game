@@ -3,8 +3,9 @@ const socket = io();
 //const player = new Player(x, y);
 //const players = {};
 const playersInServer = [];
+let lobbies = [];
+let localAccount = {};
 socket.on('updatePlayers', (backendAccounts) => {
-    console.log("WAZZZUUUUUP!");
     for (const id in backendAccounts){
         const backendAccount = backendAccounts[id];
         if(typeof backendAccount == "function") continue;
@@ -42,5 +43,17 @@ socket.on('updatePlayers', (backendAccounts) => {
             playersInServer.isDead;
         }
     }
-    console.log(playersInServer);
 })
+
+socket.on("setPlayer", (id, backendAccounts) =>{
+    localAccount = backendAccounts[id];
+});
+
+socket.on("updateLobbies", (onlineLobbies) =>{
+    lobbies = onlineLobbies;
+    console.log(lobbies);
+})
+
+function updateLobbyToServer(lobby){
+    socket.emit("newLobby", (lobby));  
+}

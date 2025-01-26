@@ -1,12 +1,11 @@
-let servers = [];
 let serverSelected = false;
 
 function loadServersHTML() {
     let holder = $(".servers_servers_holder");
     holder.innerHTML = "";
 
-    for (let i = 0; i < servers.length; i++) {
-        let server = servers[i];
+    for (let i = 0; i < lobbies.length; i++) {
+        let server = lobbies[i];
         let server_holder = holder.create("div");
         server_holder.classAdd("server_holder");
         if (serverSelected.id == serverSelected) server_holder.classAdd("serverSelected");
@@ -52,14 +51,13 @@ function loadServerCreation() {
     holder.innerHTML = "";
 
 
-    let server = {
+    let lobby = {
         board: boards[Number(prompt())],
-        host: players[0].name,
+        host: localAccount.id,
         gameMode: gameModes[0],
         playerMax: 8,
         playerCount: 1,
         id: Date.now() + "_" + rnd(5000),
     }
-    servers.push(server);
-
+    updateLobbyToServer();  
 }

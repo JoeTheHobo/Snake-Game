@@ -514,6 +514,7 @@ function setScene(scene) {
 
     if (scene == "newMenu") {
         loadServersHTML();
+        $(".account_name").innerHTML = localAccount.id; 
     }
 }
 
