@@ -1226,5 +1226,5 @@ function specialItemManager()
 
 
 
-setScene("newMenu")
+setScene("menu")
 
