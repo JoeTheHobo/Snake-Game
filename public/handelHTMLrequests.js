@@ -1,5 +1,5 @@
 $("button_startGame").on("click",function() {
-    startGame();
+    server_startGame();
     $(".button_mapEditorHolder").hide();
 })
 $("button_players").on("click",function() {

@@ -1,9 +1,9 @@
 function renderGame() {
     renderTiles();
     ctx_items.clearRect(0,0,canvas_items.width,canvas_items.height);
-    for (let i = 0; i < currentBoard.map.length; i++) {
-        for (let j = 0; j < currentBoard.map[0].length; j++) {
-            let cell = currentBoard.map[i][j]; 
+    for (let i = 0; i < localAccount.currentBoard.map.length; i++) {
+        for (let j = 0; j < localAccount.currentBoard.map[0].length; j++) {
+            let cell = localAccount.currentBoard.map[i][j]; 
 
             if (cell.item === false) continue;
 
@@ -21,20 +21,21 @@ function renderGame() {
 }
 function renderTiles() {
     ctx_tiles.clearRect(0,0,canvas_tiles.width,canvas_tiles.height);
-    for (let i = 0; i < currentBoard.map.length; i++) {
-        for (let j = 0; j < currentBoard.map[0].length; j++) {
-            let mapTile = currentBoard.map[i][j].tile;
+    for (let i = 0; i < localAccount.currentBoard.map.length; i++) {
+        for (let j = 0; j < localAccount.currentBoard.map[0].length; j++) {
+            let mapTile = localAccount.currentBoard.map[i][j].tile;
             ctx_tiles.drawImage($("tile_" + mapTile.name),j*gridSize,i*gridSize,gridSize,gridSize);      
         }
     }
 }
 function renderCells() {
     for (let i = 0; i < updateCells.length; i++) {
-        let mapCell = currentBoard.map[updateCells[i].y][updateCells[i].x].item;
+        let mapCell = localAccount.currentBoard.map[updateCells[i].y][updateCells[i].x].item;
         ctx_items.clearRect(updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
         if (!mapCell.visible) continue;
         if (mapCell == false) continue;
 
+        if (mapCell.canvasTag == undefined) mapCell.canvasTag = "";
         ctx_items.drawImage(getItemCanvas(mapCell.name + mapCell.canvasTag),updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
 
         if (mapCell.renderStatusPath.length > 0) {
@@ -108,8 +109,8 @@ function drawRotated(list,direction,xPos, yPos, width, height) {
     ctx_players.drawImage(image,xPos,yPos,width,height);
 }
 function renderPlayers() {
-    for (let i = 0; i < playersInServer.length; i++) {
-        let player = playersInServer[i];
+    for (let i = 0; i < localAccount.playersInServer.length; i++) {
+        let player = localAccount.playersInServer[i];
 
         if (player.isDead) {
             if (player.justDied && currentGameMode.snakeVanishOnDeath == false) {
@@ -222,7 +223,7 @@ function renderPlayers() {
                 let direction = "right";
 
                 let playerIsOnPortal = false;
-                if (_type(currentBoard.map[tailY][tailX].item.teleport).type == "number") {
+                if (_type(localAccount.currentBoard.map[tailY][tailX].item.teleport).type == "number") {
                     playerIsOnPortal = true;
                     tail.up = {
                         active: false,
@@ -318,375 +319,6 @@ function renderPlayers() {
     }
     doColorRender = false;
 }
-function growPlayer(player,grow) {
-    player.growTail += grow;
-}
-function movePlayers() {
-    for (let i = 0; i < playersInServer.length; i++) {
-        let player = playersInServer[i];
-
-        if (player.isDead) continue;
-
-        if ((player.moveTik*deltaTime) >= (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
-            if (player.turboActive == true) {
-                player.turboDuration --;
-                if (player.turboDuration <= 0) {
-                    player.turboActive = false;
-                    removePlayerStatus(player,"turbo");
-                    player.moveSpeed = 6;
-                }
-            }
-            player.moveTik = 0
-
-
-            //check the movement queue
-            if (player.moveQueue.length != 0){
-                if(player.moving == "left" && player.moveQueue[0] != "right" || 
-                    player.moving == "right" && player.moveQueue[0] != "left" || 
-                    player.moving == "up" && player.moveQueue[0] != "down" || 
-                    player.moving == "down" && player.moveQueue[0] != "up"){
-                    player.moving = player.moveQueue[0];
-                }
-                else if (player.moving === false)
-                {
-                    player.moving = player.moveQueue[0];
-                }
-                player.moveQueue.shift();
-            }
-            //Growing/Moving Tail
-            if (player.growTail > 0) {
-                player.tail.unshift({
-                    x: player.pos.x,
-                    y: player.pos.y,
-                    direction: player.moving,
-                });
-                player.growTail--;
-                if (player.tail.length > player.longestTail) player.longestTail = player.tail.length;
-            } else if(player.tail.length > 0) {
-                player.tail.unshift({
-                    x: player.pos.x,
-                    y: player.pos.y,
-                    direction: player.moving,
-                });
-                updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y});
-                
-                let tail = player.tail[player.tail.length-1];
-                if (currentBoard.map[tail.y][tail.x].item) {
-                    let mapItem = currentBoard.map[tail.y][tail.x].item;
-                    if (mapItem.canCollide) runItemFunction(player,mapItem,"offCollision");
-                }
-                
-                player.tail.pop();
-            } else {
-                if (currentBoard.map[player.pos.y][player.pos.x].item) {
-                    let mapItem = currentBoard.map[player.pos.y][player.pos.x].item;
-                    if (mapItem.canCollide) runItemFunction(player,mapItem,"offCollision");
-                }
-            }
-            if (player.tail.length > 0)
-                updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
-
-            
-
-            updateSnakeCells.push({
-                x: player.pos.x,
-                y: player.pos.y,
-                player: player
-            })
-
-            //ctx.fillStyle = map[player.pos.y][player.pos.x].color;
-            //ctx.fillRect(player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
-            //Move Player and make sure he can't go back on himself
-            if (player.moving == "left") player.pos.x--;
-            if (player.moving == "right") player.pos.x++;
-            if (player.moving == "up") player.pos.y--;
-            if (player.moving == "down") player.pos.y++;
-
-            //Teleport Player If Needed
-            if (_type(player.justTeleported).type == "object") {
-                deleteSnakeCells();
-                player.pos.x = player.justTeleported.x;
-                player.pos.y = player.justTeleported.y;
-                player.justTeleported = true;
-            }
-
-            //Collision Testing
-            //Test If Player Hits Wall
-            if (player.pos.x > currentBoard.map[0].length-1) {
-                if (circleWalls) player.pos.x = 0;
-            }
-            if (player.pos.x < 0) {
-                if (circleWalls) player.pos.x = currentBoard.map[0].length-1;
-            }
-            if (player.pos.y > currentBoard.map.length-1) {
-                if (circleWalls) player.pos.y = 0;
-            }
-            if (player.pos.y < 0) {
-                if (circleWalls) player.pos.y = currentBoard.map.length-1;
-            }
-
-            //Test Item Underplayer
-            testItemUnderPlayer(player);
-            
-            //Check for Collisions
-            for (let a = 0; a < playersInServer.length; a++){
-                let checkedPlayer = playersInServer[a];
-                if (checkedPlayer.isDead && currentGameMode.snakeVanishOnDeath == true) continue;
-                for(let b = 0; b < checkedPlayer.tail.length; b++){
-                    let tailPiece = checkedPlayer.tail[b];
-                    if (player.pos.x == tailPiece.x && player.pos.y == tailPiece.y)
-                    {
-                        deletePlayer(player,checkedPlayer);
-                    }
-                }
-            }
-        }
-        else {
-            player.moveTik++;
-        }
-    }
-}
-function testItemUnderPlayer(player) {
-    let mapItem = currentBoard.map[player.pos.y][player.pos.x].item;
-    if (!mapItem) return;
-
-    if (mapItem.pickUp) {
-        let pickedUpItem = false;
-        findingEmptyItemSlot: for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
-            if (player.items[k] == "empty") {
-                player.items[k] = mapItem;
-                drawPlayerBox(player)
-                pickedUpItem = true;
-                break findingEmptyItemSlot;
-            }
-        }
-        if (!pickedUpItem && currentGameMode.mode_whenInventoryFullWhereDoItemsGo !== "noPickUp") {
-            if (currentGameMode.mode_whenInventoryFullWhereDoItemsGo == "select") {
-                player.items[player.selectingItem] = mapItem;
-            }
-            if (currentGameMode.mode_whenInventoryFullWhereDoItemsGo == "recycle") {
-                player.items[player.whenInventoryIsFullInsertItemsAt] = mapItem;
-                player.whenInventoryIsFullInsertItemsAt++;
-                if (player.whenInventoryIsFullInsertItemsAt > player.items.length-1) player.whenInventoryIsFullInsertItemsAt = 0;
-            }
-            drawPlayerBox(player)
-        }
-    } else if (mapItem.canEat == true) {
-        useItemHelper(player,mapItem);
-    }
-
-    if (_type(mapItem.teleport).type == "number" && !player.justTeleported) {
-        findingPortal: for (let z = 0; z < currentBoard.map.length; z++) {
-            for (let h = 0; h < currentBoard.map[z].length; h++) {
-                if (!currentBoard.map[z][h].item) continue;
-                if (player.pos.x == h && player.pos.y == z) continue;
-                if (currentBoard.map[z][h].item.teleport === mapItem.teleport) {
-                    player.justTeleported = {
-                        x: h,
-                        y: z,
-                    }
-                    break findingPortal;
-                } 
-            }
-        }
-    } else {
-        player.justTeleported = false;
-    }
-
-    if (mapItem.canCollide) {
-        runItemFunction(player,mapItem,"onCollision");
-    }
-
-    let itemIsDelete = false;
-    let worldStatusPass = false;
-    let boardStatusCount = 0;
-    for (let i = 0; i < mapItem.boardDestructible.length; i++) {
-        if (mapItem.boardDestructible[i] == "yes")  {
-            worldStatusPass = true;
-            boardStatusCount++;
-            continue;
-        }
-        if (currentBoard.boardStatus.includes(mapItem.boardDestructible[i])) {
-            for (let j = 0; j < currentBoard.boardStatus.length; j++) {
-                if (currentBoard.boardStatus[j] === mapItem.boardDestructible[i]) boardStatusCount++;
-            }
-            continue;
-        }
-    }
-    worldStatusPass = boardStatusCount >= Number(mapItem.boardDestructibleCountRequired);
-    if (worldStatusPass) {
-        checking: for (let i = 0; i < mapItem.destructible.length; i++) {
-            let status = mapItem.destructible[i];
-            let deleteMe = false;
-            if (status === false) {
-                itemIsDelete = true;
-                break checking;
-            }
-            if (status == "yes") deleteMe = true;
-            if (player.status.includes(status)) deleteMe = true;
-    
-            if (deleteMe) {
-                itemIsDelete = true;
-                //Hurt Player
-                deletePlayer(player,false,mapItem);
-    
-                if (mapItem.deleteOnDestruct == false) {
-                    break checking;
-                }
-    
-                //Checking On Eat Delete Me Object From Item
-                if (mapItem.onDelete) {
-                    if (mapItem.onDelete.removeStatus.length > 0) {
-                        for (let j = 0; j < mapItem.onDelete.removeStatus.length; j++) {
-                            removePlayerStatus(player,mapItem.onDelete.removeStatus[j]);
-                        }
-                    }    
-                }
-    
-                //Delete Item
-                currentBoard.map[player.pos.y][player.pos.x].item = false;
-                updateCells.push({
-                    x: player.pos.x,
-                    y: player.pos.y,
-                })
-                break checking;
-            }
-        }
-    }
-    if (!itemIsDelete) deletePlayer(player);
-}
-function runItemFunction(player,item,type) {
-    if (!type) return;
-
-    let collision;
-    if (type == "onCollision") collision = item.onCollision;
-    if (type == "offCollision") collision = item.offCollision;
-
-    if (!collision) return;
-
-    if (item.switchStatus == false || item.switchStatus == undefined) {
-        item.switchStatus = true;
-    } else {
-        item.switchStatus = false;
-    }
-
-    if (collision.switchImage) {
-        if (item.switchStatus === true) {
-            item.canvasTag = "_switch";
-        } else {
-            item.canvasTag = "";
-        }
-        updateCells.push({
-            x: player.pos.x,
-            y: player.pos.y,
-        })
-    }
-    if (collision.switchBoardStatus) {
-        if (item.switchStatus === true) {
-            addBoardStatus(collision.switchBoardStatus,player);
-        } else {
-            removeBoardStatus(collision.switchBoardStatus,player);
-        }
-    }
-    if (collision.addBoardStatus) {
-        addBoardStatus(collision.addBoardStatus,player);
-    }
-    if (collision.removeBoardStatus) {
-        removeBoardStatus(collision.removeBoardStatus,player);
-    }
-    if (collision.setBoardStatus) {
-        let status = collision.setBoardStatus;
-        if (collision.setBoardStatus == "player") status = "player_" + player.id;
-
-        if (item.sendingBoardStatus === status) return;
-
-        if (item.sendingBoardStatus !== false) {
-            removeBoardStatus(item.sendingBoardStatus,player);
-        }
-
-        item.sendingBoardStatus = status;
-        addBoardStatus(status,player);
-    }
-    if (collision.changeHue) {
-        addItemCanvas(item,item.img,item.name + "_" + player.name,collision.changeHue,player);
-        item.canvasTag = "_" + player.name; 
-
-        updateCells.push({
-            x: player.pos.x,
-            y: player.pos.y,
-        })
-    }
-}
-function useItemHelper(player,item) {
-    let onEat = item.onEat;
-    if (onEat.growPlayer > 0) {
-        growPlayer(player,onEat.growPlayer);
-    }
-    if (onEat.spawn) {
-        for (let i = 0; i < onEat.spawn.length; i++) {
-            for (let j = 0; j < onEat.spawn[i].count; j++) {
-                spawn(onEat.spawn[i].name);
-            }
-        }
-    }
-    if (onEat.giveturbo) {
-        if (onEat.turbo.duration && onEat.turbo.moveSpeed) {
-            player.turboActive = true;
-            player.turboDuration = onEat.turbo.duration;
-            player.moveSpeed = onEat.turbo.moveSpeed;
-        }
-    }
-    if (onEat.addStatus) {
-        for (let i = 0; i < onEat.addStatus.length; i++) {
-            addPlayerStatus(player,onEat.addStatus[i])
-        }
-    }
-    if (onEat.removeStatus) {
-        for (let i = 0; i < onEat.removeStatus.length; i++) {
-            removePlayerStatus(player,onEat.removeStatus[i])
-        }
-    }
-    if (onEat.deletePlayer) {
-        deletePlayer(player,undefined,item);
-    }
-    if (onEat.shield > 0) {
-        player.shield = onEat.shield;
-    }
-    if (onEat.winGame === true) {
-        endScreen(player);
-    }
-    if (onEat.canvasFilter.active == true) {
-        ctx_players.filter = onEat.canvasFilter.filter;
-        ctx_items.filter = onEat.canvasFilter.filter;
-        for (let i = 0; i < currentBoard.map.length; i++) {
-            for (let j = 0; j < currentBoard.map[0].length; j++) {
-                let mapTile = currentBoard.map[i][j].tile;
-                if (mapTile == false) continue;
-                updateCells.push({
-                    x: j,
-                    y: i,
-                })
-            }
-        }
-        doColorRender = true;
-        setTimeout(function() {
-            ctx_players.filter = "none";
-            ctx_items.filter = "none";
-
-            for (let i = 0; i < currentBoard.map.length; i++) {
-                for (let j = 0; j < currentBoard.map[0].length; j++) {
-                    let mapTile = currentBoard.map[i][j].tile;
-                    if (mapTile == false) continue;
-                    updateCells.push({
-                        x: j,
-                        y: i,
-                    })
-                }
-            }
-            doColorRender = true;
-        },onEat.canvasFilter.duration)
-    }
-}
 function endScreen(player = false) {
     gameEnd = true;
     isActiveGame = false;
@@ -750,62 +382,6 @@ function endScreen(player = false) {
 
     }
 }
-function deletePlayer(player,playerWhoKilled,item,instaKill = false){
-    let damage;
-    if (item) damage = item.damage;
-    if (playerWhoKilled) damage = playerWhoKilled.bodyArmor;
-    if (!item && !playerWhoKilled) damage = (player.shield+1);
-    player.shield -= damage;
-
-    if (player.shield < 0 || instaKill){
-        if (playerWhoKilled) if (playerWhoKilled.name !== player.name) playerWhoKilled.playerKills++;
-
-        //Delete Tail
-        if (currentGameMode.snakeVanishOnDeath) {
-            for (let i = 0; i < player.tail.length; i++) {
-                updateSnakeCells.push({
-                    x: player.tail[i].x,
-                    y: player.tail[i].y,
-                    player: player
-                })
-            }
-        }
-        //Delete Player
-        player.isDead = true;
-        player.justDied = true;
-        player.timeSurvived = timer;
-        drawPlayerBox(player)
-
-        let playersDead = 0;
-        for (let i = 0; i < activePlayers.length; i++) {
-            if (activePlayers[i].isDead) playersDead++;
-        }
-        if (playersDead == activePlayers.length) {
-            endScreen();
-        }
-        return;
-    }
-
-    if (player.shield == 2) {
-        removePlayerStatus(player,"silverShield");
-        removePlayerStatus(player,"bronzeShield");
-        removePlayerStatus(player,"goldShield");
-
-        addPlayerStatus(player,"silverShield");
-    }
-    if (player.shield == 1) {
-        removePlayerStatus(player,"silverShield");
-        removePlayerStatus(player,"bronzeShield");
-        removePlayerStatus(player,"goldShield");
-
-        addPlayerStatus(player,"bronzeShield");
-    }
-    if (player.shield == 0) {
-        removePlayerStatus(player,"silverShield");
-        removePlayerStatus(player,"bronzeShield");
-        removePlayerStatus(player,"goldShield");
-    }
-}
 function removePlayerStatus(player,itemName) {
     findingStatus: for (let i = 0; i < player.status.length; i++) {
         if (player.status[i] == getItem(itemName).name) {
@@ -822,9 +398,9 @@ function addPlayerStatus(player,itemName) {
 
 function removeBoardStatus(status,player) {
     if (status == "player") status = "player_" + player.id;
-    checking: for (let i = 0; i < currentBoard.boardStatus.length; i++) {
-        if (currentBoard.boardStatus[i] == status) {
-            currentBoard.boardStatus.splice(i,1);
+    checking: for (let i = 0; i < localAccount.currentBoard.boardStatus.length; i++) {
+        if (localAccount.currentBoard.boardStatus[i] == status) {
+            localAccount.currentBoard.boardStatus.splice(i,1);
             break checking;
         }
     }
@@ -834,14 +410,14 @@ function removeBoardStatus(status,player) {
 function addBoardStatus(status,player) {
     if (status == "player") status = "player_" + player.id;
 
-    currentBoard.boardStatus.push(status);
+    localAccount.currentBoard.boardStatus.push(status);
 
     loadBoardStatus();
 }
 
 //adds movement to a queue of max 3 moves
 document.body.onkeydown = function(e) {
-    if (!isActiveGame) return;
+    if (!localAccount.isInGame) return;
     if (e.key !== "F5")
         e.preventDefault();
 
@@ -854,50 +430,48 @@ document.body.onkeydown = function(e) {
         else pauseGame();
     }
 
-    for (let i = 0; i < playersInServer.length; i++) {
-        let player = playersInServer[i];
-        if (e.key == player.leftKey && player.moveQueue.length < 4) {
-            player.moveQueue.push("left");
+    let player = localAccount.player;
+    if (e.key == player.leftKey) {
+        socket.emit("movePlayerKey","left");
+    }
+    if (e.key == player.rightKey) {
+        socket.emit("movePlayerKey","right");
+    }
+    if (e.key == player.upKey) {
+        socket.emit("movePlayerKey","up");
+    }
+    if (e.key == player.downKey) {
+        socket.emit("movePlayerKey","down");
+    }
+    if (e.key == player.useItem1) {
+        if (currentGameMode.mode_usingItemType == "scroll") {
+            player.selectingItem--;
+            if (player.selectingItem < 0) player.selectingItem = currentGameMode.howManyItemsCanPlayersUse-1;
         }
-        if (e.key == player.rightKey && player.moveQueue.length < 4) {
-            player.moveQueue.push("right");
+        if (currentGameMode.mode_usingItemType == "direct") {
+            player.selectingItem = 0;
+            useItem(player);
         }
-        if (e.key == player.upKey && player.moveQueue.length < 4) {
-            player.moveQueue.push("up");
+        drawPlayerBox(player);
+    }
+    if (e.key == player.useItem2) {
+        if (currentGameMode.mode_usingItemType == "scroll") {
+            player.selectingItem++;
+            if (player.selectingItem > currentGameMode.howManyItemsCanPlayersUse-1) player.selectingItem = 0;
         }
-        if (e.key == player.downKey && player.moveQueue.length < 4) {
-            player.moveQueue.push("down");
+        if (currentGameMode.mode_usingItemType == "direct") {
+            player.selectingItem = 1;
+            useItem(player);
         }
-        if (e.key == player.useItem1) {
-            if (currentGameMode.mode_usingItemType == "scroll") {
-                player.selectingItem--;
-                if (player.selectingItem < 0) player.selectingItem = currentGameMode.howManyItemsCanPlayersUse-1;
-            }
-            if (currentGameMode.mode_usingItemType == "direct") {
-                player.selectingItem = 0;
+        drawPlayerBox(player);
+    }
+    if (e.key == player.fireItem) {
+        if (currentGameMode.mode_usingItemType == "scroll") {
+            if (player.items[player.selectingItem]) {
                 useItem(player);
             }
-            drawPlayerBox(player);
         }
-        if (e.key == player.useItem2) {
-            if (currentGameMode.mode_usingItemType == "scroll") {
-                player.selectingItem++;
-                if (player.selectingItem > currentGameMode.howManyItemsCanPlayersUse-1) player.selectingItem = 0;
-            }
-            if (currentGameMode.mode_usingItemType == "direct") {
-                player.selectingItem = 1;
-                useItem(player);
-            }
-            drawPlayerBox(player);
-        }
-        if (e.key == player.fireItem) {
-            if (currentGameMode.mode_usingItemType == "scroll") {
-                if (player.items[player.selectingItem]) {
-                    useItem(player);
-                }
-            }
-            drawPlayerBox(player);
-        }
+        drawPlayerBox(player);
     }
 }
 function useItem(player) {
@@ -919,8 +493,8 @@ function useItem(player) {
 function setUpPlayerCanvas() {
     let html_playerCanvasHolder = $("playerCanvasHolder");
     html_playerCanvasHolder.innerHTML = "";
-    for (let i = 0; i < playersInServer.length; i++) {
-        let player = playersInServer[i];
+    for (let i = 0; i < localAccount.playersInServer.length; i++) {
+        let player = localAccount.playersInServer[i];
 
         function getCanvas(image,direction) {
             let playerCanvas = html_playerCanvasHolder.create("canvas");
@@ -963,6 +537,7 @@ function setUpPlayerCanvas() {
                 down: getCanvas($("img_snakeHead"),"down"),
             }
         }
+
 
     }
 }
@@ -1048,6 +623,7 @@ function gameLoop(timestamp) {
     deltaTime = (timestamp - lastTimestamp) / perfectFrameTime;
     lastTimestamp = timestamp;
 
+
     //production.gameLoop.timeStart = performance.now();
 
     //production.renderCells.timeStart = performance.now();
@@ -1055,12 +631,14 @@ function gameLoop(timestamp) {
     //production.renderCells.times.push(performance.now() - production.renderCells.timeStart);
 
     //production.movePlayers.timeStart = performance.now();
-    movePlayers();
+    movePlayer(localAccount.id);
     //production.movePlayers.times.push(performance.now() - production.movePlayers.timeStart);
     
     //production.deleteSnakeCells.timeStart = performance.now();
     deleteSnakeCells();
     //production.deleteSnakeCells.times.push(performance.now() - production.deleteSnakeCells.timeStart);
+
+    //updateLocalAccount();
 
     //production.renderPlayers.timeStart = performance.now();
     renderPlayers();

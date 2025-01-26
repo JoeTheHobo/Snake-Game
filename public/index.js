@@ -8,13 +8,16 @@ let localGameActive = false;
 const localAccount = {
     id: false,
     isInGame: false,
+    currentBoard: false,
+    player: false,
 };
 socket.on('updatePlayers', (backendAccounts) => {
     if(localGameActive == false){
+        /*
         for (const id in backendAccounts){
             const backendAccount = backendAccounts[id];
             if(typeof backendAccount == "function") continue;
-            const backenedPlayer = backendAccount.players[0];
+            const backenedPlayer = backendAccount.players;
 
             if (!playersInServer[id]){
                 playersInServer.push({
@@ -48,7 +51,7 @@ socket.on('updatePlayers', (backendAccounts) => {
             if (!backendAccounts[id]) {
                 playersInServer.isDead;
             }
-        }
+        }*/
 
         setScene("newMenu");
         localGameActive = true;
@@ -74,11 +77,14 @@ socket.on("startingGame", (lobby) =>{
     searchingForPlayer: for (let j = 0; j < lobby.players.length; j++) {
         if (localAccount.id === lobby.players[j]) {
             foundPlayer = true;
+            localAccount.player = lobby.players[j];
             break searchingForPlayer;
         } 
     } 
     if (!foundPlayer) return;
     localAccount.isInGame = true;
+    localAccount.currentBoard = lobby.board;
+    localAccount.playersInServer = lobby.activePlayers;
                     
     setScene("game");
     $(".endGamePopup").hide();
@@ -93,15 +99,24 @@ socket.on("startingGame", (lobby) =>{
         ctx_background.drawImage(backgroundImage,0,0,canvas_background.width,canvas_background.height);
     }
 
+    setResolution(lobby.board.map[0].length,lobby.board.map.length);
     setUpPlayerCanvas();
     renderGame();
     fixItemDifferences(currentBoard.map);
     renderCells();
-    loadBoardStatus();
-    
+    //loadBoardStatus();
 
     requestAnimationFrame(gameLoop);
 
+})
+socket.on("updatedLocalAccount",(obj) => {
+    localAccount.id = obj.id;
+    localAccount.isInGame = obj.isInGame;
+    localAccount.currentBoard = obj.currentBoard;
+    localAccount.playersInServer = obj.playersInServer;
+    localAccount.player = obj.player;
+
+    setUpPlayerCanvas();
 })
 
 function updateLobbyToServer(lobby){
@@ -111,6 +126,20 @@ function server_joinLobby(lobby) {
     socket.emit("joinLobby",lobby,localAccount.id);
 }
 
-function server_startGame(lobby){
-    socket.emit("startGame", lobby)
+function server_startGame(){
+    socket.emit("startGame")
+}
+
+function spawn(name,generateRandomItem = true,counting = false) {
+    socket.emit("spawn",name,generateRandomItem = true,counting = false);
+};
+
+function getCurrentBoard() {
+
+}
+function updateLocalAccount() {
+    socket.emit("updateLocalAccount");
+}
+function movePlayer(playerID) {
+    socket.emit("movePlayer",playerID);
 }
