@@ -62,5 +62,5 @@ function loadServerCreation() {
     }
     updateLobbyToServer(lobby);  
 
-    setScene("waiting");
+    setScene("waiting", lobby);
 }

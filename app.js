@@ -102,7 +102,7 @@ io.on('connection', (socket) => {
     console.log('a user connected');
     onlineAccounts [socket.id] = {
         id: socket.id,
-        players: [{
+        player: {
             downKey: "s",
             upKey: "w",
             leftKey: "a",
@@ -136,9 +136,10 @@ io.on('connection', (socket) => {
             items: [],
             status: [],
             active: true, 
-        }],
+        },
         gameModes: [],
         boards: [],
+        lobby: false,
     }
 
     io.emit("updateLobbies", lobbies);
@@ -159,21 +160,124 @@ io.on('connection', (socket) => {
     })
 
     socket.on("joinLobby",(lobbyID,playerID) => {
+        if (socket.id !== playerID){
+            socket.disconnect();
+            return;
+        }
         searchingLobbies: for (let i = 0; i < lobbies.length; i++) {
             let lobby = lobbies[i];
             if (lobbyID === lobby.id) {
                 if (lobby.playerCount + 1 <= lobby.playerMax) {
                     lobby.playerCount++;
                     lobby.players.push(playerID);
-                    io.emit("updateLobbies", lobbies, "joining");
+                    onlineAccounts[socket.id].lobby =  lobby.id
+                    io.emit("updateLobbies", lobbies, "joining", lobby);
                 }
                 break searchingLobbies;
             }
         }
     })
+    socket.on("startGame", () =>{
+        searchingLobbies: for (let p = 0; p < lobbies.length; p++) {
+            let lobby = lobbies[p];
+            if (onlineAccounts[socket.id].lobby === lobby.id) {
+                if(lobby.host !== socket.id) continue
+                
+                
 
+                lobby.board.map = structuredClone(lobby.board.originalMap);
+
+                setResolution(lobby.board.map[0].length,lobby.board.map.length);
+                
+                lobby.doColorRender = false;
+                lobby.specialItemIteration = 0;
+                lobby.isActiveGame = true; 
+
+
+
+                //Resetting Players
+                for (let i = 0; i < lobby.players.length; i++) {
+                    let player = onlineAccounts[lobby.players.id].player;
+                    player.isPlayer = true;
+                    //Ressurect Player
+                    player.isDead = false;
+                    player.justDied = false;
+                    player.bodyArmor = 1;
+                    //Set Player Selecting Item To 1
+                    player.selectingItem = 0;
+                    player.justTeleported = false;
+                    //Set Player Item Usage
+                    player.howManyItemsCanIUse = lobby.gameMode.howManyItemsCanPlayersUse;
+                    player.whenInventoryIsFullInsertItemsAt = 0;
+                    player.status = ["player_" + i];
+                    //Set All Player Items To Empty
+                    player.items = [];
+                    for (let j = 0; j < lobby.gameMode.howManyItemsCanPlayersUse; j++) {
+                        player.items.push("empty");
+                    }
+                    //Draw Player's Card
+                    //drawPlayerBox(player);  add later
+                    //_________________________________________
+
+                    player.longestTail = 0;
+                    player.timeSurvived = 0;
+                    player.moving = false;
+                    player.growTail = 0;
+                    player.tail = [];
+                    player.moveQueue = [];
+                    player.prevMove = "start";
+                    player.moveTik = 0;
+                    player.moveSpeed = 6;
+                    player.turboDuration = 0;
+                    player.turboActive = false;
+                    player.shield = 0;
+                    
+                    player.playerKills = 0;
+
+                    player.pos = {
+                        x: false,
+                        y: false,
+                    }
+                    //Spawn Players
+                }
+
+
+                for (let i = 0; i < lobby.players.length; i++) {
+                    let player = onlineAccounts[lobby.players.id].player;
+                    spawn(player);
+
+                }
+
+                for (let i = 0; i < lobby.gameMode.items.length; i++) {
+                    let item = lobby.gameMode.items[i];
+                    for (let j = 0; j < Number(item.onStartSpawn); j++) {
+                        spawn(item.name,false);
+                    }
+                }
+
+
+                lobby.gameEnd = false;
+                lobby.deltaTime = 0;
+                lobby.lastTimestamp = 0;
+                lobby.timer = 0;
+                lobby.timerInterval = setInterval((lobby) => {
+                    lobby.timer++;
+                }, 1000);
+
+            
+
+
+
+
+                io.emit("startingGame", lobby);
+                break searchingLobbies;
+            }
+        }
+    })
     console.log(onlineAccounts);
 });
+
+
 
 server.listen(port, () => {
     console.log('app listening on port' + port);

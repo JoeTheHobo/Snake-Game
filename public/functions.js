@@ -508,7 +508,7 @@ function calculateDistance(x1, y1, x2, y2) {
 function hideScenes() {
     $(".scene").hide();
 }
-function setScene(scene) {
+function setScene(scene, lobby) {
     hideScenes();
     $("scene_" + scene).show("flex");
     console.log(0)
@@ -516,7 +516,11 @@ function setScene(scene) {
         loadServersHTML();
         $(".account_name").innerHTML = localAccount.id; 
     }
-
+    if (scene == "waiting"){
+        if (localAccount.id != lobby.host){
+            $("button_startGame").hide();
+        }
+    }
 }
 
 if (players.length == 0) {
