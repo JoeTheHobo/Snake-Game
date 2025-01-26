@@ -10,6 +10,8 @@ const localAccount = {
     isInGame: false,
     currentBoard: false,
     player: false,
+    updateSnakeCells: [],
+    updateCells: [],
 };
 socket.on('updatePlayers', (backendAccounts) => {
     if(localGameActive == false){
@@ -85,6 +87,8 @@ socket.on("startingGame", (lobby) =>{
     localAccount.isInGame = true;
     localAccount.currentBoard = lobby.board;
     localAccount.playersInServer = lobby.activePlayers;
+    localAccount.updateSnakeCells = [];
+    localAccount.updateCells = [];
                     
     setScene("game");
     $(".endGamePopup").hide();
@@ -115,6 +119,8 @@ socket.on("updatedLocalAccount",(obj) => {
     localAccount.currentBoard = obj.currentBoard;
     localAccount.playersInServer = obj.playersInServer;
     localAccount.player = obj.player;
+    localAccount.updateSnakeCells = localAccount.updateSnakeCells.concat(obj.updateSnakeCells);
+    localAccount.updateCells = localAccount.updateCells.concat(obj.updateCells); 
 
     setUpPlayerCanvas();
 })

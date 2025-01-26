@@ -11,7 +11,7 @@ function renderGame() {
             if (cell.item == undefined) cell.item = false; //Prolly Will Need To Resolve Issue Later
             if (cell.item !== false) {
                 if (cell.item.spawnLimit > 0) cell.item.spawnLimit--; 
-                updateCells.push({
+                localAccount.updateCells.push({
                     x: j,
                     y: i,
                 })
@@ -29,14 +29,14 @@ function renderTiles() {
     }
 }
 function renderCells() {
-    for (let i = 0; i < updateCells.length; i++) {
-        let mapCell = localAccount.currentBoard.map[updateCells[i].y][updateCells[i].x].item;
-        ctx_items.clearRect(updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
+    for (let i = 0; i < localAccount.updateCells.length; i++) {
+        let mapCell = localAccount.currentBoard.map[localAccount.updateCells[i].y][localAccount.updateCells[i].x].item;
+        ctx_items.clearRect(localAccount.updateCells[i].x*gridSize,localAccount.updateCells[i].y*gridSize,gridSize,gridSize);
         if (!mapCell.visible) continue;
         if (mapCell == false) continue;
 
         if (mapCell.canvasTag == undefined) mapCell.canvasTag = "";
-        ctx_items.drawImage(getItemCanvas(mapCell.name + mapCell.canvasTag),updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
+        ctx_items.drawImage(getItemCanvas(mapCell.name + mapCell.canvasTag),localAccount.updateCells[i].x*gridSize,localAccount.updateCells[i].y*gridSize,gridSize,gridSize);
 
         if (mapCell.renderStatusPath.length > 0) {
             let name = mapCell;
@@ -50,19 +50,19 @@ function renderCells() {
                 ctx_items.fillStyle = "black";
                 ctx_items.font = "20px Arial";
                 name = "P" + name.subset("_\\after","end");
-                ctx_items.fillText(name,(updateCells[i].x*gridSize) + (gridSize/2) - (gridSize/change/2),updateCells[i].y*gridSize + (gridSize/2) - (gridSize/change/2)+(gridSize/2),gridSize/change,gridSize/change);
+                ctx_items.fillText(name,(localAccount.updateCells[i].x*gridSize) + (gridSize/2) - (gridSize/change/2),localAccount.updateCells[i].y*gridSize + (gridSize/2) - (gridSize/change/2)+(gridSize/2),gridSize/change,gridSize/change);
             } else 
-                ctx_items.drawImage(getItemCanvas(name),(updateCells[i].x*gridSize) + (gridSize/2) - (gridSize/change/2),updateCells[i].y*gridSize + (gridSize/2) - (gridSize/change/2),gridSize/change,gridSize/change);
+                ctx_items.drawImage(getItemCanvas(name),(localAccount.updateCells[i].x*gridSize) + (gridSize/2) - (gridSize/change/2),localAccount.updateCells[i].y*gridSize + (gridSize/2) - (gridSize/change/2),gridSize/change,gridSize/change);
         }
     }
-    updateCells = [];
+    localAccount.updateCells = [];
 }
 function deleteSnakeCells() {
-    for (let i = 0; i < updateSnakeCells.length; i++) {
-        if (updateSnakeCells[i].player.isDead) continue;
-        ctx_players.clearRect(updateSnakeCells[i].x*gridSize,updateSnakeCells[i].y*gridSize,gridSize,gridSize);
+    for (let i = 0; i < localAccount.updateSnakeCells.length; i++) {
+        if (localAccount.updateSnakeCells[i].player?.isDead) continue;
+        ctx_players.clearRect(localAccount.updateSnakeCells[i].x*gridSize,localAccount.updateSnakeCells[i].y*gridSize,gridSize,gridSize);
     }
-    updateSnakeCells = [];
+    localAccount.updateSnakeCells = [];
 }
 function drawImage(image, direction, xPos, yPos, width, height,cnvs = canvas_players) {
     if (direction == false) direction = "up";
@@ -623,30 +623,12 @@ function gameLoop(timestamp) {
     deltaTime = (timestamp - lastTimestamp) / perfectFrameTime;
     lastTimestamp = timestamp;
 
-
-    //production.gameLoop.timeStart = performance.now();
-
-    //production.renderCells.timeStart = performance.now();
     renderCells();
-    //production.renderCells.times.push(performance.now() - production.renderCells.timeStart);
-
-    //production.movePlayers.timeStart = performance.now();
+    movePlayerLocally(); //NOT MADE YET - Should also delete snake cells locally
     movePlayer(localAccount.id);
-    //production.movePlayers.times.push(performance.now() - production.movePlayers.timeStart);
-    
-    //production.deleteSnakeCells.timeStart = performance.now();
     deleteSnakeCells();
-    //production.deleteSnakeCells.times.push(performance.now() - production.deleteSnakeCells.timeStart);
-
-    //updateLocalAccount();
-
-    //production.renderPlayers.timeStart = performance.now();
     renderPlayers();
-    //production.renderPlayers.times.push(performance.now() - production.renderPlayers.timeStart);
 
-    //production.gameLoop.times.push(performance.now() - production.gameLoop.timeStart);
-
-    //updateProduction();
     if (!gameEnd && !gamePaused) requestAnimationFrame(gameLoop);
 }
 
@@ -680,4 +662,9 @@ function specialItemManager()
     } else {
         specialItemIteration ++;
     }
+}
+
+
+function movePlayerLocally() {
+
 }

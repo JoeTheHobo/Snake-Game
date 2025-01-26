@@ -449,6 +449,8 @@ io.on('connection', (socket) => {
 
         let lobby = findLobby(socket.id);
 
+        if (obj.updateCells.length > 0) console.log(obj.updateCells)
+
         io.emit("updatedLocalAccount",{
             id: socket.id,
             isInGame: true,
@@ -456,6 +458,7 @@ io.on('connection', (socket) => {
             player: player,
             playersInServer: lobby.activePlayers,
             updateSnakeCells: obj.updateSnakeCells,
+            updateCells: obj.updateCells,
         })
         /*
         player.moveTik = obj.moveTik;
@@ -475,7 +478,6 @@ io.on('connection', (socket) => {
 });
 
 
-
 server.listen(port, () => {
     console.log('app listening on port' + port);
 }) 
@@ -488,9 +490,11 @@ function growPlayer(player,grow) {
 function movePlayer(player,lobby) {
     if (player.isDead) return{
         updateSnakeCells: [],
+        updateCells: [],
     };
 
     let updateSnakeCells = [];
+    let updateCells = [];
 
     //Change Later
     deltaTime = 1;
@@ -507,7 +511,6 @@ function movePlayer(player,lobby) {
         }
         player.moveTik = 0
 
-        console.log(player.moveQueue);
         //check the movement queue
         if (player.moveQueue.length != 0){
             if(player.moving == "left" && player.moveQueue[0] != "right" || 
@@ -593,7 +596,7 @@ function movePlayer(player,lobby) {
         }
 
         //Test Item Underplayer
-        testItemUnderPlayer(player,lobby);
+        updateCells = testItemUnderPlayer(player,lobby);
         
         //Check for Collisions
         let playersInServer = getPlayersList(lobby.players);
@@ -615,11 +618,13 @@ function movePlayer(player,lobby) {
 
     return {
         updateSnakeCells: updateSnakeCells,
+        updateCells: updateCells,
     }
 }
 function testItemUnderPlayer(player,lobby) {
     let mapItem = lobby.board.map[player.pos.y][player.pos.x].item;
-    if (!mapItem) return;
+    if (!mapItem) return [];
+    let updateCells = [];
 
     if (mapItem.pickUp) {
         let pickedUpItem = false;
@@ -640,10 +645,10 @@ function testItemUnderPlayer(player,lobby) {
                 player.whenInventoryIsFullInsertItemsAt++;
                 if (player.whenInventoryIsFullInsertItemsAt > player.items.length-1) player.whenInventoryIsFullInsertItemsAt = 0;
             }
-            drawPlayerBox(player)
+            //drawPlayerBox(player) ADD LATER
         }
     } else if (mapItem.canEat == true) {
-        useItemHelper(player,mapItem,lobby);
+        updateCells = useItemHelper(player,mapItem,lobby);
     }
 
     if (_type(mapItem.teleport).type == "number" && !player.justTeleported) {
@@ -708,14 +713,14 @@ function testItemUnderPlayer(player,lobby) {
                 if (mapItem.onDelete) {
                     if (mapItem.onDelete.removeStatus.length > 0) {
                         for (let j = 0; j < mapItem.onDelete.removeStatus.length; j++) {
-                            removePlayerStatus(player,mapItem.onDelete.removeStatus[j]);
+                            removePlayerStatus(player,mapItem.onDelete.removeStatus[j]); //ADD LATER
                         }
                     }    
                 }
     
                 //Delete Item
                 lobby.board.map[player.pos.y][player.pos.x].item = false;
-                lobby.updateCells.push({
+                updateCells.push({
                     x: player.pos.x,
                     y: player.pos.y,
                 })
@@ -724,6 +729,7 @@ function testItemUnderPlayer(player,lobby) {
         }
     }
     if (!itemIsDelete) deletePlayer(player,lobby);
+    return updateCells;
 }
 function runItemFunction(player,item,type,lobby) {
     if (!type) return;
@@ -788,6 +794,8 @@ function runItemFunction(player,item,type,lobby) {
     }
 }
 function useItemHelper(player,item,lobby) {
+    let updateCells = [];
+
     let onEat = item.onEat;
     if (onEat.growPlayer > 0) {
         growPlayer(player,onEat.growPlayer);
@@ -860,6 +868,7 @@ function useItemHelper(player,item,lobby) {
             doColorRender = true;
         },onEat.canvasFilter.duration)
     }
+    return updateCells;
 }
 
 function deletePlayer(player,lobby,playerWhoKilled,item,instaKill = false){
