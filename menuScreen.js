@@ -1,3 +1,5 @@
+const { colours } = require("nodemon/lib/config/defaults");
+
 let servers = [];
 let serverSelected = false;
 
@@ -64,6 +66,69 @@ function loadServerCreation() {
 
 }
 
+function generateHTMLScreen(holder,listObj,contentObj) {
+    holder.css({
+        width: "100%",
+        hieght: "100%",
+        padding: "5px",
+        display: "flex",
+        flexDirection: "row",
+    })
+
+    let list = $(".content_snake").create("div");
+    list.css({
+        width: "50%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+    })
+    let content = holder.create("div");
+    content.css({
+        width: "50%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+    })
+
+    generateHTMLList(list,listObj);
+    generateHTMLContent(content,contentObj);
+}
+function generateHTMLList(holder,listObj) {
+    let top = holder.create("div");
+    for (let i = 0; i < listObj.top.length; i++) {
+        let content = listObj.top[i];
+        let div = content.create("div");
+
+        if (content.text) div.innerHTML = content.text;
+
+        if (content.onClick) {
+            div.on("click",function() {
+                content.onClick();
+            })
+        }
+    }
+
+    let list = holder.create("div");
+    for (let i = 0; i < listObj.list.length; i++) {
+        let content = listObj.list[i];
+        let contentHolder = list.create("div");
+
+
+    }
+}
+function generateHTMLContent(holder,contentObj) {
+
+}
+
+
 function loadCustomizeSnakeScreen() {
-    
+    generateHTMLScreen($(".content_snake"),
+        {
+            list: players,
+            top: [{type: "button",text: "New Snake",onClick: function() { }}],
+        },
+        {
+            
+        }
+    )
 }
