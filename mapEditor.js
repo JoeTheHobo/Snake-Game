@@ -24,6 +24,7 @@ let history;
 let tool = "draw";
 let subTool = "brush";
 let aligning = false;
+let alignPoint = false;
 let selectedCells  = {
     selecting: false,
     start: {
@@ -40,6 +41,7 @@ let zoom = 1;
 let xChange = 0;
 let yChange = 0;
 let showGrid = false;
+let showFullGrid = false;
 
 loadObjectMenu();
 function fixItemDifferencesMapEditor(map) {
@@ -70,6 +72,7 @@ function openMapEditor(boardComingIn) {
     history = [];
     forwardHistory = [];
     zoom = 1;
+    showFullGrid = false;
     showGrid = false;
     $(".redo_tool").style.opacity = "0.5";
     $(".undo_tool").style.opacity = "0.5";
@@ -86,8 +89,8 @@ function openMapEditor(boardComingIn) {
     tool = false;
     setTool("draw");
 
-    xChange = ($(".me_canvasHolder").offsetWidth - $(".edit_canvas").offsetWidth)/2;
-    yChange = ($(".me_canvasHolder").offsetHeight - $(".edit_canvas").offsetHeight)/2;
+    xChange = ($(".me_canvasHolder").offsetWidth - $(".edit_canvas")[0].offsetWidth)/2;
+    yChange = ($(".me_canvasHolder").offsetHeight - $(".edit_canvas")[0].offsetHeight)/2;
     adjustCanvasPosition();
 
     clearInterval(saveInterval);
@@ -145,12 +148,91 @@ function me_loadDropdown(holder,group,name) {
         }
     }
 }
+function renderTopCanvas() {
+    me2_ctx.clearRect(0,0,me2_canvas.width,me2_canvas.height)
+
+    if (selectedCells.selecting || selectedCells.shape) {
+        me2_ctx.lineWidth = 1;
+        let obj = getRectPos(selectedCells.start,selectedCells.end);
+        me2_ctx.strokeStyle = "blue";
+        me2_ctx.strokeRect(obj.startX,obj.startY,obj.width,obj.height);
+    }
+
+    if (selectedCells.shape) {
+        if (tool !== "eraser") {
+            let array = [];
+            if (subTool == "circle") {
+                array = generateOvalPoints(selectedCells.start,selectedCells.end);
+            }
+            if (subTool == "shape") {
+                array = generatePointsInRect(selectedCells.start,selectedCells.end);
+            }
+            for (let i = 0; i < array.length; i++) {
+                me_updateCell(me2_ctx,array[i].x,array[i].y,0.5)
+            }
+        }
+    }
+
+    if (showFullGrid) {
+        me2_ctx.strokeStyle = "black";
+        me2_ctx.lineWidth = 1;
+        for (let i = 0; i < currentBoard.originalMap.length; i++) {
+            me2_ctx.beginPath();
+            me2_ctx.moveTo(0, i*gridSize*zoom);
+            me2_ctx.lineTo(me_canvas.width, i*gridSize*zoom);
+            me2_ctx.stroke();
+        }
+        for (let i = 0; i < currentBoard.originalMap[0].length; i++) {
+            me2_ctx.beginPath();
+            me2_ctx.moveTo(i*gridSize*zoom, 0);
+            me2_ctx.lineTo(i*gridSize*zoom, me_canvas.height);
+            me2_ctx.stroke();
+        }
+    }
+
+    if (showGrid) {
+        me2_ctx.lineWidth = 2;
+
+        function drawLine(type,color,pos) {
+            pos = ((gridSize*zoom)*pos)
+            
+            let x1 = type == "x" ? 0 : pos;
+            let x2 = type == "x" ? me_canvas.width : pos;
+            let y1 = type == "y" ? 0 : pos;
+            let y2 = type == "y" ? me_canvas.height : pos;
+
+            me2_ctx.strokeStyle = color;
+    
+            me2_ctx.beginPath();
+            me2_ctx.moveTo(x1, y1);
+            me2_ctx.lineTo(x2, y2);
+            me2_ctx.stroke();
+        }
+        //Draw Extra Lines
+        drawLine("y","gray",board.originalMap[0].length / 4);
+        drawLine("x","gray",board.originalMap.length / 4);
+        drawLine("y","gray",board.originalMap[0].length-(board.originalMap[0].length / 4));
+        drawLine("x","gray",board.originalMap.length-(board.originalMap.length / 4));
+
+        //Draw Center Lines
+        drawLine("y","gray",board.originalMap[0].length / 2);
+        drawLine("x","gray",board.originalMap.length / 2);
+
+    }
+
+    me2_ctx.lineWidth = 1;
+    me2_ctx.strokeStyle = "blue"; 
+    me2_ctx.strokeRect((gridSize*zoom)*mouseX,(gridSize*zoom)*mouseY,(gridSize*zoom),(gridSize*zoom));
+}
+function checkRenderThenRender() {
+     renderMapEditorCanvas();
+}
 function renderMapEditorCanvas() {
     itemCounts = [];
     me_ctx.clearRect(0,0,me_canvas.width,me_canvas.height)
     for (let i = 0; i < board.originalMap.length; i++) {
         for (let j = 0; j < board.originalMap[i].length; j++) {
-            me_updateCell(j,i)
+            me_updateCell(me_ctx,j,i)
         }
     }
 
@@ -165,45 +247,6 @@ function renderMapEditorCanvas() {
             if (selectedItem.cell.name === items[i].name && selectedItem.type == "item") selectedItem.canEdit = false;
             $("me_item_" + items[i].name).classAdd("me_fullSpawnLimit");
         }
-    }
-
-    if (selectedCells.selecting) {
-        let obj = getRectPos(selectedCells.start,selectedCells.end);
-        me_ctx.strokeRect(obj.startX,obj.startY,obj.width,obj.height);
-    }
-
-    if (selectedCells.shape) {
-        let obj = getRectPos(selectedCells.start,selectedCells.end);
-        me_ctx.strokeRect(obj.startX,obj.startY,obj.width,obj.height);
-    }
-
-
-    if (showGrid) {
-        function drawLine(type,color,pos) {
-            pos = ((gridSize*zoom)*pos)
-            
-            let x1 = type == "x" ? 0 : pos;
-            let x2 = type == "x" ? me_canvas.width : pos;
-            let y1 = type == "y" ? 0 : pos;
-            let y2 = type == "y" ? me_canvas.height : pos;
-
-            me_ctx.strokeStyle = color;
-    
-            me_ctx.beginPath();
-            me_ctx.moveTo(x1, y1);
-            me_ctx.lineTo(x2, y2);
-            me_ctx.stroke();
-        }
-        //Draw Extra Lines
-        drawLine("y","gray",board.originalMap[0].length / 4);
-        drawLine("x","gray",board.originalMap.length / 4);
-        drawLine("y","gray",board.originalMap[0].length-(board.originalMap[0].length / 4));
-        drawLine("x","gray",board.originalMap.length-(board.originalMap.length / 4));
-
-        //Draw Center Lines
-        drawLine("y","black",board.originalMap[0].length / 2);
-        drawLine("x","black",board.originalMap.length / 2);
-
     }
 }
 function getRectPos(pos1,pos2) {
@@ -234,19 +277,24 @@ function getRectPos(pos1,pos2) {
         height: height,
     };
 }
-function me_updateCell(x,y) {
-    let cell = board.originalMap[y][x];
+function me_updateCell(ctx,x,y,opacity) {
+    let cell = cloneObject(board.originalMap[y][x]);
+
+    if (opacity) cell[selectedItem.type] = selectedItem.cell;
+    else opacity = 1;
+
+    ctx.globalAlpha = opacity;
 
     let Xpos = ((gridSize*zoom)*x)
     let Ypos = ((gridSize*zoom)*y);
 
     if (cell.tile) {
         itemCounts.push("tile_" + cell.tile.name);
-        me_ctx.drawImage($("tile_" + cell.tile.name),Xpos,Ypos,(gridSize*zoom),(gridSize*zoom));
+        ctx.drawImage($("tile_" + cell.tile.name),Xpos,Ypos,(gridSize*zoom),(gridSize*zoom));
     }
     if (cell.item) {
         itemCounts.push("item_" + cell.item.name);
-        me_ctx.drawImage(getItemCanvas(cell.item.name),Xpos,Ypos,(gridSize*zoom),(gridSize*zoom));
+        ctx.drawImage(getItemCanvas(cell.item.name),Xpos,Ypos,(gridSize*zoom),(gridSize*zoom));
         if (cell.item.renderStatusPath.length > 0) {
             let name = cell.item;
             for (let j = 0; j < cell.item.renderStatusPath.length; j++) {
@@ -258,21 +306,18 @@ function me_updateCell(x,y) {
 
             if (name.subset(0,5) == "player") {
                 if (name !== "player") {
-                    me_ctx.fillStyle = "black";
-                    me_ctx.font = "20px Arial";
+                    ctx.fillStyle = "black";
+                    ctx.font = "20px Arial";
                     name = "P" + name.subset("_\\after","end");
-                    me_ctx.fillText(name,(x*(gridSize*zoom)) + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),y*(gridSize*zoom) + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2)+((gridSize*zoom)/2),(gridSize*zoom)/change,(gridSize*zoom)/change);
+                    ctx.fillText(name,(x*(gridSize*zoom)) + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),y*(gridSize*zoom) + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2)+((gridSize*zoom)/2),(gridSize*zoom)/change,(gridSize*zoom)/change);
                 }
             } else {
-                me_ctx.drawImage(getItemCanvas(getItem(name).name),Xpos + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),Ypos + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),(gridSize*zoom)/change,(gridSize*zoom)/change);
+                ctx.drawImage(getItemCanvas(getItem(name).name),Xpos + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),Ypos + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),(gridSize*zoom)/change,(gridSize*zoom)/change);
             }
         }
     }
 
-    if (cell.mouseOver) {
-        me_ctx.strokeStyle = "blue"; 
-        me_ctx.strokeRect((gridSize*zoom)*x,(gridSize*zoom)*y,(gridSize*zoom),(gridSize*zoom));
-    }
+    ctx.globalAlpha = 1;
 }
 var mouseDirection = {
     y: 0,
@@ -288,7 +333,6 @@ mousemovemethod = function (e) {
 
     oldMouseX = e.pageX;
     oldMouseY = e.pageY;
-
     if ((tool == "move" && mouseDown === true) || mouseDown == "wheel") {
         xChange += mouseDirection.x;
         yChange += mouseDirection.y;
@@ -320,7 +364,7 @@ $("me_canvas").on("mousemove",function(e) {
     board.originalMap[mouseY][mouseX].mouseOver = true;
     
     if ((tool == "draw" || tool == "eraser")) {
-        if (subTool == "shape") {
+        if (subTool == "shape" || subTool == "circle") {
             selectedCells.end = {
                 x: mouseX,
                 y: mouseY,
@@ -332,12 +376,31 @@ $("me_canvas").on("mousemove",function(e) {
         }
         if (subTool == "brush") {
             if (((mouseDown===true) || rightMouse) && selectedItem) {
+                let x = mouseX;
+                let y = mouseY;
+
+                if (aligning) {
+                    if (alignPoint.direction == false) {
+                        let xDis = Math.abs(mouseX - alignPoint.x);
+                        let yDis = Math.abs(mouseY - alignPoint.y);
+    
+                        if (xDis < yDis) alignPoint.direction = "x";
+                        if (xDis > yDis) alignPoint.direction = "Y";
+                    }
+
+                    if (alignPoint.direction !== false) {
+                        if (alignPoint.direction == "x") x = alignPoint.x;
+                        else y = alignPoint.y;
+                    }
+                }
+
                 if (rightMouse || tool == "eraser") {
-                    board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
+                    board.originalMap[y][x][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
                 } else if (selectedItem.canEdit) {
-                    board.originalMap[mouseY][mouseX][selectedItem.type] = structuredClone(selectedItem.cell);
+                    board.originalMap[y][x][selectedItem.type] = structuredClone(selectedItem.cell);
                 }
                 $("saveStatus").innerHTML = "Board Is Not Saved";
+                if (mouseDown !== "wheel") checkRenderThenRender();
             }
         }
     }
@@ -348,9 +411,8 @@ $("me_canvas").on("mousemove",function(e) {
             y: mouseY,
         }
     }
-
-    if (mouseDown !== "wheel")
-        renderMapEditorCanvas();
+    
+    if (mouseDown !== "wheel") renderTopCanvas()
 })
 $("me_canvas").on("mousedown",function(e) {
     var isRightMB;
@@ -360,6 +422,7 @@ $("me_canvas").on("mousedown",function(e) {
         isRightMB = e.which == 3; 
     else if ("button" in e)  // IE, Opera 
         isRightMB = e.button == 2; 
+
 
 
     rightMouse = isRightMB;
@@ -372,7 +435,7 @@ $("me_canvas").on("mousedown",function(e) {
                 x: mouseX,
                 y: mouseY,
             }
-            renderMapEditorCanvas();
+            checkRenderThenRender();
         } else {
             selectedCells = {
                 selecting: true,
@@ -389,7 +452,12 @@ $("me_canvas").on("mousedown",function(e) {
         }
     }
     if (tool == "draw" || tool == "eraser") {
-        if (subTool == "shape") {
+        alignPoint = {
+            x: mouseX,
+            y: mouseY,
+            direction: false,
+        }
+        if (subTool == "shape" || subTool == "circle") {
             selectedCells = {
                 selecting: false,
                 shape: true,
@@ -405,7 +473,7 @@ $("me_canvas").on("mousedown",function(e) {
         }
     }
     
-    renderMapEditorCanvas();
+    checkRenderThenRender();
 })
 $("me_canvas").on("mouseup",function(e) {
 
@@ -414,8 +482,24 @@ $("me_canvas").on("mouseup",function(e) {
             tool_fill();
             addHistory();
         }
+        if (subTool == "circle") {
+            let array = generateOvalPoints(selectedCells.start,selectedCells.end);
+            fillInPoints(array);
+            selectedCells = {
+                selecting: false,
+                shape: false,
+                start: {
+                    x: false,
+                    y: false,
+                },
+                end: {
+                    x: false,
+                    y: false,
+                },
+            }
+        }
         if (subTool == "brush") {
-            if (selectedItem) {
+            if (selectedItem && !aligning) {
                 if (rightMouse || tool == "eraser") {
                     board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
                 } else if (selectedItem.canEdit) {
@@ -425,7 +509,7 @@ $("me_canvas").on("mouseup",function(e) {
             }
         }
         $("saveStatus").innerHTML = "Board Is Not Saved";
-        renderMapEditorCanvas();
+        checkRenderThenRender();
     }
 
     if (tool == "select" && mouseDown === true) {
@@ -493,7 +577,7 @@ $("me_canvas").on("mouseup",function(e) {
             addHistory();
             $("saveStatus").innerHTML = "Board Is Not Saved";
         }
-        renderMapEditorCanvas();
+        checkRenderThenRender();
     }
 
     mouseDown = false;
@@ -503,26 +587,32 @@ $("me_canvas").on("mouseup",function(e) {
 
 $(".me_canvasHolder").on("wheel",function(e) {
     const delta = Math.sign(e.deltaY);
-    let oldXY = {
-        x: mouseX,
-        y: mouseY,
-    }
 
     changeZoom(delta);
 
+    moveCanvasToStayInPosition(e,mouseX,mouseY);
+});
+function moveCanvasToStayInPosition(e,originalX,originalY) {
     adjustMousePos(e);
 
-    let xDif = mouseX - oldXY.x;
-    let yDif = mouseY - oldXY.y;
+    let xDif = mouseX - originalX;
+    let yDif = mouseY - originalY;
 
     xChange += xDif*(gridSize*zoom)
     yChange += yDif*(gridSize*zoom)
 
     adjustCanvasPosition();
-});
+
+    adjustMousePos(e);
+
+    if (mouseX !== originalX || originalY !== mouseY) moveCanvasToStayInPosition(e,originalX,originalY);
+
+}
 function adjustCanvasPosition() {
-    $(".edit_canvas").style.marginLeft = xChange + "px";
-    $(".edit_canvas").style.marginTop = yChange + "px";
+    $("me_canvas").style.marginLeft = xChange + "px";
+    $("me_canvas").style.marginTop = yChange + "px";
+    $("me_canvas2").style.marginLeft = xChange + "px";
+    $("me_canvas2").style.marginTop = yChange + "px";
 }
 function changeZoom(delta) {
     if (delta < 0) zoom += 0.1;
@@ -532,7 +622,8 @@ function changeZoom(delta) {
     if (zoom < 0.1) zoom = 0.1;
 
     adjustCanvasSize(board.width,board.height,zoom);
-    renderMapEditorCanvas();
+    checkRenderThenRender();
+    renderTopCanvas();
 }
 $("me_canvas").on("mouseleave",function(e) {
     mouseDown = false;
@@ -572,7 +663,7 @@ document.on('keydown', (e) => {
             y: mouseY,
         };
     }
-    if (e.ctrlKey && e.key === 'd') {
+    if ((e.ctrlKey && e.key === 'd') || e.key == "Escape") {
         e.preventDefault(); // Prevent the default save action
         selectedCells = {
             selecting: false,
@@ -586,24 +677,25 @@ document.on('keydown', (e) => {
                 y: false,
             },
         }
-        renderMapEditorCanvas();
+        renderTopCanvas();
         $(".subTool_select").hide();
 
     }
     if (e.ctrlKey && e.key === 'a') {
         e.preventDefault(); // Prevent the default save action
-        if (tool == "select") {
-            selectedCells.selecting = true;
-            selectedCells.start = {
-                x: 0,
-                y: 0,
-            };
-            selectedCells.end = {
-                x: currentBoard.originalMap[0].length - 1,
-                y: currentBoard.originalMap.length - 1,
-            }
+        if (tool !== "select") setTool("select");
+
+        selectedCells.selecting = true;
+        selectedCells.start = {
+            x: 0,
+            y: 0,
+        };
+        selectedCells.end = {
+            x: currentBoard.originalMap[0].length - 1,
+            y: currentBoard.originalMap.length - 1,
         }
-        renderMapEditorCanvas();
+
+        checkRenderThenRender();
     }
     if (e.ctrlKey && e.key === 'c') {
         e.preventDefault(); // Prevent the default save action
@@ -625,6 +717,10 @@ document.on('keydown', (e) => {
     if (e.ctrlKey && e.key === 'y') {
         e.preventDefault(); // Prevent the default save action
         runTool("redo");
+    }
+    if (!e.ctrlKey && e.key === 'g') {
+        e.preventDefault(); // Prevent the default save action
+        runTool("show_grid2");
     }
     if (e.ctrlKey && e.key === 'g') {
         e.preventDefault(); // Prevent the default save action
@@ -655,6 +751,8 @@ function getDimensions(start,end) {
     
 }
 function tool_fill() {
+    if (!selectedCells.selecting && !selectedCells.shape) return;
+
     let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
 
     for (let i = upY; i < bottomY+1; i++) {
@@ -664,7 +762,7 @@ function tool_fill() {
         }
     }
 
-    renderMapEditorCanvas();
+    checkRenderThenRender();
     
     if (tool == "select") return;
 
@@ -908,7 +1006,7 @@ function loadStatusSelectionScreen() {
                 selectedItem.cell[selectedItem.path[0]] = this.status;
                 if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][selectedItem.path[0]] = this.status;
             }
-            renderMapEditorCanvas();
+            checkRenderThenRender();
             $(".statusSelectionScreen").hide();
             loadObjectMenu();
         })
@@ -933,6 +1031,7 @@ function setTool(tool2) {
     if (tool === tool2) {
         if (tool == "draw" || tool == "eraser") {
             if (subTool == "brush") setSubTool("shape");
+            else if (subTool == "shape") setSubTool("circle");
             else setSubTool("brush");
         }
         if (tool == "bucket") {
@@ -976,7 +1075,7 @@ function setTool(tool2) {
 
     $(".toolBarToolHolder").classRemove("toolIsSelected");
     $("tool_" + tool).$P().classAdd("toolIsSelected")
-    renderMapEditorCanvas();
+    checkRenderThenRender();
 }
 function setSubTool(tool2) {
     subTool = tool2;
@@ -1019,9 +1118,20 @@ function runTool(type) {
                 board.originalMap[i][j][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
             }
         }
-        renderMapEditorCanvas();
+        checkRenderThenRender();
         addHistory();
         $("saveStatus").innerHTML = "Board Is Not Saved";
+    }
+    if (type == "rotate_left" || type == "rotate_right") {
+        copiedCells = getArrayOfSelection();
+        runTool("delete");
+        copiedCells = type == "rotate_left" ? rotateArrayLeft(copiedCells) : rotateArrayRight(copiedCells);
+        paste(selectedCells.start.x,selectedCells.start.y,copiedCells);
+        selectedCells.end = {
+            x: selectedCells.start.x + copiedCells[0].length-1,
+            y: selectedCells.start.y + copiedCells.length-1,
+        }
+        renderTopCanvas();
     }
     if (type == "fill") {
         tool_fill();
@@ -1049,7 +1159,7 @@ function runTool(type) {
         if (history.length < 2) {
             $(".undo_tool").style.opacity = "0.5";
         }
-        renderMapEditorCanvas();
+        checkRenderThenRender();
         $("saveStatus").innerHTML = "Board Is Not Saved";
     }
     if (type == "redo") {
@@ -1062,7 +1172,7 @@ function runTool(type) {
         if (forwardHistory.length == 0) {
             $(".redo_tool").style.opacity = "0.5";
         }
-        renderMapEditorCanvas();
+        checkRenderThenRender();
         $("saveStatus").innerHTML = "Board Is Not Saved";
     }
     if (type == "zoomIn") {
@@ -1073,18 +1183,31 @@ function runTool(type) {
     }
     if (type == "zoomZero") {
         changeZoom(0);
-        xChange = ($(".me_canvasHolder").offsetWidth - $(".edit_canvas").offsetWidth)/2;
-        yChange = ($(".me_canvasHolder").offsetHeight - $(".edit_canvas").offsetHeight)/2;
+        xChange = ($(".me_canvasHolder").offsetWidth - $(".edit_canvas")[0].offsetWidth)/2;
+        yChange = ($(".me_canvasHolder").offsetHeight - $(".edit_canvas")[0].offsetHeight)/2;
         adjustCanvasPosition();
 
     }
     if (type == "show_grid") {
         showGrid = showGrid == false ? true : false;
-        renderMapEditorCanvas();
+        renderTopCanvas();
 
         if (showGrid) $(".show_grid_tool").classAdd("toolIsSelected");
         else $(".show_grid_tool").classRemove("toolIsSelected");
     }
+    if (type == "show_grid2") {
+        showFullGrid = showFullGrid == false ? true : false;
+        renderTopCanvas();
+
+        if (showFullGrid) $(".show_grid_tool2").classAdd("toolIsSelected");
+        else $(".show_grid_tool2").classRemove("toolIsSelected");
+    }
+}
+function rotateArrayLeft(matrix) {
+    return matrix[0].map((val, index) => matrix.map(row => row[row.length-1-index]));
+}
+function rotateArrayRight(matrix) {
+    return matrix[0].map((val, index) => matrix.map(row => row[index]).reverse());
 }
 function paste(x,y,map) {
     for (let i = y; i < y+map.length; i++) {
@@ -1094,7 +1217,7 @@ function paste(x,y,map) {
             currentBoard.originalMap[i][j] = cloneObject(map[i-y][j-x]);
         }
     }
-    renderMapEditorCanvas();
+    checkRenderThenRender();
     addHistory();
     $("saveStatus").innerHTML = "Board Is Not Saved";
 }
@@ -1212,4 +1335,56 @@ function getPacks(list) {
         }
     }
     return packs;
+}
+function generateOvalPoints(point1, point2, step = 1) {
+    const points = [];
+
+    // Calculate the center of the circle/oval (midpoint of point1 and point2)
+    const centerX = (point1.x + point2.x) / 2;
+    const centerY = (point1.y + point2.y) / 2;
+
+    // Calculate the semi-major and semi-minor axes based on the distance between point1 and point2
+    const semiMajorAxis = Math.abs(point2.x - point1.x) / 2;
+    const semiMinorAxis = Math.abs(point2.y - point1.y) / 2;
+
+    // Loop through all grid points within the bounding box of point1 and point2
+    for (let x = Math.min(point1.x, point2.x); x <= Math.max(point1.x, point2.x); x += step) {
+        for (let y = Math.min(point1.y, point2.y); y <= Math.max(point1.y, point2.y); y += step) {
+            // Check if the point (x, y) is inside the circle/oval
+            const dx = (x - centerX) / semiMajorAxis;
+            const dy = (y - centerY) / semiMinorAxis;
+            if (dx * dx + dy * dy <= 1) {
+                // If the point is inside the oval, add it to the list
+                points.push({ x, y });
+            }
+        }
+    }
+
+    return points;
+}
+
+
+function fillInPoints(points) {
+    for (let i = 0; i < points.length; i++) {
+        if (rightMouse || tool == "eraser") {
+            board.originalMap[points[i].y][points[i].x][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
+        } else if (selectedItem.canEdit) {
+            board.originalMap[points[i].y][points[i].x][selectedItem.type] = structuredClone(selectedItem.cell);
+        }
+    }
+    addHistory();
+    checkRenderThenRender();
+}
+function generatePointsInRect(pointA,pointB) {
+    let arr = [];
+    let {upY,leftX,bottomY,rightX} = getDimensions(pointA,pointB)
+    for (let i = upY; i < bottomY+1; i++) {
+        for (let j = leftX; j < rightX+1; j++) {
+            arr.push({
+                x: j,
+                y: i,
+            })
+        }
+    }
+    return arr;
 }

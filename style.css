@@ -44,6 +44,11 @@ html {
     bottom: 0;
     top: 0;
     margin: auto;
+    z-index: 1;
+}
+#me_canvas2 {
+  pointer-events: none;
+  z-index: 2;
 }
 #render_background {
   z-index: 401;

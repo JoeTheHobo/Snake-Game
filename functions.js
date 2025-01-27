@@ -132,7 +132,9 @@ let ctx_overhangs = canvas_players.getContext("2d");
 
 let me_canvas = $("me_canvas");
 let me_ctx = me_canvas.getContext("2d");
-me_ctx.imageSmoothingEnabled = false;
+let me2_canvas = $("me_canvas2");
+let me2_ctx = me2_canvas.getContext("2d");
+
 function adjustCanvasSize(gridx,gridy,zoom = 1) {
     const width = Math.ceil(gridx * gridSize * zoom);
     const height = Math.ceil(gridy * gridSize * zoom);
@@ -150,6 +152,8 @@ function adjustCanvasSize(gridx,gridy,zoom = 1) {
     canvas_overhangs.height = height;
     me_canvas.width = width;
     me_canvas.height = height;
+    me2_canvas.width = width;
+    me2_canvas.height = height;
 
     // Scale the canvas visually for the screen
     $(".game_canvas").css({

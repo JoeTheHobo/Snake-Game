@@ -191,6 +191,7 @@
             <div class="toolbar_subtools">
                 <div class="toolBarToolHolder subToolHolder subTool_draw"><img src="img/tool_brush.png" id="subTool_brush" onclick="setSubTool('brush')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_draw"><img src="img/tool_shape.png" id="subTool_shape" onclick="setSubTool('shape')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_draw"><img src="img/tool_shape_circle.png" id="subTool_circle" onclick="setSubTool('circle')" class="toolBarToolImg"></div>
 
                 <div class="toolBarToolHolder subToolHolder subTool_select" title="Shortcut: Control + C"><img src="img/tool_copy.png" id="subTool_copy" onclick="runTool('copy')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_select pastingTool" title="Shortcut: Control + V"><img src="img/tool_paste.png" id="subTool_paste" onclick="runTool('paste')" class="toolBarToolImg"></div>
@@ -198,6 +199,8 @@
                 <div class="toolBarToolHolder subToolHolder subTool_select"><img src="img/tool_bucket.png" id="subTool_fill" onclick="runTool('fill')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_select"><img src="img/tool_reflectX.png" id="subTool_reflectX" onclick="runTool('reflectX')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_select"><img src="img/tool_reflectY.png" id="subTool_reflectY" onclick="runTool('reflectY')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_select"><img src="img/tool_rotate_left.png" id="subTool_rotate_left" onclick="runTool('rotate_left')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_select"><img src="img/tool_rotate_right.png" id="subTool_rotate_right" onclick="runTool('rotate_right')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_select" title="Shortcut: Delete Key"><img src="img/tool_delete.png" id="subTool_delete" onclick="runTool('delete')" class="toolBarToolImg"></div>
                 
                 <div class="toolBarToolHolder subToolHolder subTool_bucket" title="Shortcut: B"><img src="img/tool_bucket.png" id="subTool_bucket" onclick="setSubTool('bucket')" class="toolBarToolImg"></div>
@@ -212,11 +215,13 @@
             
             <div class="toolbar_extra">
                 <div class="toolBarToolHolder2 show_grid_tool" title="Shortcut: Control + G"><img src="img/tool_show_grid.png" id="tool_show_grid" onclick="runTool('show_grid')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder2 show_grid_tool2" title="Shortcut: G"><img src="img/tool_show_grid2.png" id="tool_show_grid2" onclick="runTool('show_grid2')" class="toolBarToolImg"></div>
             </div>
         </div>
         <div class="me_bottom">
             <div class="me_canvasHolder">
                 <canvas class="edit_canvas" id="me_canvas"></canvas>
+                <canvas class="edit_canvas" id="me_canvas2"></canvas>
             </div>
             <div class="me_objectHolder">
                 <div class="me_ih_imageHolder">
