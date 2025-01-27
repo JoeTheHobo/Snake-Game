@@ -55,6 +55,15 @@ tiles.push({
     id: 7,
     pack: "Regular Speed",//Which Item Pack Does This Group To (For Map Editor)
 })
+tiles.push({
+    name: "Dirt",
+    img: "dirtTile.jpg",
+    changePlayerSpeed: 1, //Player Speed Times This Number
+    canSpawn: true, //If Items can spawn on tile
+    id: 8,
+    pack: "Regular Speed",//Which Item Pack Does This Group To (For Map Editor)
+})
+
 
 
 
