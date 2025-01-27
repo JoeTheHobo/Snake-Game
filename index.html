@@ -134,30 +134,12 @@
     <div class="scene" id="scene_boardList">
         <div class="pixel" id="button_mainMenu"><p>Main Menu</p></div>
         <div class="boardListHolder listHolder"></div>
-        <div class="boardSettings">
-            <div class="valueHolder">
-                <div class="settingTitle">Name</div>
-                <input class="settingInput settingsInputName" value="Untitled">
-            </div>
-            <div class="valueHolder">
-                <div class="settingTitle">Width</div>
-                <input class="settingInput settingsInputWidth" value="50" type="number">
-            </div>
-            <div class="valueHolder">
-                <div class="settingTitle">Height</div>
-                <input class="settingInput settingsInputHeight" value="30" type="number">
-            </div>
-            <div class="settingsButtonHolder">
-                <div class="pixel" id="button_cancelBoard"><p>Cancel</p></div>
-                <div class="pixel" id="button_createBoard"><p>Create</p></div>
-            </div>
-        </div>
     </div>
     <div class="scene" id="scene_mapEditor">
         <div class="me_top">
             <div id="me_left">
                 <div id="me_button"><--</div>
-                <input id="me_name">
+                <input id="me_name" placeholder="Board Name">
                 <div id="saveStatus"></div>
             </div>
             <div id="me_playButton">Play Game!</div>
@@ -228,6 +210,7 @@
                     <img src="img/rock2.png" class="me_ih_image">
                 </div>
                 <div class="me_ih_name">Pellet</div>
+                <div class="me_ih_type">Item</div>
                 <div class="me_ih_settings"></div>
             </div>
         </div>
@@ -258,6 +241,7 @@
     <script src='libraries/library_simple_v16.js'></script>
 
     <!--Insert All Your Sheets Below-->
+    <script src="popups.js"></script>
     <script src="tiles.js"></script>
     <script src="items.js"></script>
     <script src="presetGameModes.js"></script>

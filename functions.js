@@ -632,12 +632,29 @@ function loadPlayers() {
             editPlayerScreen(players[playerID])
         });
         makeRightButton("delete.png",function(playerID) {
-            players.splice(playerID,1);
-            gs_playerCount--;
-            for (let i = 0; i < players.length; i++) {
-                players[i].id = i;
-            }
-            loadPlayers();
+            makePopUp([
+                {type: "text",text: "Delete " + players[playerID].name},
+                {type: "title",text: "Are You Sure?"},
+                [
+                    {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
+                    {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Delete",onClick: (ids,param) => {
+                        playerID = param.playerID;
+                        players.splice(playerID,1);
+                        gs_playerCount--;
+                        for (let i = 0; i < players.length; i++) {
+                            players[i].id = i;
+                        }
+                        loadPlayers();
+                    }},
+                ],
+            ],{
+                id: "deletePopUp",
+                parameter: {
+                    playerID: playerID,
+                } 
+            })
+
+            
         });
         if (player.active) {
             makeRightButton("eyeOpen.png",function(playerID) {
@@ -1196,13 +1213,26 @@ function loadGameModes() {
             deleteImg.src = "img/delete.png";
             deleteHolder.i = i;
             deleteHolder.on("click",function() {
-                gameModes.splice(this.i,1);
-                activeGameMode = 0;
-                currentGameMode = gameModes[activeGameMode];
+                
+                makePopUp([
+                    {type: "text",text: "Delete " + currentGameMode.name},
+                    {type: "title",text: "Are You Sure?"},
+                    [
+                        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
+                        {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Delete",onClick: () => {
+                            gameModes.splice(this.i,1);
+                            activeGameMode = 0;
+                            currentGameMode = gameModes[activeGameMode];
 
-                ls.save("gameModes",gameModes)
-                ls.save("activeGameMode",activeGameMode)
-                loadGameModes();
+                            ls.save("gameModes",gameModes)
+                            ls.save("activeGameMode",activeGameMode)
+                            loadGameModes();
+                        }},
+                    ],
+                ],{
+                    id: "deletePopUp",
+                
+                })
             })
         }
 
@@ -1423,7 +1453,6 @@ function gameMode_editItem(item,html_holder,gameMode) {
 }
 
 function loadBoards() {
-    $(".boardSettings").hide();
     let html_boardList = $(".boardListHolder");
     html_boardList.innerHTML = `
         <div class="lb_row">
@@ -1436,7 +1465,32 @@ function loadBoards() {
         flexDirection: "row",
     })
     $("gameModes_newBoard").on("click",function() {
-        boardSettings();
+        makePopUp([
+            {type: "title",text: "New Board"},
+            [
+                {type: "text", text: "Name"},
+                {type: "input", id:"name", placeholder: "Untitled", width: "200px"},
+            ],
+            [
+                {type: "text", text: "Width"},
+                {type: "number", id:"width", value: "50", min: 5, max: 70, width: "50px"},
+                {type: "text", text: "Height"},
+                {type: "number", id:"height", value: "30", min: 5, max: 70, width: "50px"},
+            ],
+            
+            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "green",text:"Create",onClick: (ids) => {
+                const {name,width,height} = ids;
+                let boardName = name.value == "" ? "Untitled" : name.value;
+                createBoard(boardName,width.value,height.value);
+                
+            }},
+        ],{
+            exit: {
+                cursor: "url('./img/pointer.cur'), auto",
+            },
+            id: "newBoard",
+
+        })
     })
     $("gameModes_import").on("click",function() {
          // Create an input element of type file
@@ -1529,27 +1583,32 @@ function loadBoards() {
             deleteImg.src = "img/delete.png";
             deleteHolder.i = i;
             deleteHolder.on("click",function() {
-                currentBoardIndex = 0;
-                currentBoard = boards[currentBoardIndex];
-                boards.splice(this.i,1);
-                saveBoards();
-                ls.save("currentBoardIndex",currentBoardIndex);
-                loadBoards();
+                makePopUp([
+                    {type: "text",text: "Delete " + currentBoard.name},
+                    {type: "title",text: "Are You Sure?"},
+                    [
+                        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
+                        {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Delete",onClick: () => {
+                            currentBoardIndex = 0;
+                            currentBoard = boards[currentBoardIndex];
+                            boards.splice(this.i,1);
+                            saveBoards();
+                            ls.save("currentBoardIndex",currentBoardIndex);
+                            loadBoards();
+                        }},
+                    ],
+                ],{
+                    id: "deletePopUp",
+                
+                })
             })
         }
 
     }
 }
-function boardSettings() {
-    $(".settingsInputHeight").value = 30;
-    $(".settingsInputWidth").value = 50;
-    $(".boardSettings").show("flex");
-}
-function createBoard() {
-    let width = $(".settingsInputWidth").value;
-    let height = $(".settingsInputHeight").value;
+function createBoard(name,width,height) {
     boards.push({
-        name: $(".settingsInputName").value,
+        name: name,
         width: width,
         height: height,
         background: false,

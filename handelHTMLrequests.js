@@ -23,12 +23,6 @@ $("button_boards").on("click",function() {
     setScene("boardList");
     loadBoards();
 })
-$("button_cancelBoard").on("click",function() {
-    $(".boardSettings").hide();
-})
-$("button_createBoard").on("click",function() {
-    createBoard();
-})
 $("me_playButton").on("click",function() {
     startGame();
     $(".button_mapEditorHolder").show();

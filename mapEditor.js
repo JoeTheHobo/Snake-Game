@@ -37,11 +37,16 @@ let selectedCells  = {
     },
 }
 let copiedCells = [];
+let copyType = false;
+let copyTypeNeedsToReset = true;
+
 let zoom = 1;
 let xChange = 0;
 let yChange = 0;
 let showGrid = false;
 let showFullGrid = false;
+
+let oldMap = [];
 
 loadObjectMenu();
 function fixItemDifferencesMapEditor(map) {
@@ -68,12 +73,22 @@ function fixItemDifferencesMapEditor(map) {
 function openMapEditor(boardComingIn) {
     board = boardComingIn;
     currentBoard.originalMap = forceAllCellsToBeTheirOwn(board.originalMap);
+    oldMap = structuredClone(currentBoard.originalMap);
     copiedCells = [];
+    copyType = false;
+    copyTypeNeedsToReset = true;
     history = [];
     forwardHistory = [];
     zoom = 1;
     showFullGrid = false;
     showGrid = false;
+    selectedItem = {
+        type: "item",
+        content: getRealItem("pellet"),
+        canEdit: true,
+        path: false,
+        cell: cloneObject(getRealItem("pellet")),
+    }
     $(".redo_tool").style.opacity = "0.5";
     $(".undo_tool").style.opacity = "0.5";
     setScene("mapEditor");
@@ -83,7 +98,7 @@ function openMapEditor(boardComingIn) {
     me_loadDropdown($(".me_tilesContent"),tiles,"tile_");
 
     adjustCanvasSize(board.width,board.height,zoom);
-    renderMapEditorCanvas();
+    renderMapEditorCanvas(true);
     fixItemDifferencesMapEditor(currentBoard.originalMap);
     saveBoard(true);
     tool = false;
@@ -227,14 +242,18 @@ function renderTopCanvas() {
 function checkRenderThenRender() {
      renderMapEditorCanvas();
 }
-function renderMapEditorCanvas() {
+function renderMapEditorCanvas(renderEverything = false) {
     itemCounts = [];
-    me_ctx.clearRect(0,0,me_canvas.width,me_canvas.height)
     for (let i = 0; i < board.originalMap.length; i++) {
         for (let j = 0; j < board.originalMap[i].length; j++) {
-            me_updateCell(me_ctx,j,i)
+            let tileIsDifferent = JSON.stringify(board.originalMap[i][j].tile) !== JSON.stringify(oldMap[i][j].tile);
+            let itemIsDifferent = JSON.stringify(board.originalMap[i][j].item) !== JSON.stringify(oldMap[i][j].item);
+            if (tileIsDifferent || itemIsDifferent || renderEverything) {
+                me_updateCell(me_ctx,j,i)
+            }
         }
     }
+    oldMap = structuredClone(currentBoard.originalMap);
 
     selectedItem.canEdit = true;
     for (let i = 0; i < items.length; i++) {
@@ -285,8 +304,10 @@ function me_updateCell(ctx,x,y,opacity) {
 
     ctx.globalAlpha = opacity;
 
-    let Xpos = ((gridSize*zoom)*x)
+    let Xpos = ((gridSize*zoom)*x);
     let Ypos = ((gridSize*zoom)*y);
+
+    ctx.clearRect(Xpos,Ypos,(gridSize*zoom),(gridSize*zoom))
 
     if (cell.tile) {
         itemCounts.push("tile_" + cell.tile.name);
@@ -437,6 +458,7 @@ $("me_canvas").on("mousedown",function(e) {
             }
             checkRenderThenRender();
         } else {
+            clearSelection();
             selectedCells = {
                 selecting: true,
                 shape: false,
@@ -458,6 +480,7 @@ $("me_canvas").on("mousedown",function(e) {
             direction: false,
         }
         if (subTool == "shape" || subTool == "circle") {
+            clearSelection();
             selectedCells = {
                 selecting: false,
                 shape: true,
@@ -485,18 +508,7 @@ $("me_canvas").on("mouseup",function(e) {
         if (subTool == "circle") {
             let array = generateOvalPoints(selectedCells.start,selectedCells.end);
             fillInPoints(array);
-            selectedCells = {
-                selecting: false,
-                shape: false,
-                start: {
-                    x: false,
-                    y: false,
-                },
-                end: {
-                    x: false,
-                    y: false,
-                },
-            }
+            clearSelection();
         }
         if (subTool == "brush") {
             if (selectedItem && !aligning) {
@@ -634,6 +646,11 @@ $("me_canvas").on("contextmenu",function(e) {
 })
 document.on('keydown', (e) => {
     if ($("scene_mapEditor").style.display == "none") return;
+    // Check if the currently focused element is an input, textarea, or select
+    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+        return; // Exit early if an input element is focused
+    }
+
     // Check if Ctrl and S are pressed
     if (e.ctrlKey && e.key === 's') {
         e.preventDefault(); // Prevent the default save action
@@ -644,6 +661,27 @@ document.on('keydown', (e) => {
     }
     if (!e.ctrlKey && e.key == "d") {
         setTool("draw");
+    }
+    if (e.key == "Tab") {
+        e.preventDefault();
+        if (selectedItem.type == "item") {
+            selectedItem = {
+                type: "tile",
+                content: getTile("grass"),
+                canEdit: true,
+                path: false,
+                cell: cloneObject(getTile("grass")),
+            }
+        } else {
+            selectedItem = {
+                type: "item",
+                content: getRealItem("pellet"),
+                canEdit: true,
+                path: false,
+                cell: cloneObject(getRealItem("pellet")),
+            }
+        }
+        loadObjectMenu();
     }
     if (e.key == "b") {
         setTool("bucket");
@@ -665,19 +703,7 @@ document.on('keydown', (e) => {
     }
     if ((e.ctrlKey && e.key === 'd') || e.key == "Escape") {
         e.preventDefault(); // Prevent the default save action
-        selectedCells = {
-            selecting: false,
-            shape: false,
-            start: {
-                x: false,
-                y: false,
-            },
-            end: {
-                x: false,
-                y: false,
-            },
-        }
-        renderTopCanvas();
+        clearSelection();
         $(".subTool_select").hide();
 
     }
@@ -694,20 +720,20 @@ document.on('keydown', (e) => {
             x: currentBoard.originalMap[0].length - 1,
             y: currentBoard.originalMap.length - 1,
         }
+        
+        $(".subTool_select").show();
 
         checkRenderThenRender();
     }
     if (e.ctrlKey && e.key === 'c') {
         e.preventDefault(); // Prevent the default save action
         if (selectedCells.selecting) {
-            copiedCells = getArrayOfSelection();
-            $(".pastingTool").show();
+            runTool("copy")
         }
     }
     if (e.ctrlKey && e.key === 'v') {
         if (copiedCells.length > 0 && selectedCells.selecting) {
-            let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
-            paste(leftX,upY,copiedCells);
+            runTool("paste");
         }
     }
     if (e.ctrlKey && e.key === 'z') {
@@ -766,18 +792,7 @@ function tool_fill() {
     
     if (tool == "select") return;
 
-    selectedCells = {
-        selecting: false,
-        shape: false,
-        start: {
-            x: false,
-            y: false,
-        },
-        end: {
-            x: false,
-            y: false,
-        },
-    }
+    clearSelection();
 }
 function saveBoard(saveDifferences = false) {
     let html_saveStatus = $("saveStatus");
@@ -788,14 +803,45 @@ function saveBoard(saveDifferences = false) {
 }
 
 $("me_button").on("click",function() {
-    saveBoard();
-    setScene("boardList");
-    loadBoards();
+    if ($("saveStatus").innerHTML == "Board Saved") {
+        saveBoard();
+        setScene("boardList");
+        loadBoards();
+        return;
+    }
+    makePopUp([
+        {type: "title",text: "Save Changes?"},
+        [
+            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Discard Changes",onClick: () => {
+                setScene("boardList");
+                loadBoards();
+            }},
+            {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Save Changes",onClick: () => {
+                saveBoard();
+                setScene("boardList");
+                loadBoards();
+            }},
+        ],
+    ],{
+        exit: {
+            cursor: "url('./img/pointer.cur'), auto",
+        },
+        id: "savePopUp",
+    
+    })
+})
+$("me_name").on("click",function() {
+    this.storedValue = this.value;
+    this.value = "";
+})
+$("me_name").on("focusout",function() {
+    if (this.value == "") this.value = this.storedValue;
 })
 $("me_name").on("input",function() {
-    if (this.value == "") return;
+    let setValue = this.value;
+    if (this.value == "") setValue = "Untitled";
     board.name = this.value;
-    saveBoards();
+    $("saveStatus").innerHTML = "Board Is Not Saved";
 })
 
 function loadObjectMenu() {
@@ -803,6 +849,7 @@ function loadObjectMenu() {
     let holder = $(".me_ih_settings");
     holder.innerHTML = "";
     $(".me_ih_name").innerHTML = selectedItem.cell.name;
+    $(".me_ih_type").innerHTML = selectedItem.type;
 
     function addSetting(title,type,value,path) {
         let settingHolder = holder.create("div");
@@ -1046,18 +1093,7 @@ function setTool(tool2) {
         $(".subToolHolder").hide();
         $(".subTool_draw").show();
         setSubTool("brush");
-        selectedCells = {
-            selecting: false,
-            shape: false,
-            start: {
-                x: false,
-                y: false,
-            },
-            end: {
-                x: false,
-                y: false,
-            },
-        }
+        clearSelection();
     }
     if (tool == "select") {
         $(".subToolHolder").hide();
@@ -1143,12 +1179,29 @@ function runTool(type) {
         runTool("delete");
     }
     if (type == "copy") {
+        let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
+        let coords = {
+            y: upY-1,
+            x: leftX + ((rightX-leftX)/2),
+        }
+        let xy = getRealCoordsFromBoardPoints(coords.x,coords.y);
+
+        if (copyTypeNeedsToReset) {
+            copyTypeNeedsToReset = false;
+            copyType = false;
+        }
+
+        if (copyType == false) copyType = [selectedItem.type]
+        else if (copyType.length < 2) copyType.push(copyType[0] === "item" ? "tile" : "item");
+        else copyType = [(copyType[0] == "item" ? "tile" : "item")]
+
+        runToolTip(xy.x+(gridSize/2),xy.y,"Copied: " + copyType.join(" + "),"center",1);
         copiedCells = getArrayOfSelection();
         $(".pastingTool").show();
     }
     if (type == "paste") {
         let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
-        paste(leftX,upY,copiedCells)
+        paste(leftX,upY,copiedCells,copyType)
     }
     if (type == "undo") {
         if (history.length < 2) return;
@@ -1209,12 +1262,18 @@ function rotateArrayLeft(matrix) {
 function rotateArrayRight(matrix) {
     return matrix[0].map((val, index) => matrix.map(row => row[index]).reverse());
 }
-function paste(x,y,map) {
+function paste(x,y,map,type) {
     for (let i = y; i < y+map.length; i++) {
         if (i > currentBoard.originalMap.length-1) continue;
         for (let j = x; j < x+map[0].length; j++) {
             if (j > currentBoard.originalMap[0].length-1) continue;
-            currentBoard.originalMap[i][j] = cloneObject(map[i-y][j-x]);
+
+            if (!type)
+                currentBoard.originalMap[i][j] = cloneObject(map[i-y][j-x]);
+            else {
+                if (type.includes("item")) currentBoard.originalMap[i][j].item = cloneObject(map[i-y][j-x].item);
+                if (type.includes("tile")) currentBoard.originalMap[i][j].tile = cloneObject(map[i-y][j-x].tile);
+            }
         }
     }
     checkRenderThenRender();
@@ -1387,4 +1446,69 @@ function generatePointsInRect(pointA,pointB) {
         }
     }
     return arr;
+}
+
+
+
+function getRealCoordsFromBoardPoints(x,y) {
+    let rect = me_canvas.getBoundingClientRect();
+
+    x = (gridSize * x * zoom) + rect.left;
+    y = (gridSize * y * zoom) + rect.top;
+
+    return {
+        x: x,
+        y: y,
+    }
+}
+function clearSelection() {
+    selectedCells  = {
+        selecting: false,
+        start: {
+            x: false,
+            y: false,
+        },
+        end: {
+            x: false,
+            y: false,
+        },
+    }
+    copyTypeNeedsToReset = true;
+    renderTopCanvas();
+}
+
+
+
+function runToolTip(x,y,message,type,id = false) {
+    let toolTip;
+    if (id) {
+        if ($("toolTip" + id)) {
+            toolTip = $("toolTip" + id);
+            clearTimeout(toolTip.timeOut)
+        }
+        else toolTip = $("scene_mapEditor").create("div");
+    } else {
+        toolTip = $("scene_mapEditor").create("div");
+    }
+    
+    toolTip.className = "toolTip";
+    toolTip.innerHTML = message;
+
+    if (id) toolTip.id = "toolTip" + id;
+
+    if (type == "center") {
+        x = x - (toolTip.offsetWidth/2);
+        y = y - (toolTip.offsetHeight/2);
+    }
+
+    toolTip.css({
+        left: x + "px",
+        top: y + "px",
+    })
+    toolTip.style.opacity = 0.8;
+    toolTip.timeOut = setTimeout(function() {
+        toolTip.style.opacity = 0;
+
+        toolTip.remove()
+    },1500)
 }
