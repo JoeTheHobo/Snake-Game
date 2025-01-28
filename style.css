@@ -1195,3 +1195,13 @@ html {
   flex-direction: column;
   align-items: center;
 }
+
+.hover {
+  transition: all .2s ease-in-out;
+}
+.hover:hover {
+  opacity: 0.8;
+}
+.list_selected {
+  background: rgb(117, 59, 156) !important;
+}
