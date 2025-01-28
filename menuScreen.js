@@ -240,7 +240,7 @@ function generateHTMLContent(holder,contentList,valueObj) {
 
             if (["image"].includes(l.type)) div = holder.create("img");
             if (["title","text","label"].includes(l.type)) div = holder.create("div");
-            if (["keyBind","slider"].includes(l.type)) div = holder.create("input");
+            if (["keyBind","slider","input"].includes(l.type)) div = holder.create("input");
 
             if (l.text) div.innerHTML = l.text;
 
@@ -252,7 +252,7 @@ function generateHTMLContent(holder,contentList,valueObj) {
             }
             if (l.type == "text") {
                 div.css({
-                    fontSize: "20px",
+                    fontSize: "25px",
                     color: "white",
                 })
             }
@@ -260,9 +260,11 @@ function generateHTMLContent(holder,contentList,valueObj) {
                 div.type = "range";
                 div.min = l.min;
                 div.max = l.max;
-                console.log(obj[l.value.subset(".\\after","end")]);
                 if (l.value.charAt(0) == ".") div.value = obj[l.value.subset(".\\after","end")];
                 else div.value = l.value;
+                div.css({
+                    SliderColor: "green",
+                })
 
             }
             if (l.type == "label") {
@@ -273,6 +275,19 @@ function generateHTMLContent(holder,contentList,valueObj) {
                     height: "40px",
                     margin: "3px",
                     lineHeight: "40px",
+                })
+            }
+            if (l.type == "input") {
+                if (l.value.charAt(0) == ".") div.value = obj[l.value.subset(".\\after","end")];
+                else div.value = l.value;
+                div.css({
+                    width: "75%",
+                    height: "40px",
+                    outline: "none",
+                    border: "none",
+                    textAlign: "center",
+                    fontSize: "20px",
+                    margin: "3px",
                 })
             }
             if (l.type == "keyBind") {
@@ -286,6 +301,14 @@ function generateHTMLContent(holder,contentList,valueObj) {
                     textAlign: "center",
                     fontSize: "20px",
                     margin: "3px",
+                    cursor: "url('./img/pointer.cur'), auto",
+                })
+                div.on("click",function() {
+                    this.value = "";
+                })
+                div.on("keydown",function(e) {
+                    e.preventDefault();
+                    this.value = e.key;
                 })
             }
             if (l.type == "image") {
@@ -321,11 +344,11 @@ function loadCustomizeSnakeScreen() {
                     {type: "text",text: "Snake Name"},
                     {type: "input",value: ".name", id: "snakeName"},
                     {type: "text",text: "Hue"},
-                    {type: "slider", value: ".color",min: 0, max: 100},
+                    {type: "slider", value: ".color",min: 0, max: 360},
                     {type: "text",text: "Sepia"},
                     {type: "slider", value: ".color2",min: 0, max: 100},
                     {type: "text",text: "Contrast"},
-                    {type: "slider", value: ".color3",min: 0, max: 100}
+                    {type: "slider", value: ".color3",min: 0, max: 200}
                 ],
             ],
             {type: "title",text: "Key Binds"},
