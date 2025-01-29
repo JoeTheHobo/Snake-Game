@@ -625,3 +625,39 @@ function savePlayers() {
 function saveAllGameModes() {
     ls.save("gameModes",gameModes);
 }
+
+function loadLocalScreen() {
+    let boardHolder = $("local_boards");
+    let snakesHolder = $("local_snakes");
+    let gameModesHolder = $("local_gameModes");
+
+    boardHolder.innerHTML = "";
+    snakesHolder.innerHTML = "";
+    gameModesHolder.innerHTML = "";
+
+    function loadContent(parent,list,type) {
+        for (let i = 0; i < list.length; i++) {
+            let holder = parent.create("div");
+            holder.className = "local_content_holder hover";
+
+            if (type == "snakes") {
+                let img = holder.create("img");
+                img.src = "img/snakeHead.png";
+                img.className = "local_content_snakeHead";
+                img.style.filter = `hue-rotate(${list[i].color}deg) sepia(${list[i].color2}%) contrast(${list[i].color3}%)`;
+            }
+
+            let title = holder.create("div");
+            title.innerHTML = list[i].name;
+            title.className = "local_content_title";
+
+            if (type == "gameModes" && i == currentBoardIndex) {
+                holder.classAdd("local_content_selected");
+            }
+        }
+    }
+
+    loadContent(boardHolder,boards,"boards");
+    loadContent(snakesHolder,players,"snakes");
+    loadContent(gameModesHolder,gameModes,"gameModes");
+}

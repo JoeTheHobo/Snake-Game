@@ -1205,3 +1205,63 @@ html {
 .list_selected {
   background: rgb(117, 59, 156) !important;
 }
+
+
+
+.local_top {
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: row;
+}
+.local_choice_holder {
+  display: flex;
+  flex-direction: column;
+  width: 33%;
+  align-items: center;
+}
+.local_border_right {
+  border-right: 1px solid white;
+
+}
+.local_choice_title {
+  color: white;
+  font-size: 35px;
+}
+.local_choice_content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.local_bottom {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content:  center;
+}
+.local_content_holder {
+  width: 95%;
+  height: 40px;
+  background: #888;
+  border-radius: 5px;
+  margin-top: 5px;
+  cursor: url('./img/pointer.cur'), auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.local_content_title {
+  color: white;
+  font-size: 25px;
+  margin-left: 5px;
+}
+.local_content_snakeHead {
+  height: 95%;
+  width: auto;
+}
+.local_content_selected { 
+  background: rgb(117, 59, 156) !important;
+}

@@ -20,7 +20,7 @@
         <div class="menu_holder">
             <div class="menu_top">
                 <div onclick="loadServersHTML()" id="servers_tab" class="menu_tab menu_tab_selected">Servers</div>
-                <div id="local_tab" class="menu_tab">Play Local</div>
+                <div id="local_tab" onclick="loadLocalScreen()" class="menu_tab">Play Local</div>
                 <div onclick="loadCustomizeSnakeScreen()" id="snake_tab" class="menu_tab">Your Snakes</div>
                 <div onclick="loadBoardsScreen()" id="boards_tab" class="menu_tab">Your Boards</div>
                 <div id="gameModes_tab" class="menu_tab">Your Game Modes</div>
@@ -47,6 +47,26 @@
             <div class="menu_content content_snake"></div>
             <div class="menu_content content_boards"></div>
             <div class="menu_content content_gameModes"></div>
+            <div class="menu_content content_local">
+                <div class="local_top">
+                    <div class="local_choice_holder local_border_right">
+                        <div class="local_choice_title">Choose Board</div>
+                        <div class="local_choice_content" id="local_boards"></div>
+                    </div>
+                    <div class="local_choice_holder local_border_right">
+                        <div class="local_choice_title">Choose Game Mode</div>
+                        <div class="local_choice_content" id="local_gameModes"></div>
+                    </div>
+                    <div class="local_choice_holder">
+                        <div class="local_choice_title">Choose Snakes</div>
+                        <div class="local_choice_content" id="local_snakes"></div>
+                    </div>
+                </div>
+                <div class="local_bottom">
+                    <div class="servers_button">Play Game!</div>
+                    <div class="servers_button">Play Solo!</div>
+                </div>
+            </div>
 
         </div>
     </div>
