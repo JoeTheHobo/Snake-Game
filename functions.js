@@ -1,6 +1,6 @@
 ls.setID("snakegame");
 
-let forceReset = 6;
+let forceReset = 7;
 let needsToBeReset = ls.get("reset" + forceReset,true);
 if (needsToBeReset) {
     ls.clear();
