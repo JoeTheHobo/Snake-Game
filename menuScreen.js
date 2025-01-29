@@ -631,14 +631,29 @@ function loadLocalScreen() {
     let snakesHolder = $("local_snakes");
     let gameModesHolder = $("local_gameModes");
 
-    boardHolder.innerHTML = "";
-    snakesHolder.innerHTML = "";
-    gameModesHolder.innerHTML = "";
-
     function loadContent(parent,list,type) {
+        parent.innerHTML = "";
+
+        if (type == "snakes") {
+            //Check If Player Exists
+            let newArr = [];
+            for (let i = 0; i < activePlayerCount.length; i++) {
+                for (let j = 0; j < players.length; j++) {
+                    if (players[j].id === activePlayerCount[i].id) newArr.push(players[j]);
+                }
+            }
+            activePlayerCount = newArr;
+            //Reset Player Active IDS
+            for (let i = 0; i < activePlayerCount.length; i++) {
+                activePlayerCount[i].active = i;
+            }
+            ls.save("activePlayerCount",activePlayerCount);
+            savePlayers();
+        }
+
         for (let i = 0; i < list.length; i++) {
             let holder = parent.create("div");
-            holder.className = "local_content_holder hover";
+            holder.className = `local_content_holder hover  local_content_${type}_${i} local_content_${type}`;
 
             if (type == "snakes") {
                 let img = holder.create("img");
@@ -651,9 +666,54 @@ function loadLocalScreen() {
             title.innerHTML = list[i].name;
             title.className = "local_content_title";
 
-            if (type == "gameModes" && i == currentBoardIndex) {
+            if (type == "gameModes" && i == activeGameMode) {
                 holder.classAdd("local_content_selected");
             }
+            if (type == "boards" && i == currentBoardIndex) {
+                holder.classAdd("local_content_selected");
+            }
+            if (type == "snakes") {
+                let div = holder.create("div");
+                div.className = "local_content_player_number";
+                if (list[i].active !== false) {
+                    holder.classAdd("local_content_selected");
+                    div.innerHTML = "Player " + list[i].active;
+                }
+                holder.snakeNumber = div;
+            }
+
+            holder.object = list[i];
+            holder.type = type;
+            holder.index = i;
+            holder.on("click",function() {
+                if (this.type !== "snakes") {
+                    $(`.local_content_${this.type}`).classRemove("local_content_selected");
+                    this.classAdd("local_content_selected");
+                }
+                
+
+                if (this.type == "boards") {
+                    currentBoardIndex = this.index;
+                    ls.save("currentBoardIndex",currentBoardIndex)
+                }
+                if (this.type == "gameModes") {
+                    activeGameMode = this.index;
+                    ls.save("activeGameMode",activeGameMode)
+                }
+                if (this.type == "snakes") {
+                    if (this.object.active === false) {
+                        if (activePlayerCount.length >= 8) return;
+                        activePlayerCount.push(this.object);
+                        this.object.active = activePlayerCount.length - 1;
+                    } else {
+                        let index = this.object.active;
+                        this.object.active = false;
+                        activePlayerCount.splice(index,1);
+                    }
+
+                    loadContent(snakesHolder,players,"snakes");
+                }
+            })
         }
     }
 

@@ -1252,6 +1252,12 @@ html {
   display: flex;
   flex-direction: row;
   align-items: center;
+  user-select: none;
+}
+.local_content_player_number {
+  margin-left: auto;
+  color: white;
+  margin-right: 20px;
 }
 .local_content_title {
   color: white;

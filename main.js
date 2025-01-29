@@ -981,6 +981,9 @@ function startGame() {
 
     gamePaused = false;
 
+    currentBoard = boards[currentBoardIndex];
+    currentGameMode = gameModes[activeGameMode];
+
     try {
         currentBoard.map = structuredClone(currentBoard.originalMap);
     } catch {
@@ -992,7 +995,7 @@ function startGame() {
     currentBoard.boardStatus = [];
     
     doColorRender = false;
-    activePlayers = [];
+    activePlayers = activePlayerCount;
     specialItemIteration = 0;
     isActiveGame = true;
 
@@ -1003,9 +1006,6 @@ function startGame() {
         ctx_background.drawImage(backgroundImage,0,0,canvas_background.width,canvas_background.height);
     }
 
-    for (let i = 0; i < players.length; i++) {
-        if (players[i].active) activePlayers.push(players[i]);
-    }
     //Resetting Players
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];

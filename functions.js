@@ -13,7 +13,7 @@ if (needsToBeReset) {
     ls.save("resetGM" + forceGMReset,false);
 }
 
-
+let activePlayerCount = ls.get("activePlayerCount",[]);
 let showPerformance = false;
 
 let updateCells = [];
@@ -339,7 +339,7 @@ function newPlayer() {
         shield: 0,
         items: [],
         status: [],
-        active: true, 
+        active: false, 
     }
     players.push(player);
     ls.save("players",players);

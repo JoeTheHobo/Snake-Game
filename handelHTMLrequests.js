@@ -1,13 +1,26 @@
-$("button_startGame").on("click",function() {
-    startGame();
-    $(".button_mapEditorHolder").hide();
+$("local_button_playGame").on("click",function() {
+    if (activePlayerCount.length == 0) {
+        makePopUp([
+            {type: "title",color: "red",text: "Select Player(s) Before Playing Game"},
+            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "green",text:"Return"},
+        ],{
+            exit: {
+                cursor: "url('./img/pointer.cur'), auto",
+            },
+            id: "warning",
+
+        })
+    } else {
+        startGame();
+        $(".button_mapEditorHolder").hide();
+    }
 })
 $("button_players").on("click",function() {
     setScene("players");
     loadPlayers();
 })
 $("button_mainMenu").on("click",function() {
-    setScene("menu");
+    setScene("newMenu")
     $(".production").show("none");
     isActiveGame = false;
 })
