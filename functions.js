@@ -328,7 +328,7 @@ function newPlayer() {
         tail: [],
         moveQueue: [],
         prevMove: "start",
-        id: playerNumber,
+        id: Date.now(),
         whenInventoryIsFullInsertItemsAt: 0,
         moveTik: 0,
         moveSpeed: 6,
@@ -516,11 +516,6 @@ function hideScenes() {
 function setScene(scene) {
     hideScenes();
     $("scene_" + scene).show("flex");
-
-    if (scene == "newMenu") {
-        loadServersHTML();
-        $(".content_servers").show("flex");
-    }
 }
 
 if (players.length == 0) {
@@ -1661,17 +1656,16 @@ function downloadTextFile(filename, text) {
   function importMap(textFile) {
     let board = JSON.parse(textFile);
     let decompressed = pako.ungzip(board, { to: 'string' });
-
     board = JSON.parse(decompressed);
-
     board = fixBoard(board);
+    board.cantEdit = false;
     boards.push(board);
     currentBoardIndex = boards.length - 1;
     currentBoard = boards[currentBoardIndex];
 
     saveBoards();
     ls.save("currentBoardIndex",currentBoardIndex);
-    loadBoards();
+    loadBoardsScreen()
     try {
     } catch {
         console.warn("Incorect File")
@@ -1963,4 +1957,48 @@ function forceAllCellsToBeTheirOwn(map) {
         newMap.push(row);
     }
     return newMap;
+}
+
+
+
+function drawBoardToCanvas(board,canvas) {
+    let ctx = canvas.getContext("2d");
+    let gs;
+
+    if (board.length > board[0].length) {
+        gs = Math.round(canvas.height / board.length);
+
+    } else {
+        gs = Math.round(canvas.width / board[0].length);
+
+    } 
+
+    let width = Math.round(board[0].length * gs);
+    let height = Math.round(board.length * gs);
+    canvas.height = height;
+    canvas.width = width;
+    canvas.css({
+        width: width + "px",
+        height: height + "px",
+    })
+
+
+    for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+            let cell = board[i][j];
+
+            let Xpos = (j * gs);
+            let Ypos = (i * gs);
+            
+            if (cell.tile) {
+                ctx.drawImage($("tile_" + cell.tile.name),Xpos,Ypos,(gs),(gs));
+            }
+            if (cell.item) {
+                ctx.drawImage(getItemCanvas(cell.item.name),Xpos,Ypos,(gs),(gs));
+            }
+
+        }
+    }
+
+
 }

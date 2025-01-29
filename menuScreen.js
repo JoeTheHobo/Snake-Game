@@ -73,9 +73,10 @@ function generateHTMLScreen(holder,listObj,contentObj) {
         padding: "5px",
         display: "flex",
         flexDirection: "row",
+        userSelect: "none",
     })
 
-    let list = $(".content_snake").create("div");
+    let list = holder.create("div");
     list.css({
         width: "50%",
         height: "100%",
@@ -86,16 +87,16 @@ function generateHTMLScreen(holder,listObj,contentObj) {
     let content = holder.create("div");
     content.css({
         width: "50%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
+        height: "90%",
         borderLeft: "1px solid white",
+        overflowY: "auto",
     })
 
     generateHTMLList(list,listObj,contentObj,content);
 }
 function generateHTMLList(holder,listObj,contentObj,contentHTML) {
     let top = holder.create("div");
+    let forceOpen = false;
     top.css({
         width: "100%",
         display: "flex",
@@ -159,11 +160,21 @@ function generateHTMLList(holder,listObj,contentObj,contentHTML) {
         contentHolder.classAdd("hover");
         contentHolder.classAdd("list_element")
 
-        contentHolder.on("click",function() {
+        contentHolder.open = function() {
             $(".list_element").classRemove("list_selected");
             this.classAdd("list_selected");
-            generateHTMLContent(contentHTML,contentObj,content);
+            generateHTMLContent(contentHTML,contentObj,content,contentHolder);
+        }
+        contentHolder.on("click",function() {
+            this.open();
         })
+        
+
+        if (listObj.forceOpen) {
+            forceOpen = contentHolder;
+        }
+
+        contentHolder.tags = {};
 
         function generateContent(list,parent,index,contentHTML) {
             for (let j = 0; j < list.length; j++) {
@@ -176,13 +187,20 @@ function generateHTMLList(holder,listObj,contentObj,contentHTML) {
                         flexDirection: "row",
                         alignItems: "center",
                         height: "100%",
+                        
+                        marginLeft: "auto",
+                        alignItems: "center",
+                        marginRight: "5px",
                     })
                     generateContent(obj,div,index);
                     continue;
                 }
 
+
+                if (obj.special) if (content.cantEdit) continue;
+
                 if (["image"].includes(obj.type)) div = parent.create("img");
-                if (["title"].includes(obj.type)) div = parent.create("div");
+                if (["title","button"].includes(obj.type)) div = parent.create("div");
                 
                 if (obj.text) {
                     if (obj.text.charAt(0) == ".") {
@@ -205,6 +223,30 @@ function generateHTMLList(holder,listObj,contentObj,contentHTML) {
                         marginLeft: "5px",
                     })
                 }
+                if (obj.type == "button") {
+                    div.classAdd("hover");
+                    div.css({
+                        height: "70%",
+                        width: "max-content",
+                        borderRadius: "5px",
+                        background: obj.background || "white",
+                        paddingLeft: "5px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        paddingRight: "5px",
+                        fontSize: "20px",
+                        marginLeft: "5px",
+                    })
+                }
+                if (obj.tag) {
+                    contentHolder.tags[obj.tag] = div;
+                }
+                if (obj.onClick) {
+                    div.on("click",function() {
+                        obj.onClick(index);
+                    })
+                }
             }
         }
 
@@ -212,11 +254,14 @@ function generateHTMLList(holder,listObj,contentObj,contentHTML) {
         
 
     }
-}
-function generateHTMLContent(holder,contentList,valueObj) {
-    holder.innerHTML = "";
 
-    function generateContent(list,obj,parent,direction = "column") {
+    if (forceOpen) forceOpen.open();
+}
+function generateHTMLContent(holder,contentList,valueObj,contentHolder) {
+    holder.innerHTML = "";
+    holder.tags = {};
+
+    function generateContent(list,obj,parent,direction = "column",originalParent) {
         let holder = parent.create("div");
         holder.css({
             display: "flex",
@@ -224,7 +269,7 @@ function generateHTMLContent(holder,contentList,valueObj) {
             alignItems: "center",
             justifyContent: "center",
             width: "100%",
-            height: "100%",
+            height: "max-content",
         })
 
 
@@ -232,14 +277,17 @@ function generateHTMLContent(holder,contentList,valueObj) {
             let l = list[i];
 
             if (_type(l).type == "array") {
-                generateContent(l,obj,holder,(direction == "column" ? "row" : "column"));
+                generateContent(l,obj,holder,(direction == "column" ? "row" : "column"),originalParent);
                 continue;
             }
 
             let div;
 
+            if (l.special == "delete") if (obj.cantEdit) continue;
+
             if (["image"].includes(l.type)) div = holder.create("img");
-            if (["title","text","label"].includes(l.type)) div = holder.create("div");
+            if (["canvas"].includes(l.type)) div = holder.create("canvas");
+            if (["title","text","label","delete"].includes(l.type)) div = holder.create("div");
             if (["keyBind","slider","input"].includes(l.type)) div = holder.create("input");
 
             if (l.text) div.innerHTML = l.text;
@@ -250,11 +298,78 @@ function generateHTMLContent(holder,contentList,valueObj) {
                     color: "white",
                 })
             }
+            if (l.type == "delete") {
+                div.classAdd("hover");
+                div.innerHTML = "Delete"
+                div.css({
+                    width: "60%",
+                    height: "50px",
+                    borderRadius: "5px",
+                    userSelect: "none",
+                    background: "#C12F2F",
+                    textAlign: "center",
+                    lineHeight: "50px",
+                    fontSize: "30px",
+                    color: "black",
+                    cursor: "url('./img/pointer.cur'), auto",
+                })
+                div.on("click",function() {
+                    let saveArray = l.delete;
+                    makePopUp([
+                        {type: "text",text: "Delete " + contentHolder.tags["name"].innerHTML},
+                        {type: "title",text: "Are You Sure?"},
+                        [
+                            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
+                            {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Delete",onClick: (ids,param) => {
+                                let saveArray = param.saveArray;
+
+                                let index = false;
+                                findingIndex: for (let i = 0; i < saveArray.length; i++) {
+                                    if (saveArray[i].id === obj.id) {
+                                        index = i;
+                                        break findingIndex;
+                                    }
+                                }
+
+                                if (index === false) return;
+
+                                saveArray.splice(index,1);
+
+                                savePlayers();
+                                saveBoards();
+                                saveAllGameModes();
+                                l.deleteLoad();
+                            }},
+                        ],
+                    ],{
+                        id: "deletePopUp",
+                        parameter: {
+                            saveArray: saveArray,
+                        } 
+                    })
+                })
+            }
             if (l.type == "text") {
                 div.css({
                     fontSize: "25px",
                     color: "white",
                 })
+            }
+            if (l.type == "canvas") {
+                div.css({
+                    width: l.width || "auto",
+                    height: l.height || "auto",
+                    borderRadius: l.borderRadius || "5px",
+                })
+
+                if (l.height == "square") div.style.height = div.clientWidth + "px";
+
+                div.width = div.clientWidth;
+                div.height = div.clientHeight;
+
+                if (l.display) {
+                    l.display(obj,div);
+                }
             }
             if (l.type == "slider") {
                 div.type = "range";
@@ -309,8 +424,11 @@ function generateHTMLContent(holder,contentList,valueObj) {
                 div.on("keydown",function(e) {
                     e.preventDefault();
                     this.value = e.key;
+                    const event = new Event("input", { bubbles: true, cancelable: true });
+                    this.dispatchEvent(event);
                 })
             }
+
             if (l.type == "image") {
                 div.css({
                     filter: l.filter == "player" ? `hue-rotate(${obj.color}deg) sepia(${obj.color2}%) contrast(${obj.color3}%)` : "",
@@ -321,34 +439,65 @@ function generateHTMLContent(holder,contentList,valueObj) {
                 })
                 div.src = "img/" + l.src;
             }
+            if (l.tag) {
+                originalParent.tags[l.tag] = div;
+            }
+            if (l.bind) {
+                div.on("input",function() {
+                    if (l.bind.type == "!==") if (this.value !== "") obj[l.bind.key] = this.value;
+                    if (l.bind.type == "set" || !l.type) obj[l.bind.key] = this.value;
+
+                    if (l.save  == undefined || l.save == true) {
+                        savePlayers();
+                    }
+                    if (l.bind.update) {
+                        let value = obj[l.bind.key];
+                        
+                        if (l.bind.update.type == "filterPlayer") {
+                            if (l.bind.update.externalKey) contentHolder.tags[l.bind.update.externalKey].style.filter = `hue-rotate(${obj.color}deg) sepia(${obj.color2}%) contrast(${obj.color3}%)`;
+                            if (l.bind.update.key) originalParent.tags[l.bind.update.key].style.filter = `hue-rotate(${obj.color}deg) sepia(${obj.color2}%) contrast(${obj.color3}%)`;
+                        } else {
+                            if (l.bind.update.externalKey) contentHolder.tags[l.bind.update.externalKey][l.bind.update.type] = value;
+                            if (l.bind.update.key) originalParent.tags[l.bind.update.key][l.bind.update.type] = value;
+                        }
+                    }
+                })
+
+                
+
+            }
 
         }
     }
 
-    generateContent(contentList,valueObj,holder)
+    generateContent(contentList,valueObj,holder,"column",holder)
 }
 
 
-function loadCustomizeSnakeScreen() {
+function loadCustomizeSnakeScreen(index = false) {
     generateHTMLScreen($(".content_snake"),
         {
             list: players,
-            listContent: [{type: "image",src: "snakeHead.png", filter: "player"},{type: "title",text: ".name"}],
-            top: [{type: "button",text: "New Snake",onClick: function() { }}],
+            forceOpen: index,
+            listContent: [{type: "image",src: "snakeHead.png", filter: "player",tag: "image"},{type: "title",text: ".name",tag: "name"}],
+            top: [{type: "button",text: "New Snake",onClick: function() {
+                newPlayer();
+                loadCustomizeSnakeScreen(players.length-1);
+            }}],
         },
         [
             {type: "title",text: "Appearance"},
             [
-                [{type: "image", src: "snakeHead.png",filter: "player",id:"snakeImg",width: "200px",height: "200px",background: "white",borderRadius: "5px",}],
+                [{type: "image", src: "snakeHead.png",filter: "player",tag:"image",width: "200px",height: "200px",background: "white",borderRadius: "5px",}],
                 [
                     {type: "text",text: "Snake Name"},
-                    {type: "input",value: ".name", id: "snakeName"},
+                    {type: "input",value: ".name", tag: "name", bind: {key: "name",type: "!==",value: "",update: {externalKey: "name",type: "innerHTML"}}},
                     {type: "text",text: "Hue"},
-                    {type: "slider", value: ".color",min: 0, max: 360},
+                    {type: "slider", value: ".color",min: 0, max: 360,bind: {key: "color",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
                     {type: "text",text: "Sepia"},
-                    {type: "slider", value: ".color2",min: 0, max: 100},
+                    {type: "slider", value: ".color2",min: 0, max: 100,bind: {key: "color2",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
                     {type: "text",text: "Contrast"},
-                    {type: "slider", value: ".color3",min: 0, max: 200}
+                    {type: "slider", value: ".color3",min: 0, max: 200,bind: {key: "color3",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
                 ],
             ],
             {type: "title",text: "Key Binds"},
@@ -360,10 +509,10 @@ function loadCustomizeSnakeScreen() {
                     {type: "label",text: "Move Up"},
                 ],
                 [
-                    {type: "keyBind", id:"moveLeft",value: ".leftKey"},
-                    {type: "keyBind", id:"moveDown",value: ".downKey"},
-                    {type: "keyBind", id:"moveRight",value: ".rightKey"},
-                    {type: "keyBind", id:"moveUp",value: ".upKey"},
+                    {type: "keyBind",value: ".leftKey",bind: {key: "leftKey",type: "set"}},
+                    {type: "keyBind",value: ".downKey",bind: {key: "downKey",type: "set"}},
+                    {type: "keyBind",value: ".rightKey",bind: {key: "rightKey",type: "set"}},
+                    {type: "keyBind", value: ".upKey",bind: {key: "upKey",type: "set"}},
                 ],
                 [
                     {type: "label",text: "Scroll Left"},
@@ -372,12 +521,107 @@ function loadCustomizeSnakeScreen() {
 
                 ],
                 [
-                    {type: "keyBind", id:"scrollLeft",value: ".useItem1"},
-                    {type: "keyBind", id:"scrollRight",value: ".useItem2"},
-                    {type: "keyBind", id:"useItem",value: ".fireItem"},
+                    {type: "keyBind", value: ".useItem1",bind: {key: "useItem1",type: "set"}},
+                    {type: "keyBind", value: ".useItem2",bind: {key: "useItem2",type: "set"}},
+                    {type: "keyBind", value: ".fireItem",bind: {key: "fireItem",type: "set"}},
 
                 ]
             ],
+            {type: "title",text: "Danger Zone"},
+            {type: "delete", delete: players,deleteLoad: loadCustomizeSnakeScreen}
         ]
     )
+}
+
+function loadBoardsScreen(index = false) {
+    generateHTMLScreen($(".content_boards"),
+        {
+            list: boards,
+            forceOpen: index,
+            listContent: [{type: "title",text: ".name",tag: "name"},[{type: "button", text:"Export", onClick: (board) => {
+                const encoder = new TextEncoder();
+                const shortenBoardResult = shortenBoard(board);
+                
+                if (!shortenBoardResult) {
+                    throw new Error('shortenBoard(board) returned invalid data.');
+                }
+                
+                const jsonString = JSON.stringify(shortenBoardResult);
+                const encodedText = encoder.encode(jsonString);
+                
+                
+                const compressed = pako.gzip(encodedText);
+
+                downloadTextFile(board.name,JSON.stringify(compressed));
+                  
+            }},{type: "button",special: true, text:"Edit", onClick: (board) => {
+                openMapEditor(board);
+            }}]],
+            top: [{type: "button",text: "New Board",onClick: function() {
+                makePopUp([
+                    {type: "title",text: "New Board"},
+                    [
+                        {type: "text", text: "Name"},
+                        {type: "input", id:"name", placeholder: "Untitled", width: "200px"},
+                    ],
+                    [
+                        {type: "text", text: "Width"},
+                        {type: "number", id:"width", value: "50", min: 5, max: 70, width: "50px"},
+                        {type: "text", text: "Height"},
+                        {type: "number", id:"height", value: "30", min: 5, max: 70, width: "50px"},
+                    ],
+                    
+                    {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "green",text:"Create",onClick: (ids) => {
+                        const {name,width,height} = ids;
+                        let boardName = name.value == "" ? "Untitled" : name.value;
+                        createBoard(boardName,width.value,height.value);
+                        
+                    }},
+                ],{
+                    exit: {
+                        cursor: "url('./img/pointer.cur'), auto",
+                    },
+                    id: "newBoard",
+        
+                })
+            }},{type: "button",text: "Import",onClick: () => {
+
+                // Create an input element of type file
+                const input = document.createElement('input');
+                input.type = 'file';
+
+                // When the user selects a file
+                input.addEventListener('change', (event) => {
+                    const file = event.target.files[0]; // Get the first selected file
+                    if (file) {
+                        readFileContent(file); // Read the content of the file
+
+                    } else {
+                    alert('No file selected!');
+                    }
+                });
+
+                // Programmatically click the input to open the file dialog
+                input.click();
+
+                
+
+            }}],
+        },
+        [
+            {type: "canvas", width: "90%", height: "square",display: function(board,canvas) {
+                drawBoardToCanvas(board.originalMap,canvas)
+            }},
+            {type: "title",special: "delete", text: "Danger Zone"},
+            {type: "delete", special: "delete", delete: boards,deleteLoad: loadBoardsScreen}
+        ]
+    )
+}
+
+
+function savePlayers() {
+    ls.save("players",players);
+}
+function saveAllGameModes() {
+    ls.save("gameModes",gameModes);
 }

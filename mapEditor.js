@@ -603,6 +603,8 @@ $(".me_canvasHolder").on("wheel",function(e) {
     changeZoom(delta);
 
     moveCanvasToStayInPosition(e,mouseX,mouseY);
+    checkRenderThenRender();
+    renderTopCanvas();
 });
 function moveCanvasToStayInPosition(e,originalX,originalY) {
     adjustMousePos(e);
@@ -805,21 +807,21 @@ function saveBoard(saveDifferences = false) {
 $("me_button").on("click",function() {
     if ($("saveStatus").innerHTML == "Board Saved") {
         saveBoard();
-        setScene("boardList");
-        loadBoards();
+        setScene("newMenu");
+        loadBoardsScreen();
         return;
     }
     makePopUp([
         {type: "title",text: "Save Changes?"},
         [
             {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Discard Changes",onClick: () => {
-                setScene("boardList");
+                setScene("newMenu");
                 loadBoards();
             }},
             {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Save Changes",onClick: () => {
                 saveBoard();
-                setScene("boardList");
-                loadBoards();
+                setScene("newMenu");
+                loadBoardsScreen();
             }},
         ],
     ],{
