@@ -966,8 +966,8 @@ function setUpPlayerCanvas() {
     }
 }
 
-
-function startGame() {
+let cameraFollowPlayer;
+function startGame(type = "local") {
     setScene("game");
     $(".endGamePopup").hide();
     $(".pauseGamePopup").hide();
@@ -990,7 +990,10 @@ function startGame() {
         console.warn(currentBoard.originalMap);
     }
 
-    setResolution(currentBoard.map[0].length,currentBoard.map.length);
+    setResolution(currentBoard.map[0].length,currentBoard.map.length,type);
+
+    if (type == "local") cameraFollowPlayer = false;
+    if (type == "singleplayer") cameraFollowPlayer = true;
 
     currentBoard.boardStatus = [];
     
@@ -1166,6 +1169,9 @@ function gameLoop(timestamp) {
     if (!isActiveGame) return;
     deltaTime = (timestamp - lastTimestamp) / perfectFrameTime;
     lastTimestamp = timestamp;
+
+    if (cameraFollowPlayer)
+        updateCanvasPositionToPlayer();
 
     production.gameLoop.timeStart = performance.now();
 

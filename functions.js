@@ -64,24 +64,27 @@ let doColorRender = false;
 let backgrounds = ["background.jpg"];
 let currentBackground = backgrounds[0];
 
-
-const getPPI = () => {
-    // Screen dimensions in inches (calculated using screen width and height in pixels and the screen diagonal in inches)
-    const screenWidth = window.screen.width; // Screen width in pixels
-    const screenHeight = window.screen.height; // Screen height in pixels
-    const screenDiagonalInches = 15.6; // Example for a 15.6-inch screen diagonal. Replace with actual size if known.
-  
-    const screenDiagonalPixels = Math.sqrt(screenWidth ** 2 + screenHeight ** 2);
-    return screenDiagonalPixels / screenDiagonalInches;
-  };
-  const inchesToPixels = (inches, ppi) => inches * ppi;
-  const setPhysicalSize = (sizeInInches) => {
-    const ppi = getPPI();
-    const sizeInPixels = inchesToPixels(sizeInInches, ppi);
-    return sizeInPixels;
-  };
-
-  let gridSize = Math.floor(setPhysicalSize(.17));
+let gridSize;
+function setGridSize(size) {
+    const getPPI = () => {
+        // Screen dimensions in inches (calculated using screen width and height in pixels and the screen diagonal in inches)
+        const screenWidth = window.screen.width; // Screen width in pixels
+        const screenHeight = window.screen.height; // Screen height in pixels
+        const screenDiagonalInches = 15.6; // Example for a 15.6-inch screen diagonal. Replace with actual size if known.
+      
+        const screenDiagonalPixels = Math.sqrt(screenWidth ** 2 + screenHeight ** 2);
+        return screenDiagonalPixels / screenDiagonalInches;
+      };
+      const inchesToPixels = (inches, ppi) => inches * ppi;
+      const setPhysicalSize = (sizeInInches) => {
+        const ppi = getPPI();
+        const sizeInPixels = inchesToPixels(sizeInInches, ppi);
+        return sizeInPixels;
+      };
+    
+      gridSize = Math.floor(setPhysicalSize(size));
+}
+setGridSize(.17);
   
 
 const perfectFrameTime = 1000 / 60;
@@ -135,7 +138,7 @@ let me_ctx = me_canvas.getContext("2d");
 let me2_canvas = $("me_canvas2");
 let me2_ctx = me2_canvas.getContext("2d");
 
-function adjustCanvasSize(gridx,gridy,zoom = 1) {
+function adjustCanvasSize(gridx,gridy,zoom = 1,type) {
     const width = Math.ceil(gridx * gridSize * zoom);
     const height = Math.ceil(gridy * gridSize * zoom);
 
@@ -243,8 +246,9 @@ function getItemCanvas(itemName) {
 
 
 
-function setResolution(gridx, gridy) {
-    adjustCanvasSize(gridx,gridy);
+function setResolution(gridx, gridy,type="local") {
+    setGridSize(type === "local" ? .17 : .32);
+    adjustCanvasSize(gridx,gridy,1,type);
 }
 
 
