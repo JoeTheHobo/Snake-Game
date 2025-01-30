@@ -32,6 +32,10 @@ html {
   top: 0;
   margin: auto;
 }
+.singlePlayerCanvas {
+  margin: 0 !important;
+  transition: all .4s ease;
+}
 .boardStatusHolder {
   position: absolute;
   height: 60px;

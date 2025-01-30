@@ -1170,8 +1170,11 @@ function gameLoop(timestamp) {
     deltaTime = (timestamp - lastTimestamp) / perfectFrameTime;
     lastTimestamp = timestamp;
 
-    if (cameraFollowPlayer)
-        updateCanvasPositionToPlayer();
+    //First Person View
+    if (cameraFollowPlayer) {
+        updateCanvasPositionToPlayer(activePlayers[0]);
+    }
+       
 
     production.gameLoop.timeStart = performance.now();
 

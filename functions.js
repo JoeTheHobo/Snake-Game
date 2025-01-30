@@ -184,6 +184,29 @@ for (let i = 0; i < tiles.length; i++) {
     img.src = "img/" + tiles[i].img;
     img.id = "tile_" + tiles[i].name;
 }
+function updateCanvasPositionToPlayer(player) {
+    let playerX = player.pos.x;
+    let playerY = player.pos.y;
+
+    let centerX = window.innerWidth / 2;
+    let centerY = window.innerHeight / 2;
+
+    let actualPlayerX = (playerX * gridSize) + (gridSize/2);
+    let actualPlayerY = (playerY * gridSize) + (gridSize/2);
+
+    let xDif = centerX - actualPlayerX;
+    let yDif = centerY - actualPlayerY;
+
+    $(".game_canvas").classAdd("singlePlayerCanvas");
+    $(".game_canvas").css({
+        left: xDif + "px",
+        top: yDif + "px",
+    })
+    
+
+    console.log(actualPlayerY,centerY)
+
+}
 //End Load All Item Images
 let itemCanvas = [];
 function setUpItemCanvas() {
