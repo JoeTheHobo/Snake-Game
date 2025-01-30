@@ -204,22 +204,28 @@ function updateCanvasPositionToPlayer(player) {
     let xDif = centerX - actualPlayerX;
     let yDif = centerY - actualPlayerY;
 
+    let addY = 0;
+    let addX = 0;
+
     if (cameraQuickZoom) {
-        $(".game_canvas").css({
-            transition: "none",
-        })
+        $(".game_canvas").css({ transition: "none" });
+    
+        // Force a reflow before applying new left/top
+        $(".game_canvas")[0].offsetHeight; 
+        addY = gridSize+(gridSize/4)+15;
+        addX = (-gridSize/10)+5;
     }
-
+    
     $(".game_canvas").css({
-        left: xDif + "px",
-        top: yDif + "px",
-    })
-
+        left: (xDif+addX) + "px",
+        top: (yDif+addY) + "px",
+    });
+    
     if (cameraQuickZoom) {
         cameraQuickZoom = false;
-        $(".game_canvas").css({
-            transition: "all .4s ease",
-        })
+        setTimeout(() => {
+            $(".game_canvas").css({ transition: "all .4s ease" });
+        }, 0);
     }
 }
 //End Load All Item Images
