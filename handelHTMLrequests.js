@@ -50,6 +50,7 @@ $("button_players").on("click",function() {
 $("button_mainMenu").on("click",function() {
     setScene("newMenu")
     $(".production").show("none");
+    loadLocalScreen();
     isActiveGame = false;
 })
 $("button_playAgain").on("click",function() {

@@ -412,15 +412,19 @@ function movePlayers() {
             //Collision Testing
             //Test If Player Hits Edge
             if (player.pos.x > currentBoard.map[0].length-1) {
+                cameraQuickZoom = true;
                 if (circleWalls) player.pos.x = 0;
             }
             if (player.pos.x < 0) {
+                cameraQuickZoom = true;
                 if (circleWalls) player.pos.x = currentBoard.map[0].length-1;
             }
             if (player.pos.y > currentBoard.map.length-1) {
+                cameraQuickZoom = true;
                 if (circleWalls) player.pos.y = 0;
             }
             if (player.pos.y < 0) {
+                cameraQuickZoom = true;
                 if (circleWalls) player.pos.y = currentBoard.map.length-1;
             }
 
@@ -967,6 +971,7 @@ function setUpPlayerCanvas() {
 }
 
 let cameraFollowPlayer;
+let cameraQuickZoom;
 function startGame() {
     setScene("game");
     $(".endGamePopup").hide();
@@ -991,6 +996,13 @@ function startGame() {
     }
 
     setResolution(currentBoard.map[0].length,currentBoard.map.length);
+
+    if (cameraFollowPlayer) {
+        cameraQuickZoom = false;
+        $(".firstPersonCanvas").show();
+    } else {
+        $(".firstPersonCanvas").hide();
+    }
 
     currentBoard.boardStatus = [];
     
@@ -1170,6 +1182,55 @@ function gameLoop(timestamp) {
     //First Person View
     if (cameraFollowPlayer) {
         updateCanvasPositionToPlayer(activePlayers[0]);
+        
+        const rect = $("render_background").getBoundingClientRect();
+        const canvasWidth = $("render_background").clientWidth;
+        const canvasHeight = $("render_background").clientHeight;
+        $(".firstPersonCanvas_tl").css({
+            left: (rect.left-canvasWidth) + "px",
+            top: (rect.top-canvasHeight) + "px",
+        })
+        $(".firstPersonCanvas_tm").css({
+            left: (rect.left) + "px",
+            top: (rect.top-canvasHeight) + "px",
+        })
+        $(".firstPersonCanvas_tr").css({
+            left: (rect.right) + "px",
+            top: (rect.top-canvasHeight) + "px",
+        })
+        $(".firstPersonCanvas_lm").css({
+            left: (rect.left-canvasWidth) + "px",
+            top: (rect.top) + "px",
+        })
+        $(".firstPersonCanvas_rm").css({
+            left: (rect.right) + "px",
+            top: (rect.top) + "px",
+        })
+        $(".firstPersonCanvas_bl").css({
+            left: (rect.left-canvasWidth) + "px",
+            top: (rect.bottom) + "px",
+        })
+        $(".firstPersonCanvas_bm").css({
+            left: (rect.left) + "px",
+            top: (rect.bottom) + "px",
+        })
+        $(".firstPersonCanvas_br").css({
+            left: (rect.right) + "px",
+            top: (rect.bottom) + "px",
+        })
+
+        ctx_firstPerson_master.clearRect(0,0,canvasWidth,canvasHeight)
+        ctx_firstPerson_master.drawImage($("render_background"),0,0)
+        ctx_firstPerson_master.drawImage($("render_tiles"),0,0)
+        ctx_firstPerson_master.drawImage($("render_items"),0,0)
+        ctx_firstPerson_master.drawImage($("render_players"),0,0)
+        ctx_firstPerson_master.drawImage($("render_overhangs"),0,0)
+
+        let ctxs = [ctx_firstPerson_tl,ctx_firstPerson_tm,ctx_firstPerson_tr,ctx_firstPerson_lm,ctx_firstPerson_rm,ctx_firstPerson_bl,ctx_firstPerson_bm,ctx_firstPerson_br];
+        for (let i = 0; i < ctxs.length; i++) {
+            ctxs[i].clearRect(0,0,canvasWidth,canvasHeight);
+            ctxs[i].drawImage($(".firstPersonCanvas_master"),0,0)
+        }
     }
        
 

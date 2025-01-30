@@ -93,7 +93,7 @@ function openMapEditor(boardComingIn) {
     $(".undo_tool").style.opacity = "0.5";
     setScene("mapEditor");
     $("me_name").value = board.name;
-
+    setGridSize(.17);
     me_loadDropdown($(".me_itemsContent"),items,"item_");
     me_loadDropdown($(".me_tilesContent"),tiles,"tile_");
 

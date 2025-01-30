@@ -23,7 +23,14 @@ html {
     height: 100%;
     align-items: center;
 }
-
+.firstPersonCanvas {
+  display: none;
+  position: absolute;
+  background: white;
+}
+.firstPersonCanvas_master {
+  visibility: hidden;
+}
 .game_canvas {
   position: absolute;
   left: 0;

@@ -138,35 +138,42 @@ let me_ctx = me_canvas.getContext("2d");
 let me2_canvas = $("me_canvas2");
 let me2_ctx = me2_canvas.getContext("2d");
 
+let canvas_firstPerson_tl = $(".firstPersonCanvas_tl");
+let ctx_firstPerson_tl = canvas_firstPerson_tl.getContext("2d");
+let canvas_firstPerson_tm = $(".firstPersonCanvas_tm");
+let ctx_firstPerson_tm = canvas_firstPerson_tm.getContext("2d");
+let canvas_firstPerson_tr = $(".firstPersonCanvas_tr");
+let ctx_firstPerson_tr = canvas_firstPerson_tr.getContext("2d");
+let canvas_firstPerson_lm = $(".firstPersonCanvas_lm");
+let ctx_firstPerson_lm = canvas_firstPerson_lm.getContext("2d");
+let canvas_firstPerson_rm = $(".firstPersonCanvas_rm");
+let ctx_firstPerson_rm = canvas_firstPerson_rm.getContext("2d");
+let canvas_firstPerson_bl = $(".firstPersonCanvas_bl");
+let ctx_firstPerson_bl = canvas_firstPerson_bl.getContext("2d");
+let canvas_firstPerson_bm = $(".firstPersonCanvas_bm");
+let ctx_firstPerson_bm = canvas_firstPerson_bm.getContext("2d");
+let canvas_firstPerson_br = $(".firstPersonCanvas_br");
+let ctx_firstPerson_br = canvas_firstPerson_br.getContext("2d");
+let canvas_firstPerson_master = $(".firstPersonCanvas_master");
+let ctx_firstPerson_master = canvas_firstPerson_master.getContext("2d");
+
+let allCanvas = [canvas_background,canvas_tiles,canvas_items,canvas_players,canvas_overhangs,me_canvas,me2_canvas,canvas_firstPerson_tl,
+    canvas_firstPerson_tm,canvas_firstPerson_tr,canvas_firstPerson_lm,canvas_firstPerson_rm,canvas_firstPerson_bl,canvas_firstPerson_bm,canvas_firstPerson_br,canvas_firstPerson_master
+]
+
 function adjustCanvasSize(gridx,gridy,zoom = 1) {
     const width = Math.ceil(gridx * gridSize * zoom);
     const height = Math.ceil(gridy * gridSize * zoom);
 
     // Set the canvas dimensions in device pixels
-    canvas_background.width = width;
-    canvas_background.height = height;
-    canvas_tiles.width = width;
-    canvas_tiles.height = height;
-    canvas_items.width = width;
-    canvas_items.height = height;
-    canvas_players.width = width;
-    canvas_players.height = height;
-    canvas_overhangs.width = width;
-    canvas_overhangs.height = height;
-    me_canvas.width = width;
-    me_canvas.height = height;
-    me2_canvas.width = width;
-    me2_canvas.height = height;
-
-    // Scale the canvas visually for the screen
-    $(".game_canvas").css({
-        width: `${width}px`,
-        height: `${height}px`,
-    })
-    $(".edit_canvas").css({
-        width: `${width}px`,
-        height: `${height}px`,
-    })
+    for (let i = 0; i < allCanvas.length; i++) {
+        allCanvas[i].width = width;
+        allCanvas[i].height = height;
+        allCanvas[i].css({
+            width: width + "px",
+            height: height + "px",
+        })
+    }
 
     //Fix Board Status Position
     let offset = $(".game_canvas")[0].getBoundingClientRect();
@@ -197,14 +204,23 @@ function updateCanvasPositionToPlayer(player) {
     let xDif = centerX - actualPlayerX;
     let yDif = centerY - actualPlayerY;
 
+    if (cameraQuickZoom) {
+        $(".game_canvas").css({
+            transition: "none",
+        })
+    }
+
     $(".game_canvas").css({
         left: xDif + "px",
         top: yDif + "px",
     })
-    
 
-    console.log(actualPlayerY,centerY)
-
+    if (cameraQuickZoom) {
+        cameraQuickZoom = false;
+        $(".game_canvas").css({
+            transition: "all .4s ease",
+        })
+    }
 }
 //End Load All Item Images
 let itemCanvas = [];
