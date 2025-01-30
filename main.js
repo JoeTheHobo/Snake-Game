@@ -967,7 +967,7 @@ function setUpPlayerCanvas() {
 }
 
 let cameraFollowPlayer;
-function startGame(type = "local") {
+function startGame() {
     setScene("game");
     $(".endGamePopup").hide();
     $(".pauseGamePopup").hide();
@@ -990,10 +990,7 @@ function startGame(type = "local") {
         console.warn(currentBoard.originalMap);
     }
 
-    setResolution(currentBoard.map[0].length,currentBoard.map.length,type);
-
-    if (type == "local") cameraFollowPlayer = false;
-    if (type == "singleplayer") cameraFollowPlayer = true;
+    setResolution(currentBoard.map[0].length,currentBoard.map.length);
 
     currentBoard.boardStatus = [];
     

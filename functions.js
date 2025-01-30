@@ -138,7 +138,7 @@ let me_ctx = me_canvas.getContext("2d");
 let me2_canvas = $("me_canvas2");
 let me2_ctx = me2_canvas.getContext("2d");
 
-function adjustCanvasSize(gridx,gridy,zoom = 1,type) {
+function adjustCanvasSize(gridx,gridy,zoom = 1) {
     const width = Math.ceil(gridx * gridSize * zoom);
     const height = Math.ceil(gridy * gridSize * zoom);
 
@@ -197,7 +197,6 @@ function updateCanvasPositionToPlayer(player) {
     let xDif = centerX - actualPlayerX;
     let yDif = centerY - actualPlayerY;
 
-    $(".game_canvas").classAdd("singlePlayerCanvas");
     $(".game_canvas").css({
         left: xDif + "px",
         top: yDif + "px",
@@ -269,9 +268,9 @@ function getItemCanvas(itemName) {
 
 
 
-function setResolution(gridx, gridy,type="local") {
-    setGridSize(type === "local" ? .17 : .32);
-    adjustCanvasSize(gridx,gridy,1,type);
+function setResolution(gridx, gridy) {
+    setGridSize(cameraFollowPlayer === false ? .17 : .32);
+    adjustCanvasSize(gridx,gridy,1);
 }
 
 

@@ -11,6 +11,15 @@ $("local_button_playGame").on("click",function() {
 
         })
     } else {
+        $(".game_canvas").classRemove("singlePlayerCanvas");
+        $(".game_canvas").css({
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            margin: "auto",
+        })
+        cameraFollowPlayer = false;
         startGame();
         $(".button_mapEditorHolder").hide();
     }
@@ -28,7 +37,9 @@ $("local_button_playSolo").on("click",function() {
 
         })
     } else {
-        startGame("singleplayer");
+        $(".game_canvas").classAdd("singlePlayerCanvas");
+        cameraFollowPlayer = true;
+        startGame();
         $(".button_mapEditorHolder").hide();
     }
 })
