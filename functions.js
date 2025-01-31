@@ -1,17 +1,10 @@
 ls.setID("snakegame");
 
-let forceReset = 9;
+let forceReset = 10;
 let needsToBeReset = ls.get("reset" + forceReset,true);
 if (needsToBeReset) {
     ls.clear();
     ls.save("reset" + forceReset,false);
-}
-let forceGMReset = 8;
-needsToBeReset = ls.get("resetGM" + forceGMReset,true);
-if (needsToBeReset) {
-    gameModes = [];
-    saveAllGameModes()
-    ls.save("resetGM" + forceGMReset,false);
 }
 
 
