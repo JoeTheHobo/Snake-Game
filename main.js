@@ -611,7 +611,7 @@ function testItemUnderPlayer(player) {
     }
     if (!itemIsDelete) deletePlayer(player);
 }
-function runItemFunction(player,item,type,itemPos) {
+function runItemFunction(player,item,type,itemPos,settings) {
     if (!type) return;
 
     let collision = item[type];
@@ -737,7 +737,7 @@ function runItemFunction(player,item,type,itemPos) {
             doColorRender = true;
         },onEat.canvasFilter.duration)
     }
-    if (collision.playSound && item.playSounds) {
+    if (collision.playSound && item.playSounds && settings?.playAudio) {
         let src = "sounds/" + item.soundFolder + "/" + item.soundFolder + "_" + collision.playSound[0] + "_" + rnd(collision.playSound[1]) + ".mp3";
         var audio = new Audio(src);
         if (player && itemPos) {
@@ -1202,7 +1202,7 @@ function startGame() {
     for (let i = 0; i < currentGameMode.items.length; i++) {
         let item = currentGameMode.items[i];
         for (let j = 0; j < Number(item.onStartSpawn); j++) {
-            spawn(item.name,false);
+            spawn(item.name,false,false,false);
         }
     }
 

@@ -455,7 +455,7 @@ function newPlayer() {
     players.push(player);
     ls.save("players",players);
 }
-function spawn(name,generateRandomItem = true,counting = false) {
+function spawn(name,generateRandomItem = true,counting = false,playAudio = true) {
     let isPlayer = name.isPlayer;
     let itemIndex = false;
     let item;
@@ -469,14 +469,13 @@ function spawn(name,generateRandomItem = true,counting = false) {
         if (item.spawnCount == undefined) item.spawnCount = 1;
         if (counting == false) {
             for (let i = 0; i < item.spawnCount; i++) {
-                spawn(name,generateRandomItem,true);
+                spawn(name,generateRandomItem,true,playAudio);
             }
             return;
         }
         if (item.spawnLimit !== false) item.spawnLimit--;
     }
         
-
     let counter = 0;
     let foundSpot = false;
     let x,y;
@@ -608,7 +607,7 @@ function spawn(name,generateRandomItem = true,counting = false) {
         } else {
             let sendPlayer = false;
             if (cameraFollowPlayer) sendPlayer = activePlayers[0];
-            runItemFunction(sendPlayer,currentGameMode.items[itemIndex],"onSpawn",{x:x,y:y});
+            runItemFunction(sendPlayer,currentGameMode.items[itemIndex],"onSpawn",{x:x,y:y},{playAudio: playAudio});
             currentBoard.map[y][x].item = cloneObject(currentGameMode.items[itemIndex]);
             updateCells.push({
                 x: x,
