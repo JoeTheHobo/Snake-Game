@@ -973,6 +973,10 @@ function gameMode_editItem(item,html_holder,gameMode) {
         item.visible = value;
         saveAllGameModes();
     });
+    addSetting("Plays Audio","toggle",item.playSounds,function(value) {
+        item.playSounds = value;
+        saveAllGameModes();
+    });
 
     if (item.canEat == true && item.onEat.growPlayer > 0 ) {
         addSetting("Grow Player","number",item.onEat.growPlayer,function(value) {

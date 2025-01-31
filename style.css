@@ -1223,6 +1223,7 @@ html {
   flex-direction: column;
   width: 33%;
   align-items: center;
+  overflow-y: auto;
 }
 .local_border_right {
   border-right: 1px solid white;

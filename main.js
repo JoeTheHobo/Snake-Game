@@ -7,9 +7,10 @@ function renderGame() {
 
             if (cell.item === false) continue;
 
-            cell.item = cloneObject(getItem(cell.item.name));
+            cell.item = structuredClone(getItem(cell.item.name));
             if (cell.item == undefined) cell.item = false; //Prolly Will Need To Resolve Issue Later
             if (cell.item !== false) {
+                
                 if (cell.item.spawnLimit > 0 || cell.item.spawnLimit === false) {
                     cell.item.spawnLimit--; 
                     updateCells.push({
@@ -43,7 +44,6 @@ function renderCells() {
         ctx_items.clearRect(updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
         if (!mapCell.visible) continue;
         if (mapCell == false) continue;
-
         ctx_items.drawImage(getItemCanvas(mapCell.name + mapCell.canvasTag),updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
 
         if (mapCell.renderStatusPath.length > 0) {
@@ -413,6 +413,7 @@ function movePlayers() {
             //Teleport Player If Needed
             if (_type(player.justTeleported).type == "object") {
                 deleteSnakeCells();
+                cameraQuickZoom = "tunnel";
                 player.pos.x = player.justTeleported.x;
                 player.pos.y = player.justTeleported.y;
                 player.justTeleported = true;
@@ -610,7 +611,7 @@ function testItemUnderPlayer(player) {
     }
     if (!itemIsDelete) deletePlayer(player);
 }
-function runItemFunction(player,item,type) {
+function runItemFunction(player,item,type,itemPos) {
     if (!type) return;
 
     let collision = item[type];
@@ -736,9 +737,18 @@ function runItemFunction(player,item,type) {
             doColorRender = true;
         },onEat.canvasFilter.duration)
     }
-    if (collision.playSound) {
+    if (collision.playSound && item.playSounds) {
         let src = "sounds/" + item.soundFolder + "/" + item.soundFolder + "_" + collision.playSound[0] + "_" + rnd(collision.playSound[1]) + ".mp3";
         var audio = new Audio(src);
+        if (player && itemPos) {
+            let dis = calculateDistance(player.pos.x,player.pos.y,itemPos.x,itemPos.y);
+            function getVolume(distance) {
+                const k = 3; // Controls how fast sound fades
+                return distance < 4 ? 1 : Math.max(0, Math.exp(-(distance - 4) / k));
+            }
+            audio.volume = getVolume(dis);
+            
+        }
         audio.play();
     }
 }

@@ -458,6 +458,7 @@ $("me_canvas").on("mousedown",function(e) {
 
     rightMouse = isRightMB;
     mouseDown = e.which == 2 ? "wheel" : true;
+
     
     if (tool == "select" && mouseDown === true) {
         $(".subTool_select").hide();
@@ -483,7 +484,7 @@ $("me_canvas").on("mousedown",function(e) {
             }
         }
     }
-    if (tool == "draw" || tool == "eraser") {
+    if ((tool == "draw" || tool == "eraser") && mouseDown === true) {
         alignPoint = {
             x: mouseX,
             y: mouseY,

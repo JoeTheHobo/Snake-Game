@@ -38,6 +38,7 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
     soundFolder: "mouse",
+    playSounds: true, //If Item should be muted or not;
     onSpawn: { //When item spawns run these
         playSound: ["spawn",1], //Write the name of sound, and how many different Files there are.
     },
@@ -84,6 +85,7 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 50,
     teleport: false,
+    playSounds: true, //If Item should be muted or not;
     visible: true, //If show when playing
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
@@ -129,6 +131,7 @@ items.push({
     },
     showInEditor: true,
     onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 20,
     teleport: false,
@@ -176,6 +179,7 @@ items.push({
     },
     showInEditor: true,
     onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 20,
     teleport: false,
@@ -207,6 +211,7 @@ items.push({
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     canEat: false,
     pickUp: false,
+    playSounds: true, //If Item should be muted or not;
     onEat: {
         deletePlayer: true,
 
@@ -275,6 +280,7 @@ items.push({
     },
     showInEditor: true,
     onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 20,
     teleport: false,
@@ -325,6 +331,7 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 10,
     teleport: false,
+    playSounds: true, //If Item should be muted or not;
     visible: true, //If show when playing
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
@@ -370,6 +377,7 @@ items.push({
     },
     showInEditor: true,
     onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 5,
     teleport: false,
@@ -416,6 +424,7 @@ items.push({
     },
     showInEditor: false,
     onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 1,
     teleport: false,
@@ -455,6 +464,7 @@ items.push({
     },
     showInEditor: true,
     onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 4,
     visible: true, //If show when playing
@@ -496,6 +506,7 @@ items.push({
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 4,
+    playSounds: true, //If Item should be muted or not;
     visible: true, //If show when playing
     teleport: 1, //Teleport ID
     spawnCount: 2, //How Many To Spawn In When Spawning
@@ -535,6 +546,7 @@ items.push({
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 4,
+    playSounds: true, //If Item should be muted or not;
     visible: true, //If show when playing
     teleport: 2, //Teleport ID
     spawnCount: 2, //How Many To Spawn In When Spawning
@@ -575,6 +587,7 @@ items.push({
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
+    playSounds: true, //If Item should be muted or not;
     visible: false, //If show when playing
     teleport: false, //Teleport ID
     spawnCount: 1, //How Many To Spawn In When Spawning
@@ -616,6 +629,7 @@ items.push({
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
+    playSounds: true, //If Item should be muted or not;
     visible: false, //If show when playing
     teleport: false, //Teleport ID
     spawnCount: 1, //How Many To Spawn In When Spawning
@@ -653,6 +667,7 @@ items.push({
     },
     showInEditor: true,
     onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing
@@ -692,6 +707,7 @@ items.push({
     },
     showInEditor: true,
     onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing
@@ -731,6 +747,7 @@ items.push({
     },
     showInEditor: true,
     onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing
@@ -785,6 +802,7 @@ items.push({
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
+    playSounds: true, //If Item should be muted or not;
     onDelete: {
         removeStatus: ["blueKey"],
 
@@ -821,6 +839,7 @@ items.push({
     },
 
     destructible: ["redKey"],
+    playSounds: true, //If Item should be muted or not;
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
@@ -846,6 +865,7 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+    playSounds: true, //If Item should be muted or not;
 
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
@@ -880,6 +900,7 @@ items.push({
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing
@@ -923,6 +944,7 @@ items.push({
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
+    playSounds: true, //If Item should be muted or not;
     visible: true, //If show when playing
     teleport: false, //Teleport ID
     spawnCount: 1, //How Many To Spawn In When Spawning
@@ -969,6 +991,7 @@ items.push({
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
+    playSounds: true, //If Item should be muted or not;
     specialSpawnWeight: 0,
     visible: true, //If show when playing
     teleport: false, //Teleport ID
@@ -1016,6 +1039,7 @@ items.push({
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing
@@ -1065,6 +1089,7 @@ items.push({
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing
@@ -1116,6 +1141,7 @@ items.push({
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing
@@ -1139,6 +1165,7 @@ items.push({
         canvasFilter: false,
     },
 
+    soundFolder: "flag",
     canCollide: true, //If You should look at any colliding properties
     onCollision: { //When collisionType collides do these
         switchImage: false, //Switch Between these images
@@ -1147,6 +1174,7 @@ items.push({
         removeBoardStatus: false, //Remove a status To the Board;
         setBoardStatus: "player", //Sets its world status to this, can only send out one status
         changeHue: "player", //Change hue to this.
+        playSound: ["set",1],
     },
 
     destructible: [false],
@@ -1169,6 +1197,7 @@ items.push({
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing
@@ -1224,6 +1253,7 @@ items.push({
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing
@@ -1280,6 +1310,7 @@ items.push({
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing

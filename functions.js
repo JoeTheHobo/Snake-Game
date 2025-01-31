@@ -63,6 +63,31 @@ if (_type(gameModes).type == "string") gameModes = unZip(gameModes);
 let activeGameMode = ls.get("activeGameMode",0);
 if (!gameModes[activeGameMode]) activeGameMode = 0;
 ls.save("activeGameMode",activeGameMode);
+
+//Fix GameModes
+function mergeGameModes(basedGameMode, currentGameMode) {
+    for (const key in basedGameMode) {
+        if (basedGameMode.hasOwnProperty(key)) {
+            if (typeof basedGameMode[key] === 'object' && basedGameMode[key] !== null) {
+                // If the property is an object and not null, ensure currentGameMode has it as an object
+                if (!currentGameMode.hasOwnProperty(key) || typeof currentGameMode[key] !== 'object') {
+                    currentGameMode[key] = {};
+                }
+                // Recursively merge nested objects
+                mergeGameModes(basedGameMode[key], currentGameMode[key]);
+            } else {
+                // If the property is missing, copy it over
+                if (!currentGameMode.hasOwnProperty(key)) {
+                    currentGameMode[key] = basedGameMode[key];
+                }
+            }
+        }
+    }
+}
+for (let i = 0; i < gameModes.length; i++) {
+    mergeGameModes(basedGameMode,gameModes[i]);
+}
+
 let currentGameMode = gameModes[activeGameMode];
 
 
@@ -239,21 +264,30 @@ function updateCanvasPositionToPlayer(player) {
         // Force a reflow before applying new left/top
         $(".game_canvas")[0].offsetHeight; 
 
+        function calculateResult(movementSpeed) {
+            return -0.4 * movementSpeed + 1.10;
+        }
+        let xAxisSpeed = calculateResult(currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed);
+
         if (cameraQuickZoom == "bottom") {
             addY = gridSize/0.59;
-            addX = gridSize/90;
+            addX = 0;
         }
         if (cameraQuickZoom == "top") {
             addY = -(gridSize/0.59);
-            addX = gridSize/90;
+            addX = 0;
         }
         if (cameraQuickZoom == "left") {
             addY = 0;
-            addX = gridSize/-0.59;
+            addX = gridSize/-(xAxisSpeed);
         }
         if (cameraQuickZoom == "right") {
             addY = 0;
-            addX = -(gridSize/-0.59);
+            addX = -(gridSize/-(xAxisSpeed));
+        }
+        if (cameraQuickZoom == "tunnel") {
+            addY = 0;
+            addX = 0;
         }
         
     }
@@ -264,10 +298,10 @@ function updateCanvasPositionToPlayer(player) {
     });
     
     if (cameraQuickZoom) {
+        // Force a reflow before applying new left/top
+        $(".game_canvas")[0].offsetHeight; 
+        $(".game_canvas").css({ transition: "all .4s ease" });
         cameraQuickZoom = false;
-        setTimeout(() => {
-            $(".game_canvas").css({ transition: "all .4s ease" });
-        }, 0);
     }
 }
 //End Load All Item Images
@@ -358,14 +392,14 @@ function newMap(width,height) {
 function getRealItem(name) {
     for (let i = 0; i < items.length; i++) {
         if (items[i].name == name) {
-            return items[i];
+            return cloneObject(items[i]);
         }
     }
 }
 function getItem(name) {
     for (let i = 0; i < currentGameMode.items.length; i++) {
         if (currentGameMode.items[i].name == name) {
-            return currentGameMode.items[i];
+            return cloneObject(currentGameMode.items[i]);
         }
     }
 }
@@ -572,7 +606,9 @@ function spawn(name,generateRandomItem = true,counting = false) {
             name.pos.x = x;
             name.pos.y = y;
         } else {
-            runItemFunction(false,currentGameMode.items[itemIndex],"onSpawn");
+            let sendPlayer = false;
+            if (cameraFollowPlayer) sendPlayer = activePlayers[0];
+            runItemFunction(sendPlayer,currentGameMode.items[itemIndex],"onSpawn",{x:x,y:y});
             currentBoard.map[y][x].item = cloneObject(currentGameMode.items[itemIndex]);
             updateCells.push({
                 x: x,
@@ -1156,14 +1192,7 @@ function fixItemDifferences(map) {
         map[d.y][d.x].item = pos;
     }
 }
-function cloneObject(object) {
-    try {
-        return structuredClone(object);
-    } catch {
-        console.warn("Structed Clone Failed On:",object);
-    }
-    
-}
+
 function forceAllCellsToBeTheirOwn(map) {
     let newMap = [];
     for (let i = 0; i < map.length; i++) {
