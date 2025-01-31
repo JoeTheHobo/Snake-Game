@@ -23,7 +23,7 @@
                 <div id="local_tab" onclick="loadLocalScreen()" class="menu_tab">Play Local</div>
                 <div onclick="loadCustomizeSnakeScreen()" id="snake_tab" class="menu_tab">Your Snakes</div>
                 <div onclick="loadBoardsScreen()" id="boards_tab" class="menu_tab">Your Boards</div>
-                <div id="gameModes_tab" class="menu_tab">Your Game Modes</div>
+                <div id="gameModes_tab" onclick="loadGameModesScreen()" class="menu_tab">Your Game Modes</div>
 
                 <div class="menu_right">
                     <div class="account_name">Guest#2242</div>
@@ -75,18 +75,6 @@
 
         
 
-    </div>
-
-    <div class="scene" id="scene_menu">
-        <div id="gameTitle">Snake Game</div>
-        <div class="pixel" id="button_startGame"><p>Start Game</p></div>
-        <div class="pixel" id="button_players"><p>Players</p></div>
-        <div class="pixel" id="button_gameMode"><p>Game Mode</p></div>
-        <div class="pixel" id="button_boards"><p>Boards</p></div>
-    </div>
-    <div class="scene" id="scene_players">
-        <div class="pixel" id="button_mainMenu"><p>Main Menu</p></div>
-        <div class="playersHolder"></div>
     </div>
     <div class="scene" id="scene_game">
         <canvas class="game_canvas" id="render_background"></canvas>

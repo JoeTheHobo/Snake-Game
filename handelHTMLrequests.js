@@ -43,10 +43,6 @@ $("local_button_playSolo").on("click",function() {
         $(".button_mapEditorHolder").hide();
     }
 })
-$("button_players").on("click",function() {
-    setScene("players");
-    loadPlayers();
-})
 $("button_mainMenu").on("click",function() {
     setScene("newMenu")
     $(".production").show("none");
@@ -56,14 +52,6 @@ $("button_mainMenu").on("click",function() {
 $("button_playAgain").on("click",function() {
     startGame();
     $(".button_mapEditorHolder").hide();
-})
-$("button_gameMode").on("click",function() {
-    setScene("gameModes");
-    loadGameModes();
-})
-$("button_boards").on("click",function() {
-    setScene("boardList");
-    loadBoards();
 })
 $("me_playButton").on("click",function() {
     startGame();

@@ -112,7 +112,7 @@ function generateHTMLList(holder,listObj,contentObj,contentHTML) {
 
         if (content.type == "button") {
             div.css({
-                width: "100px",
+                minWidth: "100px",
                 textAlign: "center",
                 color: "white",
                 fontSize: "25px",
@@ -163,7 +163,8 @@ function generateHTMLList(holder,listObj,contentObj,contentHTML) {
         contentHolder.open = function() {
             $(".list_element").classRemove("list_selected");
             this.classAdd("list_selected");
-            generateHTMLContent(contentHTML,contentObj,content,contentHolder);
+            if (contentObj) generateHTMLContent(contentHTML,contentObj,content,contentHolder);
+            else editGameMode(contentHTML,content,contentHolder.tags["name"]); 
         }
         contentHolder.on("click",function() {
             this.open();
@@ -720,4 +721,239 @@ function loadLocalScreen() {
     loadContent(boardHolder,boards,"boards");
     loadContent(snakesHolder,players,"snakes");
     loadContent(gameModesHolder,gameModes,"gameModes");
+}
+
+
+function loadGameModesScreen(index = false) {
+    generateHTMLScreen($(".content_gameModes"),
+        {
+            list: gameModes,
+            forceOpen: index,
+            listContent: [{type: "title",text: ".name",tag: "name"}],
+            top: [{type: "button",text: "New Game Mode",onClick: function() {
+                gameModes.push(structuredClone(gameModes[0]));
+                gameModes[gameModes.length-1].name = "Untitled";
+                loadGameModesScreen(gameModes.length-1);
+            }}],
+        });
+}
+
+function editGameMode(holder2,gameMode,htmlName) {
+    let html_gameModesHolder = holder2;
+    html_gameModesHolder.innerHTML = `
+        <div class="gameModes_settings_title">General Settings</div>
+        <div class="settingsHolder"></div>
+        <div class="gameModes_settings_title">Item Settings</div>
+        <div class="onSpawnHolder"></div>
+        <div class="gameModes_settings_title" id="gameModes_item_selected_name">Nothing Selected</div>
+        <div class="gameModes_item_settings"></div>
+        <div class="gameModes_settings_title">Danger Zone</div>
+        <div class="gameModes_fullWidth hover"><div class="gameModes_deleteButton">Delete Game Mode</div></div>
+        
+    `;
+
+    
+    function addSetting(title,type,value,func,list) {
+        let holder = $(".settingsHolder").create("div");
+        holder.className = "settingHolder";
+        let settingsTitle = holder.create("div");
+        settingsTitle.className = "settingTitle";
+        settingsTitle.innerHTML = title;
+        
+        let settingsInput;
+        if (type == "input" || type == "number") {
+            settingsInput = holder.create("input");
+            settingsInput.className = type == "input" ? "settingsInputFull" : "settingInput";
+            settingsInput.value = value;
+            settingsInput.id = "gm_" + title.toLowerCase().subset(0,"end","trim\\ ");
+            if (type == "number") settingsInput.type = "number";
+        }
+        if (type == "dropdown") {
+            settingsInput = holder.create("div");
+            settingsInput.className = "dropdown";
+
+            let button = settingsInput.create("button");
+            button.className = "dropbtn";
+            button.innerHTML = value;
+
+            let content = settingsInput.create("div");
+            content.className = "dropdown-content";
+
+            for (let i = 0; i < list.length; i++) {
+                let setting = content.create("div");
+                setting.button = button;
+                setting.innerHTML = list[i];
+                setting.on("click",function() {
+                    this.button.innerHTML = this.innerHTML;
+                    func(this.innerHTML);
+                })
+            }
+        }
+        settingsInput.on("input",function() {
+            func(this.value,this);
+        })
+        
+    }
+    addSetting("Game Mode Name","input",gameMode.name,function(value,input) {
+        if (value !== "")
+        gameMode.name = value;
+        htmlName.innerHTML = value;
+        ls.save("gameModes",gameModes);
+    });
+    addSetting("Inventory Slots","number",gameMode.howManyItemsCanPlayersUse,function(value,input) {
+        if (value < 0) input.value = 0;
+        if (value > 10) input.value = 10;
+
+        gameMode.howManyItemsCanPlayersUse = value;
+        ls.save("gameModes",gameModes);
+    });
+    addSetting("Using Items Type","dropdown",gameMode.mode_usingItemType,function(value) {
+        gameMode.mode_usingItemType = value;
+        if (value == "direct") {
+            $("gm_inventoryslots").value = 2;
+            gameMode.howManyItemsCanPlayersUse = 2;
+        }
+        ls.save("gameModes",gameModes);
+    },["direct","scroll"]);
+    addSetting("Full Inventory","dropdown",gameMode.mode_whenInventoryFullWhereDoItemsGo,function(value) {
+        gameMode.mode_whenInventoryFullWhereDoItemsGo = value;
+        ls.save("gameModes",gameModes);
+    },["noPickUp","select","recycle"]);
+    addSetting("Snake Vanish On Death","dropdown",gameMode.snakeVanishOnDeath,function(value) {
+        gameMode.snakeVanishOnDeath = value == "true" ? true : false;
+        ls.save("gameModes",gameModes);
+    },["true","false"]);
+
+
+    let html_onSpawnHolder = $(".onSpawnHolder");
+    let allItems = html_onSpawnHolder.create("div");
+    allItems.className = "allItems";
+    let itemEditor = html_onSpawnHolder.create("div");
+    itemEditor.className = "itemEditorHolder";
+    for (let i = 0; i < gameMode.items.length; i++) {
+        let item = gameMode.items[i];
+
+        if (!item.showInEditor) continue;
+
+        let holder = allItems.create("div");
+        holder.className = "spawn_holder";
+        let imgHolder = holder.create("div");
+        imgHolder.className = "spawn_imageHolder" + " " + (item.gameModeMenu_selectedItem ? "spawn_itemSelected" : "");
+        let img = imgHolder.create("img");
+        img.className = "spawn_image";
+        img.src = "img/" + item.img;
+
+        imgHolder.gameMode = gameMode;
+        imgHolder.item = item;
+        imgHolder.holder = holder;
+        imgHolder.on("click",function() {
+            $(".spawn_holder").classRemove("spawn_itemSelected");
+            this.holder.classAdd("spawn_itemSelected");
+            $("gameModes_item_selected_name").innerHTML = this.item.name;
+            gameMode_editItem(this.item,$(".gameModes_item_settings"),this.gameMode)
+        })
+    }
+}
+function gameMode_editItem(item,html_holder,gameMode) {
+    html_holder.innerHTML = "";
+
+    function addSetting(title,type,value,func,list) {
+        let holder = html_holder.create("div");
+        holder.className = "settingHolder";
+        let settingsTitle = holder.create("div");
+        settingsTitle.className = "settingTitle";
+        settingsTitle.innerHTML = title;
+        
+        let settingsInput;
+        if (type == "toggle") {
+            settingsInput = holder.create("input");
+            settingsInput.type = "checkbox";
+            settingsInput.checked = value;
+            settingsInput.className = "gameModes_checkbox";
+            settingsInput.on("change",function() {
+                func(this.checked,this);
+            })
+
+        }
+        if (type == "input" || type == "number") {
+            settingsInput = holder.create("input");
+            settingsInput.className = "settingInput";
+            settingsInput.value = value;
+            settingsInput.id = "gm_" + title.toLowerCase().subset(0,"end","trim\\ ");
+            if (type == "number") settingsInput.type = "number";
+            settingsInput.on("input",function() {
+                func(this.value,this);
+            })
+        }
+        if (type == "dropdown") {
+            settingsInput = holder.create("div");
+            settingsInput.className = "dropdown";
+
+            let button = settingsInput.create("button");
+            button.className = "dropbtn";
+            button.innerHTML = value;
+
+            let content = settingsInput.create("div");
+            content.className = "dropdown-content";
+
+            for (let i = 0; i < list.length; i++) {
+                let setting = content.create("div");
+                setting.button = button;
+                setting.innerHTML = list[i];
+                setting.on("click",function() {
+                    this.button.innerHTML = this.innerHTML;
+                    func(this.innerHTML);
+                })
+            }
+            settingsInput.on("input",function() {
+                func(this.value,this);
+            })
+        }
+        
+    }
+
+    addSetting("Spawn Rate","number",item.specialSpawnWeight,function(value) {
+        item.specialSpawnWeight = Number(value);
+        if (value < 0) return;
+        ls.save("gameModes",gameModes);
+    });
+    addSetting("Visible","toggle",item.visible,function(value) {
+        item.visible = value;
+        ls.save("gameModes",gameModes);
+    });
+
+    if (item.canEat == true && item.onEat.growPlayer > 0 ) {
+        addSetting("Grow Player","number",item.onEat.growPlayer,function(value) {
+            if (value < 0) return;
+            item.onEat.growPlayer = Number(value);
+            ls.save("gameModes",gameModes);
+        });
+    }
+    if (item.canEat == true) {
+        addSetting("Attempt Spawn Random Item","toggle",item.onEat.spawnRandomItem,function(value) {
+            item.onEat.spawnRandomItem = value;
+            ls.save("gameModes",gameModes);
+        });
+    }
+    if (item.canEat == true && item.onEat.shield > 0) {
+        addSetting("Give Shield","number",item.onEat.shield,function(value) {
+            item.onEat.shield = Number(value);
+            ls.save("gameModes",gameModes);
+        });
+    }
+    if (item.canEat == true && item.onEat.giveturbo) {
+        addSetting("Turbo Duration","number",item.onEat.turbo.duration,function(value) {
+        if (value < 0) return;
+        item.onEat.turbo.duration = Number(value);
+        ls.save("gameModes",gameModes);
+        });
+    }
+    if (item.canEat == true && item.onEat.giveturbo) {
+        addSetting("Turbo Speed","number",item.onEat.turbo.moveSpeed,function(value) {
+        if (value < 0) return;
+        item.onEat.turbo.moveSpeed = value;
+        ls.save("gameModes",gameModes);
+        });
+    }
+
 }

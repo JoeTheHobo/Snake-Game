@@ -859,7 +859,24 @@ function loadObjectMenu() {
         let html_title = settingHolder.create("div");
         html_title.className = "settingTitle";
         html_title.innerHTML = title;
+        if (type == "toggle") {
+            let toggle = settingHolder.create("input");
+            toggle.type = "checkbox";
+            toggle.checked = value;
+            toggle.path = path;
+            toggle.on("change",function() {
+                let selectingOneCell = isSelectingOneCell();
 
+                if (this.path.length == 2) {
+                    selectedItem.cell[this.path[0]][this.path[1]] = this.checked;
+                    if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][this.path[0]][this.path[1]] = this.checked;
+                }
+                if (this.path.length == 1) {
+                    selectedItem.cell[this.path[0]] = this.checked;
+                    if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][this.path[0]] = this.checked;
+                }
+            })
+        }
         if (type == "number") {
             let input = settingHolder.create("input");
             input.type = "number",
@@ -986,6 +1003,8 @@ function loadObjectMenu() {
     if (object.spawnPlayerID) {
         addSetting("Spawn Player ID","statusPlayer",object.spawnPlayerID,["spawnPlayerID"]);
     }
+    
+    addSetting("Visible","toggle",object.visible,["visible"]);
 }
 function isSelectingOneCell() {
     if (selectedCells.selecting) {
