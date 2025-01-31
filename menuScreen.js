@@ -733,12 +733,16 @@ function loadGameModesScreen(index = false) {
             top: [{type: "button",text: "New Game Mode",onClick: function() {
                 gameModes.push(structuredClone(gameModes[0]));
                 gameModes[gameModes.length-1].name = "Untitled";
+                gameModes[gameModes.length-1].cantEdit = false;
+                gameModes[gameModes.length-1].id = Date.now() + rnd(5000);
                 loadGameModesScreen(gameModes.length-1);
+                ls.save("gameModes",gameModes)
             }}],
         });
 }
 
 function editGameMode(holder2,gameMode,htmlName) {
+    if (gameMode.cantEdit) return;
     let html_gameModesHolder = holder2;
     html_gameModesHolder.innerHTML = `
         <div class="gameModes_settings_title">General Settings</div>
@@ -752,6 +756,28 @@ function editGameMode(holder2,gameMode,htmlName) {
         
     `;
 
+    $(".gameModes_deleteButton").on("click",function() {
+        for (let i = 0; i < gameModes.length; i++) {
+            if (gameModes[i].id === gameMode.id) {
+                makePopUp([
+                    {type: "text",text: "Delete " + gameMode.name},
+                    {type: "title",text: "Are You Sure?"},
+                    [
+                        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
+                        {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Delete",onClick: () => {
+                            gameModes.splice(i,1);
+                            holder2.innerHTML = "";
+                            loadGameModesScreen();
+                            ls.save("gameModes",gameModes)
+                        }},
+                    ],
+                ],{
+                    id: "deletePopUp",
+                })
+                
+            }
+        }
+    })
     
     function addSetting(title,type,value,func,list) {
         let holder = $(".settingsHolder").create("div");

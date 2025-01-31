@@ -6,7 +6,7 @@ if (needsToBeReset) {
     ls.clear();
     ls.save("reset" + forceReset,false);
 }
-let forceGMReset = 5;
+let forceGMReset = 8;
 needsToBeReset = ls.get("resetGM" + forceGMReset,true);
 if (needsToBeReset) {
     ls.save("gameModes",[]);

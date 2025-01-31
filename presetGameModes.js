@@ -1,7 +1,7 @@
 let presetGameModes = [
     {
         name: "Classic",
-        canDelete: false,
+        cantEdit: true,
         howManyItemsCanPlayersUse: 2,
         mode_usingItemType: "scroll",
         mode_whenInventoryFullWhereDoItemsGo: "select",
@@ -13,7 +13,7 @@ let presetGameModes = [
     },
     {
         name: "Rocky",
-        canDelete: false,
+        cantEdit: true,
         howManyItemsCanPlayersUse: 2,
         mode_usingItemType: "scroll",
         mode_whenInventoryFullWhereDoItemsGo: "select",
