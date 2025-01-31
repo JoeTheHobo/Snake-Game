@@ -599,7 +599,7 @@ function runItemFunction(player,item,type) {
     }
     if (collision.setBoardStatus) {
         let status = collision.setBoardStatus;
-        if (collision.setBoardStatus == "player") status = "player_" + player.id;
+        if (collision.setBoardStatus == "player") status = "player_" + player.index;
 
         if (item.sendingBoardStatus === status) return;
 
@@ -824,7 +824,10 @@ function addPlayerStatus(player,itemName) {
     drawPlayerBox(player);
 }
 function removeBoardStatus(status,player) {
-    if (status == "player") status = "player_" + player.id;
+    if (status == "player") {
+        playerIndex = i;
+        status = "player_" + player.index;
+    }
     checking: for (let i = 0; i < currentBoard.boardStatus.length; i++) {
         if (currentBoard.boardStatus[i] == status) {
             currentBoard.boardStatus.splice(i,1);
@@ -835,7 +838,9 @@ function removeBoardStatus(status,player) {
     loadBoardStatus();
 }
 function addBoardStatus(status,player) {
-    if (status == "player") status = "player_" + player.id;
+    if (status == "player") {
+        status = "player_" + player.index;
+    } 
 
     currentBoard.boardStatus.push(status);
 
@@ -1096,6 +1101,7 @@ function startGame() {
         //Set Player Item Usage
         player.howManyItemsCanIUse = currentGameMode.howManyItemsCanPlayersUse;
         player.whenInventoryIsFullInsertItemsAt = 0;
+        player.index = i;
         player.status = ["player_" + i];
         //Set All Player Items To Empty
         player.items = [];

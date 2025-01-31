@@ -200,11 +200,20 @@ function adjustCanvasSize(gridx,gridy,zoom = 1) {
 
     //Fix Board Status Position
     let offset = $(".game_canvas")[0].getBoundingClientRect();
-    $(".boardStatusHolder").css({
-        top: offset.bottom + "px",
-        left: offset.left + "px",
-        width: width,
-    })
+    if (cameraFollowPlayer) {
+        $(".boardStatusHolder").css({
+            top: "5px",
+            left: "5px",
+            width: "100%",
+        })
+    } else {
+        $(".boardStatusHolder").css({
+            top: offset.bottom + "px",
+            left: offset.left + "px",
+            width: width,
+        })
+    }
+    
 }
 
 for (let i = 0; i < tiles.length; i++) {
@@ -607,7 +616,7 @@ function pauseGame(displayPopup = true) {
     
 }
 function drawPlayerBox(player) {
-    let index = player.id;
+    let index = player.index;
     if ($("card" + index)) $("card" + index).remove();
 
     let itemBoxHolderSize = 50;
@@ -1043,16 +1052,18 @@ function compareObjects(obj1, obj2, path = []) {
     return differences;
 }
 
-function loadBoardStatus() {
+function loadBoardStatus(index) {
     let holder = $(".boardStatusHolder");
     holder.innerHTML = "";
+
+    let statusSize = cameraFollowPlayer ? 40 : 25;
 
     for (let i = 0; i < currentBoard.boardStatus.length; i++) {
         let status = currentBoard.boardStatus[i];
         let imgHolder = holder.create("div");
         imgHolder.css({
-            width: "25px",
-            height: "25px",
+            width: statusSize + "px",
+            height: statusSize + "px",
             margin: "2px",
             borderRadius: "5px",
             border: "2px solid black",
@@ -1067,8 +1078,8 @@ function loadBoardStatus() {
                     width: "100%",
                     color: "black",
                     fontWeight: "bold",
-                    fontSize: "25px",
-                    lineHeight: "50px",
+                    fontSize: statusSize + "px",
+                    lineHeight:  statusSize + "px",
                     textAlign: "center",
                 })
             }
@@ -1079,8 +1090,8 @@ function loadBoardStatus() {
                     width: "100%",
                     color: "black",
                     fontWeight: "bold",
-                    fontSize: "25px",
-                    lineHeight: "50px",
+                    fontSize: statusSize+ "px",
+                    lineHeight: statusSize + "px",
                     textAlign: "center",
                 })
             }
