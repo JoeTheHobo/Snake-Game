@@ -10,11 +10,20 @@ function renderGame() {
             cell.item = cloneObject(getItem(cell.item.name));
             if (cell.item == undefined) cell.item = false; //Prolly Will Need To Resolve Issue Later
             if (cell.item !== false) {
-                if (cell.item.spawnLimit > 0) cell.item.spawnLimit--; 
-                updateCells.push({
-                    x: j,
-                    y: i,
-                })
+                if (cell.item.spawnLimit > 0 || cell.item.spawnLimit === false) {
+                    cell.item.spawnLimit--; 
+                    updateCells.push({
+                        x: j,
+                        y: i,
+                    })
+                    if (cell.item.pack == "Tunnels") {
+                        currentBoard.location_tunnels.push({
+                            x: j,
+                            y: i,
+                            name: cell.item.name,
+                        })
+                    }
+                }
             }
         }
     }
@@ -426,6 +435,34 @@ function movePlayers() {
             if (player.pos.y < 0) {
                 cameraQuickZoom = "top";
                 if (circleWalls) player.pos.y = currentBoard.map.length-1;
+            }
+
+            //Check If Tunnels are near player
+            if (cameraFollowPlayer) {
+                let tunnel = false;
+                let index = false;
+                for (let z = 0; z < currentBoard.location_tunnels.length; z++) {
+                    let dis = calculateDistance(currentBoard.location_tunnels[z].x,currentBoard.location_tunnels[z].y,player.pos.x,player.pos.y);
+                    if (dis < 10) {
+                        tunnel = currentBoard.location_tunnels[z];
+                        index = z;
+                    }
+                }
+                if (tunnel) {
+                    $(".extraCanvas").show();
+                    for (let z = 0; z < currentBoard.location_tunnels.length; z++) {
+                        let indexTunnel = currentBoard.location_tunnels[z];
+                        if (indexTunnel.name === tunnel.name && z !== index) {
+                            drawTunnelCanvas($(".extraCanvas"),{
+                                x: indexTunnel.x,
+                                y: indexTunnel.y,
+                            });
+                        }
+                    }
+                } else {
+                    $(".extraCanvas").hide();
+
+                }
             }
 
             //Test Item Underplayer
@@ -1046,11 +1083,14 @@ function startGame() {
     currentBoard = boards[currentBoardIndex];
     currentGameMode = gameModes[activeGameMode];
 
+    currentBoard.location_tunnels = [];
+
     try {
         currentBoard.map = structuredClone(currentBoard.originalMap);
     } catch {
         console.warn(currentBoard.originalMap);
     }
+    $(".extraCanvas").hide();
 
     setResolution(currentBoard.map[0].length,currentBoard.map.length);
 

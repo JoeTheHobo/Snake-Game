@@ -584,6 +584,15 @@ function spawn(name,generateRandomItem = true,counting = false) {
                 x: x,
                 y: y,
             })
+            if (item.pack == "Tunnels") {
+                currentBoard.location_tunnels.push(
+                    {
+                        x: x,
+                        y: y,
+                        name: item.name,
+                    }
+                )
+            }
             if (generateRandomItem && item.onEat?.spawnRandomItem) specialItemManager();
         }
     } else {
@@ -1192,4 +1201,18 @@ function drawBoardToCanvas(board,canvas) {
     }
 
 
+}
+
+function drawTunnelCanvas(canvas,pos) {
+    let x = pos.x*gridSize;
+    let y = pos.y*gridSize;
+
+    let extra = gridSize*4;
+
+    canvas.width = 200;
+    canvas.height = 200;
+    
+
+    let ctx = canvas.getContext("2d");
+    ctx.drawImage($(".firstPersonCanvas_master"),x-extra,y-extra,extra*2,extra*2,0,0,200,200);
 }
