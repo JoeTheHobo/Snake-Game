@@ -611,7 +611,7 @@ function testItemUnderPlayer(player) {
     }
     if (!itemIsDelete) deletePlayer(player);
 }
-function runItemFunction(player,item,type,itemPos,settings) {
+function runItemFunction(player,item,type,itemPos,settings = {playAudio: true}) {
     if (!type) return;
 
     let collision = item[type];
