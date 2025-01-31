@@ -1,6 +1,6 @@
 ls.setID("snakegame");
 
-let forceReset = 7;
+let forceReset = 9;
 let needsToBeReset = ls.get("reset" + forceReset,true);
 if (needsToBeReset) {
     ls.clear();
@@ -13,13 +13,36 @@ if (needsToBeReset) {
     ls.save("resetGM" + forceGMReset,false);
 }
 
-let activePlayerCount = ls.get("activePlayerCount",[]);
+
 let showPerformance = false;
 
 let updateCells = [];
 let updateSnakeCells = [];
+
+//Players
+let playerNames1 = [
+    "Squabbling", "Terrifying", "Witty", "Sassy", "Mysterious",
+    "Jolly", "Spunky", "Clumsy", "Grumpy", "Cheeky",
+    "Funky", "Zesty", "Breezy", "Quirky", "Snarky",
+    "Boisterous", "Goofy", "Rambunctious", "Vivacious", "Frolicking"
+];
+let playerNames2 = [
+    "Cheesecake", "Martian", "Taco", "Wombat", "Penguin",
+    "Sasquatch", "Narwhal", "Donut", "Giraffe", "Unicorn",
+    "Robot", "Ostrich", "Dragon", "Platypus", "Sloth",
+    "Cactus", "Llama", "Cupcake", "Blobfish", "Banana"
+];
 let players = ls.get("players",[]);
+if (players.length == 0) newPlayer();
 let activePlayers;
+let activePlayerCount = ls.get("activePlayerCount",[]);
+if (activePlayerCount.length == 0) {
+    players[0].active = true;
+    activePlayerCount = [players[0]];
+}
+//End Players
+
+
 let boards = ls.get("boards",[]);
 if (_type(boards).type == "string") {
     compressed = JSON.parse(boards);
@@ -212,8 +235,24 @@ function updateCanvasPositionToPlayer(player) {
     
         // Force a reflow before applying new left/top
         $(".game_canvas")[0].offsetHeight; 
-        addY = gridSize+(gridSize/4)+15;
-        addX = (-gridSize/10)+5;
+
+        if (cameraQuickZoom == "bottom") {
+            addY = gridSize/0.59;
+            addX = gridSize/90;
+        }
+        if (cameraQuickZoom == "top") {
+            addY = -(gridSize/0.59);
+            addX = gridSize/90;
+        }
+        if (cameraQuickZoom == "left") {
+            addY = 0;
+            addX = gridSize/-0.59;
+        }
+        if (cameraQuickZoom == "right") {
+            addY = 0;
+            addX = -(gridSize/-0.59);
+        }
+        
     }
     
     $(".game_canvas").css({
@@ -312,18 +351,7 @@ function newMap(width,height) {
     return _newMap;
 }
 
-let playerNames1 = [
-    "Squabbling", "Terrifying", "Witty", "Sassy", "Mysterious",
-    "Jolly", "Spunky", "Clumsy", "Grumpy", "Cheeky",
-    "Funky", "Zesty", "Breezy", "Quirky", "Snarky",
-    "Boisterous", "Goofy", "Rambunctious", "Vivacious", "Frolicking"
-];
-let playerNames2 = [
-    "Cheesecake", "Martian", "Taco", "Wombat", "Penguin",
-    "Sasquatch", "Narwhal", "Donut", "Giraffe", "Unicorn",
-    "Robot", "Ostrich", "Dragon", "Platypus", "Sloth",
-    "Cactus", "Llama", "Cupcake", "Blobfish", "Banana"
-];
+
 
 function getRealItem(name) {
     for (let i = 0; i < items.length; i++) {
@@ -347,7 +375,6 @@ function getTile(name) {
     }
 }
 function newPlayer() {
-    let playerNumber = players.length;
     let gameCrashed = false;
     if (gameCrashed) {
         console.log("Game Crashed")
@@ -577,14 +604,21 @@ function pauseGame(displayPopup = true) {
     gamePaused = true;
     let html = $(".pauseGamePopup");
     if (displayPopup) html.show("flex");
+    
 }
 function drawPlayerBox(player) {
     let index = player.id;
     if ($("card" + index)) $("card" + index).remove();
 
     let itemBoxHolderSize = 50;
+    if (cameraFollowPlayer) {
+        itemBoxHolderSize+=15;
+    }
+    let borderSize = 2;
+    if (cameraFollowPlayer) borderSize = 4;
     let cardWidth;
     cardWidth = currentGameMode.howManyItemsCanPlayersUse * itemBoxHolderSize;
+    if (cameraFollowPlayer) cardWidth += ((borderSize)*currentGameMode.howManyItemsCanPlayersUse);
     if (currentGameMode.howManyItemsCanPlayersUse > 5) {
         cardWidth = (index == 4 || index == 7) ? currentGameMode.howManyItemsCanPlayersUse*itemBoxHolderSize : 5 * itemBoxHolderSize;
     }
@@ -613,9 +647,10 @@ function drawPlayerBox(player) {
     for (let i = 0; i < currentGameMode.howManyItemsCanPlayersUse; i++) {
         let itemHolder = itemBoxesHolder.create("div");
 
-        let borderColor = "2px solid black";
-        if (currentGameMode.mode_whenInventoryFullWhereDoItemsGo == "recycle" && player.whenInventoryIsFullInsertItemsAt == i && !player.items.includes("empty")) borderColor = "2px solid blue";  
-        if (player.selectingItem == i && currentGameMode.mode_usingItemType !== "direct") borderColor = "2px solid gold";
+        let borderColor = borderSize + "px solid black";
+        if (currentGameMode.mode_whenInventoryFullWhereDoItemsGo == "recycle" && player.whenInventoryIsFullInsertItemsAt == i && !player.items.includes("empty")) borderColor = borderSize + "px solid blue";  
+        if (player.selectingItem == i && currentGameMode.mode_usingItemType !== "direct") borderColor = borderSize + "px solid gold";
+
 
         itemHolder.css({
             width: itemBoxHolderSize - 4,
@@ -634,34 +669,37 @@ function drawPlayerBox(player) {
             })
         }
     }
-
-    let playerImageHolder = card.create("div");
-    playerImageHolder.css({
-        position: "absolute",
-        left: 0,
-        right: 0,
-        bottom: "-" + (itemBoxHolderSize/1.1) + "px",
-        marginLeft: "auto",
-        marginRight: "auto",
-        background: player.isDead ? "red" : "white",
-        border: "3px solid black",
-        borderRadius: "50px",
-        width: itemBoxHolderSize + "px",
-        height: itemBoxHolderSize + "px",
-    })
-    let playerImage = playerImageHolder.create("img");
-    playerImage.src = "img/snakeHead.png";
-    playerImage.css({
-        width: "100%",
-        height: "100%",
-        filter: `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`,
-    })
+    if (!cameraFollowPlayer) {
+        let playerImageHolder = card.create("div");
+        playerImageHolder.css({
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: "-" + (itemBoxHolderSize/1.1) + "px",
+            marginLeft: "auto",
+            marginRight: "auto",
+            background: player.isDead ? "red" : "white",
+            border: "3px solid black",
+            borderRadius: "50px",
+            width: itemBoxHolderSize + "px",
+            height: itemBoxHolderSize + "px",
+        })
+        let playerImage = playerImageHolder.create("img");
+        playerImage.src = "img/snakeHead.png";
+        playerImage.css({
+            width: "100%",
+            height: "100%",
+            filter: `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`,
+        })
+    }
+    
 
     let cardTop = "", cardLeft = "", cardRight = "", cardBottom = "";
     let statusTop = "", statusLeft = "", statusRight = "", statusBottom = "", statusFlex = "column";
     //Set Card Position
+    if (cameraFollowPlayer) index = 7;
     switch(index) {
-        case 0:
+        case 0 :
             cardTop = 5;
             cardLeft = 5;
             statusTop = 5;
@@ -705,7 +743,7 @@ function drawPlayerBox(player) {
             statusRight = card.offsetWidth;
             break;
         case 7:
-            cardBottom = 5 + (itemBoxHolderSize* 0.9);
+            cardBottom = 5 + (itemBoxHolderSize* 0.9) - (cameraFollowPlayer ? (itemBoxHolderSize* 0.9) : 0);
             cardLeft = (window.innerWidth / 2) - (card.offsetWidth/2);
             statusFlex = "row";
             statusTop = 5 + itemBoxHolderSize;
@@ -742,6 +780,8 @@ function drawPlayerBox(player) {
 }
 
 function createBoard(name,width,height) {
+    width = Number(width);
+    height = Number(height);
     boards.push({
         name: name,
         width: width,

@@ -243,9 +243,10 @@ function generateHTMLList(holder,listObj,contentObj,contentHTML) {
                 if (obj.tag) {
                     contentHolder.tags[obj.tag] = div;
                 }
+
                 if (obj.onClick) {
                     div.on("click",function() {
-                        obj.onClick(index);
+                        obj.onClick(index,i);
                     })
                 }
             }
@@ -367,7 +368,6 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder) {
 
                 div.width = div.clientWidth;
                 div.height = div.clientHeight;
-
                 if (l.display) {
                     l.display(obj,div);
                 }
@@ -555,7 +555,9 @@ function loadBoardsScreen(index = false) {
 
                 downloadTextFile(board.name,JSON.stringify(compressed));
                   
-            }},{type: "button",special: true, text:"Edit", onClick: (board) => {
+            }},{type: "button",special: true, text:"Edit", onClick: (board,index) => {
+                currentBoardIndex = index;
+                currentBoard = boards[currentBoardIndex];
                 openMapEditor(board);
             }}]],
             top: [{type: "button",text: "New Board",onClick: function() {
@@ -695,6 +697,7 @@ function loadLocalScreen() {
 
                 if (this.type == "boards") {
                     currentBoardIndex = this.index;
+                    currentBoard = boards[currentBoardIndex];
                     ls.save("currentBoardIndex",currentBoardIndex)
                 }
                 if (this.type == "gameModes") {

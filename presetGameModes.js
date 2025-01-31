@@ -10,6 +10,7 @@ let presetGameModes = [
             count: 3,
         }],
         items: cloneWithoutFunctions(items),
+        snakeVanishOnDeath: false,
     },
     {
         name: "Rocky",
@@ -22,6 +23,7 @@ let presetGameModes = [
             count: 3,
         }],
         items: cloneWithoutFunctions(items), // Unique copy for Rocky
+        snakeVanishOnDeath: false,
     }
 ];
 

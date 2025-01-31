@@ -412,19 +412,19 @@ function movePlayers() {
             //Collision Testing
             //Test If Player Hits Edge
             if (player.pos.x > currentBoard.map[0].length-1) {
-                cameraQuickZoom = true;
+                cameraQuickZoom = "right";
                 if (circleWalls) player.pos.x = 0;
             }
             if (player.pos.x < 0) {
-                cameraQuickZoom = true;
+                cameraQuickZoom = "left";
                 if (circleWalls) player.pos.x = currentBoard.map[0].length-1;
             }
             if (player.pos.y > currentBoard.map.length-1) {
-                cameraQuickZoom = true;
+                cameraQuickZoom = "bottom";
                 if (circleWalls) player.pos.y = 0;
             }
             if (player.pos.y < 0) {
-                cameraQuickZoom = true;
+                cameraQuickZoom = "top";
                 if (circleWalls) player.pos.y = currentBoard.map.length-1;
             }
 
@@ -691,6 +691,7 @@ function useItemHelper(player,item) {
     }
 }
 function endScreen(player = false) {
+    $("playerCardsHolder").style.cursor = "";
     gameEnd = true;
     isActiveGame = false;
     $(".endGamePopup").show("flex");
@@ -841,8 +842,43 @@ function addBoardStatus(status,player) {
     loadBoardStatus();
 }
 
+document.body.on("click",function() {
+    if (!isActiveGame) return;
+    if (currentGameMode.mode_usingItemType == "direct") return;
+    if (!cameraFollowPlayer) return;
 
-//adds movement to a queue of max 3 moves
+    player = activePlayers[0];
+
+    if (player.items[player.selectingItem]) {
+        useItem(player);
+    }
+
+    drawPlayerBox(player);
+})
+document.body.on("wheel",function(e) {
+    if (!isActiveGame) return;
+    if (currentGameMode.mode_usingItemType == "direct") return;
+    if (!cameraFollowPlayer) return;
+
+    let value = 0;
+
+    let wheelingUp = false;
+    if (e.wheelDelta) {
+        wheelingUp = e.wheelDelta > 0;
+    } else {
+        wheelingUp = e.deltaY < 0;
+    }
+    if (wheelingUp) value = -1;
+    else value = 1;
+
+    player = activePlayers[0];
+
+    player.selectingItem += value;
+    if (player.selectingItem < 0) player.selectingItem = currentGameMode.howManyItemsCanPlayersUse-1;
+    if (player.selectingItem > currentGameMode.howManyItemsCanPlayersUse-1) player.selectingItem = 0;
+    
+    drawPlayerBox(player);
+})
 document.body.onkeydown = function(e) {
     if (!isActiveGame) return;
     if (e.key !== "F5")
@@ -853,8 +889,22 @@ document.body.onkeydown = function(e) {
             $(".pauseGamePopup").hide();
             gamePaused = false;
             requestAnimationFrame(gameLoop);
+            $("playerCardsHolder").style.cursor = "none";
         }
-        else pauseGame();
+        else {
+            pauseGame();
+            $("playerCardsHolder").style.cursor = "";
+        }
+    }
+
+    if (cameraFollowPlayer) {
+        if (e.key == "m") {
+            if ($(".firstPersonMap").style.display == "block") {
+                $(".firstPersonMap").hide();
+            } else {
+                $(".firstPersonMap").show();
+            }
+        }
     }
 
     for (let i = 0; i < activePlayers.length; i++) {
@@ -970,7 +1020,7 @@ function setUpPlayerCanvas() {
     }
 }
 
-let cameraFollowPlayer;
+let cameraFollowPlayer = false;
 let cameraQuickZoom;
 function startGame() {
     setScene("game");
@@ -983,6 +1033,8 @@ function startGame() {
         setUpProductionHTML();
         $(".production").show("flex");
     }
+
+    $("playerCardsHolder").style.cursor = "none";
 
     gamePaused = false;
 
@@ -1000,7 +1052,19 @@ function startGame() {
     if (cameraFollowPlayer) {
         cameraQuickZoom = false;
         $(".firstPersonCanvas").show();
+        $(".firstPersonMap").show();
+        
+        let miniMapWidth = (currentBoard.map[0].length*gridSize)/8;
+        let miniMapHeight = (currentBoard.map.length*gridSize)/8;
+        
+        $(".firstPersonMap").css({
+            width: miniMapWidth,
+            height: miniMapHeight,
+        })
+        $(".firstPersonMap").width = miniMapWidth;
+        $(".firstPersonMap").height = miniMapHeight;
     } else {
+        $(".firstPersonMap").hide();
         $(".firstPersonCanvas").hide();
     }
 
@@ -1170,6 +1234,7 @@ function updateProduction() {
         if (production[entry[0]].times.length > 1000) {
             production[entry[0]].times.shift();
         }
+        if (production[entry[0]].times.length == 0) production[entry[0]].times.push(0);
         production[entry[0]].average = production[entry[0]].times.avg();
         $("production_" + entry[0]).innerHTML = production[entry[0]].average.toFixed(4) + "ms";
     }
@@ -1225,6 +1290,9 @@ function gameLoop(timestamp) {
         ctx_firstPerson_master.drawImage($("render_items"),0,0)
         ctx_firstPerson_master.drawImage($("render_players"),0,0)
         ctx_firstPerson_master.drawImage($("render_overhangs"),0,0)
+
+        $(".firstPersonMap").getContext("2d").clearRect(0,0,$(".firstPersonMap").width,$(".firstPersonMap").height);
+        $(".firstPersonMap").getContext("2d").drawImage($(".firstPersonCanvas_master"),0,0,$(".firstPersonMap").width,$(".firstPersonMap").height);
 
         let ctxs = [ctx_firstPerson_tl,ctx_firstPerson_tm,ctx_firstPerson_tr,ctx_firstPerson_lm,ctx_firstPerson_rm,ctx_firstPerson_bl,ctx_firstPerson_bm,ctx_firstPerson_br];
         for (let i = 0; i < ctxs.length; i++) {

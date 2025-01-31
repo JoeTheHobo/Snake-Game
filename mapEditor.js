@@ -304,18 +304,24 @@ function me_updateCell(ctx,x,y,opacity) {
 
     ctx.globalAlpha = opacity;
 
-    let Xpos = ((gridSize*zoom)*x);
-    let Ypos = ((gridSize*zoom)*y);
+    let Xpos = Math.round((gridSize*zoom)*x);
+    let Ypos = Math.round((gridSize*zoom)*y);
+
+    let nextX = Math.round((gridSize*zoom)*(x+1));
+    let nextY = Math.round((gridSize*zoom)*(y+1));
+
+    let xDif = nextX - (Xpos+(gridSize*zoom))+1;
+    let yDif = nextY - (Ypos+(gridSize*zoom))+1;
 
     ctx.clearRect(Xpos,Ypos,(gridSize*zoom),(gridSize*zoom))
 
     if (cell.tile) {
         itemCounts.push("tile_" + cell.tile.name);
-        ctx.drawImage($("tile_" + cell.tile.name),Xpos,Ypos,(gridSize*zoom),(gridSize*zoom));
+        ctx.drawImage($("tile_" + cell.tile.name),Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
     }
     if (cell.item) {
         itemCounts.push("item_" + cell.item.name);
-        ctx.drawImage(getItemCanvas(cell.item.name),Xpos,Ypos,(gridSize*zoom),(gridSize*zoom));
+        ctx.drawImage(getItemCanvas(cell.item.name),Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
         if (cell.item.renderStatusPath.length > 0) {
             let name = cell.item;
             for (let j = 0; j < cell.item.renderStatusPath.length; j++) {
@@ -361,6 +367,10 @@ mousemovemethod = function (e) {
     }
 }
 $(".me_canvasHolder").on('mousemove', mousemovemethod);
+$(".me_canvasHolder").on("click",function() {
+    mouseDown = false;
+    rightMouse = false;
+})
 function adjustMousePos(e) {
     let rect = me_canvas.getBoundingClientRect();
     let x = e.clientX - rect.left;
@@ -603,7 +613,7 @@ $(".me_canvasHolder").on("wheel",function(e) {
     changeZoom(delta);
 
     moveCanvasToStayInPosition(e,mouseX,mouseY);
-    checkRenderThenRender();
+    renderMapEditorCanvas(true);
     renderTopCanvas();
 });
 function moveCanvasToStayInPosition(e,originalX,originalY) {
@@ -640,8 +650,8 @@ function changeZoom(delta) {
     renderTopCanvas();
 }
 $("me_canvas").on("mouseleave",function(e) {
-    mouseDown = false;
-    rightMouse = false;
+    //mouseDown = false;
+    //rightMouse = false;
 })
 $("me_canvas").on("contextmenu",function(e) {
     e.preventDefault();
@@ -1260,7 +1270,7 @@ function runTool(type) {
         xChange = ($(".me_canvasHolder").offsetWidth - $(".edit_canvas")[0].offsetWidth)/2;
         yChange = ($(".me_canvasHolder").offsetHeight - $(".edit_canvas")[0].offsetHeight)/2;
         adjustCanvasPosition();
-
+        renderMapEditorCanvas(true)
     }
     if (type == "show_grid") {
         showGrid = showGrid == false ? true : false;
