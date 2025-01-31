@@ -629,10 +629,13 @@ function spawn(name,generateRandomItem = true,counting = false) {
         console.log("No Available Spot To Spawn");
     }
 };
-function calculateDistance(x1, y1, x2, y2) {
-    return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+function calculateDistance(x1, y1, x2, y2, boardLength, boardHeight) {
+    boardLength = currentBoard.map[0].length;
+    boardHeight = currentBoard.map.length;
+    let dx = Math.min(Math.abs(x1 - x2), boardLength - Math.abs(x1 - x2));
+    let dy = Math.min(Math.abs(y1 - y2), boardHeight - Math.abs(y1 - y2));
+    return dx + dy;
 }
-
 function hideScenes() {
     $(".scene").hide();
 }
