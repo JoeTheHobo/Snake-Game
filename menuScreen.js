@@ -2,6 +2,10 @@ let servers = [];
 let serverSelected = false;
 
 function loadServersHTML() {
+    $(".menu_tab").classRemove("menu_tab_selected");
+    $(".menu_content").hide();
+    $(".content_servers").show("flex");
+    $("servers_tab").classAdd("menu_tab_selected");
     let holder = $(".servers_servers_holder");
     holder.innerHTML = "";
 
@@ -160,15 +164,19 @@ function generateHTMLList(holder,listObj,contentObj,contentHTML) {
         contentHolder.classAdd("hover");
         contentHolder.classAdd("list_element")
 
-        contentHolder.open = function() {
-            $(".list_element").classRemove("list_selected");
-            this.classAdd("list_selected");
-            if (contentObj) generateHTMLContent(contentHTML,contentObj,content,contentHolder);
-            else editGameMode(contentHTML,content,contentHolder.tags["name"]); 
+        if (!content.cantEdit || listObj.type !== "gameModes") {
+            contentHolder.open = function() {
+                $(".list_element").classRemove("list_selected");
+                this.classAdd("list_selected");
+                if (contentObj) generateHTMLContent(contentHTML,contentObj,content,contentHolder);
+                else editGameMode(contentHTML,content,contentHolder.tags["name"]); 
+            }
+            contentHolder.on("click",function() {
+                this.open();
+            })
         }
-        contentHolder.on("click",function() {
-            this.open();
-        })
+        
+        
         
 
         if (listObj.forceOpen) {
@@ -476,6 +484,10 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder) {
 
 
 function loadCustomizeSnakeScreen(index = false) {
+    $(".menu_tab").classRemove("menu_tab_selected");
+    $(".menu_content").hide();
+    $(".content_snake").show("flex");
+    $("snake_tab").classAdd("menu_tab_selected");
     generateHTMLScreen($(".content_snake"),
         {
             list: players,
@@ -535,6 +547,10 @@ function loadCustomizeSnakeScreen(index = false) {
 }
 
 function loadBoardsScreen(index = false) {
+    $(".menu_tab").classRemove("menu_tab_selected");
+    $(".menu_content").hide();
+    $(".content_boards").show("flex");
+    $("boards_tab").classAdd("menu_tab_selected");
     generateHTMLScreen($(".content_boards"),
         {
             list: boards,
@@ -625,11 +641,13 @@ function loadBoardsScreen(index = false) {
 function savePlayers() {
     ls.save("players",players);
 }
-function saveAllGameModes() {
-    ls.save("gameModes",gameModes);
-}
+
 
 function loadLocalScreen() {
+    $(".menu_tab").classRemove("menu_tab_selected");
+    $(".menu_content").hide();
+    $(".content_local").show("flex");
+    $("local_tab").classAdd("menu_tab_selected");
     let boardHolder = $("local_boards");
     let snakesHolder = $("local_snakes");
     let gameModesHolder = $("local_gameModes");
@@ -728,10 +746,15 @@ function loadLocalScreen() {
 
 
 function loadGameModesScreen(index = false) {
+    $(".menu_tab").classRemove("menu_tab_selected");
+    $(".menu_content").hide();
+    $(".content_gameModes").show("flex");
+    $("gameModes_tab").classAdd("menu_tab_selected");
     generateHTMLScreen($(".content_gameModes"),
         {
             list: gameModes,
             forceOpen: index,
+            type: "gameModes",
             listContent: [{type: "title",text: ".name",tag: "name"}],
             top: [{type: "button",text: "New Game Mode",onClick: function() {
                 gameModes.push(structuredClone(gameModes[0]));
@@ -739,7 +762,7 @@ function loadGameModesScreen(index = false) {
                 gameModes[gameModes.length-1].cantEdit = false;
                 gameModes[gameModes.length-1].id = Date.now() + rnd(5000);
                 loadGameModesScreen(gameModes.length-1);
-                ls.save("gameModes",gameModes)
+                saveAllGameModes()
             }}],
         });
 }
@@ -771,7 +794,7 @@ function editGameMode(holder2,gameMode,htmlName) {
                             gameModes.splice(i,1);
                             holder2.innerHTML = "";
                             loadGameModesScreen();
-                            ls.save("gameModes",gameModes)
+                            saveAllGameModes()
                         }},
                     ],
                 ],{
@@ -827,14 +850,14 @@ function editGameMode(holder2,gameMode,htmlName) {
         if (value !== "")
         gameMode.name = value;
         htmlName.innerHTML = value;
-        ls.save("gameModes",gameModes);
+        saveAllGameModes();
     });
     addSetting("Inventory Slots","number",gameMode.howManyItemsCanPlayersUse,function(value,input) {
         if (value < 0) input.value = 0;
         if (value > 10) input.value = 10;
 
         gameMode.howManyItemsCanPlayersUse = value;
-        ls.save("gameModes",gameModes);
+        saveAllGameModes();
     });
     addSetting("Using Items Type","dropdown",gameMode.mode_usingItemType,function(value) {
         gameMode.mode_usingItemType = value;
@@ -842,15 +865,15 @@ function editGameMode(holder2,gameMode,htmlName) {
             $("gm_inventoryslots").value = 2;
             gameMode.howManyItemsCanPlayersUse = 2;
         }
-        ls.save("gameModes",gameModes);
+        saveAllGameModes();
     },["direct","scroll"]);
     addSetting("Full Inventory","dropdown",gameMode.mode_whenInventoryFullWhereDoItemsGo,function(value) {
         gameMode.mode_whenInventoryFullWhereDoItemsGo = value;
-        ls.save("gameModes",gameModes);
+        saveAllGameModes();
     },["noPickUp","select","recycle"]);
     addSetting("Snake Vanish On Death","dropdown",gameMode.snakeVanishOnDeath,function(value) {
         gameMode.snakeVanishOnDeath = value == "true" ? true : false;
-        ls.save("gameModes",gameModes);
+        saveAllGameModes();
     },["true","false"]);
 
 
@@ -944,44 +967,44 @@ function gameMode_editItem(item,html_holder,gameMode) {
     addSetting("Spawn Rate","number",item.specialSpawnWeight,function(value) {
         item.specialSpawnWeight = Number(value);
         if (value < 0) return;
-        ls.save("gameModes",gameModes);
+        saveAllGameModes();
     });
     addSetting("Visible","toggle",item.visible,function(value) {
         item.visible = value;
-        ls.save("gameModes",gameModes);
+        saveAllGameModes();
     });
 
     if (item.canEat == true && item.onEat.growPlayer > 0 ) {
         addSetting("Grow Player","number",item.onEat.growPlayer,function(value) {
             if (value < 0) return;
             item.onEat.growPlayer = Number(value);
-            ls.save("gameModes",gameModes);
+            saveAllGameModes();
         });
     }
     if (item.canEat == true) {
         addSetting("Attempt Spawn Random Item","toggle",item.onEat.spawnRandomItem,function(value) {
             item.onEat.spawnRandomItem = value;
-            ls.save("gameModes",gameModes);
+            saveAllGameModes();
         });
     }
     if (item.canEat == true && item.onEat.shield > 0) {
         addSetting("Give Shield","number",item.onEat.shield,function(value) {
             item.onEat.shield = Number(value);
-            ls.save("gameModes",gameModes);
+            saveAllGameModes();
         });
     }
     if (item.canEat == true && item.onEat.giveturbo) {
         addSetting("Turbo Duration","number",item.onEat.turbo.duration,function(value) {
         if (value < 0) return;
         item.onEat.turbo.duration = Number(value);
-        ls.save("gameModes",gameModes);
+        saveAllGameModes();
         });
     }
     if (item.canEat == true && item.onEat.giveturbo) {
         addSetting("Turbo Speed","number",item.onEat.turbo.moveSpeed,function(value) {
         if (value < 0) return;
         item.onEat.turbo.moveSpeed = value;
-        ls.save("gameModes",gameModes);
+        saveAllGameModes();
         });
     }
 

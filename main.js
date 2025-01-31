@@ -1408,5 +1408,4 @@ function specialItemManager()
 
 
 setScene("newMenu")
-loadServersHTML();
-$(".content_servers").show("flex");
+loadLocalScreen();

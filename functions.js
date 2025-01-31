@@ -9,7 +9,8 @@ if (needsToBeReset) {
 let forceGMReset = 8;
 needsToBeReset = ls.get("resetGM" + forceGMReset,true);
 if (needsToBeReset) {
-    ls.save("gameModes",[]);
+    gameModes = [];
+    saveAllGameModes()
     ls.save("resetGM" + forceGMReset,false);
 }
 
@@ -65,7 +66,7 @@ let currentBoard = boards[currentBoardIndex];
 
 
 let gameModes = ls.get("gameModes",presetGameModes);
-if (gameModes == "") gameModes = presetGameModes;
+if (_type(gameModes).type == "string") gameModes = unZip(gameModes);
 let activeGameMode = ls.get("activeGameMode",0);
 if (!gameModes[activeGameMode]) activeGameMode = 0;
 ls.save("activeGameMode",activeGameMode);
@@ -142,7 +143,7 @@ for (let i = 0; i < gameModes.length; i++) {
         }
     }
 }
-ls.save("gameModes",gameModes);
+saveAllGameModes()
 
 //Setting Up Canvas
 let canvas_background = $("render_background");
@@ -359,7 +360,6 @@ function newMap(width,height) {
     }
     return _newMap;
 }
-
 
 
 function getRealItem(name) {
@@ -837,21 +837,21 @@ function downloadTextFile(filename, text) {
     
     // Clean up the URL object after the download is triggered
     window.URL.revokeObjectURL(link.href);
-  }
+}
 
-  function readFileContent(file) {
+function readFileContent(file) {
     const reader = new FileReader();
-    
+
     // Event listener to handle the load event (file reading completed)
     reader.onload = function(event) {
-      const content = event.target.result; // The file content as a string
+        const content = event.target.result; // The file content as a string
         importMap(content); // Display the content
-    };
+};
 
-    // Read the file as text
-    reader.readAsText(file);
-  }
-  function importMap(textFile) {
+// Read the file as text
+reader.readAsText(file);
+}
+function importMap(textFile) {
     let board = JSON.parse(textFile);
     let decompressed = pako.ungzip(board, { to: 'string' });
     board = JSON.parse(decompressed);
@@ -868,7 +868,30 @@ function downloadTextFile(filename, text) {
     } catch {
         console.warn("Incorect File")
     }
-  }
+}
+function zip(what) {
+    const encoder = new TextEncoder();
+    const shortenResult = gameModes;
+
+    if (!shortenResult) {
+        throw new Error('shortenBoard(this.board) returned invalid data.');
+    }
+
+    const jsonString = JSON.stringify(shortenResult);
+    const encodedText = encoder.encode(jsonString);
+
+    const compressed = pako.gzip(encodedText);
+
+    return JSON.stringify(compressed);
+}
+function unZip(what) {
+    compressed = JSON.parse(what);
+    return JSON.parse(pako.ungzip(compressed, { to: 'string' }));
+}
+function saveAllGameModes() {
+    ls.save("gameModes",zip(gameModes));
+}
+
 function saveBoards() {
     let newBoards = [];
     for (let i = 0; i < boards.length; i++) {
