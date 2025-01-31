@@ -486,6 +486,21 @@ function movePlayers() {
         }
     }
 }
+function useItem(player) {
+    if (player.status.includes(player.items[player.selectingItem].img)) return;
+    
+    let item = player.items[player.selectingItem];
+    if (item == "empty") return;
+    if (item.cantUseIfStatus.length > 0) {
+        for (let i = 0; i < item.cantUseIfStatus.length; i++) {
+            let id = item.cantUseIfStatus[i];
+            if (player.status.includes(id)) return;
+        }
+    }
+    
+    runItemFunction(player,player.items[player.selectingItem],"onEat");
+    player.items[player.selectingItem] = "empty";
+}
 function testItemUnderPlayer(player) {
     let mapItem = currentBoard.map[player.pos.y][player.pos.x].item;
     if (!mapItem) return;
@@ -512,7 +527,7 @@ function testItemUnderPlayer(player) {
             drawPlayerBox(player)
         }
     } else if (mapItem.canEat == true) {
-        useItemHelper(player,mapItem);
+        runItemFunction(player,mapItem,"onEat");
     }
 
     if (_type(mapItem.teleport).type == "number" && !player.justTeleported) {
@@ -598,9 +613,7 @@ function testItemUnderPlayer(player) {
 function runItemFunction(player,item,type) {
     if (!type) return;
 
-    let collision;
-    if (type == "onCollision") collision = item.onCollision;
-    if (type == "offCollision") collision = item.offCollision;
+    let collision = item[type];
 
     if (!collision) return;
 
@@ -656,48 +669,45 @@ function runItemFunction(player,item,type) {
             y: player.pos.y,
         })
     }
-}
-function useItemHelper(player,item) {
-    let onEat = item.onEat;
-    if (onEat.growPlayer > 0) {
-        growPlayer(player,onEat.growPlayer);
+    if (collision.growPlayer > 0) {
+        growPlayer(player,collision.growPlayer);
     }
-    if (onEat.spawn) {
-        for (let i = 0; i < onEat.spawn.length; i++) {
-            for (let j = 0; j < onEat.spawn[i].count; j++) {
-                spawn(onEat.spawn[i].name);
+    if (collision.spawn) {
+        for (let i = 0; i < collision.spawn.length; i++) {
+            for (let j = 0; j < collision.spawn[i].count; j++) {
+                spawn(collision.spawn[i].name);
             }
         }
     }
-    if (onEat.giveturbo) {
-        if (onEat.turbo.duration && onEat.turbo.moveSpeed) {
+    if (collision.giveturbo) {
+        if (collision.turbo.duration && collision.turbo.moveSpeed) {
             player.turboActive = true;
-            player.turboDuration = onEat.turbo.duration;
-            player.moveSpeed = onEat.turbo.moveSpeed;
+            player.turboDuration = collision.turbo.duration;
+            player.moveSpeed = collision.turbo.moveSpeed;
         }
     }
-    if (onEat.addStatus) {
-        for (let i = 0; i < onEat.addStatus.length; i++) {
-            addPlayerStatus(player,onEat.addStatus[i])
+    if (collision.addStatus) {
+        for (let i = 0; i < collision.addStatus.length; i++) {
+            addPlayerStatus(player,collision.addStatus[i])
         }
     }
-    if (onEat.removeStatus) {
-        for (let i = 0; i < onEat.removeStatus.length; i++) {
-            removePlayerStatus(player,onEat.removeStatus[i])
+    if (collision.removeStatus) {
+        for (let i = 0; i < collision.removeStatus.length; i++) {
+            removePlayerStatus(player,collision.removeStatus[i])
         }
     }
-    if (onEat.deletePlayer) {
+    if (collision.deletePlayer) {
         deletePlayer(player,undefined,item);
     }
-    if (onEat.shield > 0) {
-        player.shield = onEat.shield;
+    if (collision.shield > 0) {
+        player.shield = collision.shield;
     }
-    if (onEat.winGame === true) {
+    if (collision.winGame === true) {
         endScreen(player);
     }
-    if (onEat.canvasFilter.active == true) {
-        ctx_players.filter = onEat.canvasFilter.filter;
-        ctx_items.filter = onEat.canvasFilter.filter;
+    if (collision.canvasFilter?.active == true) {
+        ctx_players.filter = collision.canvasFilter.filter;
+        ctx_items.filter = collision.canvasFilter.filter;
         for (let i = 0; i < currentBoard.map.length; i++) {
             for (let j = 0; j < currentBoard.map[0].length; j++) {
                 let mapTile = currentBoard.map[i][j].tile;
@@ -725,6 +735,11 @@ function useItemHelper(player,item) {
             }
             doColorRender = true;
         },onEat.canvasFilter.duration)
+    }
+    if (collision.playSound) {
+        let src = "sounds/" + item.soundFolder + "/" + item.soundFolder + "_" + collision.playSound[0] + "_" + rnd(collision.playSound[1]) + ".mp3";
+        var audio = new Audio(src);
+        audio.play();
     }
 }
 function endScreen(player = false) {
@@ -995,21 +1010,7 @@ document.body.onkeydown = function(e) {
         }
     }
 }
-function useItem(player) {
-    if (player.status.includes(player.items[player.selectingItem].img)) return;
-    
-    let item = player.items[player.selectingItem];
-    if (item == "empty") return;
-    if (item.cantUseIfStatus.length > 0) {
-        for (let i = 0; i < item.cantUseIfStatus.length; i++) {
-            let id = item.cantUseIfStatus[i];
-            if (player.status.includes(id)) return;
-        }
-    }
-    
-    useItemHelper(player,player.items[player.selectingItem]);
-    player.items[player.selectingItem] = "empty";
-}
+
 
 function setUpPlayerCanvas() {
     let html_playerCanvasHolder = $("playerCanvasHolder");

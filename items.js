@@ -25,7 +25,7 @@ items.push({
             filter: false,
             duration: false,
         },
-        playSound: ["eat",2], //Write the name of sound, and how many different Files there are.
+        playSound: ["die",2], //Write the name of sound, and how many different Files there are.
         spawnRandomItem: true, //When eaten will it attempt to spawn in from item pool?
     },
     showInEditor: true,

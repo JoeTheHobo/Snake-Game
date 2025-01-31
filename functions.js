@@ -572,7 +572,8 @@ function spawn(name,generateRandomItem = true,counting = false) {
             name.pos.x = x;
             name.pos.y = y;
         } else {
-            currentBoard.map[y][x].item = currentGameMode.items[itemIndex];
+            runItemFunction(false,currentGameMode.items[itemIndex],"onSpawn");
+            currentBoard.map[y][x].item = cloneObject(currentGameMode.items[itemIndex]);
             updateCells.push({
                 x: x,
                 y: y,
