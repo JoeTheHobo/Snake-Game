@@ -1318,6 +1318,23 @@ html {
   color: white;
   margin-bottom: 5px;
 }
+.local_content_board_gameMode {
+  margin-left: auto;
+  padding-left: 5px;
+  padding-right: 5px;
+  background: white;
+  border-radius: 5px;
+  border: 2px solid black;
+  margin-right: 15px;
+  font-size: 25px;
+  display: none;
+}
+.local_content_board_gameMode_selected {
+  background: rgb(88, 88, 179);
+}
+.local_content_gameModes_blocked {
+  background: rgb(53, 53, 53);
+}
 
 .firstPersonMap {
   border: 2px solid black;

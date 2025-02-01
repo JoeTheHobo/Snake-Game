@@ -1096,7 +1096,7 @@ function startGame() {
     gamePaused = false;
 
     currentBoard = boards[currentBoardIndex];
-    currentGameMode = gameModes[activeGameMode];
+    if (activeGameMode !== false) currentGameMode = gameModes[activeGameMode];
 
     currentBoard.location_tunnels = [];
 

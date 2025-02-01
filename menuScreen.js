@@ -687,11 +687,30 @@ function loadLocalScreen() {
             title.innerHTML = list[i].name;
             title.className = "local_content_title";
 
-            if (type == "gameModes" && i == activeGameMode) {
+            if (type == "gameModes" && i === activeGameMode) {
                 holder.classAdd("local_content_selected");
             }
-            if (type == "boards" && i == currentBoardIndex) {
-                holder.classAdd("local_content_selected");
+            if (type == "boards") {
+                let div;
+                if (list[i].recommendedGameMode) {
+                    div = holder.create("div");
+                    div.className = "local_content_board_gameMode hover";
+                    div.innerHTML = "Use Recommended Game Mode";
+
+                    div.gameMode = list[i].gameMode;
+                    div.on("click",function() {
+                        activeGameMode = false;
+                        currentGameMode = this.gameMode;
+                        $(".local_content_board_gameMode").classRemove("local_content_board_gameMode_selected");
+                        div.classAdd("local_content_board_gameMode_selected");
+                        loadContent(gameModesHolder,gameModes,"gameModes");
+                        $(".local_content_gameModes").classAdd("local_content_gameModes_blocked");
+                    })
+                }
+                if (i == currentBoardIndex) {
+                    if (list[i].recommendedGameMode) div.show();
+                    holder.classAdd("local_content_selected");
+                }
             }
             if (type == "snakes") {
                 let div = holder.create("div");
@@ -707,7 +726,7 @@ function loadLocalScreen() {
             holder.type = type;
             holder.index = i;
             holder.parent = parent;
-            holder.on("click",function() {
+            holder.on("click",function(e) {
                 if (this.type !== "snakes") {
                     $(`.local_content_${this.type}`).classRemove("local_content_selected");
                     this.classAdd("local_content_selected");
@@ -715,15 +734,30 @@ function loadLocalScreen() {
                 
 
                 if (this.type == "boards") {
+                    if (e.target.classList.contains("local_content_board_gameMode")) return;
+
+                    if (activeGameMode === false) {
+                        activeGameMode = 0;
+                        currentGameMode = gameModes[activeGameMode];
+                        loadContent(gameModesHolder,gameModes,"gameModes");
+                    }
+
+                    $(".local_content_board_gameMode").classRemove("local_content_board_gameMode_selected");
+
                     currentBoardIndex = this.index;
                     currentBoard = boards[currentBoardIndex];
                     ls.save("currentBoardIndex",currentBoardIndex)
 
+                    $(".local_content_board_gameMode").hide();
+
+                    if (this.object.recommendedGameMode) this.$(".local_content_board_gameMode").show();
                     
                 }
                 if (this.type == "gameModes") {
+                    $(".local_content_gameModes").classRemove("local_content_gameModes_blocked");
                     activeGameMode = this.index;
                     ls.save("activeGameMode",activeGameMode)
+                    $(".local_content_board_gameMode").classRemove("local_content_board_gameMode_selected");
                 }
                 if (this.type == "snakes") {
                     if (this.object.active === false) {
