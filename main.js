@@ -468,6 +468,10 @@ function movePlayers() {
 
             //Test Item Underplayer
             testItemUnderPlayer(player);
+
+            //Test Tile UnderPlayer
+            let mapTile = currentBoard.map[player.pos.y][player.pos.x].tile;
+            if (mapTile.onOver) runItemFunction(player,mapTile,"onOver");
             
             //Check for Player Collisions
             for (let a = 0; a < activePlayers.length; a++){
@@ -1192,6 +1196,7 @@ function startGame() {
     setUpPlayerCanvas();
     renderGame();
     fixItemDifferences(currentBoard.map);
+    fixTileDifferences(currentBoard.map);
     renderCells();
     loadBoardStatus();
 

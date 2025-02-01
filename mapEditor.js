@@ -70,6 +70,30 @@ function fixItemDifferencesMapEditor(map) {
         map[d.y][d.x].item = pos;
     }
 }
+function fixTileDifferencesMapEditor(map) {
+    if (!currentBoard.tileDifferences) return;
+    for (let i = 0; i < currentBoard.tileDifferences.length; i++) {
+        let e = currentBoard.tileDifferences[i];
+        let d = {
+            differences: e[0],
+            x: e[1],
+            y: e[2],
+        }
+        let pos = structuredClone(map[d.y][d.x].tile);
+        if (!pos) continue;
+        for (let j = 0; j < d.differences.length; j++) {
+            let change = d.differences[j]; 
+            if (change.length == 4) {
+                pos[change[0]][change[1]][change[2]] = change[3];
+            }
+            if (change.length == 3) {
+                pos[change[0]][change[1]] = change[2];
+            }
+            if (change.length == 2) pos[change[0]] = change[1];
+        }
+        map[d.y][d.x].tile = pos;
+    }
+}
 function openMapEditor(boardComingIn) {
     board = boardComingIn;
     currentBoard.originalMap = forceAllCellsToBeTheirOwn(board.originalMap);
@@ -100,6 +124,7 @@ function openMapEditor(boardComingIn) {
     adjustCanvasSize(board.width,board.height,zoom);
     renderMapEditorCanvas(true);
     fixItemDifferencesMapEditor(currentBoard.originalMap);
+    fixTileDifferencesMapEditor(currentBoard.originalMap);
     saveBoard(true);
     tool = false;
     setTool("draw");
@@ -107,6 +132,7 @@ function openMapEditor(boardComingIn) {
     xChange = ($(".me_canvasHolder").offsetWidth - $(".edit_canvas")[0].offsetWidth)/2;
     yChange = ($(".me_canvasHolder").offsetHeight - $(".edit_canvas")[0].offsetHeight)/2;
     adjustCanvasPosition();
+    loadObjectMenu();
 
     clearInterval(saveInterval);
     saveInterval = setInterval(function() {
@@ -810,6 +836,7 @@ function tool_fill() {
 function saveBoard(saveDifferences = false) {
     let html_saveStatus = $("saveStatus");
     currentBoard.itemDifferences = findItemDifferences(currentBoard.originalMap);
+    currentBoard.tileDifferences = findTileDifferences(currentBoard.originalMap);
     saveBoards();
 
     html_saveStatus.innerHTML = "Board Saved";
@@ -864,7 +891,7 @@ function loadObjectMenu() {
     $(".me_ih_name").innerHTML = selectedItem.cell.name;
     $(".me_ih_type").innerHTML = selectedItem.type;
 
-    function addSetting(title,type,value,path) {
+    function addSetting(title,type,value,path,extra) {
         let settingHolder = holder.create("div");
         settingHolder.className = "settingHolder";
         let html_title = settingHolder.create("div");
@@ -914,6 +941,37 @@ function loadObjectMenu() {
                     if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][this.path[0]] = this.value;
                 }
             })
+        }
+        if (type == "dropdown") {
+            let select = settingHolder.create("select");
+
+            extra.forEach(value2 => {
+                let option = document.createElement("option");
+                option.value = value2;
+                option.textContent = value2;
+                if (value2 === value) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            });
+
+            select.path = path;
+            select.onchange = function() {
+                let selectingOneCell = isSelectingOneCell();
+
+                if (this.path.length == 3) {
+                    selectedItem.cell[this.path[0]][this.path[1]][this.path[2]] = this.value;
+                    if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][this.path[0]][this.path[1]][this.path[2]] = this.value;
+                }
+                if (this.path.length == 2) {
+                    selectedItem.cell[this.path[0]][this.path[1]] = this.value;
+                    if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][this.path[0]][this.path[1]] = this.value;
+                }
+                if (this.path.length == 1) {
+                    selectedItem.cell[this.path[0]] = this.value;
+                    if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][this.path[0]] = this.value;
+                }
+            }
         }
         if (type.subset(0,5) == "status") {
             let imgHolder = settingHolder.create("div");
@@ -979,43 +1037,49 @@ function loadObjectMenu() {
 
     let object = selectedItem.cell;
     
-    if (selectedItem.type == "tile") return;
-
-    if (object.boardDestructible[0] !== "yes") {
-        addSetting("Board Status Required","status",object.boardDestructible[0],["boardDestructible",0]);
-    }
-    if (object.destructible.length > 0) {
-        if (object.destructible[0] !== "yes" && object.destructible[0] !== false && object.name !== "blueLock" && object.name !== "redLock" && object.name !== "greenLock") {
-            addSetting("Player Status Required","status",object.destructible[0],["destructible",0]);
+    if (selectedItem.type == "tile") {
+        if (object.onOver?.playSound) {
+            addSetting("Play Sound","dropdown",object.onOver?.playSound[0],["onOver","playSound",0],object.onOver?.playSound[2]);
         }
-    }
-    if (object.canCollide) {
-        if (object.onCollision.switchBoardStatus !== false && object.onCollision.switchBoardStatus !== undefined) {
-            addSetting("Toggle Board Status","status",object.onCollision.switchBoardStatus,["onCollision","switchBoardStatus"]);
+    } else {
+        if (object.boardDestructible[0] !== "yes") {
+            addSetting("Board Status Required","status",object.boardDestructible[0],["boardDestructible",0]);
         }
-        if (object.onCollision.addBoardStatus !== false && object.onCollision.addBoardStatus !== undefined) {
-            addSetting("Add Board Status","status",object.onCollision.addBoardStatus,["onCollision","addBoardStatus"]);
-        }
-        if (object.onCollision.setBoardStatus !== false && object.onCollision.setBoardStatus !== undefined) {
-            addSetting("Set Board Status","status",object.onCollision.setBoardStatus,["onCollision","setBoardStatus"]);
-        }
-        if (object.onCollision.removeBoardStatus !== false && object.onCollision.removeBoardStatus !== undefined) {
-            addSetting("Remove Board Status","status",object.onCollision.removeBoardStatus,["onCollision","removeBoardStatus"]);
-        }
-        if (object.offCollision) {
-            if (object.offCollision.removeBoardStatus !== false && object.offCollision.removeBoardStatus !== undefined) {
-                addSetting("Remove Board Status","status",object.offCollision.removeBoardStatus,["offCollision","removeBoardStatus"]);
+        if (object.destructible.length > 0) {
+            if (object.destructible[0] !== "yes" && object.destructible[0] !== false && object.name !== "blueLock" && object.name !== "redLock" && object.name !== "greenLock") {
+                addSetting("Player Status Required","status",object.destructible[0],["destructible",0]);
             }
         }
-    }
-    if (object.name == "boardLockedCell")
-        addSetting("Board Status Required","number",object.boardDestructibleCountRequired,["boardDestructibleCountRequired"]);
-
-    if (object.spawnPlayerID) {
-        addSetting("Spawn Player ID","statusPlayer",object.spawnPlayerID,["spawnPlayerID"]);
-    }
+        if (object.canCollide) {
+            if (object.onCollision.switchBoardStatus !== false && object.onCollision.switchBoardStatus !== undefined) {
+                addSetting("Toggle Board Status","status",object.onCollision.switchBoardStatus,["onCollision","switchBoardStatus"]);
+            }
+            if (object.onCollision.addBoardStatus !== false && object.onCollision.addBoardStatus !== undefined) {
+                addSetting("Add Board Status","status",object.onCollision.addBoardStatus,["onCollision","addBoardStatus"]);
+            }
+            if (object.onCollision.setBoardStatus !== false && object.onCollision.setBoardStatus !== undefined) {
+                addSetting("Set Board Status","status",object.onCollision.setBoardStatus,["onCollision","setBoardStatus"]);
+            }
+            if (object.onCollision.removeBoardStatus !== false && object.onCollision.removeBoardStatus !== undefined) {
+                addSetting("Remove Board Status","status",object.onCollision.removeBoardStatus,["onCollision","removeBoardStatus"]);
+            }
+            if (object.offCollision) {
+                if (object.offCollision.removeBoardStatus !== false && object.offCollision.removeBoardStatus !== undefined) {
+                    addSetting("Remove Board Status","status",object.offCollision.removeBoardStatus,["offCollision","removeBoardStatus"]);
+                }
+            }
+        }
+        if (object.name == "boardLockedCell")
+            addSetting("Board Status Required","number",object.boardDestructibleCountRequired,["boardDestructibleCountRequired"]);
     
-    addSetting("Visible","toggle",object.visible,["visible"]);
+        if (object.spawnPlayerID) {
+            addSetting("Spawn Player ID","statusPlayer",object.spawnPlayerID,["spawnPlayerID"]);
+        }
+        
+        addSetting("Visible","toggle",object.visible,["visible"]);
+    }
+
+    
 }
 function isSelectingOneCell() {
     if (selectedCells.selecting) {

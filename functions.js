@@ -406,7 +406,7 @@ function getItem(name) {
 function getTile(name) {
     for (let i = 0; i < tiles.length; i++) {
         if (tiles[i].name == name) {
-            return tiles[i];
+            return structuredClone(tiles[i]);
         }
     }
 }
@@ -1090,6 +1090,22 @@ function findItemDifferences(map) {
     }
     return allDifferences;
 }
+function findTileDifferences(map) {
+    let allDifferences = [];
+    for (let i = 0; i < map.length; i++) {
+        for (let j = 0; j < map[i].length; j++) {
+            let tile = map[i][j].tile;
+            if (!tile) continue;
+
+            let realTile = getTile(tile.name);
+            let differences = compareObjects(realTile,tile);
+            if (differences.length == 0) continue;
+
+            allDifferences.push([differences,j,i]);
+        }
+    }
+    return allDifferences;
+}
 function compareObjects(obj1, obj2, path = []) {
     let differences = [];
   
@@ -1182,7 +1198,7 @@ function fixItemDifferences(map) {
             x: e[1],
             y: e[2],
         }
-        let pos = (map[d.y][d.x].item);
+        let pos = structuredClone(map[d.y][d.x].item);
         if (!pos) continue;
         for (let j = 0; j < d.differences.length; j++) {
             let change = d.differences[j];
@@ -1192,6 +1208,30 @@ function fixItemDifferences(map) {
             if (change.length == 2) pos[change[0]] = change[1];
         }
         map[d.y][d.x].item = pos;
+    }
+}
+function fixTileDifferences(map) {
+    if (!currentBoard.tileDifferences) return;
+    for (let i = 0; i < currentBoard.tileDifferences.length; i++) {
+        let e = currentBoard.tileDifferences[i];
+        let d = {
+            differences: e[0],
+            x: e[1],
+            y: e[2],
+        }
+        let pos = structuredClone((map[d.y][d.x].tile));
+        if (!pos) continue;
+        for (let j = 0; j < d.differences.length; j++) {
+            let change = d.differences[j];
+            if (change.length == 4) {
+                pos[change[0]][change[1]][change[2]] = change[3];
+            }
+            if (change.length == 3) {
+                pos[change[0]][change[1]] = change[2];
+            }
+            if (change.length == 2) pos[change[0]] = change[1];
+        }
+        map[d.y][d.x].tile = pos;
     }
 }
 
