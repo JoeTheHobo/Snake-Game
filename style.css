@@ -973,6 +973,7 @@ html {
 
 }
 .logo_image {
+  width: 700px;
   height: auto;
   position: relative;
   
@@ -985,7 +986,6 @@ html {
 }
 
 .menu_holder {
-  margin-top: 25px;
   z-index: 1;
   width: 70%;
   height: 60%;
