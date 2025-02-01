@@ -7,7 +7,7 @@ if (needsToBeReset) {
     ls.save("reset" + forceReset,false);
 }
 
-let backgrounds = ["colors","water","space"];
+let backgrounds = ["colors","water","space","clear"];
 let currentBackground = backgrounds[0];
 
 let showPerformance = false;

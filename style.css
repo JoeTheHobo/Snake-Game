@@ -1091,7 +1091,9 @@ html {
   cursor: url('./img/cursor.cur'), auto;
 
 }
-
+#servers_tab {
+  display: none;
+}
 .servers_invite_holder {
   display: flex;
   flex-direction: row;
@@ -1445,4 +1447,8 @@ html {
   line-height: 108px;
   font-size: 40px;
   color: white;
+}
+
+.hideContent {
+  display: none;
 }

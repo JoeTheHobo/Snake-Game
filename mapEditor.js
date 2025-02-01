@@ -288,6 +288,7 @@ function renderBackgroundCanvas() {
     let image = new Image();
     image.src= "img/backgrounds/" + board.background + ".png";
     image.onload = function() {
+        me_ctx_background.clearRect(0,0,me_canvas_background.width,me_canvas_background.height)
         me_ctx_background.drawImage(image,0,0,me_canvas_background.width,me_canvas_background.height)
     }
     
@@ -665,6 +666,7 @@ $(".me_canvasHolder").on("wheel",function(e) {
 
     moveCanvasToStayInPosition(e,mouseX,mouseY);
     renderMapEditorCanvas(true);
+    renderBackgroundCanvas();
     renderTopCanvas();
 });
 function moveCanvasToStayInPosition(e,originalX,originalY) {
