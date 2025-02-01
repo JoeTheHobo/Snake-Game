@@ -148,19 +148,10 @@
             <div class="pixel" id="button_mapEditor"><p>Back To Editor</p></div>
         </div>
     </div>
-    <div class="scene" id="scene_gameModes">
-        <div class="pixel" id="button_mainMenu"><p>Main Menu</p></div>
-        <div class="gameModesHolder listHolder"></div>
-    </div>
-    <div class="scene" id="scene_boardList">
-        <div class="pixel" id="button_mainMenu"><p>Main Menu</p></div>
-        <div class="boardListHolder listHolder"></div>
-    </div>
     <div class="scene" id="scene_mapEditor">
         <div class="me_top">
             <div id="me_left">
                 <div id="me_button"><--</div>
-                <input id="me_name" placeholder="Board Name">
                 <div id="saveStatus"></div>
             </div>
             <div id="me_playButton">Play Game!</div>
@@ -172,10 +163,6 @@
                 <div class="me_dropdown" id="me_tilesDropDown">
                     <div class="me_dropdownTitle">Tiles</div>
                     <div class="me_dropdownContent me_tilesContent"></div>
-                </div>
-                <div class="me_dropdown" id="me_tilesDropDown">
-                    <div class="me_dropdownTitle">Backgrounds</div>
-                    <div class="me_dropdownContent me_backgroundContent"></div>
                 </div>
             </div>
         </div>
@@ -223,6 +210,7 @@
         </div>
         <div class="me_bottom">
             <div class="me_canvasHolder">
+                <canvas class="edit_canvas" id="me_canvas_background"></canvas>
                 <canvas class="edit_canvas" id="me_canvas"></canvas>
                 <canvas class="edit_canvas" id="me_canvas2"></canvas>
             </div>
@@ -233,11 +221,41 @@
                 <div class="me_ih_name">Pellet</div>
                 <div class="me_ih_type">Item</div>
                 <div class="me_ih_settings"></div>
+                
+                <div class="me_ih_bottom">
+                    <div class="me_ih_title">Board Settings</div>
+                    <div class="me_ih_setting">
+                        <div class="me_ih_settingName">Board Name</div>
+                        <input placeholder="Board Name..." id="me_name" class="me_ih_input">
+                    </div>
+                    <div class="me_ih_setting">
+                        <div class="me_ih_settingName">Board Background</div>
+                        <div class="me_ih_button hover" id="me_background">Background Name</div>
+                    </div>
+                    <div class="me_ih_setting">
+                        <div class="me_ih_settingName">Game Mode</div>
+                        <div class="me_ih_button hover" id="me_gameMode">Game Mode Name</div>
+                    </div>
+                    <div class="me_ih_setting">
+                        <div class="me_ih_settingName">Recommended Game Mode</div>
+                        <input type="checkbox" id="me_recommendedGameMode" class="me_ih_checkbox">
+                    </div>
+                    <div class="me_ih_setting">
+                        <div class="me_ih_settingName">Min Players Allowed</div>
+                        <input type="number" min="1" max="16" id="me_minPlayers" class="me_ih_number">
+                    </div>
+                    <div class="me_ih_setting">
+                        <div class="me_ih_settingName">Max Players Allowed</div>
+                        <input type="number" min="1" max="16" id="me_maxPlayers" class="me_ih_number">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="statusSelectionScreen">
             <div class="statusSelectionHolder"></div>
         </div>
+        <div class="gameModeSelectionScreen"></div>
+        <div class="backgroundSelectionScreen"></div>
     </div>
 
     <div class="production"></div>

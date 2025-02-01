@@ -1137,7 +1137,7 @@ function startGame() {
 
     //Draw On Background canvas
     let backgroundImage = new Image();
-    backgroundImage.src = "img/" + currentBackground;
+    backgroundImage.src = "img/backgrounds/" + currentBoard.background + ".png";
     backgroundImage.onload = function() {
         ctx_background.drawImage(backgroundImage,0,0,canvas_background.width,canvas_background.height);
     }

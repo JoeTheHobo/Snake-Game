@@ -706,6 +706,7 @@ function loadLocalScreen() {
             holder.object = list[i];
             holder.type = type;
             holder.index = i;
+            holder.parent = parent;
             holder.on("click",function() {
                 if (this.type !== "snakes") {
                     $(`.local_content_${this.type}`).classRemove("local_content_selected");
@@ -717,6 +718,8 @@ function loadLocalScreen() {
                     currentBoardIndex = this.index;
                     currentBoard = boards[currentBoardIndex];
                     ls.save("currentBoardIndex",currentBoardIndex)
+
+                    
                 }
                 if (this.type == "gameModes") {
                     activeGameMode = this.index;

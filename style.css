@@ -59,9 +59,16 @@ html {
     margin: auto;
     z-index: 1;
 }
+#me_canvas {
+  z-index: 2;
+}
 #me_canvas2 {
   pointer-events: none;
-  z-index: 2;
+  z-index: 3;
+}
+#me_canvas_background {
+  pointer-events: none;
+  z-index: 1;
 }
 #render_background {
   z-index: 401;
@@ -799,16 +806,6 @@ html {
   margin: 5px;
 }
 
-
-#me_name {
-  outline: none;
-  width: 150px;
-  height: 30px;
-  text-align: center;
-  font-size: 20px;
-  margin-left: 10px;
-}
-
 .me_toolbar {
   width: 100%;
   background: gray;
@@ -892,6 +889,44 @@ html {
   height: 60%;
   border-radius: 5px;
   background: gray;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  z-index: 3;
+}
+.gameModeSelectionScreen {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  display: none;
+  flex-direction: column;
+  width: 400px;
+  height: max-content;
+  align-items: center;
+  padding: 5px;
+  padding-bottom: 10px;
+  border-radius: 5px;
+  background: rgb(19, 19, 19);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  z-index: 3;
+}
+.backgroundSelectionScreen {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  display: none;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 610px;
+  height: max-content;
+  align-items: center;
+  padding: 5px;
+  border-radius: 5px;
+  background: rgb(19, 19, 19);
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   z-index: 3;
 }
@@ -1309,4 +1344,88 @@ html {
   background:white;
   width: 200px;
   height: 200px;
+}
+
+.me_ih_bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: auto;
+  width: 100%;
+  margin-bottom: 70px;
+}
+.me_ih_title {
+  font-size: 35px;
+  margin-bottom: 10px;
+  width: 90%;
+  text-align: center;
+  border-bottom: 3px solid white;
+}
+.me_ih_setting {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 3px;
+}
+.me_ih_settingName {
+  width: 50%;
+  font-size: 25px;
+  padding: 3px;
+  padding-right: 10px;
+  text-align: right;
+}
+.me_ih_button {
+  width: 40%;
+  text-align: center;
+  border-radius: 5px;
+  background: white;
+  color: black;
+  cursor: url('./img/pointer.cur'), auto;
+  font-size: 25px;
+  padding: 3px;
+}
+.me_ih_checkbox {
+  outline: none;
+  width: 32px;
+  height: 32px;
+  cursor: url('./img/pointer.cur'), auto;
+  border-radius: 5px;
+  border: none;
+}
+.me_ih_input {
+  width: 40%;
+  outline: none;
+  border: none;
+  text-align: center;
+  font-size: 25px;
+  border-radius: 5px;
+  font-family: VT323;
+}
+.me_ih_number {
+  width: 40px;
+  height: 32px;
+  outline: none;
+  border: none;
+  font-family: VT323;
+  border-radius: 5px;
+  font-size: 25px;
+  text-align: center;
+}
+
+.me_background_holder {
+  border-radius: 5px;
+  width: 192px;
+  height: 108px;
+  margin: 5px;
+  position: relative;
+  cursor: url('./img/pointer.cur'), auto;
+}
+.me_background_title {
+  width: 100%;
+  text-align: center;
+  height: 108px;
+  line-height: 108px;
+  font-size: 40px;
+  color: white;
 }

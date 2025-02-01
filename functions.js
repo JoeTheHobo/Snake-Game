@@ -7,6 +7,8 @@ if (needsToBeReset) {
     ls.save("reset" + forceReset,false);
 }
 
+let backgrounds = ["colors","water","space"];
+let currentBackground = backgrounds[0];
 
 let showPerformance = false;
 
@@ -51,6 +53,12 @@ boards = presetBoards.concat(boards);
 if (boards.length) {
     for (let i = 0; i < boards.length; i++) {
         boards[i] = fixBoard(boards[i]);
+
+        if (!boards[i].minPlayers) boards[i].minPlayers = 1;
+        if (!boards[i].maxPlayers) boards[i].maxPlayers = 8;
+        if (!boards[i].background) boards[i].backgrounds = backgrounds[0];
+        if (!boards[i].recommendedGameMode) boards[i].recommendedGameMode = false;
+        if (!boards[i].gameMode) boards[i].gameMode = false;
     }
 }
 let currentBoardIndex = ls.get("currentBoardIndex",0);
@@ -103,8 +111,6 @@ let gamePaused = false;
 let isActiveGame = false;
 let doColorRender = false;
 
-let backgrounds = ["background.jpg"];
-let currentBackground = backgrounds[0];
 
 let gridSize;
 function setGridSize(size) {
@@ -179,6 +185,8 @@ let me_canvas = $("me_canvas");
 let me_ctx = me_canvas.getContext("2d");
 let me2_canvas = $("me_canvas2");
 let me2_ctx = me2_canvas.getContext("2d");
+let me_canvas_background = $("me_canvas_background");
+let me_ctx_background = me_canvas_background.getContext("2d");
 
 let canvas_firstPerson_tl = $(".firstPersonCanvas_tl");
 let ctx_firstPerson_tl = canvas_firstPerson_tl.getContext("2d");
@@ -200,7 +208,7 @@ let canvas_firstPerson_master = $(".firstPersonCanvas_master");
 let ctx_firstPerson_master = canvas_firstPerson_master.getContext("2d");
 
 let allCanvas = [canvas_background,canvas_tiles,canvas_items,canvas_players,canvas_overhangs,me_canvas,me2_canvas,canvas_firstPerson_tl,
-    canvas_firstPerson_tm,canvas_firstPerson_tr,canvas_firstPerson_lm,canvas_firstPerson_rm,canvas_firstPerson_bl,canvas_firstPerson_bm,canvas_firstPerson_br,canvas_firstPerson_master
+    canvas_firstPerson_tm,canvas_firstPerson_tr,canvas_firstPerson_lm,canvas_firstPerson_rm,canvas_firstPerson_bl,canvas_firstPerson_bm,canvas_firstPerson_br,canvas_firstPerson_master,me_canvas_background
 ]
 
 function adjustCanvasSize(gridx,gridy,zoom = 1) {
@@ -836,7 +844,11 @@ function createBoard(name,width,height) {
         name: name,
         width: width,
         height: height,
-        background: false,
+        minPlayers: 1,
+        maxPlayers: 8,
+        background: backgrounds[0],
+        recommendedGameMode: false,
+        gameMode: currentGameMode,
         map: newMap(width,height),
         id: Date.now() + "_" + rnd(1000),
         mouseOver: false,

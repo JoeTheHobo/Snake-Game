@@ -116,7 +116,22 @@ function openMapEditor(boardComingIn) {
     $(".redo_tool").style.opacity = "0.5";
     $(".undo_tool").style.opacity = "0.5";
     setScene("mapEditor");
+
+    //Load Board Settings HTML
     $("me_name").value = board.name;
+    if (!board.background) board.background = backgrounds[0];
+    $("me_background").innerHTML = board.background;
+    if (!board.gameMode) board.gameMode = currentGameMode;
+    $("me_gameMode").innerHTML = board.gameMode.name;
+    $("me_minPlayers").value = board.minPlayers;
+    $("me_maxPlayers").value = board.maxPlayers;
+    $("me_recommendedGameMode").checked = board.recommendedGameMode;
+
+    $(".gameModeSelectionScreen").hide();
+    $(".backgroundSelectionScreen").hide();
+    
+    //End Load Board Settings HTML
+
     setGridSize(.17);
     me_loadDropdown($(".me_itemsContent"),items,"item_");
     me_loadDropdown($(".me_tilesContent"),tiles,"tile_");
@@ -133,6 +148,7 @@ function openMapEditor(boardComingIn) {
     yChange = ($(".me_canvasHolder").offsetHeight - $(".edit_canvas")[0].offsetHeight)/2;
     adjustCanvasPosition();
     loadObjectMenu();
+    renderBackgroundCanvas();
 
     clearInterval(saveInterval);
     saveInterval = setInterval(function() {
@@ -267,6 +283,14 @@ function renderTopCanvas() {
 }
 function checkRenderThenRender() {
      renderMapEditorCanvas();
+}
+function renderBackgroundCanvas() {
+    let image = new Image();
+    image.src= "img/backgrounds/" + board.background + ".png";
+    image.onload = function() {
+        me_ctx_background.drawImage(image,0,0,me_canvas_background.width,me_canvas_background.height)
+    }
+    
 }
 function renderMapEditorCanvas(renderEverything = false) {
     itemCounts = [];
@@ -664,6 +688,8 @@ function adjustCanvasPosition() {
     $("me_canvas").style.marginTop = yChange + "px";
     $("me_canvas2").style.marginLeft = xChange + "px";
     $("me_canvas2").style.marginTop = yChange + "px";
+    $("me_canvas_background").style.marginLeft = xChange + "px";
+    $("me_canvas_background").style.marginTop = yChange + "px";
 }
 function changeZoom(delta) {
     if (delta < 0) zoom += 0.1;
@@ -854,7 +880,7 @@ $("me_button").on("click",function() {
         [
             {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Discard Changes",onClick: () => {
                 setScene("newMenu");
-                loadBoards();
+                loadBoardsScreen();
             }},
             {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Save Changes",onClick: () => {
                 saveBoard();
@@ -869,19 +895,6 @@ $("me_button").on("click",function() {
         id: "savePopUp",
     
     })
-})
-$("me_name").on("click",function() {
-    this.storedValue = this.value;
-    this.value = "";
-})
-$("me_name").on("focusout",function() {
-    if (this.value == "") this.value = this.storedValue;
-})
-$("me_name").on("input",function() {
-    let setValue = this.value;
-    if (this.value == "") setValue = "Untitled";
-    board.name = this.value;
-    $("saveStatus").innerHTML = "Board Is Not Saved";
 })
 
 function loadObjectMenu() {
@@ -1608,3 +1621,114 @@ function runToolTip(x,y,message,type,id = false) {
         toolTip.remove()
     },1500)
 }
+
+
+
+//HTML ON Click
+
+$("me_name").on("click",function() {
+    this.storedValue = this.value;
+    this.value = "";
+})
+$("me_name").on("focusout",function() {
+    if (this.value == "") this.value = this.storedValue;
+})
+$("me_name").on("input",function() {
+    let setValue = this.value;
+    if (this.value == "") setValue = "Untitled";
+    board.name = this.value;
+    $("saveStatus").innerHTML = "Board Is Not Saved";
+})
+$("me_minPlayers").on("change",function() {
+    let value = Number(Math.round(this.value));
+    if (value < 1 || value > 16) return;
+    if (value > board.maxPlayers) {
+        board.maxPlayers = value;
+        $("me_maxPlayers").value = this.value;
+    }
+    board.minPlayers = value;
+    $("saveStatus").innerHTML = "Board Is Not Saved";
+})
+$("me_maxPlayers").on("change",function() {
+    let value = Number(Math.round(this.value));
+    if (value < 1 || value > 16) return;
+    if (value < board.minPlayers) {
+        board.minPlayers = value;
+        $("me_minPlayers").value = this.value;
+    }
+    board.maxPlayers = value;
+    $("saveStatus").innerHTML = "Board Is Not Saved";
+})
+$("me_recommendedGameMode").on("change",function() {
+    board.recommendedGameMode = this.checked;
+    $("saveStatus").innerHTML = "Board Is Not Saved";
+
+})
+$("me_background").on("click",function() {
+    let holder = $(".backgroundSelectionScreen");
+    if (holder.style.display !== "none") holder.hide();
+    else {
+        holder.show("flex");
+        loadBackgroundContent(holder);
+    }
+})
+$("me_gameMode").on("click",function() {
+    let holder = $(".gameModeSelectionScreen");
+    if (holder.style.display !== "none") holder.hide();
+    else {
+        holder.show("flex");
+        loadGameModesContent(holder);
+    }
+})
+function loadGameModesContent(parent) {
+    parent.innerHTML = "";
+    let list = gameModes;
+    let type = "gameModes";
+    for (let i = 0; i < list.length; i++) {
+        let holder = parent.create("div");
+        holder.className = `local_content_holder hover  local_content_${type}_${i} local_content_${type}`;
+
+        let title = holder.create("div");
+        title.innerHTML = list[i].name;
+        title.className = "local_content_title";
+
+        holder.object = list[i];
+        holder.type = type;
+        holder.index = i;
+        holder.on("click",function() {
+
+            activeGameMode = this.index;
+            ls.save("activeGameMode",activeGameMode)
+            currentGameMode = gameModes[activeGameMode];
+            board.gameMode = structuredClone(currentGameMode);
+            parent.hide();
+            $("me_gameMode").innerHTML = gameModes[activeGameMode].name;
+            $("saveStatus").innerHTML = "Board Is Not Saved";
+        })
+    }
+}
+
+function loadBackgroundContent(parent) {
+    parent.innerHTML = "";
+    let list = backgrounds;
+    for (let i = 0; i < list.length; i++) {
+        let holder = parent.create("div");
+        holder.className = `me_background_holder`;
+        holder.style.background = "url(img/backgrounds/" + list[i] + ".png)";
+
+        let title = holder.create("div");
+        title.innerHTML = list[i];
+        title.className = "me_background_title";
+
+        holder.object = list[i];
+        holder.index = i;
+        holder.on("click",function() {
+            board.background = this.object;
+            parent.hide();
+            $("me_background").innerHTML = this.object;
+            $("saveStatus").innerHTML = "Board Is Not Saved";
+            renderBackgroundCanvas();
+        })
+    }
+}
+//HTML ON CLICK END
