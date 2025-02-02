@@ -1073,6 +1073,9 @@ function loadObjectMenu() {
         if (_type(object.snakeSizeRequired).type == "number") {
             addSetting("Snake Size Required","number",object.snakeSizeRequired,["snakeSizeRequired"]);
         }
+        if (_type(object.requiredSnakeSizeToCollide).type == "number") {
+            addSetting("Snake Size Required","number",object.requiredSnakeSizeToCollide,["requiredSnakeSizeToCollide"]);
+        }
         
         addSetting("Visible","toggle",object.visible,["visible"]);
     }
