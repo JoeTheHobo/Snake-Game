@@ -1270,7 +1270,14 @@ html {
 }
 
 
-
+.local_bottom_canvas {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  width: 142px;
+  height: 80px;
+  background: white;
+}
 .local_top {
   width: 100%;
   height: 80%;
@@ -1288,6 +1295,10 @@ html {
   border-right: 1px solid white;
 
 }
+.local_choice_warning {
+  color: red;
+  font-size: 17px;
+}
 .local_choice_title {
   color: white;
   font-size: 35px;
@@ -1303,6 +1314,7 @@ html {
   height: 20%;
   display: flex;
   flex-direction: row;
+  position: relative;
   align-items: center;
   justify-content:  center;
 }

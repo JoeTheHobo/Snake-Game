@@ -170,6 +170,8 @@ for (let i = 0; i < gameModes.length; i++) {
 saveAllGameModes()
 
 //Setting Up Canvas
+$(".local_bottom_canvas").width = 142;
+$(".local_bottom_canvas").height = 80;
 let canvas_background = $("render_background");
 let ctx_background = canvas_background.getContext("2d");
 let canvas_tiles = $("render_tiles");
@@ -1155,16 +1157,36 @@ function loadBoardStatus(index) {
 
     let statusSize = cameraFollowPlayer ? 40 : 25;
 
+    let statusGroups = [];
     for (let i = 0; i < currentBoard.boardStatus.length; i++) {
-        let status = currentBoard.boardStatus[i];
+        let foundStatus = false;
+        for (let j = 0; j < statusGroups.length; j++) {
+            if (statusGroups[j][0] === currentBoard.boardStatus[i]) {
+                statusGroups[j].push(currentBoard.boardStatus[i]);
+                foundStatus = true;
+            }    
+        }
+        if (foundStatus) continue;
+        statusGroups.push([currentBoard.boardStatus[i]]);
+    }
+
+    for (let i = 0; i < statusGroups.length; i++) {
+        let status = statusGroups[i][0];
+        let count = statusGroups[i].length;
+
+        if (count > 1) status = status + "x" + count;
+
         let contentHolder = holder.create("div");
         contentHolder.css({
-            width: statusSize + "px",
+            width: "max-content",
+            paddingLeft: "3px",
+            paddingRight: "3px",
             height: statusSize + "px",
             margin: "2px",
             borderRadius: "5px",
             border: "2px solid black",
             background: "white",
+            fontFamily: "VT323",
         })
 
         let text = contentHolder.create("div");
@@ -1176,10 +1198,13 @@ function loadBoardStatus(index) {
             fontSize: statusSize+ "px",
             lineHeight: statusSize + "px",
             textAlign: "center",
+            fontFamily: "VT323",
         })
 
         
     }
+
+    updateStatusCells();
 }
 
 
@@ -1253,7 +1278,7 @@ function forceAllCellsToBeTheirOwn(map) {
 
 
 
-function drawBoardToCanvas(board,canvas) {
+function drawBoardToCanvas(board,canvas,forceHeight) {
     let ctx = canvas.getContext("2d");
     let gs;
 
@@ -1264,9 +1289,11 @@ function drawBoardToCanvas(board,canvas) {
         gs = Math.round(canvas.width / board[0].length);
 
     } 
+    if (forceHeight) gs = Math.round(canvas.height / board.length);
 
     let width = Math.round(board[0].length * gs);
     let height = Math.round(board.length * gs);
+
     canvas.height = height;
     canvas.width = width;
     canvas.css({

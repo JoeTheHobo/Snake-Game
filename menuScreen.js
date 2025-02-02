@@ -695,7 +695,7 @@ function loadLocalScreen() {
                 if (list[i].recommendedGameMode) {
                     div = holder.create("div");
                     div.className = "local_content_board_gameMode hover";
-                    div.innerHTML = "Use Recommended Game Mode";
+                    div.innerHTML = "Enable Game Mode";
 
                     div.gameMode = list[i].gameMode;
                     div.on("click",function() {
@@ -710,6 +710,14 @@ function loadLocalScreen() {
                 if (i == currentBoardIndex) {
                     if (list[i].recommendedGameMode) div.show();
                     holder.classAdd("local_content_selected");
+                    
+                    let snakeText = "Snakes";
+                    if (currentBoard.maxPlayers < 2) snakeText = "Snake";
+                    let text = `${currentBoard.minPlayers} - ${currentBoard.maxPlayers} ${snakeText} Are Required For Board`;
+                    if (currentBoard.minPlayers === currentBoard.maxPlayers) text = `${currentBoard.maxPlayers} ${snakeText} Are Required For Board`
+                    $(".snakedRequiredWarning").innerHTML = text;
+
+                    drawBoardToCanvas(list[i].originalMap,$(".local_bottom_canvas"),true)
                 }
             }
             if (type == "snakes") {
@@ -751,6 +759,14 @@ function loadLocalScreen() {
                     $(".local_content_board_gameMode").hide();
 
                     if (this.object.recommendedGameMode) this.$(".local_content_board_gameMode").show();
+
+                    let snakeText = "Snakes";
+                    if (currentBoard.maxPlayers < 2) snakeText = "Snake";
+                    let text = `${currentBoard.minPlayers} - ${currentBoard.maxPlayers} ${snakeText} Are Required For Board`;
+                    if (currentBoard.minPlayers === currentBoard.maxPlayers) text = `${currentBoard.maxPlayers} ${snakeText} Are Required For Board`
+                    $(".snakedRequiredWarning").innerHTML = text;
+
+                    drawBoardToCanvas(this.object.originalMap,$(".local_bottom_canvas"),true)
                     
                 }
                 if (this.type == "gameModes") {

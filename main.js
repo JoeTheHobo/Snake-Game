@@ -28,6 +28,13 @@ function renderGame() {
                             name: cell.item.name,
                         })
                     }
+                    if (cell.item.renderStatusPath.length > 0) {
+                        currentBoard.location_status.push({
+                            x: j,
+                            y: i,
+                            name: cell.item.name,
+                        })
+                    }
                 }
             }
         }
@@ -66,12 +73,35 @@ function renderCells() {
 
             if (name == "*P") continue;
 
+
+            //Check If Status IS Cleared Or Not
+            let worldStatusPass = false;
+            let boardStatusCount = 0;
+            for (let i = 0; i < mapCell.boardDestructible.length; i++) {
+                if (mapCell.boardDestructible[i] == "yes")  {
+                    worldStatusPass = true;
+                    boardStatusCount++;
+                    continue;
+                }
+                if (currentBoard.boardStatus.includes(mapCell.boardDestructible[i])) {
+                    for (let j = 0; j < currentBoard.boardStatus.length; j++) {
+                        if (currentBoard.boardStatus[j] === mapCell.boardDestructible[i]) boardStatusCount++;
+                    }
+                    continue;
+                }
+            }
+            worldStatusPass = boardStatusCount >= Number(mapCell.boardDestructibleCountRequired);
+            //End
+
+
+
             if (mapCell.boardDestructibleCountRequired > 1)
                 name = name + "x" + mapCell.boardDestructibleCountRequired;
 
             ctx_items.font = "16px VT323";
             ctx_items.strokeStyle = "black";
-            ctx_items.fillStyle = "white";
+            if (worldStatusPass) ctx_items.fillStyle = "green";
+            else ctx_items.fillStyle = "red";
             ctx_items.lineWidth = 4;
 
             let textWidth = ctx_items.measureText(name).width;
@@ -85,6 +115,14 @@ function renderCells() {
         }
     }
     updateCells = [];
+}
+function updateStatusCells() {
+    for (let i = 0; i < currentBoard.location_status.length; i++) {
+        updateCells.push({
+            x: currentBoard.location_status[i].x,
+            y: currentBoard.location_status[i].y,
+        });
+    }
 }
 function deleteSnakeCells() {
     for (let i = 0; i < updateSnakeCells.length; i++) {
@@ -1120,6 +1158,7 @@ function startGame(solo = false) {
     currentGameMode = structuredClone(currentGameMode);
 
     currentBoard.location_tunnels = [];
+    currentBoard.location_status = [];
 
     try {
         currentBoard.map = structuredClone(currentBoard.originalMap);
