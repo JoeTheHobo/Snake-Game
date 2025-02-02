@@ -1,9 +1,9 @@
 ls.setID("snakegame");
 
-let forceReset = 10;
+let forceReset = 16;
 let needsToBeReset = ls.get("reset" + forceReset,true);
 if (needsToBeReset) {
-    ls.clear();
+    ls.delete("gameModes");
     ls.save("reset" + forceReset,false);
 }
 
@@ -179,7 +179,9 @@ let ctx_items = canvas_items.getContext("2d");
 let canvas_players = $("render_players");
 let ctx_players = canvas_players.getContext("2d");
 let canvas_overhangs = $("render_overhangs");
-let ctx_overhangs = canvas_players.getContext("2d");
+let ctx_overhangs = canvas_overhangs.getContext("2d");
+let canvas_top = $("render_top");
+let ctx_top = canvas_top.getContext("2d");
 
 let me_canvas = $("me_canvas");
 let me_ctx = me_canvas.getContext("2d");
@@ -207,7 +209,7 @@ let ctx_firstPerson_br = canvas_firstPerson_br.getContext("2d");
 let canvas_firstPerson_master = $(".firstPersonCanvas_master");
 let ctx_firstPerson_master = canvas_firstPerson_master.getContext("2d");
 
-let allCanvas = [canvas_background,canvas_tiles,canvas_items,canvas_players,canvas_overhangs,me_canvas,me2_canvas,canvas_firstPerson_tl,
+let allCanvas = [canvas_background,canvas_tiles,canvas_items,canvas_players,canvas_overhangs,canvas_top,me_canvas,me2_canvas,canvas_firstPerson_tl,
     canvas_firstPerson_tm,canvas_firstPerson_tr,canvas_firstPerson_lm,canvas_firstPerson_rm,canvas_firstPerson_bl,canvas_firstPerson_bm,canvas_firstPerson_br,canvas_firstPerson_master,me_canvas_background
 ]
 
@@ -334,7 +336,7 @@ function makeItemCanvas(image,filter = "",player) {
     let itemCanvas = html_itemCanvasHolder.create("canvas");
     let itemCtx = itemCanvas.getContext("2d");
 
-    if (filter == "player") {
+    if (filter == "*P") {
         filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
     }
 
@@ -494,8 +496,8 @@ function spawn(name,generateRandomItem = true,counting = false,playAudio = true)
                 for (let j = 0; j < currentBoard.map[0].length; j++) {
                     if (currentBoard.map[k][j].item === false) continue;
                     if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
-                    if (currentBoard.map[k][j].item.spawnPlayerID == "player" || currentBoard.map[k][j].item.spawnPlayerID === undefined) continue;
-                    if (Number(currentBoard.map[k][j].item.spawnPlayerID.subset("_\\after","end")) !== Number(name.index)) continue;
+                    if (currentBoard.map[k][j].item.spawnPlayerID == "*P" || currentBoard.map[k][j].item.spawnPlayerID === undefined) continue;
+                    if (currentBoard.map[k][j].item.spawnPlayerID !== "P" + Number(name.index)) continue;
 
                     let playerOnIt = false;
                     for (let i = 0; i < activePlayers.length; i++) {
@@ -515,7 +517,7 @@ function spawn(name,generateRandomItem = true,counting = false,playAudio = true)
                     for (let j = 0; j < currentBoard.map[0].length; j++) {
                         if (currentBoard.map[k][j].item === false) continue;
                         if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
-                        if (currentBoard.map[k][j].item.spawnPlayerID !== "player") continue;
+                        if (currentBoard.map[k][j].item.spawnPlayerID !== "*P") continue;
                         
                         let playerOnIt = false;
                         for (let i = 0; i < activePlayers.length; i++) {
@@ -616,6 +618,10 @@ function spawn(name,generateRandomItem = true,counting = false,playAudio = true)
             if (cameraFollowPlayer) sendPlayer = activePlayers[0];
             runItemFunction(sendPlayer,currentGameMode.items[itemIndex],"onSpawn",{x:x,y:y},{playAudio: playAudio});
             currentBoard.map[y][x].item = cloneObject(currentGameMode.items[itemIndex]);
+            currentBoard.map[y][x].item.pos = {
+                x: x,
+                y: y,
+            }
             updateCells.push({
                 x: x,
                 y: y,
@@ -826,7 +832,7 @@ function drawPlayerBox(player) {
         right: statusRight,
     })
     for (let i = 0; i < player.status.length; i++) {
-        if (player.status[i].subset(0,6) == "player_") continue;
+        if (player.status[i].charAt(0) == "P" && player.status[i].length < 3) continue;
 
         let statusImage = statusHolder.create("img");
         statusImage.src = "img/" + getRealItem(player.status[i]).img;
@@ -1151,8 +1157,8 @@ function loadBoardStatus(index) {
 
     for (let i = 0; i < currentBoard.boardStatus.length; i++) {
         let status = currentBoard.boardStatus[i];
-        let imgHolder = holder.create("div");
-        imgHolder.css({
+        let contentHolder = holder.create("div");
+        contentHolder.css({
             width: statusSize + "px",
             height: statusSize + "px",
             margin: "2px",
@@ -1161,39 +1167,16 @@ function loadBoardStatus(index) {
             background: "white",
         })
 
-        if (status.subset(0,5) == "player") {
-            if (status.subset(0,6) == "player_") {
-                let text = imgHolder.create("div");
-                text.innerHTML = "P" + status.subset("_\\after","end"); 
-                text.css({
-                    width: "100%",
-                    color: "black",
-                    fontWeight: "bold",
-                    fontSize: statusSize + "px",
-                    lineHeight:  statusSize + "px",
-                    textAlign: "center",
-                })
-            }
-            if (status == "player") {
-                let text = imgHolder.create("div");
-                text.innerHTML = "P"; 
-                text.css({
-                    width: "100%",
-                    color: "black",
-                    fontWeight: "bold",
-                    fontSize: statusSize+ "px",
-                    lineHeight: statusSize + "px",
-                    textAlign: "center",
-                })
-            }
-        } else {
-            let img = imgHolder.create("img");
-            img.src = "img/" + getRealItem(status).img;
-            img.css({
-                width: "100%",
-                height: "100%",
-            })
-        }
+        let text = contentHolder.create("div");
+        text.innerHTML = status; 
+        text.css({
+            width: "100%",
+            color: "black",
+            fontWeight: "bold",
+            fontSize: statusSize+ "px",
+            lineHeight: statusSize + "px",
+            textAlign: "center",
+        })
 
         
     }
@@ -1213,12 +1196,22 @@ function fixItemDifferences(map) {
         if (!pos) continue;
         for (let j = 0; j < d.differences.length; j++) {
             let change = d.differences[j];
+            if (change.length == 4) {
+                pos[change[0]][change[1]][change[2]] = change[3];
+            }
             if (change.length == 3) {
                 pos[change[0]][change[1]] = change[2];
             }
             if (change.length == 2) pos[change[0]] = change[1];
         }
         map[d.y][d.x].item = pos;
+        let item = map[d.y][d.x].item;
+        
+        if (item.message) {
+            if (item.message == ".status" && item.boardDestructibleCountRequired > 1) {
+                new messageEmote(item,"x" + item.boardDestructibleCountRequired,{showIfPlayerDis: 5,hideIfBoardStatusPass: true,messagePadding: 5})
+            }
+        }
     }
 }
 function fixTileDifferences(map) {

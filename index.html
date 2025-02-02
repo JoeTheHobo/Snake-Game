@@ -82,6 +82,7 @@
         <canvas class="game_canvas" id="render_items"></canvas>
         <canvas class="game_canvas" id="render_players"></canvas>
         <canvas class="game_canvas" id="render_overhangs"></canvas>
+        <canvas class="game_canvas" id="render_top"></canvas>
 
         <canvas class="firstPersonCanvas firstPersonCanvas_master"></canvas>
         <canvas class="firstPersonCanvas firstPersonCanvas_tl"></canvas>
@@ -252,7 +253,10 @@
             </div>
         </div>
         <div class="statusSelectionScreen">
-            <div class="statusSelectionHolder"></div>
+            <div class="popupTitle">Select A Status</div>
+            <div class="statusSelectionHolder statusHolderLetters"></div>
+            <div class="popupSubTitle">Player Status'</div>
+            <div class="statusSelectionHolder statusHolderPlayers"></div>
         </div>
         <div class="gameModeSelectionScreen"></div>
         <div class="backgroundSelectionScreen"></div>
@@ -283,6 +287,7 @@
     <script src="popups.js"></script>
     <script src="tiles.js"></script>
     <script src="items.js"></script>
+    <script src="emotes.js"></script>
     <script src="presetGameModes.js"></script>
     <script src="presetBoards.js"></script>
     <script src="functions.js"></script>

@@ -10,7 +10,11 @@ function renderGame() {
             cell.item = structuredClone(getItem(cell.item.name));
             if (cell.item == undefined) cell.item = false; //Prolly Will Need To Resolve Issue Later
             if (cell.item !== false) {
-                
+                cell.item.pos = {
+                    x: j,
+                    y: i,
+                }
+
                 if (cell.item.spawnLimit > 0 || cell.item.spawnLimit === false) {
                     cell.item.spawnLimit--; 
                     updateCells.push({
@@ -33,34 +37,51 @@ function renderTiles() {
     ctx_tiles.clearRect(0,0,canvas_tiles.width,canvas_tiles.height);
     for (let i = 0; i < currentBoard.map.length; i++) {
         for (let j = 0; j < currentBoard.map[0].length; j++) {
+            currentBoard.map[i][j].tile = structuredClone(currentBoard.map[i][j].tile);
             let mapTile = currentBoard.map[i][j].tile;
+            mapTile.pos = {
+                x: j,
+                y: i,
+            }
             ctx_tiles.drawImage($("tile_" + mapTile.name),j*gridSize,i*gridSize,gridSize,gridSize);      
         }
     }
 }
 function renderCells() {
     for (let i = 0; i < updateCells.length; i++) {
-        let mapCell = currentBoard.map[updateCells[i].y][updateCells[i].x].item;
-        ctx_items.clearRect(updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
+        let x = updateCells[i].x;
+        let y = updateCells[i].y;
+
+        let mapCell = currentBoard.map[y][x].item;
+        ctx_items.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
         if (!mapCell.visible) continue;
         if (mapCell == false) continue;
-        ctx_items.drawImage(getItemCanvas(mapCell.name + mapCell.canvasTag),updateCells[i].x*gridSize,updateCells[i].y*gridSize,gridSize,gridSize);
+        ctx_items.drawImage(getItemCanvas(mapCell.name + mapCell.canvasTag),x*gridSize,y*gridSize,gridSize,gridSize);
 
         if (mapCell.renderStatusPath.length > 0) {
             let name = mapCell;
             for (let j = 0; j < mapCell.renderStatusPath.length; j++) {
                 name = name[mapCell.renderStatusPath[j]];
             }
-            let change = 1.5;
-            if (_type(name).type == "array") name = name[0];
-            if (name.subset(0,5) == "player") {
-                if (name == "player") continue;
-                ctx_items.fillStyle = "black";
-                ctx_items.font = "20px Arial";
-                name = "P" + name.subset("_\\after","end");
-                ctx_items.fillText(name,(updateCells[i].x*gridSize) + (gridSize/2) - (gridSize/change/2),updateCells[i].y*gridSize + (gridSize/2) - (gridSize/change/2)+(gridSize/2),gridSize/change,gridSize/change);
-            } else 
-                ctx_items.drawImage(getItemCanvas(name),(updateCells[i].x*gridSize) + (gridSize/2) - (gridSize/change/2),updateCells[i].y*gridSize + (gridSize/2) - (gridSize/change/2),gridSize/change,gridSize/change);
+
+            if (name == "*P") continue;
+
+            if (mapCell.boardDestructibleCountRequired > 1)
+                name = name + "x" + mapCell.boardDestructibleCountRequired;
+
+            ctx_items.font = "16px VT323";
+            ctx_items.strokeStyle = "black";
+            ctx_items.fillStyle = "white";
+            ctx_items.lineWidth = 4;
+
+            let textWidth = ctx_items.measureText(name).width;
+
+            let xPos = (x*(gridSize)) + ((gridSize)/2) - (textWidth/2);
+            let yPos = (y*(gridSize)) + ((gridSize)/2)+5;
+
+            ctx_items.strokeText(name,xPos,yPos);
+            ctx_items.fillText(name,xPos,yPos);
+
         }
     }
     updateCells = [];
@@ -656,7 +677,7 @@ function runItemFunction(player,item,type,itemPos,settings = {playAudio: true}) 
     }
     if (collision.setBoardStatus) {
         let status = collision.setBoardStatus;
-        if (collision.setBoardStatus == "player") status = "player_" + player.index;
+        if (collision.setBoardStatus == "*P") status = "P" + player.index;
 
         if (item.sendingBoardStatus === status) return;
 
@@ -668,8 +689,8 @@ function runItemFunction(player,item,type,itemPos,settings = {playAudio: true}) 
         addBoardStatus(status,player);
     }
     if (collision.changeHue) {
-        addItemCanvas(item,item.img,item.name + "_" + player.name,collision.changeHue,player);
-        item.canvasTag = "_" + player.name; 
+        addItemCanvas(item,item.img,item.name + "_" + player.id,collision.changeHue,player);
+        item.canvasTag = "_" + player.id; 
 
         updateCells.push({
             x: player.pos.x,
@@ -893,26 +914,20 @@ function addPlayerStatus(player,itemName) {
     drawPlayerBox(player);
 }
 function removeBoardStatus(status,player) {
-    if (status == "player") {
-        playerIndex = i;
-        status = "player_" + player.index;
-    }
+    if (status == "*P") status = "P" + player.index;
+
     checking: for (let i = 0; i < currentBoard.boardStatus.length; i++) {
         if (currentBoard.boardStatus[i] == status) {
             currentBoard.boardStatus.splice(i,1);
             break checking;
         }
     }
-
     loadBoardStatus();
 }
 function addBoardStatus(status,player) {
-    if (status == "player") {
-        status = "player_" + player.index;
-    } 
+    if (status == "*P") status = "P" + player.index;
 
     currentBoard.boardStatus.push(status);
-
     loadBoardStatus();
 }
 
@@ -1097,6 +1112,7 @@ function startGame(solo = false) {
     $("playerCardsHolder").style.cursor = "none";
 
     gamePaused = false;
+    renderEmotesList = [];
 
     currentBoard = boards[currentBoardIndex];
     if (activeGameMode !== false) currentGameMode = gameModes[activeGameMode];
@@ -1163,7 +1179,7 @@ function startGame(solo = false) {
         player.howManyItemsCanIUse = currentGameMode.howManyItemsCanPlayersUse;
         player.whenInventoryIsFullInsertItemsAt = 0;
         player.index = i;
-        player.status = ["player_" + i];
+        player.status = ["P" + i];
         //Set All Player Items To Empty
         player.items = [];
         for (let j = 0; j < currentGameMode.howManyItemsCanPlayersUse; j++) {
@@ -1216,6 +1232,7 @@ function startGame(solo = false) {
             spawn(item.name,false,false,false);
         }
     }
+
 
     gameEnd = true;
     setTimeout(function() {
@@ -1389,6 +1406,8 @@ function gameLoop(timestamp) {
     production.renderPlayers.times.push(performance.now() - production.renderPlayers.timeStart);
 
     production.gameLoop.times.push(performance.now() - production.gameLoop.timeStart);
+
+    renderEmotes();
 
     updateProduction();
     if (!gameEnd && !gamePaused) requestAnimationFrame(gameLoop);

@@ -378,20 +378,26 @@ function me_updateCell(ctx,x,y,opacity) {
             for (let j = 0; j < cell.item.renderStatusPath.length; j++) {
                 name = name[cell.item.renderStatusPath[j]];
             }
-            let change = 1.5;
             if (name == "player") name = cell.item.name;
             if (_type(name).type == "array") name = name[0];
 
-            if (name.subset(0,5) == "player") {
-                if (name !== "player") {
-                    ctx.fillStyle = "black";
-                    ctx.font = "20px Arial";
-                    name = "P" + name.subset("_\\after","end");
-                    ctx.fillText(name,(x*(gridSize*zoom)) + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),y*(gridSize*zoom) + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2)+((gridSize*zoom)/2),(gridSize*zoom)/change,(gridSize*zoom)/change);
-                }
-            } else {
-                ctx.drawImage(getItemCanvas(getItem(name).name),Xpos + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),Ypos + ((gridSize*zoom)/2) - ((gridSize*zoom)/change/2),(gridSize*zoom)/change,(gridSize*zoom)/change);
-            }
+
+            if (cell.item.boardDestructibleCountRequired > 1)
+                name = name + "x" + cell.item.boardDestructibleCountRequired;
+
+            ctx.font = "16px VT323";
+            ctx.strokeStyle = "black";
+            ctx.fillStyle = "white";
+            ctx.lineWidth = 4;
+
+            let textWidth = ctx.measureText(name).width;
+
+            let xPos = (x*(gridSize*zoom)) + ((gridSize*zoom)/2) - (textWidth/2);
+            let yPos = (y*(gridSize*zoom)) + ((gridSize*zoom)/2)+5;
+
+            ctx.strokeText(name,xPos,yPos);
+            ctx.fillText(name,xPos,yPos);
+            
         }
     }
 
@@ -989,8 +995,8 @@ function loadObjectMenu() {
             }
         }
         if (type.subset(0,5) == "status") {
-            let imgHolder = settingHolder.create("div");
-            imgHolder.css({
+            let contentHolder = settingHolder.create("div");
+            contentHolder.css({
                 width: "50px",
                 height: "50px",
                 background: "white",
@@ -998,47 +1004,21 @@ function loadObjectMenu() {
                 borderRadius: "5px",
                 border: "2px solid black",
             })
+            
+            let text = contentHolder.create("div");
+            text.innerHTML = value; 
+            text.css({
+                width: "100%",
+                color: "black",
+                fontWeight: "bold",
+                fontSize: "25px",
+                lineHeight: "50px",
+                textAlign: "center",
+            })
 
-            if (value.subset(0,5) == "player") {
-                if (value.subset(0,6) == "player_") {
-                    let text = imgHolder.create("div");
-                    text.innerHTML = "P" + value.subset("_\\after","end"); 
-                    text.css({
-                        width: "100%",
-                        color: "black",
-                        fontWeight: "bold",
-                        fontSize: "25px",
-                        lineHeight: "50px",
-                        textAlign: "center",
-                    })
-                }
-                if (value == "player") {
-                    let text = imgHolder.create("div");
-                    text.innerHTML = "P"; 
-                    text.css({
-                        width: "100%",
-                        color: "black",
-                        fontWeight: "bold",
-                        fontSize: "25px",
-                        lineHeight: "50px",
-                        textAlign: "center",
-                    })
-                }
-            } else {
-                let img = imgHolder.create("img");
-                img.css({
-                    width: "100%",
-                    height: "100%",
-                })
-                let src;
-                if (selectedItem.type == "item") src = "img/" + getRealItem(value).img;
-    
-                img.src = src;
-            }
-
-            imgHolder.path = path;
-            imgHolder.type = type;
-            imgHolder.on("click",function() {
+            contentHolder.path = path;
+            contentHolder.type = type;
+            contentHolder.on("click",function() {
                 selectedItem.path = this.path;
                 if (this.type == "statusPlayer") {
                     $(".nonPlayer").hide();
@@ -1108,13 +1088,13 @@ function isSelectingOneCell() {
 }
 loadStatusSelectionScreen();
 function loadStatusSelectionScreen() {
-    let holder = $(".statusSelectionHolder");
+    let holder = $(".statusHolderLetters");
+    let holder2 = $(".statusHolderPlayers");
 
-    function createStatus(object,type) {
-        let value = object;
+    function createStatus(string,className,holder) {
 
-        let imgHolder = holder.create("div");
-        imgHolder.css({
+        let contentHolder = holder.create("div");
+        contentHolder.css({
             width: "50px",
             height: "50px",
             background: "white",
@@ -1123,39 +1103,29 @@ function loadStatusSelectionScreen() {
             border: "2px solid black",
             display: "inline-block",
         })
-        if (_type(value).type !== "string") {
-            imgHolder.className = "nonPlayer";   
-        }
-        if (_type(value).type == "string") {
-            imgHolder.status = "player";
 
-            if (value.length == 2) imgHolder.status = "player_" + value.charAt(1);
+        contentHolder.status = string;
 
-            let text = imgHolder.create("div");
-            text.innerHTML = value; 
-            text.css({
-                width: "100%",
-                color: "black",
-                fontWeight: "bold",
-                fontSize: "25px",
-                lineHeight: "50px",
-                textAlign: "center",
-            })
-        } else {
-            imgHolder.status = value.name;
-            let img = imgHolder.create("img");
-            img.css({
-                width: "100%",
-                height: "100%",
-            })
-            let src;
-            src = "img/" + value.img;
-    
-            img.src = src;
-        }
-        imgHolder.on("click",function() {
+        let text = contentHolder.create("div");
+        text.innerHTML = string; 
+        text.css({
+            width: "100%",
+            color: "black",
+            fontWeight: "bold",
+            fontSize: "25px",
+            lineHeight: "50px",
+            textAlign: "center",
+        })
+
+        if (className) contentHolder.className = className;
+        
+        contentHolder.on("click",function() {
             let selectingOneCell = isSelectingOneCell();
-            
+
+            if (selectedItem.path.length == 3) {
+                selectedItem.cell[selectedItem.path[0]][selectedItem.path[1]][selectedItem.path[2]] = this.status;
+                if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][selectedItem.path[0]][selectedItem.path[1]][selectedItem.path[2]] = this.status;
+            }
             if (selectedItem.path.length == 2) {
                 selectedItem.cell[selectedItem.path[0]][selectedItem.path[1]] = this.status;
                 if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][selectedItem.path[0]][selectedItem.path[1]] = this.status;
@@ -1170,18 +1140,20 @@ function loadStatusSelectionScreen() {
         })
     }
 
-    createStatus("P");
-    createStatus("P0");
-    createStatus("P1");
-    createStatus("P2");
-    createStatus("P3");
-    createStatus("P4");
-    createStatus("P5");
-    createStatus("P6");
-    createStatus("P7");
-    for (let i = 0; i < items.length; i++) {
-        if (!items[i].showInEditor) continue;
-        createStatus(structuredClone(items[i]));
+    createStatus("*P","playerStatus",holder2);
+    createStatus("P0","playerStatus",holder2);
+    createStatus("P1","playerStatus",holder2);
+    createStatus("P2","playerStatus",holder2);
+    createStatus("P3","playerStatus",holder2);
+    createStatus("P4","playerStatus",holder2);
+    createStatus("P5","playerStatus",holder2);
+    createStatus("P6","playerStatus",holder2);
+    createStatus("P7","playerStatus",holder2);
+    createStatus("P8","playerStatus",holder2);
+    createStatus("P9","playerStatus",holder2);
+    let abc = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+    for (let i = 0; i < abc.length; i++) {
+        createStatus(abc[i],"nonPlayer",holder);
     }
 }
 
