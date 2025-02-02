@@ -495,7 +495,7 @@ function spawn(name,generateRandomItem = true,counting = false,playAudio = true)
                     if (currentBoard.map[k][j].item === false) continue;
                     if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
                     if (currentBoard.map[k][j].item.spawnPlayerID == "player" || currentBoard.map[k][j].item.spawnPlayerID === undefined) continue;
-                    if (Number(currentBoard.map[k][j].item.spawnPlayerID.subset("_\\after","end")) !== Number(name.id)) continue;
+                    if (Number(currentBoard.map[k][j].item.spawnPlayerID.subset("_\\after","end")) !== Number(name.index)) continue;
 
                     let playerOnIt = false;
                     for (let i = 0; i < activePlayers.length; i++) {
@@ -511,7 +511,6 @@ function spawn(name,generateRandomItem = true,counting = false,playAudio = true)
                 }
             }
             if (!foundSpot) {
-
                 findingSpawner: for (let k = 0; k < currentBoard.map.length; k++) {
                     for (let j = 0; j < currentBoard.map[0].length; j++) {
                         if (currentBoard.map[k][j].item === false) continue;

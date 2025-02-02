@@ -17,6 +17,9 @@ let basedGameMode = {
     }],
     items: cloneObject(items),
     snakeVanishOnDeath: false,
+    respawn: false,
+    respawnTimer: 5,
+    respawnGrowth: 50, //Percent
 }
 let presetGameModes = [
     {
@@ -31,6 +34,9 @@ let presetGameModes = [
         }],
         items: cloneObject(items),
         snakeVanishOnDeath: false,
+        respawn: false,
+        respawnTimer: 5,
+        respawnGrowth: 50, //Percent
     },
     {
         name: "Rocky",
@@ -44,6 +50,9 @@ let presetGameModes = [
         }],
         items: cloneObject(items), // Unique copy for Rocky
         snakeVanishOnDeath: false,
+        respawn: false,
+        respawnTimer: 5,
+        respawnGrowth: 50, //Percent
     }
 ];
 

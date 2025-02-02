@@ -67,7 +67,7 @@ function renderCells() {
 }
 function deleteSnakeCells() {
     for (let i = 0; i < updateSnakeCells.length; i++) {
-        if (updateSnakeCells[i].player.isDead) continue;
+        //if (updateSnakeCells[i].player.isDead) continue;
         ctx_players.clearRect(updateSnakeCells[i].x*gridSize,updateSnakeCells[i].y*gridSize,gridSize,gridSize);
     }
     updateSnakeCells = [];
@@ -170,6 +170,9 @@ function renderPlayers() {
                 afterTail.y = player.tail[j+1].y;
             }
 
+            //Before - Towards Head Of Snake
+            //After - Towards Tail Of Snake
+
             if (j == player.tail.length - 1) {
                 drawRotated(player.canvas.tail,direction,tailX*gridSize,tailY*gridSize,gridSize,gridSize);
             } else if (beforeTail.exist && afterTail.exist) {
@@ -230,7 +233,6 @@ function renderPlayers() {
                 let image = player.canvas.head;
                 let direction = "right";
 
-                let playerIsOnPortal = false;
                 if (_type(currentBoard.map[tailY][tailX].item.teleport).type == "number") {
                     playerIsOnPortal = true;
                     tail.down = {
@@ -840,6 +842,7 @@ function deletePlayer(player,playerWhoKilled,item,instaKill = false){
                 })
             }
         }
+
         //Delete Player
         player.isDead = true;
         player.justDied = true;
@@ -1079,7 +1082,7 @@ function setUpPlayerCanvas() {
 
 let cameraFollowPlayer = false;
 let cameraQuickZoom;
-function startGame() {
+function startGame(solo = false) {
     setScene("game");
     $(".endGamePopup").hide();
     $(".pauseGamePopup").hide();
@@ -1097,6 +1100,8 @@ function startGame() {
 
     currentBoard = boards[currentBoardIndex];
     if (activeGameMode !== false) currentGameMode = gameModes[activeGameMode];
+
+    currentGameMode = structuredClone(currentGameMode);
 
     currentBoard.location_tunnels = [];
 
@@ -1132,6 +1137,7 @@ function startGame() {
     
     doColorRender = false;
     activePlayers = activePlayerCount;
+    if (solo) activePlayers = [activePlayers[0]];
     specialItemIteration = 0;
     isActiveGame = true;
 

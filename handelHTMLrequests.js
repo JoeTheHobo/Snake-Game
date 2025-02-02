@@ -47,10 +47,10 @@ $("local_button_playSolo").on("click",function() {
         warningPopup(`Select A Snake Before Playing Game`);
         return;
     }
-    
+
     $(".game_canvas").classAdd("singlePlayerCanvas");
     cameraFollowPlayer = true;
-    startGame();
+    startGame(true);
     $(".button_mapEditorHolder").hide();
     
 })
