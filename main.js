@@ -73,25 +73,31 @@ function renderCells() {
 
             if (name == "*P") continue;
 
-
-            //Check If Status IS Cleared Or Not
-            let worldStatusPass = false;
-            let boardStatusCount = 0;
-            for (let i = 0; i < mapCell.boardDestructible.length; i++) {
-                if (mapCell.boardDestructible[i] == "yes")  {
-                    worldStatusPass = true;
-                    boardStatusCount++;
-                    continue;
-                }
-                if (currentBoard.boardStatus.includes(mapCell.boardDestructible[i])) {
-                    for (let j = 0; j < currentBoard.boardStatus.length; j++) {
-                        if (currentBoard.boardStatus[j] === mapCell.boardDestructible[i]) boardStatusCount++;
+            let color = mapCell.renderStatusColor || "white";
+            if (color == "board") {
+                //Check If Status IS Cleared Or Not
+                let worldStatusPass = false;
+                let boardStatusCount = 0;
+                for (let i = 0; i < mapCell.boardDestructible.length; i++) {
+                    if (mapCell.boardDestructible[i] == "yes")  {
+                        worldStatusPass = true;
+                        boardStatusCount++;
+                        continue;
                     }
-                    continue;
+                    if (currentBoard.boardStatus.includes(mapCell.boardDestructible[i])) {
+                        for (let j = 0; j < currentBoard.boardStatus.length; j++) {
+                            if (currentBoard.boardStatus[j] === mapCell.boardDestructible[i]) boardStatusCount++;
+                        }
+                        continue;
+                    }
                 }
+                worldStatusPass = boardStatusCount >= Number(mapCell.boardDestructibleCountRequired);
+                //End
+
+                if (worldStatusPass) color = "green";
+                else color = "red";
             }
-            worldStatusPass = boardStatusCount >= Number(mapCell.boardDestructibleCountRequired);
-            //End
+           
 
 
 
@@ -100,8 +106,7 @@ function renderCells() {
 
             ctx_items.font = "16px VT323";
             ctx_items.strokeStyle = "black";
-            if (worldStatusPass) ctx_items.fillStyle = "green";
-            else ctx_items.fillStyle = "red";
+            ctx_items.fillStyle = color;
             ctx_items.lineWidth = 4;
 
             let textWidth = ctx_items.measureText(name).width;
@@ -428,6 +433,7 @@ function movePlayers() {
                     y: player.pos.y,
                     direction: player.moving,
                 });
+                drawPlayerBox(player);
                 player.growTail--;
                 if (player.tail.length > player.longestTail) player.longestTail = player.tail.length;
             } else if(player.tail.length > 0) {
@@ -615,7 +621,12 @@ function testItemUnderPlayer(player) {
     }
 
     if (mapItem.canCollide) {
-        runItemFunction(player,mapItem,"onCollision");
+        let pass = true;
+        if (_type(mapItem.requiredSnakeSizeToCollide).type == "number") {
+            if ((player.tail.length+1) >= mapItem.requiredSnakeSizeToCollide) pass = true;
+            else pass = false;
+        }
+        if (pass) runItemFunction(player,mapItem,"onCollision");
     }
 
     let itemIsDelete = false;
@@ -635,7 +646,16 @@ function testItemUnderPlayer(player) {
         }
     }
     worldStatusPass = boardStatusCount >= Number(mapItem.boardDestructibleCountRequired);
-    if (worldStatusPass) {
+
+    //Check Snake Length Pass
+    let snakeSizePass = true;
+    if (mapItem.snakeSizeRequired) {
+        if ((player.tail.length + 1) >= mapItem.snakeSizeRequired) snakeSizePass = true;
+        else snakeSizePass = false; 
+    }
+    //End
+
+    if (worldStatusPass && snakeSizePass) {
         checking: for (let i = 0; i < mapItem.destructible.length; i++) {
             let status = mapItem.destructible[i];
             let deleteMe = false;
@@ -800,7 +820,7 @@ function runItemFunction(player,item,type,itemPos,settings = {playAudio: true}) 
                 }
             }
             doColorRender = true;
-        },onEat.canvasFilter.duration)
+        },collision.canvasFilter.duration)
     }
     if (collision.playSound && item.playSounds && settings?.playAudio) {
         let src = "sounds/" + item.soundFolder + "/" + item.soundFolder + "_" + collision.playSound[0] + "_" + rnd(collision.playSound[1]) + ".mp3";
@@ -1224,8 +1244,6 @@ function startGame(solo = false) {
         for (let j = 0; j < currentGameMode.howManyItemsCanPlayersUse; j++) {
             player.items.push("empty");
         }
-        //Draw Player's Card
-        drawPlayerBox(player);
 
         player.longestTail = 0;
         player.timeSurvived = 0;
@@ -1246,6 +1264,8 @@ function startGame(solo = false) {
             x: false,
             y: false,
         }
+        //Draw Player's Card
+        drawPlayerBox(player);
         //Spawn Players
     }
 

@@ -750,13 +750,13 @@ function loadLocalScreen() {
                         loadContent(gameModesHolder,gameModes,"gameModes");
                     }
 
-                    $(".local_content_board_gameMode").classRemove("local_content_board_gameMode_selected");
+                    if ($(".local_content_board_gameMode")) $(".local_content_board_gameMode").classRemove("local_content_board_gameMode_selected");
 
                     currentBoardIndex = this.index;
                     currentBoard = boards[currentBoardIndex];
                     ls.save("currentBoardIndex",currentBoardIndex)
 
-                    $(".local_content_board_gameMode").hide();
+                    if ($(".local_content_board_gameMode"))$(".local_content_board_gameMode").hide();
 
                     if (this.object.recommendedGameMode) this.$(".local_content_board_gameMode").show();
 
@@ -773,7 +773,7 @@ function loadLocalScreen() {
                     $(".local_content_gameModes").classRemove("local_content_gameModes_blocked");
                     activeGameMode = this.index;
                     ls.save("activeGameMode",activeGameMode)
-                    $(".local_content_board_gameMode").classRemove("local_content_board_gameMode_selected");
+                    if ($(".local_content_board_gameMode")) $(".local_content_board_gameMode").classRemove("local_content_board_gameMode_selected");
                 }
                 if (this.type == "snakes") {
                     if (this.object.active === false) {

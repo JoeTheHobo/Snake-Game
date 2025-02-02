@@ -1,6 +1,6 @@
 ls.setID("snakegame");
 
-let forceReset = 16;
+let forceReset = 19;
 let needsToBeReset = ls.get("reset" + forceReset,true);
 if (needsToBeReset) {
     ls.delete("gameModes");
@@ -825,7 +825,7 @@ function drawPlayerBox(player) {
     let statusHolder = card.create("div");
     statusHolder.css({
         position: "absolute",
-        width: "20px",
+        width: "100px",
         display: "flex",
         flexDirection: statusFlex,
         top: statusTop,
@@ -833,13 +833,20 @@ function drawPlayerBox(player) {
         bottom: statusBottom,
         right: statusRight,
     })
+
+    let length = statusHolder.create("div");
+    length.css({
+        fontSize: "20px",
+    })
+    length.innerHTML = "Size: " + (player.tail.length + 1); 
+
     for (let i = 0; i < player.status.length; i++) {
         if (player.status[i].charAt(0) == "P" && player.status[i].length < 3) continue;
 
         let statusImage = statusHolder.create("img");
         statusImage.src = "img/" + getRealItem(player.status[i]).img;
         statusImage.css({
-            width: "100%",
+            width: "20px",
         })
     }
 }

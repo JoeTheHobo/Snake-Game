@@ -1070,6 +1070,9 @@ function loadObjectMenu() {
         if (object.spawnPlayerID) {
             addSetting("Spawn Player ID","statusPlayer",object.spawnPlayerID,["spawnPlayerID"]);
         }
+        if (_type(object.snakeSizeRequired).type == "number") {
+            addSetting("Snake Size Required","number",object.snakeSizeRequired,["snakeSizeRequired"]);
+        }
         
         addSetting("Visible","toggle",object.visible,["visible"]);
     }

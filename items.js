@@ -54,6 +54,7 @@ items.push({
     },
     id: 1,
     pack: "Food",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "super_pellet",
@@ -102,6 +103,7 @@ items.push({
     },
     id: 2,
     pack: "Food",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "turbo",
@@ -150,6 +152,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "wall",
@@ -203,6 +206,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "wall2",
@@ -251,6 +255,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "bronzeShield", //(string) Name Of Item
@@ -299,6 +304,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "silverShield",
@@ -347,6 +353,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "goldShield",
@@ -396,6 +403,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "lamp", //(string) Name Of Item
@@ -443,6 +451,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     pack: "Hidden",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "snakeHole", //(string) Name Of Item
@@ -483,6 +492,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "snakeHole2", //(string) Name Of Item
@@ -523,6 +533,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "snakeHole3", //(string) Name Of Item
@@ -563,6 +574,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 
 items.push({
@@ -605,6 +617,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     pack: "Mechanics",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 
 items.push({
@@ -646,6 +659,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     pack: "Mechanics",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "blueKey", //(string) Name Of Item
@@ -686,6 +700,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "redKey", //(string) Name Of Item
@@ -726,6 +741,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "greenKey", //(string) Name Of Item
@@ -766,6 +782,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "blueLock", //(string) Name Of Item
@@ -808,6 +825,7 @@ items.push({
 
     },
     pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "redLock", //(string) Name Of Item
@@ -850,6 +868,7 @@ items.push({
 
     },
     pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "greenLock", //(string) Name Of Item
@@ -892,6 +911,7 @@ items.push({
 
     },
     pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "stoneWall", //(string) Name Of Item
@@ -934,6 +954,7 @@ items.push({
 
     },
     pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "switch", //(string) Name Of Item
@@ -973,7 +994,8 @@ items.push({
 
     destructible: [false],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: ["onCollision","switchBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    renderStatusPath: ["onCollision","switchBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need 
+    renderStatusColor: "white", //Type To Render Color;
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
@@ -982,6 +1004,7 @@ items.push({
 
     },
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "button", //(string) Name Of Item
@@ -1023,6 +1046,7 @@ items.push({
     destructible: [false],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
     renderStatusPath: ["onCollision","removeBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    renderStatusColor: "white", //Type To Render Color;
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
@@ -1031,6 +1055,7 @@ items.push({
 
     },
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "buttonAdd", //(string) Name Of Item
@@ -1072,6 +1097,7 @@ items.push({
     destructible: [false],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
     renderStatusPath: ["onCollision","addBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    renderStatusColor: "white", //Type To Render Color;
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
@@ -1080,6 +1106,7 @@ items.push({
 
     },
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 
 items.push({
@@ -1132,6 +1159,7 @@ items.push({
 
     },
     pack: "Mechanics",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 
 items.push({
@@ -1180,6 +1208,7 @@ items.push({
     destructible: [false],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
     renderStatusPath: ["onCollision","setBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    renderStatusColor: "white", //Type To Render Color;
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
@@ -1188,6 +1217,7 @@ items.push({
 
     },
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 
 items.push({
@@ -1237,6 +1267,7 @@ items.push({
     destructible: [false],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
     renderStatusPath: ["onCollision","addBoardStatus"], //Path to which status to render on top of item, leave blank if no render
+    renderStatusColor: "white", //Type To Render Color;
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
@@ -1245,6 +1276,7 @@ items.push({
 
     },
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "lockedCell", //(string) Name Of Item
@@ -1294,6 +1326,7 @@ items.push({
     destructible: ["P0"],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
     renderStatusPath: ["destructible"], //Path to which status to render on top of item, leave blank if no render
+    renderStatusColor: "white", //Type To Render Color;
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: false,
     damage: 0,
@@ -1302,6 +1335,7 @@ items.push({
 
     },
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "boardLockedCell", //(string) Name Of Item
@@ -1351,6 +1385,7 @@ items.push({
     destructible: ["yes"], //Leave Blank If Nothing can Destroy This. "yes" - Anyone can destroy this
     boardDestructible: ["A"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
     renderStatusPath: ["boardDestructible"], //Path to which status to render on top of item, leave blank if no render
+    renderStatusColor: "board", //Type To Render Color;
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: false,
     damage: 0,
@@ -1359,6 +1394,7 @@ items.push({
 
     },
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 
 items.push({
@@ -1400,6 +1436,7 @@ items.push({
         removeStatus: [], //Remove any status
     },
     pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 items.push({
     name: "Yellow_lock", //(string) Name Of Item
@@ -1434,6 +1471,7 @@ items.push({
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0,
     playSounds: true, //If Item should be muted or not;
@@ -1442,4 +1480,123 @@ items.push({
 
     },
     pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
+})
+items.push({
+    name: "Sanke_Size_Gate", //(string) Name Of Item
+    id: 32,
+    img: "Sanke_Size_Gate.png", //(string) Image name
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    showInEditor: true,
+    onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    onEat: {
+        winGame: false, //When Picked Up Does Game End?
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: true,
+        canvasFilter: false,
+    },
+
+    canCollide: false, //If You should look at any colliding properties
+    onCollision: { //When snake collides do these
+        switchImage: false, //Switch Between Main Image and This Image
+        switchBoardStatus: false, //Switch Between giving these status
+        addBoardStatus: false, //Add a status To the Board;
+        removeBoardStatus: false, //Remove a status To the Board;
+        setBoardStatus: false, //Sets its world status to this, can only send out one status
+        changeHue: false, //Change hue to this.
+    },
+    offCollision: { //When snake leaves item
+        removeBoardStatus: false, //Remove a status To the Board;
+    },
+
+
+    destructible: ["yes"], //Leave Blank If Nothing can Destroy This. "yes" - Anyone can destroy this
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: ["snakeSizeRequired"], //Path to which status to render on top of item, leave blank if no render
+    renderStatusColor: "white", //Type To Render Color;
+    snakeSizeRequired: 10, //How Big Snake Needs To Be To Pass Through This False if any
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: false,
+    damage: 0,
+    onDelete: {
+        removeStatus: [],
+
+    },
+    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+})
+
+items.push({
+    name: "Weighted_Preassure_Plate", //(string) Name Of Item
+    id: 33,
+    img: "weightedPressurePlate.png", //(string) Image name
+    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    showInEditor: true,
+    onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    teleport: false, //Teleport ID
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+
+    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
+    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
+    onEat: {
+        winGame: false, //When Picked Up Does Game End?
+        addStatus: [],
+        shield: 0,
+        growPlayer: 0,
+        spawn: [],
+        removeStatus: [],
+        giveturbo: false,
+        turbo: false,
+        deletePlayer: true,
+        canvasFilter: false,
+    },
+
+    canCollide: true, //If You should look at any colliding properties
+    requiredSnakeSizeToCollide: 5,
+    onCollision: { //When snake collides do these
+        switchImage: false, //Switch Between these images
+        switchBoardStatus: false, //Switch Between giving these status
+        addBoardStatus: "A", //Add a status To the Board;
+        removeBoardStatus: false, //Remove a status To the Board;
+        setBoardStatus: false, //Sets its world status to this, can only send out one status
+        changeHue: false, //Change hue to this.
+    },
+    offCollision: { //When snake leaves item
+        removeBoardStatus: "A", //Remove a status To the Board;
+    },
+
+    destructible: [false],
+    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    renderStatusPath: ["requiredSnakeSizeToCollide"], //Path to which status to render on top of item, leave blank if no render
+    renderStatusColor: "white", //Type To Render Color;
+    boardDestructibleCountRequired: 1, //How many of these world status does it need
+    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
+    damage: 0,
+    onDelete: {
+        removeStatus: [],
+
+    },
+    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
