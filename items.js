@@ -1220,6 +1220,7 @@ items.push({
             value: "*P",
         }, //Change base image tag.
         playSound: ["set",1],
+        tie: [".onCollision.setBoardStatus",".onCollision.setBaseImgTag.value"],
     },
 
     destructible: [false],

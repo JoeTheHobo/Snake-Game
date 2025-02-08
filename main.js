@@ -374,7 +374,7 @@ function movePlayers() {
             }
             player.moveTik = 0
 
-            
+            let playerOldMoving = player.moving;
 
             //check the movement queue
             if (player.moveQueue.length != 0){
@@ -391,56 +391,18 @@ function movePlayers() {
 
                 player.moveQueue.shift();
             }
-            //Growing/Moving Tail
-            if (player.growTail > 0) {
-                player.tail.unshift({
-                    x: player.pos.x,
-                    y: player.pos.y,
-                    direction: player.moving,
-                });
-                drawPlayerBox(player);
-                player.growTail--;
-                if (player.tail.length > player.longestTail) player.longestTail = player.tail.length;
-            } else if(player.tail.length > 0) {
-                player.tail.unshift({
-                    x: player.pos.x,
-                    y: player.pos.y,
-                    direction: player.moving,
-                });
-                updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
-                
-
-                let tail = player.tail[player.tail.length-1];
-                if (currentBoard.map[tail.y][tail.x].item) {
-                    let mapItem = currentBoard.map[tail.y][tail.x].item;
-                    if (mapItem.canCollide) runItemFunction(player,mapItem,"offCollision");
-                }
-                
-                player.tail.pop();
-            } else {
-                if (currentBoard.map[player.pos.y][player.pos.x].item) {
-                    let mapItem = currentBoard.map[player.pos.y][player.pos.x].item;
-                    if (mapItem.canCollide) runItemFunction(player,mapItem,"offCollision");
-                }
-            }
-            if (player.tail.length > 0)
-                updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
-
             
+            //Moving The Player
+            production.setPlayerPos.timeStart = performance.now();
+            let playerOldPos = { x: player.pos.x, y: player.pos.y };
 
-            updateSnakeCells.push({
-                x: player.pos.x,
-                y: player.pos.y,
-                player: player
-            })
-
-            //ctx.fillStyle = map[player.pos.y][player.pos.x].color;
-            //ctx.fillRect(player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize);
             //Move Player and make sure he can't go back on himself
-            if (player.moving == "left") player.pos.x--;
-            if (player.moving == "right") player.pos.x++;
-            if (player.moving == "up") player.pos.y--;
-            if (player.moving == "down") player.pos.y++;
+            switch (player.moving) {
+                case "left": player.pos.x--; break;
+                case "right": player.pos.x++; break;
+                case "up": player.pos.y--; break;
+                case "down": player.pos.y++; break;
+            }            
 
             //Teleport Player If Needed
             if (_type(player.justTeleported).type == "object") {
@@ -453,23 +415,19 @@ function movePlayers() {
 
             //Collision Testing
             //Test If Player Hits Edge
-            if (player.pos.x > currentBoard.map[0].length-1) {
-                cameraQuickZoom = "right";
-                if (circleWalls) player.pos.x = 0;
-            }
-            if (player.pos.x < 0) {
-                cameraQuickZoom = "left";
-                if (circleWalls) player.pos.x = currentBoard.map[0].length-1;
-            }
-            if (player.pos.y > currentBoard.map.length-1) {
-                cameraQuickZoom = "bottom";
-                if (circleWalls) player.pos.y = 0;
-            }
-            if (player.pos.y < 0) {
-                cameraQuickZoom = "top";
-                if (circleWalls) player.pos.y = currentBoard.map.length-1;
+            const maxX = currentBoard.map[0].length - 1;
+            const maxY = currentBoard.map.length - 1;
+
+            if (player.pos.x > maxX || player.pos.x < 0 || player.pos.y > maxY || player.pos.y < 0) {
+                if (player.pos.x > maxX) { cameraQuickZoom = "right"; if (circleWalls) player.pos.x = 0; }
+                else if (player.pos.x < 0) { cameraQuickZoom = "left"; if (circleWalls) player.pos.x = maxX; }
+
+                if (player.pos.y > maxY) { cameraQuickZoom = "bottom"; if (circleWalls) player.pos.y = 0; }
+                else if (player.pos.y < 0) { cameraQuickZoom = "top"; if (circleWalls) player.pos.y = maxY; }
             }
 
+
+            
             //Check If Tunnels are near player
             if (cameraFollowPlayer) {
                 let tunnel = false;
@@ -479,6 +437,7 @@ function movePlayers() {
                     if (dis < 10) {
                         tunnel = currentBoard.location_tunnels[z];
                         index = z;
+                        break;
                     }
                 }
                 if (tunnel) {
@@ -497,26 +456,96 @@ function movePlayers() {
 
                 }
             }
+            production.setPlayerPos.times.push(performance.now() - production.setPlayerPos.timeStart);
+            //Finished Moving Player
 
-            //Test Item Underplayer
-            testItemUnderPlayer(player);
-
-            //Test Tile UnderPlayer
-            let mapTile = currentBoard.map[player.pos.y][player.pos.x].tile;
-            if (mapTile.onOver) runItemFunction(player,mapTile,"onOver");
-            
             //Check for Player Collisions
-            for (let a = 0; a < activePlayers.length; a++){
-                let checkedPlayer = activePlayers[a];
-                if (checkedPlayer.isDead && currentGameMode.snakeVanishOnDeath == true) continue;
-                for(let b = 0; b < checkedPlayer.tail.length; b++){
-                    let tailPiece = checkedPlayer.tail[b];
-                    if (player.pos.x == tailPiece.x && player.pos.y == tailPiece.y)
-                    {
-                        deletePlayer(player,checkedPlayer);
+            production.checkingPlayerCollision.timeStart = performance.now();
+            if (currentGameMode.snakeCollision) {
+                let occupiedPositions = new Set();
+            
+                // Step 1: Populate occupiedPositions with all players' tails & positions
+                for (let a = 0; a < activePlayers.length; a++) {
+                    let checkedPlayer = activePlayers[a];
+                    if (checkedPlayer.isDead && currentGameMode.snakeVanishOnDeath) continue;
+                    if (findPlayersTeam(checkedPlayer) === findPlayersTeam(player) && !currentGameMode.teamCollision && findPlayersTeam(player) !== "white") continue;
+            
+                    for (let b = 0; b < checkedPlayer.tail.length; b++) {
+                        occupiedPositions.add(`${checkedPlayer.tail[b].x},${checkedPlayer.tail[b].y}`);
+                    }
+                    if (checkedPlayer.id !== player.id) {
+                        occupiedPositions.add(`${checkedPlayer.pos.x},${checkedPlayer.pos.y}`);
                     }
                 }
+                // Step 2: Check if the player's new position exists in occupiedPositions
+                if (occupiedPositions.has(`${player.pos.x},${player.pos.y}`)) {
+                    deletePlayer(player);
+                }
             }
+            production.checkingPlayerCollision.times.push(performance.now() - production.checkingPlayerCollision.timeStart);
+            //Test Item Underplayer
+            if (!player.isDead) testItemUnderPlayer(player);
+
+            if (!player.isDead) {
+                production.testingItems.timeStart = performance.now();
+                //Test Tile UnderPlayer
+                let mapTile = currentBoard.map[player.pos.y][player.pos.x].tile;
+                if (mapTile.onOver) runItemFunction(player,mapTile,"onOver");
+                production.testingItems.times.push(performance.now() - production.testingItems.timeStart);
+
+                production.growingTail.timeStart = performance.now();
+                //Growing/Moving Tail
+                let playerX = playerOldPos.x;
+                let playerY = playerOldPos.y;
+
+                if (player.growTail > 0) {
+                    player.tail.unshift({
+                        x: playerX,
+                        y: playerY,
+                        direction: player.moving,
+                    });
+                    //drawPlayerBox(player); //REALLY LAGGY We should Update that specific part of their card.
+                    player.growTail--;
+                    if (player.tail.length > player.longestTail) player.longestTail = player.tail.length;
+                } else if(player.tail.length > 0) {
+                    player.tail.unshift({
+                        x: playerX,
+                        y: playerY,
+                        direction: player.moving,
+                    });
+                    updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
+                    
+    
+                    let tail = player.tail[player.tail.length-1];
+                    if (currentBoard.map[tail.y][tail.x].item) {
+                        let mapItem = currentBoard.map[tail.y][tail.x].item;
+                        if (mapItem.canCollide) runItemFunction(player,mapItem,"offCollision");
+                    }
+                    
+                    player.tail.pop();
+                } else {
+                    if (currentBoard.map[playerY][playerX].item) {
+                        let mapItem = currentBoard.map[playerY][playerX].item;
+                        if (mapItem.canCollide) runItemFunction(player,mapItem,"offCollision");
+                    }
+                }
+                if (player.tail.length > 0)
+                    updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
+    
+                
+    
+                updateSnakeCells.push({
+                    x: playerX,
+                    y: playerY,
+                    player: player
+                })
+                //End Growing Tail
+                production.growingTail.times.push(performance.now() - production.growingTail.timeStart);
+            } else {
+                player.pos = playerOldPos;
+                player.moving = playerOldMoving;
+            }
+
         }
         else {
             player.moveTik++;
@@ -541,7 +570,6 @@ function useItem(player) {
 function testItemUnderPlayer(player) {
     let mapItem = currentBoard.map[player.pos.y][player.pos.x].item;
     if (!mapItem) return;
-
     if (mapItem.pickUp) {
         let pickedUpItem = false;
         findingEmptyItemSlot: for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
@@ -629,7 +657,7 @@ function testItemUnderPlayer(player) {
                 break checking;
             }
             if (status == "yes") deleteMe = true;
-            if (player.status.includes(status)) deleteMe = true;
+            if (player.status.includes(status) || player.status.includes("status_" + status)) deleteMe = true;
     
             if (deleteMe) {
                 itemIsDelete = true;
@@ -886,15 +914,21 @@ function deletePlayer(player,playerWhoKilled,item,instaKill = false){
         //Delete Player
         player.isDead = true;
         player.justDied = true;
-        player.timeSurvived = timer;
         drawPlayerBox(player)
 
-        let playersDead = 0;
-        for (let i = 0; i < activePlayers.length; i++) {
-            if (activePlayers[i].isDead) playersDead++;
-        }
-        if (playersDead == activePlayers.length) {
-            endScreen();
+        if (!currentGameMode.respawn) {
+            player.timeSurvived = timer;
+            let playersDead = 0;
+            for (let i = 0; i < activePlayers.length; i++) {
+                if (activePlayers[i].isDead) playersDead++;
+            }
+            if (playersDead == activePlayers.length) {
+                endScreen();
+            }
+        } else {
+            setTimeout(function() {
+                respawnPlayer(player,currentGameMode.respawnGrowth);
+            },currentGameMode.respawnTimer * 1000);
         }
         return;
     }
@@ -1003,6 +1037,12 @@ document.body.on("wheel",function(e) {
 })
 document.body.onkeydown = function(e) {
     if (!isActiveGame) return;
+    if (e.ctrlKey && e.key === 'q') {
+        showPerformance = showPerformance ? false : true;
+        
+        if (showPerformance) $(".production").show("flex");
+        else $(".production").hide();
+    }
     if (e.key !== "F5")
         e.preventDefault();
 
@@ -1031,6 +1071,8 @@ document.body.onkeydown = function(e) {
 
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
+        if (player.isDead) continue;
+
         if (e.key == player.leftKey && player.moveQueue.length < 4) {
             player.moveQueue.push("left");
         }
@@ -1137,10 +1179,7 @@ function startGame(solo = false) {
     $("playerCardsHolder").innerHTML = "";
     $("playerCardsHolder").style.visibility = "visible";
     //For testing
-    if (showPerformance) {
-        setUpProductionHTML();
-        $(".production").show("flex");
-    }
+    setUpProductionHTML();
 
     $("playerCardsHolder").style.cursor = "none";
 
@@ -1304,6 +1343,30 @@ let production = {
         average: 0,
         timeStart: 0,
         type: "dom",
+    },
+    setPlayerPos: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        type: "sub",
+    },
+    checkingPlayerCollision: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        type: "sub",
+    },
+    testingItems: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        type: "sub",
+    },
+    growingTail: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        type: "sub",
     },
     deleteSnakeCells: {
         times: [],

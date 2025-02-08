@@ -1,6 +1,6 @@
 ls.setID("snakegame");
 
-let forceReset = 26;
+let forceReset = 27;
 let needsToBeReset = ls.get("reset" + forceReset,true);
 if (needsToBeReset) {
     ls.delete("gameModes");
@@ -564,10 +564,15 @@ function spawn(name,generateRandomItem = true,counting = false,playAudio = true)
                     if (activePlayers[i].pos.x == allSpawns[k].x && activePlayers[i].pos.y == allSpawns[k].y) playerOnIt = true;
                 }
                 if (playerOnIt) continue;
+
+                let playerTeam = findPlayersTeam(name);
+                let spawnTeam = allSpawns[k].item.spawnPlayerTeam || "white";
+
+                if (playerTeam !== "white" && spawnTeam !== playerTeam) continue;
                 
                 x = allSpawns[k].x;
                 y = allSpawns[k].y;
-                team = allSpawns[k].item.spawnPlayerTeam || "white";
+                team = playerTeam !== "white" ? playerTeam : spawnTeam;
                 foundSpot = true;
                 break findingSpawner;
             }
@@ -1423,4 +1428,44 @@ function getImageFromItem(item,returnCanvas = true) {
         image = getItemCanvas(item.name);
     }
     return image;
+}
+function respawnPlayer(player,growthPercentage) {
+    let length = Math.round((growthPercentage/100) * player.tail.length);
+
+    //Delete Old Tail
+    for (let i = 0; i < player.tail.length; i++) {
+        updateSnakeCells.push({
+            x: player.tail[i].x,
+            y: player.tail[i].y,
+            player: player
+        })
+    }
+    updateSnakeCells.push({
+        x: player.pos.x,
+        y: player.pos.y,
+        player: player
+    })
+
+    player.isDead = false;
+    player.tail = [];
+    player.items = [];
+    for (let j = 0; j < currentGameMode.howManyItemsCanPlayersUse; j++) {
+        player.items.push("empty");
+    }
+    let team = findPlayersTeam(player);
+    player.status = ["status_" + team];
+    player.justDied = false;
+    player.bodyArmor = 1;
+    player.justTeleported = false;
+    player.moveQueue = [];
+    player.moveTik = 0;
+    player.moveSpeed = 6;
+    player.turboDuration = 0;
+    player.turboActive = false;
+    player.shield = 0;
+
+
+    spawn(player);
+    growPlayer(player,length);
+    drawPlayerBox(player);
 }

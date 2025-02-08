@@ -928,6 +928,29 @@ function editGameMode(holder2,gameMode,htmlName) {
         gameMode.snakeVanishOnDeath = value == "true" ? true : false;
         saveAllGameModes();
     },["true","false"]);
+    addSetting("Respawn","dropdown",gameMode.respawn,function(value) {
+        gameMode.respawn = value == "true" ? true : false;
+        saveAllGameModes();
+    },["true","false"]);
+    addSetting("Respawn Timer (Seconds)","number",gameMode.respawnTimer,function(value,input) {
+        if (value < 0) input.value = 0;
+        gameMode.respawnTimer = value;
+        saveAllGameModes();
+    });
+    addSetting("Respawn Tail %","number",gameMode.respawnGrowth,function(value,input) {
+        if (value < 0) input.value = 0;
+        if (value > 100) input.value = 100;
+        gameMode.respawnGrowth = value;
+        saveAllGameModes();
+    });
+    addSetting("Snake Collision","dropdown",gameMode.snakeCollision,function(value) {
+        gameMode.snakeCollision = value == "true" ? true : false;
+        saveAllGameModes();
+    },["true","false"]);
+    addSetting("Team Collision","dropdown",gameMode.teamCollision,function(value) {
+        gameMode.teamCollision = value == "true" ? true : false;
+        saveAllGameModes();
+    },["true","false"]);
 
 
     let html_onSpawnHolder = $(".onSpawnHolder");
@@ -946,7 +969,12 @@ function editGameMode(holder2,gameMode,htmlName) {
         imgHolder.className = "spawn_imageHolder" + " " + (item.gameModeMenu_selectedItem ? "spawn_itemSelected" : "");
         let img = imgHolder.create("img");
         img.className = "spawn_image";
-        img.src = "img/" + item.img;
+        
+        if (item.baseImg) {
+            let image = getImageFromItem(item,false);
+            img.src = $("item_" + image).src;
+        } else 
+            img.src = $("item_" + item.name).src;
 
         imgHolder.gameMode = gameMode;
         imgHolder.item = item;

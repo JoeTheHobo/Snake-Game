@@ -20,6 +20,8 @@ let basedGameMode = {
     respawn: false,
     respawnTimer: 5,
     respawnGrowth: 50, //Percent
+    snakeCollision: true,
+    teamCollision: true,
 }
 let presetGameModes = [
     {
@@ -37,6 +39,8 @@ let presetGameModes = [
         respawn: false,
         respawnTimer: 5,
         respawnGrowth: 50, //Percent
+        snakeCollision: true,
+        teamCollision: true,
     },
     {
         name: "Rocky",
@@ -53,6 +57,8 @@ let presetGameModes = [
         respawn: false,
         respawnTimer: 5,
         respawnGrowth: 50, //Percent
+        snakeCollision: true,
+        teamCollision: true,
     }
 ];
 

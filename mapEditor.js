@@ -1125,7 +1125,7 @@ function loadStatusSelectionScreen() {
                 }
                 if (path.length == 1) {
                     if (returnValue == true) return item[path[0]];
-                    item[pathpath[0]] = value;
+                    item[path[0]] = value;
                     if (item.tie && returnValue !== "tie") tie = item.tie;
                 }
                 if (tie) {
