@@ -180,7 +180,11 @@ function me_loadDropdown(holder,group,name) {
             let itemHolder = itemsHolder.create("div");
             itemHolder.className = "me_itemHolder";
             let itemImage = itemHolder.create("img");
-            itemImage.src = $(name + item.name).src;
+            let image = getImageFromItem(item,false);
+            if (item.baseImg) {
+                itemImage.src = $(name + image).src;
+            } else 
+                itemImage.src = $(name + item.name).src;
             itemImage.css({
                 width: "100%",
                 height: "100%",
@@ -372,32 +376,22 @@ function me_updateCell(ctx,x,y,opacity) {
     }
     if (cell.item) {
         itemCounts.push("item_" + cell.item.name);
-        ctx.drawImage(getItemCanvas(cell.item.name),Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
-        if (cell.item.renderStatusPath.length > 0) {
-            let name = cell.item;
-            for (let j = 0; j < cell.item.renderStatusPath.length; j++) {
-                name = name[cell.item.renderStatusPath[j]];
-            }
-            if (name == "player") name = cell.item.name;
-            if (_type(name).type == "array") name = name[0];
 
+        let image = getImageFromItem(cell.item);
+        ctx.drawImage(image,Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
 
-            if (cell.item.boardDestructibleCountRequired > 1)
-                name = name + "x" + cell.item.boardDestructibleCountRequired;
-
+        if (cell.item.boardDestructibleCountRequired > 1) {
             ctx.font = "16px VT323";
             ctx.strokeStyle = "black";
             ctx.fillStyle = "white";
             ctx.lineWidth = 4;
 
-            let textWidth = ctx.measureText(name).width;
+            let textWidth = ctx.measureText(cell.item.boardDestructibleCountRequired).width;
+            xPos = (x*(gridSize*zoom)) + ((gridSize*zoom)/2) - (textWidth/2);
+            yPos = (y*(gridSize*zoom)) + ((gridSize*zoom)/2)+5;
 
-            let xPos = (x*(gridSize*zoom)) + ((gridSize*zoom)/2) - (textWidth/2);
-            let yPos = (y*(gridSize*zoom)) + ((gridSize*zoom)/2)+5;
-
-            ctx.strokeText(name,xPos,yPos);
-            ctx.fillText(name,xPos,yPos);
-            
+            ctx.strokeText(cell.item.boardDestructibleCountRequired,xPos,yPos);
+            ctx.fillText(cell.item.boardDestructibleCountRequired,xPos,yPos);
         }
     }
 
@@ -906,7 +900,11 @@ $("me_button").on("click",function() {
 })
 
 function loadObjectMenu() {
-    $(".me_ih_image").src = "img/" + selectedItem.cell.img;
+    if (selectedItem.cell.baseImg) {
+        let image = getImageFromItem(selectedItem.cell,false);
+        $(".me_ih_image").src = $(selectedItem.type +"_" + image).src;
+    } else 
+        $(".me_ih_image").src = $(selectedItem.type +"_" + selectedItem.cell.name).src;
     let holder = $(".me_ih_settings");
     holder.innerHTML = "";
     $(".me_ih_name").innerHTML = selectedItem.cell.name;
@@ -994,37 +992,21 @@ function loadObjectMenu() {
                 }
             }
         }
-        if (type.subset(0,5) == "status") {
+        if (type == "status") {
             let contentHolder = settingHolder.create("div");
             contentHolder.css({
                 width: "50px",
                 height: "50px",
-                background: "white",
+                background: getColorFromTeam(value),
                 cursor: "url('./img/pointer.cur'), auto",
                 borderRadius: "5px",
                 border: "2px solid black",
-            })
-            
-            let text = contentHolder.create("div");
-            text.innerHTML = value; 
-            text.css({
-                width: "100%",
-                color: "black",
-                fontWeight: "bold",
-                fontSize: "25px",
-                lineHeight: "50px",
-                textAlign: "center",
             })
 
             contentHolder.path = path;
             contentHolder.type = type;
             contentHolder.on("click",function() {
                 selectedItem.path = this.path;
-                if (this.type == "statusPlayer") {
-                    $(".nonPlayer").hide();
-                } else {
-                    $(".nonPlayer").show("inline-block");
-                }
                 $(".statusSelectionScreen").show("flex");
             })
         }
@@ -1058,17 +1040,12 @@ function loadObjectMenu() {
             if (object.onCollision.removeBoardStatus !== false && object.onCollision.removeBoardStatus !== undefined) {
                 addSetting("Remove Board Status","status",object.onCollision.removeBoardStatus,["onCollision","removeBoardStatus"]);
             }
-            if (object.offCollision) {
-                if (object.offCollision.removeBoardStatus !== false && object.offCollision.removeBoardStatus !== undefined) {
-                    addSetting("Remove Board Status","status",object.offCollision.removeBoardStatus,["offCollision","removeBoardStatus"]);
-                }
-            }
         }
         if (object.name == "boardLockedCell")
             addSetting("Board Status Required","number",object.boardDestructibleCountRequired,["boardDestructibleCountRequired"]);
     
-        if (object.spawnPlayerID) {
-            addSetting("Spawn Player ID","statusPlayer",object.spawnPlayerID,["spawnPlayerID"]);
+        if (object.spawnPlayerTeam) {
+            addSetting("Team Color","status",object.spawnPlayerTeam,["spawnPlayerTeam"]);
         }
         if (_type(object.snakeSizeRequired).type == "number") {
             addSetting("Snake Size Required","number",object.snakeSizeRequired,["snakeSizeRequired"]);
@@ -1099,47 +1076,72 @@ function loadStatusSelectionScreen() {
 
     function createStatus(string,className,holder) {
 
+        let backgroundColor = "white";
+        if (className == "nonPlayer") backgroundColor = string[1];
+
         let contentHolder = holder.create("div");
         contentHolder.css({
             width: "50px",
             height: "50px",
-            background: "white",
+            backgroundColor: backgroundColor,
             cursor: "url('./img/pointer.cur'), auto",
             borderRadius: "5px",
             border: "2px solid black",
             display: "inline-block",
         })
 
-        contentHolder.status = string;
+        if (className == "playerStatus") {
+            contentHolder.status = string;
+            let text = contentHolder.create("div");
+            text.innerHTML = string; 
+            text.css({
+                width: "100%",
+                color: "black",
+                fontWeight: "bold",
+                fontSize: "25px",
+                lineHeight: "50px",
+                textAlign: "center",
+            })
+        } else {
+            contentHolder.status = string[0];
+        }
 
-        let text = contentHolder.create("div");
-        text.innerHTML = string; 
-        text.css({
-            width: "100%",
-            color: "black",
-            fontWeight: "bold",
-            fontSize: "25px",
-            lineHeight: "50px",
-            textAlign: "center",
-        })
-
-        if (className) contentHolder.className = className;
+        contentHolder.className = className;
         
         contentHolder.on("click",function() {
             let selectingOneCell = isSelectingOneCell();
 
-            if (selectedItem.path.length == 3) {
-                selectedItem.cell[selectedItem.path[0]][selectedItem.path[1]][selectedItem.path[2]] = this.status;
-                if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][selectedItem.path[0]][selectedItem.path[1]][selectedItem.path[2]] = this.status;
+            function helper(item,path,value,returnValue = false) {
+                let tie = false;
+                if (path.length == 3) {
+                    if (returnValue == true) return item[path[0]][path[1]][path[2]];
+                    item[path[0]][path[1]][path[2]] = value;
+                    if (item[path[0]][path[1]].tie && returnValue !== "tie") tie = item[path[0]][path[1]].tie;
+                }
+                if (path.length == 2) {
+                    if (returnValue == true) return item[path[0]][path[1]];
+                    item[path[0]][path[1]] = value;
+                    if (item[path[0]].tie && returnValue !== "tie") tie = item[path[0]].tie;
+                }
+                if (path.length == 1) {
+                    if (returnValue == true) return item[path[0]];
+                    item[pathpath[0]] = value;
+                    if (item.tie && returnValue !== "tie") tie = item.tie;
+                }
+                if (tie) {
+                    let wantPath = tie[0].split(".");
+                    wantPath.shift();
+                    let setPath = tie[1].split(".");
+                    setPath.shift();
+
+                    
+                    helper(item,setPath,helper(item,wantPath,false,true),"tie");
+                }
             }
-            if (selectedItem.path.length == 2) {
-                selectedItem.cell[selectedItem.path[0]][selectedItem.path[1]] = this.status;
-                if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][selectedItem.path[0]][selectedItem.path[1]] = this.status;
-            }
-            if (selectedItem.path.length == 1) {
-                selectedItem.cell[selectedItem.path[0]] = this.status;
-                if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][selectedItem.path[0]] = this.status;
-            }
+            helper(selectedItem.cell,selectedItem.path,this.status);
+            if (selectingOneCell) helper(currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x],selectedItem.path,this.status);
+
+            
             checkRenderThenRender();
             $(".statusSelectionScreen").hide();
             loadObjectMenu();
@@ -1147,19 +1149,8 @@ function loadStatusSelectionScreen() {
     }
 
     createStatus("*P","playerStatus",holder2);
-    createStatus("P0","playerStatus",holder2);
-    createStatus("P1","playerStatus",holder2);
-    createStatus("P2","playerStatus",holder2);
-    createStatus("P3","playerStatus",holder2);
-    createStatus("P4","playerStatus",holder2);
-    createStatus("P5","playerStatus",holder2);
-    createStatus("P6","playerStatus",holder2);
-    createStatus("P7","playerStatus",holder2);
-    createStatus("P8","playerStatus",holder2);
-    createStatus("P9","playerStatus",holder2);
-    let abc = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-    for (let i = 0; i < abc.length; i++) {
-        createStatus(abc[i],"nonPlayer",holder);
+    for (let i = 0; i < global_gameColors.length; i++) {
+        createStatus(global_gameColors[i],"nonPlayer",holder);
     }
 }
 

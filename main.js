@@ -35,6 +35,13 @@ function renderGame() {
                             name: cell.item.name,
                         })
                     }
+                    if (cell.item.spawnPlayerHere == true) {
+                        currentBoard.location_spawns.push({
+                            x: j,
+                            y: i,
+                            item: cell.item,
+                        })
+                    }
                 }
             }
         }
@@ -63,61 +70,19 @@ function renderCells() {
         ctx_items.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
         if (!mapCell.visible) continue;
         if (mapCell == false) continue;
-        ctx_items.drawImage(getItemCanvas(mapCell.name + mapCell.canvasTag),x*gridSize,y*gridSize,gridSize,gridSize);
 
-        if (mapCell.renderStatusPath.length > 0) {
-            let name = mapCell;
-            for (let j = 0; j < mapCell.renderStatusPath.length; j++) {
-                name = name[mapCell.renderStatusPath[j]];
+        let image;
+        if (mapCell.baseImg) {
+            image = mapCell.name + "_";
+            for (let i = 0; i < mapCell.baseImgTags.length; i++) {
+                image += getBaseImgFromTag(mapCell,mapCell.baseImgTags[i])
             }
-
-            if (name == "*P") continue;
-
-            let color = mapCell.renderStatusColor || "white";
-            if (color == "board") {
-                //Check If Status IS Cleared Or Not
-                let worldStatusPass = false;
-                let boardStatusCount = 0;
-                for (let i = 0; i < mapCell.boardDestructible.length; i++) {
-                    if (mapCell.boardDestructible[i] == "yes")  {
-                        worldStatusPass = true;
-                        boardStatusCount++;
-                        continue;
-                    }
-                    if (currentBoard.boardStatus.includes(mapCell.boardDestructible[i])) {
-                        for (let j = 0; j < currentBoard.boardStatus.length; j++) {
-                            if (currentBoard.boardStatus[j] === mapCell.boardDestructible[i]) boardStatusCount++;
-                        }
-                        continue;
-                    }
-                }
-                worldStatusPass = boardStatusCount >= Number(mapCell.boardDestructibleCountRequired);
-                //End
-
-                if (worldStatusPass) color = "green";
-                else color = "red";
-            }
-           
-
-
-
-            if (mapCell.boardDestructibleCountRequired > 1)
-                name = name + "x" + mapCell.boardDestructibleCountRequired;
-
-            ctx_items.font = "16px VT323";
-            ctx_items.strokeStyle = "black";
-            ctx_items.fillStyle = color;
-            ctx_items.lineWidth = 4;
-
-            let textWidth = ctx_items.measureText(name).width;
-
-            let xPos = (x*(gridSize)) + ((gridSize)/2) - (textWidth/2);
-            let yPos = (y*(gridSize)) + ((gridSize)/2)+5;
-
-            ctx_items.strokeText(name,xPos,yPos);
-            ctx_items.fillText(name,xPos,yPos);
-
+            image = getItemCanvas(image);
+        } else {
+            image = getItemCanvas(mapCell.name);
         }
+
+        ctx_items.drawImage(image,x*gridSize,y*gridSize,gridSize,gridSize);
     }
     updateCells = [];
 }
@@ -709,12 +674,8 @@ function runItemFunction(player,item,type,itemPos,settings = {playAudio: true}) 
         item.switchStatus = false;
     }
 
-    if (collision.switchImage) {
-        if (item.switchStatus === true) {
-            item.canvasTag = "_switch";
-        } else {
-            item.canvasTag = "";
-        }
+    if (collision.switchBaseImgTag) {
+        item.baseImgTags[collision.switchBaseImgTag.index] = item.baseImgTags[collision.switchBaseImgTag.index] == collision.switchBaseImgTag.switch[0] ? collision.switchBaseImgTag.switch[1] : collision.switchBaseImgTag.switch[0];
         updateCells.push({
             x: player.pos.x,
             y: player.pos.y,
@@ -735,8 +696,7 @@ function runItemFunction(player,item,type,itemPos,settings = {playAudio: true}) 
     }
     if (collision.setBoardStatus) {
         let status = collision.setBoardStatus;
-        if (collision.setBoardStatus == "*P") status = "P" + player.index;
-
+        if (collision.setBoardStatus == "*P") status = findPlayersTeam(player);
         if (item.sendingBoardStatus === status) return;
 
         if (item.sendingBoardStatus !== false) {
@@ -746,9 +706,10 @@ function runItemFunction(player,item,type,itemPos,settings = {playAudio: true}) 
         item.sendingBoardStatus = status;
         addBoardStatus(status,player);
     }
-    if (collision.changeHue) {
-        addItemCanvas(item,item.img,item.name + "_" + player.id,collision.changeHue,player);
-        item.canvasTag = "_" + player.id; 
+    if (collision.setBaseImgTag) {
+        let value = collision.setBaseImgTag.value;
+        if (value == "*P") value = findPlayersTeam(player);
+        item.baseImgTags[collision.setBaseImgTag.index] = value;
 
         updateCells.push({
             x: player.pos.x,
@@ -959,16 +920,30 @@ function deletePlayer(player,playerWhoKilled,item,instaKill = false){
     }
 }
 function removePlayerStatus(player,itemName) {
-    findingStatus: for (let i = 0; i < player.status.length; i++) {
-        if (player.status[i] == getItem(itemName).name) {
-            player.status.splice(i,1);
-            break findingStatus;
+    if (itemName == "teamColor") {
+        findingStatus: for (let i = 0; i < player.status.length; i++) {
+            if (player.status[i].subset(0,5) == "status") {
+                player.status.splice(i,1);
+                break findingStatus;
+            }
+        }
+    } else {
+        findingStatus: for (let i = 0; i < player.status.length; i++) {
+            if (player.status[i] == getItem(itemName).name) {
+                player.status.splice(i,1);
+                break findingStatus;
+            }
         }
     }
     drawPlayerBox(player);
 }
 function addPlayerStatus(player,itemName) {
-    player.status.push(getItem(itemName).name);
+    if (itemName.subset(0,5) == "status") {
+        removePlayerStatus(player,"teamColor");
+        player.status.push(itemName);
+    } else {
+        player.status.push(getItem(itemName).name);
+    }
     drawPlayerBox(player);
 }
 function removeBoardStatus(status,player) {
@@ -1179,6 +1154,7 @@ function startGame(solo = false) {
 
     currentBoard.location_tunnels = [];
     currentBoard.location_status = [];
+    currentBoard.location_spawns = [];
 
     try {
         currentBoard.map = structuredClone(currentBoard.originalMap);
@@ -1238,7 +1214,7 @@ function startGame(solo = false) {
         player.howManyItemsCanIUse = currentGameMode.howManyItemsCanPlayersUse;
         player.whenInventoryIsFullInsertItemsAt = 0;
         player.index = i;
-        player.status = ["P" + i];
+        player.status = ["status_white"];
         //Set All Player Items To Empty
         player.items = [];
         for (let j = 0; j < currentGameMode.howManyItemsCanPlayersUse; j++) {
@@ -1267,11 +1243,6 @@ function startGame(solo = false) {
         //Draw Player's Card
         drawPlayerBox(player);
         //Spawn Players
-    }
-
-    //Reset Items
-    for (let i = 0; i < currentGameMode.items.length; i++) {
-        currentGameMode.items[i].canvasTag = "";
     }
 
     setUpPlayerCanvas();

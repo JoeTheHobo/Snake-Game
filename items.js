@@ -576,7 +576,7 @@ items.push({
     pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
     snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
-
+//Spawn v
 items.push({
     name: "spawn", //(string) Name Of Item
     id: 13,
@@ -605,11 +605,11 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: true, //Spawn players on this tile
-    spawnPlayerID: "*P", //Tells which player to spawn here. "player" for all players
+    spawnPlayerTeam: "white", //Tells which player to spawn here. "player" for all players
 
     destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: ["spawnPlayerID"], //Path to which status to render on top of item, leave blank if no render
+    renderStatusPath: ["spawnPlayerTeam"], //Path to which status to render on top of item, leave blank if no render
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     deleteOnDestruct: true, //When Destructible status is met do I delete myself?
     damage: 0, //How much damage to inflict to play when collided with
@@ -959,7 +959,9 @@ items.push({
 items.push({
     name: "switch", //(string) Name Of Item
     id: 22,
-    img: "switchOff.png", //(string) Image name
+    baseImg: "items/item_switch_",
+    baseImgTags: [".onCollision.switchBoardStatus","_off"],
+    renderImages: [["*colors"],["_on","_off"]],
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
@@ -988,8 +990,11 @@ items.push({
 
     canCollide: true, //If You should look at any colliding properties
     onCollision: { //When collisionType collides do these
-        switchImage: "switchOn.png", //Switch Between these images
-        switchBoardStatus: "A", //Switch Between giving these status'
+        switchBaseImgTag: { //Switch Between these images using Base Img
+            index: 1,
+            switch: ["_on","_off"],
+        },
+        switchBoardStatus: "red", //Switch Between giving these status'
     },
 
     destructible: [false],
@@ -1009,7 +1014,10 @@ items.push({
 items.push({
     name: "button", //(string) Name Of Item
     id: 23,
-    img: "button.png", //(string) Image name
+    baseImg: "items/item_buttonSubtract_", //BaseImgTags Will add to this, to say which image to use
+    baseImgTags: [".onCollision.removeBoardStatus"], 
+    renderImages: [["*colors"]], //All Variations it can be
+
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
@@ -1040,7 +1048,7 @@ items.push({
     onCollision: { //When collisionType collides do these
         switchImage: false, //Switch Between these images
         switchBoardStatus: false, //Switch Between giving these status
-        removeBoardStatus: "A", //Add a status To the Board;
+        removeBoardStatus: "red", //Add a status To the Board;
     },
 
     destructible: [false],
@@ -1060,7 +1068,11 @@ items.push({
 items.push({
     name: "buttonAdd", //(string) Name Of Item
     id: 24,
-    img: "buttonAdd.png", //(string) Image name
+    
+    baseImg: "items/item_buttonAdd_", //BaseImgTags Will add to this, to say which image to use
+    baseImgTags: [".onCollision.addBoardStatus"], 
+    renderImages: [["*colors"]], //All Variations it can be
+
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
@@ -1091,7 +1103,7 @@ items.push({
     onCollision: { //When collisionType collides do these
         switchImage: false, //Switch Between these images
         switchBoardStatus: false, //Switch Between giving these status
-        addBoardStatus: "A", //Add a status To the Board;
+        addBoardStatus: "red", //Add a status To the Board;
     },
 
     destructible: [false],
@@ -1165,7 +1177,9 @@ items.push({
 items.push({
     name: "flag", //(string) Name Of Item
     id: 26,
-    img: "flag.png", //(string) Image name
+    baseImg: "items/item_flag_",
+    baseImgTags: ["white"],
+    renderImages: [["*colors2"]],
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
@@ -1201,7 +1215,10 @@ items.push({
         addBoardStatus: false, //Add a status To the Board;
         removeBoardStatus: false, //Remove a status To the Board;
         setBoardStatus: "*P", //Sets its world status to this, can only send out one status
-        changeHue: "*P", //Change hue to this.
+        setBaseImgTag: {
+            index: 0,
+            value: "*P",
+        }, //Change base image tag.
         playSound: ["set",1],
     },
 
@@ -1223,7 +1240,9 @@ items.push({
 items.push({
     name: "preassurePlate", //(string) Name Of Item
     id: 27,
-    img: "pressureplate.png", //(string) Image name
+    baseImg: "items/item_pressurePlate_",
+    baseImgTags: [".onCollision.addBoardStatus"],
+    renderImages: [["*colors"]],
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
@@ -1255,13 +1274,14 @@ items.push({
     onCollision: { //When snake collides do these
         switchImage: false, //Switch Between these images
         switchBoardStatus: false, //Switch Between giving these status
-        addBoardStatus: "A", //Add a status To the Board;
+        addBoardStatus: "red", //Add a status To the Board;
         removeBoardStatus: false, //Remove a status To the Board;
         setBoardStatus: false, //Sets its world status to this, can only send out one status
         changeHue: false, //Change hue to this.
+        tie: [".onCollision.addBoardStatus",".offCollision.removeBoardStatus"],
     },
     offCollision: { //When snake leaves item
-        removeBoardStatus: "A", //Remove a status To the Board;
+        removeBoardStatus: "red", //Remove a status To the Board;
     },
 
     destructible: [false],
@@ -1323,7 +1343,7 @@ items.push({
     },
 
 
-    destructible: ["P0"],
+    destructible: ["status_red"],
     boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
     renderStatusPath: ["destructible"], //Path to which status to render on top of item, leave blank if no render
     renderStatusColor: "white", //Type To Render Color;
@@ -1383,7 +1403,7 @@ items.push({
 
 
     destructible: ["yes"], //Leave Blank If Nothing can Destroy This. "yes" - Anyone can destroy this
-    boardDestructible: ["A"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
+    boardDestructible: ["status_red"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
     renderStatusPath: ["boardDestructible"], //Path to which status to render on top of item, leave blank if no render
     renderStatusColor: "board", //Type To Render Color;
     boardDestructibleCountRequired: 1, //How many of these world status does it need

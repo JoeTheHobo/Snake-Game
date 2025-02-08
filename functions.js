@@ -1,6 +1,6 @@
 ls.setID("snakegame");
 
-let forceReset = 19;
+let forceReset = 26;
 let needsToBeReset = ls.get("reset" + forceReset,true);
 if (needsToBeReset) {
     ls.delete("gameModes");
@@ -110,6 +110,48 @@ let timer, gameEnd;
 let gamePaused = false;
 let isActiveGame = false;
 let doColorRender = false;
+
+//Setting up colors
+
+let global_gameColors = [
+    ["white","#ffffff"],
+    ["aquamarine","#61f3cc"],
+    ["blue","#25008f"],
+    ["buff","#f7d082"],
+    ["coral","#f07a7d"],
+    ["crimsonpurple","#e33bf1"],
+    ["gold","#ccbb00"],
+    ["green","#3e9000"],
+    ["lemon","#e0ff00"],
+    ["lime","#6ff600"],
+    ["magenta","#85008f"],
+    ["orange","#f29900"],
+    ["pink","#e8006f"],
+    ["red","#ee0013"],
+    ["skyblue","#85d0ff"],
+    ["slateblue","#7564ff"],
+    ["venom","#6b7a00"],
+]
+function getColorFromTeam(color) {
+    if (color == "white") return "#ffffff";
+    if (color == "aquamarine") return "#61f3cc";
+    if (color == "blue") return "#25008f";
+    if (color == "buff") return "#f7d082";
+    if (color == "coral") return "#f07a7d";
+    if (color == "crimsonpurple") return "#e33bf1";
+    if (color == "gold") return "#ccbb00";
+    if (color == "green") return "#3e9000";
+    if (color == "lemon") return "#e0ff00";
+    if (color == "lime") return "#6ff600";
+    if (color == "magenta") return "#85008f";
+    if (color == "orange") return "#f29900";
+    if (color == "pink") return "#e8006f";
+    if (color == "red") return "#ee0013";
+    if (color == "skyblue") return "#85d0ff";
+    if (color == "slateblue") return "#7564ff";
+    if (color == "venom") return "#6b7a00";
+}
+//End Colors
 
 
 let gridSize;
@@ -323,13 +365,35 @@ function setUpItemCanvas() {
     html_itemCanvasHolder.innerHTML = "";
 
     for (let i = 0; i < items.length; i++) {
-        addItemCanvas(items[i],items[i].img,items[i].name);
+        let item = items[i];
+        if (!item.baseImg) {
+            addItemCanvas(items[i],items[i].img,items[i].name);
+            continue;
+        }
 
-        if (items[i].onCollision) {
-            if (items[i].onCollision.switchImage) {
-                addItemCanvas(items[i],items[i].onCollision.switchImage,items[i].name + "_switch");
+        function combineStrings(arrays, prefix = "", index = 0) {
+            if (index === arrays.length) {
+                processCombination(prefix); // Call the function with the combined string
+                return;
+            }
+        
+            for (let item of arrays[index]) {
+                combineStrings(arrays, prefix + item, index + 1);
             }
         }
+        
+        function processCombination(combination) {
+            addItemCanvas(items[i],items[i].baseImg + combination + ".png",items[i].name + "_" + combination);
+        }
+        for (let j = 0; j < item.renderImages.length; j++) {
+            if (item.renderImages[0] == "*colors") item.renderImages[0] = [
+                "aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
+            ]
+            if (item.renderImages[0] == "*colors2") item.renderImages[0] = [
+                "white","aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
+            ]
+        }
+        combineStrings(item.renderImages);
     }
 }
 function makeItemCanvas(image,filter = "",player) {
@@ -490,69 +554,22 @@ function spawn(name,generateRandomItem = true,counting = false,playAudio = true)
         
     let counter = 0;
     let foundSpot = false;
-    let x,y;
+    let x,y,team = "white";
+    let allSpawns = currentBoard.location_spawns.shuffle();
     while (foundSpot == false) {
         if (isPlayer) {
-            
-            findingExactSpawner: for (let k = 0; k < currentBoard.map.length; k++) {
-                for (let j = 0; j < currentBoard.map[0].length; j++) {
-                    if (currentBoard.map[k][j].item === false) continue;
-                    if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
-                    if (currentBoard.map[k][j].item.spawnPlayerID == "*P" || currentBoard.map[k][j].item.spawnPlayerID === undefined) continue;
-                    if (currentBoard.map[k][j].item.spawnPlayerID !== "P" + Number(name.index)) continue;
-
-                    let playerOnIt = false;
-                    for (let i = 0; i < activePlayers.length; i++) {
-                        if (activePlayers[i].pos.x == j && activePlayers[i].pos.y == k) playerOnIt = true;
-                    }
-                    if (playerOnIt) continue;
-
-                    x = j;
-                    y = k;
-                    foundSpot = true;
-                    break findingExactSpawner;
-                    
+            findingSpawner: for (let k = 0; k < allSpawns.length; k++) {
+                let playerOnIt = false;
+                for (let i = 0; i < activePlayers.length; i++) {
+                    if (activePlayers[i].pos.x == allSpawns[k].x && activePlayers[i].pos.y == allSpawns[k].y) playerOnIt = true;
                 }
-            }
-            if (!foundSpot) {
-                findingSpawner: for (let k = 0; k < currentBoard.map.length; k++) {
-                    for (let j = 0; j < currentBoard.map[0].length; j++) {
-                        if (currentBoard.map[k][j].item === false) continue;
-                        if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
-                        if (currentBoard.map[k][j].item.spawnPlayerID !== "*P") continue;
-                        
-                        let playerOnIt = false;
-                        for (let i = 0; i < activePlayers.length; i++) {
-                            if (activePlayers[i].pos.x == j && activePlayers[i].pos.y == k) playerOnIt = true;
-                        }
-                        if (playerOnIt) continue;
-                        
-                        x = j;
-                        y = k;
-                        foundSpot = true;
-                        break findingSpawner;
-                    }
-                }
-
+                if (playerOnIt) continue;
                 
-                if (!foundSpot) {
-                    findingSpawner: for (let k = 0; k < currentBoard.map.length; k++) {
-                        for (let j = 0; j < currentBoard.map[0].length; j++) {
-                            if (currentBoard.map[k][j].item === false) continue;
-                            if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
-                            let playerOnIt = false;
-                            for (let i = 0; i < activePlayers.length; i++) {
-                                if (activePlayers[i].pos.x == j && activePlayers[i].pos.y == k) playerOnIt = true;
-                            }
-                            if (playerOnIt) continue;
-        
-                            x = j;
-                            y = k;
-                            foundSpot = true;
-                            break findingSpawner;
-                        }
-                    }
-                }
+                x = allSpawns[k].x;
+                y = allSpawns[k].y;
+                team = allSpawns[k].item.spawnPlayerTeam || "white";
+                foundSpot = true;
+                break findingSpawner;
             }
         }
         
@@ -615,6 +632,7 @@ function spawn(name,generateRandomItem = true,counting = false,playAudio = true)
         if (isPlayer) {
             name.pos.x = x;
             name.pos.y = y;
+            addPlayerStatus(name,"status_" + team);
         } else {
             let sendPlayer = false;
             if (cameraFollowPlayer) sendPlayer = activePlayers[0];
@@ -841,7 +859,14 @@ function drawPlayerBox(player) {
     length.innerHTML = "Size: " + (player.tail.length + 1); 
 
     for (let i = 0; i < player.status.length; i++) {
-        if (player.status[i].charAt(0) == "P" && player.status[i].length < 3) continue;
+        if (player.status[i].subset(0,6) == "status_") {
+            let statusImage = statusHolder.create("img");
+            statusImage.src = "img/status/status_team_" + player.status[i].subset("_\\after","end") + ".png";
+            statusImage.css({
+                width: "20px",
+            })
+            continue;
+        }
 
         let statusImage = statusHolder.create("img");
         statusImage.src = "img/" + getRealItem(player.status[i]).img;
@@ -1181,32 +1206,36 @@ function loadBoardStatus(index) {
         let status = statusGroups[i][0];
         let count = statusGroups[i].length;
 
-        if (count > 1) status = status + "x" + count;
 
         let contentHolder = holder.create("div");
         contentHolder.css({
             width: "max-content",
+            minWidth: "20px",
+            textAlign: "center",
             paddingLeft: "3px",
             paddingRight: "3px",
             height: statusSize + "px",
             margin: "2px",
             borderRadius: "5px",
             border: "2px solid black",
-            background: "white",
+            background: getColorFromTeam(status),
             fontFamily: "VT323",
         })
 
-        let text = contentHolder.create("div");
-        text.innerHTML = status; 
-        text.css({
-            width: "100%",
-            color: "black",
-            fontWeight: "bold",
-            fontSize: statusSize+ "px",
-            lineHeight: statusSize + "px",
-            textAlign: "center",
-            fontFamily: "VT323",
-        })
+        if (count > 1) {
+            let text = contentHolder.create("div");
+            text.innerHTML = count; 
+            text.css({
+                width: "100%",
+                color: "black",
+                fontWeight: "bold",
+                fontSize: statusSize+ "px",
+                lineHeight: statusSize + "px",
+                textAlign: "center",
+                fontFamily: "VT323",
+            })
+        }
+        
 
         
     }
@@ -1234,9 +1263,16 @@ function fixItemDifferences(map) {
             if (change.length == 3) {
                 pos[change[0]][change[1]] = change[2];
             }
-            if (change.length == 2) pos[change[0]] = change[1];
+            if (change.length == 2) {
+                pos[change[0]] = change[1];
+            }
         }
         map[d.y][d.x].item = pos;
+        for (let i = 0; i < currentBoard.location_spawns.length; i++) {
+            if (d.y == currentBoard.location_spawns[i].y && currentBoard.location_spawns[i].x == d.x) {
+                currentBoard.location_spawns[i].item = map[d.y][d.x].item;
+            }
+        }
         let item = map[d.y][d.x].item;
         
         if (item.message) {
@@ -1320,7 +1356,19 @@ function drawBoardToCanvas(board,canvas,forceHeight) {
                 ctx.drawImage($("tile_" + cell.tile.name),Xpos,Ypos,(gs),(gs));
             }
             if (cell.item) {
-                ctx.drawImage(getItemCanvas(cell.item.name),Xpos,Ypos,(gs),(gs));
+                
+                let image;
+                if (cell.item.baseImg) {
+                    image = cell.item.name + "_";
+                    for (let i = 0; i < cell.item.baseImgTags.length; i++) {
+                        image += getBaseImgFromTag(cell.item,cell.item.baseImgTags[i])
+                    }
+                    image = getItemCanvas(image);
+                } else {
+                    image = getItemCanvas(cell.item.name);
+                }
+
+                ctx.drawImage(image,Xpos,Ypos,(gs),(gs));
             }
 
         }
@@ -1341,4 +1389,38 @@ function drawTunnelCanvas(canvas,pos) {
 
     let ctx = canvas.getContext("2d");
     ctx.drawImage($(".firstPersonCanvas_master"),x-extra,y-extra,extra*2,extra*2,0,0,200,200);
+}
+
+function findPlayersTeam(player) {
+    for (let i = 0; i < player.status.length; i++) {
+        if (player.status[i].subset(0,5) == "status") return player.status[i].subset("_\\after","end");
+    }
+}
+function getBaseImgFromTag(item,tag) {
+    if (tag.charAt(0) == ".") {
+        return getItemValueFromList(item,tag.split("."));
+    } else {
+        return tag;
+    }
+}
+function getItemValueFromList(item,list) {
+    let value = item;
+    for (let i = 1; i < list.length; i++) {
+        value = value[list[i]];
+    }
+    return value;
+}
+function getImageFromItem(item,returnCanvas = true) {
+    let image;
+    if (item.baseImg) {
+        image = item.name + "_";
+        for (let i = 0; i < item.baseImgTags.length; i++) {
+            image += getBaseImgFromTag(item,item.baseImgTags[i])
+        }
+        if (!returnCanvas) return image;
+        image = getItemCanvas(image);
+    } else {
+        image = getItemCanvas(item.name);
+    }
+    return image;
 }
