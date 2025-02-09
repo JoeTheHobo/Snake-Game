@@ -432,6 +432,7 @@ io.on('connection', (socket) => {
     })
     socket.on("startGame", () =>{
         console.log("Server Started")
+        console.log(socket.id,onlineAccounts)
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         lobby.board.map = structuredClone(lobby.board.originalMap);
 
