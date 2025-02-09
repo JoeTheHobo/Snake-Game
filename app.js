@@ -650,6 +650,7 @@ io.on('connection', (socket) => {
                 setTimeout(this.startGameTimer(),1)
             }
         }
+        lobby.startGameTimer();
         
         //lobby.timerLoop();
 
