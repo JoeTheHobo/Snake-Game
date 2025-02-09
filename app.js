@@ -631,7 +631,7 @@ io.on('connection', (socket) => {
         }
     })
     socket.on("movePlayerKey",(direction) => {
-        console.log("hmm2")
+        console.log("Player Pressed Movement Key")
         if (onlineAccounts[socket.id].player.moveQueue.length >= 4) return;
         onlineAccounts[socket.id].player.moveQueue.push(direction);
     })
