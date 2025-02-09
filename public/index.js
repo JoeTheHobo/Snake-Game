@@ -72,6 +72,8 @@ socket.on("updateLobbies", (onlineLobbies,isPlayerJoining, lobby) =>{
     if (isPlayerJoining) setScene("waiting", lobby);
 })
 
+
+
 socket.on("startingGame", (lobby) =>{
     if (localAccount.isInGame) return;
 
