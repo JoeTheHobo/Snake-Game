@@ -426,7 +426,7 @@ function movePlayers() {
                 else if (player.pos.y < 0) { cameraQuickZoom = "top"; if (circleWalls) player.pos.y = maxY; }
             }
 
-
+            updateSnakeCells.push({x: player.pos.x,y: player.pos.y,player: player});
             
             //Check If Tunnels are near player
             if (cameraFollowPlayer) {
