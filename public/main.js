@@ -1567,13 +1567,13 @@ function gameLoop() {
 function serverGameLoop() {
     deltaTime = 1;
     if (!isActiveGame) return;
-    //renderCells();
+    renderCells();
     //movePlayers();
     //deleteSnakeCells();
     //renderPlayers();
     
 
-    if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/10);//requestAnimationFrame(gameLoop);
+    if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 120);//requestAnimationFrame(gameLoop);
 }
 function specialItemManager() {
     if (gameType == "server") return;

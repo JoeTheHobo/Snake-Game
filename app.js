@@ -552,31 +552,16 @@ io.on('connection', (socket) => {
             server_movePlayers(this)
             this.lastTimestamp = timestamp;
 
-            // if (timestamp - this.updateTimeStamp >= 200) { // Every 200ms
-            //     if (onlineAccounts[socket.id]) {
-            //         io.emit("updatedLocalAccount",{
-            //             id: socket.id,
-            //             isInGame: true,
-            //             board: this.board,
-            //             updateCells: this.updateCells,
-            //         })
-            //     }
-            //     this.updateTimeStamp = timestamp;
-            //     this.updateCells = [];
-            // }
-
-            //if (timestamp - this.updatePositionTimeStamp >= 100) { // Every 200ms
-                if (onlineAccounts[socket.id]) {
-                    io.emit("updatePositions",{
-                        activePlayers: this.activePlayers,
-                        updateSnakeCells: this.updateSnakeCells,
-                        updateCells: this.updateCells,
-                    })
-                }
-                this.updatePositionTimeStamp = timestamp;
-                this.updateSnakeCells = [];
-                this.updateCells = [];
-            //}
+            if (onlineAccounts[socket.id]) {
+                io.emit("updatePositions",{
+                    activePlayers: this.activePlayers,
+                    updateSnakeCells: this.updateSnakeCells,
+                    updateCells: this.updateCells,
+                })
+            }
+            this.updatePositionTimeStamp = timestamp;
+            this.updateSnakeCells = [];
+            this.updateCells = [];
             
 
 

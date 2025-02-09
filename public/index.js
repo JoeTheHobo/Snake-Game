@@ -181,7 +181,6 @@ socket.on("updatePositions",(obj) => {
     
     deleteSnakeCells();
     renderPlayers();
-    renderCells();
 });
 socket.on("updatedLocalAccount",(obj) => {
     localAccount.id = obj.id;
