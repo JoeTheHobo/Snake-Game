@@ -568,6 +568,7 @@ function useItem(player) {
 }
 function testItemUnderPlayer(player) {
     let mapItem = currentBoard.map[player.pos.y][player.pos.x].item;
+    console.log(2,mapItem);
     if (!mapItem) return;
     if (mapItem.pickUp) {
         let pickedUpItem = false;
