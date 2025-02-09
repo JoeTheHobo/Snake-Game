@@ -1283,7 +1283,6 @@ function server_movePlayers(lobby) {
     activePlayers = lobby.activePlayers;
     let currentBoard = lobby.board;
     let currentGameMode = lobby.gameMode;
-    console.log(activePlayers)
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
         
@@ -1326,6 +1325,7 @@ function server_movePlayers(lobby) {
         let playerOldPos = { x: player.pos.x, y: player.pos.y };
 
         //Move Player and make sure he can't go back on himself
+        console.log(player.moving)
         switch (player.moving) {
             case "left": player.pos.x--; break;
             case "right": player.pos.x++; break;
