@@ -550,7 +550,7 @@ io.on('connection', (socket) => {
         lobby.gameLoop = function() {
             let timestamp = Date.now();
             this.deltaTime = (timestamp - this.lastTimestamp) / (1000/60);
-            console.log(this.lastTimestamp - timeStamp);
+            console.log(this.lastTimestamp - timestamp);
             server_movePlayers(this)
             this.lastTimestamp = timestamp;
 
