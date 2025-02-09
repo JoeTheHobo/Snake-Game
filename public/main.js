@@ -390,6 +390,7 @@ function movePlayers() {
                     player.moving = player.moveQueue[0];
                 }
 
+                console.log("turned Player");
                 player.moveQueue.shift();
             }
             
@@ -1126,7 +1127,6 @@ document.body.onkeydown = function(e) {
             if (activePlayers[i].id === player.id) activePlayer = activePlayers[i];
         }
         if (player.isDead) return;
-        console.log("sentKey")
         if (e.key == player.leftKey && player.moveQueue.length < 4) {
             activePlayer.moveQueue.push("left");
             socket.emit("movePlayerKey","left");

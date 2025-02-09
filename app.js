@@ -646,7 +646,6 @@ io.on('connection', (socket) => {
     })
     socket.on("movePlayerKey",(direction) => {
         if (onlineAccounts[socket.id].player.moveQueue.length >= 4) return;
-        console.log("Recieved Key")
         onlineAccounts[socket.id].player.moveQueue.push(direction);
     })
     socket.on("fireItem",() => {
@@ -1322,6 +1321,7 @@ function server_movePlayers(lobby) {
             {
                 player.moving = player.moveQueue[0];
             }
+            console.log("turned Player");
 
             player.moveQueue.shift();
         }
