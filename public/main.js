@@ -425,8 +425,6 @@ function movePlayers() {
                 if (player.pos.y > maxY) { cameraQuickZoom = "bottom"; if (circleWalls) player.pos.y = 0; }
                 else if (player.pos.y < 0) { cameraQuickZoom = "top"; if (circleWalls) player.pos.y = maxY; }
             }
-
-            updateSnakeCells.push({x: player.pos.x,y: player.pos.y,player: player});
             
             //Check If Tunnels are near player
             if (cameraFollowPlayer) {
@@ -1479,7 +1477,7 @@ function updateProduction() {
 }
 function gameLoop(timestamp) {
     if (!isActiveGame) return;
-    deltaTime = (timestamp - lastTimestamp) / perfectFrameTime;
+    deltaTime = 1;//(timestamp - lastTimestamp) / perfectFrameTime;
     lastTimestamp = timestamp;
 
     //First Person View
