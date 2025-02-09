@@ -346,6 +346,11 @@ app.get('/', (req, res) => {
 const lobbies = {};
 const onlineAccounts = {};
 
+socket.on("ping", () => {
+    console.log(`Ping received from ${socket.id}`);
+});
+
+
 io.on('connection', (socket) => {
     console.log('a user connected');
     onlineAccounts[socket.id] = {
@@ -398,7 +403,18 @@ io.on('connection', (socket) => {
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
         console.log("A user disconnected due to " + reason);
-        onlineAccounts[socket.id].isDead = true;
+        if (onlineAccounts[socket.id].lobby) {
+            let lobby = lobbies[onlineAccounts[socket.id].lobby];
+            let player = onlineAccounts[socket.id].player;
+
+            for (let i = 0; i < lobby.activePlayers.length; i++) {
+                if (lobby.activePlayers[i].id === player.id) lobby.activePlayers.splice(i,1); 
+            }
+            for (let i = 0; i < lobby.players.length; i++) {
+                if (lobby.players[i].id === socket.id) lobby.players.splice(i,1); 
+            }
+        }
+        
         io.emit('updatePlayers', onlineAccounts);
         delete onlineAccounts[socket.id];
         //io.emit('updatePlayers', onlineAccounts);
