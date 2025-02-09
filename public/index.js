@@ -61,15 +61,6 @@ socket.on('updatePlayers', (backendAccounts) => {
     }
 })
 
-socket.on("connect", () => {
-    console.log("Connected to server");
-
-    setInterval(() => {
-        console.log("Sending ping...");
-        socket.emit("ping");
-    }, 5000); // Every 5 seconds
-});
-
 socket.on("kickPlayer",() => {
     killSwitch = true;
     alert("Disconnected");

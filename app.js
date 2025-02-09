@@ -332,7 +332,7 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(server, { pingInterval: 2000, pingTimeout: 60000});
+const io = new Server(server, { pingInterval: 25000, pingTimeout: 60000});
 
 
 const port = 3000;
@@ -608,12 +608,14 @@ io.on('connection', (socket) => {
                 })
             }
         }
+        /*
         lobby.timerLoop = function() {
             setTimeout(() => {
                 this.timer++;
                 this.timerLoop();
             },1000)
         }
+        */
 
         lobby.gameLoop();
         lobby.timerLoop();
