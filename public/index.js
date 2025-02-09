@@ -165,7 +165,7 @@ socket.on("endGame",(obj) => {
 socket.on("updatePositions",(obj) => {
 
     let player = obj.player;
-    player.color = 50;
+    layer.canvas = activePlayers[0].canvas;
 
     activePlayers = [activePlayers[0],player];
 
