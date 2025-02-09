@@ -163,9 +163,6 @@ socket.on("endGame",(obj) => {
     $("winnerStat").hide();
 })
 socket.on("updatePositions",(obj) => {
-    
-
-    return;
     let canvasList = [];
     let oldPosList = [];
     for (let i = 0; i < activePlayers.length; i++) {
