@@ -61,6 +61,11 @@ socket.on('updatePlayers', (backendAccounts) => {
     }
 })
 
+socket.on("kickPlayer",() => {
+    alert("Disconnected");
+    
+})
+
 socket.on("setPlayer", (id, backendAccounts) =>{
     if (localAccount.id !== false) return;
     localAccount.id = backendAccounts[id].id;

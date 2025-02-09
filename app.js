@@ -397,7 +397,7 @@ io.on('connection', (socket) => {
     io.emit("updateLobbies", lobbies);
     io.emit('setPlayer', socket.id, onlineAccounts);
     io.emit('updatePlayers', onlineAccounts)
-    
+
     socket.on("ping", () => {
         console.log(`Ping received from ${socket.id}`);
     });
@@ -416,7 +416,7 @@ io.on('connection', (socket) => {
             }
         }
         
-        io.emit('updatePlayers', onlineAccounts);
+        io.emit("kickPlayer");
         delete onlineAccounts[socket.id];
         //io.emit('updatePlayers', onlineAccounts);
     }) 
