@@ -163,6 +163,13 @@ socket.on("endGame",(obj) => {
     $("winnerStat").hide();
 })
 socket.on("updatePositions",(obj) => {
+
+    let player = obj.player;
+    player.color = 50;
+
+    activePlayers = [activePlayers[0],player];
+
+    return;
     let canvasList = [];
     let oldPosList = [];
     for (let i = 0; i < activePlayers.length; i++) {
