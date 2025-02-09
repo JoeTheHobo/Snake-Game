@@ -1565,13 +1565,13 @@ function serverGameLoop() {
     //renderCells();
     //deleteSnakeCells();
     //renderPlayers();
-    server_movePlayers();
+    movePlayers();
     
 
     if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/60);;//requestAnimationFrame(gameLoop);
 }
 function server_movePlayers() {
-    
+
 }
 function specialItemManager() {
     if (gameType == "server") return;

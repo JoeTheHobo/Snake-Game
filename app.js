@@ -550,18 +550,7 @@ io.on('connection', (socket) => {
             let timestamp = Date.now();
             this.deltaTime = (timestamp - this.lastTimestamp) / (1000/60);
 
-            if (server_movePlayers(this,onlineAccounts[socket.id].player)) {
-                if (onlineAccounts[socket.id]) {
-                    io.emit("updatePositions",{
-                        activePlayers: this.activePlayers,
-                        updateSnakeCells: this.updateSnakeCells,
-                        deltaTime: this.deltaTime,
-                        player: onlineAccounts[socket.id].player,
-                    })
-                }
-                this.updatePositionTimeStamp = timestamp;
-                this.updateSnakeCells = [];
-            }
+            server_movePlayers(this)
             this.lastTimestamp = timestamp;
 
             if (timestamp - this.updateTimeStamp >= 300) { // Every 200ms
@@ -578,7 +567,16 @@ io.on('connection', (socket) => {
             }
 
             if (timestamp - this.updatePositionTimeStamp >= 50) { // Every 200ms
-                
+                if (onlineAccounts[socket.id]) {
+                    io.emit("updatePositions",{
+                        activePlayers: this.activePlayers,
+                        updateSnakeCells: this.updateSnakeCells,
+                        deltaTime: this.deltaTime,
+                        player: onlineAccounts[socket.id].player,
+                    })
+                }
+                this.updatePositionTimeStamp = timestamp;
+                this.updateSnakeCells = [];
             }
             
 
@@ -1287,12 +1285,10 @@ function getPlayersList(playerIds) {
     return list;
 }
 
-function server_movePlayers(lobby,clientPlayer) {
+function server_movePlayers(lobby) {
     activePlayers = lobby.activePlayers;
     let currentBoard = lobby.board;
     let currentGameMode = lobby.gameMode;
-    let MainPlayer = {x: clientPlayer.pos.x, y: clientPlayer.pos.y};
-    let toReturn = false;
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
         
@@ -1442,7 +1438,5 @@ function server_movePlayers(lobby,clientPlayer) {
             player.pos = playerOldPos;
             player.moving = playerOldMoving;
         }
-        if (player.id == clientPlayer.id && (player.pos.x !== MainPlayer.x || player.pos.y !== MainPlayer.y)) toReturn = true;
     }
-    return toReturn;
 }
