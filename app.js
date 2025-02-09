@@ -552,8 +552,6 @@ io.on('connection', (socket) => {
                     io.emit("updatedLocalAccount",{
                         id: socket.id,
                         isInGame: true,
-                        updateCells: this.updateCells,
-                        updateSnakeCells: this.updateSnakeCells,
                         board: this.board,
                     })
                 }
@@ -565,8 +563,9 @@ io.on('connection', (socket) => {
             if (timestamp - this.updatePositionTimeStamp >= 100) { // Every 200ms
                 if (onlineAccounts[socket.id]) {
                     io.emit("updatePositions",{
-                        player: onlineAccounts[socket.id].player,
                         activePlayers: this.activePlayers,
+                        updateCells: this.updateCells,
+                        updateSnakeCells: this.updateSnakeCells,
                     })
                 }
                 this.updatePositionTimeStamp = timestamp;

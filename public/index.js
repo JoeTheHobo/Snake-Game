@@ -172,17 +172,18 @@ socket.on("updatePositions",(obj) => {
     }
 
     activePlayers = obj.activePlayers;
-});
-socket.on("updatedLocalAccount",(obj) => {
-    localAccount.id = obj.id;
-    localAccount.isInGame = obj.isInGame;
-    localAccount.currentBoard = obj.board;
+    
     localAccount.updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
     localAccount.updateCells = updateCells.concat(obj.updateCells); 
 
     //currentBoard = obj.lobby.board;
     updateSnakeCells = localAccount.updateSnakeCells;
     updateCells = localAccount.updateCells;
+});
+socket.on("updatedLocalAccount",(obj) => {
+    localAccount.id = obj.id;
+    localAccount.isInGame = obj.isInGame;
+    localAccount.currentBoard = obj.board;
     currentBoard = obj.board;
 })
 
