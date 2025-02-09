@@ -361,9 +361,9 @@ function growPlayer(player,grow) {
 function movePlayers() {
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
-        console.log(1,player.isDead);
+        
         if (player.isDead) continue;
-        console.log(2);
+        
         if ((player.moveTik*deltaTime) >= (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             if (player.turboActive == true) {
                 player.turboDuration --;
@@ -393,7 +393,6 @@ function movePlayers() {
                 player.moveQueue.shift();
             }
             
-        console.log(3);
             //Moving The Player
             production.setPlayerPos.timeStart = performance.now();
             let playerOldPos = { x: player.pos.x, y: player.pos.y };
@@ -428,7 +427,6 @@ function movePlayers() {
                 else if (player.pos.y < 0) { cameraQuickZoom = "top"; if (circleWalls) player.pos.y = maxY; }
             }
             
-        console.log(4);
             //Check If Tunnels are near player
             if (cameraFollowPlayer) {
                 let tunnel = false;
@@ -460,7 +458,6 @@ function movePlayers() {
             production.setPlayerPos.times.push(performance.now() - production.setPlayerPos.timeStart);
             //Finished Moving Player
 
-            console.log(5);
             //Check for Player Collisions
             production.checkingPlayerCollision.timeStart = performance.now();
             if (currentGameMode.snakeCollision) {
@@ -486,7 +483,6 @@ function movePlayers() {
             }
             production.checkingPlayerCollision.times.push(performance.now() - production.checkingPlayerCollision.timeStart);
             //Test Item Underplayer
-            console.log(6,player.isDead)
             if (!player.isDead) testItemUnderPlayer(player);
 
             if (!player.isDead) {
@@ -1569,6 +1565,7 @@ function gameLoop() {
     if (!gameEnd && !gamePaused && !killSwitch) setTimeout(() => gameLoop(), Math.max(0, (1000/30) - (Date.now() - timestamp)));;//requestAnimationFrame(gameLoop);
 }
 function serverGameLoop() {
+    deltaTime = 1;
     if (!isActiveGame) return;
     renderCells();
     movePlayers();
