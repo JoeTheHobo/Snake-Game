@@ -1036,6 +1036,7 @@ document.body.on("wheel",function(e) {
     drawPlayerBox(player);
 })
 document.body.onkeydown = function(e) {
+    if (killSwitch) return;
     if (!isActiveGame) return;
     if (e.ctrlKey && e.key === 'q') {
         showPerformance = showPerformance ? false : true;

@@ -61,6 +61,9 @@ socket.on('updatePlayers', (backendAccounts) => {
     }
 })
 
+socket.on("ping", () => {
+    console.log(`Ping received from ${socket.id}`);
+});
 socket.on("kickPlayer",() => {
     killSwitch = true;
     alert("Disconnected");

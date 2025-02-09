@@ -398,9 +398,6 @@ io.on('connection', (socket) => {
     io.emit('setPlayer', socket.id, onlineAccounts);
     io.emit('updatePlayers', onlineAccounts)
 
-    socket.on("ping", () => {
-        console.log(`Ping received from ${socket.id}`);
-    });
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
         console.log("A user disconnected due to " + reason);
