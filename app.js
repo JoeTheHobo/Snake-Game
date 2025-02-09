@@ -571,13 +571,14 @@ io.on('connection', (socket) => {
                     io.emit("updatePositions",{
                         activePlayers: this.activePlayers,
                         updateSnakeCells: this.updateSnakeCells,
-                        //deltaTime: this.deltaTime,
+                        updateCells: this.updateCells,
                         player: onlineAccounts[socket.id].player,
                     })
                 }
                 this.updatePositionTimeStamp = timestamp;
                 this.updateSnakeCells = [];
-            //}
+                this.updateCells = [];
+            }
             
 
 

@@ -180,9 +180,11 @@ socket.on("updatePositions",(obj) => {
     }
     localAccount.player = obj.player;
     updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
+    updateCells = updateCells.concat(obj.updateCells);
     
     deleteSnakeCells();
     renderPlayers();
+    renderCells();
 });
 socket.on("updatedLocalAccount",(obj) => {
     localAccount.id = obj.id;
