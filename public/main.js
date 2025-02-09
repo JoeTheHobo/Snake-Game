@@ -363,6 +363,7 @@ function movePlayers() {
         let player = activePlayers[i];
         
         if (player.isDead) continue;
+        console.log("Moving")
         
         if ((player.moveTik*deltaTime) >= (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             if (player.turboActive == true) {
@@ -568,7 +569,6 @@ function useItem(player) {
 }
 function testItemUnderPlayer(player) {
     let mapItem = currentBoard.map[player.pos.y][player.pos.x].item;
-    console.log(2,mapItem);
     if (!mapItem) return;
     if (mapItem.pickUp) {
         let pickedUpItem = false;
