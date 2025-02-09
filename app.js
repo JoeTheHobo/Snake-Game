@@ -347,6 +347,9 @@ const lobbies = {};
 const onlineAccounts = {};
 
 
+// function handleDeaths(deadPlayer){
+//     io.emit("playerDied", deadPlayer);
+// }
 
 io.on('connection', (socket) => {
     console.log('a user connected');
@@ -401,8 +404,11 @@ io.on('connection', (socket) => {
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
         console.log("A user disconnected due to " + reason);
-        delete onlineAccounts[socket.id];
+        onlineAccounts[socket.id].isDead = true;
+        movePlayer();
         io.emit('updatePlayers', onlineAccounts);
+        delete onlineAccounts[socket.id];
+        //io.emit('updatePlayers', onlineAccounts);
     }) 
 
     socket.on("newLobby", (lobby) =>{
