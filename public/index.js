@@ -1,4 +1,4 @@
-const socket = io();
+const socket = io({reconnection: false});
 
 //const player = new Player(x, y);
 //const players = {};
