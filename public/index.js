@@ -163,6 +163,12 @@ socket.on("endGame",(obj) => {
     $("winnerStat").hide();
 })
 socket.on("updatePositions",(obj) => {
+
+    let player = obj.player;
+    ctx_top.clearRect(0,0,canvas_top.width,canvas_top.height);
+    ctx_top.fillRect(player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize)
+
+    return;
     let canvasList = [];
     let oldPosList = [];
     for (let i = 0; i < activePlayers.length; i++) {
