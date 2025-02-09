@@ -1567,8 +1567,9 @@ function serverGameLoop() {
     if (!isActiveGame) return;
     renderCells();
     if (Math.abs((localUpdated/2)-(Date.now()-localTimeStamp))<10) {
-        movePlayers();
+        
     }
+    movePlayers();
     deleteSnakeCells();
     renderPlayers();
 
