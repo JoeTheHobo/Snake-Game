@@ -1570,7 +1570,7 @@ function serverGameLoop() {
     renderCells();
     deleteSnakeCells();
     renderPlayers();
-    movePlayers();
+    //movePlayers();
     
 
     if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/60);;//requestAnimationFrame(gameLoop);
