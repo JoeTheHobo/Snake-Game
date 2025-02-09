@@ -578,7 +578,7 @@ io.on('connection', (socket) => {
                 this.updatePositionTimeStamp = timestamp;
                 this.updateSnakeCells = [];
                 this.updateCells = [];
-            }
+            //}
             
 
 
