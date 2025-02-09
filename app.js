@@ -555,13 +555,13 @@ io.on('connection', (socket) => {
                     })
                 }
                 this.updateTimeStamp = timestamp;
+                this.updateSnakeCells = [];
+                this.updateCells = [];
             }
             
             
 
-            this.updateSnakeCells = [];
-            this.updateCells = [];
-            
+
             if (!this.gameEnd) {
                 setTimeout(() => this.gameLoop(), Math.max(0, (1000/60) - (Date.now() - timestamp)));
             } else {
