@@ -1563,7 +1563,7 @@ function gameLoop() {
     renderEmotes();
 
     updateProduction();
-    if (!gameEnd && !gamePaused && !killSwitch) setTimeout(() => gameLoop(), Math.max(0, (1000/30) - (Date.now() - timestamp)));;//requestAnimationFrame(gameLoop);
+    if (!gameEnd && !gamePaused && !killSwitch) setTimeout(() => gameLoop(), Math.max(0, (1000/60) - (Date.now() - timestamp)));;//requestAnimationFrame(gameLoop);
 }
 function serverGameLoop() {
     if (!isActiveGame) return;
