@@ -746,7 +746,7 @@ function runItemFunction(player,item,type,itemPos,settings = {playAudio: true}) 
     if (collision.growPlayer > 0) {
         growPlayer(player,collision.growPlayer);
     }
-    if (collision.spawn) {
+    if (collision.spawn && gameType == "local") {
         for (let i = 0; i < collision.spawn.length; i++) {
             for (let j = 0; j < collision.spawn[i].count; j++) {
                 spawn(collision.spawn[i].name);
@@ -1565,7 +1565,7 @@ function gameLoop() {
     if (!gameEnd && !gamePaused && !killSwitch) setTimeout(() => gameLoop(), Math.max(0, (1000/30) - (Date.now() - timestamp)));;//requestAnimationFrame(gameLoop);
 }
 function serverGameLoop() {
-    deltaTime = .5;
+    deltaTime = 1;
     if (!isActiveGame) return;
     renderCells();
     deleteSnakeCells();
@@ -1575,8 +1575,8 @@ function serverGameLoop() {
 
     if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/60);;//requestAnimationFrame(gameLoop);
 }
-function specialItemManager()
-{
+function specialItemManager() {
+    if (gameType == "server") return;
     if (specialItemIteration >= specialItemActiveChance) {
         specialItemIteration = 0;
         specialItemActiveChance = rnd(specialItemLowChance,specialItemHighChance);

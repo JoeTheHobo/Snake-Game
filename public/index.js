@@ -163,22 +163,21 @@ socket.on("endGame",(obj) => {
 })
 socket.on("updatePositions",(obj) => {
     let canvasList = [];
+    let oldPosList = [];
     for (let i = 0; i < activePlayers.length; i++) {
         canvasList.push(activePlayers[i].canvas)
+        oldPosList.push({x: activePlayers.x, y: activePlayers.y})
     }
-    localAccount.activePlayers = obj.activePlayers;
+    activePlayers = obj.activePlayers;
     for (let i = 0; i < canvasList.length; i++) {
         localAccount.activePlayers[i].canvas = canvasList[i];
+        if (oldPosList[i].x !== localAccount.activePlayers[i].pos.x || oldPosList[i].x !== localAccount.activePlayers[i].pos.x) {
+            updateSnakeCells.push(oldPosList[i]);
+        }
     }
 
-    activePlayers = obj.activePlayers;
-    
-    localAccount.updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
-    localAccount.updateCells = updateCells.concat(obj.updateCells); 
-
-    //currentBoard = obj.lobby.board;
-    updateSnakeCells = localAccount.updateSnakeCells;
-    updateCells = localAccount.updateCells;
+    updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
+    updateCells = updateCells.concat(obj.updateCells); 
 });
 socket.on("updatedLocalAccount",(obj) => {
     localAccount.id = obj.id;
