@@ -643,11 +643,11 @@ io.on('connection', (socket) => {
         let startTime = Date.now() + 1000;
         io.emit("startAt",startTime);
         lobby.startGameTimer = function() {
-            if (Date.now >= startTime) {
+            if (Date.now() >= startTime) {
                 console.log("Match Started")
                 lobby.gameLoop();
             } else {
-                setTimeout(this.startGameTimer(),50)
+                setTimeout(this.startGameTimer(),1)
             }
         }
         lobby.startGameTimer();
