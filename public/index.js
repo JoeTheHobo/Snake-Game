@@ -163,8 +163,6 @@ socket.on("endGame",(obj) => {
     $("winnerStat").hide();
 })
 socket.on("updatePositions",(obj) => {
-
-
     let canvasList = [];
     let oldPosList = [];
     for (let i = 0; i < activePlayers.length; i++) {
@@ -178,7 +176,6 @@ socket.on("updatePositions",(obj) => {
         //     updateSnakeCells.push(oldPosList[i]);
         // }
     }
-    localAccount.player = obj.player;
     updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
     updateCells = updateCells.concat(obj.updateCells);
     

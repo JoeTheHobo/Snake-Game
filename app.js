@@ -544,8 +544,7 @@ io.on('connection', (socket) => {
         io.emit("updatePositions",{
             activePlayers: lobby.activePlayers,
             updateSnakeCells: lobby.updateSnakeCells,
-            deltaTime: 1,
-            player: onlineAccounts[socket.id].player,
+            updateCells: lobby.updateCells,
         })
         lobby.gameLoop = function() {
             let timestamp = Date.now();
@@ -572,7 +571,6 @@ io.on('connection', (socket) => {
                         activePlayers: this.activePlayers,
                         updateSnakeCells: this.updateSnakeCells,
                         updateCells: this.updateCells,
-                        player: onlineAccounts[socket.id].player,
                     })
                 }
                 this.updatePositionTimeStamp = timestamp;
