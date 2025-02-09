@@ -165,7 +165,49 @@ socket.on("endGame",(obj) => {
 socket.on("updatePositions",(obj) => {
 
     let player = obj.player;
-    player.canvas = activePlayers[0].canvas;
+    player.color = 50;
+
+    function getCanvas(image,direction) {
+        let playerCanvas = html_playerCanvasHolder.create("canvas");
+        let playerCtx = playerCanvas.getContext("2d");
+        playerCanvas.width = image.width;
+        playerCanvas.height = image.height;
+        playerCtx.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
+
+        if (direction) {
+            drawImage(image,direction,0,0,image.width,image.height,playerCanvas);
+        } else {
+            playerCtx.drawImage(image,0,0);
+        }
+        return playerCanvas;
+    }
+
+    player.canvas = {
+        body: {
+            left: getCanvas($("img_snakeBody"),"left"),
+            right: getCanvas($("img_snakeBody"),"right"),
+            up: getCanvas($("img_snakeBody"),"up"),
+            down: getCanvas($("img_snakeBody"),"down"),
+        },
+        tail: {
+            left: getCanvas($("img_snakeTail"),"left"),
+            right: getCanvas($("img_snakeTail"),"right"),
+            up: getCanvas($("img_snakeTail"),"up"),
+            down: getCanvas($("img_snakeTail"),"down"),
+        },
+        turn: {
+            left: getCanvas($("img_snakeTurn"),"left"),
+            right: getCanvas($("img_snakeTurn"),"right"),
+            up: getCanvas($("img_snakeTurn"),"up"),
+            down: getCanvas($("img_snakeTurn"),"down"),
+        },
+        head: {
+            left: getCanvas($("img_snakeHead"),"left"),
+            right: getCanvas($("img_snakeHead"),"right"),
+            up: getCanvas($("img_snakeHead"),"up"),
+            down: getCanvas($("img_snakeHead"),"down"),
+        }
+    }
 
     activePlayers = [activePlayers[0],player];
 
