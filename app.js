@@ -563,6 +563,7 @@ io.on('connection', (socket) => {
                 this.updateCells = [];
             }
             
+            console.log(onlineAccounts[socket.id].player.pos)
             
 
 

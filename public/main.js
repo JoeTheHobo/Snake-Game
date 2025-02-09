@@ -1573,6 +1573,7 @@ function serverGameLoop() {
     deleteSnakeCells();
     renderPlayers();
 
+    console.log(activePlayers[0].pos)
     
 
     if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/60);;//requestAnimationFrame(gameLoop);
