@@ -1285,8 +1285,7 @@ function server_movePlayers(lobby) {
         let player = activePlayers[i];
         
         if (player.isDead) continue;
-        let deltaTime = 1;
-        if ((player.moveTik*deltaTime) < (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
+        if ((player.moveTik*lobby.deltaTime) < (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             player.moveTik++;
             continue;
         }
