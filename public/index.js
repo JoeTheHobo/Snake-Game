@@ -165,7 +165,7 @@ socket.on("endGame",(obj) => {
 socket.on("updatePositions",(obj) => {
 
     let player = obj.player;
-    layer.canvas = activePlayers[0].canvas;
+    player.canvas = activePlayers[0].canvas;
 
     activePlayers = [activePlayers[0],player];
 
