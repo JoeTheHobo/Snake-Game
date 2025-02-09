@@ -566,7 +566,7 @@ io.on('connection', (socket) => {
                 this.updateCells = [];
             }
 
-            if (timestamp - this.updatePositionTimeStamp >= 100) { // Every 200ms
+            if (timestamp - this.updatePositionTimeStamp >= 50) { // Every 200ms
                 if (onlineAccounts[socket.id]) {
                     io.emit("updatePositions",{
                         activePlayers: this.activePlayers,
@@ -642,13 +642,14 @@ io.on('connection', (socket) => {
 
         let startTime = Date.now() + 1000;
         io.emit("startAt",startTime);
-        let clear = setInterval(function() {
+        lobby.startGameTimer = function() {
             if (Date.now >= startTime) {
                 console.log("Match Started")
                 lobby.gameLoop();
-                clearInterval(clear);
+            } else {
+                setTimeout(this.startGameTimer(),1)
             }
-        },1);
+        }
         
         //lobby.timerLoop();
 

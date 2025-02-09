@@ -193,7 +193,6 @@ socket.on("updatePositions",(obj) => {
     updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
 });
 socket.on("updatedLocalAccount",(obj) => {
-    console.log("hmm")
     localAccount.id = obj.id;
     localAccount.isInGame = obj.isInGame;
     currentBoard = obj.board;
