@@ -553,22 +553,22 @@ io.on('connection', (socket) => {
                         id: socket.id,
                         isInGame: true,
                         board: this.board,
+                        updateCells: this.updateCells,
                     })
                 }
                 this.updateTimeStamp = timestamp;
+                this.updateCells = [];
             }
 
-            if (timestamp - this.updatePositionTimeStamp >= 100) { // Every 200ms
+            if (timestamp - this.updatePositionTimeStamp >= 125) { // Every 200ms
                 if (onlineAccounts[socket.id]) {
                     io.emit("updatePositions",{
                         activePlayers: this.activePlayers,
-                        updateCells: this.updateCells,
                         updateSnakeCells: this.updateSnakeCells,
                     })
                 }
                 this.updatePositionTimeStamp = timestamp;
                 this.updateSnakeCells = [];
-                this.updateCells = [];
             }
             
 

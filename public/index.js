@@ -178,12 +178,12 @@ socket.on("updatePositions",(obj) => {
     }
 
     updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
-    updateCells = updateCells.concat(obj.updateCells); 
 });
 socket.on("updatedLocalAccount",(obj) => {
     localAccount.id = obj.id;
     localAccount.isInGame = obj.isInGame;
     currentBoard = obj.board;
+    updateCells = updateCells.concat(obj.updateCells); 
 })
 
 function updateLobbyToServer(lobby){
