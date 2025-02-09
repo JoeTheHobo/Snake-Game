@@ -1291,7 +1291,7 @@ function server_movePlayers(lobby,clientPlayer) {
     activePlayers = lobby.activePlayers;
     let currentBoard = lobby.board;
     let currentGameMode = lobby.gameMode;
-    let MainPlayer = clientPlayer.pos;
+    let MainPlayer = {x: clientPlayer.pos.x, y: clientPlayer.pos.y};
     let toReturn = false;
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
@@ -1442,7 +1442,6 @@ function server_movePlayers(lobby,clientPlayer) {
             player.pos = playerOldPos;
             player.moving = playerOldMoving;
         }
-        console.log(player.id == clientPlayer.id, (player.pos.x !== MainPlayer.x || player.pos.y !== MainPlayer.y),player.id,clientPlayer.id,player.pos.x , MainPlayer.x , player.pos.y , MainPlayer.y)
         if (player.id == clientPlayer.id && (player.pos.x !== MainPlayer.x || player.pos.y !== MainPlayer.y)) toReturn = true;
     }
     return toReturn;
