@@ -325,6 +325,7 @@ function rnd(num,to,exp) {
 
 
  
+const { timeStamp } = require('console');
 const express = require('express');
 const app = express();
 
@@ -549,7 +550,7 @@ io.on('connection', (socket) => {
         lobby.gameLoop = function() {
             let timestamp = Date.now();
             this.deltaTime = (timestamp - this.lastTimestamp) / (1000/60);
-
+            console.log(this.lastTimestamp - timeStamp);
             server_movePlayers(this)
             this.lastTimestamp = timestamp;
 
