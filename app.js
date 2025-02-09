@@ -868,6 +868,7 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
             lobby.updateCells.push({
                 x: x,
                 y: y,
+                item: currentBoard.map[y][x].item,
             })
             if (item.pack == "Tunnels") {
                 currentBoard.location_tunnels.push(
@@ -1119,6 +1120,7 @@ function testItemUnderPlayer(lobby,player) {
                 lobby.updateCells.push({
                     x: player.pos.x,
                     y: player.pos.y,
+                    item: false,
                 })
                 break checking;
             }
@@ -1145,6 +1147,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         lobby.updateCells.push({
             x: player.pos.x,
             y: player.pos.y,
+            item: item,
         })
     }
     if (collision.switchBoardStatus) {
@@ -1180,6 +1183,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         lobby.updateCells.push({
             x: player.pos.x,
             y: player.pos.y,
+            item: item,
         })
     }
     if (collision.growPlayer > 0) {
@@ -1228,6 +1232,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
                 lobby.updateCells.push({
                     x: j,
                     y: i,
+                    item: mapTile,
                 })
             }
         }
@@ -1243,6 +1248,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
                     lobby.updateCells.push({
                         x: j,
                         y: i,
+                        item: mapTile,
                     })
                 }
             }

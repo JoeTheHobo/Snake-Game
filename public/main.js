@@ -66,7 +66,7 @@ function renderCells() {
         let x = updateCells[i].x;
         let y = updateCells[i].y;
 
-        let mapCell = currentBoard.map[y][x].item;
+        let mapCell = updateCells[i].item || currentBoard.map[y][x].item;
         ctx_items.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
         if (!mapCell.visible) continue;
         if (mapCell == false) continue;
