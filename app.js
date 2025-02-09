@@ -554,8 +554,8 @@ io.on('connection', (socket) => {
                         lobby: this,
                     })
                 }
+                this.lastTimestamp = timestamp;
             }
-            this.lastTimestamp = timestamp;
             
             
 
@@ -1354,8 +1354,6 @@ function server_movePlayers(lobby) {
             if (player.pos.y > maxY) { cameraQuickZoom = "bottom"; player.pos.y = 0; }
             else if (player.pos.y < 0) { cameraQuickZoom = "top"; player.pos.y = maxY; }
         }
-
-        console.log("Player Pos: ",player.pos.x,player.pos.y)
 
         //Check for Player Collisions
         if (currentGameMode.snakeCollision) {
