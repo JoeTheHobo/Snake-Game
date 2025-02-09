@@ -378,7 +378,7 @@ function movePlayers() {
             let playerOldMoving = player.moving;
 
             //check the movement queue
-            if (player.moveQueue.length != 0){
+            if (player.moveQueue.length != 0 && gameType !== "server"){
                 if(player.moving == "left" && player.moveQueue[0] != "right" || 
                     player.moving == "right" && player.moveQueue[0] != "left" || 
                     player.moving == "up" && player.moveQueue[0] != "down" || 
