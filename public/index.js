@@ -161,7 +161,6 @@ socket.on("endGame",(obj) => {
     $("winnerStat").hide();
 })
 socket.on("updatedLocalAccount",(obj) => {
-    console.log("updatedBIYATHCHAES")
     localAccount.id = obj.id;
     localAccount.isInGame = obj.isInGame;
     localAccount.currentBoard = obj.lobby.board;
@@ -174,6 +173,7 @@ socket.on("updatedLocalAccount",(obj) => {
         localAccount.activePlayers[i].canvas = canvasList[i];
     }
     let playerCanvas = localAccount.player.canvas;
+    console.log(obj.player.moving)
     localAccount.player = obj.player;
     localAccount.player.canvas = playerCanvas;
     localAccount.updateSnakeCells = updateSnakeCells.concat(obj.lobby.updateSnakeCells);
