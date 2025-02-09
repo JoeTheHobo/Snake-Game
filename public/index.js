@@ -162,6 +162,7 @@ socket.on("endGame",(obj) => {
 
     $("winnerStat").hide();
 })
+let wait = false;
 socket.on("updatePositions",(obj) => {
 
     let player = obj.player;
@@ -170,9 +171,13 @@ socket.on("updatePositions",(obj) => {
 
     deltaTime = obj.deltaTime;
 
-    updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
-    updateSnakeCells.push({x: activePlayers[0].pos.x,y:activePlayers[0].pos.y})
-    activePlayers[0].pos = obj.activePlayers[0].pos;
+    //updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
+    //updateSnakeCells.push({x: activePlayers[0].pos.x,y:activePlayers[0].pos.y})
+    //activePlayers[0].pos = obj.activePlayers[0].pos;
+    if (activePlayers[0].pos != obj.activePlayers[0].pos) {
+        activePlayers[0].pos = obj.activePlayers[0].pos;
+        wait = true;
+    }
 
     if (obj.dontSend) return;
 

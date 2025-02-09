@@ -1566,12 +1566,17 @@ function gameLoop() {
     if (!gameEnd && !gamePaused && !killSwitch) setTimeout(() => gameLoop(), Math.max(0, (1000/60) - (Date.now() - timestamp)));;//requestAnimationFrame(gameLoop);
 }
 function serverGameLoop() {
-    if (!isActiveGame) return;
-    //renderCells();
-    movePlayers();
-    deleteSnakeCells();
-    renderPlayers();
-    
+    if (!wait) {
+
+        if (!isActiveGame) return;
+        //renderCells();
+        movePlayers();
+        deleteSnakeCells();
+        renderPlayers();
+        
+    } else {
+        wait = false;
+    }
 
     if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/60);//requestAnimationFrame(gameLoop);
 }
