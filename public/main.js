@@ -1576,7 +1576,7 @@ function serverGameLoop() {
     console.log(activePlayers[0].pos)
     
 
-    if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/60);;//requestAnimationFrame(gameLoop);
+    if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/120);;//requestAnimationFrame(gameLoop);
 }
 function specialItemManager()
 {
