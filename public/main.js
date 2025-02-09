@@ -355,6 +355,7 @@ function renderPlayers() {
     doColorRender = false;
 }
 function growPlayer(player,grow) {
+    console.log("called");
     player.growTail += grow;
 }
 function movePlayers() {
