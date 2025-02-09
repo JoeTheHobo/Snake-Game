@@ -161,27 +161,27 @@ socket.on("endGame",(obj) => {
     $("winnerStat").hide();
 })
 socket.on("updatedLocalAccount",(obj) => {
-    //localAccount.id = obj.id;
-    //localAccount.isInGame = obj.isInGame;
-    //localAccount.currentBoard = obj.lobby.board;
+    localAccount.id = obj.id;
+    localAccount.isInGame = obj.isInGame;
+    localAccount.currentBoard = obj.lobby.board;
     let canvasList = [];
     for (let i = 0; i < activePlayers.length; i++) {
         canvasList.push(activePlayers[i].canvas)
     }
-    //localAccount.activePlayers = obj.lobby.activePlayers;
-    //for (let i = 0; i < canvasList.length; i++) {
-    //    localAccount.activePlayers[i].canvas = canvasList[i];
-    //}
+    localAccount.activePlayers = obj.lobby.activePlayers;
+    for (let i = 0; i < canvasList.length; i++) {
+        localAccount.activePlayers[i].canvas = canvasList[i];
+    }
     let playerCanvas = localAccount.player.canvas;
     localAccount.player = obj.player;
     localAccount.player.canvas = playerCanvas;
-    //localAccount.updateSnakeCells = updateSnakeCells.concat(obj.lobby.updateSnakeCells);
-    //localAccount.updateCells = updateCells.concat(obj.lobby.updateCells); 
+    localAccount.updateSnakeCells = updateSnakeCells.concat(obj.lobby.updateSnakeCells);
+    localAccount.updateCells = updateCells.concat(obj.lobby.updateCells); 
 
     //currentBoard = obj.lobby.board;
-    //activePlayers = obj.lobby.activePlayers;
-    //updateSnakeCells = localAccount.updateSnakeCells;
-    //updateCells = localAccount.updateCells;
+    activePlayers = obj.lobby.activePlayers;
+    updateSnakeCells = localAccount.updateSnakeCells;
+    updateCells = localAccount.updateCells;
 })
 
 function updateLobbyToServer(lobby){
