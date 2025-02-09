@@ -544,7 +544,18 @@ io.on('connection', (socket) => {
             let timestamp = Date.now();
             this.deltaTime = (timestamp - this.lastTimestamp) / (1000/60);
 
-            server_movePlayers(this);
+            if (server_movePlayers(this)) {
+                if (onlineAccounts[socket.id]) {
+                    io.emit("updatePositions",{
+                        activePlayers: this.activePlayers,
+                        updateSnakeCells: this.updateSnakeCells,
+                        deltaTime: this.deltaTime,
+                        player: onlineAccounts[socket.id].player,
+                    })
+                }
+                this.updatePositionTimeStamp = timestamp;
+                this.updateSnakeCells = [];
+            }
             this.lastTimestamp = timestamp;
 
             if (timestamp - this.updateTimeStamp >= 300) { // Every 200ms
@@ -561,16 +572,7 @@ io.on('connection', (socket) => {
             }
 
             if (timestamp - this.updatePositionTimeStamp >= 50) { // Every 200ms
-                if (onlineAccounts[socket.id]) {
-                    io.emit("updatePositions",{
-                        activePlayers: this.activePlayers,
-                        updateSnakeCells: this.updateSnakeCells,
-                        deltaTime: this.deltaTime,
-                        player: onlineAccounts[socket.id].player,
-                    })
-                }
-                this.updatePositionTimeStamp = timestamp;
-                this.updateSnakeCells = [];
+                
             }
             
 
@@ -1283,6 +1285,8 @@ function server_movePlayers(lobby) {
     activePlayers = lobby.activePlayers;
     let currentBoard = lobby.board;
     let currentGameMode = lobby.gameMode;
+    let MainPlayer = onlineAccounts[socket.id].player.pos;
+    let toReturn = false;
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
         
@@ -1426,10 +1430,13 @@ function server_movePlayers(lobby) {
                 x: playerX,
                 y: playerY,
             })
+            
             //End Growing Tail
         } else {
             player.pos = playerOldPos;
             player.moving = playerOldMoving;
         }
+        if (player.id == onlineAccounts[socket.id].player.id && (player.pos.x !== MainPlayer.x || player.pos.y !== MainPlayer.y)) toReturn = true;
     }
+    return toReturn;
 }
