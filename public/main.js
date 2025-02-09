@@ -484,7 +484,7 @@ function movePlayers() {
             }
             production.checkingPlayerCollision.times.push(performance.now() - production.checkingPlayerCollision.timeStart);
             //Test Item Underplayer
-            if (!player.isDead) testItemUnderPlayer(player);
+            //if (!player.isDead) testItemUnderPlayer(player);
 
             if (!player.isDead) {
                 production.testingItems.timeStart = performance.now();
@@ -1546,7 +1546,7 @@ function gameLoop(timestamp) {
     production.renderCells.times.push(performance.now() - production.renderCells.timeStart);
 
     production.movePlayers.timeStart = performance.now();
-    //movePlayers();
+    movePlayers();
     production.movePlayers.times.push(performance.now() - production.movePlayers.timeStart);
     
     production.deleteSnakeCells.timeStart = performance.now();
