@@ -640,7 +640,16 @@ io.on('connection', (socket) => {
         }
         */
 
-        lobby.gameLoop();
+        let startTime = Date.now() + 1000;
+        io.emit("startAt",startTime);
+        let clear = setInterval(function() {
+            if (Date.now >= startTime) {
+                console.log("Match Started")
+                lobby.gameLoop();
+                clearInterval(clear);
+            }
+        },1);
+        
         //lobby.timerLoop();
 
     })

@@ -12,6 +12,7 @@ const localAccount = {
     player: false,
     updateSnakeCells: [],
     updateCells: [],
+    startTime: false,
 };
 let gameType = "local";
 socket.on('updatePlayers', (backendAccounts) => {
@@ -97,6 +98,7 @@ socket.on("startingGame", (lobby,player) =>{
     updateCells = [];
     currentGameMode = lobby.gameMode;
     localAccount.player = player;
+    localAccount.startTime = 0;
                     
     setScene("game");
     $(".endGamePopup").hide();
@@ -127,8 +129,18 @@ socket.on("startingGame", (lobby,player) =>{
 
     localTimeStamp = Date.now();
     localUpdated = 0;
-    requestAnimationFrame(serverGameLoop);
+    let clear = setInterval(function() {
+        if (localAccount.startTime >= Date.now()) {
+            console.log("Local Started")
+            serverGameLoop();
+            clearInterval(clear);
+        }
+    },1)
+    
 
+})
+socket.on("startAt",(time) => {
+    localAccount.startTime = time;
 })
 socket.on("endGame",(obj) => {
     $("playerCardsHolder").style.cursor = "";
