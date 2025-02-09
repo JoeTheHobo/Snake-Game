@@ -63,6 +63,7 @@ function renderTiles() {
 }
 function renderCells() {
     for (let i = 0; i < updateCells.length; i++) {
+        console.log("beginRenderingCell")
         let x = updateCells[i].x;
         let y = updateCells[i].y;
 
@@ -79,6 +80,7 @@ function renderCells() {
             }
             image = getItemCanvas(image);
         } else {
+            console.log("renderingCell")
             image = getItemCanvas(mapCell.name);
         }
 
