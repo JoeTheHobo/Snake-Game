@@ -78,7 +78,7 @@ socket.on("updateLobbies", (backEndLobbies,isPlayerJoining, lobby) =>{
     loadServersHTML();
     if (isPlayerJoining) setScene("waiting", lobby);
 })
-
+let localUpdated,localTimeStamp;
 socket.on("startingGame", (lobby,player) =>{
     if (localAccount.isInGame) return;
 
@@ -125,6 +125,8 @@ socket.on("startingGame", (lobby,player) =>{
     renderCells();
     //loadBoardStatus();
 
+    localTimeStamp = Date.now();
+    localUpdated = 0;
     requestAnimationFrame(serverGameLoop);
 
 })
@@ -184,6 +186,9 @@ socket.on("updatedLocalAccount",(obj) => {
     updateSnakeCells = localAccount.updateSnakeCells;
     updateCells = localAccount.updateCells;
     currentBoard = obj.lobby.board;
+
+    localUpdated = Date.now() - localTimeStamp;
+    localTimeStamp = Date.now();
 })
 
 function updateLobbyToServer(lobby){
