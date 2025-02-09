@@ -12,7 +12,139 @@ let playerNames2 = [
     "Cactus", "Llama", "Cupcake", "Blobfish", "Banana"
 ];
 
+//Subset v1
+String.prototype.subset = function(start=0,end = undefined,...modifiers) {
+    let startIndex = findIndex(this,start)
+    let endIndex = findIndex(this,end);
 
+    if (end === true) endIndex.index = this.length;
+    if (end === false || end === undefined) endIndex.index = startIndex.index;
+    if (endIndex.indexType == "count") endIndex.index = startIndex.index + endIndex.index;
+    if (!isNaN(end) && !(end == true || end == false)) endIndex.index = end;
+
+    if (startIndex.position == "full") startIndex.index -= startIndex.string.length - 1;
+
+    //Return With Modifers
+    let returnString = this.substring(startIndex.index,endIndex.index+1)
+    let modObj = {
+        length: returnString.length,
+        trim: [],
+        return: "string",
+    }
+
+    for (let i = 0; i < modifiers.length; i++) {
+        let setting = modifiers[i].split("\\");
+        setting[0] = setting[0].toLowerCase();
+        if (setting[0] == "limit" || setting[0] == "length") modObj.length = Number(setting[1])
+        if (setting[0] == "trim") modObj.trim.push(setting[1])
+        if (setting[0] == "return") modObj.return = setting[1];
+    }
+
+    for (let i = 0; i < modObj.trim.length; i++) {
+        returnString = returnString.replaceAll(modObj.trim[i],"");
+    }
+
+    if (modObj.return == "string")
+        return returnString.substring(0,modObj.length);
+    if (modObj.return == "number")
+        return Number(returnString.substring(0,modObj.length));
+}
+
+String.prototype.orCompare = function(...compares) {
+    for (let i = 0; i < compares.length; i++) {
+        if (this.toString() === compares[i]) return true;
+    }
+    return false;
+}
+String.prototype.andCompare = function(...compares) {
+    for (let i = 0; i < compares.length; i++) {
+        if (this !== compares[i]) return false;
+    }
+    return true;
+}
+function findIndex(string,searchString) {
+    let indexObj = {
+        position: "on", //before/on/after/full
+        indexType: "find",//index/count/find
+        caseSensitive: true, //true/false
+        add: 0, //Any Number
+        index: searchString, 
+        string: searchString,
+    }
+    searchingString: if (typeof searchString == "string") {
+
+        let stringArr = searchString.split("\\");
+
+        for (let i = 1; i < stringArr.length; i++) {
+            //Fix abriviations
+            if (stringArr[i] == "af") stringArr[i] = "after";
+            if (stringArr[i] == "be") stringArr[i] = "before";
+            if (stringArr[i] == "fu") stringArr[i] = "full";
+            if (stringArr[i] == "in") stringArr[i] = "index";
+            if (stringArr[i] == "co") stringArr[i] = "count";
+            if (stringArr[i] == "fi") stringArr[i] = "find";
+
+            //Find results
+            if (stringArr[i].orCompare("after","before","on","full")) indexObj.position = stringArr[i];
+            if (stringArr[i].orCompare("count","index")) indexObj.indexType = stringArr[i];
+            if (stringArr[i].orCompare("ci","cs")) indexObj.caseSensitive = stringArr[i] == "cs" ? true : false;
+            if (!isNaN(stringArr[i])) indexObj.add = Number(stringArr[i]);
+        }
+
+        indexObj.string = stringArr[0];
+
+        if (indexObj.indexType === "count" || indexObj.indexType === "index") {
+            searchString = Number(stringArr[0]);
+            break searchingString;
+        }
+
+        if (indexObj.caseSensitive)
+            searchString = string.indexOf(stringArr[0]);
+        else
+            searchString = string.toLowerCase().indexOf(stringArr[0].toLowerCase());
+
+        if (stringArr[0] === "*end") {
+            searchString = string.length-1;
+        }
+
+        if (searchString == -1) {
+            searchString = string.length;
+            break searchingString;
+        }
+
+        if (indexObj.position == "before") searchString -= 1;
+        if (indexObj.position == "after") searchString += stringArr[0].length;
+        if (indexObj.position == "full") searchString += stringArr[0].length-1;
+
+
+    }
+    indexObj.index = searchString + indexObj.add;
+
+    return indexObj;
+}
+function s_shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (currentIndex != 0) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
+  }
+Array.prototype.shuffle = function() {
+    return s_shuffle(this);
+}
+String.prototype.shuffle = function() {
+    return s_shuffle(this.split('')).join("");
+}
 /*
     _type v2 Documentation
     _type(object) return a string of whatever the object is
@@ -211,16 +343,16 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 })
 
-const lobbies = [];
+const lobbies = {};
 const onlineAccounts = {};
 
 
 
 io.on('connection', (socket) => {
     console.log('a user connected');
-    onlineAccounts [socket.id] = {
+    onlineAccounts[socket.id] = {
         id: socket.id,
-        player: {
+        players: [ {
             downKey: "s",
             upKey: "w",
             leftKey: "a",
@@ -236,13 +368,13 @@ io.on('connection', (socket) => {
             growTail: 0,
             isDead: false,
             pos: {
-                x: false,
-                y: false, 
+                x: 0,
+                y: 0, 
             },
             tail: [],
             moveQueue: [],
             prevMove: "start",
-            id: 0,
+            id: Date.now(),
             whenInventoryIsFullInsertItemsAt: 0,
             moveTik: 0,
             moveSpeed: 6,
@@ -253,8 +385,10 @@ io.on('connection', (socket) => {
             shield: 0,
             items: [],
             status: [],
-            active: true, 
-        },
+            active: false, 
+        }],
+        selectedPlayerIndex: 0,
+        player: false,
         gameModes: [],
         boards: [],
         lobby: false,
@@ -272,7 +406,7 @@ io.on('connection', (socket) => {
     }) 
 
     socket.on("newLobby", (lobby) =>{
-        lobbies.push(lobby);
+        lobbies[lobby.id] = lobby;
         onlineAccounts[socket.id].lobby = lobby.id;
         io.emit("updateLobbies", lobbies);
     })
@@ -282,134 +416,189 @@ io.on('connection', (socket) => {
             socket.disconnect();
             return;
         }
-        searchingLobbies: for (let i = 0; i < lobbies.length; i++) {
-            let lobby = lobbies[i];
-            if (lobbyID === lobby.id) {
-                if (lobby.playerCount + 1 <= lobby.playerMax) {
-                    lobby.playerCount++;
-                    lobby.players.push(playerID);
-                    onlineAccounts[socket.id].lobby =  lobby.id
-                    io.emit("updateLobbies", lobbies, "joining", lobby);
-                }
-                break searchingLobbies;
-            }
+        let lobby = lobbies[lobbyID];
+        if (lobby.playerCount + 1 <= lobby.playerMax) {
+            lobby.playerCount++;
+            lobby.players.push(playerID);
+            onlineAccounts[socket.id].lobby =  lobby.id;
+            onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
+            io.emit("updateLobbies", lobbies, "joining", lobby);
         }
     })
     socket.on("startGame", () =>{
         console.log("Server Started")
-        searchingLobbies: for (let p = 0; p < lobbies.length; p++) {
-            let lobby = lobbies[p];
-            if (onlineAccounts[socket.id].lobby === lobby.id) {
-                if(lobby.host !== socket.id) continue
-                
-                
-
-                lobby.board.map = structuredClone(lobby.board.originalMap);
-
-                
-                lobby.doColorRender = false;
-                lobby.specialItemIteration = 0;
-                lobby.isActiveGame = true; 
-                lobby.updateCells = [];
-
-
-
-                //Resetting Players
-                for (let i = 0; i < lobby.players.length; i++) {
-                    let player = onlineAccounts[lobby.players[i]].player;
-                    player.isPlayer = true;
-                    //Ressurect Player
-                    player.isDead = false;
-                    player.justDied = false;
-                    player.bodyArmor = 1;
-                    //Set Player Selecting Item To 1
-                    player.selectingItem = 0;
-                    player.justTeleported = false;
-                    //Set Player Item Usage
-                    player.howManyItemsCanIUse = lobby.gameMode.howManyItemsCanPlayersUse;
-                    player.whenInventoryIsFullInsertItemsAt = 0;
-                    player.status = ["player_" + i];
-                    //Set All Player Items To Empty
-                    player.items = [];
-                    for (let j = 0; j < lobby.gameMode.howManyItemsCanPlayersUse; j++) {
-                        player.items.push("empty");
-                    }
-                    //Draw Player's Card
-                    //drawPlayerBox(player);  add later
-                    //_________________________________________
-
-                    player.longestTail = 0;
-                    player.timeSurvived = 0;
-                    player.moving = false;
-                    player.growTail = 0;
-                    player.tail = [];
-                    player.moveQueue = [];
-                    player.prevMove = "start";
-                    player.moveTik = 0;
-                    player.moveSpeed = 6;
-                    player.turboDuration = 0;
-                    player.turboActive = false;
-                    player.shield = 0;
-                    
-                    player.playerKills = 0;
-
-                    player.pos = {
-                        x: false,
-                        y: false,
-                    }
-                    //Spawn Players
-                }
-
-
-                let currentGameMode = lobby.gameMode;
-                let currentBoard = lobby.board;
-                let activePlayers = getPlayersList(lobby.players);
-
-                for (let i = 0; i < lobby.players.length; i++) {
-                    let player = onlineAccounts[lobby.players[i]].player;
-                    let obj = spawn(currentGameMode,currentBoard,activePlayers,player);
-                    player.pos.x = obj.x;
-                    player.pos.y = obj.y;
-                }
-
-                for (let i = 0; i < lobby.gameMode.items.length; i++) {
-                    let item = lobby.gameMode.items[i];
-                    for (let j = 0; j < Number(item.onStartSpawn); j++) {
-                        let obj = spawn(currentGameMode,currentBoard,activePlayers,item.name,false);
-
-                        if (!Array.isArray(obj)) obj = [obj];
-
-                        for (let k = 0; k < obj.length; k++) {
-                            currentBoard.map[obj[k].y][obj[k].x].item = currentGameMode.items[obj[k].itemIndex];
-                            lobby.updateCells.push({
-                                x: obj[k].x,
-                                y: obj[k].y,
-                            })
-                            if (obj[k].generateRandomItem) specialItemManager();
-                        }
-                    }
-                }
-
-
-                lobby.gameEnd = false;
-                lobby.deltaTime = 0;
-                lobby.lastTimestamp = 0;
-                lobby.timer = 0;
-                lobby.activePlayers = getPlayersList(lobby.players);
-                lobby.boardStatusCount = 0;
-                lobby.boardStatus = [];
-                /*
-                lobby.timerInterval = setInterval((lobby) => {
-                    lobby.timer++;
-                }, 1000);
-                */
+        let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        lobby.board.map = structuredClone(lobby.board.originalMap);
 
         
+        lobby.board.doColorRender = false;
+        lobby.specialItemIteration = 0;
+        lobby.specialItemActiveChance = 4;
+        lobby.specialItemLowChance = 1;
+        lobby.specialItemHighChance = 6;
+        lobby.board.isActiveGame = true; 
+        lobby.updateCells = [];
+        lobby.updateSnakeCells = [];
+        lobby.board.renderEmotesList = [];
+        lobby.board.location_tunnels = [];
+        lobby.board.location_status = [];
+        lobby.board.location_spawns = [];
+        lobby.board.boardStatus = [];
 
-                io.emit("startingGame", lobby);
-                break searchingLobbies;
+
+
+
+        //Resetting Players
+        for (let i = 0; i < lobby.players.length; i++) {
+            if (!onlineAccounts[lobby.players[i]].player) onlineAccounts[lobby.players[i]].player = onlineAccounts[lobby.players[i]].players[onlineAccounts[lobby.players[i]].selectedPlayerIndex]
+            let player = onlineAccounts[lobby.players[i]].player;
+            player.isPlayer = true;
+            //Ressurect Player
+            player.isDead = false;
+            player.justDied = false;
+            player.bodyArmor = 1;
+            //Set Player Selecting Item To 1
+            player.selectingItem = 0;
+            player.justTeleported = false;
+            //Set Player Item Usage
+            player.howManyItemsCanIUse = lobby.gameMode.howManyItemsCanPlayersUse;
+            player.whenInventoryIsFullInsertItemsAt = 0;
+            player.status = ["status_white"];
+            //Set All Player Items To Empty
+            player.items = [];
+            for (let j = 0; j < lobby.gameMode.howManyItemsCanPlayersUse; j++) {
+                player.items.push("empty");
+            }
+            //Draw Player's Card
+            //drawPlayerBox(player);  add later
+            //_________________________________________
+
+            player.longestTail = 0;
+            player.timeSurvived = 0;
+            player.moving = false;
+            player.growTail = 0;
+            player.tail = [];
+            player.moveQueue = [];
+            player.prevMove = "start";
+            player.moveTik = 0;
+            player.moveSpeed = 6;
+            player.turboDuration = 0;
+            player.turboActive = false;
+            player.shield = 0;
+            
+            player.playerKills = 0;
+
+            player.pos = {
+                x: false,
+                y: false,
+            }
+            //Spawn Players
+        }
+
+        lobby.activePlayers = getPlayersList(lobby.players);
+
+        fixItemDifferences(lobby.board,lobby.board.map);
+        fixTileDifferences(lobby.board,lobby.board.map);
+
+        for (let i = 0; i < lobby.players.length; i++) {
+            let player = onlineAccounts[lobby.players[i]].player;
+            spawn(lobby,player);
+        }
+
+        for (let i = 0; i < lobby.gameMode.items.length; i++) {
+            let item = lobby.gameMode.items[i];
+            for (let j = 0; j < Number(item.onStartSpawn); j++) {
+                spawn(lobby,item.name,false);
             }
         }
+
+
+        lobby.gameEnd = false;
+        lobby.deltaTime = 0;
+        lobby.lastTimestamp = Date.now();
+        lobby.timer = 0;
+        lobby.boardStatusCount = 0;
+        lobby.boardStatus = [];
+
+        io.emit("startingGame", lobby,onlineAccounts[socket.id].player);
+
+        lobby.gameLoop = function() {
+            let timestamp = Date.now();
+            this.deltaTime = (timestamp - this.lastTimestamp) / (1000/60);
+            this.lastTimestamp = timestamp;
+
+            this.updateSnakeCells = [];
+            this.updateCells = [];
+
+            server_movePlayers(this);
+            
+            io.emit("updatedLocalAccount",{
+                id: socket.id,
+                isInGame: true,
+                player: onlineAccounts[socket.id].player,
+                lobby: this,
+            })
+
+            if (!this.gameEnd) {
+                setTimeout(() => this.gameLoop(), Math.max(0, (1000/60) - (Date.now() - timestamp)));
+            } else {
+                this.isActiveGame = false;
+
+                //Kill Any Non Dead Snakes
+                for (let i = 0; i < this.activePlayers.length; i++) {
+                    if (!this.activePlayers[i].isDead) {
+                        deletePlayer(this,this.activePlayers[i],false,false,true);
+                    }
+                }
+
+                let longestTail = this.activePlayers[0].longestTail;
+                let timeSurvived = this.activePlayers[0].timeSurvived;
+                let mostKills = this.activePlayers[0].playerKills;
+                let longestTailPlayer = this.activePlayers[0];
+                let timeSurvivedPlayer = this.activePlayers[0];
+                let mostKillsPlayer = this.activePlayers[0];
+                for (let i = 1; i < this.activePlayers.length; i++) {
+                    if (this.activePlayers[i].longestTail > longestTail) {
+                        longestTail = this.activePlayers[i].longestTail;
+                        longestTailPlayer = this.activePlayers[i];
+                    }
+                    if (this.activePlayers[i].timeSurvived > timeSurvived) {
+                        timeSurvived = this.activePlayers[i].timeSurvived;
+                        timeSurvivedPlayer = this.activePlayers[i];
+                    }
+                    if (this.activePlayers[i].playerKills > mostKills) {
+                        mostKills = this.activePlayers[i].mostKills;
+                        mostKillsPlayer = this.activePlayers[i];
+                    }
+                }
+
+                let minutes = (timeSurvived-(timeSurvived%60))/60;
+                let seconds = timeSurvived%60;
+
+                if ((seconds + "").length == 1) seconds = "0" + seconds;
+
+                io.emit("endGame",{
+                    lobby: this,
+                    longestTail: longestTail,
+                    timeSurvived: timeSurvived,
+                    longestTailPlayer: longestTailPlayer,
+                    timeSurvivedPlayer: timeSurvivedPlayer,
+                    mostKillsPlayer: mostKillsPlayer,
+                    minutes: minutes,
+                    seconds: seconds,
+                })
+            }
+        }
+        lobby.timerLoop = function() {
+            setTimeout(() => {
+                this.timer++;
+                this.timerLoop();
+            },1000)
+        }
+
+        lobby.gameLoop();
+        lobby.timerLoop();
+
     })
     socket.on("spawn",(name,generateRandomItem = true,counting = false) => {
         let lobby = findLobby(socket.id);
@@ -427,52 +616,22 @@ io.on('connection', (socket) => {
         }
     })
     socket.on("movePlayerKey",(direction) => {
+        console.log("hmm2")
         if (onlineAccounts[socket.id].player.moveQueue.length >= 4) return;
         onlineAccounts[socket.id].player.moveQueue.push(direction);
-
     })
-    socket.on("updateLocalAccount",() => {
-        let lobby = findLobby(socket.id);
-        io.emit("updatedLocalAccount",{
-            id: socket.id,
-            isInGame: true,
-            currentBoard: lobby.board,
-            player: onlineAccounts[socket.id].player,
-            playersInServer: lobby.activePlayers,
-        })
-    })
-    socket.on("movePlayer",(playerID) => {
-        if (playerID !== socket.id) return;
+    socket.on("fireItem",() => {
+        let lobby = lobbies[onlineAccounts[socket.id].lobby];
         let player = onlineAccounts[socket.id].player;
-
-        let obj = movePlayer(player,findLobby(socket.id));
-
-        let lobby = findLobby(socket.id);
-
-        if (obj.updateCells.length > 0) console.log(obj.updateCells)
-
-        io.emit("updatedLocalAccount",{
-            id: socket.id,
-            isInGame: true,
-            currentBoard: lobby.board,
-            player: player,
-            playersInServer: lobby.activePlayers,
-            updateSnakeCells: obj.updateSnakeCells,
-            updateCells: obj.updateCells,
-        })
-        /*
-        player.moveTik = obj.moveTik;
-        player.moveSpeed = obj.moveSpeed;
-        player.turboActive = obj.turboActive;
-        player.turboDuration = obj.turboDuration;
-        player.moveQueue = obj.moveQueue;
-        player.moving = obj.moving;
-        player.growTail = obj.growTail;
-        player.tail = obj.tail;
-        player.pos = obj.pos;
-        player.justTeleported = obj.justTeleported;
-        player.justDied = obj.justDied;
-        */
+        useItem(lobby,player);
+    })
+    socket.on("changeItem",(change) => {
+        let player = onlineAccounts[socket.id].player;
+        let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        let currentGameMode = lobby.gameMode;
+        player.selectingItem += change;
+        if (player.selectingItem < 0) player.selectingItem = currentGameMode.howManyItemsCanPlayersUse-1;
+        if (player.selectingItem > currentGameMode.howManyItemsCanPlayersUse-1) player.selectingItem = 0;
     })
     console.log(onlineAccounts);
 });
@@ -484,471 +643,87 @@ server.listen(port, () => {
 
 
 
-function growPlayer(player,grow) {
-    player.growTail += grow;
-}
-function movePlayer(player,lobby) {
-    if (player.isDead) return{
-        updateSnakeCells: [],
-        updateCells: [],
-    };
 
-    let updateSnakeCells = [];
-    let updateCells = [];
-
-    //Change Later
-    deltaTime = 1;
-    //
-
-    if ((player.moveTik*deltaTime) >= (player.moveSpeed/lobby.board.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
-        if (player.turboActive == true) {
-            player.turboDuration --;
-            if (player.turboDuration <= 0) {
-                player.turboActive = false;
-                //removePlayerStatus(player,"turbo");
-                player.moveSpeed = 6;
-            }
-        }
-        player.moveTik = 0
-
-        //check the movement queue
-        if (player.moveQueue.length != 0){
-            if(player.moving == "left" && player.moveQueue[0] != "right" || 
-                player.moving == "right" && player.moveQueue[0] != "left" || 
-                player.moving == "up" && player.moveQueue[0] != "down" || 
-                player.moving == "down" && player.moveQueue[0] != "up"){
-                player.moving = player.moveQueue[0];
-            }
-            else if (player.moving === false)
-            {
-                player.moving = player.moveQueue[0];
-            }
-            player.moveQueue.shift();
-        }
-        //Growing/Moving Tail
-        if (player.growTail > 0) {
-            player.tail.unshift({
-                x: player.pos.x,
-                y: player.pos.y,
-                direction: player.moving,
-            });
-            player.growTail--;
-            if (player.tail.length > player.longestTail) player.longestTail = player.tail.length;
-        } else if(player.tail.length > 0) {
-            player.tail.unshift({
-                x: player.pos.x,
-                y: player.pos.y,
-                direction: player.moving,
-            });
-            updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y});
-            
-            let tail = player.tail[player.tail.length-1];
-            if (lobby.board.map[tail.y][tail.x].item) {
-                let mapItem = lobby.board.map[tail.y][tail.x].item;
-                if (mapItem.canCollide) runItemFunction(player,mapItem,"offCollision");
-            }
-            
-            player.tail.pop();
-        } else {
-            if (lobby.board.map[player.pos.y][player.pos.x].item) {
-                let mapItem = lobby.board.map[player.pos.y][player.pos.x].item;
-                if (mapItem.canCollide) runItemFunction(player,mapItem,"offCollision");
-            }
-        }
-        if (player.tail.length > 0)
-            updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
-
-        
-
-        updateSnakeCells.push({
-            x: player.pos.x,
-            y: player.pos.y,
-            player: player
-        })
-
-        //Move Player and make sure he can't go back on himself
-        if (player.moving == "left") player.pos.x--;
-        if (player.moving == "right") player.pos.x++;
-        if (player.moving == "up") player.pos.y--;
-        if (player.moving == "down") player.pos.y++;
-
-        //Teleport Player If Needed
-        if (_type(player.justTeleported).type == "object") {
-            deleteSnakeCells();
-            player.pos.x = player.justTeleported.x;
-            player.pos.y = player.justTeleported.y;
-            player.justTeleported = true;
-        }
-
-        //Collision Testing
-        //Test If Player Hits Wall
-        if (player.pos.x > lobby.board.map[0].length-1) {
-            player.pos.x = 0;
-        }
-        if (player.pos.x < 0) {
-            player.pos.x = lobby.board.map[0].length-1;
-        }
-        if (player.pos.y > lobby.board.map.length-1) {
-            player.pos.y = 0;
-        }
-        if (player.pos.y < 0) {
-            player.pos.y = lobby.board.map.length-1;
-        }
-
-        //Test Item Underplayer
-        updateCells = testItemUnderPlayer(player,lobby);
-        
-        //Check for Collisions
-        let playersInServer = getPlayersList(lobby.players);
-        for (let a = 0; a < playersInServer.length; a++){
-            let checkedPlayer = playersInServer[a];
-            if (checkedPlayer.isDead && lobby.gameMode.snakeVanishOnDeath == true) continue;
-            for(let b = 0; b < checkedPlayer.tail.length; b++){
-                let tailPiece = checkedPlayer.tail[b];
-                if (player.pos.x == tailPiece.x && player.pos.y == tailPiece.y)
-                {
-                    deletePlayer(player,checkedPlayer);
-                }
-            }
-        }
-    }
-    else {
-        player.moveTik++;
-    }
-
-    return {
-        updateSnakeCells: updateSnakeCells,
-        updateCells: updateCells,
-    }
-}
-function testItemUnderPlayer(player,lobby) {
-    let mapItem = lobby.board.map[player.pos.y][player.pos.x].item;
-    if (!mapItem) return [];
-    let updateCells = [];
-
-    if (mapItem.pickUp) {
-        let pickedUpItem = false;
-        findingEmptyItemSlot: for (let k = 0; k < lobby.gameMode.howManyItemsCanPlayersUse; k++) {
-            if (player.items[k] == "empty") {
-                player.items[k] = mapItem;
-                //drawPlayerBox(player) ADD LATER
-                pickedUpItem = true;
-                break findingEmptyItemSlot;
-            }
-        }
-        if (!pickedUpItem && lobby.gameMode.mode_whenInventoryFullWhereDoItemsGo !== "noPickUp") {
-            if (lobby.gameMode.mode_whenInventoryFullWhereDoItemsGo == "select") {
-                player.items[player.selectingItem] = mapItem;
-            }
-            if (lobby.gameMode.mode_whenInventoryFullWhereDoItemsGo == "recycle") {
-                player.items[player.whenInventoryIsFullInsertItemsAt] = mapItem;
-                player.whenInventoryIsFullInsertItemsAt++;
-                if (player.whenInventoryIsFullInsertItemsAt > player.items.length-1) player.whenInventoryIsFullInsertItemsAt = 0;
-            }
-            //drawPlayerBox(player) ADD LATER
-        }
-    } else if (mapItem.canEat == true) {
-        updateCells = useItemHelper(player,mapItem,lobby);
-    }
-
-    if (_type(mapItem.teleport).type == "number" && !player.justTeleported) {
-        findingPortal: for (let z = 0; z < lobby.board.map.length; z++) {
-            for (let h = 0; h < lobby.board.map[z].length; h++) {
-                if (!lobby.board.map[z][h].item) continue;
-                if (player.pos.x == h && player.pos.y == z) continue;
-                if (lobby.board.map[z][h].item.teleport === mapItem.teleport) {
-                    player.justTeleported = {
-                        x: h,
-                        y: z,
-                    }
-                    break findingPortal;
-                } 
-            }
-        }
-    } else {
-        player.justTeleported = false;
-    }
-
-    if (mapItem.canCollide) {
-        runItemFunction(player,mapItem,"onCollision",lobby);
-    }
-
-    let itemIsDelete = false;
-    let worldStatusPass = false;
-    let boardStatusCount = 0;
-    for (let i = 0; i < mapItem.boardDestructible.length; i++) {
-        if (mapItem.boardDestructible[i] == "yes")  {
-            boardStatusCount++;
-            continue;
-        }
-        if (lobby.board.boardStatus.includes(mapItem.boardDestructible[i])) {
-            for (let j = 0; j < lobby.board.boardStatus.length; j++) {
-                if (lobby.board.boardStatus[j] === mapItem.boardDestructible[i]) boardStatusCount++;
-            }
-            continue;
-        }
-    }
-    worldStatusPass = boardStatusCount >= Number(mapItem.boardDestructibleCountRequired);
-    if (worldStatusPass) {
-        checking: for (let i = 0; i < mapItem.destructible.length; i++) {
-            let status = mapItem.destructible[i];
-            let deleteMe = false;
-            if (status === false) {
-                itemIsDelete = true;
-                break checking;
-            }
-            if (status == "yes") deleteMe = true;
-            if (player.status.includes(status)) deleteMe = true;
-    
-            if (deleteMe) {
-                itemIsDelete = true;
-                //Hurt Player
-                deletePlayer(player,lobby,false,mapItem);
-    
-                if (mapItem.deleteOnDestruct == false) {
-                    break checking;
-                }
-    
-                //Checking On Eat Delete Me Object From Item
-                if (mapItem.onDelete) {
-                    if (mapItem.onDelete.removeStatus.length > 0) {
-                        for (let j = 0; j < mapItem.onDelete.removeStatus.length; j++) {
-                            removePlayerStatus(player,mapItem.onDelete.removeStatus[j]); //ADD LATER
-                        }
-                    }    
-                }
-    
-                //Delete Item
-                lobby.board.map[player.pos.y][player.pos.x].item = false;
-                updateCells.push({
-                    x: player.pos.x,
-                    y: player.pos.y,
-                })
-                break checking;
-            }
-        }
-    }
-    if (!itemIsDelete) deletePlayer(player,lobby);
-    return updateCells;
-}
-function runItemFunction(player,item,type,lobby) {
-    if (!type) return;
-
-    let collision;
-    if (type == "onCollision") collision = item.onCollision;
-    if (type == "offCollision") collision = item.offCollision;
-
-    if (!collision) return;
-
-    if (item.switchStatus == false || item.switchStatus == undefined) {
-        item.switchStatus = true;
-    } else {
-        item.switchStatus = false;
-    }
-
-    if (collision.switchImage) {
-        if (item.switchStatus === true) {
-            item.canvasTag = "_switch";
-        } else {
-            item.canvasTag = "";
-        }
-        updateCells.push({
-            x: player.pos.x,
-            y: player.pos.y,
-        })
-    }
-    if (collision.switchBoardStatus) {
-        if (item.switchStatus === true) {
-            addBoardStatus(collision.switchBoardStatus,player);
-        } else {
-            removeBoardStatus(collision.switchBoardStatus,player);
-        }
-    }
-    if (collision.addBoardStatus) {
-        addBoardStatus(collision.addBoardStatus,player);
-    }
-    if (collision.removeBoardStatus) {
-        removeBoardStatus(collision.removeBoardStatus,player);
-    }
-    if (collision.setBoardStatus) {
-        let status = collision.setBoardStatus;
-        if (collision.setBoardStatus == "player") status = "player_" + player.id;
-
-        if (item.sendingBoardStatus === status) return;
-
-        if (item.sendingBoardStatus !== false) {
-            removeBoardStatus(item.sendingBoardStatus,player);
-        }
-
-        item.sendingBoardStatus = status;
-        addBoardStatus(status,player);
-    }
-    if (collision.changeHue) {
-        addItemCanvas(item,item.img,item.name + "_" + player.name,collision.changeHue,player);
-        item.canvasTag = "_" + player.name; 
-
-        updateCells.push({
-            x: player.pos.x,
-            y: player.pos.y,
-        })
-    }
-}
-function useItemHelper(player,item,lobby) {
-    let updateCells = [];
-
-    let onEat = item.onEat;
-    if (onEat.growPlayer > 0) {
-        growPlayer(player,onEat.growPlayer);
-    }
-    if (onEat.spawn) {
-        let currentGameMode = lobby.gameMode;
-        let currentBoard = lobby.board;
-        let activePlayers = getPlayersList(lobby.players);
-
-        for (let i = 0; i < onEat.spawn.length; i++) {
-            for (let j = 0; j < onEat.spawn[i].count; j++) {
-                spawn(currentGameMode,currentBoard,activePlayers,onEat.spawn[i].name);
-            }
-        }
-    }
-    if (onEat.giveturbo) {
-        if (onEat.turbo.duration && onEat.turbo.moveSpeed) {
-            player.turboActive = true;
-            player.turboDuration = onEat.turbo.duration;
-            player.moveSpeed = onEat.turbo.moveSpeed;
-        }
-    }
-    if (onEat.addStatus) {
-        for (let i = 0; i < onEat.addStatus.length; i++) {
-            addPlayerStatus(player,onEat.addStatus[i])
-        }
-    }
-    if (onEat.removeStatus) {
-        for (let i = 0; i < onEat.removeStatus.length; i++) {
-            removePlayerStatus(player,onEat.removeStatus[i])
-        }
-    }
-    if (onEat.deletePlayer) {
-        deletePlayer(player,undefined,item);
-    }
-    if (onEat.shield > 0) {
-        player.shield = onEat.shield;
-    }
-    if (onEat.winGame === true) {
-        endScreen(player);
-    }
-    if (onEat.canvasFilter.active == true) {
-        ctx_players.filter = onEat.canvasFilter.filter;
-        ctx_items.filter = onEat.canvasFilter.filter;
-        for (let i = 0; i < localAccount.currentBoard.map.length; i++) {
-            for (let j = 0; j < localAccount.currentBoard.map[0].length; j++) {
-                let mapTile = localAccount.currentBoard.map[i][j].tile;
-                if (mapTile == false) continue;
-                updateCells.push({
-                    x: j,
-                    y: i,
-                })
-            }
-        }
-        doColorRender = true;
-        setTimeout(function() {
-            ctx_players.filter = "none";
-            ctx_items.filter = "none";
-
-            for (let i = 0; i < localAccount.currentBoard.map.length; i++) {
-                for (let j = 0; j < localAccount.currentBoard.map[0].length; j++) {
-                    let mapTile = localAccount.currentBoard.map[i][j].tile;
-                    if (mapTile == false) continue;
-                    updateCells.push({
-                        x: j,
-                        y: i,
-                    })
-                }
-            }
-            doColorRender = true;
-        },onEat.canvasFilter.duration)
-    }
-    return updateCells;
-}
-
-function deletePlayer(player,lobby,playerWhoKilled,item,instaKill = false){
-    let damage;
-    if (item) damage = item.damage;
-    if (playerWhoKilled) damage = playerWhoKilled.bodyArmor;
-    if (!item && !playerWhoKilled) damage = (player.shield+1);
-    player.shield -= damage;
-
-    if (player.shield < 0 || instaKill){
-        if (playerWhoKilled) if (playerWhoKilled.name !== player.name) playerWhoKilled.playerKills++;
-
-        //Delete Tail
-        if (currentGameMode.snakeVanishOnDeath) {
-            for (let i = 0; i < player.tail.length; i++) {
-                updateSnakeCells.push({
-                    x: player.tail[i].x,
-                    y: player.tail[i].y,
-                    player: player
-                })
-            }
-        }
-        //Delete Player
-        player.isDead = true;
-        player.justDied = true;
-        player.timeSurvived = timer;
-        drawPlayerBox(player)
-
-        let playersDead = 0;
-        for (let i = 0; i < activePlayers.length; i++) {
-            if (activePlayers[i].isDead) playersDead++;
-        }
-        if (playersDead == activePlayers.length) {
-            endScreen();
-        }
-        return;
-    }
-
-    /*
-    if (player.shield == 2) {
-        removePlayerStatus(player,"silverShield");
-        removePlayerStatus(player,"bronzeShield");
-        removePlayerStatus(player,"goldShield");
-
-        addPlayerStatus(player,"silverShield");
-    }
-    if (player.shield == 1) {
-        removePlayerStatus(player,"silverShield");
-        removePlayerStatus(player,"bronzeShield");
-        removePlayerStatus(player,"goldShield");
-
-        addPlayerStatus(player,"bronzeShield");
-    }
-    if (player.shield == 0) {
-        removePlayerStatus(player,"silverShield");
-        removePlayerStatus(player,"bronzeShield");
-        removePlayerStatus(player,"goldShield");
-    }
-    */
-}
-////
-function findLobby(playerID) {
-    for (let i = 0; i < lobbies.length; i++) {
-        for (let j = 0; j < lobbies[i].players.length; j++) {
-            if (lobbies[i].players[j] === playerID) return lobbies[i];
+//Copying From Functions.js
+function getItem(lobby,name) {
+    let currentGameMode = lobby.gameMode;
+    for (let i = 0; i < currentGameMode.items.length; i++) {
+        if (currentGameMode.items[i].name == name) {
+            return structuredClone(currentGameMode.items[i]);
         }
     }
 }
-function getPlayersList(playerIds) {
-    let list = [];
-    for (let i = 0; i < playerIds.length; i++) {
-        list.push(onlineAccounts[playerIds[i]].player)
+function findPlayersTeam(player) {
+    for (let i = 0; i < player.status.length; i++) {
+        if (player.status[i].subset(0,5) == "status") return player.status[i].subset("_\\after","end");
     }
-    return list;
 }
-
-
-
-
-function spawn(currentGameMode,currentBoard,activePlayers,name,generateRandomItem = true,counting = false) {
+function calculateDistance(currentBoard,x1, y1, x2, y2, boardLength, boardHeight) {
+    boardLength = currentBoard.map[0].length;
+    boardHeight = currentBoard.map.length;
+    let dx = Math.min(Math.abs(x1 - x2), boardLength - Math.abs(x1 - x2));
+    let dy = Math.min(Math.abs(y1 - y2), boardHeight - Math.abs(y1 - y2));
+    return dx + dy;
+}
+function fixItemDifferences(currentBoard,map) {
+    if (!currentBoard.itemDifferences) return;
+    for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
+        let e = currentBoard.itemDifferences[i];
+        let d = {
+            differences: e[0],
+            x: e[1],
+            y: e[2],
+        }
+        let pos = structuredClone(map[d.y][d.x].item);
+        if (!pos) continue;
+        for (let j = 0; j < d.differences.length; j++) {
+            let change = d.differences[j];
+            if (change.length == 4) {
+                pos[change[0]][change[1]][change[2]] = change[3];
+            }
+            if (change.length == 3) {
+                pos[change[0]][change[1]] = change[2];
+            }
+            if (change.length == 2) {
+                pos[change[0]] = change[1];
+            }
+        }
+        map[d.y][d.x].item = pos;
+        for (let i = 0; i < currentBoard.location_spawns.length; i++) {
+            if (d.y == currentBoard.location_spawns[i].y && currentBoard.location_spawns[i].x == d.x) {
+                currentBoard.location_spawns[i].item = map[d.y][d.x].item;
+            }
+        }
+    }
+}
+function fixTileDifferences(currentBoard,map) {
+    if (!currentBoard.tileDifferences) return;
+    for (let i = 0; i < currentBoard.tileDifferences.length; i++) {
+        let e = currentBoard.tileDifferences[i];
+        let d = {
+            differences: e[0],
+            x: e[1],
+            y: e[2],
+        }
+        let pos = structuredClone((map[d.y][d.x].tile));
+        if (!pos) continue;
+        for (let j = 0; j < d.differences.length; j++) {
+            let change = d.differences[j];
+            if (change.length == 4) {
+                pos[change[0]][change[1]][change[2]] = change[3];
+            }
+            if (change.length == 3) {
+                pos[change[0]][change[1]] = change[2];
+            }
+            if (change.length == 2) pos[change[0]] = change[1];
+        }
+        map[d.y][d.x].tile = pos;
+    }
+}
+function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio = true) {
+    let currentGameMode = lobby.gameMode;
+    let currentBoard = lobby.board;
+    let activePlayers = lobby.activePlayers; 
     let isPlayer = name.isPlayer;
     let itemIndex = false;
     let item;
@@ -961,83 +736,37 @@ function spawn(currentGameMode,currentBoard,activePlayers,name,generateRandomIte
         }
         if (item.spawnCount == undefined) item.spawnCount = 1;
         if (counting == false) {
-            let returnValue = [];
-                
             for (let i = 0; i < item.spawnCount; i++) {
-                returnValue.push(spawn(currentGameMode,currentBoard,activePlayers,name,generateRandomItem,true));
+                spawn(lobby,name,generateRandomItem,true,playAudio);
             }
-            return returnValue;
+            return;
         }
         if (item.spawnLimit !== false) item.spawnLimit--;
     }
         
-
     let counter = 0;
     let foundSpot = false;
-    let x,y;
+    let x,y,team = "white";
+    let allSpawns = currentBoard.location_spawns.shuffle();
     while (foundSpot == false) {
         if (isPlayer) {
-            
-            findingExactSpawner: for (let k = 0; k < currentBoard.map.length; k++) {
-                for (let j = 0; j < currentBoard.map[0].length; j++) {
-                    if (currentBoard.map[k][j].item === false) continue;
-                    if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
-                    if (currentBoard.map[k][j].item.spawnPlayerID == "player" || currentBoard.map[k][j].item.spawnPlayerID === undefined) continue;
-                    if (Number(currentBoard.map[k][j].item.spawnPlayerID.subset("_\\after","end")) !== Number(name.id)) continue;
-
-                    let playerOnIt = false;
-                    for (let i = 0; i < activePlayers.length; i++) {
-                        if (activePlayers[i].pos.x == j && activePlayers[i].pos.y == k) playerOnIt = true;
-                    }
-                    if (playerOnIt) continue;
-
-                    x = j;
-                    y = k;
-                    foundSpot = true;
-                    break findingExactSpawner;
-                    
+            findingSpawner: for (let k = 0; k < allSpawns.length; k++) {
+                let playerOnIt = false;
+                for (let i = 0; i < activePlayers.length; i++) {
+                    if (activePlayers[i].pos.x == allSpawns[k].x && activePlayers[i].pos.y == allSpawns[k].y) playerOnIt = true;
                 }
-            }
-            if (!foundSpot) {
+                if (playerOnIt) continue;
 
-                findingSpawner: for (let k = 0; k < currentBoard.map.length; k++) {
-                    for (let j = 0; j < currentBoard.map[0].length; j++) {
-                        if (currentBoard.map[k][j].item === false) continue;
-                        if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
-                        if (currentBoard.map[k][j].item.spawnPlayerID !== "player") continue;
-                        
-                        let playerOnIt = false;
-                        for (let i = 0; i < activePlayers.length; i++) {
-                            if (activePlayers[i].pos.x == j && activePlayers[i].pos.y == k) playerOnIt = true;
-                        }
-                        if (playerOnIt) continue;
-                        
-                        x = j;
-                        y = k;
-                        foundSpot = true;
-                        break findingSpawner;
-                    }
-                }
+                let playerTeam = findPlayersTeam(name);
+                let spawnTeam = allSpawns[k].item.spawnPlayerTeam || "white";
 
+                if (playerTeam !== "white" && spawnTeam !== playerTeam) continue;
                 
-                if (!foundSpot) {
-                    findingSpawner: for (let k = 0; k < currentBoard.map.length; k++) {
-                        for (let j = 0; j < currentBoard.map[0].length; j++) {
-                            if (currentBoard.map[k][j].item === false) continue;
-                            if (currentBoard.map[k][j].item.spawnPlayerHere !== true) continue;
-                            let playerOnIt = false;
-                            for (let i = 0; i < activePlayers.length; i++) {
-                                if (activePlayers[i].pos.x == j && activePlayers[i].pos.y == k) playerOnIt = true;
-                            }
-                            if (playerOnIt) continue;
-        
-                            x = j;
-                            y = k;
-                            foundSpot = true;
-                            break findingSpawner;
-                        }
-                    }
-                }
+                x = allSpawns[k].x;
+                y = allSpawns[k].y;
+                team = playerTeam !== "white" ? playerTeam : spawnTeam;
+                foundSpot = true;
+                break findingSpawner;
             }
         }
         
@@ -1047,7 +776,7 @@ function spawn(currentGameMode,currentBoard,activePlayers,name,generateRandomIte
             if (currentBoard.map[y][x].item == false && currentBoard.map[y][x].tile.canSpawn) {
                 foundSpot = true;
                 checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
-                    let distance = calculateDistance(activePlayers[j].pos.x,activePlayers[j].pos.y,x,y);
+                    let distance = calculateDistance(currentBoard,activePlayers[j].pos.x,activePlayers[j].pos.y,x,y);
                     if (distance < 5) {
                         foundSpot = false;
                         break checkingDistanceFromPlayersHead;
@@ -1069,11 +798,11 @@ function spawn(currentGameMode,currentBoard,activePlayers,name,generateRandomIte
 
     if (foundSpot == "couldn't find any") {
         findingAnySpot: for (let k = 0; k < currentBoard.map.length; k++) {
-            for (let j = 0; j < currentBoard.mapcurrentBoard.map[0].length; j++) {
+            for (let j = 0; j < currentBoard.map[0].length; j++) {
                 if (currentBoard.map[k][j].item == false && currentBoard.map[k][j].tile.canSpawn) {
                     let foundGoodSpot = true;
                     checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
-                        let distance = calculateDistance(activePlayers[j].pos.x,activePlayers[j].pos.y,x,y);
+                        let distance = calculateDistance(currentBoard,activePlayers[j].pos.x,activePlayers[j].pos.y,x,y);
                         if (distance < 5) {
                             foundGoodSpot = false;
                             break checkingDistanceFromPlayersHead;
@@ -1098,29 +827,591 @@ function spawn(currentGameMode,currentBoard,activePlayers,name,generateRandomIte
 
     if (foundSpot == true) {
         if (isPlayer) {
-            return {
-                isPlayer: true,
-                x: x,
-                y: y,
-            }
+            name.pos.x = x;
+            name.pos.y = y;
+            addPlayerStatus(lobby,name,"status_" + team);
         } else {
-            return {
-                isPlayer: false,
+            //runItemFunction(name,currentGameMode.items[itemIndex],"onSpawn",{x:x,y:y},{playAudio: playAudio});
+            currentBoard.map[y][x].item = structuredClone(currentGameMode.items[itemIndex]);
+            currentBoard.map[y][x].item.pos = {
                 x: x,
                 y: y,
-                itemIndex: itemIndex,
-                generateRandomItem: generateRandomItem,
             }
+            lobby.updateCells.push({
+                x: x,
+                y: y,
+            })
+            if (item.pack == "Tunnels") {
+                currentBoard.location_tunnels.push(
+                    {
+                        x: x,
+                        y: y,
+                        name: item.name,
+                    }
+                )
+            }
+            if (generateRandomItem && item.onEat?.spawnRandomItem) specialItemManager(lobby);
         }
     } else {
         console.log("No Available Spot To Spawn");
     }
 };
 
-function calculateDistance(x1, y1, x2, y2) {
-    return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+//Copied From Main.js
+function useItem(lobby,player) {
+    if (player.status.includes(player.items[player.selectingItem].img)) return;
+    
+    let item = player.items[player.selectingItem];
+    if (item == "empty") return;
+    if (item.cantUseIfStatus.length > 0) {
+        for (let i = 0; i < item.cantUseIfStatus.length; i++) {
+            let id = item.cantUseIfStatus[i];
+            if (player.status.includes(id)) return;
+        }
+    }
+    
+    runItemFunction(lobby,player,player.items[player.selectingItem],"onEat");
+    player.items[player.selectingItem] = "empty";
+}
+function specialItemManager(lobby) {
+    let specialItemIteration = lobby.specialItemIteration;
+    let specialItemActiveChance = lobby.specialItemActiveChance;
+    let currentGameMode = lobby.gameMode;
+    let specialItemLowChance = lobby.specialItemLowChance;
+    let specialItemHighChance = lobby.specialItemHighChance;
+
+    if (specialItemIteration >= specialItemActiveChance) {
+        specialItemIteration = 0;
+        lobby.specialItemActiveChance = rnd(specialItemLowChance,specialItemHighChance);
+        // Calculate the total weight
+        let totalWeight = 0;
+        for (let i = 0; i < currentGameMode.items.length; i++) {
+            if (currentGameMode.items[i].spawnLimit < 1 && _type(currentGameMode.items[i].spawnLimit).type == "number") continue;
+            totalWeight += currentGameMode.items[i].specialSpawnWeight;
+        }
+
+        // Generate a random number between 0 and totalWeight
+        const randomWeight = Math.random() * totalWeight;
+
+        // Find the item corresponding to the random weight
+        let cumulativeWeight = 0;
+        findingItem: for (const item of currentGameMode.items) {
+            if (item.spawnLimit < 1 && _type(item.spawnLimit).type == "number") continue;
+
+            cumulativeWeight += item.specialSpawnWeight;
+            if (randomWeight < cumulativeWeight) {
+                spawn(lobby,item.name);
+                break findingItem;
+            }
+        }
+
+    } else {
+        lobby.specialItemIteration++;
+    }
+}
+function deletePlayer(lobby,player,playerWhoKilled,item,instaKill = false){
+    let currentGameMode = lobby.gameMode;
+    let activePlayers = lobby.activePlayers;
+
+    let damage;
+    if (item) damage = item.damage;
+    if (playerWhoKilled) damage = playerWhoKilled.bodyArmor;
+    if (!item && !playerWhoKilled) damage = (player.shield+1);
+    player.shield -= damage;
+
+    if (player.shield < 0 || instaKill){
+        if (playerWhoKilled) if (playerWhoKilled.name !== player.name) playerWhoKilled.playerKills++;
+
+        //Delete Tail
+        if (currentGameMode.snakeVanishOnDeath) {
+            for (let i = 0; i < player.tail.length; i++) {
+                lobby.updateSnakeCells.push({
+                    x: player.tail[i].x,
+                    y: player.tail[i].y,
+                    player: player
+                })
+            }
+        }
+
+        //Delete Player
+        player.isDead = true;
+        player.justDied = true;
+
+        if (!currentGameMode.respawn) {
+            player.timeSurvived = lobby.timer;
+            let playersDead = 0;
+            for (let i = 0; i < activePlayers.length; i++) {
+                if (activePlayers[i].isDead) playersDead++;
+            }
+            if (playersDead == activePlayers.length) {
+                lobby.gameEnd = true;
+            }
+        } else {
+            setTimeout(function() {
+                respawnPlayer(lobby,player,currentGameMode.respawnGrowth);
+            },currentGameMode.respawnTimer * 1000);
+        }
+        return;
+    }
+
+    if (player.shield == 2) {
+        removePlayerStatus(lobby,player,"silverShield");
+        removePlayerStatus(lobby,player,"bronzeShield");
+        removePlayerStatus(lobby,player,"goldShield");
+
+        addPlayerStatus(lobby,player,"silverShield");
+    }
+    if (player.shield == 1) {
+        removePlayerStatus(lobby,player,"silverShield");
+        removePlayerStatus(lobby,player,"bronzeShield");
+        removePlayerStatus(lobby,player,"goldShield");
+
+        addPlayerStatus(lobby,player,"bronzeShield");
+    }
+    if (player.shield == 0) {
+        removePlayerStatus(lobby,player,"silverShield");
+        removePlayerStatus(lobby,player,"bronzeShield");
+        removePlayerStatus(lobby,player,"goldShield");
+    }
+}
+function growPlayer(player,grow) {
+    player.growTail += grow;
+}
+function testItemUnderPlayer(lobby,player) {
+    let currentGameMode = lobby.gameMode;
+    let currentBoard = lobby.board;
+    let mapItem = currentBoard.map[player.pos.y][player.pos.x].item;
+    if (!mapItem) return;
+    if (mapItem.pickUp) {
+        let pickedUpItem = false;
+        findingEmptyItemSlot: for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
+            if (player.items[k] == "empty") {
+                player.items[k] = mapItem;
+                pickedUpItem = true;
+                break findingEmptyItemSlot;
+            }
+        }
+        if (!pickedUpItem && currentGameMode.mode_whenInventoryFullWhereDoItemsGo !== "noPickUp") {
+            if (currentGameMode.mode_whenInventoryFullWhereDoItemsGo == "select") {
+                player.items[player.selectingItem] = mapItem;
+            }
+            if (currentGameMode.mode_whenInventoryFullWhereDoItemsGo == "recycle") {
+                player.items[player.whenInventoryIsFullInsertItemsAt] = mapItem;
+                player.whenInventoryIsFullInsertItemsAt++;
+                if (player.whenInventoryIsFullInsertItemsAt > player.items.length-1) player.whenInventoryIsFullInsertItemsAt = 0;
+            }
+        }
+    } else if (mapItem.canEat == true) {
+        runItemFunction(lobby,player,mapItem,"onEat");
+    }
+
+    if (_type(mapItem.teleport).type == "number" && !player.justTeleported) {
+        findingPortal: for (let z = 0; z < currentBoard.map.length; z++) {
+            for (let h = 0; h < currentBoard.map[z].length; h++) {
+                if (!currentBoard.map[z][h].item) continue;
+                if (player.pos.x == h && player.pos.y == z) continue;
+                if (currentBoard.map[z][h].item.teleport === mapItem.teleport) {
+                    player.justTeleported = {
+                        x: h,
+                        y: z,
+                    }
+                    break findingPortal;
+                } 
+            }
+        }
+    } else {
+        player.justTeleported = false;
+    }
+
+    if (mapItem.canCollide) {
+        let pass = true;
+        if (_type(mapItem.requiredSnakeSizeToCollide).type == "number") {
+            if ((player.tail.length+1) >= mapItem.requiredSnakeSizeToCollide) pass = true;
+            else pass = false;
+        }
+        if (pass) runItemFunction(lobby,player,mapItem,"onCollision");
+    }
+
+    let itemIsDelete = false;
+    let worldStatusPass = false;
+    let boardStatusCount = 0;
+    for (let i = 0; i < mapItem.boardDestructible.length; i++) {
+        if (mapItem.boardDestructible[i] == "yes")  {
+            worldStatusPass = true;
+            boardStatusCount++;
+            continue;
+        }
+        if (currentBoard.boardStatus.includes(mapItem.boardDestructible[i])) {
+            for (let j = 0; j < currentBoard.boardStatus.length; j++) {
+                if (currentBoard.boardStatus[j] === mapItem.boardDestructible[i]) boardStatusCount++;
+            }
+            continue;
+        }
+    }
+    worldStatusPass = boardStatusCount >= Number(mapItem.boardDestructibleCountRequired);
+
+    //Check Snake Length Pass
+    let snakeSizePass = true;
+    if (mapItem.snakeSizeRequired) {
+        if ((player.tail.length + 1) >= mapItem.snakeSizeRequired) snakeSizePass = true;
+        else snakeSizePass = false; 
+    }
+    //End
+
+    if (worldStatusPass && snakeSizePass) {
+        checking: for (let i = 0; i < mapItem.destructible.length; i++) {
+            let status = mapItem.destructible[i];
+            let deleteMe = false;
+            if (status === false) {
+                itemIsDelete = true;
+                break checking;
+            }
+            if (status == "yes") deleteMe = true;
+            if (player.status.includes(status) || player.status.includes("status_" + status)) deleteMe = true;
+    
+            if (deleteMe) {
+                itemIsDelete = true;
+                //Hurt Player
+                deletePlayer(lobby,player,false,mapItem);
+    
+                if (mapItem.deleteOnDestruct == false) {
+                    break checking;
+                }
+    
+                //Checking On Eat Delete Me Object From Item
+                if (mapItem.onDelete) {
+                    if (mapItem.onDelete.removeStatus.length > 0) {
+                        for (let j = 0; j < mapItem.onDelete.removeStatus.length; j++) {
+                            removePlayerStatus(lobby,player,mapItem.onDelete.removeStatus[j]);
+                        }
+                    }    
+                }
+    
+                //Delete Item
+                currentBoard.map[player.pos.y][player.pos.x].item = false;
+                lobby.updateCells.push({
+                    x: player.pos.x,
+                    y: player.pos.y,
+                })
+                break checking;
+            }
+        }
+    }
+    if (!itemIsDelete) deletePlayer(lobby,player);
+}
+function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: true}) {
+    let currentBoard = lobby.board;
+    if (!type) return;
+
+    let collision = item[type];
+
+    if (!collision) return;
+
+    if (item.switchStatus == false || item.switchStatus == undefined) {
+        item.switchStatus = true;
+    } else {
+        item.switchStatus = false;
+    }
+
+    if (collision.switchBaseImgTag) {
+        item.baseImgTags[collision.switchBaseImgTag.index] = item.baseImgTags[collision.switchBaseImgTag.index] == collision.switchBaseImgTag.switch[0] ? collision.switchBaseImgTag.switch[1] : collision.switchBaseImgTag.switch[0];
+        lobby.updateCells.push({
+            x: player.pos.x,
+            y: player.pos.y,
+        })
+    }
+    if (collision.switchBoardStatus) {
+        if (item.switchStatus === true) {
+            addBoardStatus(collision.switchBoardStatus,player);
+        } else {
+            removeBoardStatus(collision.switchBoardStatus,player);
+        }
+    }
+    if (collision.addBoardStatus) {
+        addBoardStatus(collision.addBoardStatus,player);
+    }
+    if (collision.removeBoardStatus) {
+        removeBoardStatus(collision.removeBoardStatus,player);
+    }
+    if (collision.setBoardStatus) {
+        let status = collision.setBoardStatus;
+        if (collision.setBoardStatus == "*P") status = findPlayersTeam(player);
+        if (item.sendingBoardStatus === status) return;
+
+        if (item.sendingBoardStatus !== false) {
+            removeBoardStatus(item.sendingBoardStatus,player);
+        }
+
+        item.sendingBoardStatus = status;
+        addBoardStatus(status,player);
+    }
+    if (collision.setBaseImgTag) {
+        let value = collision.setBaseImgTag.value;
+        if (value == "*P") value = findPlayersTeam(player);
+        item.baseImgTags[collision.setBaseImgTag.index] = value;
+
+        lobby.updateCells.push({
+            x: player.pos.x,
+            y: player.pos.y,
+        })
+    }
+    if (collision.growPlayer > 0) {
+        growPlayer(player,collision.growPlayer);
+    }
+    if (collision.spawn) {
+        for (let i = 0; i < collision.spawn.length; i++) {
+            for (let j = 0; j < collision.spawn[i].count; j++) {
+                spawn(lobby,collision.spawn[i].name);
+            }
+        }
+    }
+    if (collision.giveturbo) {
+        if (collision.turbo.duration && collision.turbo.moveSpeed) {
+            player.turboActive = true;
+            player.turboDuration = collision.turbo.duration;
+            player.moveSpeed = collision.turbo.moveSpeed;
+        }
+    }
+    if (collision.addStatus) {
+        for (let i = 0; i < collision.addStatus.length; i++) {
+            addPlayerStatus(lobby,player,collision.addStatus[i])
+        }
+    }
+    if (collision.removeStatus) {
+        for (let i = 0; i < collision.removeStatus.length; i++) {
+            removePlayerStatus(lobby,player,collision.removeStatus[i])
+        }
+    }
+    if (collision.deletePlayer) {
+        deletePlayer(lobby,player,undefined,item);
+    }
+    if (collision.shield > 0) {
+        player.shield = collision.shield;
+    }
+    if (collision.winGame === true) {
+        endScreen(player);
+    }
+    if (collision.canvasFilter?.active == true) {
+        ctx_players.filter = collision.canvasFilter.filter;
+        ctx_items.filter = collision.canvasFilter.filter;
+        for (let i = 0; i < currentBoard.map.length; i++) {
+            for (let j = 0; j < currentBoard.map[0].length; j++) {
+                let mapTile = currentBoard.map[i][j].tile;
+                if (mapTile == false) continue;
+                lobby.updateCells.push({
+                    x: j,
+                    y: i,
+                })
+            }
+        }
+        doColorRender = true;
+        setTimeout(function() {
+            ctx_players.filter = "none";
+            ctx_items.filter = "none";
+
+            for (let i = 0; i < currentBoard.map.length; i++) {
+                for (let j = 0; j < currentBoard.map[0].length; j++) {
+                    let mapTile = currentBoard.map[i][j].tile;
+                    if (mapTile == false) continue;
+                    lobby.updateCells.push({
+                        x: j,
+                        y: i,
+                    })
+                }
+            }
+            doColorRender = true;
+        },collision.canvasFilter.duration)
+    }
+}
+function addPlayerStatus(lobby,player,itemName) {
+    if (itemName.subset(0,5) == "status") {
+        removePlayerStatus(lobby,player,"teamColor");
+        player.status.push(itemName);
+    } else {
+        player.status.push(getItem(lobby,itemName).name);
+    }
+}
+function removePlayerStatus(lobby,player,itemName) {
+    if (itemName == "teamColor") {
+        findingStatus: for (let i = 0; i < player.status.length; i++) {
+            if (player.status[i].subset(0,5) == "status") {
+                player.status.splice(i,1);
+                break findingStatus;
+            }
+        }
+    } else {
+        findingStatus: for (let i = 0; i < player.status.length; i++) {
+            if (player.status[i] == getItem(lobby,itemName).name) {
+                player.status.splice(i,1);
+                break findingStatus;
+            }
+        }
+    }
 }
 
-function specialItemManager() {
+//From Appj.js
+function getPlayersList(playerIds) {
+    let list = [];
+    for (let i = 0; i < playerIds.length; i++) {
+        list.push(onlineAccounts[playerIds[i]].player)
+    }
+    return list;
+}
 
+function server_movePlayers(lobby) {
+    activePlayers = lobby.activePlayers;
+    let currentBoard = lobby.board;
+    let currentGameMode = lobby.gameMode;
+    for (let i = 0; i < activePlayers.length; i++) {
+        let player = activePlayers[i];
+        
+        if (player.isDead) continue;
+        let deltaTime = 1;
+        if ((player.moveTik*deltaTime) < (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
+            player.moveTik++;
+            continue;
+        }
+
+        if (player.turboActive == true) {
+            player.turboDuration --;
+            if (player.turboDuration <= 0) {
+                player.turboActive = false;
+                removePlayerStatus(lobby,player,"turbo");
+                player.moveSpeed = 6;
+            }
+        }
+        player.moveTik = 0
+
+        let playerOldMoving = player.moving;
+
+        //check the movement queue
+        if (player.moveQueue.length != 0){
+            if(player.moving == "left" && player.moveQueue[0] != "right" || 
+                player.moving == "right" && player.moveQueue[0] != "left" || 
+                player.moving == "up" && player.moveQueue[0] != "down" || 
+                player.moving == "down" && player.moveQueue[0] != "up"){
+                player.moving = player.moveQueue[0];
+            }
+            else if (player.moving === false)
+            {
+                player.moving = player.moveQueue[0];
+            }
+
+            player.moveQueue.shift();
+        }
+        
+        //Moving The Player
+        let playerOldPos = { x: player.pos.x, y: player.pos.y };
+
+        //Move Player and make sure he can't go back on himself
+        switch (player.moving) {
+            case "left": player.pos.x--; break;
+            case "right": player.pos.x++; break;
+            case "up": player.pos.y--; break;
+            case "down": player.pos.y++; break;
+        }            
+
+        //Teleport Player If Needed
+        if (_type(player.justTeleported).type == "object") {
+            //deleteSnakeCells(); Add Later?
+            cameraQuickZoom = "tunnel";
+            player.pos.x = player.justTeleported.x;
+            player.pos.y = player.justTeleported.y;
+            player.justTeleported = true;
+        }
+
+        //Collision Testing
+        //Test If Player Hits Edge
+        const maxX = currentBoard.map[0].length - 1;
+        const maxY = currentBoard.map.length - 1;
+
+        if (player.pos.x > maxX || player.pos.x < 0 || player.pos.y > maxY || player.pos.y < 0) {
+            if (player.pos.x > maxX) { cameraQuickZoom = "right"; player.pos.x = 0; }
+            else if (player.pos.x < 0) { cameraQuickZoom = "left"; player.pos.x = maxX; }
+
+            if (player.pos.y > maxY) { cameraQuickZoom = "bottom"; player.pos.y = 0; }
+            else if (player.pos.y < 0) { cameraQuickZoom = "top"; player.pos.y = maxY; }
+        }
+
+        //Check for Player Collisions
+        if (currentGameMode.snakeCollision) {
+            let occupiedPositions = new Set();
+        
+            // Step 1: Populate occupiedPositions with all players' tails & positions
+            for (let a = 0; a < activePlayers.length; a++) {
+                let checkedPlayer = activePlayers[a];
+                if (checkedPlayer.isDead && currentGameMode.snakeVanishOnDeath) continue;
+                if (findPlayersTeam(checkedPlayer) === findPlayersTeam(player) && !currentGameMode.teamCollision && findPlayersTeam(player) !== "white") continue;
+        
+                for (let b = 0; b < checkedPlayer.tail.length; b++) {
+                    occupiedPositions.add(`${checkedPlayer.tail[b].x},${checkedPlayer.tail[b].y}`);
+                }
+                if (checkedPlayer.id !== player.id) {
+                    occupiedPositions.add(`${checkedPlayer.pos.x},${checkedPlayer.pos.y}`);
+                }
+            }
+            // Step 2: Check if the player's new position exists in occupiedPositions
+            if (occupiedPositions.has(`${player.pos.x},${player.pos.y}`)) {
+                deletePlayer(lobby,player);
+            }
+        }
+        //Test Item Underplayer
+        if (!player.isDead) testItemUnderPlayer(lobby,player);
+
+        if (!player.isDead) {
+            //Test Tile UnderPlayer
+            let mapTile = currentBoard.map[player.pos.y][player.pos.x].tile;
+            if (mapTile.onOver) runItemFunction(lobby,player,mapTile,"onOver");
+
+            //Growing/Moving Tail
+            let playerX = playerOldPos.x;
+            let playerY = playerOldPos.y;
+
+            if (player.growTail > 0) {
+                player.tail.unshift({
+                    x: playerX,
+                    y: playerY,
+                    direction: player.moving,
+                });
+                //drawPlayerBox(player); //REALLY LAGGY We should Update that specific part of their card.
+                player.growTail--;
+                if (player.tail.length > player.longestTail) player.longestTail = player.tail.length;
+            } else if(player.tail.length > 0) {
+                player.tail.unshift({
+                    x: playerX,
+                    y: playerY,
+                    direction: player.moving,
+                });
+                lobby.updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
+                
+
+                let tail = player.tail[player.tail.length-1];
+                if (currentBoard.map[tail.y][tail.x].item) {
+                    let mapItem = currentBoard.map[tail.y][tail.x].item;
+                    if (mapItem.canCollide) runItemFunction(lobby,player,mapItem,"offCollision");
+                }
+                
+                player.tail.pop();
+            } else {
+                if (currentBoard.map[playerY][playerX].item) {
+                    let mapItem = currentBoard.map[playerY][playerX].item;
+                    if (mapItem.canCollide) runItemFunction(lobby,player,mapItem,"offCollision");
+                }
+            }
+            if (player.tail.length > 0)
+                lobby.updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
+
+            
+
+            lobby.updateSnakeCells.push({
+                x: playerX,
+                y: playerY,
+                player: player
+            })
+            //End Growing Tail
+        } else {
+            player.pos = playerOldPos;
+            player.moving = playerOldMoving;
+        }
+    }
 }

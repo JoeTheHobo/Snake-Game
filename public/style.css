@@ -5,6 +5,7 @@ body {
     background: rgb(56, 56, 56);
     font-family: VT323;
     height: 100%;
+    user-select: none;
 }
 html {
     height: 100%;
@@ -22,7 +23,14 @@ html {
     height: 100%;
     align-items: center;
 }
-
+.firstPersonCanvas {
+  display: none;
+  position: absolute;
+  background: white;
+}
+.firstPersonCanvas_master {
+  visibility: hidden;
+}
 .game_canvas {
   position: absolute;
   left: 0;
@@ -31,11 +39,16 @@ html {
   top: 0;
   margin: auto;
 }
+.singlePlayerCanvas {
+  margin: 0 !important;
+  transition: all .4s ease;
+}
 .boardStatusHolder {
   position: absolute;
   height: 60px;
   display: flex;
   flex-direction: row;
+  z-index: 1000;
 }
 .edit_canvas {
     position: absolute;
@@ -44,6 +57,18 @@ html {
     bottom: 0;
     top: 0;
     margin: auto;
+    z-index: 1;
+}
+#me_canvas {
+  z-index: 2;
+}
+#me_canvas2 {
+  pointer-events: none;
+  z-index: 3;
+}
+#me_canvas_background {
+  pointer-events: none;
+  z-index: 1;
 }
 #render_background {
   z-index: 401;
@@ -57,7 +82,12 @@ html {
 #render_players {
   z-index: 404;
 }
-
+#render_overhanges {
+  z-index: 405;
+}
+#render_top {
+  z-index: 406;
+}
   #gameTitle {
     color: white;
     font-size: 90px;
@@ -237,38 +267,25 @@ html {
   background: rgb(17, 17, 17);
 }
 
-.listHolder > .backarrow {
-  padding: 5px;
-  margin-bottom: 5px;
-  font-size: 20px;
-  user-select: none;
-  color: white;
-  background: black;
-  width: 30px;
-  height: 22px;
-  line-height: 22px;
-  text-align: center;
-  cursor: url('./img/pointer.cur'), auto;
-  border-radius: 3px;
-}
-.listHolder > .backarrow:hover {
-  background: rgb(17, 17, 17);
-}
-.listHolder > .settingsHolder {
+.settingsHolder {
   width: 100%;
-  height: 20%;
-  border-radius: 3px;
-  background: rgb(92, 92, 92);
+  height: auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow-x: hidden;
+}
+.gameModes_item_settings {
+  display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
 }
-
 .settingHolder {
   display: flex;
   flex-direction: row;
   align-items: center;
   height: 40px;
+  width: 50%; 
   margin-bottom: 10px;
 }
 .settingTitle {
@@ -276,21 +293,6 @@ html {
   font-size: 20px;
   margin-right: 10px;
   width: 130px;
-}
-.settingInput {
-  width: 100px;
-  height: 30px;
-  text-align: center;
-  font-size: 15px;
-}
-.settingInput::-webkit-outer-spin-button,
-.settingInput::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-/* Firefox */
-.settingInput[type=number] {
-  -moz-appearance: textfield;
 }
 
 
@@ -304,11 +306,11 @@ html {
 }
 
 .dropdown {
-  position: relative;
   display: inline-block;
 }
 
 .dropdown-content {
+  position: absolute;
   display: none;
   position: absolute;
   background-color: #f1f1f1;
@@ -333,10 +335,6 @@ html {
 
 
 .onSpawnHolder {
-  width: 100%;
-  height: 70%;
-  border-radius: 3px;
-  background: rgb(92, 92, 92);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -346,22 +344,22 @@ html {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 5px;
+  margin: 1px;
   user-select: none;
+  border: 3px solid black;
+  border-radius: 5px;
+  background: white;
 }
 .spawn_imageHolder {
   width: 40px;
   height: 40px;
-  background: white;
-  border: 2px solid black;
-  border-radius: 5px;
   cursor: url('./img/pointer.cur'), auto;
 }
 .spawn_itemSelected {
-  border: 2px solid blue !important;
+  border: 3px solid blue !important;
 }
-.spawn_imageHolder:hover {
-  border: 2px solid lightblue;
+.spawn_holder:hover {
+  border: 3px solid lightblue;
 }
 .spawn_image {
   width: 100%;
@@ -380,19 +378,16 @@ html {
 
 .allItems {
   display: flex;
-  flex-direction: column;
-  width: 40%;
+  flex-direction: row;
+  width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  height: 100%;
+  flex-wrap: wrap;
 }
 .itemEditorHolder {
   display: flex;
-  width: 55%;
-  height: 100%;
-  border-left: 1px solid black;
+  width: 100%;
   flex-direction: column;
-  padding: 5px;
 }
 .spawn_input {
   height: 30px;
@@ -550,16 +545,42 @@ html {
   text-align: right;
 }
 .settingsInputFull {
-  width: 100px;
+  width: 92px;
   outline: none;
-  height: 30px;
+  height: 32px;
   text-align: center;
   font-size: 16px;
 }
+.gameModes_checkbox {
+  outline: none;
+  border: none;
+  width: 36px;
+  height: 36px;
+}
+.gameModes_fullWidth {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gameModes_deleteButton {
+  width: 60%;
+  height: 50px;
+  border-radius: 5px;
+  user-select: none;
+  background: #C12F2F;
+  text-align: center;
+  line-height: 50px;
+  font-size: 30px;
+  color: black;
+  cursor: url('./img/pointer.cur'), auto;
+}
 .settingInput {
-  width: 30px;
+  width: 40px;
+  height: 36px;
   outline: none;
   font-size: 20px;
+  text-align: center;
 }
 .settingsButtonHolder {
   display: flex;
@@ -729,6 +750,11 @@ html {
   margin-top: 5px;
   user-select: none;
 }
+.me_ih_type {
+  font-size: 20px;
+  margin-top: 1px;
+  user-select: none;
+}
 .me_ih_settings {
   display: flex;
   flex-direction: column;
@@ -785,16 +811,6 @@ html {
   margin: 5px;
 }
 
-
-#me_name {
-  outline: none;
-  width: 150px;
-  height: 30px;
-  text-align: center;
-  font-size: 20px;
-  margin-left: 10px;
-}
-
 .me_toolbar {
   width: 100%;
   background: gray;
@@ -814,10 +830,32 @@ html {
   padding-right: 10px;
   margin-right: 10px;
 }
+.toolbar_extra {
+  border-left: 1px solid white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-right: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
 .toolbar_subtools {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+.toolBarToolHolder2 {
+  border-radius: 5px;
+  transition: all .2s ease-in;
+  width: 25px;
+  height: 25px;
+  margin-left: 5px;
+  cursor: url('./img/pointer.cur'), auto;
+  user-select: none;
+}
+.toolBarToolHolder2:hover {
+  background: white !important;
+
 }
 .toolBarToolHolder {
   border-radius: 5px;
@@ -843,6 +881,20 @@ html {
 
 
 
+.popupTitle {
+  color: white;
+  font-size: 30px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 15px;
+}
+.popupSubTitle {
+  color: rgb(182, 182, 182);
+  font-size: 20px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 5px;
+}
 .statusSelectionScreen {
   position: absolute;
   left: 0;
@@ -852,10 +904,51 @@ html {
   margin: auto;
   display: none;
   flex-direction: column;
-  width: 70%;
-  height: 60%;
+  width: 400px;
+  height: max-content;
+  align-items: center;
+  padding: 5px;
+  padding-bottom: 10px;
   border-radius: 5px;
-  background: gray;
+  background: rgb(19, 19, 19);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  z-index: 3;
+}
+.gameModeSelectionScreen {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  display: none;
+  flex-direction: column;
+  width: 400px;
+  height: max-content;
+  align-items: center;
+  padding: 5px;
+  padding-bottom: 10px;
+  border-radius: 5px;
+  background: rgb(19, 19, 19);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  z-index: 3;
+}
+.backgroundSelectionScreen {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  display: none;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 610px;
+  height: max-content;
+  align-items: center;
+  padding: 5px;
+  border-radius: 5px;
+  background: rgb(19, 19, 19);
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   z-index: 3;
 }
@@ -902,6 +995,7 @@ html {
 
 }
 .logo_image {
+  width: 700px;
   height: auto;
   position: relative;
   
@@ -914,7 +1008,6 @@ html {
 }
 
 .menu_holder {
-  margin-top: 25px;
   z-index: 1;
   width: 70%;
   height: 60%;
@@ -987,7 +1080,7 @@ html {
 .menu_content {
   width: 100%;
   height: 100%;
-  display: flex;
+  display: none;
   flex-direction: column;
 }
 .servers_bottom {
@@ -1020,7 +1113,9 @@ html {
   cursor: url('./img/cursor.cur'), auto;
 
 }
-
+#servers_tab {
+  
+}
 .servers_invite_holder {
   display: flex;
   flex-direction: row;
@@ -1117,4 +1212,277 @@ html {
   bottom: 5px;
   right: 5px;
 
+}
+
+.toolTip {
+  padding: 6px;
+  opacity: 0;
+  background: black;
+  font-size: 18px;
+  color: white;
+  border-radius: 5px;
+  position: absolute;
+  left: 100;
+  top: 500;
+  z-index: 500;
+  transition: opacity 0.8s ease-in-out;
+  pointer-events: none;
+  user-select: none;
+}
+
+
+.popup {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  display: flex;
+  width: max-content;
+  height: max-content;
+  flex-direction: column;
+  border-radius: 5px;
+  padding: 15px;
+  background: rgb(26, 26, 26);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  z-index: 1000;
+}
+.popup_row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.popup_col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hover {
+  transition: all .2s ease-in-out;
+}
+.hover:hover {
+  opacity: 0.8;
+}
+.list_selected {
+  background: rgb(117, 59, 156) !important;
+}
+
+
+.local_bottom_canvas {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  width: 142px;
+  height: 80px;
+  background: white;
+}
+.local_top {
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: row;
+}
+.local_choice_holder {
+  display: flex;
+  flex-direction: column;
+  width: 33%;
+  align-items: center;
+  overflow-y: auto;
+}
+.local_border_right {
+  border-right: 1px solid white;
+
+}
+.local_choice_warning {
+  color: red;
+  font-size: 17px;
+}
+.local_choice_title {
+  color: white;
+  font-size: 35px;
+}
+.local_choice_content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.local_bottom {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  align-items: center;
+  justify-content:  center;
+}
+.local_content_holder {
+  width: 95%;
+  height: 40px;
+  background: #888;
+  border-radius: 5px;
+  margin-top: 5px;
+  cursor: url('./img/pointer.cur'), auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  user-select: none;
+}
+.local_content_player_number {
+  margin-left: auto;
+  color: white;
+  margin-right: 20px;
+}
+.local_content_title {
+  color: white;
+  font-size: 25px;
+  margin-left: 5px;
+}
+.local_content_snakeHead {
+  height: 95%;
+  width: auto;
+}
+.local_content_selected { 
+  background: rgb(117, 59, 156) !important;
+}
+.gameModes_settings_title {
+  width: 100%;
+  text-align: center;
+  font-size: 30px;
+  color: white;
+  margin-bottom: 5px;
+}
+.local_content_board_gameMode {
+  margin-left: auto;
+  padding-left: 5px;
+  padding-right: 5px;
+  background: white;
+  border-radius: 5px;
+  border: 2px solid black;
+  margin-right: 15px;
+  font-size: 25px;
+  display: none;
+}
+.local_content_board_gameMode_selected {
+  background: rgb(88, 88, 179);
+}
+.local_content_gameModes_blocked {
+  background: rgb(53, 53, 53);
+}
+
+.firstPersonMap {
+  border: 2px solid black;
+  border-radius: 5px;
+  position: absolute;
+
+  right: 10px;
+  bottom: 10px;
+
+  z-index: 999;
+
+}
+.extraCanvas {
+  border: 2px solid black;
+  border-radius: 5px;
+  position: absolute;
+
+  left: 10px;
+  bottom: 10px;
+
+  z-index: 999;
+
+
+  background:white;
+  width: 200px;
+  height: 200px;
+}
+
+.me_ih_bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: auto;
+  width: 100%;
+  margin-bottom: 70px;
+}
+.me_ih_title {
+  font-size: 35px;
+  margin-bottom: 10px;
+  width: 90%;
+  text-align: center;
+  border-bottom: 3px solid white;
+}
+.me_ih_setting {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 3px;
+}
+.me_ih_settingName {
+  width: 50%;
+  font-size: 25px;
+  padding: 3px;
+  padding-right: 10px;
+  text-align: right;
+}
+.me_ih_button {
+  width: 40%;
+  text-align: center;
+  border-radius: 5px;
+  background: white;
+  color: black;
+  cursor: url('./img/pointer.cur'), auto;
+  font-size: 25px;
+  padding: 3px;
+}
+.me_ih_checkbox {
+  outline: none;
+  width: 32px;
+  height: 32px;
+  cursor: url('./img/pointer.cur'), auto;
+  border-radius: 5px;
+  border: none;
+}
+.me_ih_input {
+  width: 40%;
+  outline: none;
+  border: none;
+  text-align: center;
+  font-size: 25px;
+  border-radius: 5px;
+  font-family: VT323;
+}
+.me_ih_number {
+  width: 40px;
+  height: 32px;
+  outline: none;
+  border: none;
+  font-family: VT323;
+  border-radius: 5px;
+  font-size: 25px;
+  text-align: center;
+}
+
+.me_background_holder {
+  border-radius: 5px;
+  width: 192px;
+  height: 108px;
+  margin: 5px;
+  position: relative;
+  cursor: url('./img/pointer.cur'), auto;
+}
+.me_background_title {
+  width: 100%;
+  text-align: center;
+  height: 108px;
+  line-height: 108px;
+  font-size: 40px;
+  color: white;
+}
+
+.hideContent {
+  display: none;
 }

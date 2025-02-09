@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Snake Game</title>
+    <title>World Of Snakes</title>
     
     <link href='https://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css'>
     
@@ -14,17 +14,18 @@
 <body>
 
     <div class="scene" id="scene_newMenu">
-        <img src="img/main_menu_background.jpg" class="menu_background">
+        <img draggable="false" src="img/main_menu_background.jpg" class="menu_background">
         
-        <img src="img/logo.png" class="logo_image">
+        <img draggable="false" src="img/logo.png" class="logo_image">
         <div class="menu_holder">
             <div class="menu_top">
                 <div onclick="loadServersHTML()" id="servers_tab" class="menu_tab menu_tab_selected">Servers</div>
-                <div id="snake_tab" class="menu_tab">Your Snake</div>
-                <div id="boards_tab" class="menu_tab">Your Boards</div>
-                <div id="gameModes_tab" class="menu_tab">Your Game Modes</div>
+                <div id="local_tab" onclick="loadLocalScreen()" class="menu_tab">Play Local</div>
+                <div onclick="loadCustomizeSnakeScreen()" id="snake_tab" class="menu_tab">Your Snakes</div>
+                <div onclick="loadBoardsScreen()" id="boards_tab" class="menu_tab">Your Boards</div>
+                <div id="gameModes_tab" onclick="loadGameModesScreen()" class="menu_tab">Your Game Modes</div>
 
-                <div class="menu_right">
+                <div class="menu_right hideContent">
                     <div class="account_name">Guest#2242</div>
                     <a class="signinLink" href="">Login/Sign up</a>
                 </div>
@@ -44,6 +45,31 @@
                     </div>
                 </div>
             </div>
+            <div class="menu_content content_snake"></div>
+            <div class="menu_content content_boards"></div>
+            <div class="menu_content content_gameModes"></div>
+            <div class="menu_content content_local">
+                <div class="local_top">
+                    <div class="local_choice_holder local_border_right">
+                        <div class="local_choice_title">Choose Board</div>
+                        <div class="local_choice_content" id="local_boards"></div>
+                    </div>
+                    <div class="local_choice_holder local_border_right">
+                        <div class="local_choice_title">Choose Game Mode</div>
+                        <div class="local_choice_content" id="local_gameModes"></div>
+                    </div>
+                    <div class="local_choice_holder">
+                        <div class="local_choice_title">Choose Snakes</div>
+                        <div class="local_choice_warning snakedRequiredWarning">1 - 4 Snakes Are Required For Board</div>
+                        <div class="local_choice_content" id="local_snakes"></div>
+                    </div>
+                </div>
+                <div class="local_bottom">
+                    <div id="local_button_playGame" class="servers_button">Play Game!</div>
+                    <div id="local_button_playSolo" class="servers_button">Play Solo!</div>
+                    <canvas class="local_bottom_canvas"></canvas>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -55,24 +81,25 @@
         
 
     </div>
-
-    <div class="scene" id="scene_menu">
-        <div id="gameTitle">Snake Game</div>
-        <div class="pixel" id="button_startGame"><p>Start Game</p></div>
-        <div class="pixel" id="button_players"><p>Players</p></div>
-        <div class="pixel" id="button_gameMode"><p>Game Mode</p></div>
-        <div class="pixel" id="button_boards"><p>Boards</p></div>
-    </div>
-    <div class="scene" id="scene_players">
-        <div class="pixel" id="button_mainMenu"><p>Main Menu</p></div>
-        <div class="playersHolder"></div>
-    </div>
     <div class="scene" id="scene_game">
         <canvas class="game_canvas" id="render_background"></canvas>
         <canvas class="game_canvas" id="render_tiles"></canvas>
         <canvas class="game_canvas" id="render_items"></canvas>
         <canvas class="game_canvas" id="render_players"></canvas>
         <canvas class="game_canvas" id="render_overhangs"></canvas>
+        <canvas class="game_canvas" id="render_top"></canvas>
+
+        <canvas class="firstPersonCanvas firstPersonCanvas_master"></canvas>
+        <canvas class="firstPersonCanvas firstPersonCanvas_tl"></canvas>
+        <canvas class="firstPersonCanvas firstPersonCanvas_tm"></canvas>
+        <canvas class="firstPersonCanvas firstPersonCanvas_tr"></canvas>
+        <canvas class="firstPersonCanvas firstPersonCanvas_lm"></canvas>
+        <canvas class="firstPersonCanvas firstPersonCanvas_rm"></canvas>
+        <canvas class="firstPersonCanvas firstPersonCanvas_bl"></canvas>
+        <canvas class="firstPersonCanvas firstPersonCanvas_bm"></canvas>
+        <canvas class="firstPersonCanvas firstPersonCanvas_br"></canvas>
+        <canvas class="firstPersonMap"></canvas>
+        <canvas class="extraCanvas"></canvas>
 
         <div class="boardStatusHolder"></div>
 
@@ -127,37 +154,10 @@
             <div class="pixel" id="button_mapEditor"><p>Back To Editor</p></div>
         </div>
     </div>
-    <div class="scene" id="scene_gameModes">
-        <div class="pixel" id="button_mainMenu"><p>Main Menu</p></div>
-        <div class="gameModesHolder listHolder"></div>
-    </div>
-    <div class="scene" id="scene_boardList">
-        <div class="pixel" id="button_mainMenu"><p>Main Menu</p></div>
-        <div class="boardListHolder listHolder"></div>
-        <div class="boardSettings">
-            <div class="valueHolder">
-                <div class="settingTitle">Name</div>
-                <input class="settingInput settingsInputName" value="Untitled">
-            </div>
-            <div class="valueHolder">
-                <div class="settingTitle">Width</div>
-                <input class="settingInput settingsInputWidth" value="50" type="number">
-            </div>
-            <div class="valueHolder">
-                <div class="settingTitle">Height</div>
-                <input class="settingInput settingsInputHeight" value="30" type="number">
-            </div>
-            <div class="settingsButtonHolder">
-                <div class="pixel" id="button_cancelBoard"><p>Cancel</p></div>
-                <div class="pixel" id="button_createBoard"><p>Create</p></div>
-            </div>
-        </div>
-    </div>
     <div class="scene" id="scene_mapEditor">
         <div class="me_top">
             <div id="me_left">
                 <div id="me_button"><--</div>
-                <input id="me_name">
                 <div id="saveStatus"></div>
             </div>
             <div id="me_playButton">Play Game!</div>
@@ -169,10 +169,6 @@
                 <div class="me_dropdown" id="me_tilesDropDown">
                     <div class="me_dropdownTitle">Tiles</div>
                     <div class="me_dropdownContent me_tilesContent"></div>
-                </div>
-                <div class="me_dropdown" id="me_tilesDropDown">
-                    <div class="me_dropdownTitle">Backgrounds</div>
-                    <div class="me_dropdownContent me_backgroundContent"></div>
                 </div>
             </div>
         </div>
@@ -191,12 +187,16 @@
             <div class="toolbar_subtools">
                 <div class="toolBarToolHolder subToolHolder subTool_draw"><img src="img/tool_brush.png" id="subTool_brush" onclick="setSubTool('brush')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_draw"><img src="img/tool_shape.png" id="subTool_shape" onclick="setSubTool('shape')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_draw"><img src="img/tool_shape_circle.png" id="subTool_circle" onclick="setSubTool('circle')" class="toolBarToolImg"></div>
 
                 <div class="toolBarToolHolder subToolHolder subTool_select" title="Shortcut: Control + C"><img src="img/tool_copy.png" id="subTool_copy" onclick="runTool('copy')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_select pastingTool" title="Shortcut: Control + V"><img src="img/tool_paste.png" id="subTool_paste" onclick="runTool('paste')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_select" title="Shortcut: Control + X"><img src="img/tool_cut.png" id="subTool_cut" onclick="runTool('cut')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_select"><img src="img/tool_bucket.png" id="subTool_fill" onclick="runTool('fill')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_select"><img src="img/tool_reflectX.png" id="subTool_reflectX" onclick="runTool('reflectX')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_select"><img src="img/tool_reflectY.png" id="subTool_reflectY" onclick="runTool('reflectY')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_select"><img src="img/tool_rotate_left.png" id="subTool_rotate_left" onclick="runTool('rotate_left')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder subToolHolder subTool_select"><img src="img/tool_rotate_right.png" id="subTool_rotate_right" onclick="runTool('rotate_right')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_select" title="Shortcut: Delete Key"><img src="img/tool_delete.png" id="subTool_delete" onclick="runTool('delete')" class="toolBarToolImg"></div>
                 
                 <div class="toolBarToolHolder subToolHolder subTool_bucket" title="Shortcut: B"><img src="img/tool_bucket.png" id="subTool_bucket" onclick="setSubTool('bucket')" class="toolBarToolImg"></div>
@@ -208,22 +208,63 @@
                 <div class="toolBarToolHolder subToolHolder subTool_move" title="Shortcut: Mouse Wheel Up"><img src="img/tool_zoomin.png" id="subTool_zoomIn" onclick="runTool('zoomIn')" class="toolBarToolImg"></div>
 
             </div>
+            
+            <div class="toolbar_extra">
+                <div class="toolBarToolHolder2 show_grid_tool" title="Shortcut: Control + G"><img src="img/tool_show_grid.png" id="tool_show_grid" onclick="runTool('show_grid')" class="toolBarToolImg"></div>
+                <div class="toolBarToolHolder2 show_grid_tool2" title="Shortcut: G"><img src="img/tool_show_grid2.png" id="tool_show_grid2" onclick="runTool('show_grid2')" class="toolBarToolImg"></div>
+            </div>
         </div>
         <div class="me_bottom">
             <div class="me_canvasHolder">
+                <canvas class="edit_canvas" id="me_canvas_background"></canvas>
                 <canvas class="edit_canvas" id="me_canvas"></canvas>
+                <canvas class="edit_canvas" id="me_canvas2"></canvas>
             </div>
             <div class="me_objectHolder">
                 <div class="me_ih_imageHolder">
                     <img src="img/rock2.png" class="me_ih_image">
                 </div>
                 <div class="me_ih_name">Pellet</div>
+                <div class="me_ih_type">Item</div>
                 <div class="me_ih_settings"></div>
+                
+                <div class="me_ih_bottom">
+                    <div class="me_ih_title">Board Settings</div>
+                    <div class="me_ih_setting">
+                        <div class="me_ih_settingName">Board Name</div>
+                        <input placeholder="Board Name..." id="me_name" class="me_ih_input">
+                    </div>
+                    <div class="me_ih_setting">
+                        <div class="me_ih_settingName">Board Background</div>
+                        <div class="me_ih_button hover" id="me_background">Background Name</div>
+                    </div>
+                    <div class="me_ih_setting">
+                        <div class="me_ih_settingName">Game Mode</div>
+                        <div class="me_ih_button hover" id="me_gameMode">Game Mode Name</div>
+                    </div>
+                    <div class="me_ih_setting">
+                        <div class="me_ih_settingName">Recommended Game Mode</div>
+                        <input type="checkbox" id="me_recommendedGameMode" class="me_ih_checkbox">
+                    </div>
+                    <div class="me_ih_setting">
+                        <div class="me_ih_settingName">Min Players Allowed</div>
+                        <input type="number" min="1" max="16" id="me_minPlayers" class="me_ih_number">
+                    </div>
+                    <div class="me_ih_setting">
+                        <div class="me_ih_settingName">Max Players Allowed</div>
+                        <input type="number" min="1" max="16" id="me_maxPlayers" class="me_ih_number">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="statusSelectionScreen">
-            <div class="statusSelectionHolder"></div>
+            <div class="popupTitle">Select A Status</div>
+            <div class="statusSelectionHolder statusHolderLetters"></div>
+            <div class="popupSubTitle">Player Status'</div>
+            <div class="statusSelectionHolder statusHolderPlayers"></div>
         </div>
+        <div class="gameModeSelectionScreen"></div>
+        <div class="backgroundSelectionScreen"></div>
     </div>
 
     <div class="production"></div>
@@ -245,14 +286,17 @@
 
     <!--Insert All Library Sheets Below-->
     <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pako/dist/pako.min.js"></script>
     <script src='libraries/library_simple_v16.js'></script>
 
     <!--Insert All Your Sheets Below-->
-    <script src="index.js"></script>
+    <script src="popups.js"></script>
     <script src="tiles.js"></script>
     <script src="items.js"></script>
+    <script src="emotes.js"></script>
     <script src="presetGameModes.js"></script>
     <script src="presetBoards.js"></script>
+    <script src="index.js"></script>
     <script src="functions.js"></script>
     <script src="menuScreen.js"></script>
     <script src="mapEditor.js"></script>

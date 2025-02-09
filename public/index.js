@@ -2,8 +2,8 @@ const socket = io();
 
 //const player = new Player(x, y);
 //const players = {};
-const playersInServer = [];
-let frontEndLobbies = [];
+const playersInServer = {};
+let frontEndLobbies = {};
 let localGameActive = false;
 const localAccount = {
     id: false,
@@ -13,6 +13,7 @@ const localAccount = {
     updateSnakeCells: [],
     updateCells: [],
 };
+let gameType = "local";
 socket.on('updatePlayers', (backendAccounts) => {
     if(localGameActive == false){
         /*
@@ -66,13 +67,13 @@ socket.on("setPlayer", (id, backendAccounts) =>{
 
 });
 
-socket.on("updateLobbies", (onlineLobbies,isPlayerJoining, lobby) =>{
-    frontEndLobbies = onlineLobbies;
+socket.on("updateLobbies", (backEndLobbies,isPlayerJoining, lobby) =>{
+    frontEndLobbies = backEndLobbies;
     loadServersHTML();
     if (isPlayerJoining) setScene("waiting", lobby);
 })
 
-socket.on("startingGame", (lobby) =>{
+socket.on("startingGame", (lobby,player) =>{
     if (localAccount.isInGame) return;
 
     let foundPlayer = false;
@@ -89,40 +90,92 @@ socket.on("startingGame", (lobby) =>{
     localAccount.playersInServer = lobby.activePlayers;
     localAccount.updateSnakeCells = [];
     localAccount.updateCells = [];
+    localAccount.player = player;
                     
     setScene("game");
     $(".endGamePopup").hide();
     $(".pauseGamePopup").hide();
     $("playerCardsHolder").innerHTML = "";
     $("playerCardsHolder").style.visibility = "visible";
+    $(".firstPersonMap").hide();
+    $(".firstPersonCanvas").hide();
+    $(".extraCanvas").hide();
     
-    //Draw On Background canvas 
+    //Draw On Background canvas
     let backgroundImage = new Image();
-    backgroundImage.src = "img/" + currentBackground;
+    backgroundImage.src = "img/backgrounds/" + lobby.board.background + ".png";
     backgroundImage.onload = function() {
         ctx_background.drawImage(backgroundImage,0,0,canvas_background.width,canvas_background.height);
     }
 
+    activePlayers = lobby.activePlayers;
+    currentBoard = lobby.board;
+    isActiveGame = true;
+    gameType = "server";
+
     setResolution(lobby.board.map[0].length,lobby.board.map.length);
     setUpPlayerCanvas();
     renderGame();
-    fixItemDifferences(currentBoard.map);
     renderCells();
     //loadBoardStatus();
 
     requestAnimationFrame(gameLoop);
 
 })
+socket.on("endGame",(obj) => {
+    $("playerCardsHolder").style.cursor = "";
+    gameEnd = true;
+    isActiveGame = false;
+    $(".endGamePopup").show("flex");
+
+    let timeSurvivedPlayer = obj.timeSurvivedPlayer;
+    let longestTailPlayer = obj.longestTailPlayer;
+    let mostKillsPlayer = obj.mostKillsPlayer;
+    let minutes = obj.minutes;
+    let seconds = obj.seconds;
+    let longestTail = obj.longestTail;
+    let mostKills = obj.mostKills;
+
+    $(".longestTimePlayerImg").style.filter = `hue-rotate(${timeSurvivedPlayer.color}deg) sepia(${timeSurvivedPlayer.color2}%) contrast(${timeSurvivedPlayer.color3}%)`;
+    $(".longestTailPlayerImg").style.filter = `hue-rotate(${longestTailPlayer.color}deg) sepia(${longestTailPlayer.color2}%) contrast(${longestTailPlayer.color3}%)`;
+    $(".mostKillsImg").style.filter = `hue-rotate(${mostKillsPlayer.color}deg) sepia(${mostKillsPlayer.color2}%) contrast(${mostKillsPlayer.color3}%)`;
+    $(".engGame_playerNameTime").innerHTML = timeSurvivedPlayer.name;
+    $(".engGame_playerTime").innerHTML = minutes + ":" + seconds + " Minutes";
+    $(".engGame_playerNameLength").innerHTML = longestTailPlayer.name;
+    $(".engGame_playerLength").innerHTML = (longestTail+1) + " Length";
+    $(".engGame_playerNameKills").innerHTML = mostKillsPlayer.name;
+    $(".engGame_playerKills").innerHTML = (mostKills) + " Kill" + (mostKills > 1 ? "s" : "");
+
+    if (activePlayers.length > 1 && mostKills > 0) {
+        $("snakeKillsStat").show("flex");
+    } else {
+        $("snakeKillsStat").hide();
+    }
+
+    $("winnerStat").hide();
+})
 socket.on("updatedLocalAccount",(obj) => {
     localAccount.id = obj.id;
     localAccount.isInGame = obj.isInGame;
-    localAccount.currentBoard = obj.currentBoard;
-    localAccount.playersInServer = obj.playersInServer;
+    localAccount.currentBoard = obj.lobby.board;
+    let canvasList = [];
+    for (let i = 0; i < activePlayers.length; i++) {
+        canvasList.push(activePlayers[i].canvas)
+    }
+    localAccount.activePlayers = obj.lobby.activePlayers;
+    for (let i = 0; i < canvasList.length; i++) {
+        localAccount.activePlayers[i].canvas = canvasList[i];
+    }
+    let playerCanvas = localAccount.player.canvas;
     localAccount.player = obj.player;
-    localAccount.updateSnakeCells = localAccount.updateSnakeCells.concat(obj.updateSnakeCells);
-    localAccount.updateCells = localAccount.updateCells.concat(obj.updateCells); 
+    localAccount.player.canvas = playerCanvas;
+    localAccount.updateSnakeCells = updateSnakeCells.concat(obj.lobby.updateSnakeCells);
+    localAccount.updateCells = updateCells.concat(obj.lobby.updateCells); 
 
-    setUpPlayerCanvas();
+    currentBoard = obj.lobby.board;
+    activePlayers = obj.lobby.activePlayers;
+    updateSnakeCells = localAccount.updateSnakeCells;
+    updateCells = localAccount.updateCells;
 })
 
 function updateLobbyToServer(lobby){
@@ -143,9 +196,6 @@ function spawn(name,generateRandomItem = true,counting = false) {
 function getCurrentBoard() {
 
 }
-function updateLocalAccount() {
-    socket.emit("updateLocalAccount");
-}
-function movePlayer(playerID) {
-    socket.emit("movePlayer",playerID);
+function server_movePlayers() {
+    socket.emit("movePlayer");
 }
