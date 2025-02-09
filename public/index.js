@@ -170,6 +170,7 @@ socket.on("updatePositions",(obj) => {
 
     deltaTime = obj.deltaTime;
 
+    updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
     activePlayers[0].pos = obj.activePlayers[0].pos;
 
     if (obj.dontSend) return;
@@ -188,7 +189,6 @@ socket.on("updatePositions",(obj) => {
         }
     }
     localAccount.player = obj.player;
-    updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
 });
 socket.on("updatedLocalAccount",(obj) => {
     localAccount.id = obj.id;
