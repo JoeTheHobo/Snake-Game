@@ -1561,7 +1561,7 @@ function gameLoop(timestamp) {
     renderEmotes();
 
     updateProduction();
-    if (!gameEnd && !gamePaused) requestAnimationFrame(gameLoop);
+    if (!gameEnd && !gamePaused && !killSwitch) requestAnimationFrame(gameLoop);
 }
 
 function specialItemManager()

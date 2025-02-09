@@ -62,8 +62,9 @@ socket.on('updatePlayers', (backendAccounts) => {
 })
 
 socket.on("kickPlayer",() => {
+    killSwitch = true;
     alert("Disconnected");
-    
+
 })
 
 socket.on("setPlayer", (id, backendAccounts) =>{
