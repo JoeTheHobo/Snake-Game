@@ -1565,12 +1565,11 @@ function gameLoop() {
 }
 function serverGameLoop() {
     if (!isActiveGame) return;
-    console.log("eo");
     renderCells();
     deleteSnakeCells();
     renderPlayers();
 
-    if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), Math.max(0, (1000/30) - (Date.now() - timestamp)));;//requestAnimationFrame(gameLoop);
+    if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/60);;//requestAnimationFrame(gameLoop);
 }
 function specialItemManager()
 {
