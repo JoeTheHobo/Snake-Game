@@ -346,9 +346,7 @@ app.get('/', (req, res) => {
 const lobbies = {};
 const onlineAccounts = {};
 
-io.on("ping", () => {
-    console.log(`Ping received from ${socket.id}`);
-});
+
 
 
 io.on('connection', (socket) => {
@@ -399,7 +397,10 @@ io.on('connection', (socket) => {
     io.emit("updateLobbies", lobbies);
     io.emit('setPlayer', socket.id, onlineAccounts);
     io.emit('updatePlayers', onlineAccounts)
- 
+    
+    socket.on("ping", () => {
+        console.log(`Ping received from ${socket.id}`);
+    });
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
         console.log("A user disconnected due to " + reason);
@@ -651,7 +652,7 @@ io.on('connection', (socket) => {
         if (player.selectingItem < 0) player.selectingItem = currentGameMode.howManyItemsCanPlayersUse-1;
         if (player.selectingItem > currentGameMode.howManyItemsCanPlayersUse-1) player.selectingItem = 0;
     })
-    console.log(onlineAccounts);
+    console.log(Object.keys(onlineAccounts).length);
 });
 
 
