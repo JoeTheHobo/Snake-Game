@@ -1572,7 +1572,7 @@ function serverGameLoop() {
     movePlayers();
     
 
-    if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/60);;//requestAnimationFrame(gameLoop);
+    if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/50);;//requestAnimationFrame(gameLoop);
 }
 function specialItemManager() {
     if (gameType == "server") return;
