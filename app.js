@@ -545,8 +545,7 @@ io.on('connection', (socket) => {
             this.updateCells = [];
             server_movePlayers(this);
 
-            console.log(timestamp,this.lastUpdateTime);
-            if (timestamp - this.lastUpdateTime >= 200) { // Every 200ms
+            if (timestamp - this.lastTimestamp >= 200) { // Every 200ms
                 if (onlineAccounts[socket.id]) {
                     io.emit("updatedLocalAccount",{
                         id: socket.id,
