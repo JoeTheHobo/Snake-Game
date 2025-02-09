@@ -556,8 +556,6 @@ io.on('connection', (socket) => {
                     })
                 }
                 this.updateTimeStamp = timestamp;
-                this.updateSnakeCells = [];
-                this.updateCells = [];
             }
 
             if (timestamp - this.updatePositionTimeStamp >= 100) { // Every 200ms
@@ -569,6 +567,8 @@ io.on('connection', (socket) => {
                     })
                 }
                 this.updatePositionTimeStamp = timestamp;
+                this.updateSnakeCells = [];
+                this.updateCells = [];
             }
             
 
