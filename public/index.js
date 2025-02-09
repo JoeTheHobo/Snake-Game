@@ -165,12 +165,12 @@ socket.on("endGame",(obj) => {
 socket.on("updatedLocalAccount",(obj) => {
     localAccount.id = obj.id;
     localAccount.isInGame = obj.isInGame;
-    localAccount.currentBoard = obj.lobby.board;
+    localAccount.currentBoard = obj.board;
     let canvasList = [];
     for (let i = 0; i < activePlayers.length; i++) {
         canvasList.push(activePlayers[i].canvas)
     }
-    localAccount.activePlayers = obj.lobby.activePlayers;
+    localAccount.activePlayers = obj.activePlayers;
     for (let i = 0; i < canvasList.length; i++) {
         localAccount.activePlayers[i].canvas = canvasList[i];
     }
@@ -178,14 +178,14 @@ socket.on("updatedLocalAccount",(obj) => {
     //updateSnakeCells.push({x: localAccount.player.x,y:localAccount.player.y});
     localAccount.player = obj.player;
     localAccount.player.canvas = playerCanvas;
-    localAccount.updateSnakeCells = updateSnakeCells.concat(obj.lobby.updateSnakeCells);
-    localAccount.updateCells = updateCells.concat(obj.lobby.updateCells); 
+    localAccount.updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
+    localAccount.updateCells = updateCells.concat(obj.updateCells); 
 
     //currentBoard = obj.lobby.board;
-    activePlayers = obj.lobby.activePlayers;
+    activePlayers = obj.activePlayers;
     updateSnakeCells = localAccount.updateSnakeCells;
     updateCells = localAccount.updateCells;
-    currentBoard = obj.lobby.board;
+    currentBoard = obj.board;
 
     localUpdated = Date.now() - localTimeStamp;
     localTimeStamp = Date.now();

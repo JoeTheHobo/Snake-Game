@@ -455,6 +455,7 @@ io.on('connection', (socket) => {
         lobby.board.isActiveGame = true; 
         lobby.updateCells = [];
         lobby.updateSnakeCells = [];
+        lobby.updatePoints = [];
         lobby.board.renderEmotesList = [];
         lobby.board.location_tunnels = [];
         lobby.board.location_status = [];
@@ -551,7 +552,10 @@ io.on('connection', (socket) => {
                         id: socket.id,
                         isInGame: true,
                         player: onlineAccounts[socket.id].player,
-                        lobby: this,
+                        updateCells: this.updateCells,
+                        updateSnakeCells: this.updateSnakeCells,
+                        activePlayers: this.activePlayers,
+                        board: this.board,
                     })
                 }
                 this.updateTimeStamp = timestamp;
