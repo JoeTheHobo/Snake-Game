@@ -1479,7 +1479,7 @@ function updateProduction() {
 function gameLoop() {
     let timestamp = Date.now();
     if (!isActiveGame) return;
-    deltaTime = 1;//(timestamp - lastTimestamp) / perfectFrameTime;
+    deltaTime = (timestamp - lastTimestamp) / perfectFrameTime;
     lastTimestamp = timestamp;
 
     //First Person View
@@ -1568,9 +1568,9 @@ function serverGameLoop() {
     deltaTime = 1;
     if (!isActiveGame) return;
     renderCells();
-    deleteSnakeCells();
+    //deleteSnakeCells();
     renderPlayers();
-    //movePlayers();
+    movePlayers();
     
 
     if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/60);;//requestAnimationFrame(gameLoop);

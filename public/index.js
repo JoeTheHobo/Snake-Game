@@ -178,6 +178,7 @@ socket.on("updatePositions",(obj) => {
     }
 
     updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
+    deleteSnakeCells();
 });
 socket.on("updatedLocalAccount",(obj) => {
     localAccount.id = obj.id;
