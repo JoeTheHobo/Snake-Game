@@ -130,7 +130,7 @@ socket.on("startingGame", (lobby,player) =>{
     localTimeStamp = Date.now();
     localUpdated = 0;
     let clear = setInterval(function() {
-        if (localAccount.startTime+100 >= Date.now()) {
+        if (localAccount.startTime+200 >= Date.now()) {
             console.log("Local Started")
             serverGameLoop();
             clearInterval(clear);

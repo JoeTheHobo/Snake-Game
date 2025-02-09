@@ -1392,6 +1392,7 @@ function server_movePlayers(lobby) {
                 deletePlayer(lobby,player);
             }
         }
+        console.log("moved",Date.now())
         //Test Item Underplayer
         if (!player.isDead) testItemUnderPlayer(lobby,player);
 

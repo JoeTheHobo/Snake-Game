@@ -458,6 +458,8 @@ function movePlayers() {
             production.setPlayerPos.times.push(performance.now() - production.setPlayerPos.timeStart);
             //Finished Moving Player
 
+            console.log("moved",Date.now())
+
             //Check for Player Collisions
             production.checkingPlayerCollision.timeStart = performance.now();
             if (currentGameMode.snakeCollision) {
