@@ -1321,7 +1321,6 @@ function server_movePlayers(lobby) {
             {
                 player.moving = player.moveQueue[0];
             }
-            console.log("turned Player");
 
             player.moveQueue.shift();
         }

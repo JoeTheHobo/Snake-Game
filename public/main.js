@@ -390,7 +390,6 @@ function movePlayers() {
                     player.moving = player.moveQueue[0];
                 }
 
-                console.log("turned Player");
                 player.moveQueue.shift();
             }
             
