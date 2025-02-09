@@ -639,19 +639,7 @@ io.on('connection', (socket) => {
             },1000)
         }
         */
-
-        let startTime = Date.now() + 1000;
-        io.emit("startAt",startTime);
-        lobby.startGameTimer = function() {
-            if (Date.now() >= startTime) {
-                console.log("Match Started")
-                lobby.gameLoop();
-            } else {
-                setTimeout(() => {lobby.startGameTimer()},1)
-            }
-        }
-        lobby.startGameTimer();
-        
+        lobby.gameLoop();
         //lobby.timerLoop();
 
     })

@@ -126,21 +126,9 @@ socket.on("startingGame", (lobby,player) =>{
     renderGame();
     renderCells();
     //loadBoardStatus();
-
-    localTimeStamp = Date.now();
-    localUpdated = 0;
-    let clear = setInterval(function() {
-        if (localAccount.startTime+3000 >= Date.now()) {
-            console.log("Local Started")
-            serverGameLoop();
-            clearInterval(clear);
-        }
-    },1)
+    serverGameLoop();
     
 
-})
-socket.on("startAt",(time) => {
-    localAccount.startTime = time;
 })
 socket.on("endGame",(obj) => {
     $("playerCardsHolder").style.cursor = "";
