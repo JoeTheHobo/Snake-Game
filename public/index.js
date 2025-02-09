@@ -193,7 +193,7 @@ function server_joinLobby(lobby) {
 }
 
 function server_startGame(){
-    console.log(socket.connected)
+    console.log("Starting Server",socket.connected)
     socket.emit("startGame")
 }
 

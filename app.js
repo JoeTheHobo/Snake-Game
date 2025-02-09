@@ -545,7 +545,7 @@ io.on('connection', (socket) => {
 
             this.updateSnakeCells = [];
             this.updateCells = [];
-
+            console.log("In Game")
             server_movePlayers(this);
             
             if (onlineAccounts[socket.id]) {
