@@ -547,12 +547,15 @@ io.on('connection', (socket) => {
 
             server_movePlayers(this);
             
-            io.emit("updatedLocalAccount",{
-                id: socket.id,
-                isInGame: true,
-                player: onlineAccounts[socket.id].player,
-                lobby: this,
-            })
+            if (onlineAccounts[socket.id]) {
+                io.emit("updatedLocalAccount",{
+                    id: socket.id,
+                    isInGame: true,
+                    player: onlineAccounts[socket.id].player,
+                    lobby: this,
+                })
+            }
+            
 
             if (!this.gameEnd) {
                 setTimeout(() => this.gameLoop(), Math.max(0, (1000/60) - (Date.now() - timestamp)));
