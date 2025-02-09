@@ -1410,12 +1410,12 @@ function server_movePlayers(lobby) {
                 lobby.updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
 
             
-            console.log("It's being Updated")
             lobby.updateSnakeCells.push({
                 x: playerX,
                 y: playerY,
                 player: player
             })
+            console.log("It's being Updated",lobby.updateSnakeCells)
             //End Growing Tail
         } else {
             player.pos = playerOldPos;
