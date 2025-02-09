@@ -195,7 +195,9 @@ socket.on("updatePositions",(obj) => {
         if (server_pos.y < client_pos.y) fixY = true;
         if (server_pos.y > client_pos.y) fixY = true;
     }
-
+    if (fixY || fixX) {
+        updateSnakeCells.push({x: client_pos.x,y: client_pos.y})
+    }
     if (fixY) {
         client_pos.y = server_pos.y;
     }
@@ -203,6 +205,7 @@ socket.on("updatePositions",(obj) => {
         client_pos.x = server_pos.x;
     }
 
+    updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
 
     if (obj.dontSend) return;
 
