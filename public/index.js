@@ -180,7 +180,6 @@ socket.on("updatePositions",(obj) => {
     deltaTime = obj.deltaTime;
     updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
     deleteSnakeCells();
-    renderPlayers();
 });
 socket.on("updatedLocalAccount",(obj) => {
     localAccount.id = obj.id;

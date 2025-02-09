@@ -1564,16 +1564,12 @@ function gameLoop() {
     updateProduction();
     if (!gameEnd && !gamePaused && !killSwitch) setTimeout(() => gameLoop(), Math.max(0, (1000/30) - (Date.now() - timestamp)));;//requestAnimationFrame(gameLoop);
 }
-let gameLoopTimeStamp = Date.now();
 function serverGameLoop() {
     if (!isActiveGame) return;
     //renderCells();
     //deleteSnakeCells();
-    //renderPlayers();
-    let timeStamp = Date.now();
     movePlayers();
-    console.log(gameLoopTimeStamp-timeStamp);
-    gameLoopTimeStamp = timeStamp;
+    renderPlayers();
     
 
     if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/60);;//requestAnimationFrame(gameLoop);
