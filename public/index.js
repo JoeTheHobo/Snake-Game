@@ -164,6 +164,7 @@ socket.on("endGame",(obj) => {
 })
 socket.on("updatePositions",(obj) => {
 
+    let html_playerCanvasHolder = $("playerCanvasHolder");
     let player = obj.player;
     player.color = 50;
 
