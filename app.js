@@ -540,6 +540,12 @@ io.on('connection', (socket) => {
         lobby.boardStatus = [];
 
         io.emit("startingGame", lobby,onlineAccounts[socket.id].player);
+        io.emit("updatePositions",{
+            activePlayers: lobby.activePlayers,
+            updateSnakeCells: lobby.updateSnakeCells,
+            deltaTime: 1,
+            player: onlineAccounts[socket.id].player,
+        })
         lobby.gameLoop = function() {
             let timestamp = Date.now();
             this.deltaTime = (timestamp - this.lastTimestamp) / (1000/60);
@@ -1436,6 +1442,7 @@ function server_movePlayers(lobby,clientPlayer) {
             player.pos = playerOldPos;
             player.moving = playerOldMoving;
         }
+        console.log(player.id,clientPlayer.id,player.pos.x , MainPlayer.x , player.pos.y , MainPlayer.y)
         if (player.id == clientPlayer.id && (player.pos.x !== MainPlayer.x || player.pos.y !== MainPlayer.y)) toReturn = true;
     }
     return toReturn;
