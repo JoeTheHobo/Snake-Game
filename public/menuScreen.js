@@ -52,10 +52,10 @@ function loadServersHTML() {
 }
 
 function loadServerCreation() {
-    let holder = $(".content_servers");
-    holder.innerHTML = "";
+    //let holder = $(".content_servers");
+    //holder.innerHTML = "";
 
-    
+
 
     let lobby = {
         players: [localAccount.id],
