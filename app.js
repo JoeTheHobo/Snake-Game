@@ -549,7 +549,6 @@ io.on('connection', (socket) => {
 
             if (timestamp - this.updateTimeStamp >= 200) { // Every 200ms
                 if (onlineAccounts[socket.id]) {
-                    console.log(this.updateSnakeCells)
                     io.emit("updatedLocalAccount",{
                         id: socket.id,
                         isInGame: true,
@@ -625,23 +624,7 @@ io.on('connection', (socket) => {
         //lobby.timerLoop();
 
     })
-    socket.on("spawn",(name,generateRandomItem = true,counting = false) => {
-        let lobby = findLobby(socket.id);
-        let currentGameMode = lobby.gameMode;
-        let currentBoard = lobby.board;
-        let activePlayers = getPlayersList(lobby.players);
-
-        console.log("NO GO");
-        let obj = spawn(currentGameMode,currentBoard,activePlayers,name,generateRandomItem = true,counting = false);
-        
-        if (obj.isPlayer) {
-
-        } else {
-
-        }
-    })
     socket.on("movePlayerKey",(direction) => {
-        console.log("Player Pressed Movement Key")
         if (onlineAccounts[socket.id].player.moveQueue.length >= 4) return;
         onlineAccounts[socket.id].player.moveQueue.push(direction);
     })
@@ -1427,7 +1410,7 @@ function server_movePlayers(lobby) {
                 lobby.updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
 
             
-
+            console.log("It's being Updated")
             lobby.updateSnakeCells.push({
                 x: playerX,
                 y: playerY,
