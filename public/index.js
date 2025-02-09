@@ -168,7 +168,7 @@ socket.on("updatePositions",(obj) => {
     ctx_top.clearRect(0,0,canvas_top.width,canvas_top.height);
     ctx_top.fillRect(player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize)
 
-    deltaTime = obj.deltaTime-.1;
+    deltaTime = obj.deltaTime-.05;
 
     if (obj.dontSend) return;
 
