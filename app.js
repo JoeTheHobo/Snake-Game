@@ -936,7 +936,6 @@ function deletePlayer(lobby,player,playerWhoKilled,item,instaKill = false){
                 lobby.updateSnakeCells.push({
                     x: player.tail[i].x,
                     y: player.tail[i].y,
-                    player: player
                 })
             }
         }
@@ -1390,7 +1389,7 @@ function server_movePlayers(lobby) {
                     y: playerY,
                     direction: player.moving,
                 });
-                lobby.updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
+                lobby.updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y});
                 
 
                 let tail = player.tail[player.tail.length-1];
@@ -1407,13 +1406,12 @@ function server_movePlayers(lobby) {
                 }
             }
             if (player.tail.length > 0)
-                lobby.updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y,player: player});
+                lobby.updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y});
 
             
             lobby.updateSnakeCells.push({
                 x: playerX,
                 y: playerY,
-                player: player
             })
             console.log("It's being Updated",lobby.updateSnakeCells)
             //End Growing Tail
