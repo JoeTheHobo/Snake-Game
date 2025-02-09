@@ -363,7 +363,6 @@ function movePlayers() {
         let player = activePlayers[i];
         
         if (player.isDead) continue;
-        console.log("Moving")
         
         if ((player.moveTik*deltaTime) >= (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             if (player.turboActive == true) {
@@ -484,6 +483,7 @@ function movePlayers() {
             }
             production.checkingPlayerCollision.times.push(performance.now() - production.checkingPlayerCollision.timeStart);
             //Test Item Underplayer
+            console.log(player.isDead)
             if (!player.isDead) testItemUnderPlayer(player);
 
             if (!player.isDead) {
