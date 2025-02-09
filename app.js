@@ -346,7 +346,7 @@ app.get('/', (req, res) => {
 const lobbies = {};
 const onlineAccounts = {};
 
-socket.on("ping", () => {
+io.on("ping", () => {
     console.log(`Ping received from ${socket.id}`);
 });
 
