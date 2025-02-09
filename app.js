@@ -647,7 +647,7 @@ io.on('connection', (socket) => {
                 console.log("Match Started")
                 lobby.gameLoop();
             } else {
-                setTimeout(this.startGameTimer,1)
+                setTimeout(() => {lobby.startGameTimer},1)
             }
         }
         lobby.startGameTimer();
