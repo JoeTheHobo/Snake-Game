@@ -125,7 +125,7 @@ socket.on("startingGame", (lobby,player) =>{
     renderCells();
     //loadBoardStatus();
 
-    requestAnimationFrame(gameLoop);
+    requestAnimationFrame(serverGameLoop);
 
 })
 socket.on("endGame",(obj) => {
