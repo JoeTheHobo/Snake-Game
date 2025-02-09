@@ -391,7 +391,6 @@ io.on('connection', (socket) => {
         boards: [],
         lobby: false,
     }
-    console.log(socket.id)
     io.emit("updateLobbies", lobbies);
     io.emit('setPlayer', socket.id, onlineAccounts);
     io.emit('updatePlayers', onlineAccounts)

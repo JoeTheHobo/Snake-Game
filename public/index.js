@@ -186,6 +186,7 @@ function server_joinLobby(lobby) {
 }
 
 function server_startGame(){
+    console.log("hmm")
     socket.emit("startGame")
 }
 
