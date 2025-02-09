@@ -1569,7 +1569,7 @@ function serverGameLoop() {
     deleteSnakeCells();
     renderPlayers();
 
-    console.log(Math.abs(localUpdated/2-Date.now()-localTimeStamp),Math.abs(localUpdated/2-Date.now()-localTimeStamp)<10);
+    console.log(Math.abs((localUpdated/2)-(Date.now()-localTimeStamp))<10);
 
     if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/60);;//requestAnimationFrame(gameLoop);
 }
