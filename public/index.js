@@ -161,6 +161,7 @@ socket.on("endGame",(obj) => {
     $("winnerStat").hide();
 })
 socket.on("updatedLocalAccount",(obj) => {
+    console.log("updatedBIYATHCHAES")
     localAccount.id = obj.id;
     localAccount.isInGame = obj.isInGame;
     localAccount.currentBoard = obj.lobby.board;

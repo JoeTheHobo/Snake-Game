@@ -1325,7 +1325,6 @@ function server_movePlayers(lobby) {
         let playerOldPos = { x: player.pos.x, y: player.pos.y };
 
         //Move Player and make sure he can't go back on himself
-        console.log(player.moving)
         switch (player.moving) {
             case "left": player.pos.x--; break;
             case "right": player.pos.x++; break;
