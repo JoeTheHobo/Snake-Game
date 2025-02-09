@@ -173,7 +173,6 @@ socket.on("updatedLocalAccount",(obj) => {
         localAccount.activePlayers[i].canvas = canvasList[i];
     }
     let playerCanvas = localAccount.player.canvas;
-    console.log(obj.player.pos)
     localAccount.player = obj.player;
     localAccount.player.canvas = playerCanvas;
     localAccount.updateSnakeCells = updateSnakeCells.concat(obj.lobby.updateSnakeCells);

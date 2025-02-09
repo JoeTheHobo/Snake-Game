@@ -548,7 +548,6 @@ io.on('connection', (socket) => {
             server_movePlayers(this);
             
             if (onlineAccounts[socket.id]) {
-                console.log(onlineAccounts[socket.id].player.pos);
                 io.emit("updatedLocalAccount",{
                     id: socket.id,
                     isInGame: true,
@@ -559,7 +558,7 @@ io.on('connection', (socket) => {
             
 
             if (!this.gameEnd) {
-                setTimeout(() => this.gameLoop(), 1000/*Math.max(0, (1000/60) - (Date.now() - timestamp))*/);
+                setTimeout(() => this.gameLoop(), 1000/60/*Math.max(0, (1000/60) - (Date.now() - timestamp))*/);
             } else {
                 this.isActiveGame = false;
 
