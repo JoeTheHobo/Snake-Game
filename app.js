@@ -573,6 +573,7 @@ io.on('connection', (socket) => {
                         updateSnakeCells: this.updateSnakeCells,
                         deltaTime: this.deltaTime,
                         player: onlineAccounts[socket.id].player,
+                        dontSend: true,
                     })
                 }
                 this.updatePositionTimeStamp = timestamp;

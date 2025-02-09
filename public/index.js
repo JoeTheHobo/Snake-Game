@@ -168,7 +168,8 @@ socket.on("updatePositions",(obj) => {
     ctx_top.clearRect(0,0,canvas_top.width,canvas_top.height);
     ctx_top.fillRect(player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize)
 
-    return;
+    if (obj.dontSend) return;
+
     let canvasList = [];
     let oldPosList = [];
     for (let i = 0; i < activePlayers.length; i++) {
