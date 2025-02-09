@@ -1564,6 +1564,8 @@ function gameLoop() {
     if (!gameEnd && !gamePaused && !killSwitch) setTimeout(() => gameLoop(), Math.max(0, (1000/30) - (Date.now() - timestamp)));;//requestAnimationFrame(gameLoop);
 }
 function serverGameLoop() {
+    if (!isActiveGame) return;
+    console.log("eo");
     renderCells();
     deleteSnakeCells();
     renderPlayers();
