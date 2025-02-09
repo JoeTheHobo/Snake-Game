@@ -1475,7 +1475,8 @@ function updateProduction() {
         $("production_" + entry[0]).innerHTML = production[entry[0]].average.toFixed(4) + "ms";
     }
 }
-function gameLoop(timestamp) {
+function gameLoop() {
+    let timestamp = Date.now();
     if (!isActiveGame) return;
     deltaTime = 1;//(timestamp - lastTimestamp) / perfectFrameTime;
     lastTimestamp = timestamp;
