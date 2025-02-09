@@ -565,6 +565,7 @@ io.on('connection', (socket) => {
                     io.emit("updatePositions",{
                         activePlayers: this.activePlayers,
                         updateSnakeCells: this.updateSnakeCells,
+                        deltaTime: this.deltaTime,
                     })
                 }
                 this.updatePositionTimeStamp = timestamp;
