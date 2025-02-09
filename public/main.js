@@ -1566,14 +1566,9 @@ function gameLoop() {
 function serverGameLoop() {
     if (!isActiveGame) return;
     renderCells();
-    if (Math.abs((localUpdated/2)-(Date.now()-localTimeStamp))<10) {
-        
-    }
     movePlayers();
     deleteSnakeCells();
     renderPlayers();
-
-    console.log(activePlayers[0].pos)
     
 
     if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/60);;//requestAnimationFrame(gameLoop);

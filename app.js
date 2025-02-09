@@ -534,6 +534,7 @@ io.on('connection', (socket) => {
         lobby.deltaTime = 0;
         lobby.lastTimestamp = Date.now();
         lobby.updateTimeStamp = Date.now();
+        lobby.updatePositionTimeStamp = Date.now();
         lobby.timer = 0;
         lobby.boardStatusCount = 0;
         lobby.boardStatus = [];
@@ -546,15 +547,13 @@ io.on('connection', (socket) => {
             server_movePlayers(this);
             this.lastTimestamp = timestamp;
 
-            if (timestamp - this.updateTimeStamp >= 150) { // Every 200ms
+            if (timestamp - this.updateTimeStamp >= 500) { // Every 200ms
                 if (onlineAccounts[socket.id]) {
                     io.emit("updatedLocalAccount",{
                         id: socket.id,
                         isInGame: true,
-                        player: onlineAccounts[socket.id].player,
                         updateCells: this.updateCells,
                         updateSnakeCells: this.updateSnakeCells,
-                        activePlayers: this.activePlayers,
                         board: this.board,
                     })
                 }
@@ -562,8 +561,16 @@ io.on('connection', (socket) => {
                 this.updateSnakeCells = [];
                 this.updateCells = [];
             }
-            
-            console.log(onlineAccounts[socket.id].player.pos)
+
+            if (timestamp - this.updatePositionTimeStamp >= 100) { // Every 200ms
+                if (onlineAccounts[socket.id]) {
+                    io.emit("updatePositions",{
+                        player: onlineAccounts[socket.id].player,
+                        activePlayers: this.activePlayers,
+                    })
+                }
+                this.updatePositionTimeStamp = timestamp;
+            }
             
 
 

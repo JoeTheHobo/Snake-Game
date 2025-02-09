@@ -78,7 +78,6 @@ socket.on("updateLobbies", (backEndLobbies,isPlayerJoining, lobby) =>{
     loadServersHTML();
     if (isPlayerJoining) setScene("waiting", lobby);
 })
-let localUpdated,localTimeStamp;
 socket.on("startingGame", (lobby,player) =>{
     if (localAccount.isInGame) return;
 
@@ -162,10 +161,7 @@ socket.on("endGame",(obj) => {
 
     $("winnerStat").hide();
 })
-socket.on("updatedLocalAccount",(obj) => {
-    localAccount.id = obj.id;
-    localAccount.isInGame = obj.isInGame;
-    localAccount.currentBoard = obj.board;
+socket.on("updatePositions",(obj) => {
     let canvasList = [];
     for (let i = 0; i < activePlayers.length; i++) {
         canvasList.push(activePlayers[i].canvas)
@@ -174,21 +170,20 @@ socket.on("updatedLocalAccount",(obj) => {
     for (let i = 0; i < canvasList.length; i++) {
         localAccount.activePlayers[i].canvas = canvasList[i];
     }
-    let playerCanvas = localAccount.player.canvas;
-    //updateSnakeCells.push({x: localAccount.player.x,y:localAccount.player.y});
-    localAccount.player = obj.player;
-    localAccount.player.canvas = playerCanvas;
+
+    activePlayers = obj.activePlayers;
+});
+socket.on("updatedLocalAccount",(obj) => {
+    localAccount.id = obj.id;
+    localAccount.isInGame = obj.isInGame;
+    localAccount.currentBoard = obj.board;
     localAccount.updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
     localAccount.updateCells = updateCells.concat(obj.updateCells); 
 
     //currentBoard = obj.lobby.board;
-    activePlayers = obj.activePlayers;
     updateSnakeCells = localAccount.updateSnakeCells;
     updateCells = localAccount.updateCells;
     currentBoard = obj.board;
-
-    localUpdated = Date.now() - localTimeStamp;
-    localTimeStamp = Date.now();
 })
 
 function updateLobbyToServer(lobby){
