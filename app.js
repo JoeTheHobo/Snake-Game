@@ -548,15 +548,13 @@ io.on('connection', (socket) => {
             this.updateCells = [];
             server_movePlayers(this);
             
-            if (this.frameCount % 2 === 0) {
-                if (onlineAccounts[socket.id]) {
-                    io.emit("updatedLocalAccount",{
-                        id: socket.id,
-                        isInGame: true,
-                        player: onlineAccounts[socket.id].player,
-                        lobby: this,
-                    })
-                }
+            if (onlineAccounts[socket.id]) {
+                io.emit("updatedLocalAccount",{
+                    id: socket.id,
+                    isInGame: true,
+                    player: onlineAccounts[socket.id].player,
+                    lobby: this,
+                })
             }
             
             
