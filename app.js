@@ -540,7 +540,6 @@ io.on('connection', (socket) => {
         lobby.gameLoop = function() {
             let timestamp = Date.now();
             this.deltaTime = (timestamp - this.lastTimestamp) / (1000/60);
-            this.lastTimestamp = timestamp;
 
             this.updateSnakeCells = [];
             this.updateCells = [];
@@ -556,6 +555,7 @@ io.on('connection', (socket) => {
                     })
                 }
             }
+            this.lastTimestamp = timestamp;
             
             
 
