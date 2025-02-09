@@ -550,10 +550,10 @@ io.on('connection', (socket) => {
             
             if (onlineAccounts[socket.id]) {
                 io.emit("updatedLocalAccount",{
-                    id: socket.id,
-                    isInGame: true,
+                    //id: socket.id,
+                    //isInGame: true,
                     player: onlineAccounts[socket.id].player,
-                    lobby: this,
+                    //lobby: this,
                 })
             }
             
