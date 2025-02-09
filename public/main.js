@@ -1568,9 +1568,9 @@ function serverGameLoop() {
     deltaTime = 1;
     if (!isActiveGame) return;
     //renderCells();
-    movePlayers();
-    deleteSnakeCells();
-    renderPlayers();
+    //movePlayers();
+    //deleteSnakeCells();
+    //renderPlayers();
     
 
     if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/10);//requestAnimationFrame(gameLoop);

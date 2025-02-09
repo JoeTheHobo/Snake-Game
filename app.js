@@ -571,9 +571,8 @@ io.on('connection', (socket) => {
                     io.emit("updatePositions",{
                         activePlayers: this.activePlayers,
                         updateSnakeCells: this.updateSnakeCells,
-                        deltaTime: this.deltaTime,
+                        //deltaTime: this.deltaTime,
                         player: onlineAccounts[socket.id].player,
-                        dontSend: true,
                     })
                 }
                 this.updatePositionTimeStamp = timestamp;
@@ -583,7 +582,7 @@ io.on('connection', (socket) => {
 
 
             if (!this.gameEnd) {
-                setTimeout(() => this.gameLoop(), 1000/10);
+                setTimeout(() => this.gameLoop(), 50);
             } else {
                 this.isActiveGame = false;
 
@@ -1293,9 +1292,9 @@ function server_movePlayers(lobby) {
         let player = activePlayers[i];
         
         if (player.isDead) continue;
-        if ((player.moveTik*1/*lobby.deltaTime*/) < (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
-            player.moveTik++;
-        }
+        // if ((player.moveTik*1/*lobby.deltaTime*/) < (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
+        //     player.moveTik++;
+        // }
 
         if (player.turboActive == true) {
             player.turboDuration --;
