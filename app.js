@@ -537,8 +537,9 @@ io.on('connection', (socket) => {
         lobby.boardStatus = [];
 
         io.emit("startingGame", lobby,onlineAccounts[socket.id].player);
-
+        lobby.frameCount = 0;
         lobby.gameLoop = function() {
+            this.frameCount++;
             let timestamp = Date.now();
             this.deltaTime = (timestamp - this.lastTimestamp) / (1000/60);
             this.lastTimestamp = timestamp;
@@ -547,18 +548,21 @@ io.on('connection', (socket) => {
             this.updateCells = [];
             server_movePlayers(this);
             
-            if (onlineAccounts[socket.id]) {
-                io.emit("updatedLocalAccount",{
-                    id: socket.id,
-                    isInGame: true,
-                    player: onlineAccounts[socket.id].player,
-                    lobby: this,
-                })
+            if (this.frameCount % 2 === 0) {
+                if (onlineAccounts[socket.id]) {
+                    io.emit("updatedLocalAccount",{
+                        id: socket.id,
+                        isInGame: true,
+                        player: onlineAccounts[socket.id].player,
+                        lobby: this,
+                    })
+                }
             }
+            
             
 
             if (!this.gameEnd) {
-                setTimeout(() => this.gameLoop(), 1000/60/*Math.max(0, (1000/60) - (Date.now() - timestamp))*/);
+                setTimeout(() => this.gameLoop(), Math.max(0, (1000/30) - (Date.now() - timestamp)));
             } else {
                 this.isActiveGame = false;
 
