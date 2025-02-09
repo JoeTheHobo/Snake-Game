@@ -191,7 +191,6 @@ socket.on("updatePositions",(obj) => {
     localAccount.player = obj.player;
     deltaTime = obj.deltaTime;
     updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
-    deleteSnakeCells();
 });
 socket.on("updatedLocalAccount",(obj) => {
     localAccount.id = obj.id;

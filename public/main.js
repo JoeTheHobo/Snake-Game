@@ -1567,7 +1567,7 @@ function gameLoop() {
 function serverGameLoop() {
     if (!isActiveGame) return;
     //renderCells();
-    //deleteSnakeCells();
+    deleteSnakeCells();
     movePlayers();
     renderPlayers();
     
