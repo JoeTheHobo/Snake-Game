@@ -170,41 +170,6 @@ socket.on("updatePositions",(obj) => {
 
     deltaTime = obj.deltaTime-0.002;
 
-    let client_player = activePlayers[0];
-    let client_pos = client_player.pos;
-    let server_pos = player.pos;
-    let fixY = false;
-    let fixX = false;
-    if (client_player.moving == "up") {
-        if (server_pos.y > client_pos.y) fixY = true;
-        if (server_pos.x < client_pos.x) fixX = true;
-        if (server_pos.x > client_pos.x) fixX = true;
-    }
-    if (client_player.moving == "down") {
-        if (server_pos.y < client_pos.y) fixY = true;
-        if (server_pos.x < client_pos.x) fixX = true;
-        if (server_pos.x > client_pos.x) fixX = true;
-    }
-    if (client_player.moving == "right") {
-        if (server_pos.x > client_pos.x) fixX = true;
-        if (server_pos.y < client_pos.y) fixY = true;
-        if (server_pos.y > client_pos.y) fixY = true;
-    }
-    if (client_player.moving == "left") {
-        if (server_pos.x < client_pos.x) fixX = true;
-        if (server_pos.y < client_pos.y) fixY = true;
-        if (server_pos.y > client_pos.y) fixY = true;
-    }
-    if (fixY || fixX) {
-        updateSnakeCells.push({x: client_pos.x,y: client_pos.y})
-    }
-    if (fixY) {
-        client_pos.y = server_pos.y;
-    }
-    if (fixX) {
-        client_pos.x = server_pos.x;
-    }
-
     updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
 
     if (obj.dontSend) return;
