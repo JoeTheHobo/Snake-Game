@@ -483,7 +483,7 @@ function movePlayers() {
             }
             production.checkingPlayerCollision.times.push(performance.now() - production.checkingPlayerCollision.timeStart);
             //Test Item Underplayer
-            //if (!player.isDead) testItemUnderPlayer(player);
+            if (!player.isDead) testItemUnderPlayer(player);
 
             if (!player.isDead) {
                 production.testingItems.timeStart = performance.now();
