@@ -346,11 +346,6 @@ app.get('/', (req, res) => {
 const lobbies = {};
 const onlineAccounts = {};
 
-
-// function handleDeaths(deadPlayer){
-//     io.emit("playerDied", deadPlayer);
-// }
-
 io.on('connection', (socket) => {
     console.log('a user connected');
     onlineAccounts[socket.id] = {
@@ -396,7 +391,7 @@ io.on('connection', (socket) => {
         boards: [],
         lobby: false,
     }
-
+    console.log(socket.id)
     io.emit("updateLobbies", lobbies);
     io.emit('setPlayer', socket.id, onlineAccounts);
     io.emit('updatePlayers', onlineAccounts)
