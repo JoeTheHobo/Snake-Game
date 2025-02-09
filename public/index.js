@@ -170,15 +170,6 @@ socket.on("updatePositions",(obj) => {
 
     deltaTime = obj.deltaTime;
 
-    
-    //activePlayers[0].pos = obj.activePlayers[0].pos;
-    if (activePlayers[0].pos != obj.activePlayers[0].pos) {
-        updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
-        updateSnakeCells.push({x: activePlayers[0].pos.x,y:activePlayers[0].pos.y})
-
-        activePlayers[0].pos = obj.activePlayers[0].pos;
-    }
-
     if (obj.dontSend) return;
 
     let canvasList = [];
@@ -195,6 +186,7 @@ socket.on("updatePositions",(obj) => {
         }
     }
     localAccount.player = obj.player;
+    updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
 });
 socket.on("updatedLocalAccount",(obj) => {
     localAccount.id = obj.id;
