@@ -182,7 +182,7 @@ socket.on("updatedLocalAccount",(obj) => {
     activePlayers = obj.lobby.activePlayers;
     updateSnakeCells = localAccount.updateSnakeCells;
     updateCells = localAccount.updateCells;
-    console.log("updateCells",updateCells)
+    currentBoard = obj.lobby.board;
 })
 
 function updateLobbyToServer(lobby){
