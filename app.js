@@ -546,6 +546,7 @@ io.on('connection', (socket) => {
             this.lastTimestamp = timestamp;
 
             if (timestamp - this.updateTimeStamp >= 200) { // Every 200ms
+                console.log("sendingUpdatedCells",this.updateCells)
                 if (onlineAccounts[socket.id]) {
                     io.emit("updatedLocalAccount",{
                         id: socket.id,
@@ -850,6 +851,7 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
                 x: x,
                 y: y,
             })
+            console.log("updateCellSpawn",lobby.updateCells)
             if (item.pack == "Tunnels") {
                 currentBoard.location_tunnels.push(
                     {
@@ -1101,6 +1103,7 @@ function testItemUnderPlayer(lobby,player) {
                     x: player.pos.x,
                     y: player.pos.y,
                 })
+                console.log("updateCell",lobby.updateCells)
                 break checking;
             }
         }

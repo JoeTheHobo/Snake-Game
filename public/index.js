@@ -176,6 +176,7 @@ socket.on("updatedLocalAccount",(obj) => {
     localAccount.player = obj.player;
     localAccount.player.canvas = playerCanvas;
     localAccount.updateSnakeCells = updateSnakeCells.concat(obj.lobby.updateSnakeCells);
+    console.log("recieving Updated Cells",obj.lobby.updateCells);
     localAccount.updateCells = updateCells.concat(obj.lobby.updateCells); 
 
     //currentBoard = obj.lobby.board;
