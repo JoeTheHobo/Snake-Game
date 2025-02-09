@@ -542,8 +542,6 @@ io.on('connection', (socket) => {
             let timestamp = Date.now();
             this.deltaTime = (timestamp - this.lastTimestamp) / (1000/60);
 
-            this.updateSnakeCells = [];
-            this.updateCells = [];
             server_movePlayers(this);
             this.lastTimestamp = timestamp;
 
@@ -610,6 +608,10 @@ io.on('connection', (socket) => {
                     seconds: seconds,
                 })
             }
+
+            
+            this.updateSnakeCells = [];
+            this.updateCells = [];
         }
         /*
         lobby.timerLoop = function() {
@@ -1413,7 +1415,6 @@ function server_movePlayers(lobby) {
                 x: playerX,
                 y: playerY,
             })
-            console.log("It's being Updated",lobby.updateSnakeCells)
             //End Growing Tail
         } else {
             player.pos = playerOldPos;
