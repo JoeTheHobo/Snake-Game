@@ -1442,8 +1442,8 @@ function server_movePlayers(lobby,clientPlayer) {
             player.pos = playerOldPos;
             player.moving = playerOldMoving;
         }
+        console.log(player.id == clientPlayer.id, (player.pos.x !== MainPlayer.x || player.pos.y !== MainPlayer.y),player.id,clientPlayer.id,player.pos.x , MainPlayer.x , player.pos.y , MainPlayer.y)
         if (player.id == clientPlayer.id && (player.pos.x !== MainPlayer.x || player.pos.y !== MainPlayer.y)) toReturn = true;
     }
-    console.log(toReturn)
     return toReturn;
 }
