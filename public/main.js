@@ -364,7 +364,7 @@ function movePlayers() {
         
         if (player.isDead) continue;
         
-        if ((player.moveTik*deltaTime) >= (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
+        if ((player.moveTik*deltaTime) >= (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed) || gameType == "server") {   
             if (player.turboActive == true) {
                 player.turboDuration --;
                 if (player.turboDuration <= 0) {
@@ -1566,6 +1566,7 @@ function gameLoop() {
     if (!gameEnd && !gamePaused && !killSwitch) setTimeout(() => gameLoop(), Math.max(0, (1000/60) - (Date.now() - timestamp)));;//requestAnimationFrame(gameLoop);
 }
 function serverGameLoop() {
+    deltaTime = 1;
     if (!isActiveGame) return;
     //renderCells();
     movePlayers();
@@ -1573,7 +1574,7 @@ function serverGameLoop() {
     renderPlayers();
     
 
-    if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/60);//requestAnimationFrame(gameLoop);
+    if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/10);//requestAnimationFrame(gameLoop);
 }
 function specialItemManager() {
     if (gameType == "server") return;
