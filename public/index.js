@@ -169,7 +169,11 @@ socket.on("updatePositions",(obj) => {
     ctx_top.fillRect(player.pos.x*gridSize,player.pos.y*gridSize,gridSize,gridSize)
 
     deltaTime = obj.deltaTime;
-    
+
+    for (let i = 0; i < activePlayers.length; i++) {
+        activePlayers[i].moveTik = obj.activePlayers[i].moveTik;
+    }
+
     if (obj.dontSend) return;
 
     let canvasList = [];
