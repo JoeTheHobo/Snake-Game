@@ -559,6 +559,9 @@ io.on('connection', (socket) => {
             
             
 
+            this.updateSnakeCells = [];
+            this.updateCells = [];
+            
             if (!this.gameEnd) {
                 setTimeout(() => this.gameLoop(), Math.max(0, (1000/60) - (Date.now() - timestamp)));
             } else {
@@ -608,10 +611,6 @@ io.on('connection', (socket) => {
                     seconds: seconds,
                 })
             }
-
-            
-            this.updateSnakeCells = [];
-            this.updateCells = [];
         }
         /*
         lobby.timerLoop = function() {
