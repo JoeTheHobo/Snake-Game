@@ -545,7 +545,7 @@ io.on('connection', (socket) => {
             server_movePlayers(this);
             this.lastTimestamp = timestamp;
 
-            if (timestamp - this.updateTimeStamp >= 200) { // Every 200ms
+            if (timestamp - this.updateTimeStamp >= 150) { // Every 200ms
                 if (onlineAccounts[socket.id]) {
                     io.emit("updatedLocalAccount",{
                         id: socket.id,
@@ -563,7 +563,7 @@ io.on('connection', (socket) => {
 
 
             if (!this.gameEnd) {
-                setTimeout(() => this.gameLoop(), Math.max(0, (1000/30) - (Date.now() - timestamp)));
+                setTimeout(() => this.gameLoop(), Math.max(0, (1000/40) - (Date.now() - timestamp)));
             } else {
                 this.isActiveGame = false;
 
