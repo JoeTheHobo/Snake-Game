@@ -1283,6 +1283,7 @@ function server_movePlayers(lobby) {
     activePlayers = lobby.activePlayers;
     let currentBoard = lobby.board;
     let currentGameMode = lobby.gameMode;
+    console.log(activePlayers)
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
         
