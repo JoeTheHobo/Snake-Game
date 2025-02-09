@@ -545,7 +545,6 @@ io.on('connection', (socket) => {
 
             this.updateSnakeCells = [];
             this.updateCells = [];
-            console.log("In Game")
             server_movePlayers(this);
             
             if (onlineAccounts[socket.id]) {
@@ -1353,6 +1352,8 @@ function server_movePlayers(lobby) {
             if (player.pos.y > maxY) { cameraQuickZoom = "bottom"; player.pos.y = 0; }
             else if (player.pos.y < 0) { cameraQuickZoom = "top"; player.pos.y = maxY; }
         }
+
+        console.log("Player Pos: ",player.pos.x,player.pos.y)
 
         //Check for Player Collisions
         if (currentGameMode.snakeCollision) {
