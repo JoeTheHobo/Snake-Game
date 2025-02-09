@@ -91,10 +91,11 @@ socket.on("startingGame", (lobby,player) =>{
     } 
     if (!foundPlayer) return;
     localAccount.isInGame = true;
-    localAccount.currentBoard = lobby.board;
+    currentBoard = lobby.board;
     localAccount.playersInServer = lobby.activePlayers;
-    localAccount.updateSnakeCells = [];
-    localAccount.updateCells = [];
+    updateSnakeCells = [];
+    updateCells = [];
+    currentGameMode = lobby.gameMode;
     localAccount.player = player;
                     
     setScene("game");
@@ -170,8 +171,8 @@ socket.on("updatePositions",(obj) => {
     }
     activePlayers = obj.activePlayers;
     for (let i = 0; i < canvasList.length; i++) {
-        localAccount.activePlayers[i].canvas = canvasList[i];
-        if (oldPosList[i].x !== localAccount.activePlayers[i].pos.x || oldPosList[i].x !== localAccount.activePlayers[i].pos.x) {
+        activePlayers[i].canvas = canvasList[i];
+        if (oldPosList[i].x !== activePlayers[i].pos.x || oldPosList[i].x !== activePlayers[i].pos.x) {
             updateSnakeCells.push(oldPosList[i]);
         }
     }
@@ -182,7 +183,6 @@ socket.on("updatePositions",(obj) => {
 socket.on("updatedLocalAccount",(obj) => {
     localAccount.id = obj.id;
     localAccount.isInGame = obj.isInGame;
-    localAccount.currentBoard = obj.board;
     currentBoard = obj.board;
 })
 
