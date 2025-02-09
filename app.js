@@ -405,7 +405,6 @@ io.on('connection', (socket) => {
     socket.on('disconnect', (reason) => {
         console.log("A user disconnected due to " + reason);
         onlineAccounts[socket.id].isDead = true;
-        movePlayer();
         io.emit('updatePlayers', onlineAccounts);
         delete onlineAccounts[socket.id];
         //io.emit('updatePlayers', onlineAccounts);
