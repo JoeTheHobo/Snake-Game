@@ -618,7 +618,7 @@ io.on('connection', (socket) => {
         */
 
         lobby.gameLoop();
-        lobby.timerLoop();
+        //lobby.timerLoop();
 
     })
     socket.on("spawn",(name,generateRandomItem = true,counting = false) => {
