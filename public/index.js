@@ -176,6 +176,7 @@ socket.on("updatePositions",(obj) => {
             updateSnakeCells.push(oldPosList[i]);
         }
     }
+    localAccount.player = obj.player;
     deltaTime = obj.deltaTime;
     updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
     deleteSnakeCells();

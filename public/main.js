@@ -1120,48 +1120,44 @@ document.body.onkeydown = function(e) {
     }
     if (gameType == "server") {
         let player = localAccount.player;
-        let activePlayer;
-        for (let i = 0; i < activePlayers.length; i++) {
-            if (activePlayers[i].id === player.id) activePlayer = activePlayers[i];
-        }
         if (player.isDead) return;
 
         if (e.key == player.leftKey && player.moveQueue.length < 4) {
-            activePlayer.moveQueue.push("left");
+            player.moveQueue.push("left");
             socket.emit("movePlayerKey","left");
         }
         if (e.key == player.rightKey && player.moveQueue.length < 4) {
-            activePlayer.moveQueue.push("right");
+            player.moveQueue.push("right");
             socket.emit("movePlayerKey","right");
         }
         if (e.key == player.upKey && player.moveQueue.length < 4) {
-            activePlayer.moveQueue.push("up");
+            player.moveQueue.push("up");
             socket.emit("movePlayerKey","up");
         }
         if (e.key == player.downKey && player.moveQueue.length < 4) {
-            activePlayer.moveQueue.push("down");
+            player.moveQueue.push("down");
             socket.emit("movePlayerKey","down");
         }
         if (e.key == player.useItem1) {
             if (currentGameMode.mode_usingItemType == "scroll") {
-                activePlayer.selectingItem--;
-                if (activePlayer.selectingItem < 0) activePlayer.selectingItem = currentGameMode.howManyItemsCanPlayersUse-1;
+                player.selectingItem--;
+                if (activePlayer.selectingItem < 0) player.selectingItem = currentGameMode.howManyItemsCanPlayersUse-1;
                 socket.emit("changeItem",-1);
             }
             if (currentGameMode.mode_usingItemType == "direct") {
-                activePlayer.selectingItem = 0;
+                player.selectingItem = 0;
                 useItem(player);
             }
             drawPlayerBox(player);
         }
         if (e.key == player.useItem2) {
             if (currentGameMode.mode_usingItemType == "scroll") {
-                activePlayer.selectingItem++;
-                if (player.selectingItem > currentGameMode.howManyItemsCanPlayersUse-1) activePlayer.selectingItem = 0;
+                player.selectingItem++;
+                if (player.selectingItem > currentGameMode.howManyItemsCanPlayersUse-1) player.selectingItem = 0;
                 socket.emit("changeItem",1);
             }
             if (currentGameMode.mode_usingItemType == "direct") {
-                activePlayer.selectingItem = 1;
+                player.selectingItem = 1;
                 useItem(player);
             }
             drawPlayerBox(player);
@@ -1569,10 +1565,13 @@ function serverGameLoop() {
     //renderCells();
     //deleteSnakeCells();
     //renderPlayers();
-    movePlayers();
+    server_movePlayers();
     
 
     if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 1000/60);;//requestAnimationFrame(gameLoop);
+}
+function server_movePlayers() {
+    
 }
 function specialItemManager() {
     if (gameType == "server") return;

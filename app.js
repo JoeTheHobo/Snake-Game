@@ -560,12 +560,13 @@ io.on('connection', (socket) => {
                 this.updateCells = [];
             }
 
-            if (timestamp - this.updatePositionTimeStamp >= 100) { // Every 200ms
+            if (timestamp - this.updatePositionTimeStamp >= 50) { // Every 200ms
                 if (onlineAccounts[socket.id]) {
                     io.emit("updatePositions",{
                         activePlayers: this.activePlayers,
                         updateSnakeCells: this.updateSnakeCells,
                         deltaTime: this.deltaTime,
+                        player: onlineAccounts[socket.id].player,
                     })
                 }
                 this.updatePositionTimeStamp = timestamp;
