@@ -549,6 +549,7 @@ io.on('connection', (socket) => {
 
             if (timestamp - this.updateTimeStamp >= 200) { // Every 200ms
                 if (onlineAccounts[socket.id]) {
+                    console.log(this.updateSnakeCells)
                     io.emit("updatedLocalAccount",{
                         id: socket.id,
                         isInGame: true,
