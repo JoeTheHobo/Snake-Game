@@ -544,7 +544,7 @@ io.on('connection', (socket) => {
             let timestamp = Date.now();
             this.deltaTime = (timestamp - this.lastTimestamp) / (1000/60);
 
-            if (server_movePlayers(this)) {
+            if (server_movePlayers(this,onlineAccounts[socket.id].player)) {
                 if (onlineAccounts[socket.id]) {
                     io.emit("updatePositions",{
                         activePlayers: this.activePlayers,
@@ -1281,11 +1281,11 @@ function getPlayersList(playerIds) {
     return list;
 }
 
-function server_movePlayers(lobby) {
+function server_movePlayers(lobby,clientPlayer) {
     activePlayers = lobby.activePlayers;
     let currentBoard = lobby.board;
     let currentGameMode = lobby.gameMode;
-    let MainPlayer = onlineAccounts[socket.id].player.pos;
+    let MainPlayer = clientPlayer.pos;
     let toReturn = false;
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
@@ -1436,7 +1436,7 @@ function server_movePlayers(lobby) {
             player.pos = playerOldPos;
             player.moving = playerOldMoving;
         }
-        if (player.id == onlineAccounts[socket.id].player.id && (player.pos.x !== MainPlayer.x || player.pos.y !== MainPlayer.y)) toReturn = true;
+        if (player.id == clientPlayer.id && (player.pos.x !== MainPlayer.x || player.pos.y !== MainPlayer.y)) toReturn = true;
     }
     return toReturn;
 }
