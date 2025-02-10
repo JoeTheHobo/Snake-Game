@@ -452,13 +452,10 @@ io.on('connection', (socket) => {
         if (socket.id !== playerID){
             socket.disconnect();
             return;
-        }
-        console.log(lobbyID);
+        };
         let lobby = lobbies[lobbyID];
-        console.log(lobbies);
         if (!lobby) return;
-        if (lobby.playerCount + 1 <= lobby.playerMax) {
-            lobby.playerCount++;
+        if (lobby.players.length <= lobby.playerMax) {
             lobby.players.push(playerID);
             onlineAccounts[socket.id].lobby =  lobby.id;
             onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
