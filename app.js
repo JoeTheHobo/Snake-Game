@@ -928,6 +928,7 @@ function deletePlayer(lobby,player,playerWhoKilled,item,instaKill = false){
     player.shield -= damage;
 
     if (player.shield < 0 || instaKill){
+        console.log(player.shield,instaKill);
         if (playerWhoKilled) if (playerWhoKilled.name !== player.name) playerWhoKilled.playerKills++;
 
         //Delete Tail
@@ -1345,7 +1346,7 @@ function server_movePlayers(lobby) {
 
         //Check for Player Collisions
         if (currentGameMode.snakeCollision) {
-            let occupiedPositions = new Set();
+            let occupiedPositions = new Map();
         
             // Step 1: Populate occupiedPositions with all players' tails & positions
             for (let a = 0; a < activePlayers.length; a++) {
@@ -1354,15 +1355,16 @@ function server_movePlayers(lobby) {
                 if (findPlayersTeam(checkedPlayer) === findPlayersTeam(player) && !currentGameMode.teamCollision && findPlayersTeam(player) !== "white") continue;
         
                 for (let b = 0; b < checkedPlayer.tail.length; b++) {
-                    occupiedPositions.add(`${checkedPlayer.tail[b].x},${checkedPlayer.tail[b].y}`);
+                    occupiedPositions.set(`${checkedPlayer.tail[b].x},${checkedPlayer.tail[b].y}`, checkedPlayer);
                 }
                 if (checkedPlayer.id !== player.id) {
-                    occupiedPositions.add(`${checkedPlayer.pos.x},${checkedPlayer.pos.y}`);
+                    occupiedPositions.set(`${checkedPlayer.pos.x},${checkedPlayer.pos.y}`, checkedPlayer);
                 }
             }
             // Step 2: Check if the player's new position exists in occupiedPositions
             if (occupiedPositions.has(`${player.pos.x},${player.pos.y}`)) {
-                deletePlayer(lobby,player);
+                let killer = occupiedPositions.get(`${player.pos.x},${player.pos.y}`);
+                deletePlayer(lobby, player, killer);
             }
         }
         //Test Item Underplayer
