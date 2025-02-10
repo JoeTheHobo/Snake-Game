@@ -1127,7 +1127,7 @@ document.body.onkeydown = function(e) {
     if (gameType == "server") {
         let activePlayer;
         for (let i = 0; i < activePlayers.length; i++) {
-            if (activePlayers[i].id === player.id) activePlayer = activePlayers[i];
+            if (activePlayers[i].accountID === localAccount.id) activePlayer = activePlayers[i];
         }
         if (player.isDead) return;
         if (e.key == player.leftKey && player.moveQueue.length < 4) {

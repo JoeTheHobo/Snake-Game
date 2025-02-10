@@ -377,6 +377,7 @@ io.on('connection', (socket) => {
             moveQueue: [],
             prevMove: "start",
             id: Date.now(),
+            accountID: socket.id,
             whenInventoryIsFullInsertItemsAt: 0,
             moveTik: 0,
             moveSpeed: 6,
