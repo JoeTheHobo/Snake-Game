@@ -46,7 +46,6 @@ socket.on("startingGame", (lobby) => {
     searchingForPlayer: for (let j = 0; j < lobby.players.length; j++) {
         if (localAccount.id === lobby.players[j]) {
             foundPlayer = true;
-            localAccount.player = lobby.players[j];
             break searchingForPlayer;
         } 
     } 
@@ -56,8 +55,6 @@ socket.on("startingGame", (lobby) => {
     updateSnakeCells = [];
     updateCells = [];
     currentGameMode = lobby.gameMode;
-    localAccount.player = player;
-    localAccount.startTime = 0;
                     
     setScene("game");
     $(".endGamePopup").hide();

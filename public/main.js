@@ -1125,7 +1125,6 @@ document.body.onkeydown = function(e) {
         }
     }
     if (gameType == "server") {
-        let player = localAccount.player;
         let activePlayer;
         for (let i = 0; i < activePlayers.length; i++) {
             if (activePlayers[i].id === player.id) activePlayer = activePlayers[i];
