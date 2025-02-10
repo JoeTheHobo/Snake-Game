@@ -17,8 +17,8 @@ function loadServersHTML() {
 
         let boardCanvas = server_holder.create("canvas");
         boardCanvas.className = "server_canvas";
-        drawBoardToCanvas(server.board.originalMap,boardCanvas,true)
-        
+        drawBoardToCanvas(server.board.originalMap,boardCanvas,false)
+
         let column = server_holder.create("div");
         column.className = "server_column";
 
