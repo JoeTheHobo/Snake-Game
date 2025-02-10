@@ -581,6 +581,7 @@ io.on('connection', (socket) => {
 
                 //Kill Any Non Dead Snakes
                 for (let i = 0; i < this.activePlayers.length; i++) {
+                    if (activePlayers[i] == false) continue;
                     if (!this.activePlayers[i].isDead) {
                         deletePlayer(this,this.activePlayers[i],false,false,true);
                     }
@@ -593,6 +594,7 @@ io.on('connection', (socket) => {
                 let timeSurvivedPlayer = this.activePlayers[0];
                 let mostKillsPlayer = this.activePlayers[0];
                 for (let i = 1; i < this.activePlayers.length; i++) {
+                    if (activePlayers[i] == false) continue;
                     if (this.activePlayers[i].longestTail > longestTail) {
                         longestTail = this.activePlayers[i].longestTail;
                         longestTailPlayer = this.activePlayers[i];
@@ -779,6 +781,7 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
             findingSpawner: for (let k = 0; k < allSpawns.length; k++) {
                 let playerOnIt = false;
                 for (let i = 0; i < activePlayers.length; i++) {
+                    if (activePlayers[i] == false) continue;
                     if (activePlayers[i].pos.x == allSpawns[k].x && activePlayers[i].pos.y == allSpawns[k].y) playerOnIt = true;
                 }
                 if (playerOnIt) continue;
@@ -802,6 +805,7 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
             if (currentBoard.map[y][x].item == false && currentBoard.map[y][x].tile.canSpawn) {
                 foundSpot = true;
                 checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
+                    if (activePlayers[j] == false) continue;
                     let distance = calculateDistance(currentBoard,activePlayers[j].pos.x,activePlayers[j].pos.y,x,y);
                     if (distance < 5) {
                         foundSpot = false;
@@ -828,6 +832,7 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
                 if (currentBoard.map[k][j].item == false && currentBoard.map[k][j].tile.canSpawn) {
                     let foundGoodSpot = true;
                     checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
+                        if (activePlayers[j] == false) continue;
                         let distance = calculateDistance(currentBoard,activePlayers[j].pos.x,activePlayers[j].pos.y,x,y);
                         if (distance < 5) {
                             foundGoodSpot = false;
@@ -964,6 +969,7 @@ function deletePlayer(lobby,player,playerWhoKilled,item,instaKill = false){
             player.timeSurvived = lobby.timer;
             let playersDead = 0;
             for (let i = 0; i < activePlayers.length; i++) {
+                if (activePlayers[i] == false) playersDead++;
                 if (activePlayers[i].isDead) playersDead++;
             }
             if (playersDead == activePlayers.length) {
@@ -1291,6 +1297,7 @@ function server_movePlayers(lobby) {
     let currentBoard = lobby.board;
     let currentGameMode = lobby.gameMode;
     for (let i = 0; i < activePlayers.length; i++) {
+        if (activePlayers[i] == false) continue;
         let player = activePlayers[i];
         
         if (player.isDead) continue;
@@ -1365,6 +1372,7 @@ function server_movePlayers(lobby) {
         
             // Step 1: Populate occupiedPositions with all players' tails & positions
             for (let a = 0; a < activePlayers.length; a++) {
+                if (activePlayers[i] == false) continue;
                 let checkedPlayer = activePlayers[a];
                 if (checkedPlayer.isDead && currentGameMode.snakeVanishOnDeath) continue;
                 if (findPlayersTeam(checkedPlayer) === findPlayersTeam(player) && !currentGameMode.teamCollision && findPlayersTeam(player) !== "white") continue;
