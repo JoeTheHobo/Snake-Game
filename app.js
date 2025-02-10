@@ -797,6 +797,7 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
     let allSpawns = currentBoard.location_spawns.shuffle();
     while (foundSpot == false) {
         if (isPlayer) {
+            console.log(0,currentBoard.location_spawns)
             findingSpawner: for (let k = 0; k < allSpawns.length; k++) {
                 console.log(1)
                 let playerOnIt = false;
