@@ -1,12 +1,6 @@
 ls.setID("snakegame");
 
 let killSwitch = false;
-let forceReset = 27;
-let needsToBeReset = ls.get("reset" + forceReset,true);
-if (needsToBeReset) {
-    ls.delete("gameModes");
-    ls.save("reset" + forceReset,false);
-}
 
 let backgrounds = ["colors","water","space","clear"];
 let currentBackground = backgrounds[0];

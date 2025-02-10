@@ -397,11 +397,7 @@ io.on('connection', (socket) => {
     }
     io.emit("updateLobbies", lobbies);
     io.emit('setPlayer', socket.id, onlineAccounts);
-    io.emit('updatePlayers', onlineAccounts)
 
-    socket.on("ping", () => {
-        console.log(`Ping received from ${socket.id}`);
-    });
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
         console.log("A user disconnected due to " + reason);
@@ -417,13 +413,14 @@ io.on('connection', (socket) => {
             }
         }
         
-        io.emit("kickPlayer");
+        io.emit("kickPlayer",socket.id,"Disconnected [Code: 002]");
         delete onlineAccounts[socket.id];
         //io.emit('updatePlayers', onlineAccounts);
     }) 
 
     socket.on("newLobby", (lobby) =>{
         lobbies[lobby.id] = lobby;
+        lobbies[lobby.id].hostID = socket.id;
         onlineAccounts[socket.id].lobby = lobby.id;
         io.emit("updateLobbies", lobbies);
     })
@@ -440,11 +437,15 @@ io.on('connection', (socket) => {
             onlineAccounts[socket.id].lobby =  lobby.id;
             onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
             io.emit("updateLobbies", lobbies, "joining", lobby,socket.id);
+            io.emit("setClientLobby",socket.id,lobby.id)
         }
     })
     socket.on("startGame", () =>{
-        console.log("Server Started")
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        if (lobby.hostID !== socket.id) {
+            socket.emit("kickPlayer","Caught Hacking [Code: 001]");
+        }
+        console.log("Server Started")
         lobby.board.map = structuredClone(lobby.board.originalMap);
 
         
@@ -545,7 +546,7 @@ io.on('connection', (socket) => {
             activePlayers: lobby.activePlayers,
             updateSnakeCells: lobby.updateSnakeCells,
             updateCells: lobby.updateCells,
-        })
+        },lobby.id)
         lobby.gameLoop = function() {
             let timestamp = Date.now();
             this.deltaTime = (timestamp - this.lastTimestamp) / (1000/60);
@@ -557,7 +558,7 @@ io.on('connection', (socket) => {
                     activePlayers: this.activePlayers,
                     updateSnakeCells: this.updateSnakeCells,
                     updateCells: this.updateCells,
-                })
+                },this.id)
             }
             this.updatePositionTimeStamp = timestamp;
             this.updateSnakeCells = [];
@@ -612,7 +613,7 @@ io.on('connection', (socket) => {
                     mostKillsPlayer: mostKillsPlayer,
                     minutes: minutes,
                     seconds: seconds,
-                })
+                },lobby.id)
             }
         }
         /*

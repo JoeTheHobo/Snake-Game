@@ -2,7 +2,6 @@ const socket = io({reconnection: false});
 
 //const player = new Player(x, y);
 //const players = {};
-const playersInServer = {};
 let frontEndLobbies = {};
 let localGameActive = false;
 const localAccount = {
@@ -15,73 +14,36 @@ const localAccount = {
     startTime: false,
 };
 let gameType = "local";
-socket.on('updatePlayers', (backendAccounts) => {
-    if(localGameActive == false){
-        /*
-        for (const id in backendAccounts){
-            const backendAccount = backendAccounts[id];
-            if(typeof backendAccount == "function") continue;
-            const backenedPlayer = backendAccount.players;
 
-            if (!playersInServer[id]){
-                playersInServer.push({
-                    id: id, 
-                    name: playerNames1.rnd() + playerNames2.rnd(),
-                    color: backenedPlayer.color, //Hue
-                    color2: backenedPlayer.color2, //Brightness
-                    color3: backenedPlayer.color3, //Contrast
-                    moving: backenedPlayer.moving,
-                    growTail: backenedPlayer.growTail,
-                    isDead: backenedPlayer.isDead,
-                    pos: backenedPlayer.pos,
-                    tail: backenedPlayer.tail,
-                    moveQueue: backenedPlayer.moveQueue,
-                    prevMove: backenedPlayer.prevMove,
-                    whenInventoryIsFullInsertItemsAt: backenedPlayer.whenInventoryIsFullInsertItemsAt,
-                    moveTik: backenedPlayer.moveTik,
-                    moveSpeed: backenedPlayer.moveSpeed,
-                    longestTail: backenedPlayer.longestTail,
-                    timeSurvived: backenedPlayer.timeSurvived,
-                    turboDuration: backenedPlayer.turboDuration,
-                    turboActive: backenedPlayer.turboActive,
-                    shield: backenedPlayer.shield,
-                    items: backenedPlayer.items,
-                    status: backenedPlayer.status, 
-                })
-            }
-        }
-
-        for (const id in playersInServer.id) {
-            if (!backendAccounts[id]) {
-                playersInServer.isDead;
-            }
-        }*/
-
-        setScene("newMenu");
-        localGameActive = true;
-    }
-})
-
-socket.on("kickPlayer",() => {
-    killSwitch = true;
-    alert("Disconnected");
-
-})
-
-socket.on("setPlayer", (id, backendAccounts) =>{
-    if (localAccount.id !== false) return;
-    localAccount.id = backendAccounts[id].id;
-
-});
-
-socket.on("updateLobbies", (backEndLobbies,isPlayerJoining, lobby,playerID) =>{
+socket.on("kickPlayer",(playerID,message) => {
     if (playerID !== localAccount.id) return;
+    killSwitch = true;
+    alert(message);
+
+})
+
+socket.on("setPlayer", (id) =>{
+    if (localAccount.id !== false) return;
+    localAccount.id = id;
+    localAccount.isInGame = false;
+    localAccount.lobbyID = false;
+});
+socket.on("setClientLobby",(socketID,lobbyID) => {
+    if (localAccount.isInGame) return;
+    if (socketID) if (socketID !== localAccount.id) return;
+    localAccount.lobbyID = lobbyID;
+    localAccount.isInGame = true;
+    setScene("waiting", lobby);
+})
+socket.on("updateLobbies", (backEndLobbies,isPlayerJoining, lobby,playerID) =>{
+    if (localAccount.isInGame) return;
+    if (playerID) if (playerID !== localAccount.id) return;
     frontEndLobbies = backEndLobbies;
     loadServersHTML();
-    if (isPlayerJoining) setScene("waiting", lobby);
 })
-socket.on("startingGame", (lobby,player) =>{
+socket.on("startingGame", (lobby) => {
     if (localAccount.isInGame) return;
+    if (localAccount.lobbyID !== lobby.id) return;
 
     let foundPlayer = false;
     searchingForPlayer: for (let j = 0; j < lobby.players.length; j++) {
@@ -92,9 +54,8 @@ socket.on("startingGame", (lobby,player) =>{
         } 
     } 
     if (!foundPlayer) return;
-    localAccount.isInGame = true;
+    
     currentBoard = lobby.board;
-    localAccount.playersInServer = lobby.activePlayers;
     updateSnakeCells = [];
     updateCells = [];
     currentGameMode = lobby.gameMode;
@@ -131,7 +92,9 @@ socket.on("startingGame", (lobby,player) =>{
     
 
 })
-socket.on("endGame",(obj) => {
+socket.on("endGame",(obj,lobbyID) => {
+    if (localAccount.lobbyID !== lobbyID) return;
+
     $("playerCardsHolder").style.cursor = "";
     gameEnd = true;
     isActiveGame = false;
@@ -163,7 +126,9 @@ socket.on("endGame",(obj) => {
 
     $("winnerStat").hide();
 })
-socket.on("updatePositions",(obj) => {
+socket.on("updatePositions",(obj,lobbyID) => {
+    if (localAccount.lobbyID !== lobbyID) return;
+
     let canvasList = [];
     let oldPosList = [];
     for (let i = 0; i < activePlayers.length; i++) {
@@ -200,7 +165,7 @@ function server_joinLobby(lobby) {
 
 function server_startGame(){
     console.log("Starting Server",socket.connected)
-    socket.emit("startGame")
+    socket.emit("startGame",localAccount.id)
 }
 
 function spawn(name,generateRandomItem = true,counting = false) {
