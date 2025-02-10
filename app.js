@@ -453,7 +453,9 @@ io.on('connection', (socket) => {
             socket.disconnect();
             return;
         }
+        console.log(lobbyID);
         let lobby = lobbies[lobbyID];
+        console.log(lobby);
         if (lobby.playerCount + 1 <= lobby.playerMax) {
             lobby.playerCount++;
             lobby.players.push(playerID);
