@@ -419,10 +419,13 @@ io.on('connection', (socket) => {
     }) 
 
     socket.on("newLobby", (lobby) =>{
+        if (!lobby) return;
+
         lobbies[lobby.id] = lobby;
         lobbies[lobby.id].hostID = socket.id;
         onlineAccounts[socket.id].lobby = lobby.id;
         io.emit("updateLobbies", lobbies);
+        io.emit("setClientLobby",socket.id,lobby.id)
     })
 
     socket.on("joinLobby",(lobbyID,playerID) => {

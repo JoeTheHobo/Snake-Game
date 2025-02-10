@@ -31,7 +31,6 @@ socket.on("setPlayer", (id) =>{
 socket.on("setClientLobby",(socketID,lobbyID) => {
     if (socketID !== localAccount.id) return;
     localAccount.lobbyID = lobbyID;
-    localAccount.isInGame = true;
     setScene("waiting", lobby);
 })
 socket.on("updateLobbies", (backEndLobbies,isPlayerJoining, lobby,playerID) =>{
