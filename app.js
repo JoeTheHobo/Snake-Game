@@ -406,7 +406,19 @@ io.on('connection', (socket) => {
             let lobby = lobbies[onlineAccounts[socket.id].lobby];
 
             for (let i = 0; i < lobby.activePlayers.length; i++) {
-                if (lobby.activePlayers[i].accountID === socket.id) lobbies[onlineAccounts[socket.id].lobby].activePlayers[i] = false; 
+                if (lobby.activePlayers[i].accountID === socket.id) {
+                    for (let j = 0; j < lobby.activePlayers[i].tail.length; j++) {
+                        lobby.updateSnakeCells.push({
+                            x: lobby.activePlayers[i].tail[j].x,
+                            y: lobby.activePlayers[i].tail[j].y,
+                        })
+                    }
+                    lobby.updateSnakeCells.push({
+                        x: lobby.activePlayers[i].pos.x,
+                        y: lobby.activePlayers[i].pos.y,
+                    })
+                    lobbies[onlineAccounts[socket.id].lobby].activePlayers[i] = false; 
+                }
             }
             for (let i = 0; i < lobby.players.length; i++) {
                 if (lobby.players[i] === socket.id) lobbies[onlineAccounts[socket.id].lobby].players.splice(i,1); 
