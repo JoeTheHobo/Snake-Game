@@ -798,18 +798,22 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
     while (foundSpot == false) {
         if (isPlayer) {
             findingSpawner: for (let k = 0; k < allSpawns.length; k++) {
+                console.log(1)
                 let playerOnIt = false;
                 for (let i = 0; i < activePlayers.length; i++) {
                     if (activePlayers[i] == false) continue;
                     if (activePlayers[i].pos.x == allSpawns[k].x && activePlayers[i].pos.y == allSpawns[k].y) playerOnIt = true;
                 }
+                console.log(2)
                 if (playerOnIt) continue;
 
+                console.log(3)
                 let playerTeam = findPlayersTeam(name);
                 let spawnTeam = allSpawns[k].item.spawnPlayerTeam || "white";
 
                 if (playerTeam !== "white" && spawnTeam !== playerTeam) continue;
                 
+                console.log(4)
                 x = allSpawns[k].x;
                 y = allSpawns[k].y;
                 team = playerTeam !== "white" ? playerTeam : spawnTeam;
@@ -909,6 +913,23 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
 };
 
 //Copied From Main.js
+function removeBoardStatus(lobby,status,player) {
+    let currentBoard = lobby.board;
+    if (status == "*P") status = "P" + player.index;
+
+    checking: for (let i = 0; i < currentBoard.boardStatus.length; i++) {
+        if (currentBoard.boardStatus[i] == status) {
+            currentBoard.boardStatus.splice(i,1);
+            break checking;
+        }
+    }
+}
+function addBoardStatus(lobby,status,player) {
+    let currentBoard = lobby.board;
+    if (status == "*P") status = "P" + player.index;
+
+    currentBoard.boardStatus.push(status);
+}
 function useItem(lobby,player) {
     if (player.status.includes(player.items[player.selectingItem].img)) return;
     
@@ -1172,16 +1193,16 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     }
     if (collision.switchBoardStatus) {
         if (item.switchStatus === true) {
-            addBoardStatus(collision.switchBoardStatus,player);
+            addBoardStatus(lobby,collision.switchBoardStatus,player);
         } else {
-            removeBoardStatus(collision.switchBoardStatus,player);
+            removeBoardStatus(lobby,collision.switchBoardStatus,player);
         }
     }
     if (collision.addBoardStatus) {
-        addBoardStatus(collision.addBoardStatus,player);
+        addBoardStatus(lobby,collision.addBoardStatus,player);
     }
     if (collision.removeBoardStatus) {
-        removeBoardStatus(collision.removeBoardStatus,player);
+        removeBoardStatus(lobby,collision.removeBoardStatus,player);
     }
     if (collision.setBoardStatus) {
         let status = collision.setBoardStatus;
@@ -1189,11 +1210,11 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         if (item.sendingBoardStatus === status) return;
 
         if (item.sendingBoardStatus !== false) {
-            removeBoardStatus(item.sendingBoardStatus,player);
+            removeBoardStatus(lobby,item.sendingBoardStatus,player);
         }
 
         item.sendingBoardStatus = status;
-        addBoardStatus(status,player);
+        addBoardStatus(lobby,status,player);
     }
     if (collision.setBaseImgTag) {
         let value = collision.setBaseImgTag.value;
