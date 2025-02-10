@@ -424,7 +424,7 @@ io.on('connection', (socket) => {
 
         lobbies[lobby.id] = lobby;
         lobbies[lobby.id].hostID = socket.id;
-        lobbies[lobby.id].hostName = onlineAccounts[socket.id].payers[onlineAccounts[socket.id].selectedPlayerIndex].name;
+        lobbies[lobby.id].hostName = onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex].name;
         onlineAccounts[socket.id].lobby = lobby.id;
         io.emit("updateLobbies", lobbies);
         io.emit("setClientLobby",socket.id,lobby.id,lobby)
