@@ -716,9 +716,7 @@ function calculateDistance(currentBoard,x1, y1, x2, y2, boardLength, boardHeight
 }
 function fixItemDifferences(lobby,map) {
     let currentBoard = lobby.board;
-    console.log(1);
     if (!currentBoard.itemDifferences) return;
-    console.log(2,currentBoard.itemDifferences);
     for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
         let e = currentBoard.itemDifferences[i];
         let d = {
@@ -743,7 +741,6 @@ function fixItemDifferences(lobby,map) {
         map[d.y][d.x].item = pos;
         for (let i = 0; i < currentBoard.location_spawns.length; i++) {
             if (d.y == currentBoard.location_spawns[i].y && currentBoard.location_spawns[i].x == d.x) {
-                console.log(3);
                 lobby.board.location_spawns[i].item = map[d.y][d.x].item;
             }
         }
@@ -816,7 +813,6 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
 
                 if (playerTeam !== "white" && spawnTeam !== playerTeam) continue;
                 
-                console.log(4,playerTeam,spawnTeam)
                 x = allSpawns[k].x;
                 y = allSpawns[k].y;
                 team = playerTeam !== "white" ? playerTeam : spawnTeam;
@@ -953,7 +949,6 @@ function getLocations(lobby) {
                         })
                     }
                     if (cell.item.spawnPlayerHere == true) {
-                        console.log(cell.item);
                         lobby.board.location_spawns.push({
                             x: j,
                             y: i,
@@ -1040,7 +1035,7 @@ function deletePlayer(lobby,player,playerWhoKilled,item,instaKill = false){
     player.shield -= damage;
 
     if (player.shield < 0 || instaKill){
-        console.log(player.shield,instaKill);
+        console.log(player.shield,instaKill,damage);
         if (playerWhoKilled) if (playerWhoKilled.name !== player.name) playerWhoKilled.playerKills++;
 
         //Delete Tail
