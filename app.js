@@ -949,6 +949,7 @@ function getLocations(lobby) {
                         })
                     }
                     if (cell.item.spawnPlayerHere == true) {
+                        console.log(cell.item);
                         lobby.board.location_spawns.push({
                             x: j,
                             y: i,
