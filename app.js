@@ -411,7 +411,7 @@ io.on('connection', (socket) => {
             for (let i = 0; i < lobby.players.length; i++) {
                 if (lobby.players[i].id === socket.id) lobby.players.splice(i,1); 
             }
-
+            console.log("Lobby Length",lobby.players.length)
             if (lobby.players.length < 1) {
                 delete lobbies[lobby.id];
                 io.emit("updateLobbies", lobbies);
