@@ -124,6 +124,7 @@ socket.on("endGame",(obj,lobbyID) => {
     $("winnerStat").hide();
 })
 socket.on("updatePositions",(obj,lobbyID) => {
+    console.log(1)
     if (localAccount.lobbyID !== lobbyID) return;
 
     let canvasList = [];
