@@ -27,7 +27,7 @@ function loadServersHTML() {
 
         let hostName = column.create("div");
         hostName.className = "server_host_name";
-        hostName.innerHTML = "Host: " + server.host;
+        hostName.innerHTML = "Host: " + server.hostName;
 
         let gameMode = column.create("div");
         gameMode.className = "server_game_mode_name";

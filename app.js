@@ -424,6 +424,7 @@ io.on('connection', (socket) => {
 
         lobbies[lobby.id] = lobby;
         lobbies[lobby.id].hostID = socket.id;
+        lobbies[lobby.id].hostName = onlineAccounts[socket.id].payers[onlineAccounts[socket.id].selectedPlayerIndex].name;
         onlineAccounts[socket.id].lobby = lobby.id;
         io.emit("updateLobbies", lobbies);
         io.emit("setClientLobby",socket.id,lobby.id,lobby)
@@ -608,6 +609,7 @@ io.on('connection', (socket) => {
 
                 if ((seconds + "").length == 1) seconds = "0" + seconds;
 
+
                 io.emit("endGame",{
                     lobby: this,
                     longestTail: longestTail,
@@ -618,6 +620,11 @@ io.on('connection', (socket) => {
                     minutes: minutes,
                     seconds: seconds,
                 },lobby.id)
+
+                //Temporary
+                delete lobbies[lobby.id];
+                io.emit("updateLobbies", lobbies);
+                //end Temp
             }
         }
         /*

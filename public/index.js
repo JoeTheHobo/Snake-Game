@@ -88,7 +88,10 @@ socket.on("startingGame", (lobby) => {
 })
 socket.on("endGame",(obj,lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;
-
+    setScene("newMenu");
+    localAccount.lobbyID = false;
+    localAccount.isInGame = false;
+    return;
     $("playerCardsHolder").style.cursor = "";
     gameEnd = true;
     isActiveGame = false;
