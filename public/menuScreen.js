@@ -59,9 +59,9 @@ function loadServerCreation() {
 
     let lobby = {
         players: [localAccount.id],
-        board: prompt("board"),
+        board: boards[0],
         host: localAccount.id,
-        gameMode: prompt("gameMode"),
+        gameMode: gameModes[0],
         playerMax: 8,
         playerCount: 1,
         id: Date.now() + "_" + rnd(5000),
