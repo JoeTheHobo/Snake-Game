@@ -406,7 +406,7 @@ io.on('connection', (socket) => {
             let lobby = lobbies[onlineAccounts[socket.id].lobby];
 
             for (let i = 0; i < lobby.activePlayers.length; i++) {
-                if (lobby.activePlayers[i].accountID === socket.id) lobbies[onlineAccounts[socket.id].lobby].activePlayers.splice(i,1); 
+                if (lobby.activePlayers[i].accountID === socket.id) lobbies[onlineAccounts[socket.id].lobby].activePlayers[i] = false; 
             }
             for (let i = 0; i < lobby.players.length; i++) {
                 if (lobby.players[i] === socket.id) lobbies[onlineAccounts[socket.id].lobby].players.splice(i,1); 

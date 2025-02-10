@@ -152,6 +152,7 @@ function drawRotated(list,direction,xPos, yPos, width, height) {
 }
 function renderPlayers() {
     for (let i = 0; i < activePlayers.length; i++) {
+        if(activePlayers[i] == false) continue;
         let player = activePlayers[i];
 
         if (player.isDead) {
@@ -365,6 +366,7 @@ function growPlayer(player,grow) {
 }
 function movePlayers() {
     for (let i = 0; i < activePlayers.length; i++) {
+        if(activePlayers[i] == false) continue;
         let player = activePlayers[i];
         
         if (player.isDead) continue;
@@ -470,6 +472,7 @@ function movePlayers() {
             
                 // Step 1: Populate occupiedPositions with all players' tails & positions
                 for (let a = 0; a < activePlayers.length; a++) {
+                    if(activePlayers[i] == false) continue;
                     let checkedPlayer = activePlayers[a];
                     if (checkedPlayer.isDead && currentGameMode.snakeVanishOnDeath) continue;
                     if (findPlayersTeam(checkedPlayer) === findPlayersTeam(player) && !currentGameMode.teamCollision && findPlayersTeam(player) !== "white") continue;
@@ -838,6 +841,7 @@ function endScreen(player = false) {
 
     //Kill Any Non Dead Snakes
     for (let i = 0; i < activePlayers.length; i++) {
+        if(activePlayers[i] == false) continue;
         if (!activePlayers[i].isDead) {
             deletePlayer(activePlayers[i],false,false,true);
         }
@@ -850,6 +854,7 @@ function endScreen(player = false) {
     let timeSurvivedPlayer = activePlayers[0];
     let mostKillsPlayer = activePlayers[0];
     for (let i = 1; i < activePlayers.length; i++) {
+        if(activePlayers[i] == false) continue;
         if (activePlayers[i].longestTail > longestTail) {
             longestTail = activePlayers[i].longestTail;
             longestTailPlayer = activePlayers[i];
@@ -924,6 +929,7 @@ function deletePlayer(player,playerWhoKilled,item,instaKill = false){
             player.timeSurvived = timer;
             let playersDead = 0;
             for (let i = 0; i < activePlayers.length; i++) {
+                if(activePlayers[i] == false) playersDead++;
                 if (activePlayers[i].isDead) playersDead++;
             }
             if (playersDead == activePlayers.length) {
@@ -1127,6 +1133,7 @@ document.body.onkeydown = function(e) {
     if (gameType == "server") {
         let activePlayer;
         for (let i = 0; i < activePlayers.length; i++) {
+            if(activePlayers[i] == false) continue;
             if (activePlayers[i].accountID === localAccount.id) activePlayer = activePlayers[i];
         }
         if (!activePlayer) return;
@@ -1189,6 +1196,7 @@ function setUpPlayerCanvas() {
     let html_playerCanvasHolder = $("playerCanvasHolder");
     html_playerCanvasHolder.innerHTML = "";
     for (let i = 0; i < activePlayers.length; i++) {
+        if(activePlayers[i] == false) continue;
         let player = activePlayers[i];
 
         function getCanvas(image,direction) {

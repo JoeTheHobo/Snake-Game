@@ -134,6 +134,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
     }
     activePlayers = obj.activePlayers;
     for (let i = 0; i < canvasList.length; i++) {
+        if (activePlayers[i] == false) continue;
         activePlayers[i].canvas = canvasList[i];
         // if (oldPosList[i].x !== activePlayers[i].pos.x || oldPosList[i].x !== activePlayers[i].pos.x) {
         //     updateSnakeCells.push(oldPosList[i]);
