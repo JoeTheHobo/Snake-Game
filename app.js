@@ -543,8 +543,10 @@ io.on('connection', (socket) => {
 
         lobby.activePlayers = getPlayersList(lobby.players);
 
-        fixItemDifferences(lobby.board,lobby.board.map);
-        fixTileDifferences(lobby.board,lobby.board.map);
+        fixItemDifferences(lobby,lobby.board,lobby.board.map);
+        fixTileDifferences(lobby,lobby.board,lobby.board.map);
+
+        getLocations(lobby);
 
         for (let i = 0; i < lobby.players.length; i++) {
             let player = onlineAccounts[lobby.players[i]].player;
@@ -712,7 +714,7 @@ function calculateDistance(currentBoard,x1, y1, x2, y2, boardLength, boardHeight
     let dy = Math.min(Math.abs(y1 - y2), boardHeight - Math.abs(y1 - y2));
     return dx + dy;
 }
-function fixItemDifferences(currentBoard,map) {
+function fixItemDifferences(lobby,currentBoard,map) {
     if (!currentBoard.itemDifferences) return;
     for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
         let e = currentBoard.itemDifferences[i];
@@ -738,7 +740,7 @@ function fixItemDifferences(currentBoard,map) {
         map[d.y][d.x].item = pos;
         for (let i = 0; i < currentBoard.location_spawns.length; i++) {
             if (d.y == currentBoard.location_spawns[i].y && currentBoard.location_spawns[i].x == d.x) {
-                currentBoard.location_spawns[i].item = map[d.y][d.x].item;
+                lobby.board.location_spawns[i].item = map[d.y][d.x].item;
             }
         }
     }
@@ -914,6 +916,54 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
 };
 
 //Copied From Main.js
+function getLocations(lobby) {
+    let currentBoard = lobby.board;
+    for (let i = 0; i < currentBoard.map.length; i++) {
+        for (let j = 0; j < currentBoard.map[0].length; j++) {
+            let cell = currentBoard.map[i][j]; 
+
+            if (cell.item === false) continue;
+
+            cell.item = structuredClone(getItem(lobby,cell.item.name));
+            if (cell.item == undefined) cell.item = false; //Prolly Will Need To Resolve Issue Later
+            if (cell.item !== false) {
+                cell.item.pos = {
+                    x: j,
+                    y: i,
+                }
+
+                if (cell.item.spawnLimit > 0 || cell.item.spawnLimit === false) {
+                    cell.item.spawnLimit--; 
+                    lobby.updateCells.push({
+                        x: j,
+                        y: i,
+                    })
+                    if (cell.item.pack == "Tunnels") {
+                        lobby.board.location_tunnels.push({
+                            x: j,
+                            y: i,
+                            name: cell.item.name,
+                        })
+                    }
+                    if (cell.item.renderStatusPath.length > 0) {
+                        lobby.board.location_status.push({
+                            x: j,
+                            y: i,
+                            name: cell.item.name,
+                        })
+                    }
+                    if (cell.item.spawnPlayerHere == true) {
+                        lobby.board.location_spawns.push({
+                            x: j,
+                            y: i,
+                            item: cell.item,
+                        })
+                    }
+                }
+            }
+        }
+    }
+}
 function removeBoardStatus(lobby,status,player) {
     let currentBoard = lobby.board;
     if (status == "*P") status = "P" + player.index;
