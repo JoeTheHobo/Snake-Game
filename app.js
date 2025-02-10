@@ -1035,7 +1035,6 @@ function deletePlayer(lobby,player,playerWhoKilled,item,instaKill = false){
     player.shield -= damage;
 
     if (player.shield < 0 || instaKill){
-        console.log(player.shield,instaKill,damage);
         if (playerWhoKilled) if (playerWhoKilled.name !== player.name) playerWhoKilled.playerKills++;
 
         //Delete Tail
