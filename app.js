@@ -463,6 +463,10 @@ io.on('connection', (socket) => {
             io.emit("setClientLobby",socket.id,lobby)
         }
     })
+    socket.on("refreshLobbies",(playerID) => {
+        if (playerID !== socket.id) return;
+        io.emit("updateLobbies", lobbies);
+    })
     socket.on("startGame", () =>{
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (lobby.hostID !== socket.id) {

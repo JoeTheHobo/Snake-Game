@@ -160,6 +160,9 @@ function updateLobbyToServer(lobby){
 function server_joinLobby(lobby) {
     socket.emit("joinLobby",lobby,localAccount.id);
 }
+function server_refreshLobby() {
+    socket.emit("refreshLobbies",localAccount.id);
+}
 
 function server_startGame(){
     console.log("Starting Server",socket.connected)

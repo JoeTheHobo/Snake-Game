@@ -91,7 +91,7 @@ $("hostServer").on("click",function() {
     loadServerCreation();
 })
 $("refreshServers").on("click",function() {
-    loadServersHTML();
+    server_refreshLobby();
 })
 $("joinServer").on("click",function() {
     server_joinLobby(serverSelected);
