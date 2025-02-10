@@ -799,24 +799,20 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
     let allSpawns = currentBoard.location_spawns.shuffle();
     while (foundSpot == false) {
         if (isPlayer) {
-            console.log(0,currentBoard.location_spawns)
             findingSpawner: for (let k = 0; k < allSpawns.length; k++) {
-                console.log(1)
                 let playerOnIt = false;
                 for (let i = 0; i < activePlayers.length; i++) {
                     if (activePlayers[i] == false) continue;
                     if (activePlayers[i].pos.x == allSpawns[k].x && activePlayers[i].pos.y == allSpawns[k].y) playerOnIt = true;
                 }
-                console.log(2)
                 if (playerOnIt) continue;
 
-                console.log(3)
                 let playerTeam = findPlayersTeam(name);
                 let spawnTeam = allSpawns[k].item.spawnPlayerTeam || "white";
 
                 if (playerTeam !== "white" && spawnTeam !== playerTeam) continue;
                 
-                console.log(4)
+                console.log(4,playerTeam,spawnTeam)
                 x = allSpawns[k].x;
                 y = allSpawns[k].y;
                 team = playerTeam !== "white" ? playerTeam : spawnTeam;
