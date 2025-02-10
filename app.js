@@ -404,17 +404,21 @@ io.on('connection', (socket) => {
         console.log("A user disconnected due to " + reason);
         if (onlineAccounts[socket.id].lobby) {
             let lobby = lobbies[onlineAccounts[socket.id].lobby];
-            let player = onlineAccounts[socket.id].player;
 
             for (let i = 0; i < lobby.activePlayers.length; i++) {
-                if (lobby.activePlayers[i].id === player.id) lobby.activePlayers.splice(i,1); 
+                if (lobby.activePlayers[i].accountID === socket.id) lobby.activePlayers.splice(i,1); 
             }
             for (let i = 0; i < lobby.players.length; i++) {
                 if (lobby.players[i].id === socket.id) lobby.players.splice(i,1); 
             }
+
+            if (lobby.players.length < 1) {
+                delete lobbies[lobby.id];
+                io.emit("updateLobbies", lobbies);
+            }
         }
         
-        io.emit("kickPlayer",socket.id,"Disconnected [Code: 002]");
+        io.emit("kickPlayer",socket.id,"Disconnected due to " + reason + " [Code: 002]");
         delete onlineAccounts[socket.id];
         //io.emit('updatePlayers', onlineAccounts);
     }) 
