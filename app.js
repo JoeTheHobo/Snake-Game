@@ -892,6 +892,7 @@ function specialItemManager(lobby) {
     let specialItemLowChance = lobby.specialItemLowChance;
     let specialItemHighChance = lobby.specialItemHighChance;
 
+    console.log(specialItemIteration,specialItemActiveChance);
     if (specialItemIteration >= specialItemActiveChance) {
         specialItemIteration = 0;
         lobby.specialItemActiveChance = rnd(specialItemLowChance,specialItemHighChance);
