@@ -543,10 +543,10 @@ io.on('connection', (socket) => {
 
         lobby.activePlayers = getPlayersList(lobby.players);
 
-        fixItemDifferences(lobby,lobby.board,lobby.board.map);
+        getLocations(lobby);
+        fixItemDifferences(lobby,lobby.board.map);
         fixTileDifferences(lobby,lobby.board,lobby.board.map);
 
-        getLocations(lobby);
 
         for (let i = 0; i < lobby.players.length; i++) {
             let player = onlineAccounts[lobby.players[i]].player;
@@ -714,8 +714,11 @@ function calculateDistance(currentBoard,x1, y1, x2, y2, boardLength, boardHeight
     let dy = Math.min(Math.abs(y1 - y2), boardHeight - Math.abs(y1 - y2));
     return dx + dy;
 }
-function fixItemDifferences(lobby,currentBoard,map) {
+function fixItemDifferences(lobby,map) {
+    let currentBoard = lobby.board;
+    console.log(1);
     if (!currentBoard.itemDifferences) return;
+    console.log(2,currentBoard.itemDifferences);
     for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
         let e = currentBoard.itemDifferences[i];
         let d = {
@@ -740,6 +743,7 @@ function fixItemDifferences(lobby,currentBoard,map) {
         map[d.y][d.x].item = pos;
         for (let i = 0; i < currentBoard.location_spawns.length; i++) {
             if (d.y == currentBoard.location_spawns[i].y && currentBoard.location_spawns[i].x == d.x) {
+                console.log(3);
                 lobby.board.location_spawns[i].item = map[d.y][d.x].item;
             }
         }
