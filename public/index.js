@@ -29,20 +29,18 @@ socket.on("setPlayer", (id) =>{
     localAccount.lobbyID = false;
 });
 socket.on("setClientLobby",(socketID,lobbyID) => {
-    if (localAccount.isInGame) return;
-    if (socketID) if (socketID !== localAccount.id) return;
+    if (socketID !== localAccount.id) return;
     localAccount.lobbyID = lobbyID;
     localAccount.isInGame = true;
     setScene("waiting", lobby);
 })
 socket.on("updateLobbies", (backEndLobbies,isPlayerJoining, lobby,playerID) =>{
-    if (localAccount.isInGame) return;
     if (playerID) if (playerID !== localAccount.id) return;
     frontEndLobbies = backEndLobbies;
     loadServersHTML();
 })
 socket.on("startingGame", (lobby) => {
-    if (localAccount.isInGame) return;
+    console.log(localAccount.lobbyID,lobby.id);
     if (localAccount.lobbyID !== lobby.id) return;
 
     let foundPlayer = false;
