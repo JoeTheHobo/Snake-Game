@@ -1372,7 +1372,7 @@ function server_movePlayers(lobby) {
         
             // Step 1: Populate occupiedPositions with all players' tails & positions
             for (let a = 0; a < activePlayers.length; a++) {
-                if (activePlayers[i] == false) continue;
+                if (activePlayers[a] == false) continue;
                 let checkedPlayer = activePlayers[a];
                 if (checkedPlayer.isDead && currentGameMode.snakeVanishOnDeath) continue;
                 if (findPlayersTeam(checkedPlayer) === findPlayersTeam(player) && !currentGameMode.teamCollision && findPlayersTeam(player) !== "white") continue;
