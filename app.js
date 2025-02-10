@@ -404,6 +404,7 @@ io.on('connection', (socket) => {
         console.log("A user disconnected due to " + reason);
         if (onlineAccounts[socket.id].lobby) {
             let lobby = lobbies[onlineAccounts[socket.id].lobby];
+            console.log(lobby.players,lobby.activePlayers)
 
             for (let i = 0; i < lobby.activePlayers.length; i++) {
                 if (lobby.activePlayers[i].accountID === socket.id) lobbies[onlineAccounts[socket.id].lobby].activePlayers[i] = false; 
@@ -411,6 +412,7 @@ io.on('connection', (socket) => {
             for (let i = 0; i < lobby.players.length; i++) {
                 if (lobby.players[i] === socket.id) lobbies[onlineAccounts[socket.id].lobby].players.splice(i,1); 
             }
+            console.log(lobby.players,lobby.activePlayers)
             if (lobby.players.length < 1) {
                 delete lobbies[lobby.id];
                 io.emit("updateLobbies", lobbies);
