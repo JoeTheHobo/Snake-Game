@@ -59,7 +59,7 @@ function loadServerCreation() {
     //holder.innerHTML = "";
 
     let lobby = {
-        board: boards[4],
+        board: boards[5],
         host: localAccount.id,
         gameMode: gameModes[0],
         playerMax: 8,
