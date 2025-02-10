@@ -436,12 +436,16 @@ io.on('connection', (socket) => {
     socket.on("newLobby", (lobby) =>{
         if (!lobby) return;
 
-        lobbies[lobby.id] = lobby;
-        lobbies[lobby.id].hostID = socket.id;
-        lobbies[lobby.id].hostName = onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex].name;
-        onlineAccounts[socket.id].lobby = lobby.id;
+        let id = Date.now() + "_" + rnd(5000);
+
+        lobbies[id] = lobby;
+        lobbies[id].id = id;
+        lobbies[id].hostID = socket.id;
+        lobbies[id].players = [socket.id];
+        lobbies[id].hostName = onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex].name;
+        onlineAccounts[socket.id].lobby = lobbies[lobby.id].id;
         io.emit("updateLobbies", lobbies);
-        io.emit("setClientLobby",socket.id,lobby.id,lobby)
+        io.emit("setClientLobby",socket.id,lobbies[lobby.id])
     })
 
     socket.on("joinLobby",(lobbyID,playerID) => {
@@ -456,7 +460,7 @@ io.on('connection', (socket) => {
             onlineAccounts[socket.id].lobby =  lobby.id;
             onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
             io.emit("updateLobbies", lobbies, "joining", lobby,socket.id);
-            io.emit("setClientLobby",socket.id,lobby.id,lobby)
+            io.emit("setClientLobby",socket.id,lobby)
         }
     })
     socket.on("startGame", () =>{

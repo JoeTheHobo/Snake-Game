@@ -28,9 +28,9 @@ socket.on("setPlayer", (id) =>{
     localAccount.isInGame = false;
     localAccount.lobbyID = false;
 });
-socket.on("setClientLobby",(socketID,lobbyID,lobby) => {
+socket.on("setClientLobby",(socketID,lobby) => {
     if (socketID !== localAccount.id) return;
-    localAccount.lobbyID = lobbyID;
+    localAccount.lobbyID = lobby.id;
     setScene("waiting", lobby);
 })
 socket.on("updateLobbies", (backEndLobbies,isPlayerJoining, lobby,playerID) =>{

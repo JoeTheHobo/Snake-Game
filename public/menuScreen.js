@@ -17,9 +17,10 @@ function loadServersHTML() {
 
         let boardCanvas = server_holder.create("canvas");
         boardCanvas.className = "server_canvas";
+        drawBoardToCanvas(server.board.originalMap,boardCanvas,true)
+        
         let column = server_holder.create("div");
         column.className = "server_column";
-
 
         let boardName = column.create("div");
         boardName.className = "server_board_name";
@@ -35,7 +36,7 @@ function loadServersHTML() {
 
         let activePlayers = server_holder.create("div");
         activePlayers.className = "server_active_players";
-        activePlayers.innerHTML = server.playerCount + "/" + server.playerMax; 
+        activePlayers.innerHTML = server.players.length + "/" + server.playerMax; 
 
         let boardAuthor = server_holder.create("div");
         boardAuthor.className = "server_board_author";
@@ -58,13 +59,10 @@ function loadServerCreation() {
 
 
     let lobby = {
-        players: [localAccount.id],
         board: boards[0],
         host: localAccount.id,
         gameMode: gameModes[0],
         playerMax: 8,
-        playerCount: 1,
-        id: Date.now() + "_" + rnd(5000),
     }
     updateLobbyToServer(lobby);  
 
