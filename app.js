@@ -409,9 +409,8 @@ io.on('connection', (socket) => {
                 if (lobby.activePlayers[i].accountID === socket.id) lobbies[onlineAccounts[socket.id].lobby].activePlayers.splice(i,1); 
             }
             for (let i = 0; i < lobby.players.length; i++) {
-                if (lobby.players[i].id === socket.id) lobbies[onlineAccounts[socket.id].lobby].players.splice(i,1); 
+                if (lobby.players[i] === socket.id) lobbies[onlineAccounts[socket.id].lobby].players.splice(i,1); 
             }
-            console.log("Lobby Length",lobby.players)
             if (lobby.players.length < 1) {
                 delete lobbies[lobby.id];
                 io.emit("updateLobbies", lobbies);
