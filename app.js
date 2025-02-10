@@ -886,16 +886,11 @@ function useItem(lobby,player) {
     player.items[player.selectingItem] = "empty";
 }
 function specialItemManager(lobby) {
-    let specialItemIteration = lobby.specialItemIteration;
-    let specialItemActiveChance = lobby.specialItemActiveChance;
     let currentGameMode = lobby.gameMode;
-    let specialItemLowChance = lobby.specialItemLowChance;
-    let specialItemHighChance = lobby.specialItemHighChance;
 
-    console.log(specialItemIteration,specialItemActiveChance);
-    if (specialItemIteration >= specialItemActiveChance) {
-        specialItemIteration = 0;
-        lobby.specialItemActiveChance = rnd(specialItemLowChance,specialItemHighChance);
+    if (lobby.specialItemIteration >= lobby.specialItemActiveChance) {
+        lobby.specialItemIteration = 0;
+        lobby.specialItemActiveChance = rnd(lobby.specialItemLowChance,lobby.specialItemHighChance);
         // Calculate the total weight
         let totalWeight = 0;
         for (let i = 0; i < currentGameMode.items.length; i++) {
