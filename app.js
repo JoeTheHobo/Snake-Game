@@ -439,7 +439,7 @@ io.on('connection', (socket) => {
             lobby.players.push(playerID);
             onlineAccounts[socket.id].lobby =  lobby.id;
             onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
-            io.emit("updateLobbies", lobbies, "joining", lobby);
+            io.emit("updateLobbies", lobbies, "joining", lobby,socket.id);
         }
     })
     socket.on("startGame", () =>{

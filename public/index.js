@@ -74,7 +74,8 @@ socket.on("setPlayer", (id, backendAccounts) =>{
 
 });
 
-socket.on("updateLobbies", (backEndLobbies,isPlayerJoining, lobby) =>{
+socket.on("updateLobbies", (backEndLobbies,isPlayerJoining, lobby,playerID) =>{
+    if (playerID !== localAccount.id) return;
     frontEndLobbies = backEndLobbies;
     loadServersHTML();
     if (isPlayerJoining) setScene("waiting", lobby);
