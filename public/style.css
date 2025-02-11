@@ -1540,8 +1540,7 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  padding: 20px;
+  width: 90%;
 }
 .playercard_inventory_row {
   display: flex;
@@ -1556,7 +1555,7 @@ html {
   aspect-ratio: 1/1;
 }
 .playercard_invetory_slot_selected {
-  border: 3px solid white !important;
+  border: 3px solid rgb(46, 153, 224) !important;
 
 }
 .playercard_inventory_image {
