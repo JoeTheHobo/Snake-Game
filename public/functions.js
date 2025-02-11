@@ -1249,10 +1249,18 @@ function generatePlayerCards(players) {
             position: "absolute",
             width: cardWidth + "px",
             height: cardHeight + "px",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: `cover`,
-            background: `url('img/status/playerCard_${findPlayersTeam(player)}_${cardDirection}.png')`,
         })
+
+        let backgroundImage = playerCard.create("img");
+        backgroundImage.src = `url('img/status/playerCard_${findPlayersTeam(player)}_${cardDirection}.png')`,
+        backgroundImage.css({
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            left: 0,
+            top: 0,
+        })
+
 
     }
 }
