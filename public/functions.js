@@ -1252,7 +1252,7 @@ function generatePlayerCards(players) {
         })
 
         let backgroundImage = playerCard.create("img");
-        backgroundImage.src = `url('img/status/playerCard_${findPlayersTeam(player)}_${cardDirection}.png')`,
+        backgroundImage.src = `img/status/playerCard_${findPlayersTeam(player)}_${cardDirection}.png`,
         backgroundImage.css({
             width: "100%",
             height: "100%",
