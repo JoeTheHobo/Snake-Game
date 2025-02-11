@@ -11,6 +11,7 @@ const localAccount = {
     player: false,
     updateSnakeCells: [],
     updateCells: [],
+    players: [],
     startTime: false,
 };
 let gameType = "local";

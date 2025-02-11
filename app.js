@@ -656,6 +656,10 @@ io.on('connection', (socket) => {
         io.emit("playersBeenMade",onlineAccounts[socket.id].players);
     })
     socket.on("localSendingPlayers",(players) => {
+        if (!players) {
+            console.log("Tried Sending: " + players)
+            return;
+        }
         let checksOut = true;
         for (let i = 0; i < players.length; i++) {
             if (checkPlayer(players[i]),socket.id !== true) checksOut = checkPlayer(players[i]);
