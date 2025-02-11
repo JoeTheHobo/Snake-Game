@@ -1261,9 +1261,9 @@ function generatePlayerCards(players) {
         let leftStats = playerCard.create("div");
         leftStats.className = "playercard_leftStats";
         leftStats.style.marginLeft = "14%";
-        leftStats.style.width = "20%";
+        leftStats.style.width = "35%";
         leftStats.style.marginTop = 0.00734186746 + "%";
-        leftStats.style.height = "90%";
+        leftStats.style.height = "85%";
 
         let playerName = leftStats.create("div");
         playerName.innerHTML = player.name;
