@@ -58,8 +58,11 @@ function loadServerCreation() {
     //let holder = $(".content_servers");
     //holder.innerHTML = "";
 
+    let board = boards[Number(prompt("Board: "))];
+    board.map = [];
+
     let lobby = {
-        board: JSON.stringify(boards[Number(prompt("Board: "))]),
+        board: JSON.stringify(board),
         host: localAccount.id,
         gameMode: gameModes[0],
         playerMax: 8,
