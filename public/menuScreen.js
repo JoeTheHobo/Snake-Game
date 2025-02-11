@@ -541,7 +541,7 @@ function loadCustomizeSnakeScreen(index = false) {
                 ]
             ],
             {type: "title",text: "Danger Zone"},
-            {type: "delete", delete: players,deleteLoad: loadCustomizeSnakeScreen}
+            {type: "delete", delete: localAccount.players,deleteLoad: loadCustomizeSnakeScreen}
         ]
     )
 }
