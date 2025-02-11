@@ -1519,7 +1519,7 @@ html {
   flex-direction: row;
   align-items: baseline;
   justify-content: space-evenly;
-
+  width: 100%;
 }
 .playercard_playerImgHolder {
   width: 40%;
@@ -1539,6 +1539,7 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 .playercard_inventory_row {
   display: flex;
