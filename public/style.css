@@ -1573,14 +1573,15 @@ html {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin: 5px;
 }
 .greenCircle {
-  width: 20px;
-  height: 20px;
+  width: 17px;
+  height: 17px;
   border-radius: 50px;
   background: rgb(74, 221, 74);
 }
 .servers_online_text {
   font-size: 25px;
-  color: black;
+  color: white;
 }
