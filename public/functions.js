@@ -1349,7 +1349,7 @@ function updatePlayerCard(player,whatToUpdate = "all") {
     for (let i = 0; i < player.items.length; i++) {
         let image = cardHolder.$("slot_" + i).$(".playercard_inventory_image");
         if (!player.items[i]) {
-            image.src = "#";
+            image.src = "img/backgrounds/clear.png";
             continue;
         }
 
