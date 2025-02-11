@@ -1581,7 +1581,7 @@ function checkPlayer(player,socketID) {
     if (Number(player.color3) < 0) return "color3-1";
     if (Number(player.color3) > 200) return "color3-2";
 
-    if (player.accountID !== socketID) return "socketId-1"
+    if (player.accountID !== socketID) return "socketId-1" + player.accountID + "," + socketID;
 
     return true;
 }
