@@ -1334,7 +1334,7 @@ function generatePlayerCards(players) {
 }
 function updatePlayerCard(player,whatToUpdate = "all") {
     if (!player) return;
-    
+
     let cardHolder = $("playercard_" + player.name +"_"+ player.id);
 
     if (whatToUpdate == "all" || whatToUpdate == "team") cardHolder.$("playercard_teamImg").src = `img/status/playerCard_${findPlayersTeam(player)}_${cardHolder.direction}.png`;
@@ -1349,7 +1349,7 @@ function updatePlayerCard(player,whatToUpdate = "all") {
     for (let i = 0; i < player.items.length; i++) {
         let image = cardHolder.$("slot_" + i).$(".playercard_inventory_image");
         if (!player.items[i]) {
-            image.src = "";
+            image.src = "#";
             continue;
         }
 
