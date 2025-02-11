@@ -37,10 +37,11 @@ socket.on("setClientLobby",(socketID,lobby) => {
     localAccount.lobbyID = lobby.id;
     setScene("waiting", lobby);
 })
-socket.on("updateLobbies", (backEndLobbies,isPlayerJoining, lobby,playerID) =>{
+socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     if (playerID) if (playerID !== localAccount.id) return;
     frontEndLobbies = backEndLobbies;
     loadServersHTML();
+    $(".servers_online_text").innerHTML = onlineCount;
 })
 socket.on("startingGame", (lobby) => {
     console.log(localAccount.lobbyID,lobby.id);

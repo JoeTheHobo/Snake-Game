@@ -359,7 +359,7 @@ io.on('connection', (socket) => {
         boards: [],
         lobby: false,
     }
-    io.emit("updateLobbies", lobbies);
+    io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
     io.emit('setPlayer', socket.id, onlineAccounts[socket.id]);
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
@@ -387,7 +387,7 @@ io.on('connection', (socket) => {
             }
             if (lobby.players.length < 1) {
                 delete lobbies[lobby.id];
-                io.emit("updateLobbies", lobbies);
+                io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
             }
         }
         
@@ -409,7 +409,7 @@ io.on('connection', (socket) => {
         onlineAccounts[socket.id].lobby = lobbies[lobby.id].id;
         onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
 
-        io.emit("updateLobbies", lobbies);
+        io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
         io.emit("setClientLobby",socket.id,lobbies[lobby.id])
     })
 
@@ -424,13 +424,13 @@ io.on('connection', (socket) => {
             lobby.players.push(playerID);
             onlineAccounts[socket.id].lobby =  lobby.id;
             onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
-            io.emit("updateLobbies", lobbies, "joining", lobby,socket.id);
+            io.emit("updateLobbies", lobbies, Object.keys(onlineAccounts).length, lobby,socket.id);
             io.emit("setClientLobby",socket.id,lobby)
         }
     })
     socket.on("refreshLobbies",(playerID) => {
         if (playerID !== socket.id) return;
-        io.emit("updateLobbies", lobbies);
+        io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
     })
     socket.on("startGame", () =>{
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -615,7 +615,7 @@ io.on('connection', (socket) => {
 
                 //Temporary
                 delete lobbies[lobby.id];
-                io.emit("updateLobbies", lobbies);
+                io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
                 //end Temp
             }
         }
