@@ -1244,8 +1244,12 @@ function generatePlayerCards(players) {
         } else {
             playerCard.style.right = 0;
         }
+        let cardWidth = ((window.innerWidth - canvas_background.width) / 2);
+        let cardHeight = ((cardWidth*2432)/5312);
         playerCard.css({
             position: "absolute",
+            width: cardWidth + "px",
+            height: cardHeight + "px",
         })
 
     }
