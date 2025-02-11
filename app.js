@@ -348,8 +348,6 @@ const lobbies = {};
 const onlineAccounts = {};
 
 
-
-
 io.on('connection', (socket) => {
     console.log('a user connected');
     onlineAccounts[socket.id] = {
@@ -403,7 +401,7 @@ io.on('connection', (socket) => {
 
         let id = Date.now() + "_" + rnd(5000);
         lobbies[id] = lobby;
-        lobbies[id].board = JSON.parse(lobbies[id].board);
+        lobbies[id].board = fixBoard(JSON.parse(lobbies[id].board));
         lobbies[id].id = id;
         lobbies[id].hostID = socket.id;
         lobbies[id].players = [socket.id];
@@ -1583,4 +1581,46 @@ function checkPlayer(player,socketID) {
     if (player.accountID !== socketID) return "socketId-1" + player.accountID + "," + socketID;
 
     return true;
+}
+
+function fixBoard(oldBoard) {
+    if (_type(oldBoard.originalMap[0][0]).type !== "array") return oldBoard;
+
+    let board = structuredClone(oldBoard);
+    board.map = [];
+
+    board.originalMap = decompressMap(board.originalMap);
+
+    return board;
+}
+function decompressMap(map) {
+    let _newMap = [];
+    for (let i = 0; i < map.length; i++) {
+        let row = [];
+
+        let _tiles = [];
+        let _items = [];
+
+        for (let j = 0; j < map[i][0].length; j++) {
+            for (let k = 0; k < map[i][0][j][1]; k++) {
+                _tiles.push(map[i][0][j][0]);
+            }
+        }
+        for (let j = 0; j < map[i][1].length; j++) {
+            for (let k = 0; k < map[i][1][j][1]; k++) {
+                _items.push(map[i][1][j][0]);
+            }
+        }
+
+        for (let j = 0; j < _tiles.length; j++) {
+            row.push({
+                mouseOver: false,
+                tile: getByID(_tiles[j],tiles),
+                item: getByID(_items[j],items),
+            })
+        }
+
+        _newMap.push(row);
+    }
+    return _newMap;
 }

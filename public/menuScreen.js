@@ -58,8 +58,7 @@ function loadServerCreation() {
     //let holder = $(".content_servers");
     //holder.innerHTML = "";
 
-    let board = boards[Number(prompt("Board: "))];
-    board.map = [];
+    let board = shortenBoard(boards[Number(prompt("Board: "))]);
 
     let lobby = {
         board: JSON.stringify(board),
