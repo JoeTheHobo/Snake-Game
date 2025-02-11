@@ -628,193 +628,6 @@ function pauseGame(displayPopup = true) {
     if (displayPopup) html.show("flex");
     
 }
-function drawPlayerBox(player) {
-    let index = player.index;
-    if ($("card" + index)) $("card" + index).remove();
-
-    let itemBoxHolderSize = 50;
-    if (cameraFollowPlayer) {
-        itemBoxHolderSize+=15;
-    }
-    let borderSize = 2;
-    if (cameraFollowPlayer) borderSize = 4;
-    let cardWidth;
-    cardWidth = currentGameMode.howManyItemsCanPlayersUse * itemBoxHolderSize;
-    if (cameraFollowPlayer) cardWidth += ((borderSize)*currentGameMode.howManyItemsCanPlayersUse);
-    if (currentGameMode.howManyItemsCanPlayersUse > 5) {
-        cardWidth = (index == 4 || index == 7) ? currentGameMode.howManyItemsCanPlayersUse*itemBoxHolderSize : 5 * itemBoxHolderSize;
-    }
-
-
-    let card = $("playerCardsHolder").create("div");
-    card.id = "card" + index;
-    card.css({
-        display: "flex",
-        width: cardWidth,
-        height: "max-content",
-        background: "#444",
-        flexDirection: "column",
-        position: "absolute",
-        zIndex: 500,
-    })
-
-    let itemBoxesHolder = card.create("div");
-    itemBoxesHolder.css({
-        width: "100%",
-        background: "black",
-        
-    })
-
-
-    for (let i = 0; i < currentGameMode.howManyItemsCanPlayersUse; i++) {
-        let itemHolder = itemBoxesHolder.create("div");
-
-        let borderColor = borderSize + "px solid black";
-        if (currentGameMode.mode_whenInventoryFullWhereDoItemsGo == "recycle" && player.whenInventoryIsFullInsertItemsAt == i && !player.items.includes("empty")) borderColor = borderSize + "px solid blue";  
-        if (player.selectingItem == i && currentGameMode.mode_usingItemType !== "direct") borderColor = borderSize + "px solid gold";
-
-
-        itemHolder.css({
-            width: itemBoxHolderSize - 4,
-            height: itemBoxHolderSize - 4,
-            border: borderColor,
-            background: "white",
-            display: "inline-block",
-        })
-
-        if (player.items[i] !== "empty") {
-            let img = itemHolder.create("img");
-            img.src = "img/" + player.items[i].img;
-            img.css({
-                width: "100%",
-                height: "100%",
-            })
-        }
-    }
-    if (!cameraFollowPlayer) {
-        let playerImageHolder = card.create("div");
-        playerImageHolder.css({
-            position: "absolute",
-            left: 0,
-            right: 0,
-            bottom: "-" + (itemBoxHolderSize/1.1) + "px",
-            marginLeft: "auto",
-            marginRight: "auto",
-            background: player.isDead ? "red" : "white",
-            border: "3px solid black",
-            borderRadius: "50px",
-            width: itemBoxHolderSize + "px",
-            height: itemBoxHolderSize + "px",
-        })
-        let playerImage = playerImageHolder.create("img");
-        playerImage.src = "img/snakeHead.png";
-        playerImage.css({
-            width: "100%",
-            height: "100%",
-            filter: `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`,
-        })
-    }
-    
-
-    let cardTop = "", cardLeft = "", cardRight = "", cardBottom = "";
-    let statusTop = "", statusLeft = "", statusRight = "", statusBottom = "", statusFlex = "column";
-    //Set Card Position
-    if (cameraFollowPlayer) index = 7;
-    switch(index) {
-        case 0 :
-            cardTop = 5;
-            cardLeft = 5;
-            statusTop = 5;
-            statusLeft = card.offsetWidth;
-            break;
-        case 1:
-            cardTop = 5;
-            cardRight = 5;
-            statusTop = 5;
-            statusRight = card.offsetWidth;
-            break;
-        case 2:
-            cardBottom = 5 + (itemBoxHolderSize* 0.9);
-            cardLeft = 5;
-            statusTop = 5;
-            statusLeft = card.offsetWidth;
-            break;
-        case 3:
-            cardBottom = 5 + (itemBoxHolderSize* 0.9);
-            cardRight = 5;
-            statusTop = 5;
-            statusRight = card.offsetWidth;
-            break;
-        case 4:
-            cardTop = 5;
-            cardLeft = (window.innerWidth / 2) - (card.offsetWidth/2);
-            statusFlex = "row";
-            statusTop = 5 + itemBoxHolderSize;
-            statusLeft = 5;
-            break;
-        case 5:
-            cardTop = (window.innerHeight / 2) - (card.offsetHeight/2);
-            cardLeft = 5;
-            statusTop = 5;
-            statusLeft = card.offsetWidth;
-            break;
-        case 6:
-            cardTop = (window.innerHeight / 2) - (card.offsetHeight/2);
-            cardRight = 5;
-            statusTop = 5;
-            statusRight = card.offsetWidth;
-            break;
-        case 7:
-            cardBottom = 5 + (itemBoxHolderSize* 0.9) - (cameraFollowPlayer ? (itemBoxHolderSize* 0.9) : 0);
-            cardLeft = (window.innerWidth / 2) - (card.offsetWidth/2);
-            statusFlex = "row";
-            statusTop = 5 + itemBoxHolderSize;
-            statusLeft = 5;
-            break;
-    }
-    card.css({
-        top: cardTop,
-        left: cardLeft,
-        right: cardRight,
-        bottom: cardBottom,
-    })
-
-    let statusHolder = card.create("div");
-    statusHolder.css({
-        position: "absolute",
-        width: "100px",
-        display: "flex",
-        flexDirection: statusFlex,
-        top: statusTop,
-        left: statusLeft,
-        bottom: statusBottom,
-        right: statusRight,
-    })
-
-    let length = statusHolder.create("div");
-    length.css({
-        fontSize: "20px",
-    })
-    length.innerHTML = "Size: " + (player.tail.length + 1); 
-
-    for (let i = 0; i < player.status.length; i++) {
-        if (player.status[i].subset(0,6) == "status_") {
-            let statusImage = statusHolder.create("img");
-            statusImage.src = "img/status/status_team_" + player.status[i].subset("_\\after","end") + ".png";
-            statusImage.css({
-                width: "20px",
-            })
-            continue;
-        }
-
-        let statusImage = statusHolder.create("img");
-        statusImage.src = "img/" + getRealItem(player.status[i]).img;
-        statusImage.css({
-            width: "20px",
-        })
-    }
-}
-
 function createBoard(name,width,height) {
     width = Number(width);
     height = Number(height);
@@ -1403,4 +1216,226 @@ function respawnPlayer(player,growthPercentage) {
     spawn(player);
     growPlayer(player,length);
     drawPlayerBox(player);
+}
+
+
+function generatePlayerCards(players) {
+    let playerCardsHolder = $("playerCardsHolder");
+    playerCardsHolder.innerHTML = "";
+    for (let i = 0; i < players.length; i++) {
+        let player = players[i];
+        let playerCard = playerCardsHolder.create("div");
+        playerCard.id = "playercard_" + player.name +"_"+ player.id;
+
+        let cardDirection;
+        let isLeft;
+        if (i < 4) {
+            cardDirection = "left";
+            isLeft = true;
+        } else {
+            cardDirection = "right";
+            isLeft = false;
+        }
+
+
+        playerCard.style.background = `url('img/status/playerCard_${findPlayersTeam(player)}_${cardDirection}')`;
+        if (isLeft) {
+            playerCard.style.left = 0;
+        } else {
+            playerCard.style.right = 0;
+        }
+        playerCard.css({
+            position: "absolute",
+        })
+
+    }
+}
+function updatePlayerCard() {
+
+}
+function drawPlayerBox(player) {
+    let index = player.index;
+    if ($("card" + index)) $("card" + index).remove();
+
+    let itemBoxHolderSize = 50;
+    if (cameraFollowPlayer) {
+        itemBoxHolderSize+=15;
+    }
+    let borderSize = 2;
+    if (cameraFollowPlayer) borderSize = 4;
+    let cardWidth;
+    cardWidth = currentGameMode.howManyItemsCanPlayersUse * itemBoxHolderSize;
+    if (cameraFollowPlayer) cardWidth += ((borderSize)*currentGameMode.howManyItemsCanPlayersUse);
+    if (currentGameMode.howManyItemsCanPlayersUse > 5) {
+        cardWidth = (index == 4 || index == 7) ? currentGameMode.howManyItemsCanPlayersUse*itemBoxHolderSize : 5 * itemBoxHolderSize;
+    }
+
+
+    let card = $("playerCardsHolder").create("div");
+    card.id = "card" + index;
+    card.css({
+        display: "flex",
+        width: cardWidth,
+        height: "max-content",
+        background: "#444",
+        flexDirection: "column",
+        position: "absolute",
+        zIndex: 500,
+    })
+
+    let itemBoxesHolder = card.create("div");
+    itemBoxesHolder.css({
+        width: "100%",
+        background: "black",
+        
+    })
+
+
+    for (let i = 0; i < currentGameMode.howManyItemsCanPlayersUse; i++) {
+        let itemHolder = itemBoxesHolder.create("div");
+
+        let borderColor = borderSize + "px solid black";
+        if (currentGameMode.mode_whenInventoryFullWhereDoItemsGo == "recycle" && player.whenInventoryIsFullInsertItemsAt == i && !player.items.includes("empty")) borderColor = borderSize + "px solid blue";  
+        if (player.selectingItem == i && currentGameMode.mode_usingItemType !== "direct") borderColor = borderSize + "px solid gold";
+
+
+        itemHolder.css({
+            width: itemBoxHolderSize - 4,
+            height: itemBoxHolderSize - 4,
+            border: borderColor,
+            background: "white",
+            display: "inline-block",
+        })
+
+        if (player.items[i] !== "empty") {
+            let img = itemHolder.create("img");
+            img.src = "img/" + player.items[i].img;
+            img.css({
+                width: "100%",
+                height: "100%",
+            })
+        }
+    }
+    if (!cameraFollowPlayer) {
+        let playerImageHolder = card.create("div");
+        playerImageHolder.css({
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: "-" + (itemBoxHolderSize/1.1) + "px",
+            marginLeft: "auto",
+            marginRight: "auto",
+            background: player.isDead ? "red" : "white",
+            border: "3px solid black",
+            borderRadius: "50px",
+            width: itemBoxHolderSize + "px",
+            height: itemBoxHolderSize + "px",
+        })
+        let playerImage = playerImageHolder.create("img");
+        playerImage.src = "img/snakeHead.png";
+        playerImage.css({
+            width: "100%",
+            height: "100%",
+            filter: `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`,
+        })
+    }
+    
+
+    let cardTop = "", cardLeft = "", cardRight = "", cardBottom = "";
+    let statusTop = "", statusLeft = "", statusRight = "", statusBottom = "", statusFlex = "column";
+    //Set Card Position
+    if (cameraFollowPlayer) index = 7;
+    switch(index) {
+        case 0 :
+            cardTop = 5;
+            cardLeft = 5;
+            statusTop = 5;
+            statusLeft = card.offsetWidth;
+            break;
+        case 1:
+            cardTop = 5;
+            cardRight = 5;
+            statusTop = 5;
+            statusRight = card.offsetWidth;
+            break;
+        case 2:
+            cardBottom = 5 + (itemBoxHolderSize* 0.9);
+            cardLeft = 5;
+            statusTop = 5;
+            statusLeft = card.offsetWidth;
+            break;
+        case 3:
+            cardBottom = 5 + (itemBoxHolderSize* 0.9);
+            cardRight = 5;
+            statusTop = 5;
+            statusRight = card.offsetWidth;
+            break;
+        case 4:
+            cardTop = 5;
+            cardLeft = (window.innerWidth / 2) - (card.offsetWidth/2);
+            statusFlex = "row";
+            statusTop = 5 + itemBoxHolderSize;
+            statusLeft = 5;
+            break;
+        case 5:
+            cardTop = (window.innerHeight / 2) - (card.offsetHeight/2);
+            cardLeft = 5;
+            statusTop = 5;
+            statusLeft = card.offsetWidth;
+            break;
+        case 6:
+            cardTop = (window.innerHeight / 2) - (card.offsetHeight/2);
+            cardRight = 5;
+            statusTop = 5;
+            statusRight = card.offsetWidth;
+            break;
+        case 7:
+            cardBottom = 5 + (itemBoxHolderSize* 0.9) - (cameraFollowPlayer ? (itemBoxHolderSize* 0.9) : 0);
+            cardLeft = (window.innerWidth / 2) - (card.offsetWidth/2);
+            statusFlex = "row";
+            statusTop = 5 + itemBoxHolderSize;
+            statusLeft = 5;
+            break;
+    }
+    card.css({
+        top: cardTop,
+        left: cardLeft,
+        right: cardRight,
+        bottom: cardBottom,
+    })
+
+    let statusHolder = card.create("div");
+    statusHolder.css({
+        position: "absolute",
+        width: "100px",
+        display: "flex",
+        flexDirection: statusFlex,
+        top: statusTop,
+        left: statusLeft,
+        bottom: statusBottom,
+        right: statusRight,
+    })
+
+    let length = statusHolder.create("div");
+    length.css({
+        fontSize: "20px",
+    })
+    length.innerHTML = "Size: " + (player.tail.length + 1); 
+
+    for (let i = 0; i < player.status.length; i++) {
+        if (player.status[i].subset(0,6) == "status_") {
+            let statusImage = statusHolder.create("img");
+            statusImage.src = "img/status/status_team_" + player.status[i].subset("_\\after","end") + ".png";
+            statusImage.css({
+                width: "20px",
+            })
+            continue;
+        }
+
+        let statusImage = statusHolder.create("img");
+        statusImage.src = "img/" + getRealItem(player.status[i]).img;
+        statusImage.css({
+            width: "20px",
+        })
+    }
 }
