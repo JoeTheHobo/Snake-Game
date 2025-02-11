@@ -1353,6 +1353,8 @@ function updatePlayerCard(player,whatToUpdate = "all") {
             continue;
         }
 
+        console.log(player.items[i]);
+
         let item = player.items[i];
 
         if (item.baseImg) {
