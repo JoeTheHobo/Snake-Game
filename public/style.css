@@ -1568,3 +1568,19 @@ html {
   width: 100%;
   height: 100%;
 }
+
+.servers_online_holder {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.greenCircle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50px;
+  background: rgb(74, 221, 74);
+}
+.servers_online_text {
+  font-size: 25px;
+  color: black;
+}
