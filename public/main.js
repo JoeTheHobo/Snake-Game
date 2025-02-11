@@ -511,7 +511,7 @@ function movePlayers() {
                         y: playerY,
                         direction: player.moving,
                     });
-                    //drawPlayerBox(player); //REALLY LAGGY We should Update that specific part of their card.
+                    updatePlayerCard(player,"size");
                     player.growTail--;
                     if (player.tail.length > player.longestTail) player.longestTail = player.tail.length;
                 } else if(player.tail.length > 0) {
@@ -582,7 +582,7 @@ function testItemUnderPlayer(player) {
         findingEmptyItemSlot: for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
             if (player.items[k] == "empty") {
                 player.items[k] = mapItem;
-                drawPlayerBox(player)
+                updatePlayerCard(player)
                 pickedUpItem = true;
                 break findingEmptyItemSlot;
             }
@@ -596,7 +596,7 @@ function testItemUnderPlayer(player) {
                 player.whenInventoryIsFullInsertItemsAt++;
                 if (player.whenInventoryIsFullInsertItemsAt > player.items.length-1) player.whenInventoryIsFullInsertItemsAt = 0;
             }
-            drawPlayerBox(player)
+            updatePlayerCard(player)
         }
     } else if (mapItem.canEat == true) {
         runItemFunction(player,mapItem,"onEat");
@@ -923,7 +923,7 @@ function deletePlayer(player,playerWhoKilled,item,instaKill = false){
         //Delete Player
         player.isDead = true;
         player.justDied = true;
-        drawPlayerBox(player)
+        updatePlayerCard(player)
 
         if (!currentGameMode.respawn) {
             player.timeSurvived = timer;
@@ -979,7 +979,7 @@ function removePlayerStatus(player,itemName) {
             }
         }
     }
-    drawPlayerBox(player);
+    updatePlayerCard(player,"team");
 }
 function addPlayerStatus(player,itemName) {
     if (itemName.subset(0,5) == "status") {
@@ -988,7 +988,7 @@ function addPlayerStatus(player,itemName) {
     } else {
         player.status.push(getItem(itemName).name);
     }
-    drawPlayerBox(player);
+    updatePlayerCard(player,"team");
 }
 function removeBoardStatus(status,player) {
     if (status == "*P") status = "P" + player.index;
@@ -1019,7 +1019,7 @@ document.body.on("click",function() {
         useItem(player);
     }
 
-    drawPlayerBox(player);
+    updatePlayerCard(player);
 })
 document.body.on("wheel",function(e) {
     if (!isActiveGame) return;
@@ -1043,7 +1043,7 @@ document.body.on("wheel",function(e) {
     if (player.selectingItem < 0) player.selectingItem = currentGameMode.howManyItemsCanPlayersUse-1;
     if (player.selectingItem > currentGameMode.howManyItemsCanPlayersUse-1) player.selectingItem = 0;
     
-    drawPlayerBox(player);
+    updatePlayerCard(player);
 })
 document.body.onkeydown = function(e) {
     console.log(1)
@@ -1109,7 +1109,7 @@ document.body.onkeydown = function(e) {
                     player.selectingItem = 0;
                     useItem(player);
                 }
-                drawPlayerBox(player);
+                updatePlayerCard(player);
             }
             if (e.key == player.useItem2) {
                 if (currentGameMode.mode_usingItemType == "scroll") {
@@ -1120,7 +1120,7 @@ document.body.onkeydown = function(e) {
                     player.selectingItem = 1;
                     useItem(player);
                 }
-                drawPlayerBox(player);
+                updatePlayerCard(player);
             }
             if (e.key == player.fireItem) {
                 if (currentGameMode.mode_usingItemType == "scroll") {
@@ -1128,7 +1128,7 @@ document.body.onkeydown = function(e) {
                         useItem(player);
                     }
                 }
-                drawPlayerBox(player);
+                updatePlayerCard(player);
             }
         }
     }
@@ -1166,7 +1166,6 @@ document.body.onkeydown = function(e) {
                 activePlayer.selectingItem = 0;
                 useItem(activePlayer);
             }
-            drawPlayerBox(activePlayer);
         }
         if (e.key == activePlayer.useItem2) {
             if (currentGameMode.mode_usingItemType == "scroll") {
@@ -1178,7 +1177,6 @@ document.body.onkeydown = function(e) {
                 activePlayer.selectingItem = 1;
                 useItem(activePlayer);
             }
-            drawPlayerBox(activePlayer);
         }
         if (e.key == activePlayer.fireItem) {
             if (currentGameMode.mode_usingItemType == "scroll") {
@@ -1187,7 +1185,6 @@ document.body.onkeydown = function(e) {
                     socket.emit("fireItem");
                 }
             }
-            drawPlayerBox(activePlayer);
         }
     }
     
@@ -1354,7 +1351,7 @@ function startGame(solo = false) {
             y: false,
         }
         //Draw Player's Card
-        drawPlayerBox(player);
+        updatePlayerCard(player);
         //Spawn Players
     }
 

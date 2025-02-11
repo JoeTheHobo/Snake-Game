@@ -180,15 +180,7 @@ html {
   
 }
 
-#playerCardsHolder {
-  visibility: hidden;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 500;
-}
+
 
 .endGamePopup,.pauseGamePopup {
   position: absolute;
@@ -1485,4 +1477,84 @@ html {
 
 .hideContent {
   display: none;
+}
+
+
+
+
+
+#playerCardsHolder {
+  visibility: hidden;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 500;
+  pointer-events: none;
+}
+.playercard_holder {
+  position: absolute;
+}
+.playercard_background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.playercard_leftStats {
+  border: 1px solid gold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.playercard_text {
+  font-size: 20px;
+  color: black;
+}
+.playercard_left_row1 {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-evenly;
+
+}
+.playercard_playerImgHolder {
+  width: 40%;
+  aspect-ratio: 1/1;
+  border: 3px solid black;
+}
+.playercard_playerImg {
+  width: 100%;
+  height: 100%;
+}
+.playercard_left1_col_size {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.playercard_inventory {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.playercard_inventory_row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  flex-grow: 1;
+}
+.playercard_inventory_slot {
+  flex-grow: 1;
+  border: 3px solid black;
+}
+.playercard_invetory_slot_selected {
+  border: 3px solid white !important;
+
+}
+.playercard_inventory_image {
+  width: 100%;
+  height: 100%;
 }

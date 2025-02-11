@@ -1555,6 +1555,7 @@ function newPlayer(socketID) {
         whenInventoryIsFullInsertItemsAt: 0,
         moveTik: 0,
         moveSpeed: 6,
+        selectingItem: 0,
         longestTail: 0,
         timeSurvived: 0,
         turboDuration: 0,
