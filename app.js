@@ -656,17 +656,22 @@ io.on('connection', (socket) => {
         io.emit("playersBeenMade",onlineAccounts[socket.id].players);
     })
     socket.on("localSendingPlayers",(players) => {
+        console.log("saving",1)
         if (!players) {
             console.log("Tried Sending: " + players)
             return;
         }
+        console.log("saving",2)
         let checksOut = true;
         for (let i = 0; i < players.length; i++) {
             if (checkPlayer(players[i],socket.id) !== true) checksOut = checkPlayer(players[i],socket.id);
         }
+        console.log("saving",3)
         if (checksOut === true) {
+            console.log("saving",4)
             onlineAccounts[socket.id].players = players;
         } else {
+            console.log("saving",5)
             onlineAccounts[socket.id].kickPlayer = true;
             io.emit("kickPlayer",socket.id,"Hacked Players: " + checksOut + " [Code: 7834]");
         }
