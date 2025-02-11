@@ -1624,3 +1624,13 @@ function decompressMap(map) {
     }
     return _newMap;
 }
+function getByID(id,type) {
+    let toReturn = false;
+    searching: for (let i = 0; i < type.length; i++) {
+        if (type[i].id === id) {
+            toReturn = type[i];
+            break searching;
+        }
+    }
+    return toReturn;
+}
