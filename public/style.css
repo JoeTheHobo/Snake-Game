@@ -1529,6 +1529,7 @@ html {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  margin-top: 2px;
 }
 .playercard_left1_col_size {
   display: flex;
@@ -1540,7 +1541,7 @@ html {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 5px;
+  padding: 20px;
 }
 .playercard_inventory_row {
   display: flex;
