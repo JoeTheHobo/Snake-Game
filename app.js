@@ -404,6 +404,7 @@ io.on('connection', (socket) => {
         let id = Date.now() + "_" + rnd(5000);
 
         lobbies[id] = lobby;
+        lobbies[id].board = JSON.parse(lobbies[id].board);
         lobbies[id].id = id;
         lobbies[id].hostID = socket.id;
         lobbies[id].players = [socket.id];

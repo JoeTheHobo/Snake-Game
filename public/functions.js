@@ -1245,7 +1245,10 @@ function generatePlayerCards(players) {
         }
         let cardWidth = ((window.innerWidth - canvas_background.width) / 2);
         let cardHeight = ((cardWidth*2432)/5312);
+
+        let topPosition = i * (cardHeight + ((window.innerHeight-(cardHeight*4))/4));
         playerCard.css({
+            top: topPosition + "px",
             position: "absolute",
             width: cardWidth + "px",
             height: cardHeight + "px",
