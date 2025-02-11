@@ -656,17 +656,22 @@ io.on('connection', (socket) => {
         io.emit("playersBeenMade",onlineAccounts[socket.id].players);
     })
     socket.on("localSendingPlayers",(players) => {
+        console.log(1,"Starting Save Proccess");
         if (!players) {
             console.log("Tried Sending: " + players)
             return;
         }
+        console.log(2,"Proccessing");
         let checksOut = true;
         for (let i = 0; i < players.length; i++) {
             if (checkPlayer(players[i]),socket.id !== true) checksOut = checkPlayer(players[i]);
         }
+        console.log(3,"Proccessing");
         if (checksOut === true) {
+            console.log(4,"Proccessing");
             onlineAccounts[socket.id].players = players;
         } else {
+            console.log(-4,"Proccessing");
             onlineAccounts[socket.id].kickPlayer = true;
             io.emit("kickPlayer","Hacked Players: " + checksOut + " [Code: 7834]");
         }
