@@ -1238,7 +1238,6 @@ function generatePlayerCards(players) {
         }
 
 
-        playerCard.style.background = `url('img/status/playerCard_${findPlayersTeam(player)}_${cardDirection}.png')`;
         if (isLeft) {
             playerCard.style.left = 0;
         } else {
@@ -1250,6 +1249,9 @@ function generatePlayerCards(players) {
             position: "absolute",
             width: cardWidth + "px",
             height: cardHeight + "px",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: `${cardWidth}px ${cardHeight}px`,
+            background: `url('img/status/playerCard_${findPlayersTeam(player)}_${cardDirection}.png')`,
         })
 
     }
