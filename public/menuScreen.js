@@ -791,7 +791,7 @@ function loadLocalScreen() {
     }
 
     loadContent(boardHolder,boards,"boards");
-    loadContent(snakesHolder,players,"snakes");
+    loadContent(snakesHolder,localAccount.players,"snakes");
     loadContent(gameModesHolder,gameModes,"gameModes");
 }
 
