@@ -1238,7 +1238,7 @@ function generatePlayerCards(players) {
         }
 
 
-        playerCard.style.background = `url('img/status/playerCard_${findPlayersTeam(player)}_${cardDirection}')`;
+        playerCard.style.background = `url('img/status/playerCard_${findPlayersTeam(player)}_${cardDirection}.png')`;
         if (isLeft) {
             playerCard.style.left = 0;
         } else {
