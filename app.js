@@ -362,7 +362,7 @@ io.on('connection', (socket) => {
         lobby: false,
     }
     io.emit("updateLobbies", lobbies);
-    io.emit('setPlayer', socket.id, onlineAccounts);
+    io.emit('setPlayer', socket.id, onlineAccounts[socket.id]);
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
