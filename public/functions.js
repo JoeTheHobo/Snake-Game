@@ -11,11 +11,7 @@ let updateCells = [];
 let updateSnakeCells = [];
 
 let activePlayers;
-let activePlayerCount = ls.get("activePlayerCount",[]);
-if (activePlayerCount.length == 0) {
-    players[0].active = true;
-    activePlayerCount = [players[0]];
-}
+let activePlayerCount = [];
 //End Players
 
 
