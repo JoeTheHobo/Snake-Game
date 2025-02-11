@@ -596,7 +596,7 @@ io.on('connection', (socket) => {
 
 
             if (!this.gameEnd) {
-                setTimeout(() => this.gameLoop(), 120);
+                setTimeout(() => this.gameLoop(), 60);
             } else {
                 this.isActiveGame = false;
 
@@ -1387,9 +1387,10 @@ function server_movePlayers(lobby) {
         let player = activePlayers[i];
         
         if (player.isDead) continue;
-        // if ((player.moveTik*1/*lobby.deltaTime*/) < (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
-        //     player.moveTik++;
-        // }
+        if ((player.moveTik*1/*lobby.deltaTime*/) < (1/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
+            player.moveTik++;
+            continue;
+        }
 
         if (player.turboActive == true) {
             player.turboDuration --;
