@@ -1550,12 +1550,18 @@ html {
   flex-grow: 1;
 }
 .playercard_inventory_slot {
-  flex-grow: 1;
+  flex: 1 1 0px; /* Prevent shrinking */
+  min-width: 0;  /* Ensures flex items shrink properly */
+  min-height: 0; 
   border: 3px solid black;
   aspect-ratio: 1/1;
+  display: flex; /* Ensures image fills the slot */
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Ensures image doesn't affect layout */
 }
 .playercard_invetory_slot_selected {
-  border: 3px solid rgb(46, 153, 224) !important;
+  border: 3px solid gold !important;
 
 }
 .playercard_inventory_image {
