@@ -118,6 +118,10 @@ items.push({
             duration: 50,
             moveSpeed: 3,
         },
+        turboServer: {
+            duration: 50,
+            moveSpeed: 0,
+        },
         addStatus: ["turbo"],
 
         growPlayer: 0,

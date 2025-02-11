@@ -380,7 +380,7 @@ io.on('connection', (socket) => {
             accountID: socket.id,
             whenInventoryIsFullInsertItemsAt: 0,
             moveTik: 0,
-            moveSpeed: 6,
+            moveSpeed: 1,
             longestTail: 0,
             timeSurvived: 0,
             turboDuration: 0,
@@ -527,7 +527,7 @@ io.on('connection', (socket) => {
             player.moveQueue = [];
             player.prevMove = "start";
             player.moveTik = 0;
-            player.moveSpeed = 6;
+            player.moveSpeed = 1;
             player.turboDuration = 0;
             player.turboActive = false;
             player.shield = 0;
@@ -1284,10 +1284,10 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         }
     }
     if (collision.giveturbo) {
-        if (collision.turbo.duration && collision.turbo.moveSpeed) {
+        if (collision.turboServer.duration && collision.turboServer.moveSpeed) {
             player.turboActive = true;
-            player.turboDuration = collision.turbo.duration;
-            player.moveSpeed = collision.turbo.moveSpeed;
+            player.turboDuration = collision.turboServer.duration;
+            player.moveSpeed = collision.turboServer.moveSpeed;
         }
     }
     if (collision.addStatus) {
@@ -1387,7 +1387,7 @@ function server_movePlayers(lobby) {
         let player = activePlayers[i];
         
         if (player.isDead) continue;
-        if ((player.moveTik*1/*lobby.deltaTime*/) < (1/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
+        if ((player.moveTik*1/*lobby.deltaTime*/) < (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             player.moveTik++;
             continue;
         }
@@ -1397,7 +1397,7 @@ function server_movePlayers(lobby) {
             if (player.turboDuration <= 0) {
                 player.turboActive = false;
                 removePlayerStatus(lobby,player,"turbo");
-                player.moveSpeed = 6;
+                player.moveSpeed = 1;
             }
         }
         player.moveTik = 0
