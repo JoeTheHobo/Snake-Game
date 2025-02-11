@@ -1505,7 +1505,7 @@ html {
   z-index: -1;
 }
 .playercard_leftStats {
-  border: 1px solid gold;
+  border: 3px solid gold;
   display: flex;
   flex-direction: column;
   align-items: center;
