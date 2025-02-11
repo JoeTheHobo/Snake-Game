@@ -662,7 +662,7 @@ io.on('connection', (socket) => {
         }
         let checksOut = true;
         for (let i = 0; i < players.length; i++) {
-            if (checkPlayer(players[i]),socket.id !== true) checksOut = checkPlayer(players[i]);
+            if (checkPlayer(players[i],socket.id) !== true) checksOut = checkPlayer(players[i],socket.id);
         }
         if (checksOut === true) {
             onlineAccounts[socket.id].players = players;
