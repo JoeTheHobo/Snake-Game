@@ -1283,8 +1283,11 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             }
         }
     }
+    console.log(1)
     if (collision.giveturbo) {
-        if (collision.turboServer.duration && collision.turboServer.moveSpeed) {
+        console.log(2)
+        if (collision.turboServer.duration && _type(collision.turboServer.moveSpeed).type == "number") {
+            console.log(3,collision.turboServer.moveSpeed)
             player.turboActive = true;
             player.turboDuration = collision.turboServer.duration;
             player.moveSpeed = collision.turboServer.moveSpeed;
@@ -1387,12 +1390,10 @@ function server_movePlayers(lobby) {
         let player = activePlayers[i];
         
         if (player.isDead) continue;
-        console.log(player.moveTik,player.moveSpeed,player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed);
         if ((player.moveTik*1/*lobby.deltaTime*/) < (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             player.moveTik++;
             continue;
         }
-        console.log("passed")
 
         if (player.turboActive == true) {
             player.turboDuration --;
