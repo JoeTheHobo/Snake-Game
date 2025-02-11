@@ -491,12 +491,11 @@ function loadCustomizeSnakeScreen(index = false) {
     $("snake_tab").classAdd("menu_tab_selected");
     generateHTMLScreen($(".content_snake"),
         {
-            list: players,
+            list: localAccount.players,
             forceOpen: index,
             listContent: [{type: "image",src: "snakeHead.png", filter: "player",tag: "image"},{type: "title",text: ".name",tag: "name"}],
             top: [{type: "button",text: "New Snake",onClick: function() {
-                newPlayer();
-                loadCustomizeSnakeScreen(players.length-1);
+                getAndLoadNewPlayer();
             }}],
         },
         [
@@ -639,9 +638,7 @@ function loadBoardsScreen(index = false) {
 }
 
 
-function savePlayers() {
-    ls.save("players",players);
-}
+
 
 
 function loadLocalScreen() {

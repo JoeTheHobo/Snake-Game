@@ -10,21 +10,6 @@ let showPerformance = false;
 let updateCells = [];
 let updateSnakeCells = [];
 
-//Players
-let playerNames1 = [
-    "Squabbling", "Terrifying", "Witty", "Sassy", "Mysterious",
-    "Jolly", "Spunky", "Clumsy", "Grumpy", "Cheeky",
-    "Funky", "Zesty", "Breezy", "Quirky", "Snarky",
-    "Boisterous", "Goofy", "Rambunctious", "Vivacious", "Frolicking"
-];
-let playerNames2 = [
-    "Cheesecake", "Martian", "Taco", "Wombat", "Penguin",
-    "Sasquatch", "Narwhal", "Donut", "Giraffe", "Unicorn",
-    "Robot", "Ostrich", "Dragon", "Platypus", "Sloth",
-    "Cactus", "Llama", "Cupcake", "Blobfish", "Banana"
-];
-let players = ls.get("players",[]);
-if (players.length == 0) newPlayer();
 let activePlayers;
 let activePlayerCount = ls.get("activePlayerCount",[]);
 if (activePlayerCount.length == 0) {
@@ -93,8 +78,6 @@ for (let i = 0; i < gameModes.length; i++) {
 
 let currentGameMode = gameModes[activeGameMode];
 
-
-let gs_playerCount = players.length > 0 ? players.length : 1;
 let circleWalls = true;
 let specialItemLowChance = 1;
 let specialItemHighChance = 6;
@@ -481,51 +464,7 @@ function getTile(name) {
         }
     }
 }
-function newPlayer() {
-    let gameCrashed = false;
-    if (gameCrashed) {
-        console.log("Game Crashed")
-        return;
-    }
-    
-    let player = {
-        downKey: "s",
-        upKey: "w",
-        leftKey: "a",
-        rightKey: "d",
-        useItem1: "q",
-        useItem2: "e",
-        fireItem: "r",
-        name: playerNames1.rnd() + playerNames2.rnd(),
-        color: rnd(360), //Hue
-        color2: 0, //Brightness
-        color3: 100, //Contrast
-        moving: false,
-        growTail: 0,
-        isDead: false,
-        pos: {
-            x: 0,
-            y: 0, 
-        },
-        tail: [],
-        moveQueue: [],
-        prevMove: "start",
-        id: Date.now(),
-        whenInventoryIsFullInsertItemsAt: 0,
-        moveTik: 0,
-        moveSpeed: 6,
-        longestTail: 0,
-        timeSurvived: 0,
-        turboDuration: 0,
-        turboActive: false,
-        shield: 0,
-        items: [],
-        status: [],
-        active: false, 
-    }
-    players.push(player);
-    ls.save("players",players);
-}
+
 function spawn(name,generateRandomItem = true,counting = false,playAudio = true) {
     let isPlayer = name.isPlayer;
     let itemIndex = false;
@@ -685,11 +624,6 @@ function setScene(scene,lobby) {
     }
 }
 
-if (players.length == 0) {
-    for (let i = 0; i < gs_playerCount; i++){
-        newPlayer(i);
-    }
-}
 
 
 function pauseGame(displayPopup = true) {

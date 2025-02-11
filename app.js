@@ -354,42 +354,7 @@ io.on('connection', (socket) => {
     console.log('a user connected');
     onlineAccounts[socket.id] = {
         id: socket.id,
-        players: [ {
-            downKey: "s",
-            upKey: "w",
-            leftKey: "a",
-            rightKey: "d",
-            useItem1: "q",
-            useItem2: "e",
-            fireItem: "r",
-            name: playerNames1.rnd() + playerNames2.rnd(),
-            color: rnd(360), //Hue
-            color2: 0, //Brightness
-            color3: 100, //Contrast
-            moving: false,
-            growTail: 0,
-            isDead: false,
-            pos: {
-                x: 0,
-                y: 0, 
-            },
-            tail: [],
-            moveQueue: [],
-            prevMove: "start",
-            id: Date.now(),
-            accountID: socket.id,
-            whenInventoryIsFullInsertItemsAt: 0,
-            moveTik: 0,
-            moveSpeed: 1,
-            longestTail: 0,
-            timeSurvived: 0,
-            turboDuration: 0,
-            turboActive: false,
-            shield: 0,
-            items: [],
-            status: [],
-            active: false, 
-        }],
+        players: [ newPlayer(socket.id) ],
         selectedPlayerIndex: 0,
         player: false,
         gameModes: [],
@@ -470,6 +435,7 @@ io.on('connection', (socket) => {
     socket.on("startGame", () =>{
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (lobby.hostID !== socket.id) {
+            onlineAccounts[socket.id].kickPlayer = true;
             socket.emit("kickPlayer","Caught Hacking [Code: 001]");
         }
         console.log("Server Started")
@@ -681,6 +647,25 @@ io.on('connection', (socket) => {
         player.selectingItem += change;
         if (player.selectingItem < 0) player.selectingItem = currentGameMode.howManyItemsCanPlayersUse-1;
         if (player.selectingItem > currentGameMode.howManyItemsCanPlayersUse-1) player.selectingItem = 0;
+    })
+
+
+    //Menu
+    socket.on("createNewPlayer",() => {
+        onlineAccounts[socket.id].players.push(newPlayer());
+        io.emit("playersBeenMade",onlineAccounts[socket.id].players);
+    })
+    socket.on("localSendingPlayers",(players) => {
+        let checksOut = true;
+        for (let i = 0; i < players.length; i++) {
+            if (checkPlayer(players[i]),socket.id !== true) checksOut = checkPlayer(players[i]);
+        }
+        if (checksOut === true) {
+            onlineAccounts[socket.id].players = players;
+        } else {
+            onlineAccounts[socket.id].kickPlayer = true;
+            io.emit("kickPlayer","Hacked Players: " + checksOut + " [Code: 7834]");
+        }
     })
     console.log(Object.keys(onlineAccounts).length);
 });
@@ -1538,4 +1523,61 @@ function server_movePlayers(lobby) {
             player.moving = playerOldMoving;
         }
     }
+}
+
+
+//Players Menu
+function newPlayer(socketID) {
+    return {
+        downKey: "s",
+        upKey: "w",
+        leftKey: "a",
+        rightKey: "d",
+        useItem1: "q",
+        useItem2: "e",
+        fireItem: "r",
+        name: playerNames1.rnd() + playerNames2.rnd(),
+        color: rnd(360), //Hue
+        color2: 0, //Brightness
+        color3: 100, //Contrast
+        moving: false,
+        growTail: 0,
+        isDead: false,
+        pos: {
+            x: 0,
+            y: 0, 
+        },
+        tail: [],
+        moveQueue: [],
+        prevMove: "start",
+        id: Date.now(),
+        whenInventoryIsFullInsertItemsAt: 0,
+        moveTik: 0,
+        moveSpeed: 6,
+        longestTail: 0,
+        timeSurvived: 0,
+        turboDuration: 0,
+        turboActive: false,
+        shield: 0,
+        items: [],
+        status: [],
+        active: false, 
+        accountID: socketID,
+    }
+
+}
+function checkPlayer(player,socketID) {
+    if (player.name == "") return "name-1";
+    if (player.name.length > 20) return "name-2";
+    
+    if (Number(player.color) < 0) return "color-1";
+    if (Number(player.color) > 360) return "color-2";
+    if (Number(player.color2) < 0) return "color2-1";
+    if (Number(player.color2) > 100) return "color2-2";
+    if (Number(player.color3) < 0) return "color3-1";
+    if (Number(player.color3) > 200) return "color3-2";
+
+    if (player.accountID !== socketID) return "socketId-1"
+
+    return true;
 }

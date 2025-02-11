@@ -22,11 +22,14 @@ socket.on("kickPlayer",(playerID,message) => {
 
 })
 
-socket.on("setPlayer", (id) =>{
+socket.on("setPlayer", (id,account) =>{
     if (localAccount.id !== false) return;
     localAccount.id = id;
     localAccount.isInGame = false;
     localAccount.lobbyID = false;
+    localAccount.players = account.players;
+    localAccount.boards = account.boards;
+    localAccount.gameModes = account.gameModes;
 });
 socket.on("setClientLobby",(socketID,lobby) => {
     if (socketID !== localAccount.id) return;
@@ -179,3 +182,16 @@ function getCurrentBoard() {
 function server_movePlayers() {
     socket.emit("movePlayer");
 }
+
+//
+function getAndLoadNewPlayer() {
+    socket.emit("createNewPlayer");
+}
+socket.on("playersBeenMade",(players) => {
+    localAccount.players = players;
+    loadCustomizeSnakeScreen(players.length-1);
+})
+function savePlayers() {
+    socket.emit("localSendingPlayers",localAccount.players);
+}
+//
