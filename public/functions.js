@@ -1282,7 +1282,7 @@ function generatePlayerCards(players) {
         let sizeCol = leftStatsRow1.create("div");
         sizeCol.className = "playercard_left1_col_size";
         let sizeTitle = sizeCol.create("div");
-        sizeTitle.innerHTML = player.name;
+        sizeTitle.innerHTML = "Size";
         sizeTitle.className = "playercard_text";
         let sizeText = sizeCol.create("div");
         sizeText.className = "playercard_text";
@@ -1348,12 +1348,11 @@ function updatePlayerCard(player,whatToUpdate = "all") {
 
     for (let i = 0; i < player.items.length; i++) {
         let image = cardHolder.$("slot_" + i).$(".playercard_inventory_image");
-        if (!player.items[i]) {
+        if (player.items[i] == "empty") {
             image.src = "img/backgrounds/clear.png";
             continue;
         }
 
-        console.log(player.items[i]);
 
         let item = player.items[i];
 
