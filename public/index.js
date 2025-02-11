@@ -193,7 +193,6 @@ socket.on("playersBeenMade",(players) => {
     loadCustomizeSnakeScreen(players.length-1);
 })
 function savePlayers() {
-    console.log("attempting Save")
     socket.emit("localSendingPlayers",localAccount.players);
 }
 //
