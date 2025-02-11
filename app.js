@@ -367,7 +367,7 @@ io.on('connection', (socket) => {
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
         console.log("A user disconnected due to " + reason);
-        if (onlineAccounts[socket.id].lobby) {
+        if (onlineAccounts[socket.id].lobby && onlineAccounts[socket.id].lobby.activePlayers) {
             let lobby = lobbies[onlineAccounts[socket.id].lobby];
             for (let i = 0; i < lobby.activePlayers.length; i++) {
                 if (lobby.activePlayers[i].accountID === socket.id) {
@@ -1274,11 +1274,8 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             }
         }
     }
-    console.log(1)
     if (collision.giveturbo) {
-        console.log(2)
         if (collision.turboServer.duration && _type(collision.turboServer.moveSpeed).type == "number") {
-            console.log(3,collision.turboServer.moveSpeed)
             player.turboActive = true;
             player.turboDuration = collision.turboServer.duration;
             player.moveSpeed = collision.turboServer.moveSpeed;
