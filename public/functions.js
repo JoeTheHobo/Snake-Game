@@ -1260,10 +1260,10 @@ function generatePlayerCards(players) {
 
         let leftStats = playerCard.create("div");
         leftStats.className = "playercard_leftStats";
-        leftStats.style.marginLeft = (22.5084745763) + "%";
+        leftStats.style.marginLeft = (23.5084745763) + "%";
         leftStats.style.width = (cardWidth/11.4978354978) + "px";
         leftStats.style.marginTop = 0.00734186746 + "%";
-        leftStats.style.height = (cardHeight/9.67577413479) + "px";
+        leftStats.style.height = (cardHeight/7.67577413479) + "px";
 
         let playerName = leftStats.create("div");
         playerName.innerHTML = player.name;
@@ -1275,7 +1275,8 @@ function generatePlayerCards(players) {
         let playerImgHolder = leftStatsRow1.create("div");
         playerImgHolder.className = "playercard_playerImgHolder";
         let playerImg = playerImgHolder.create("img");
-        playerImg.src = "";
+        playerImg.src = "img/snakeHead.png";
+        playerImg.style.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
         playerImg.className = "playercard_playerImg";
         playerImg.id = "playercard_img";
 
