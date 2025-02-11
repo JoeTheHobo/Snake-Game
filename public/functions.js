@@ -1250,7 +1250,7 @@ function generatePlayerCards(players) {
             width: cardWidth + "px",
             height: cardHeight + "px",
             backgroundRepeat: "no-repeat",
-            backgroundSize: `${cardWidth}px ${cardHeight}px`,
+            backgroundSize: `cover`,
             background: `url('img/status/playerCard_${findPlayersTeam(player)}_${cardDirection}.png')`,
         })
 
