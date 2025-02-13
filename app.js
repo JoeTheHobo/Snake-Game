@@ -359,6 +359,7 @@ io.on('connection', (socket) => {
         boards: [],
         lobby: false,
         username: "Guest#" + rnd(5000),
+        chatNameColor: rnd("color"),
     }
     let lobbyList = {};
     for (const lobby in lobbies) {
@@ -520,6 +521,7 @@ io.on('connection', (socket) => {
         lobby.chats.push({
             message: message,
             account: account,
+            color: onlineAccounts[socket.id].chatNameColor,
         })
 
         io.emit("updateLobbyPage",lobby);

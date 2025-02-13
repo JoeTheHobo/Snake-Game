@@ -1443,8 +1443,11 @@ function updateLobbyPage(lobby) {
     for (let i = 0; i < lobby.chats.length; i++) {
         let holder = chatHolder.create("div");
         holder.className = "lobby_chatHolder";
-        let name = lobby.chats[i].account === null ? "" : lobby.chats[i].account + ": " ;
-        holder.innerHTML = name + lobby.chats[i].message;
+        let name = holder.create("div");
+        name.innerHTML = lobby.chats[i].account === null ? "" : lobby.chats[i].account + ": " ;
+        name.style.color = lobby.chats[i].color || "white";
+        let text = holder.create("div");
+        text.innerHTML = lobby.chats[i].message;
         if (name === "") holder.style.color = "#696969";
         else holder.style.color = "white";
     }
