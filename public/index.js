@@ -173,7 +173,7 @@ function chooseCodePopUp(code) {
             {type: "input", id:"code", value:code, placeholder: "Type A Code", width: "200px"},
         ],
         
-        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "white",text:"Done",onClick: (ids) => {
+        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "black",text:"Done",onClick: (ids) => {
             const {code} = ids;
             if (code.value == "") return;
 
