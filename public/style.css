@@ -1741,7 +1741,8 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: end;
-  
+  align-items: end;
+  overflow-y: scroll;
 }
 .sc_chat_input {
   width: 100%;
@@ -1809,7 +1810,7 @@ html {
 
 .lobby_chatHolder {
   width: 100%;
-  font-size: 15px;
+  font-size: 17px;
 }
 
 .lobbyPlayerCard {
