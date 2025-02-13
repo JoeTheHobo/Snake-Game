@@ -40,6 +40,10 @@ socket.on("setClientLobby",(socketID,lobby) => {
     socket.emit("requestUpdateLobbyPage");
     $(".menu_serverScreen").show("flex");
 })
+socket.on("updateLobbyPage",(lobby) => {
+    updateLobbyPage(lobby);
+
+})
 socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     if (playerID) if (playerID !== localAccount.id) return;
     frontEndLobbies = backEndLobbies;
