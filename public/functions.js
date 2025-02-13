@@ -1375,13 +1375,11 @@ function updateLobbyPage(lobby) {
     
     $(".sc_tb_lobbyName").innerHTML = lobby.hostName + "'s Lobby";
     
-    $(".sc_boards_canvas").css({
-        width: "95%",
-        aspectratio: "1920/1080",
-    })
+    /*
     $(".sc_boards_canvas").width = $(".sc_boards_canvas").clientWidth;
     $(".sc_boards_canvas").height = $(".sc_boards_canvas").clientHeight; 
     drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);
+    */
 
     $("sc_boards_boardName").innerHTML = "Board: " + lobby.board.name;
 
@@ -1410,8 +1408,7 @@ function updateLobbyPage(lobby) {
             image.src = src;
 
             if (filter) {
-                console.log(filter)
-                image.filter = `hue-rotate(${filter.color}deg) sepia(${filter.color2}%) contrast(${filter.color3}%)`
+                image.style.filter = `hue-rotate(${filter.color}deg) sepia(${filter.color2}%) contrast(${filter.color3}%)`
             }
 
         }
