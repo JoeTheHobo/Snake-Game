@@ -1115,7 +1115,6 @@ function drawBoardToCanvas(board,canvas,forceHeight) {
                     for (let i = 0; i < cell.item.baseImgTags.length; i++) {
                         image += getBaseImgFromTag(cell.item,cell.item.baseImgTags[i])
                     }
-                    console.log(image)
                     image = getItemCanvas(image);
                 } else {
                     image = getItemCanvas(cell.item.name);
@@ -1458,4 +1457,57 @@ function updateLobbyPage(lobby) {
         $(".sc_boards_canvas").height = $(".sc_boards_canvas").clientHeight; 
         drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);
     },1)
+}
+function generateBoardsPopup(type) {
+    let parent = $(".cbp_boardsList");
+
+    parent.innerHTML = "";
+
+    function generateBoard(parent,board) {
+        let holder = parent.create("div");
+        holder.className = "cbp_board_holder";
+
+        let canvas = holder.create("canvas");
+        canvas.className = "cbp_board_canvas";
+        setTimeout(function() {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            drawBoardToCanvas(board.originalMap,canvas,true);
+        },1)
+        
+
+        let title = holder.create("div");
+        title.className = "cbp_board_title";
+        title.innerHTML = board.name;
+
+        holder.board = board;
+        holder.on("click",function() {
+            $(".chooseBoardPopup").hide();
+            $(".chooseBoardPopup").func(this.board);
+        })
+    }
+
+    for (let i = 0; i < boards.length; i++) {
+        let board = boards[i];
+        if (type == "preset" && board.cantEdit) generateBoard(parent,board);
+        if (type == "personal" && !board.cantEdit) generateBoard(parent,board);
+    }
+}
+$(".cbp_cancel").on("click",function() {
+    $(".chooseBoardPopup").hide();
+})
+$(".cbp_tab").on("click",function() {
+    selectTabInBoardMenu(this.innerHTML.subset(0," \\before").toLowerCase());
+})
+function selectTabInBoardMenu(tab) {
+    $(".cbp_tab").classRemove("cbp_tab_selected");
+    $("cbp_" + tab).classAdd("cbp_tab_selected");
+
+    generateBoardsPopup(tab);
+
+}
+function showBoardMenu(func) {
+    selectTabInBoardMenu("personal");
+    $(".chooseBoardPopup").func = func;
+    $(".chooseBoardPopup").show("flex");
 }

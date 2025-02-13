@@ -138,3 +138,8 @@ $(".sc_chat_input").on("keydown",function(e) {
         this.value = "";
     }
 })
+$(".sc_chooseboard").on("click",function() {
+    showBoardMenu(function() {
+        
+    }) 
+})
