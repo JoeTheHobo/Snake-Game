@@ -1410,7 +1410,7 @@ function updateLobbyPage(lobby) {
             image.src = src;
 
             if (filter) {
-                console.log(image.filter)
+                console.log(filter)
                 image.filter = `hue-rotate(${filter.color}deg) sepia(${filter.color2}%) contrast(${filter.color3}%)`
             }
 
