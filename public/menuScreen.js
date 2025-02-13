@@ -13,7 +13,7 @@ function loadServersHTML() {
         if (!server.id) continue;
         let server_holder = holder.create("div");
         server_holder.classAdd("server_holder");
-        if (serverSelected.id == serverSelected) server_holder.classAdd("serverSelected");
+        if (server.id == serverSelected.id) server_holder.classAdd("serverSelected");
 
         let boardCanvas = server_holder.create("canvas");
         boardCanvas.className = "server_canvas";
@@ -44,11 +44,11 @@ function loadServersHTML() {
         boardAuthor.className = "server_board_author";
         boardAuthor.innerHTML = "Board Created By: " + (server.board.author || "4ChanLoverXX");
         
-        server_holder.serverID = server.id;
+        server_holder.server = server;
         server_holder.on("click",function() {
             $(".server_holder").classRemove("serverSelected");
             this.classAdd("serverSelected");
-            serverSelected = this.serverID;
+            serverSelected = this.server;
             $("joinServer").classRemove("servers_button_inactive");
         })
     }

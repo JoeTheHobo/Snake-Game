@@ -1446,6 +1446,7 @@ function updateLobbyPage(lobby) {
         let name = holder.create("div");
         name.innerHTML = lobby.chats[i].account === null ? "" : lobby.chats[i].account + ": " ;
         name.style.color = lobby.chats[i].color || "white";
+        name.style.marginRight = "5px";
         let text = holder.create("div");
         text.innerHTML = lobby.chats[i].message;
         if (name === "") holder.style.color = "#696969";

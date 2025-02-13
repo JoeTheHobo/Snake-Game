@@ -91,7 +91,27 @@ $("refreshServers").on("click",function() {
     server_refreshLobby();
 })
 $("joinServer").on("click",function() {
-    server_joinLobby(serverSelected);
+    if (!serverSelected) return;
+    if (serverSelected.serverType == "Private") {
+        makePopUp([
+            {type: "title",text: "What Is The Lobby Code?"},
+            [
+                {type: "input", id:"code", value:"", placeholder: "Type A Code", width: "200px"},
+            ],
+            
+            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "black",text:"Join Server",onClick: (ids) => {
+                const {code} = ids;
+                socket.emit("joinLobby",lobby,localAccount.id,code.value);
+            }},
+        ],{
+            exit: {
+                cursor: "url('./img/pointer.cur'), auto",
+            },
+            id: "guessCode",
+
+        })
+    } else server_joinLobby(serverSelected.id);
+    
 })
 $("quitServerButton").on("click",function() {
     socket.emit("quitServer");
