@@ -1886,6 +1886,9 @@ html {
   user-select: none;
   cursor: url('./img/pointer.cur'), auto;
 }
+.sdd_dropdown-content:hover {
+  background-color: #838383;
+}
 .sc_tb_dd_option {
 
 }
