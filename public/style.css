@@ -2020,8 +2020,14 @@ html {
   border-radius: 5px;
   background: white;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
+  line-height: 30px;
   font-size: 20px;
-  
+  cursor: url('./img/pointer.cur'), auto;
+  transition: all .2s ease;
+
+}
+.sc_chooseboard:hover {
+  background: rgb(206, 206, 206);
+
 }
