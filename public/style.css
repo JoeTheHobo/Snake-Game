@@ -1590,6 +1590,7 @@ html {
 .servers_online_text {
   font-size: 25px;
   color: white;
+  margin-left: 10px;
 }
 
 .menu_screen {

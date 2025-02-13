@@ -66,9 +66,10 @@ function loadServerCreation() {
         gameMode: gameModes[0],
         playerMax: 8,
     }
-    updateLobbyToServer(lobby);  
-
-    setScene("waiting", lobby);
+    updateLobbyToServer(lobby);
+    $(".menu_screen").hide();
+    $(".menu_serverScreen").show("flex");
+    updateLobbyPage();
 }
 
 function generateHTMLScreen(holder,listObj,contentObj) {

@@ -1364,3 +1364,8 @@ function updatePlayerCard(player,whatToUpdate = "all") {
             image.src = $("item_" + item.name).src;
     }
 }
+
+
+function updateLobbyPage() {
+    
+}
