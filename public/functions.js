@@ -1374,7 +1374,12 @@ function updateLobbyPage(lobby) {
             $("sc_boards_recommendedGameMode").innerHTML = "Recommended Game Mode: " + lobby.board.gameMode.name;
 
             $(".sdd_title").innerHTML = lobby.serverType;
+            
         } else $("sc_boards_recommendedGameMode").hide();
+
+        
+        if (lobby.serverType == "Public") $(".lobbyCode").hide();
+        else $(".lobbyCode").show()
         
     }
     else $(".hostOnly").hide();
