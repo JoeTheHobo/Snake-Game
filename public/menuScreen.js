@@ -67,9 +67,6 @@ function loadServerCreation() {
         playerMax: 8,
     }
     updateLobbyToServer(lobby);
-    $(".menu_screen").hide();
-    $(".menu_serverScreen").show("flex");
-    updateLobbyPage();
 }
 
 function generateHTMLScreen(holder,listObj,contentObj) {

@@ -35,7 +35,9 @@ socket.on("setPlayer", (id,account) =>{
 socket.on("setClientLobby",(socketID,lobby) => {
     if (socketID !== localAccount.id) return;
     localAccount.lobbyID = lobby.id;
-    setScene("waiting", lobby);
+    $(".menu_screen").hide();
+    $(".menu_serverScreen").show("flex");
+    updateLobbyPage();
 })
 socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     if (playerID) if (playerID !== localAccount.id) return;
