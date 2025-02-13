@@ -139,7 +139,7 @@ $(".sc_chat_input").on("keydown",function(e) {
     }
 })
 $(".sc_chooseboard").on("click",function() {
-    showBoardMenu(function() {
-        
+    showBoardMenu(function(board) {
+        io.emit("changeServerBoard",board);
     }) 
 })

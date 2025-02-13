@@ -1507,7 +1507,7 @@ function selectTabInBoardMenu(tab) {
 
 }
 function showBoardMenu(func) {
-    selectTabInBoardMenu("personal");
+    selectTabInBoardMenu("preset");
     $(".chooseBoardPopup").func = func;
     $(".chooseBoardPopup").show("flex");
 }
