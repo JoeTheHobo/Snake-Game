@@ -99,7 +99,5 @@ $("joinServer").on("click",function() {
 $("quitServerButton").on("click",function() {
     socket.emit("quitServer");
     $(".menu_screen").hide();
-    $(".menu_screen").show("flex");
-    
-    server_refreshLobby();
+    $(".menu_menuScreen").show("flex");
 })
