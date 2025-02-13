@@ -104,7 +104,7 @@ $("startServerButton").on("click",function() {
 })
 
 $(".sc_tb_dd_option").on("click",function() {
-    socket.emit("changeLobbyType",this);
+    socket.emit("changeLobbyType",this.innerHTML);
     $(".sdd_title").innerHTML = this.innerHTML;
 })
 $(".lobbyCode").on("click",function() {

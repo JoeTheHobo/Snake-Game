@@ -1843,8 +1843,7 @@ html {
 .serverTypeDropdown {
   position: relative;
   display: inline-block;
-  width: 190px;
-  width: max-content;
+  width: 150px;
   padding-left: 5px;
   padding-right: 5px;
   margin: 5px;

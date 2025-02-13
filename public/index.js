@@ -170,7 +170,7 @@ function chooseCodePopUp(code) {
     makePopUp([
         {type: "title",text: "Set Code"},
         [
-            {type: "input", id:"code", value:oldCode, placeholder: "Type A Code", width: "200px"},
+            {type: "input", id:"code", value:code, placeholder: "Type A Code", width: "200px"},
         ],
         
         {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "white",text:"Done",onClick: (ids) => {
