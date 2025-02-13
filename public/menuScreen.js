@@ -61,7 +61,7 @@ function loadServerCreation() {
     let board = shortenBoard(boards[Number(prompt("Board: "))]);
 
     let lobby = {
-        board: JSON.stringify(board),
+        board: JSON.stringify(boards[0]),
         host: localAccount.id,
         gameMode: gameModes[0],
         playerMax: 8,
