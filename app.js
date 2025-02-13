@@ -395,7 +395,6 @@ io.on('connection', (socket) => {
             for (let i = 0; i < lobby.players.length; i++) {
                 if (lobby.players[i] === socket.id) {
                     lobby.players.splice(i,1); 
-                    lobby.playersNames.splice(i,1); 
                 }
             }
             if (lobby.players.length < 1) {
@@ -436,7 +435,6 @@ io.on('connection', (socket) => {
         lobbies[id].hostID = socket.id;
         lobbies[id].hostName = onlineAccounts[socket.id].username;
         lobbies[id].players = [socket.id];
-        lobbies[id].playersNames = [onlineAccounts[socket.id].username];
         lobbies[id].chats = [{
             account: null,
             message: "Lobby Created",
@@ -445,7 +443,6 @@ io.on('connection', (socket) => {
         lobbies[id].serverType = "Hidden";
         lobbies[id].gameMode = lobby.gameMode;
         lobbies[id].maxPlayers = 8;
-        lobbies[id].hostName = onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex].name;
         onlineAccounts[socket.id].lobby = lobbies[lobby.id].id;
         onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
 
@@ -468,7 +465,6 @@ io.on('connection', (socket) => {
             if (lobby.players[i] == socket.id) {
                 onlineAccounts[socket.id].lobbyID = false;
                 lobby.players.splice(i,1);
-                lobby.playersNames.splice(i,1);
             }
         }
 
@@ -485,7 +481,7 @@ io.on('connection', (socket) => {
         } else {
             if (lobby.hostID == socket.id) {
                 lobby.hostID = lobby.players[0];
-                lobby.hostName = lobby.playersNames[0];
+                lobby.hostName = onlineAccounts[lobby.players[0]].username;
             }
         
             lobby.activePlayers = getPlayersList(lobby.players);
@@ -525,7 +521,6 @@ io.on('connection', (socket) => {
 
         if (lobby.players.length <= lobby.playerMax) {
             lobby.players.push(playerID);
-            lobby.playersNames.push(onlineAccounts[socket.id].username);
             lobby.chats.push({
                 account: null,
                 message: onlineAccounts[socket.id].username + " Joined The Lobby",
@@ -563,7 +558,7 @@ io.on('connection', (socket) => {
         let account;
         for (let i = 0; i < lobby.players.length; i++) {
             if (lobby.players[i] == socket.id) {
-                account = lobby.playersNames[i];
+                account = onlineAccounts[lobby.players[i]].username;
             }
         }
 
