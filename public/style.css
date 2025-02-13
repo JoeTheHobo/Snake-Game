@@ -1738,6 +1738,10 @@ html {
 }
 .sc_chatHolder {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  
 }
 .sc_chat_input {
   width: 100%;
@@ -1805,7 +1809,7 @@ html {
 
 .lobby_chatHolder {
   width: 100%;
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .lobbyPlayerCard {
@@ -1834,9 +1838,6 @@ html {
 
 }
 .lobbyBanIcon {
-
-}
-.lobby_chatHolder {
 
 }
 
