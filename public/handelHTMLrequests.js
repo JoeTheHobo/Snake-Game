@@ -96,3 +96,10 @@ $("refreshServers").on("click",function() {
 $("joinServer").on("click",function() {
     server_joinLobby(serverSelected);
 })
+$("quitServerButton").on("click",function() {
+    socket.emit("quitServer");
+    $(".menu_screen").hide();
+    $(".menu_screen").show("flex");
+    
+    server_refreshLobby();
+})

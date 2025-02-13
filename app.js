@@ -407,6 +407,7 @@ io.on('connection', (socket) => {
         lobbies[id].hostID = socket.id;
         lobbies[id].hostName = onlineAccounts[socket.id].username;
         lobbies[id].players = [socket.id];
+        lobbies[id].playersNames = [onlineAccounts[socket.id].username];
         lobbies[id].chats = [{
             account: null,
             message: "Lobby Created",
@@ -421,6 +422,33 @@ io.on('connection', (socket) => {
         io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
         io.emit("setClientLobby",socket.id,lobbies[lobby.id])
     })
+    socket.on("quitServer",() => {
+        let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        if (!lobby) return;
+
+        for (let i = 0; i < lobby.players.length; i++) {
+            if (lobby.players[i] == socket.id) {
+                onlineAccounts[socket.id].lobbyID = false;
+                lobby.players.splice(i,1);
+                lobby.playersNames.splice(i,1);
+            }
+        }
+
+        if (lobby.players.length == 0) {
+            delete lobbies[lobby.id];
+            io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
+        } else {
+            if (lobby.hostID == socket.id) {
+                lobby.hostID = lobby.players[0];
+                lobby.hostName = lobby.playersNames[0];
+            }
+        
+            lobby.activePlayers = getPlayersList(lobby.players);
+    
+            io.emit("updateLobbyPage",lobby);
+            io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
+        }
+    }) 
     socket.on("requestUpdateLobbyPage",() => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         lobby.activePlayers = getPlayersList(lobby.players);
@@ -436,6 +464,7 @@ io.on('connection', (socket) => {
         if (!lobby) return;
         if (lobby.players.length <= lobby.playerMax) {
             lobby.players.push(playerID);
+            lobby.playersNames.push(onlineAccounts[socket.id].username);
             onlineAccounts[socket.id].lobby =  lobby.id;
             onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
             io.emit("updateLobbies", lobbies, Object.keys(onlineAccounts).length, lobby,socket.id);

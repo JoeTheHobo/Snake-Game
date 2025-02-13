@@ -1367,15 +1367,20 @@ function updatePlayerCard(player,whatToUpdate = "all") {
 
 
 function updateLobbyPage(lobby) {
-    if (localAccount.id == lobby.hostID) $(".hostOnly").show(); 
+    if (localAccount.id == lobby.hostID) {
+        $(".hostOnly").show(); 
+        if (lobby.board.recommendedGameMode) {
+            $("sc_boards_recommendedGameMode").show();
+            $("sc_boards_recommendedGameMode").innerHTML = "Recommended Game Mode: " + lobby.board.gameMode.name;
+        } else $("sc_boards_recommendedGameMode").hide();
+        
+    }
     else $(".hostOnly").hide();
 
     $(".lobbyCode").innerHTML = lobby.code;
     $(".sc_playerCount").innerHTML = `Players (${lobby.players.length}/${lobby.maxPlayers})`;
     
     $(".sc_tb_lobbyName").innerHTML = lobby.hostName + "'s Lobby";
-    
-    
 
     $("sc_boards_boardName").innerHTML = "Board: " + lobby.board.name;
 
