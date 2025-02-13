@@ -1743,6 +1743,7 @@ html {
   justify-content: end;
   align-items: end;
   overflow-y: scroll;
+  height: 100%;
 }
 .sc_chat_input {
   width: 100%;
