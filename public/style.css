@@ -1746,6 +1746,7 @@ html {
   border: none;
   padding-left: 15px;
   height: 27px;
+  color: white;
 }
 .sc_chat_input::placeholder {
   color: white;

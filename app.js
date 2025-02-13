@@ -504,6 +504,26 @@ io.on('connection', (socket) => {
         }
         io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
     })
+    socket.on("sendChat",(message) => {
+        let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        if (!lobby) return;
+        if (lobby.hostID !== socket.id) return;
+        if (message == "") return;
+
+        let account;
+        for (let i = 0; i < lobby.players.length; i++) {
+            if (lobby.players[i] == socket.id) {
+                account = lobby.playersNames[i];
+            }
+        }
+
+        lobby.chats.push({
+            message: message,
+            account: account,
+        })
+
+        io.emit("updateLobbyPage",lobby);
+    })
     socket.on("setCode",(code) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;
