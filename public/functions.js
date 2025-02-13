@@ -1375,11 +1375,7 @@ function updateLobbyPage(lobby) {
     
     $(".sc_tb_lobbyName").innerHTML = lobby.hostName + "'s Lobby";
     
-    /*
-    $(".sc_boards_canvas").width = $(".sc_boards_canvas").clientWidth;
-    $(".sc_boards_canvas").height = $(".sc_boards_canvas").clientHeight; 
-    drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);
-    */
+    
 
     $("sc_boards_boardName").innerHTML = "Board: " + lobby.board.name;
 
@@ -1441,4 +1437,10 @@ function updateLobbyPage(lobby) {
         if (name === "") holder.style.color = "#696969";
         else holder.style.color = "white";
     }
+
+    setTimeout(function() {
+        $(".sc_boards_canvas").width = $(".sc_boards_canvas").clientWidth;
+        $(".sc_boards_canvas").height = $(".sc_boards_canvas").clientHeight; 
+        drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);
+    },1)
 }
