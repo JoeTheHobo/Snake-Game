@@ -360,7 +360,11 @@ io.on('connection', (socket) => {
         lobby: false,
         username: "Guest#" + rnd(5000),
     }
-    io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
+    let lobbyList = {};
+    for (const lobby in lobbies) {
+        if (lobby.serverType !== "Hidden") lobbyList[lobby.id] = lobby;
+    }
+    io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
     io.emit('setPlayer', socket.id, onlineAccounts[socket.id]);
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
@@ -388,7 +392,11 @@ io.on('connection', (socket) => {
             }
             if (lobby.players.length < 1) {
                 delete lobbies[lobby.id];
-                io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
+                let lobbyList = {};
+                for (const lobby in lobbies) {
+                    if (lobby.serverType !== "Hidden") lobbyList[lobby.id] = lobby;
+                }
+                io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
             }
         }
         
@@ -412,7 +420,7 @@ io.on('connection', (socket) => {
             account: null,
             message: "Lobby Created",
         }];
-        lobbies[id].code = "1234";
+        lobbies[id].code = (rnd(1000,5000)) + "";
         lobbies[id].serverType = "Hidden";
         lobbies[id].gameMode = lobby.gameMode;
         lobbies[id].maxPlayers = 8;
@@ -420,7 +428,11 @@ io.on('connection', (socket) => {
         onlineAccounts[socket.id].lobby = lobbies[lobby.id].id;
         onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
 
-        io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
+        let lobbyList = {};
+        for (const lobby in lobbies) {
+            if (lobby.serverType !== "Hidden") lobbyList[lobby.id] = lobby;
+        }
+        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
         io.emit("setClientLobby",socket.id,lobbies[lobby.id])
     })
     socket.on("quitServer",() => {
@@ -437,7 +449,11 @@ io.on('connection', (socket) => {
 
         if (lobby.players.length == 0) {
             delete lobbies[lobby.id];
-            io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
+            let lobbyList = {};
+            for (const lobby in lobbies) {
+                if (lobby.serverType !== "Hidden") lobbyList[lobby.id] = lobby;
+            }
+            io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
         } else {
             if (lobby.hostID == socket.id) {
                 lobby.hostID = lobby.players[0];
@@ -447,7 +463,11 @@ io.on('connection', (socket) => {
             lobby.activePlayers = getPlayersList(lobby.players);
     
             io.emit("updateLobbyPage",lobby);
-            io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
+            let lobbyList = {};
+            for (const lobby in lobbies) {
+                if (lobby.serverType !== "Hidden") lobbyList[lobby.id] = lobby;
+            }
+            io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
         }
     }) 
     socket.on("requestUpdateLobbyPage",() => {
@@ -468,13 +488,21 @@ io.on('connection', (socket) => {
             lobby.playersNames.push(onlineAccounts[socket.id].username);
             onlineAccounts[socket.id].lobby =  lobby.id;
             onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
-            io.emit("updateLobbies", lobbies, Object.keys(onlineAccounts).length, lobby,socket.id);
+            let lobbyList = {};
+            for (const lobby in lobbies) {
+                if (lobby.serverType !== "Hidden") lobbyList[lobby.id] = lobby;
+            }
+            io.emit("updateLobbies", lobbyList, Object.keys(onlineAccounts).length, lobby,socket.id);
             io.emit("setClientLobby",socket.id,lobby)
         }
     })
     socket.on("refreshLobbies",(playerID) => {
         if (playerID !== socket.id) return;
-        io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
+        let lobbyList = {};
+        for (const lobby in lobbies) {
+            if (lobby.serverType !== "Hidden") lobbyList[lobby.id] = lobby;
+        }
+        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
     })
     socket.on("setCode",(code) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -681,7 +709,11 @@ io.on('connection', (socket) => {
 
                 //Temporary
                 delete lobbies[lobby.id];
-                io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
+                let lobbyList = {};
+                for (const lobby in lobbies) {
+                    if (lobby.serverType !== "Hidden") lobbyList[lobby.id] = lobby;
+                }
+                io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
                 //end Temp
             }
         }

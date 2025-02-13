@@ -42,10 +42,11 @@ socket.on("updateLobbyPage",(lobby) => {
     $(".menu_screen").hide();
     updateLobbyPage(lobby);
     $(".menu_serverScreen").show("flex");
-
 })
 socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     if (playerID) if (playerID !== localAccount.id) return;
+    if ($(".content_servers").style.display == "none") return;
+
     frontEndLobbies = backEndLobbies;
     loadServersHTML();
     $(".servers_online_text").innerHTML = onlineCount;
