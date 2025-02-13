@@ -1383,7 +1383,7 @@ function updateLobbyPage(lobby) {
     $(".sc_boards_canvas").height = $(".sc_boards_canvas").clientHeight; 
     drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);
 
-    $(".sc_boards_boardName").innerHTML = "Board: " + lobby.board.name;
+    $("sc_boards_boardName").innerHTML = "Board: " + lobby.board.name;
 
     $(".sc_gmb_gameModeName").innerHMTL = lobby.gameMode.name;
 
@@ -1410,6 +1410,7 @@ function updateLobbyPage(lobby) {
             image.src = src;
 
             if (filter) {
+                console.log(image.filter)
                 image.filter = `hue-rotate(${filter.color}deg) sepia(${filter.color2}%) contrast(${filter.color3}%)`
             }
 

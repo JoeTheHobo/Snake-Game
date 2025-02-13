@@ -1793,6 +1793,7 @@ html {
   flex-direction: column;
   align-items: center;
   height: 50%;
+  width: 100%;
 }
 .joinWaitingRoomButton {
   width: 28.5%;
