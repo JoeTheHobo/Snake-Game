@@ -1366,6 +1366,77 @@ function updatePlayerCard(player,whatToUpdate = "all") {
 }
 
 
-function updateLobbyPage() {
+function updateLobbyPage(lobby) {
+    if (localAccount.id == lobby.hostID) $(".hostOnly").show(); 
+    else $(".hostOnly").hide();
+
+    $(".lobbyCode").innerHTML = lobby.code;
+    $(".sc_playerCount").innerHTML = `Players (${lobby.players.length}/${lobby.maxPlayers})`;
     
+    $(".sc_tb_lobbyName").innerHTML = lobby.hostName + "'s Lobby";
+    
+    $(".sc_boards_canvas").width = $(".sc_boards_canvas").clientWidth;
+    $(".sc_boards_canvas").height = $(".sc_boards_canvas").clientHeight; 
+    drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);
+
+    $(".sc_boards_boardName").innerHTML = "Board: " + lobby.board.name;
+
+    $(".sc_gmb_gameModeName").innerHMTL = lobby.gameMode.name;
+
+    let player;
+    let playersHolder = $(".sc_players_playersList");
+    playersHolder.innerHTML = "";
+    let isHost = lobby.hostID === localAccount.id;
+    for (let i = 0; i < lobby.activePlayers.length; i++) {
+        let isYou = false;
+        if (lobby.activePlayers[i].accountID === localAccount.id)  {
+            player = lobby.activePlayers[i];
+            isYou = true;
+        }
+        let holder = playersHolder.create("div");
+        holder.className = "lobbyPlayerCard";
+
+        if (i % 2 == 0) holder.style.background = "#696969";
+
+        function makeImage(holder,className,src,filter = false) {
+            let imageHolder = holder.create("div");
+            imageHolder.className = className;
+            let image = imageHolder.create("img");
+            image.className = "lobbyImage";
+            image.src = src;
+
+            if (filter) {
+                image.filter = `hue-rotate(${filter.color}deg) sepia(${filter.color2}%) contrast(${filter.color3}%)`
+            }
+
+        }
+        makeImage(holder,"lobbySnakeImageHolder","img/snakeHead.png",lobby.activePlayers[i]);
+
+        let snakeName = holder.create("div");
+        snakeName.className = "lobbySnakeName";
+        snakeName.innerHTML = isYou ? "You" : lobby.activePlayers[i].name;
+        if (lobby.hostID == lobby.activePlayers[i].accountID) snakeName.innerHTML += " (Host)";
+
+        if (isYou) continue;
+
+        let rightContent = holder.create("div");
+        rightContent.className = "lobbyPlayersRight";
+
+        makeImage(rightContent,"lobbyFriendsIcon","img/menuIcons/friend.png");
+        if (isHost) makeImage(rightContent,"lobbyHostIcon","img/menuIcons/makeHost.png");
+        if (isHost) makeImage(rightContent,"lobbyBanIcon","img/menuIcons/banPlayer.png");
+
+    }
+    $(".sc_bb_snakeImg").style.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`; 
+
+    let chatHolder = $(".sc_chatHolder");
+    chatHolder.innerHTML = "";
+    for (let i = 0; i < lobby.chats.length; i++) {
+        let holder = chatHolder.create("div");
+        holder.className = "lobby_chatHolder";
+        let name = lobby.chats[i].account === null ? "" : lobby.chats[i].account;
+        holder.innerHTML = name + ": " + obby.chats.message;
+        if (name === "") holder.style.color = "#696969";
+        else holder.style.color = "white";
+    }
 }

@@ -358,6 +358,7 @@ io.on('connection', (socket) => {
         gameModes: [],
         boards: [],
         lobby: false,
+        username: "Guest#" + rnd(5000),
     }
     io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
     io.emit('setPlayer', socket.id, onlineAccounts[socket.id]);
@@ -404,7 +405,15 @@ io.on('connection', (socket) => {
         lobbies[id].board = fixBoard(JSON.parse(lobbies[id].board));
         lobbies[id].id = id;
         lobbies[id].hostID = socket.id;
+        lobbies[id].hostName = onlineAccounts[socket.id].username;
         lobbies[id].players = [socket.id];
+        lobbies[id].chats = [{
+            account: null,
+            message: "Lobby Created",
+        }];
+        lobbies[id].code = "1234";
+        lobbies[id].gameMode = lobby.gameMode;
+        lobbies[id].maxPlayers = 8;
         lobbies[id].hostName = onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex].name;
         onlineAccounts[socket.id].lobby = lobbies[lobby.id].id;
         onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
@@ -412,7 +421,12 @@ io.on('connection', (socket) => {
         io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
         io.emit("setClientLobby",socket.id,lobbies[lobby.id])
     })
+    socket.on("requestUpdateLobbyPage",() => {
+        let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        lobby.activePlayers = getPlayersList(lobby.players);
 
+        io.emit("updateLobbyPage",lobby);
+    })
     socket.on("joinLobby",(lobbyID,playerID) => {
         if (socket.id !== playerID){
             socket.disconnect();
@@ -461,9 +475,10 @@ io.on('connection', (socket) => {
 
 
         //Resetting Players
-        for (let i = 0; i < lobby.players.length; i++) {
-            if (!onlineAccounts[lobby.players[i]].player) onlineAccounts[lobby.players[i]].player = onlineAccounts[lobby.players[i]].players[onlineAccounts[lobby.players[i]].selectedPlayerIndex]
-            let player = onlineAccounts[lobby.players[i]].player;
+        lobby.activePlayers = getPlayersList(lobby.players);
+
+        for (let i = 0; i < lobby.activePlayers.length; i++) {
+            let player = lobby.activePlayers[i];
             player.isPlayer = true;
             //Ressurect Player
             player.isDead = false;
@@ -507,7 +522,7 @@ io.on('connection', (socket) => {
             //Spawn Players
         }
 
-        lobby.activePlayers = getPlayersList(lobby.players);
+        
 
         getLocations(lobby);
         fixItemDifferences(lobby,lobby.board.map);

@@ -31,13 +31,14 @@ socket.on("setPlayer", (id,account) =>{
     localAccount.players = account.players;
     localAccount.boards = account.boards;
     localAccount.gameModes = account.gameModes;
+    localAccount.username = account.username;
 });
 socket.on("setClientLobby",(socketID,lobby) => {
     if (socketID !== localAccount.id) return;
     localAccount.lobbyID = lobby.id;
     $(".menu_screen").hide();
+    socket.emit("requestUpdateLobbyPage");
     $(".menu_serverScreen").show("flex");
-    updateLobbyPage();
 })
 socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     if (playerID) if (playerID !== localAccount.id) return;

@@ -1797,3 +1797,43 @@ html {
 .joinWaitingRoomButton {
   width: 28.5%;
 }
+.marginTop {
+  margin-top: 20px;
+}
+
+.lobby_chatHolder {
+  width: 100%;
+  font-size: 15px;
+}
+
+.lobbyPlayerCard {
+  width: 100%;
+  height: 35px;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.lobbyImage {
+  width: 100%;
+  height: 100%;
+}
+.lobbySnakeImageHolder {
+  height: 100%;
+  aspect-ratio: 1/1;
+}
+.lobbyPlayersRight {
+  margin-left: auto;
+}
+.lobbyFriendsIcon {
+
+}
+.lobbyHostIcon {
+
+}
+.lobbyBanIcon {
+
+}
+.lobby_chatHolder {
+
+}
