@@ -1,7 +1,4 @@
-$("button_startGame").on("click",function() {
-    server_startGame();
-    $(".button_mapEditorHolder").hide();
-})
+
 $("local_button_playGame").on("click",function() {
     let minPlayers = currentBoard.minPlayers;
     let maxPlayers = currentBoard.maxPlayers;
@@ -100,4 +97,8 @@ $("quitServerButton").on("click",function() {
     socket.emit("quitServer");
     $(".menu_screen").hide();
     $(".menu_menuScreen").show("flex");
+})
+$("startServerButton").on("click",function() {
+    server_startGame();
+    $(".button_mapEditorHolder").hide();
 })

@@ -477,9 +477,11 @@ io.on('connection', (socket) => {
     })
     socket.on("startGame", () =>{
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        if (!lobby) return;
         if (lobby.hostID !== socket.id) {
             onlineAccounts[socket.id].kickPlayer = true;
             socket.emit("kickPlayer","Caught Hacking [Code: 001]");
+            return;
         }
         console.log("Server Started")
         lobby.board.map = structuredClone(lobby.board.originalMap);

@@ -175,8 +175,7 @@ function server_refreshLobby() {
 }
 
 function server_startGame(){
-    console.log("Starting Server",socket.connected)
-    socket.emit("startGame",localAccount.id)
+    socket.emit("startGame")
 }
 
 function spawn(name,generateRandomItem = true,counting = false) {
