@@ -36,12 +36,12 @@ socket.on("setPlayer", (id,account) =>{
 socket.on("setClientLobby",(socketID,lobby) => {
     if (socketID !== localAccount.id) return;
     localAccount.lobbyID = lobby.id;
-    $(".menu_screen").hide();
     socket.emit("requestUpdateLobbyPage");
-    $(".menu_serverScreen").show("flex");
 })
 socket.on("updateLobbyPage",(lobby) => {
+    $(".menu_screen").hide();
     updateLobbyPage(lobby);
+    $(".menu_serverScreen").show("flex");
 
 })
 socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{

@@ -1435,7 +1435,7 @@ function updateLobbyPage(lobby) {
         let holder = chatHolder.create("div");
         holder.className = "lobby_chatHolder";
         let name = lobby.chats[i].account === null ? "" : lobby.chats[i].account;
-        holder.innerHTML = name + ": " + obby.chats.message;
+        holder.innerHTML = name + ": " + lobby.chats.message;
         if (name === "") holder.style.color = "#696969";
         else holder.style.color = "white";
     }
