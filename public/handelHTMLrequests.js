@@ -143,3 +143,7 @@ $(".sc_chooseboard").on("click",function() {
         socket.emit("changeServerBoard",board);
     }) 
 })
+$(".servers_invite_button").on("click",function() {
+    socket.emit("searchingHiddenServer",$(".servers_invite_input").value);
+    $(".servers_invite_input").value = "";
+})
