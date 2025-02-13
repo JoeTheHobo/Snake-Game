@@ -1375,7 +1375,10 @@ function updateLobbyPage(lobby) {
     
     $(".sc_tb_lobbyName").innerHTML = lobby.hostName + "'s Lobby";
     
-    console.log($(".sc_boards_canvas").clientWidth);
+    $(".sc_boards_canvas").css({
+        width: "95%",
+        aspectratio: "1920/1080",
+    })
     $(".sc_boards_canvas").width = $(".sc_boards_canvas").clientWidth;
     $(".sc_boards_canvas").height = $(".sc_boards_canvas").clientHeight; 
     drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);
@@ -1433,11 +1436,10 @@ function updateLobbyPage(lobby) {
     let chatHolder = $(".sc_chatHolder");
     chatHolder.innerHTML = "";
     for (let i = 0; i < lobby.chats.length; i++) {
-        console.log(lobby.chats,lobby.chats[i])
         let holder = chatHolder.create("div");
         holder.className = "lobby_chatHolder";
-        let name = lobby.chats[i].account === null ? "" : lobby.chats[i].account;
-        holder.innerHTML = name + ": " + lobby.chats.message;
+        let name = lobby.chats[i].account === null ? "" : lobby.chats[i].account + ": " ;
+        holder.innerHTML = name + lobby.chats[i].message;
         if (name === "") holder.style.color = "#696969";
         else holder.style.color = "white";
     }
