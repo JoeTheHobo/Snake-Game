@@ -163,6 +163,28 @@ socket.on("updatedLocalAccount",(obj) => {
     updateCells = updateCells.concat(obj.updateCells);
     renderCells();
 })
+socket.on("setCode",(oldCode) => {
+    chooseCodePopUp(oldCode);
+})
+function chooseCodePopUp(code) {
+    makePopUp([
+        {type: "title",text: "Set Code"},
+        [
+            {type: "input", id:"code", value:oldCode, placeholder: "Type A Code", width: "200px"},
+        ],
+        
+        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "white",text:"Done",onClick: (ids) => {
+            const {code} = ids;
+            if (code.value == "") return;
+
+            $(".lobbyCode").innerHTML = code.value;
+            socket.emit("setCode",code.value);
+        }},
+    ],{
+        id: "chooseCode",
+
+    })
+}
 
 function updateLobbyToServer(lobby){
     socket.emit("newLobby", (lobby));  

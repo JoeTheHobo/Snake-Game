@@ -413,6 +413,7 @@ io.on('connection', (socket) => {
             message: "Lobby Created",
         }];
         lobbies[id].code = "1234";
+        lobbies[id].serverType = "Hidden";
         lobbies[id].gameMode = lobby.gameMode;
         lobbies[id].maxPlayers = 8;
         lobbies[id].hostName = onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex].name;
@@ -474,6 +475,25 @@ io.on('connection', (socket) => {
     socket.on("refreshLobbies",(playerID) => {
         if (playerID !== socket.id) return;
         io.emit("updateLobbies", lobbies,Object.keys(onlineAccounts).length);
+    })
+    socket.on("setCode",(code) => {
+        let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        if (!lobby) return;
+        if (lobby.hostID !== socket.id) return;
+        if (code == "") return;
+
+        lobby.code = code;
+    })
+    socket.on("changeLobbyType",(type) => {
+        let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        if (!lobby) return;
+        if (lobby.hostID !== socket.id) return;
+        if (!["Hidden","Public","Private"].includes(type)) return;
+        
+        lobby.serverType = type;
+
+        if (type == "Hidden" || type == "Private") io.emit("setCode",lobby.code);
+        io.emit("updateLobbyPage",lobby);
     })
     socket.on("startGame", () =>{
         let lobby = lobbies[onlineAccounts[socket.id].lobby];

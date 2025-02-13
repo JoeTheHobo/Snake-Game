@@ -102,3 +102,11 @@ $("startServerButton").on("click",function() {
     server_startGame();
     $(".button_mapEditorHolder").hide();
 })
+
+$(".sc_tb_dd_option").on("click",function() {
+    socket.emit("changeLobbyType",this);
+    $(".sdd_title").innerHTML = this.innerHTML;
+})
+$(".lobbyCode").on("click",function() {
+    chooseCodePopUp(this.innerHTML);
+})

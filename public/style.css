@@ -1887,8 +1887,9 @@ html {
   cursor: url('./img/pointer.cur'), auto;
 }
 .sc_tb_dd_option {
-  
+
 }
 .sc_tb_dd_option:hover {
   background-color: #838383;
+  font-size: 20px;
 }
