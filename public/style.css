@@ -1089,6 +1089,7 @@ html {
   width: max-content;
   padding-left: 5px;
   padding-right: 5px;
+  margin: 5px;
   user-select: none;
   cursor: url('./img/pointer.cur'), auto;
   height: 44px;
@@ -1271,10 +1272,13 @@ html {
   width: 142px;
   height: 80px;
   background: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 .local_top {
   width: 100%;
-  height: 80%;
+  height: 75%;
   display: flex;
   flex-direction: row;
 }
@@ -1588,13 +1592,17 @@ html {
   color: white;
 }
 
-
-
 .menu_screen {
-  display: none;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
 }
 .menu_serverScreen {
-  display: flex;
+  display: none;
   width: 100%;
   height: 100%;
   flex-direction: column;
@@ -1665,7 +1673,11 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 5px;
+  padding-right: 20px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;    
+  overflow: hidden;
 }
 .sc_boards_canvas {
   width: 95%;
@@ -1701,12 +1713,21 @@ html {
   font-size: 35px;
 }
 .sc_gmb_changeGameModeHolder {
-  height: 70%;
+  height: 90%;
   aspect-ratio: 1/1; 
+  border-radius: 5px;
+  transition: .2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: url('./img/pointer.cur'), auto;
+}
+.sc_gmb_changeGameModeHolder:hover {
+  background: rgb(156, 156, 156);
 }
 .sc_gmb_changeGameModeImg {
-  width: 100%;
-  height: 100%;
+  width: 70%;
+  height: 70%;
 }
 .sc_gameModeChanges {
 
@@ -1765,4 +1786,13 @@ html {
 }
 .sc_bb_title {
   margin-left: 10px;
+}
+.sc_half {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 50%;
+}
+.joinWaitingRoomButton {
+  width: 28.5%;
 }
