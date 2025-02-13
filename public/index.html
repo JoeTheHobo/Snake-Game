@@ -18,62 +18,113 @@
         
         <img draggable="false" src="img/logo.png" class="logo_image">
         <div class="menu_holder">
-            <div class="menu_top">
-                <div onclick="loadServersHTML()" id="servers_tab" class="menu_tab menu_tab_selected">Servers</div>
-                <div id="local_tab" onclick="loadLocalScreen()" class="menu_tab">Play Local</div>
-                <div onclick="loadCustomizeSnakeScreen()" id="snake_tab" class="menu_tab">Your Snakes</div>
-                <div onclick="loadBoardsScreen()" id="boards_tab" class="menu_tab">Your Boards</div>
-                <div id="gameModes_tab" onclick="loadGameModesScreen()" class="menu_tab">Your Game Modes</div>
-
-                <div class="menu_right hideContent">
-                    <div class="account_name">Guest#2242</div>
-                    <a class="signinLink" href="">Login/Sign up</a>
+            <div class="menu_menuScreen menu_screen">
+                <div class="menu_top">
+                    <div onclick="loadServersHTML()" id="servers_tab" class="menu_tab menu_tab_selected">Servers</div>
+                    <div id="local_tab" onclick="loadLocalScreen()" class="menu_tab">Play Local</div>
+                    <div onclick="loadCustomizeSnakeScreen()" id="snake_tab" class="menu_tab">Your Snakes</div>
+                    <div onclick="loadBoardsScreen()" id="boards_tab" class="menu_tab">Your Boards</div>
+                    <div id="gameModes_tab" onclick="loadGameModesScreen()" class="menu_tab">Your Game Modes</div>
+    
+                    <div class="menu_right hideContent">
+                        <div class="account_name">Guest#2242</div>
+                        <a class="signinLink" href="">Login/Sign up</a>
+                    </div>
                 </div>
-            </div>
-
-            <div class="menu_content content_servers">
-                <div class="servers_online_holder">
-                    <div class="greenCircle"></div>
-                    <div class="servers_online_text"></div>
-                </div>
-                <div class="servers_servers_holder"></div>
-                <div class="servers_bottom">
-                    <div id="joinServer" class="servers_button servers_button_inactive">Join Server</div>
-                    <div id="hostServer" class="servers_button">Host Server</div>
-                    <div id="refreshServers" class="servers_button">Refresh</div>
-                    <div class="flex-right">
-                        <div class="servers_invite_holder">
-                            <input class="servers_invite_input" placeholder="Invite Code.." type="text">
-                            <div class="servers_invite_button">Go</div>
+    
+                <div class="menu_content content_servers">
+                    <div class="servers_online_holder">
+                        <div class="greenCircle"></div>
+                        <div class="servers_online_text"></div>
+                    </div>
+                    <div class="servers_servers_holder"></div>
+                    <div class="servers_bottom">
+                        <div id="joinServer" class="servers_button servers_button_inactive">Join Server</div>
+                        <div id="hostServer" class="servers_button">Host Server</div>
+                        <div id="refreshServers" class="servers_button">Refresh</div>
+                        <div class="flex-right">
+                            <div class="servers_invite_holder">
+                                <input class="servers_invite_input" placeholder="Invite Code.." type="text">
+                                <div class="servers_invite_button">Go</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="menu_content content_snake"></div>
-            <div class="menu_content content_boards"></div>
-            <div class="menu_content content_gameModes"></div>
-            <div class="menu_content content_local">
-                <div class="local_top">
-                    <div class="local_choice_holder local_border_right">
-                        <div class="local_choice_title">Choose Board</div>
-                        <div class="local_choice_content" id="local_boards"></div>
+                <div class="menu_content content_snake"></div>
+                <div class="menu_content content_boards"></div>
+                <div class="menu_content content_gameModes"></div>
+                <div class="menu_content content_local">
+                    <div class="local_top">
+                        <div class="local_choice_holder local_border_right">
+                            <div class="local_choice_title">Choose Board</div>
+                            <div class="local_choice_content" id="local_boards"></div>
+                        </div>
+                        <div class="local_choice_holder local_border_right">
+                            <div class="local_choice_title">Choose Game Mode</div>
+                            <div class="local_choice_content" id="local_gameModes"></div>
+                        </div>
+                        <div class="local_choice_holder">
+                            <div class="local_choice_title">Choose Snakes</div>
+                            <div class="local_choice_warning snakedRequiredWarning">1 - 4 Snakes Are Required For Board</div>
+                            <div class="local_choice_content" id="local_snakes"></div>
+                        </div>
                     </div>
-                    <div class="local_choice_holder local_border_right">
-                        <div class="local_choice_title">Choose Game Mode</div>
-                        <div class="local_choice_content" id="local_gameModes"></div>
-                    </div>
-                    <div class="local_choice_holder">
-                        <div class="local_choice_title">Choose Snakes</div>
-                        <div class="local_choice_warning snakedRequiredWarning">1 - 4 Snakes Are Required For Board</div>
-                        <div class="local_choice_content" id="local_snakes"></div>
+                    <div class="local_bottom">
+                        <div id="local_button_playGame" class="servers_button">Play Game!</div>
+                        <div id="local_button_playSolo" class="servers_button">Play Solo!</div>
+                        <canvas class="local_bottom_canvas"></canvas>
                     </div>
                 </div>
-                <div class="local_bottom">
-                    <div id="local_button_playGame" class="servers_button">Play Game!</div>
-                    <div id="local_button_playSolo" class="servers_button">Play Solo!</div>
-                    <canvas class="local_bottom_canvas"></canvas>
+            </div>
+            <div class="menu_serverScreen menu_screen">
+                <div class="sc_topBar">
+                    <div class="servers_button">Quit Server</div>
+                    <div class="sc_tb_lobbyName">Jimmy's Lobby</div>
+                    
+                    <div class="sc_tb_right">
+                        <div class="serverTypeDropdown hostOnly"></div>
+                        <div class="servers_button hostOnly">XX24125</div>
+                        <div class="sc_tb_shareIconHolder"><img class="sc_tb_shareIcon" src="img/menuIcons/share.png"></div>
+                    </div>
+                </div>
+                <div class="sc_content">
+                    <div class="sc_content_columns">
+                        <div class="sc_contentColumn">
+                            <canvas class="sc_boards_canvas"></canvas>
+                            <div class="sc_title" id="sc_boards_boardName">Board: Custom Board #9</div>
+                            <div class="sc_subtitle hyperlink hostOnly" id="sc_boards_recommendedGameMode">Recommended Game Mode: GAME MODE NAME</div>
+                            <div class="sc_subtitle" id="sc_boards_boardRemixAuthor">Remixed By: NaN</div>
+                            <div class="sc_subtitle" id="sc_boards_boardOriginalCreator">Original Creator: NaN</div>
+                        </div>
+                        <div class="sc_contentColumn">
+                            <div class="sc_gameMode_box">
+                                <div class="sc_gmb_gameModeName">2 Player Flags</div>
+                                <div class="sc_gmb_changeGameModeHolder hostOnly"><img class="sc_gmb_changeGameModeImg" src="img/menuIcons/gears.png"></div>
+                            </div>
+                            <div class="sc_title">Game Mode Alterations</div>
+                            <div class="sc_gameModeChanges"></div>
+                        </div>
+                        <div class="sc_contentColumn2">
+                            <div class="sc_title" id="sc_playerCount">Players (1/8)</div>
+                            <div class="sc_players_playersList"></div>
+                            <div class="sc_title">Lobby Chat:</div>
+                            <div class="sc_chatHolder"></div>
+                            <input class="sc_chat_input" placeholder="Type your message...">
+                        </div>
+                    </div>
+                    <div class="sc_bottomBar">
+                        <div class="sc_bb_customizeSnakeHolder">
+                            <div class="sc_bb_snakeImgHolder"><img class="sc_bb_snakeImg" src="img/snakeHead.png"></div>
+                            <div class="sc_bb_title">Customize Snake</div>
+                        </div>
+    
+                        <div class="servers_button">Start Game</div>
+    
+                        <div class="servers_button">Join Waiting Room</div>
+                    </div>
                 </div>
             </div>
+            
 
         </div>
     </div>

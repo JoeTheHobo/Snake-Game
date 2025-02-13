@@ -1085,11 +1085,13 @@ html {
 
 }
 .servers_button {
-  width: 190px;
+  min-width: 190px;
+  width: max-content;
+  padding-left: 5px;
+  padding-right: 5px;
   user-select: none;
   cursor: url('./img/pointer.cur'), auto;
   height: 44px;
-  margin-right: 20px;
   text-align: center;
   line-height: 44px;
   background: #D9D9D9;
@@ -1584,4 +1586,183 @@ html {
 .servers_online_text {
   font-size: 25px;
   color: white;
+}
+
+
+
+.menu_screen {
+  display: none;
+}
+.menu_serverScreen {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;    
+}
+.sc_topBar {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.sc_tb_lobbyName {
+  color: white;
+  font-size: 45px;
+}
+.sc_tb_right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 25px;
+}
+.serverTypeDropdown {
+
+}
+.sc_tb_shareIconHolder {
+  width: 44px;
+  height: 44px;
+  transition: all .2s ease;
+  border-radius: 5px;
+  cursor: url('./img/pointer.cur'), auto;
+}
+.sc_tb_shareIconHolder:hover {
+  background: rgb(156, 156, 156);
+}
+.sc_tb_shareIcon {
+  width: 100%;
+  height: 100%;
+}
+.sc_content {
+  margin: 5px;
+  margin-top: 15px;
+  outline: 4px solid white;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.sc_content_columns {
+  display: flex;
+  flex-direction: row;
+  height: 90%;
+}
+.sc_contentColumn {
+  width: 35%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+.sc_contentColumn2 {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+}
+.sc_boards_canvas {
+  width: 95%;
+  aspect-ratio: 1920/1080;
+}
+.sc_title {
+  color: white;
+  font-size: 30px;
+}
+.sc_subtitle {
+  color: white;
+  font-size: 20px;
+}
+.hyperlink {
+  color: rgb(62, 143, 248);
+  text-decoration: underline;
+  cursor: url('./img/pointer.cur'), auto;
+}
+.hyperlink:hover {
+  color: rgb(30, 100, 192);
+}
+.sc_gameMode_box {
+  width: 100%;
+  height: 35px;
+  background: #D9D9D9;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+}
+.sc_gmb_gameModeName {
+  font-size: 35px;
+}
+.sc_gmb_changeGameModeHolder {
+  height: 70%;
+  aspect-ratio: 1/1; 
+}
+.sc_gmb_changeGameModeImg {
+  width: 100%;
+  height: 100%;
+}
+.sc_gameModeChanges {
+
+}
+.sc_players_playersList {
+
+}
+.sc_chatHolder {
+
+}
+.sc_chat_input {
+  width: 100%;
+  background: #696969;
+  outline: none;
+  border: none;
+  padding-left: 15px;
+  height: 27px;
+}
+.sc_chat_input::placeholder {
+  color: white;
+  opacity: 0.7; /* Firefox */
+}
+.sc_bottomBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 10%;
+  align-items: center;
+  padding: 10px;
+}
+.sc_bb_customizeSnakeHolder {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: max-content;
+  padding-right: 5px;
+  user-select: none;
+  cursor: url('./img/pointer.cur'), auto;
+  height: 44px;
+  text-align: center;
+  line-height: 44px;
+  background: #D9D9D9;
+  font-size: 30px;
+}
+.sc_bb_customizeSnakeHolder:hover {
+  background: #a0a0a0;
+
+}
+.sc_bb_snakeImgHolder {
+  height: 85%;
+  aspect-ratio: 1/1;
+}
+.sc_bb_snakeImg{
+  width: 100%;
+  height: 100%;
+}
+.sc_bb_title {
+  margin-left: 10px;
 }
