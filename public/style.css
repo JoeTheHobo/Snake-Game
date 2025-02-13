@@ -1734,10 +1734,10 @@ html {
 
 }
 .sc_players_playersList {
-
+  width: 100%;
 }
 .sc_chatHolder {
-
+  width: 100%;
 }
 .sc_chat_input {
   width: 100%;
@@ -1803,12 +1803,12 @@ html {
 
 .lobby_chatHolder {
   width: 100%;
-  font-size: 15px;
+  font-size: 20px;
 }
 
 .lobbyPlayerCard {
   width: 100%;
-  height: 35px;
+  height: 25px;
   color: white;
   display: flex;
   flex-direction: row;
