@@ -1377,7 +1377,7 @@ function updateLobbyPage(lobby) {
             
         } else $("sc_boards_recommendedGameMode").hide();
 
-        
+        console.log(lobby.serverType)
         if (lobby.serverType == "Public") $(".lobbyCode").hide();
         else $(".lobbyCode").show()
         
