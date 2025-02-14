@@ -163,3 +163,8 @@ $(".sc_gmb_changeGameModeImg").on("click",function() {
 $("sc_boards_recommendedGameMode").on("click",function() {
     socket.emit("changeGameModetoBoards");
 })
+$("button_backToLobby").on("click",function() {
+    $(".endScreenStats").hide();
+
+    setScene("newMenu")
+})

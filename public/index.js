@@ -52,7 +52,6 @@ socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     $(".servers_online_text").innerHTML = onlineCount;
 })
 socket.on("startingGame", (lobby) => {
-    console.log(localAccount.lobbyID,lobby.id);
     if (localAccount.lobbyID !== lobby.id) return;
 
     let foundPlayer = false;
