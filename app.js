@@ -447,9 +447,9 @@ io.on('connection', (socket) => {
         onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
 
         const lobbyList = {};
-        for (const lobby in lobbies) {
+        for (const lobbyID in lobbies) {
+            let lobby = lobbies[lobbyID];
             if (lobby.serverType !== "Hidden") {
-                console.log(lobby)
                 lobbyList[lobby.id] = structuredClone(lobby);
                 lobbyList[lobby.id].code = "";
             }
