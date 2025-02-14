@@ -362,7 +362,8 @@ io.on('connection', (socket) => {
         chatNameColor: rnd("color"),
     }
     let lobbyList = {};
-    for (const lobby in lobbies) {
+    for (const lobbyID in lobbies) {
+        let lobby = lobbies[lobbyID];
         if (lobby.serverType !== "Hidden") {
             lobbyList[lobby.id] = structuredClone(lobby);
             lobbyList[lobby.id].code = "";
@@ -411,7 +412,8 @@ io.on('connection', (socket) => {
                 io.emit("updateLobbyPage",lobby);
             }
             let lobbyList = {};
-            for (const lobby in lobbies) {
+            for (const lobbyID in lobbies) {
+                let lobby = lobbies[lobbyID];
                 if (lobby.serverType !== "Hidden") {
                     lobbyList[lobby.id] = structuredClone(lobby);
                     lobbyList[lobby.id].code = "";
@@ -473,7 +475,8 @@ io.on('connection', (socket) => {
         if (lobby.players.length == 0) {
             delete lobbies[lobby.id];
             let lobbyList = {};
-            for (const lobby in lobbies) {
+            for (const lobbyID in lobbies) {
+                let lobby = lobbies[lobbyID];
                 if (lobby.serverType !== "Hidden") {
                     lobbyList[lobby.id] = structuredClone(lobby);
                     lobbyList[lobby.id].code = "";
@@ -494,7 +497,8 @@ io.on('connection', (socket) => {
     
             io.emit("updateLobbyPage",lobby);
             let lobbyList = {};
-            for (const lobby in lobbies) {
+            for (const lobbyID in lobbies) {
+                let lobby = lobbies[lobbyID];
                 if (lobby.serverType !== "Hidden") {
                     lobbyList[lobby.id] = structuredClone(lobby);
                     lobbyList[lobby.id].code = "";
@@ -530,7 +534,8 @@ io.on('connection', (socket) => {
             onlineAccounts[socket.id].lobby =  lobby.id;
             onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
             let lobbyList = {};
-            for (const lobby in lobbies) {
+            for (const lobbyID in lobbies) {
+                let lobby = lobbies[lobbyID];
                 if (lobby.serverType !== "Hidden") {
                     lobbyList[lobby.id] = structuredClone(lobby);
                     lobbyList[lobby.id].code = "";
@@ -543,7 +548,8 @@ io.on('connection', (socket) => {
     socket.on("refreshLobbies",(playerID) => {
         if (playerID !== socket.id) return;
         let lobbyList = {};
-        for (const lobby in lobbies) {
+        for (const lobbyID in lobbies) {
+            let lobby = lobbies[lobbyID];
             if (lobby.serverType !== "Hidden") {
                 lobbyList[lobby.id] = structuredClone(lobby);
                 lobbyList[lobby.id].code = "";
@@ -818,6 +824,14 @@ io.on('connection', (socket) => {
                     seconds: seconds,
                 },lobby.id)
 
+                let lobbyList = {};
+                for (const lobbyID in lobbies) {
+                    let lobby = lobbies[lobbyID];
+                    if (lobby.serverType !== "Hidden") {
+                        lobbyList[lobby.id] = structuredClone(lobby);
+                        lobbyList[lobby.id].code = "";
+                    }
+                }
                 io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
             }
         }
