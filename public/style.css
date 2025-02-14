@@ -1848,6 +1848,9 @@ html {
   height: 100%;
 }
 .lobbyFriendsIcon {
+  height: 100%;
+  aspect-ratio: 1/1;
+  cursor: url('./img/pointer.cur'), auto;
 
 }
 .lobbyHostIcon {
@@ -1856,8 +1859,10 @@ html {
   cursor: url('./img/pointer.cur'), auto;
 }
 .lobbyBanIcon {
-  width: 100%;
   height: 100%;
+  aspect-ratio: 1/1;
+  cursor: url('./img/pointer.cur'), auto;
+
 }
 
 
