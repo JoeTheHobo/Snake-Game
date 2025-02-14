@@ -40,9 +40,7 @@ socket.on("setClientLobby",(socketID,lobby) => {
     setScene("lobby");
 })
 socket.on("updateLobbyPage",(lobby) => {
-    $(".menu_screen").hide();
     updateLobbyPage(lobby);
-    $(".menu_serverScreen").show("flex");
 })
 socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     if (playerID) if (playerID !== localAccount.id) return;
