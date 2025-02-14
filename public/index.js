@@ -92,7 +92,6 @@ socket.on("startingGame", (lobby) => {
     renderGame();
     renderCells();
     generatePlayerCards(activePlayers);
-    serverGameLoop();
     
 
 })

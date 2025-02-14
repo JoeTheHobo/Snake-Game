@@ -1531,6 +1531,10 @@ function playEndScreenAnimation() {
     let extra = (height*.2);
     let snakeHeightNoExt = (height/3);
     let snakeHeight = (height/3)+extra;
+    $(".endScreenContent").style.transition = "none";
+    $(".endScreenContent").style.opacity = "0";
+    $(".endScreenContent").clientWidth;
+    $(".endScreenContent").style.transition = "all .8s ease";
 
     
     for (let i = 1; i < 4; i++) {
@@ -1579,7 +1583,7 @@ function playEndScreenAnimation() {
             },(i-1)*700);
         }
     }
-    
+
     setTimeout(function() {
         $(".endScreenContent").style.opacity = "1";
     },2700)
