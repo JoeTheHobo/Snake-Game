@@ -1444,7 +1444,7 @@ function updateLobbyPage(lobby) {
         holder.className = "lobby_chatHolder";
         let name = holder.create("div");
         name.innerHTML = lobby.chats[i].account === null ? "" : lobby.chats[i].account + ": " ;
-        name.style.color = lobby.chats[i].color || "white";
+        name.style.color = lobby.chats[i].color || "gray";
         name.style.marginRight = "5px";
         let text = holder.create("div");
         text.innerHTML = lobby.chats[i].message;

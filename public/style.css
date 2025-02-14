@@ -2036,6 +2036,7 @@ html {
   width: 60%;
   height: 30px;
   border-radius: 5px;
+  margin-top: 5px;
   background: white;
   display: flex;
   text-align: center;

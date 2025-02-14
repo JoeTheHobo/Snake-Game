@@ -85,6 +85,7 @@ socket.on("startingGame", (lobby) => {
     activePlayers = lobby.activePlayers;
     currentBoard = lobby.board;
     isActiveGame = true;
+    gameEnd = false;
     gameType = "server";
 
     setResolution(lobby.board.map[0].length,lobby.board.map.length);
