@@ -560,7 +560,6 @@ io.on('connection', (socket) => {
     socket.on("sendChat",(message) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;
-        if (lobby.hostID !== socket.id) return;
         if (message == "") return;
 
         let account;
@@ -833,6 +832,7 @@ io.on('connection', (socket) => {
                     seconds: seconds,
                 },lobby.id)
 
+                /*
                 let lobbyList = {};
                 for (const lobbyID in lobbies) {
                     let lobby = lobbies[lobbyID];
@@ -842,6 +842,7 @@ io.on('connection', (socket) => {
                     }
                 }
                 io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
+                */
             }
         }
         /*
