@@ -1573,6 +1573,18 @@ function gameLoop() {
     updateProduction();
     if (!gameEnd && !gamePaused && !killSwitch) setTimeout(() => gameLoop(), Math.max(0, (1000/60) - (Date.now() - timestamp)));;//requestAnimationFrame(gameLoop);
 }
+function serverGameLoop() {
+    deltaTime = 1;
+    if (!isActiveGame) return;
+    renderCells();
+    console.log("Rendering")
+    //movePlayers();
+    //deleteSnakeCells();
+    //renderPlayers();
+    
+
+    if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 120);//requestAnimationFrame(gameLoop);
+}
 function specialItemManager() {
     if (gameType == "server") return;
     if (specialItemIteration >= specialItemActiveChance) {
