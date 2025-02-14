@@ -8,11 +8,9 @@ function loadServersHTML() {
     $("servers_tab").classAdd("menu_tab_selected");
     let holder = $(".servers_servers_holder");
     holder.innerHTML = "";
-    console.log(frontEndLobbies)
     for (let server in frontEndLobbies) {
         server = frontEndLobbies[server];
         if (!server.id) continue;
-        console.log(server)
         let server_holder = holder.create("div");
         server_holder.classAdd("server_holder");
         if (server.id == serverSelected.id) server_holder.classAdd("serverSelected");
