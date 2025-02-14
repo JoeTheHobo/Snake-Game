@@ -107,6 +107,8 @@ socket.on("endGame",(obj,lobbyID) => {
     gameEnd = true;
     isActiveGame = false;
 
+    console.log(obj)
+
     let timeSurvivedPlayer = obj.timeSurvivedPlayer;
     let longestTailPlayer = obj.longestTailPlayer;
     let mostKillsPlayer = obj.mostKillsPlayer;
