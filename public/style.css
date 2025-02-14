@@ -1845,6 +1845,7 @@ html {
   display: flex;
   flex-direction: row;
   align-items: center;
+  height: 100%;
 }
 .lobbyFriendsIcon {
 
@@ -1852,6 +1853,7 @@ html {
 .lobbyHostIcon {
   height: 100%;
   aspect-ratio: 1/1;
+  cursor: url('./img/pointer.cur'), auto;
 }
 .lobbyBanIcon {
   width: 100%;
