@@ -1714,7 +1714,7 @@ html {
   font-size: 35px;
 }
 .sc_gmb_changeGameModeHolder {
-  height: 90%;
+  height: 70%;
   aspect-ratio: 1/1; 
   border-radius: 5px;
   transition: .2s ease;
@@ -1727,8 +1727,8 @@ html {
   background: rgb(156, 156, 156);
 }
 .sc_gmb_changeGameModeImg {
-  width: 70%;
-  height: 70%;
+  width: 100%;
+  height: 100%;
 }
 .sc_gameModeChanges {
 
@@ -2030,4 +2030,44 @@ html {
 .sc_chooseboard:hover {
   background: rgb(206, 206, 206);
 
+}
+
+.chooseGameModePopup {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  display: none;
+  width: 20%;
+  height: max-content;
+  padding: 15px;
+  flex-direction: column;
+  border-radius: 5px;
+  background: rgb(26, 26, 26);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  z-index: 1000;
+}
+.cgm_list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.cgm_gameMode_holder {
+  border-radius: 5px;
+  width: 100%;
+  height: 40px;
+  font-size: 25px;
+  
+  border: 2px solid white;
+  margin-top: 3px;
+  text-align: center;
+  line-height: 40px;
+  cursor: url('./img/pointer.cur'), auto;
+  transition: all .2s ease;
+}
+.cgm_gameMode_holder:hover {
+  border: rgb(37, 185, 196);
+  color: rgb(37, 185, 196);
 }

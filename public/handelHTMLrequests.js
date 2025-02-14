@@ -147,3 +147,16 @@ $(".servers_invite_button").on("click",function() {
     socket.emit("searchingHiddenServer",$(".servers_invite_input").value);
     $(".servers_invite_input").value = "";
 })
+
+$(".cbp_cancel").on("click",function() {
+    this.$P().$P().hide();
+})
+$(".cbp_tab").on("click",function() {
+    selectTabInBoardMenu(this.innerHTML.subset(0," \\before").toLowerCase());
+})
+$(".sc_gmb_changeGameModeImg").on("click",function() {
+    $(".chooseGameModePopup").show("flex");
+    loadGameModesToPopup(function(gameMode) {
+        socket.emit("changeServerGameMode",gameMode);
+    });
+});

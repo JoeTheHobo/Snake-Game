@@ -1493,12 +1493,6 @@ function generateBoardsPopup(type) {
         if (type == "personal" && !board.cantEdit) generateBoard(parent,board);
     }
 }
-$(".cbp_cancel").on("click",function() {
-    $(".chooseBoardPopup").hide();
-})
-$(".cbp_tab").on("click",function() {
-    selectTabInBoardMenu(this.innerHTML.subset(0," \\before").toLowerCase());
-})
 function selectTabInBoardMenu(tab) {
     $(".cbp_tab").classRemove("cbp_tab_selected");
     $("cbp_" + tab).classAdd("cbp_tab_selected");
@@ -1510,4 +1504,18 @@ function showBoardMenu(func) {
     selectTabInBoardMenu("preset");
     $(".chooseBoardPopup").func = func;
     $(".chooseBoardPopup").show("flex");
+}
+function loadGameModesToPopup(func) {
+    let parent = $(".cgm_list");
+    parent.innerHTML = "";
+    for (let i = 0; i < gameModes.length; i++) {
+        let holder = parent.create("div");
+        holder.className = "cgm_gameMode_holder";
+        holder.innerHTML = gameModes[i].name;
+
+        holder.gameMode = gameModes[i];
+        holder.on("click",function() {
+            func(this.gameMode);
+        })
+    }
 }
