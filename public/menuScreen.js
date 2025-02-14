@@ -9,9 +9,9 @@ function loadServersHTML() {
     let holder = $(".servers_servers_holder");
     holder.innerHTML = "";
     for (let server in frontEndLobbies) {
-        console.log(server)
         server = frontEndLobbies[server];
         if (!server.id) continue;
+        console.log(server)
         let server_holder = holder.create("div");
         server_holder.classAdd("server_holder");
         if (server.id == serverSelected.id) server_holder.classAdd("serverSelected");
