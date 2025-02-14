@@ -1389,8 +1389,7 @@ function updateLobbyPage(lobby) {
 
     $("sc_boards_boardName").innerHTML = "Board: " + lobby.board.name;
 
-    console.log(lobby.gameMode);
-    $(".sc_gmb_gameModeName").innerHMTL = lobby.gameMode.name;
+    $(".sc_gmb_gameModeName").innerHTML = lobby.gameMode.name;
 
     let player;
     let playersHolder = $(".sc_players_playersList");
