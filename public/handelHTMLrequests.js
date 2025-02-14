@@ -160,3 +160,6 @@ $(".sc_gmb_changeGameModeImg").on("click",function() {
         socket.emit("changeServerGameMode",gameMode);
     });
 });
+$("sc_boards_recommendedGameMode").on("click",function() {
+    socket.emit("changeGameModetoBoards");
+})

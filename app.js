@@ -579,6 +579,18 @@ io.on('connection', (socket) => {
             }
         }
     })
+    socket.on("changeGameModetoBoards",() => {
+        let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        if (!lobby) return;
+        if (lobby.hostID !== socket.id) return;
+
+        let gameMode = lobby.board.gameMode;
+        if (!gameMode) return;
+
+        lobby.gameMode = gameMode;
+        io.emit("updateLobbyPage",lobby);
+
+    })
     socket.on("changeServerGameMode",(gameMode) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;
