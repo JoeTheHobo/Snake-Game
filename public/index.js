@@ -162,7 +162,8 @@ socket.on("updatedLocalAccount",(obj) => {
     updateCells = updateCells.concat(obj.updateCells);
     renderCells();
 })
-socket.on("setCode",(oldCode) => {
+socket.on("setCode",(id,oldCode) => {
+    if (localAccount.id !== id) return;
     chooseCodePopUp(oldCode);
 })
 function chooseCodePopUp(code) {

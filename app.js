@@ -637,7 +637,7 @@ io.on('connection', (socket) => {
         
         lobby.serverType = type;
 
-        if (type == "Hidden" || type == "Private") io.emit("setCode",lobby.code);
+        if (type == "Hidden" || type == "Private") io.emit("setCode",socket.id,lobby.code);
         io.emit("updateLobbyPage",lobby);
         let lobbyList = {};
         for (const lobbyID in lobbies) {
