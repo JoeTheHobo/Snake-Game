@@ -453,6 +453,7 @@ io.on('connection', (socket) => {
                 lobbyList[lobby.id].code = "";
             }
         }
+        console.log(lobbyList)
         io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
         io.emit("setClientLobby",socket.id,lobbies[lobby.id])
     })
