@@ -597,7 +597,7 @@ io.on('connection', (socket) => {
         if (!board) return;
 
         //Varify Board Here -To Be Added
-
+        board = fixBoard(JSON.parse(board))
         lobby.board = board;
         io.emit("updateLobbyPage",lobby);
     })
@@ -1764,7 +1764,6 @@ function newPlayer(socketID) {
         active: false, 
         accountID: socketID,
     }
-
 }
 function checkPlayer(player,socketID) {
     if (player.name == "") return "name-1";

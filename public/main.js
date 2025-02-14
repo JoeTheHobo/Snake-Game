@@ -1046,11 +1046,8 @@ document.body.on("wheel",function(e) {
     updatePlayerCard(player);
 })
 document.body.onkeydown = function(e) {
-    console.log(1)
     if (killSwitch) return;
-    console.log(2)
     if (!isActiveGame) return;
-    console.log(3)
     if (e.ctrlKey && e.key === 'q') {
         showPerformance = showPerformance ? false : true;
         

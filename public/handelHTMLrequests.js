@@ -140,7 +140,7 @@ $(".sc_chat_input").on("keydown",function(e) {
 })
 $(".sc_chooseboard").on("click",function() {
     showBoardMenu(function(board) {
-        socket.emit("changeServerBoard",board);
+        socket.emit("changeServerBoard",JSON.stringify(shortenBoard(board)));
     }) 
 })
 $(".servers_invite_button").on("click",function() {
