@@ -115,8 +115,7 @@ $("joinServer").on("click",function() {
 })
 $("quitServerButton").on("click",function() {
     socket.emit("quitServer");
-    $(".menu_screen").hide();
-    $(".menu_menuScreen").show("flex");
+    setScene("newMenu");
 })
 $("startServerButton").on("click",function() {
     server_startGame();
@@ -166,5 +165,5 @@ $("sc_boards_recommendedGameMode").on("click",function() {
 $("button_backToLobby").on("click",function() {
     $(".endScreenStats").hide();
 
-    setScene("newMenu")
+    setScene("lobby")
 })

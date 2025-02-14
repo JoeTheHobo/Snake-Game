@@ -1818,7 +1818,7 @@ html {
 
 .lobby_chatHolder {
   width: 100%;
-  font-size: 17px;
+  font-size: 20px;
   display: flex;
   flex-direction: row;
   align-items: center;

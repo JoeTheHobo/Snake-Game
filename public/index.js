@@ -37,6 +37,7 @@ socket.on("setClientLobby",(socketID,lobby) => {
     if (socketID !== localAccount.id) return;
     localAccount.lobbyID = lobby.id;
     socket.emit("requestUpdateLobbyPage");
+    setScene("lobby");
 })
 socket.on("updateLobbyPage",(lobby) => {
     $(".menu_screen").hide();

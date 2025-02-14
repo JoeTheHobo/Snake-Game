@@ -13,6 +13,78 @@
 </head>
 <body>
 
+
+    <div class="scene" id="scene_lobby">
+        <img draggable="false" src="img/main_menu_background.jpg" class="menu_background">
+        
+        <img draggable="false" src="img/logo.png" class="logo_image">
+
+        <div class="menu_serverScreen menu_screen">
+            <div class="sc_topBar">
+                <div class="servers_button" id="quitServerButton">Quit Server</div>
+                <div class="sc_tb_lobbyName">Jimmy's Lobby</div>
+                
+                <div class="sc_tb_right">
+                    <div class="servers_button hostOnly lobbyCode">XX24125</div>
+                    <div class="serverTypeDropdown hostOnly">
+                        <div class="sdd_content">
+                            <div class="sdd_title">Hidden</div>
+                            <img class="sdd_image" src="img/menuIcons/downArrow.png" alt="">
+                        </div>
+                        <div class="sdd_dropdown-content">
+                            <div class="sc_tb_dd_option">Hidden</div>
+                            <div class="sc_tb_dd_option">Public</div>
+                            <div class="sc_tb_dd_option">Private</div>
+                        </div>
+                    </div>
+                    <!--<div class="sc_tb_shareIconHolder"><img class="sc_tb_shareIcon" src="img/menuIcons/share.png"></div>-->
+                </div>
+            </div>
+            <div class="sc_content">
+                <div class="sc_content_columns">
+                    <div class="sc_contentColumn">
+                        <canvas class="sc_boards_canvas"></canvas>
+                        <div class="sc_title" id="sc_boards_boardName">Board: Custom Board #9</div>
+                        <div class="sc_subtitle hyperlink hostOnly" id="sc_boards_recommendedGameMode">Recommended Game Mode: GAME MODE NAME</div>
+                        <div class="sc_subtitle" id="sc_boards_boardRemixAuthor">Remixed By: NaN</div>
+                        <div class="sc_subtitle" id="sc_boards_boardOriginalCreator">Original Creator: NaN</div>
+                        <div class="sc_chooseboard hostOnly">Select New Board</div>
+                    </div>
+                    <div class="sc_contentColumn">
+                        <div class="sc_gameMode_box">
+                            <div class="sc_gmb_gameModeName"></div>
+                            <div class="sc_gmb_changeGameModeHolder hostOnly"><img class="sc_gmb_changeGameModeImg" src="img/menuIcons/gears.png"></div>
+                        </div>
+                        <div class="sc_title marginTop">Game Mode Alterations</div>
+                        <div class="sc_gameModeChanges"></div>
+                    </div>
+                    <div class="sc_contentColumn2">
+                        <div class="sc_half">
+                            <div class="sc_title" id="sc_playerCount">Players (1/8)</div>
+                            <div class="sc_players_playersList"></div>
+
+                        </div>
+                        <div class="sc_half">
+                            <div class="sc_title">Lobby Chat:</div>
+                            <div class="sc_chatHolder"></div>
+                            
+                        </div>
+                        <input class="sc_chat_input" placeholder="Type your message...">
+                    </div>
+                </div>
+                <div class="sc_bottomBar">
+                    <div class="sc_bb_customizeSnakeHolder">
+                        <div class="sc_bb_snakeImgHolder"><img class="sc_bb_snakeImg" src="img/snakeHead.png"></div>
+                        <div class="sc_bb_title">Customize Snake</div>
+                    </div>
+
+                    <div class="servers_button" id="startServerButton">Start Game</div>
+
+                    <div class="servers_button joinWaitingRoomButton">Join Waiting Room</div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="scene" id="scene_newMenu">
         <img draggable="false" src="img/main_menu_background.jpg" class="menu_background">
         
@@ -73,71 +145,6 @@
                         <div id="local_button_playGame" class="servers_button">Play Game!</div>
                         <div id="local_button_playSolo" class="servers_button">Play Solo!</div>
                         <canvas class="local_bottom_canvas"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="menu_serverScreen menu_screen">
-                <div class="sc_topBar">
-                    <div class="servers_button" id="quitServerButton">Quit Server</div>
-                    <div class="sc_tb_lobbyName">Jimmy's Lobby</div>
-                    
-                    <div class="sc_tb_right">
-                        <div class="servers_button hostOnly lobbyCode">XX24125</div>
-                        <div class="serverTypeDropdown hostOnly">
-                            <div class="sdd_content">
-                                <div class="sdd_title">Hidden</div>
-                                <img class="sdd_image" src="img/menuIcons/downArrow.png" alt="">
-                            </div>
-                            <div class="sdd_dropdown-content">
-                                <div class="sc_tb_dd_option">Hidden</div>
-                                <div class="sc_tb_dd_option">Public</div>
-                                <div class="sc_tb_dd_option">Private</div>
-                            </div>
-                        </div>
-                        <!--<div class="sc_tb_shareIconHolder"><img class="sc_tb_shareIcon" src="img/menuIcons/share.png"></div>-->
-                    </div>
-                </div>
-                <div class="sc_content">
-                    <div class="sc_content_columns">
-                        <div class="sc_contentColumn">
-                            <canvas class="sc_boards_canvas"></canvas>
-                            <div class="sc_title" id="sc_boards_boardName">Board: Custom Board #9</div>
-                            <div class="sc_subtitle hyperlink hostOnly" id="sc_boards_recommendedGameMode">Recommended Game Mode: GAME MODE NAME</div>
-                            <div class="sc_subtitle" id="sc_boards_boardRemixAuthor">Remixed By: NaN</div>
-                            <div class="sc_subtitle" id="sc_boards_boardOriginalCreator">Original Creator: NaN</div>
-                            <div class="sc_chooseboard hostOnly">Select New Board</div>
-                        </div>
-                        <div class="sc_contentColumn">
-                            <div class="sc_gameMode_box">
-                                <div class="sc_gmb_gameModeName"></div>
-                                <div class="sc_gmb_changeGameModeHolder hostOnly"><img class="sc_gmb_changeGameModeImg" src="img/menuIcons/gears.png"></div>
-                            </div>
-                            <div class="sc_title marginTop">Game Mode Alterations</div>
-                            <div class="sc_gameModeChanges"></div>
-                        </div>
-                        <div class="sc_contentColumn2">
-                            <div class="sc_half">
-                                <div class="sc_title" id="sc_playerCount">Players (1/8)</div>
-                                <div class="sc_players_playersList"></div>
-
-                            </div>
-                            <div class="sc_half">
-                                <div class="sc_title">Lobby Chat:</div>
-                                <div class="sc_chatHolder"></div>
-                                
-                            </div>
-                            <input class="sc_chat_input" placeholder="Type your message...">
-                        </div>
-                    </div>
-                    <div class="sc_bottomBar">
-                        <div class="sc_bb_customizeSnakeHolder">
-                            <div class="sc_bb_snakeImgHolder"><img class="sc_bb_snakeImg" src="img/snakeHead.png"></div>
-                            <div class="sc_bb_title">Customize Snake</div>
-                        </div>
-    
-                        <div class="servers_button" id="startServerButton">Start Game</div>
-    
-                        <div class="servers_button joinWaitingRoomButton">Join Waiting Room</div>
                     </div>
                 </div>
             </div>

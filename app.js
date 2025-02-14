@@ -816,17 +816,7 @@ io.on('connection', (socket) => {
                     seconds: seconds,
                 },lobby.id)
 
-                //Temporary
-                delete lobbies[lobby.id];
-                let lobbyList = {};
-                for (const lobby in lobbies) {
-                    if (lobby.serverType !== "Hidden") {
-                        lobbyList[lobby.id] = structuredClone(lobby);
-                        lobbyList[lobby.id].code = "";
-                    }
-                }
                 io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
-                //end Temp
             }
         }
         /*
