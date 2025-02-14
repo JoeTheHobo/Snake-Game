@@ -1568,11 +1568,12 @@ function removePlayerStatus(lobby,player,itemName) {
     }
 }
 
-//From Appj.js
+//From App.js
 function getPlayersList(playerIds) {
     let list = [];
     for (let i = 0; i < playerIds.length; i++) {
-        list.push(onlineAccounts[playerIds[i]].player)
+        onlineAccounts[playerIds[i]].player.accountName = onlineAccounts[playerIds[i]].username;
+        list.push(onlineAccounts[playerIds[i]].player);
     }
     return list;
 }

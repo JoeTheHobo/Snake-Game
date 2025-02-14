@@ -1520,3 +1520,67 @@ function loadGameModesToPopup(func) {
         })
     }
 }
+
+function showEndScreen() {
+    $(".endScreenStats").show("flex");
+    playEndScreenAnimation();
+}
+function playEndScreenAnimation() {
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let extra = (height*.2);
+    let snakeHeightNoExt = (height/3);
+    let snakeHeight = (height/3)+extra;
+
+    
+    for (let i = 1; i < 4; i++) {
+        let snake = $("endScreenSnake" + i);
+        snake.hide();
+        snake.style.transition = "none"; 
+
+        snake.offsetHeight; // This forces the browser to apply the CSS changes
+
+        snake.css({
+            height: snakeHeight,
+            width: "auto",
+            top: (((i-1)*snakeHeightNoExt)-(extra/2)) + "px",
+            
+        })
+    }
+
+
+    for (let i = 1; i < 4; i++) {
+        let snake = $("endScreenSnake" + i);
+        if (i % 2 == 0) {
+            snake.show();
+            snake.css({
+                right: (snake.clientWidth*-1) + "px",
+            })
+            snake.offsetHeight; // This forces the browser to apply the CSS changes
+            snake.style.transition = "all 2s ease"; 
+
+            snake.offsetHeight; // This forces the browser to apply the CSS changes
+
+            setTimeout(function() {
+                snake.css({
+                    right: "0px",
+                })
+            },(i-1)*700);
+        } else {
+            snake.show();
+            snake.style.left = (snake.clientWidth * -1) + "px";
+            snake.offsetHeight; // This forces the browser to apply the CSS changes
+
+            snake.style.transition = "all 2s ease"; 
+            snake.offsetHeight; // This forces the browser to apply the CSS changes
+
+            setTimeout(function() {
+                snake.style.left = "0px";
+            },(i-1)*700);
+        }
+    }
+    
+    setTimeout(function() {
+        $(".endScreenContent").style.opacity = "1";
+    },2700)
+}

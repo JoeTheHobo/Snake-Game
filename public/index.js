@@ -101,14 +101,11 @@ socket.on("startingGame", (lobby) => {
 })
 socket.on("endGame",(obj,lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;
-    setScene("newMenu");
-    localAccount.lobbyID = false;
     localAccount.isInGame = false;
-    return;
+    
     $("playerCardsHolder").style.cursor = "";
     gameEnd = true;
     isActiveGame = false;
-    $(".endGamePopup").show("flex");
 
     let timeSurvivedPlayer = obj.timeSurvivedPlayer;
     let longestTailPlayer = obj.longestTailPlayer;
@@ -121,11 +118,11 @@ socket.on("endGame",(obj,lobbyID) => {
     $(".longestTimePlayerImg").style.filter = `hue-rotate(${timeSurvivedPlayer.color}deg) sepia(${timeSurvivedPlayer.color2}%) contrast(${timeSurvivedPlayer.color3}%)`;
     $(".longestTailPlayerImg").style.filter = `hue-rotate(${longestTailPlayer.color}deg) sepia(${longestTailPlayer.color2}%) contrast(${longestTailPlayer.color3}%)`;
     $(".mostKillsImg").style.filter = `hue-rotate(${mostKillsPlayer.color}deg) sepia(${mostKillsPlayer.color2}%) contrast(${mostKillsPlayer.color3}%)`;
-    $(".engGame_playerNameTime").innerHTML = timeSurvivedPlayer.name;
+    $(".engGame_playerNameTime").innerHTML = timeSurvivedPlayer.accountName;
     $(".engGame_playerTime").innerHTML = minutes + ":" + seconds + " Minutes";
-    $(".engGame_playerNameLength").innerHTML = longestTailPlayer.name;
+    $(".engGame_playerNameLength").innerHTML = longestTailPlayer.accountName;
     $(".engGame_playerLength").innerHTML = (longestTail+1) + " Length";
-    $(".engGame_playerNameKills").innerHTML = mostKillsPlayer.name;
+    $(".engGame_playerNameKills").innerHTML = mostKillsPlayer.accountName;
     $(".engGame_playerKills").innerHTML = (mostKills) + " Kill" + (mostKills > 1 ? "s" : "");
 
     if (activePlayers.length > 1 && mostKills > 0) {
@@ -135,6 +132,8 @@ socket.on("endGame",(obj,lobbyID) => {
     }
 
     $("winnerStat").hide();
+
+    showEndScreen()
 })
 socket.on("updatePositions",(obj,lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;
