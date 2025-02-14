@@ -9,6 +9,7 @@ function loadServersHTML() {
     let holder = $(".servers_servers_holder");
     holder.innerHTML = "";
     for (let server in frontEndLobbies) {
+        console.log(server)
         server = frontEndLobbies[server];
         if (!server.id) continue;
         let server_holder = holder.create("div");
@@ -565,7 +566,6 @@ function loadBoardsScreen(index = false) {
                 
                 const jsonString = JSON.stringify(shortenBoardResult);
                 const encodedText = encoder.encode(jsonString);
-                
                 
                 const compressed = pako.gzip(encodedText);
 
