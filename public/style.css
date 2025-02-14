@@ -1995,10 +1995,10 @@ html {
   align-items: center;
   justify-content: center;
   margin-top: auto;
-  height: 10%; 
+  height: 55px; 
 }
 .cbp_cancel {
-  width: 33%;
+  width: 280px;
   height: 80%;
   border-radius: 5px;
   background: rgb(167, 8, 8);
@@ -2068,6 +2068,6 @@ html {
   transition: all .2s ease;
 }
 .cgm_gameMode_holder:hover {
-  border: rgb(37, 185, 196);
+  border: 2px solid rgb(37, 185, 196);
   color: rgb(37, 185, 196);
 }

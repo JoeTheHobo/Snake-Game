@@ -1515,6 +1515,7 @@ function loadGameModesToPopup(func) {
 
         holder.gameMode = gameModes[i];
         holder.on("click",function() {
+            $(".chooseGameModePopup").hide()
             func(this.gameMode);
         })
     }
