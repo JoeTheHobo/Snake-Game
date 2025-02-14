@@ -639,6 +639,15 @@ io.on('connection', (socket) => {
 
         if (type == "Hidden" || type == "Private") io.emit("setCode",lobby.code);
         io.emit("updateLobbyPage",lobby);
+        let lobbyList = {};
+        for (const lobbyID in lobbies) {
+            let lobby = lobbies[lobbyID];
+            if (lobby.serverType !== "Hidden") {
+                lobbyList[lobby.id] = structuredClone(lobby);
+                lobbyList[lobby.id].code = "";
+            }
+        }
+        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
     })
     socket.on("startGame", () =>{
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
