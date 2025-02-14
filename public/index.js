@@ -70,7 +70,6 @@ socket.on("startingGame", (lobby) => {
     currentGameMode = lobby.gameMode;
                     
     setScene("game");
-    $(".endGamePopup").hide();
     $(".pauseGamePopup").hide();
     $("playerCardsHolder").innerHTML = "";
     $("playerCardsHolder").style.visibility = "visible";
