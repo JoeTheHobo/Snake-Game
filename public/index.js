@@ -153,8 +153,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
     updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
     updateCells = updateCells.concat(obj.updateCells);
     
-    deleteSnakeCells();
-    renderPlayers();
+    server_renderPlayers();
 });
 socket.on("updatedLocalAccount",(obj) => {
     localAccount.id = obj.id;
