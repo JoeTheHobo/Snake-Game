@@ -1607,7 +1607,8 @@ function snakeMapRemoveAll(lobby,player) {
         }
     }
 }
-function snakeMapRemove(snakeMap,playerID,y,x) {
+function snakeMapRemove(lobby,playerID,y,x) {
+    let snakeMap = lobby.snakeMap;
     let group = snakeMap[y][x];
     for (let i = 0; i < group.length; i++) {
         if (group[i].playerID == playerID) {
