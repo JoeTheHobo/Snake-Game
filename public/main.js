@@ -243,8 +243,10 @@ function server_renderPlayers() {
                         if (active.includes("bottom") && active.includes("left")) direction = "down";
                     }
                 }
-                
+
+                ctx_players.globalAlpha = 1/k;
                 drawRotated(image,direction,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
+                ctx_players.globalAlpha = 1;
     
             }
         }
