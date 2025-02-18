@@ -3940,7 +3940,34 @@ function addOpacityToColor(color,opacity="ff",a="ff",b="ff",c="ff",d="ff") {
             let color2 = _color(color).color;
             return findSimilarity(color2,ogColor);
         },
+        darken: function(percentage) {
+            let newObj = clone(this);
+
+            newObj.ogColor = darkenHexColor(this.ogColor,percentage);
+            newObj.color = newObj.ogColor + this.opacity;
+            let findColorObj = findColorName(newObj.ogColor)
+            newObj.colorName = findColorObj.name;
+            newObj.colorNameSimilarity = findColorObj.similar;
+            return newObj;
+        }
     }
+}
+function darkenHexColor(hex, percent) {
+    // Ensure hex is valid and remove '#' if present
+    hex = hex.replace(/^#/, '');
+
+    // Convert hex to RGB
+    let r = parseInt(hex.substring(0, 2), 16);
+    let g = parseInt(hex.substring(2, 4), 16);
+    let b = parseInt(hex.substring(4, 6), 16);
+
+    // Calculate darkened values
+    r = Math.max(0, Math.round(r * (1 - percent / 100)));
+    g = Math.max(0, Math.round(g * (1 - percent / 100)));
+    b = Math.max(0, Math.round(b * (1 - percent / 100)));
+
+    // Convert back to hex and return
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
 }
 
 
