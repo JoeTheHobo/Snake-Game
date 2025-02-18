@@ -784,7 +784,7 @@ io.on('connection', (socket) => {
 
 
             if (!this.gameEnd) {
-                setTimeout(() => this.gameLoop(), 500/*60*/);
+                setTimeout(() => this.gameLoop(), 60);
             } else {
                 this.isActiveGame = false;
 
@@ -1596,7 +1596,7 @@ function snakeMapSetType(lobby,index,y,x,type) {
     for (let i = 0; i < group.length; i++) {
         if (group[i].index == index) {
             lobby.snakeMap[y][x][i].type = type;
-            if (type == "tail") lobby.snakeMap[y][x][i].siblings.shift();
+            if (type == "tail" && lobby.snakeMap[y][x][i].siblings.length > 1) lobby.snakeMap[y][x][i].siblings.shift();
             return;
         }
     }
