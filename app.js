@@ -717,6 +717,7 @@ io.on('connection', (socket) => {
             player.shield = 0;
             
             player.playerKills = 0;
+            player.index = i;
 
             player.pos = {
                 x: false,
@@ -1584,11 +1585,11 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
-function snakeMapSetTail(lobby,playerID,y,x) {
+function snakeMapSetTail(lobby,index,y,x) {
     let snakeMap = lobby.snakeMap;
     let group = snakeMap[y][x];
     for (let i = 0; i < group.length; i++) {
-        if (group[i].playerID == playerID) {
+        if (group[i].index == index) {
             snakeMap[y][x].type = "tail";
             return;
         }
@@ -1599,7 +1600,7 @@ function snakeMapRemoveAll(lobby,player) {
     for (let i = 0; i < snakeMap.length; i++) {
         for (let j = 0; j < snakeMap[i].length; j++) {
             for (let k = snakeMap[i][j].length-1; k > 0; k--) {
-                if (snakeMap[i][j][k].playerID == player.id) {
+                if (snakeMap[i][j][k].index == player.index) {
                     snakeMap[i][j].splice(k,1);
                     lobby.updateSnakeCells.push(lobby.snakeMap[i][j]);
                 }
@@ -1607,20 +1608,20 @@ function snakeMapRemoveAll(lobby,player) {
         }
     }
 }
-function snakeMapRemove(lobby,playerID,y,x) {
+function snakeMapRemove(lobby,index,y,x) {
     let snakeMap = lobby.snakeMap;
     let group = snakeMap[y][x];
     for (let i = 0; i < group.length; i++) {
-        if (group[i].playerID == playerID) {
+        if (group[i].index == index) {
             snakeMap[y][x].splice(i,1);
             return;
         }
     }
 }
-function snakeMapAddSibling(snakeMap,playerID,posY,posX,sibY,sibX) {
+function snakeMapAddSibling(snakeMap,index,posY,posX,sibY,sibX) {
     let group = snakeMap[posY][posX];
     for (let i = 0; i < group.length; i++) {
-        if (group[i].playerID == playerID) {
+        if (group[i].index == index) {
             group[i].siblings.push({
                 x: sibX,
                 y: sibY,
@@ -1743,14 +1744,14 @@ function server_movePlayers(lobby) {
         if (!player.isDead) {
             let sibling = player.tail.length > 0 ? [player.tail[0]] : [];
             lobby.snakeMap[player.pos.y][player.pos.x].push({
-                playerID: player.id,
+                index: player.index,
                 siblings: sibling,
                 type: "head",
                 x: player.pos.x,
                 y: player.pos.y,
             });
             if (sibling.length == 1) {
-                snakeMapAddSibling(lobby,player.id,sibling[0].y,sibling[0].x,player.pos.y,player.pos.x)
+                snakeMapAddSibling(lobby,player.index,sibling[0].y,sibling[0].x,player.pos.y,player.pos.x)
             }
 
 
@@ -1776,12 +1777,14 @@ function server_movePlayers(lobby) {
                     y: playerY,
                     direction: player.moving,
                 });
+                /*
                 lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x].push({
-                    playerID: player.id,
+                    index: player.index,
                     siblings: [player.tail[0].pos],
                     x: player.tail[player.tail.length-1].x,
                     y: player.tail[player.tail.length-1].y,
                 });
+                */
                 lobby.updateSnakeCells.push(lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x]);
                 
 
@@ -1791,11 +1794,11 @@ function server_movePlayers(lobby) {
                     if (mapItem.canCollide) runItemFunction(lobby,player,mapItem,"offCollision");
                 }
                 
-                snakeMapRemove(lobby,player.id,tail.y,tail.x);
+                snakeMapRemove(lobby,player.index,tail.y,tail.x);
                 player.tail.pop();
-                snakeMapSetTail(lobby,player.id,player.tail[player.tail.length-1].y,player.tail[player.tail.length-1].x);
+                snakeMapSetTail(lobby,player.index,player.tail[player.tail.length-1].y,player.tail[player.tail.length-1].x);
             } else {
-                snakeMapRemove(lobby,player.id,playerY,playerX);
+                snakeMapRemove(lobby,player.index,playerY,playerX);
                 if (currentBoard.map[playerY][playerX].item) {
                     let mapItem = currentBoard.map[playerY][playerX].item;
                     if (mapItem.canCollide) runItemFunction(lobby,player,mapItem,"offCollision");
