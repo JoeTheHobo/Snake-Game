@@ -188,10 +188,23 @@ function server_renderPlayers() {
                 let active = []
                 for (let j = 0; j < obj.siblings.length; j++) {
                     let sibling = obj.siblings[j];
-                    if (sibling.x < obj.x) active.push("left");
-                    if (sibling.x > obj.x) active.push("right");
-                    if (sibling.y < obj.y) active.push("top");
-                    if (sibling.y > obj.y) active.push("bottom");
+                    const worldWidth = currentBoard[0].length; 
+                    const worldHeight = currentBoard[0].length;
+
+                    let dx = sibling.x - obj.x;
+                    let dy = sibling.y - obj.y;
+
+                    // Adjust for wrapping
+                    if (dx > worldWidth / 2) dx -= worldWidth;
+                    if (dx < -worldWidth / 2) dx += worldWidth;
+                    if (dy > worldHeight / 2) dy -= worldHeight;
+                    if (dy < -worldHeight / 2) dy += worldHeight;
+
+                    // Determine directions based on the shortest path
+                    if (dx < 0) active.push("left");
+                    if (dx > 0) active.push("right");
+                    if (dy < 0) active.push("top");
+                    if (dy > 0) active.push("bottom");
                 }
     
                 //For Tunnels
@@ -209,7 +222,6 @@ function server_renderPlayers() {
     
                 if (obj.type == "tail") {
                     image = player.canvas.tail;
-                    console.log(obj,obj.siblings)
                     if (active.includes("right")) direction = "right"; 
                     if (active.includes("left")) direction = "left"; 
                     if (active.includes("bottom")) direction = "down"; 
