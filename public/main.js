@@ -216,8 +216,13 @@ function server_renderPlayers() {
                 //For Tunnels
                 if (active.length == 1 && active[0] !== "down" && obj.type == "body") {
                     console.log(active)
-                    if (active[0] == "bottom") active.push("top");
-                    else active.push("bottom");
+                    if (obj.type == "body") {
+                        if (active[0] == "bottom") active.push("top");
+                        else active.push("bottom");
+                    }
+                    if (obj.type == "tail") {
+                        
+                    }
                 }
                 /* 
                     snakeTurn directions
