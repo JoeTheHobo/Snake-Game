@@ -158,7 +158,6 @@ function server_renderPlayers() {
         ctx_players.clearRect(arr[0].x*gridSize,arr[0].y*gridSize,gridSize,gridSize);
         for (let k = 1; k < arr.length; k++) {
             let obj = arr[k];
-            console.log(obj)
 
             let player;
             for (let j = 0; j < activePlayers.length; j++) {
@@ -215,22 +214,24 @@ function server_renderPlayers() {
                     if (active.includes("left")) direction = "right";
                     if (active.includes("down")) direction = "up";
                     if (active.includes("up")) direction = "down";
+                } else {
+                    if (active.includes("left") && active.includes("right")) {
+                        image = player.canvas.body;
+                        direction = "right";
+                    }
+                    if (active.includes("top") && active.includes("bottom")) {
+                        image = player.canvas.body;
+                        direction = "up";
+                    }
+                    if (!image) {
+                        image = player.canvas.turn;
+                        if (active.includes("top") && active.includes("right")) direction = "up";
+                        if (active.includes("top") && active.includes("left")) direction = "left";
+                        if (active.includes("right") && active.includes("bottom")) direction = "right";
+                        if (active.includes("bottom") && active.includes("left")) direction = "down";
+                    }
                 }
-                if (active.includes("left") && active.includes("right")) {
-                    image = player.canvas.body;
-                    direction = "right";
-                }
-                if (active.includes("top") && active.includes("bottom")) {
-                    image = player.canvas.body;
-                    direction = "up";
-                }
-                if (!image) {
-                    image = player.canvas.turn;
-                    if (active.includes("top") && active.includes("right")) direction = "up";
-                    if (active.includes("top") && active.includes("left")) direction = "left";
-                    if (active.includes("right") && active.includes("bottom")) direction = "right";
-                    if (active.includes("bottom") && active.includes("left")) direction = "down";
-                }
+                
                 drawRotated(image,direction,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
     
             }
