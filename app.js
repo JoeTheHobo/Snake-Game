@@ -888,10 +888,11 @@ io.on('connection', (socket) => {
     })
     socket.on("movePlayerKey",(direction) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        let player = onlineAccounts[socket.id].player;
         if (!lobby) return;
 
         if (lobby.gameStatus == "prepare") {
-            onlineAccounts[socket.id].player.moving = direction;
+            player.moving = direction;
 
             emitingActivePlayers = Object.values(lobby.activePlayers).map(({ index, selectingItem, items, tail,moving,shield }) => ({
                 index,
@@ -901,6 +902,8 @@ io.on('connection', (socket) => {
                 moving,
                 shield,
             }));
+
+            lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);
 
             io.emit("updatePositions",{
                 updatedPlayers: emitingActivePlayers,
