@@ -1824,6 +1824,8 @@ function server_movePlayers(lobby) {
             }
             if (player.tail.length == 1) snakeMapSetSibling(lobby,player.index,player.tail[0].y,player.tail[0].x,player.pos.y,player.pos.x);
 
+            if (lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x].length > 2) console.log(2,lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x])
+
             lobby.updateSnakeCells.push(lobby.snakeMap[playerY][playerX]);
             lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);
 
