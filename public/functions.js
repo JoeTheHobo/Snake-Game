@@ -1395,46 +1395,49 @@ function updateLobbyPage(lobby) {
     let playersHolder = $(".sc_players_playersList");
     playersHolder.innerHTML = "";
     let isHost = lobby.hostID === localAccount.id;
-    for (let i = 0; i < lobby.activePlayers.length; i++) {
-        let isYou = false;
-        if (lobby.activePlayers[i].accountID === localAccount.id)  {
-            player = lobby.activePlayers[i];
-            isYou = true;
-        }
-        let holder = playersHolder.create("div");
-        holder.className = "lobbyPlayerCard";
-
-        if (i % 2 == 0) holder.style.background = "#696969";
-
-        function makeImage(holder,className,src,filter = false) {
-            let imageHolder = holder.create("div");
-            imageHolder.className = className;
-            let image = imageHolder.create("img");
-            image.className = "lobbyImage";
-            image.src = src;
-
-            if (filter) {
-                image.style.filter = `hue-rotate(${filter.color}deg) sepia(${filter.color2}%) contrast(${filter.color3}%)`
+    if (lobby.activePlayers) {
+        for (let i = 0; i < lobby.activePlayers.length; i++) {
+            let isYou = false;
+            if (lobby.activePlayers[i].accountID === localAccount.id)  {
+                player = lobby.activePlayers[i];
+                isYou = true;
             }
-
+            let holder = playersHolder.create("div");
+            holder.className = "lobbyPlayerCard";
+    
+            if (i % 2 == 0) holder.style.background = "#696969";
+    
+            function makeImage(holder,className,src,filter = false) {
+                let imageHolder = holder.create("div");
+                imageHolder.className = className;
+                let image = imageHolder.create("img");
+                image.className = "lobbyImage";
+                image.src = src;
+    
+                if (filter) {
+                    image.style.filter = `hue-rotate(${filter.color}deg) sepia(${filter.color2}%) contrast(${filter.color3}%)`
+                }
+    
+            }
+            makeImage(holder,"lobbySnakeImageHolder","img/snakeHead.png",lobby.activePlayers[i]);
+    
+            let snakeName = holder.create("div");
+            snakeName.className = "lobbySnakeName";
+            snakeName.innerHTML = isYou ? "You" : lobby.activePlayers[i].name;
+            if (lobby.hostID == lobby.activePlayers[i].accountID) snakeName.innerHTML += " (Host)";
+    
+            if (isYou) continue;
+    
+            let rightContent = holder.create("div");
+            rightContent.className = "lobbyPlayersRight";
+    
+            makeImage(rightContent,"lobbyFriendsIcon","img/menuIcons/friend.png");
+            if (isHost) makeImage(rightContent,"lobbyHostIcon","img/menuIcons/makeHost.png");
+            if (isHost) makeImage(rightContent,"lobbyBanIcon","img/menuIcons/banPlayer.png");
+    
         }
-        makeImage(holder,"lobbySnakeImageHolder","img/snakeHead.png",lobby.activePlayers[i]);
-
-        let snakeName = holder.create("div");
-        snakeName.className = "lobbySnakeName";
-        snakeName.innerHTML = isYou ? "You" : lobby.activePlayers[i].name;
-        if (lobby.hostID == lobby.activePlayers[i].accountID) snakeName.innerHTML += " (Host)";
-
-        if (isYou) continue;
-
-        let rightContent = holder.create("div");
-        rightContent.className = "lobbyPlayersRight";
-
-        makeImage(rightContent,"lobbyFriendsIcon","img/menuIcons/friend.png");
-        if (isHost) makeImage(rightContent,"lobbyHostIcon","img/menuIcons/makeHost.png");
-        if (isHost) makeImage(rightContent,"lobbyBanIcon","img/menuIcons/banPlayer.png");
-
     }
+    
     $(".sc_bb_snakeImg").style.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`; 
 
     let chatHolder = $(".sc_chatHolder");
