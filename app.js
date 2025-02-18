@@ -1771,7 +1771,6 @@ function server_movePlayers(lobby) {
                     y: playerY,
                     direction: player.moving,
                 });
-                lobby.updateSnakeCells.push(lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x]);
                 
 
                 let tail = player.tail[player.tail.length-1];
@@ -1782,17 +1781,16 @@ function server_movePlayers(lobby) {
                 
                 snakeMapRemove(lobby,player.index,tail.y,tail.x);
                 player.tail.pop();
+
+                snakeMapSetType(lobby,player.index,player.tail[0].y,player.tail[0].x,"body");
+                snakeMapSetType(lobby,player.index,player.tail[player.tail.length-1].y,player.tail[player.tail.length-1].x,"tail");
+                lobby.updateSnakeCells.push(lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x]);
             } else {
                 snakeMapRemove(lobby,player.index,playerY,playerX);
                 if (currentBoard.map[playerY][playerX].item) {
                     let mapItem = currentBoard.map[playerY][playerX].item;
                     if (mapItem.canCollide) runItemFunction(lobby,player,mapItem,"offCollision");
                 }
-            }
-            if (player.tail.length > 0) {
-                snakeMapSetType(lobby,player.index,player.tail[0].y,player.tail[0].x,"body");
-                snakeMapSetType(lobby,player.index,player.tail[player.tail.length-1].y,player.tail[player.tail.length-1].x,"tail");
-                lobby.updateSnakeCells.push(lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x]);
             }
 
             let sibling = player.tail.length > 0 ? [player.tail[0]] : [];
