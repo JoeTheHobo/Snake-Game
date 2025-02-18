@@ -139,9 +139,28 @@ socket.on("endGame",(obj,lobbyID) => {
     showEndScreen()
 })
 socket.on("preparingGame",(lobby) => {
-    
+    $(".numbersPopup").show();
+    showNumber(3);
+
 
 })
+function showNumber(index) {
+    if (index == 0) index = "go";
+    $(".np_img_holder").hide();
+    $("np_img_" + index).show();
+
+    if (index == "go") {
+        setTimeout(function() {
+            $(".numbersPopup").hide();
+        },250);
+        return;
+    }
+
+    setTimeout(function() {
+        showNumber(index-1);
+    },1000);
+
+}
 socket.on("updatePositions",(obj,lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;
 

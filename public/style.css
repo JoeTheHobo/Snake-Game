@@ -2136,6 +2136,7 @@ html {
   left: 0;
   width: 100%;
   height: 100%;
+  display: none;
 }
 .np_img_holder {
   position: absolute;
