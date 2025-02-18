@@ -1590,12 +1590,12 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
-function snakeMapSetTail(lobby,index,y,x) {
+function snakeMapSetType(lobby,index,y,x,type) {
     let snakeMap = lobby.snakeMap;
     let group = snakeMap[y][x];
     for (let i = 0; i < group.length; i++) {
         if (group[i].index == index) {
-            snakeMap[y][x].type = "tail";
+            snakeMap[y][x].type = type;
             return;
         }
     }
