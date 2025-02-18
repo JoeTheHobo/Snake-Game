@@ -152,6 +152,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
             local_player.selectingItem = server_player.selectingItem;
             local_player.items = server_player.items;
             local_player.moving = server_player.moving;
+            local_player.shield = server_player.shield;
             local_player.tailLength = server_player.tailLength;
 
             updatePlayerCard(local_player);

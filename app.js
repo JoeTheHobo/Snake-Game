@@ -759,12 +759,13 @@ io.on('connection', (socket) => {
         lobby.boardStatus = [];
 
         io.emit("startingGame", lobby,onlineAccounts[socket.id].player);
-        emitingActivePlayers = Object.values(lobby.activePlayers).map(({ index, selectingItem, items, tail,moving }) => ({
+        emitingActivePlayers = Object.values(lobby.activePlayers).map(({ index, selectingItem, items, tail,moving,shield }) => ({
             index,
             selectingItem,
             items,
             tailLength: tail.length + 1,
             moving,
+            shield,
         }));
         io.emit("updatePositions",{
             updatedPlayers: emitingActivePlayers,
@@ -778,12 +779,13 @@ io.on('connection', (socket) => {
             this.lastTimestamp = timestamp;
 
             if (onlineAccounts[socket.id]) {
-                emitingActivePlayers = Object.values(this.activePlayers).map(({ index, selectingItem, items, tail,moving }) => ({
+                emitingActivePlayers = Object.values(this.activePlayers).map(({ index, selectingItem, items, tail,moving,shield }) => ({
                     index,
                     selectingItem,
                     items,
                     tailLength: tail.length + 1,
                     moving,
+                    shield,
                 }));
 
                 io.emit("updatePositions",{
