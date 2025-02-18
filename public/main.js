@@ -155,8 +155,8 @@ function server_renderPlayers() {
         let obj = updateSnakeCells[i];
         let player;
         for (let j = 0; j < activePlayers.length; j++) {
-            console.log(activePlayers[j].id == obj.playerID,activePlayers[j].id,obj.playerID);
-            if (activePlayers[j].id === obj.playerID) {
+            console.log(activePlayers[j].index == obj.index,activePlayers[j].index,obj.index);
+            if (activePlayers[j].index === obj.index) {
                 player = activePlayers[j];
                 break;
             } 
