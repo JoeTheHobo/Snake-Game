@@ -140,6 +140,10 @@ socket.on("endGame",(obj,lobbyID) => {
 socket.on("updatePositions",(obj,lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;
 
+    const jsonString = JSON.stringify(obj);
+    const sizeInBytes = new TextEncoder().encode(jsonString).length;
+    production.updatePositions_recieveData.times.push(sizeInBytes);
+
     let canvasList = [];
     let oldPosList = [];
     for (let i = 0; i < activePlayers.length; i++) {

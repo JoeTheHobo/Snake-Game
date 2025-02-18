@@ -1521,6 +1521,7 @@ let production = {
         timeStart: 0,
         type: "dom",
         showIF: "local",
+        dataType: "ms",
     },
     renderCells: {
         times: [],
@@ -1528,6 +1529,7 @@ let production = {
         timeStart: 0,
         type: "dom",
         showIF: "local",
+        dataType: "ms",
     },
     movePlayers: {
         times: [],
@@ -1535,6 +1537,7 @@ let production = {
         timeStart: 0,
         type: "dom",
         showIF: "local",
+        dataType: "ms",
     },
     setPlayerPos: {
         times: [],
@@ -1542,6 +1545,7 @@ let production = {
         timeStart: 0,
         type: "sub",
         showIF: "local",
+        dataType: "ms",
     },
     checkingPlayerCollision: {
         times: [],
@@ -1549,6 +1553,7 @@ let production = {
         timeStart: 0,
         type: "sub",
         showIF: "local",
+        dataType: "ms",
     },
     testingItems: {
         times: [],
@@ -1556,6 +1561,7 @@ let production = {
         timeStart: 0,
         type: "sub",
         showIF: "local",
+        dataType: "ms",
     },
     growingTail: {
         times: [],
@@ -1563,6 +1569,7 @@ let production = {
         timeStart: 0,
         type: "sub",
         showIF: "local",
+        dataType: "ms",
     },
     deleteSnakeCells: {
         times: [],
@@ -1570,6 +1577,7 @@ let production = {
         timeStart: 0,
         type: "dom",
         showIF: "local",
+        dataType: "ms",
     },
     renderPlayers: {
         times: [],
@@ -1577,6 +1585,7 @@ let production = {
         timeStart: 0,
         type: "dom",
         showIF: "local",
+        dataType: "ms",
     },
     renderTail: {
         times: [],
@@ -1584,15 +1593,17 @@ let production = {
         timeStart: 0,
         type: "sub",
         showIF: "local",
+        dataType: "ms",
     },
 
     //Server Play
-    recieveData: {
+    updatePositions_recieveData: {
         times: [],
         average: 0,
         timeStart: 0,
         type: "dom",
         showIF: "server",
+        dataType: "size",
     },
 }
 function setUpProductionHTML() {
@@ -1600,7 +1611,6 @@ function setUpProductionHTML() {
     holder.innerHTML = "";
     for (let i = 0; i < Object.entries(production).length; i++) {
         let entry = Object.entries(production)[i];
-        console.log(entry[1].showIF !== productionType,entry[1].showIF , productionType);
         if (entry[1].showIF !== productionType) continue;
 
         let div = holder.create("div");
@@ -1626,7 +1636,8 @@ function updateProduction() {
         }
         if (entry[1].times.length == 0) entry[1].times.push(0);
         entry[1].average = entry[1].times.avg();
-        $("production_" + entry[0]).innerHTML = entry[1].average.toFixed(4) + "ms";
+        if (entry[1].dataType == "ms") $("production_" + entry[0]).innerHTML = entry[1].average.toFixed(4) + "ms";
+        if (entry[1].dataType == "size") $("production_" + entry[0]).innerHTML = entry[1].average.toFixed(4) + "mb";
     }
 }
 function gameLoop() {
