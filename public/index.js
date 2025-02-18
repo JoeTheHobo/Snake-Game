@@ -143,7 +143,6 @@ socket.on("updatePositions",(obj,lobbyID) => {
     const jsonString = JSON.stringify(obj);
     const sizeInBytes = new TextEncoder().encode(jsonString).length;
     production.updatePositions_recieveData.times.push(sizeInBytes);
-    console.log(obj.updatedPlayers);
     for (let i = 0; i < obj.updatedPlayers.length; i++) {
         for (let j = 0; j < activePlayers.length; j++) {
             let local_player = activePlayers[j];

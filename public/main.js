@@ -1254,48 +1254,37 @@ document.body.onkeydown = function(e) {
         }
         if (!activePlayer) return;
         if (activePlayer.isDead) return;
+        console.log("yee");
         if (e.key == activePlayer.leftKey && activePlayer.moveQueue.length < 4) {
-            activePlayer.moveQueue.push("left");
             socket.emit("movePlayerKey","left");
         }
         if (e.key == activePlayer.rightKey && activePlayer.moveQueue.length < 4) {
-            activePlayer.moveQueue.push("right");
             socket.emit("movePlayerKey","right");
         }
         if (e.key == activePlayer.upKey && activePlayer.moveQueue.length < 4) {
-            activePlayer.moveQueue.push("up");
             socket.emit("movePlayerKey","up");
         }
         if (e.key == activePlayer.downKey && activePlayer.moveQueue.length < 4) {
-            activePlayer.moveQueue.push("down");
             socket.emit("movePlayerKey","down");
         }
         if (e.key == activePlayer.useItem1) {
             if (currentGameMode.mode_usingItemType == "scroll") {
-                activePlayer.selectingItem--;
-                if (activePlayer.selectingItem < 0) activePlayer.selectingItem = currentGameMode.howManyItemsCanPlayersUse-1;
                 socket.emit("changeItem",-1);
             }
             if (currentGameMode.mode_usingItemType == "direct") {
-                activePlayer.selectingItem = 0;
-                useItem(activePlayer);
             }
         }
         if (e.key == activePlayer.useItem2) {
             if (currentGameMode.mode_usingItemType == "scroll") {
-                activePlayer.selectingItem++;
-                if (activePlayer.selectingItem > currentGameMode.howManyItemsCanPlayersUse-1) activePlayer.selectingItem = 0;
                 socket.emit("changeItem",1);
             }
             if (currentGameMode.mode_usingItemType == "direct") {
                 activePlayer.selectingItem = 1;
-                useItem(activePlayer);
             }
         }
         if (e.key == activePlayer.fireItem) {
             if (currentGameMode.mode_usingItemType == "scroll") {
                 if (activePlayer.items[activePlayer.selectingItem]) {
-                    useItem(activePlayer);
                     socket.emit("fireItem");
                 }
             }
