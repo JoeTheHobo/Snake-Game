@@ -215,6 +215,7 @@ function server_renderPlayers() {
     
                 //For Tunnels
                 if (active.length == 1 && active[0] !== "down" && obj.type == "body") {
+                    console.log(active)
                     active.push("bottom");
                 }
                 /* 
