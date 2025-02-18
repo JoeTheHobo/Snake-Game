@@ -151,17 +151,14 @@ function drawRotated(list,direction,xPos, yPos, width, height) {
     ctx_players.drawImage(image,xPos,yPos,width,height);
 }
 function server_renderPlayers() {
-    console.log(updateSnakeCells);
     for (let i = 0; i < updateSnakeCells.length; i++) {
         let obj = updateSnakeCells[i];
         let player;
         for (let j = 0; j < activePlayers.length; j++) {
-            if (activePlayers[j].id === obj.id) {
+            if (activePlayers[j].id === obj.playerID) {
                 player = activePlayers[j];
                 break;
             } 
-        }
-        console.log(player)
         if (!player) return;
 
         //Clear Cell
@@ -228,6 +225,7 @@ function server_renderPlayers() {
         }
     }
     updateSnakeCells = [];
+    console.log(updateSnakeCells)
 }
 function renderPlayers() {
     for (let i = 0; i < activePlayers.length; i++) {
