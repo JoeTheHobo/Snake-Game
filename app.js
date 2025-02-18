@@ -1619,6 +1619,7 @@ function snakeMapRemove(lobby,index,y,x) {
     }
 }
 function snakeMapAddSibling(snakeMap,index,posY,posX,sibY,sibX) {
+    console.log(posY,posX)
     let group = snakeMap[posY][posX];
     for (let i = 0; i < group.length; i++) {
         if (group[i].index == index) {
@@ -1751,7 +1752,6 @@ function server_movePlayers(lobby) {
                 y: player.pos.y,
             });
             if (sibling.length == 1) {
-                console.log(sibling[0]);
                 snakeMapAddSibling(lobby,player.index,sibling[0].y,sibling[0].x,player.pos.y,player.pos.x)
             }
 
