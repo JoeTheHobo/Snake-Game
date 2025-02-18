@@ -1624,12 +1624,25 @@ function snakeMapRemove(lobby,index,y,x) {
         }
     }
 }
+function snakeMapSetSibling(lobby,index,posY,posX,sibY,sibX) {
+    let snakeMap = lobby.snakeMap;
+    let group = snakeMap[posY][posX];
+    for (let i = 0; i < group.length; i++) {
+        if (group[i].index == index) {
+            group[i].siblings = [{
+                x: sibX,
+                y: sibY,
+            }];
+            return;
+        }
+    }
+
+}
 function snakeMapAddSibling(lobby,index,posY,posX,sibY,sibX) {
     let snakeMap = lobby.snakeMap;
     let group = snakeMap[posY][posX];
     for (let i = 0; i < group.length; i++) {
         if (group[i].index == index) {
-            if (group[i].type == "tail") return;
             group[i].siblings.push({
                 x: sibX,
                 y: sibY,
@@ -1808,6 +1821,7 @@ function server_movePlayers(lobby) {
             if (sibling.length == 1) {
                 snakeMapAddSibling(lobby,player.index,sibling[0].y,sibling[0].x,player.pos.y,player.pos.x)
             }
+            if (player.tail.length == 1) snakeMapSetSibling(lobby,player.index,player.tail[0].y,player.tail[0].x,player.pos.y,player.pos.x);
 
             lobby.updateSnakeCells.push(lobby.snakeMap[playerY][playerX]);
             lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);
