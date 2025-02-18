@@ -186,6 +186,7 @@ function server_renderPlayers() {
             }
             if (obj.type == "body" || obj.type == "tail") {
                 let active = []
+                console.log(obj.siblings)
                 for (let j = 0; j < obj.siblings.length; j++) {
                     let sibling = obj.siblings[j];
                     if (sibling.x < obj.x) active.push("left");
