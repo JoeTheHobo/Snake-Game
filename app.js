@@ -1595,7 +1595,8 @@ function snakeMapSetType(lobby,index,y,x,type) {
     let group = snakeMap[y][x];
     for (let i = 0; i < group.length; i++) {
         if (group[i].index == index) {
-            snakeMap[y][x].type = type;
+            console.log(type)
+            lobby.snakeMap[y][x].type = type;
             return;
         }
     }
