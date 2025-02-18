@@ -1593,7 +1593,7 @@ function removePlayerStatus(lobby,player,itemName) {
 function snakeMapSetType(lobby,index,y,x,type) {
     let snakeMap = lobby.snakeMap;
     let group = snakeMap[y][x];
-    for (let i = 0; i < group.length; i++) {
+    for (let i = group.length-1; i > 0; i--) {
         if (group[i].index == index) {
             lobby.snakeMap[y][x][i].type = type;
             if (type == "tail" && lobby.snakeMap[y][x][i].siblings.length > 1) lobby.snakeMap[y][x][i].siblings.shift();
@@ -1617,7 +1617,7 @@ function snakeMapRemoveAll(lobby,player) {
 function snakeMapRemove(lobby,index,y,x) {
     let snakeMap = lobby.snakeMap;
     let group = snakeMap[y][x];
-    for (let i = 0; i < group.length; i++) {
+    for (let i = group.length-1; i > 0; i--) {
         if (group[i].index == index) {
             lobby.snakeMap[y][x].splice(i,1);
             return;
@@ -1627,7 +1627,7 @@ function snakeMapRemove(lobby,index,y,x) {
 function snakeMapSetSibling(lobby,index,posY,posX,sibY,sibX) {
     let snakeMap = lobby.snakeMap;
     let group = snakeMap[posY][posX];
-    for (let i = 0; i < group.length; i++) {
+    for (let i = group.length-1; i > 0; i--) {
         if (group[i].index == index) {
             group[i].siblings = [{
                 x: sibX,
@@ -1641,7 +1641,7 @@ function snakeMapSetSibling(lobby,index,posY,posX,sibY,sibX) {
 function snakeMapAddSibling(lobby,index,posY,posX,sibY,sibX) {
     let snakeMap = lobby.snakeMap;
     let group = snakeMap[posY][posX];
-    for (let i = 0; i < group.length; i++) {
+    for (let i = group.length-1; i > 0; i--) {
         if (group[i].index == index) {
             group[i].siblings.push({
                 x: sibX,
