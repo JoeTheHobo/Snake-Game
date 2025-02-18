@@ -229,7 +229,7 @@ function server_renderPlayers() {
                     if (active.includes("right") && active.includes("bottom")) direction = "right";
                     if (active.includes("bottom") && active.includes("left")) direction = "down";
                 }
-    
+                console.log(image,direction)
                 drawRotated(image,direction,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
     
             }
