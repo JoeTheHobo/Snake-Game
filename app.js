@@ -1593,10 +1593,11 @@ function removePlayerStatus(lobby,player,itemName) {
 function snakeMapSetType(lobby,index,y,x,type) {
     let snakeMap = lobby.snakeMap;
     let group = snakeMap[y][x];
-    for (let i = 0; i < group.length; i++) {
+    for (let i = group.length-1; i > 0; i--) {
         if (group[i].index == index) {
             lobby.snakeMap[y][x][i].type = type;
             if (type == "tail" && lobby.snakeMap[y][x][i].siblings.length > 1) lobby.snakeMap[y][x][i].siblings.shift();
+            if (type == "tail" && group.length > 2) console.log(group)
             return;
         }
     }
