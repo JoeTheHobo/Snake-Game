@@ -1803,10 +1803,10 @@ function server_movePlayers(lobby) {
                 x: player.pos.x,
                 y: player.pos.y,
             });
-            if (sibling.length == 1) {
+            if (sibling.length == 1 && player.tail.length > 1) {
                 snakeMapAddSibling(lobby,player.index,sibling[0].y,sibling[0].x,player.pos.y,player.pos.x)
             }
-            
+
             lobby.updateSnakeCells.push(lobby.snakeMap[playerY][playerX]);
             lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);
 
