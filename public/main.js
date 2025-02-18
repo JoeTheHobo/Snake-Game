@@ -209,7 +209,7 @@ function server_renderPlayers() {
     
                 if (obj.type == "tail") {
                     image = player.canvas.tail;
-                    if (active.includes("right")) direction = "left"; //<
+                    if (active.includes("right")) direction = "right"; //<
                     if (active.includes("left")) direction = "up";
                     if (active.includes("bottom")) direction = "right";
                     if (active.includes("top")) direction = "down"; //v
