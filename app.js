@@ -1775,6 +1775,7 @@ function server_movePlayers(lobby) {
                     y: playerY,
                     direction: player.moving,
                 });
+                snakeMapSetType(lobby,player.index,player.tail[0].y,player.tail[0].x,"body");
                 player.growTail--;
                 if (player.tail.length > player.longestTail) player.longestTail = player.tail.length;
             } else if(player.tail.length > 0) {
@@ -1792,7 +1793,6 @@ function server_movePlayers(lobby) {
                     if (mapItem.canCollide) runItemFunction(lobby,player,mapItem,"offCollision");
                 }
                 
-                snakeMapSetType(lobby,player.index,player.tail[0].y,player.tail[0].x,"body");
                 snakeMapRemove(lobby,player.index,tail.y,tail.x);
                 player.tail.pop();
                 snakeMapSetType(lobby,player.index,player.tail[player.tail.length-1].y,player.tail[player.tail.length-1].x,"tail");
