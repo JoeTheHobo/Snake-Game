@@ -1617,7 +1617,7 @@ function snakeMapRemoveAll(lobby,player) {
 function snakeMapRemove(lobby,index,y,x) {
     let snakeMap = lobby.snakeMap;
     let group = snakeMap[y][x];
-    for (let i = group.length-1; i > 0; i--) {
+    for (let i = 0; i < group.length; i++) {
         if (group[i].index == index) {
             lobby.snakeMap[y][x].splice(i,1);
             return;
