@@ -209,7 +209,10 @@ function server_renderPlayers() {
     
                 if (obj.type == "tail") {
                     image = player.canvas.tail;
-                    console.log("Tass",player.canvas)
+                    if (active.includes("right")) direction = "left";
+                    if (active.includes("left")) direction = "right";
+                    if (active.includes("down")) direction = "up";
+                    if (active.includes("up")) direction = "down";
                 }
                 if (active.includes("left") && active.includes("right")) {
                     image = player.canvas.body;
