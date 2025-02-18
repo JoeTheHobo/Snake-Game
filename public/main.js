@@ -188,8 +188,8 @@ function server_renderPlayers() {
                 let active = []
                 for (let j = 0; j < obj.siblings.length; j++) {
                     let sibling = obj.siblings[j];
-                    const worldWidth = currentBoard[0].length; 
-                    const worldHeight = currentBoard[0].length;
+                    const worldWidth = currentBoard.map[0].length; 
+                    const worldHeight = currentBoard.map[0].length;
 
                     let dx = sibling.x - obj.x;
                     let dy = sibling.y - obj.y;
