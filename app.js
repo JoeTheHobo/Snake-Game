@@ -767,6 +767,7 @@ io.on('connection', (socket) => {
             moving,
             shield,
         }));
+        console.log(lobby.updateSnakeCells);
         io.emit("updatePositions",{
             updatedPlayers: emitingActivePlayers,
             updateSnakeCells: lobby.updateSnakeCells,
