@@ -159,6 +159,7 @@ function server_renderPlayers() {
                 player = activePlayers[j];
                 break;
             } 
+        }
         if (!player) return;
 
         //Clear Cell
