@@ -157,8 +157,10 @@ function server_renderPlayers() {
         //Clear Cell
         ctx_players.clearRect(arr[0].x*gridSize,arr[0].y*gridSize,gridSize,gridSize);
 
-        for (let k = 0; k < arr.length; k++) {
+        for (let k = 1; k < arr.length; k++) {
             let obj = arr[k];
+
+            console.log(obj)
 
             let player;
             for (let j = 0; j < activePlayers.length; j++) {
@@ -168,11 +170,8 @@ function server_renderPlayers() {
                 } 
             }
             if (!player) break;
-
-            console.log("here")
     
             if (obj.type == "head") {
-                console.log("here2")
                 drawRotated(player.canvas.head,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
             
                 if (player.shield == 1){
