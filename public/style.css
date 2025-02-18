@@ -2127,3 +2127,22 @@ html {
 .lobbySnakeName {
   margin-left: 5px;
 }
+
+
+.numbersPopup {
+  position: absolute;
+  z-index: 700;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+.np_img_holder {
+  width: 15%;
+  aspect-ratio: 1/1;
+}
+.np_img {
+  width: 100%;
+  height: 100%;
+}

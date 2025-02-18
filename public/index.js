@@ -138,6 +138,10 @@ socket.on("endGame",(obj,lobbyID) => {
 
     showEndScreen()
 })
+socket.on("preparingGame",(lobby) => {
+    
+
+})
 socket.on("updatePositions",(obj,lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;
 
