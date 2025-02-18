@@ -771,6 +771,7 @@ io.on('connection', (socket) => {
             this.lastTimestamp = timestamp;
 
             if (onlineAccounts[socket.id]) {
+                console.log(this.updateSnakeCells);
                 io.emit("updatePositions",{
                     activePlayers: this.activePlayers,
                     updateSnakeCells: this.updateSnakeCells,
