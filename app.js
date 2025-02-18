@@ -1596,6 +1596,7 @@ function snakeMapSetType(lobby,index,y,x,type) {
     for (let i = 0; i < group.length; i++) {
         if (group[i].index == index) {
             lobby.snakeMap[y][x][i].type = type;
+            if (type == "tail") lobby.snakeMap[y][x][i].siblings.shift();
             return;
         }
     }
@@ -1771,6 +1772,7 @@ function server_movePlayers(lobby) {
                     y: playerY,
                     direction: player.moving,
                 });
+                lobby.updateSnakeCells.push(lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x]);
                 
 
                 let tail = player.tail[player.tail.length-1];
