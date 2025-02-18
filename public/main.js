@@ -148,6 +148,7 @@ function drawImage(image, direction, xPos, yPos, width, height,cnvs = canvas_pla
 function drawRotated(list,direction,xPos, yPos, width, height) {
     if (!direction) direction = "up";
     let image = list[direction];
+    console.log(image)
     ctx_players.drawImage(image,xPos,yPos,width,height);
 }
 function server_renderPlayers() {
