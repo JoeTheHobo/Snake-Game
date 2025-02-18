@@ -151,6 +151,7 @@ function drawRotated(list,direction,xPos, yPos, width, height) {
     ctx_players.drawImage(image,xPos,yPos,width,height);
 }
 function server_renderPlayers() {
+    console.log(1)
     for (let i = 0; i < updateSnakeCells.length; i++) {
         let arr = updateSnakeCells[i];
 
@@ -167,8 +168,10 @@ function server_renderPlayers() {
                 } 
             }
             if (!player) break;
+            console.log(2);
     
             if (obj.type == "head") {
+                console.log(3);
                 drawRotated(player.canvas.head,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
             
                 if (player.shield == 1){
