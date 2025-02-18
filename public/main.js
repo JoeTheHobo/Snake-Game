@@ -1252,7 +1252,6 @@ document.body.onkeydown = function(e) {
         }
         if (!activePlayer) return;
         if (activePlayer.isDead) return;
-        console.log("yee");
         if (e.key == activePlayer.leftKey && activePlayer.moveQueue.length < 4) {
             socket.emit("movePlayerKey","left");
         }
