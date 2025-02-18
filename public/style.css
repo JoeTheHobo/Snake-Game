@@ -2152,3 +2152,6 @@ html {
   width: 100%;
   height: 100%;
 }
+#np_img_go {
+  width: 25% !important;
+}

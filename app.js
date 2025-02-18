@@ -881,7 +881,7 @@ io.on('connection', (socket) => {
         setTimeout(function() {
             lobby.gameStatus = "game";
             lobby.gameLoop();
-        },3000)
+        },3250)
         
         //lobby.timerLoop();
 
