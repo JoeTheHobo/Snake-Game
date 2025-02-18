@@ -154,13 +154,14 @@ function server_renderPlayers() {
     for (let i = 0; i < updateSnakeCells.length; i++) {
         let obj = updateSnakeCells[i];
         let player;
-        console.log(obj)
         for (let j = 0; j < activePlayers.length; j++) {
+            console.log(activePlayers[j].id == obj.playerID,activePlayers[j].id,obj.playerID);
             if (activePlayers[j].id === obj.playerID) {
                 player = activePlayers[j];
                 break;
             } 
         }
+        console.log(player)
         if (!player) break;
 
         //Clear Cell
@@ -227,7 +228,6 @@ function server_renderPlayers() {
         }
     }
     updateSnakeCells = [];
-    console.log(updateSnakeCells)
 }
 function renderPlayers() {
     for (let i = 0; i < activePlayers.length; i++) {
@@ -1656,7 +1656,6 @@ function serverGameLoop() {
     deltaTime = 1;
     if (!isActiveGame) return;
     renderCells();
-    console.log("Rendering")
     //movePlayers();
     //deleteSnakeCells();
     //renderPlayers();

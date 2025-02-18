@@ -150,7 +150,6 @@ socket.on("updatePositions",(obj,lobbyID) => {
         activePlayers[i].canvas = canvasList[i];
         updatePlayerCard(activePlayers[i]);
     }
-    console.log(2,updateSnakeCells)
     updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
     updateCells = updateCells.concat(obj.updateCells);
     
