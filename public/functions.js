@@ -1339,7 +1339,7 @@ function updatePlayerCard(player,whatToUpdate = "all") {
 
     if (whatToUpdate == "all" || whatToUpdate == "team") cardHolder.$("playercard_teamImg").src = `img/status/playerCard_${findPlayersTeam(player)}_${cardHolder.direction}.png`;
 
-    if (whatToUpdate == "all" || whatToUpdate == "size") cardHolder.$("playercard_size").innerHTML = player.tail.length + 1;
+    if (whatToUpdate == "all" || whatToUpdate == "size") cardHolder.$("playercard_size").innerHTML = player.tailLength;
     
     if (whatToUpdate !== "all" && whatToUpdate !== "inventory") return;
 

@@ -144,18 +144,20 @@ socket.on("updatePositions",(obj,lobbyID) => {
     const sizeInBytes = new TextEncoder().encode(jsonString).length;
     production.updatePositions_recieveData.times.push(sizeInBytes);
 
-    let canvasList = [];
-    let oldPosList = [];
-    for (let i = 0; i < activePlayers.length; i++) {
-        canvasList.push(activePlayers[i].canvas)
-        oldPosList.push({x: activePlayers.x, y: activePlayers.y})
+    for (let i = 0; i < obj.updatedPlayers.length; i++) {
+        for (let j = 0; j < activePlayers.length; j++) {
+            let local_player = activePlayers[j];
+            let server_player = obj.updatedPlayers[i];
+            if (local_player.index !== server_player.index) continue;
+
+            local_player.selectingItem = server_player.selectingItem;
+            local_player.items = server_player.items;
+            local_player.tailLength = server_player.tailLength;
+
+            updatePlayerCard(local_player);
+        }
     }
-    activePlayers = obj.activePlayers;
-    for (let i = 0; i < canvasList.length; i++) {
-        if (activePlayers[i] == false) continue;
-        activePlayers[i].canvas = canvasList[i];
-        updatePlayerCard(activePlayers[i]);
-    }
+    
     updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
     updateCells = updateCells.concat(obj.updateCells);
     

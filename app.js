@@ -771,8 +771,15 @@ io.on('connection', (socket) => {
             this.lastTimestamp = timestamp;
 
             if (onlineAccounts[socket.id]) {
+                emitingActivePlayers = Object.values(this.activePlayers).map(({ index, selectingItem, items, tail }) => ({
+                    index,
+                    selectingItem,
+                    items,
+                    tailLength: tail.length + 1,
+                }));
+
                 io.emit("updatePositions",{
-                    activePlayers: this.activePlayers,
+                    updatedPlayers: emitingActivePlayers,
                     updateSnakeCells: this.updateSnakeCells,
                     updateCells: this.updateCells,
                 },this.id)
