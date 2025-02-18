@@ -151,6 +151,7 @@ function drawRotated(list,direction,xPos, yPos, width, height) {
     ctx_players.drawImage(image,xPos,yPos,width,height);
 }
 function server_renderPlayers() {
+    console.log(updateSnakeCells);
     for (let i = 0; i < updateSnakeCells.length; i++) {
         let obj = updateSnakeCells[i];
         let player;
