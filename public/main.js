@@ -214,15 +214,18 @@ function server_renderPlayers() {
                 }
     
                 //For Tunnels
-                if (active.length == 1 && active[0] !== "down" && obj.type == "body") {
-                    if (obj.type == "body") {
-                        if (active[0] == "bottom") active.push("top");
-                        else active.push("bottom");
-                    }
-                    if (obj.type == "tail") {
-                        active = ["AHHH"];
+                if (currentBoard.map[obj.y][obj.x].item?.pack == "Tunnels") {
+                    if (active.length == 1 && active[0] !== "down") {
+                        if (obj.type == "body") {
+                            if (active[0] == "bottom") active.push("top");
+                            else active.push("bottom");
+                        }
+                        if (obj.type == "tail") {
+                            active = ["left"];
+                        }
                     }
                 }
+                
                 /* 
                     snakeTurn directions
                     up = Top - Right
@@ -235,7 +238,6 @@ function server_renderPlayers() {
     
                 if (obj.type == "tail") {
                     image = player.canvas.tail;
-                    console.log(active)
                     if (active.includes("right")) direction = "right"; 
                     if (active.includes("left")) direction = "left"; 
                     if (active.includes("bottom")) direction = "down"; 
