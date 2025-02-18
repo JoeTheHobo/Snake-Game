@@ -596,7 +596,7 @@ function spawn(name,generateRandomItem = true,counting = false,playAudio = true)
         console.log("No Available Spot To Spawn");
     }
 };
-function calculateDistance(x1, y1, x2, y2, boardLength, boardHeight) {
+function calculateDistance(x1, y1, x2, y2) {
     boardLength = currentBoard.map[0].length;
     boardHeight = currentBoard.map.length;
     let dx = Math.min(Math.abs(x1 - x2), boardLength - Math.abs(x1 - x2));

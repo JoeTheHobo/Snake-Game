@@ -189,7 +189,7 @@ function server_renderPlayers() {
                 for (let j = 0; j < obj.siblings.length; j++) {
                     let sibling = obj.siblings[j];
                     const worldWidth = currentBoard.map[0].length; 
-                    const worldHeight = currentBoard.map[0].length;
+                    const worldHeight = currentBoard.map.length;
 
                     let dx = sibling.x - obj.x;
                     let dy = sibling.y - obj.y;
@@ -200,11 +200,17 @@ function server_renderPlayers() {
                     if (dy > worldHeight / 2) dy -= worldHeight;
                     if (dy < -worldHeight / 2) dy += worldHeight;
 
-                    // Determine directions based on the shortest path
-                    if (dx < 0) active.push("left");
-                    if (dx > 0) active.push("right");
-                    if (dy < 0) active.push("top");
-                    if (dy > 0) active.push("bottom");
+                    // Calculate wrapped Manhattan distance
+                    let distance = Math.min(Math.abs(sibling.x - obj.x), worldWidth - Math.abs(sibling.x - obj.x)) +
+                                Math.min(Math.abs(sibling.y - obj.y), worldHeight - Math.abs(sibling.y - obj.y));
+
+                    // Only push direction if the distance is exactly 1
+                    if (distance === 1) {
+                        if (dx < 0) active.push("left");
+                        if (dx > 0) active.push("right");
+                        if (dy < 0) active.push("top");
+                        if (dy > 0) active.push("bottom");
+                    }
                 }
     
                 //For Tunnels
