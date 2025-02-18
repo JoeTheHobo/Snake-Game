@@ -221,7 +221,7 @@ function server_renderPlayers() {
                     }
                     if (obj.type == "tail") {
                         console.log("CHANGE!")
-                        active = ["top"];
+                        active = ["bottom"];
                     }
                 }
                 
