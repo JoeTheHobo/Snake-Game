@@ -62,9 +62,7 @@ function loadServerCreation() {
 
     let lobby = {
         board: JSON.stringify(board),
-        host: localAccount.id,
         gameMode: gameModes[0],
-        playerMax: 8,
     }
     updateLobbyToServer(lobby);
 }
