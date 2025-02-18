@@ -1361,6 +1361,8 @@ function setUpPlayerCanvas() {
 let cameraFollowPlayer = false;
 let cameraQuickZoom;
 function startGame(solo = false) {
+    productionType = "local";
+    setUpProductionHTML();
     setScene("game");
     $(".endGamePopup").hide();
     $(".pauseGamePopup").hide();
@@ -1511,66 +1513,87 @@ function startTimer() {
     },1000)
 }
 
+let productionType;
 let production = {
+    //Local Player
     gameLoop: {
         times: [],
         average: 0,
         timeStart: 0,
         type: "dom",
+        showIF: "local",
     },
     renderCells: {
         times: [],
         average: 0,
         timeStart: 0,
         type: "dom",
+        showIF: "local",
     },
     movePlayers: {
         times: [],
         average: 0,
         timeStart: 0,
         type: "dom",
+        showIF: "local",
     },
     setPlayerPos: {
         times: [],
         average: 0,
         timeStart: 0,
         type: "sub",
+        showIF: "local",
     },
     checkingPlayerCollision: {
         times: [],
         average: 0,
         timeStart: 0,
         type: "sub",
+        showIF: "local",
     },
     testingItems: {
         times: [],
         average: 0,
         timeStart: 0,
         type: "sub",
+        showIF: "local",
     },
     growingTail: {
         times: [],
         average: 0,
         timeStart: 0,
         type: "sub",
+        showIF: "local",
     },
     deleteSnakeCells: {
         times: [],
         average: 0,
         timeStart: 0,
         type: "dom",
+        showIF: "local",
     },
     renderPlayers: {
         times: [],
         average: 0,
         timeStart: 0,
         type: "dom",
+        showIF: "local",
     },
     renderTail: {
         times: [],
         average: 0,
         timeStart: 0,
         type: "sub",
+        showIF: "local",
+    },
+
+    //Server Play
+    recieveData: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        type: "dom",
+        showIF: "server",
     },
 }
 function setUpProductionHTML() {
@@ -1578,6 +1601,9 @@ function setUpProductionHTML() {
     holder.innerHTML = "";
     for (let i = 0; i < Object.entries(production).length; i++) {
         let entry = Object.entries(production)[i];
+        console.log(entry)
+        if (entry[1].showIf !== productionType) continue;
+
         let div = holder.create("div");
         div.className = "production_holder";
         let title = div.create("div");
@@ -1595,6 +1621,7 @@ function setUpProductionHTML() {
 function updateProduction() {
     for (let i = 0; i < Object.entries(production).length; i++) {
         let entry = Object.entries(production)[i];
+        console.log(entry)
         if (production[entry[0]].times.length > 1000) {
             production[entry[0]].times.shift();
         }
@@ -1736,6 +1763,3 @@ function specialItemManager() {
 
 
 setScene("newMenu")
-
-//For testing
-setUpProductionHTML();

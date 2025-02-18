@@ -51,6 +51,8 @@ socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     $(".servers_online_text").innerHTML = onlineCount;
 })
 socket.on("startingGame", (lobby) => {
+    productionType = "server";
+    setUpProductionHTML();
     if (localAccount.lobbyID !== lobby.id) return;
 
     let foundPlayer = false;
@@ -154,6 +156,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
     updateCells = updateCells.concat(obj.updateCells);
     
     server_renderPlayers();
+    updateProduction();
 });
 socket.on("updatedLocalAccount",(obj) => {
     localAccount.id = obj.id;
