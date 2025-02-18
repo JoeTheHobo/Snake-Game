@@ -759,7 +759,7 @@ io.on('connection', (socket) => {
         lobby.boardStatus = [];
 
         io.emit("startingGame", lobby,onlineAccounts[socket.id].player);
-        emitingActivePlayers = Object.values(this.activePlayers).map(({ index, selectingItem, items, tail }) => ({
+        emitingActivePlayers = Object.values(lobby.activePlayers).map(({ index, selectingItem, items, tail }) => ({
             index,
             selectingItem,
             items,
