@@ -156,10 +156,9 @@ function server_renderPlayers() {
 
         //Clear Cell
         ctx_players.clearRect(arr[0].x*gridSize,arr[0].y*gridSize,gridSize,gridSize);
-
+        console.log(arr)
         for (let k = 1; k < arr.length; k++) {
             let obj = arr[k];
-            console.log(obj)
 
             let player;
             for (let j = 0; j < activePlayers.length; j++) {
