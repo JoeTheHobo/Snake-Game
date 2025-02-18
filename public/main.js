@@ -220,8 +220,8 @@ function server_renderPlayers() {
                         else active.push("bottom");
                     }
                     if (obj.type == "tail") {
-                        console.log("CHANGE!")
-                        active = ["bottom"];
+                        if (active[0] == "bottom") active = ["top"];
+                        else active = ["bottom"];
                     }
                 }
                 
