@@ -1102,9 +1102,11 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
             name.pos.y = y;
             addPlayerStatus(lobby,name,"status_" + team);
             lobby.snakeMap[y][x].push({
-                playerID: name.id,
+                index: name.index,
                 type: "head",
                 siblings: [],
+                x: x,
+                y: y,
             });
         } else {
             //runItemFunction(name,currentGameMode.items[itemIndex],"onSpawn",{x:x,y:y},{playAudio: playAudio});

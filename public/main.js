@@ -160,8 +160,6 @@ function server_renderPlayers() {
         for (let k = 1; k < arr.length; k++) {
             let obj = arr[k];
 
-            console.log(obj)
-
             let player;
             for (let j = 0; j < activePlayers.length; j++) {
                 if (activePlayers[j].index === obj.index) {
