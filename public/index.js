@@ -97,6 +97,9 @@ socket.on("startingGame", (lobby) => {
     renderCells();
     generatePlayerCards(activePlayers);
     serverGameLoop();
+
+    let color = getAverageCanvasColor(canvas_tiles);
+    document.body.style.background = color;
     
 
 })

@@ -1591,3 +1591,24 @@ function playEndScreenAnimation() {
         $(".endScreenContent").style.opacity = "1";
     },2700)
 }
+function getAverageCanvasColor(canvas) {
+    const ctx = canvas.getContext('2d');
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels = imageData.data;
+
+    let r = 0, g = 0, b = 0;
+    let totalPixels = pixels.length / 4; // Each pixel has 4 values (R, G, B, A)
+
+    for (let i = 0; i < pixels.length; i += 4) {
+        r += pixels[i];     // Red
+        g += pixels[i + 1]; // Green
+        b += pixels[i + 2]; // Blue
+    }
+
+    // Get the average
+    r = Math.round(r / totalPixels);
+    g = Math.round(g / totalPixels);
+    b = Math.round(b / totalPixels);
+
+    return `rgb(${r}, ${g}, ${b})`; // Return as RGB string
+}
