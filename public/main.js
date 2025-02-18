@@ -161,6 +161,8 @@ function server_renderPlayers() {
                 break;
             } 
         }
+        console.log(player)
+        if (!player) return;
 
         //Clear Cell
         ctx_players.clearRect(obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
