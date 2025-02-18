@@ -1600,6 +1600,7 @@ function setUpProductionHTML() {
     holder.innerHTML = "";
     for (let i = 0; i < Object.entries(production).length; i++) {
         let entry = Object.entries(production)[i];
+        console.log(entry[1].showIF !== productionType,entry[1].showIF , productionType);
         if (entry[1].showIF !== productionType) continue;
 
         let div = holder.create("div");
