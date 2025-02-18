@@ -771,7 +771,6 @@ io.on('connection', (socket) => {
             this.lastTimestamp = timestamp;
 
             if (onlineAccounts[socket.id]) {
-                console.log(this.updateSnakeCells);
                 io.emit("updatePositions",{
                     activePlayers: this.activePlayers,
                     updateSnakeCells: this.updateSnakeCells,
@@ -1804,6 +1803,7 @@ function server_movePlayers(lobby) {
             }
             if (player.tail.length > 0) {
                 snakeMapSetType(lobby,player.index,player.tail[0].y,player.tail[0].x,"body");
+                console.log(lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x]);
                 snakeMapSetType(lobby,player.index,player.tail[player.tail.length-1].y,player.tail[player.tail.length-1].x,"tail");
                 lobby.updateSnakeCells.push(lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x]);
             }
