@@ -1601,7 +1601,6 @@ function setUpProductionHTML() {
     holder.innerHTML = "";
     for (let i = 0; i < Object.entries(production).length; i++) {
         let entry = Object.entries(production)[i];
-        console.log(entry)
         if (entry[1].showIf !== productionType) continue;
 
         let div = holder.create("div");
@@ -1621,7 +1620,7 @@ function setUpProductionHTML() {
 function updateProduction() {
     for (let i = 0; i < Object.entries(production).length; i++) {
         let entry = Object.entries(production)[i];
-        console.log(entry)
+        console.log(entry[0])
         if (production[entry[0]].times.length > 1000) {
             production[entry[0]].times.shift();
         }
