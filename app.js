@@ -380,16 +380,7 @@ io.on('connection', (socket) => {
             let lobby = lobbies[onlineAccounts[socket.id].lobby];
             for (let i = 0; i < lobby.activePlayers.length; i++) {
                 if (lobby.activePlayers[i].accountID === socket.id) {
-                    for (let j = 0; j < lobby.activePlayers[i].tail.length; j++) {
-                        lobby.updateSnakeCells.push({
-                            x: lobby.activePlayers[i].tail[j].x,
-                            y: lobby.activePlayers[i].tail[j].y,
-                        })
-                    }
-                    lobby.updateSnakeCells.push({
-                        x: lobby.activePlayers[i].pos.x,
-                        y: lobby.activePlayers[i].pos.y,
-                    })
+                    snakeMapRemoveAll(lobby,lobby.activePlayers[i]);
                     lobbies[onlineAccounts[socket.id].lobby].activePlayers[i] = false; 
                 }
             }
@@ -674,6 +665,14 @@ io.on('connection', (socket) => {
         lobby.board.location_status = [];
         lobby.board.location_spawns = [];
         lobby.board.boardStatus = [];
+        lobby.snakeMap = [];
+        for (let i = 0; i < lobby.board.map.length; i++) {
+            let toPush = [];
+            for (let j = 0; j < lobby.board.map[i].length; j++) {
+                toPush.push([])
+            }
+            lobby.snakeMap.push(toPush);
+        }
 
 
 
@@ -1098,6 +1097,10 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
             name.pos.x = x;
             name.pos.y = y;
             addPlayerStatus(lobby,name,"status_" + team);
+            lobby.snakeMap[y][x].push({
+                accountID: name.accountID,
+                siblings: [],
+            });
         } else {
             //runItemFunction(name,currentGameMode.items[itemIndex],"onSpawn",{x:x,y:y},{playAudio: playAudio});
             currentBoard.map[y][x].item = structuredClone(currentGameMode.items[itemIndex]);
@@ -1254,12 +1257,7 @@ function deletePlayer(lobby,player,playerWhoKilled,item,instaKill = false){
 
         //Delete Tail
         if (currentGameMode.snakeVanishOnDeath) {
-            for (let i = 0; i < player.tail.length; i++) {
-                lobby.updateSnakeCells.push({
-                    x: player.tail[i].x,
-                    y: player.tail[i].y,
-                })
-            }
+            snakeMapRemoveAll(lobby,player);
         }
 
         //Delete Player
@@ -1585,6 +1583,40 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function snakeMapRemoveAll(lobby,player) {
+    let snakeMap = lobby.snakeMap;
+    for (let i = 0; i < snakeMap.length; i++) {
+        for (let j = 0; j < snakeMap[i].length; j++) {
+            for (let k = snakeMap[i][j].length-1; k > 0; k--) {
+                if (snakeMap[i][j][k].accountID == player.accountID) {
+                    snakeMap[i][j].splice(k,1);
+                    lobby.updateSnakeCells.push(lobby.snakeMap[i][j]);
+                }
+            }
+        }
+    }
+}
+function snakeMapRemove(snakeMap,accountID,y,x) {
+    let group = snakeMap[y][x];
+    for (let i = 0; i < group.length; i++) {
+        if (group[i].accountID == accountID) {
+            snakeMap[y][x].splice(i,1);
+            return;
+        }
+    }
+}
+function snakeMapAddSibling(snakeMap,accountID,y,x) {
+    let group = snakeMap[y][x];
+    for (let i = 0; i < group.length; i++) {
+        if (group[i].accountID == accountID) {
+            group[i].siblings.push({
+                x: x,
+                y: y,
+            })
+            return;
+        }
+    }
+}
 function getPlayersList(playerIds) {
     let list = [];
     for (let i = 0; i < playerIds.length; i++) {
@@ -1599,9 +1631,9 @@ function server_movePlayers(lobby) {
     let currentBoard = lobby.board;
     let currentGameMode = lobby.gameMode;
     for (let i = 0; i < activePlayers.length; i++) {
-        if (activePlayers[i] == false) continue;
         let player = activePlayers[i];
         
+        if (player == false) continue;
         if (player.isDead) continue;
         if ((player.moveTik*1/*lobby.deltaTime*/) < (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             player.moveTik++;
@@ -1697,6 +1729,18 @@ function server_movePlayers(lobby) {
         if (!player.isDead) testItemUnderPlayer(lobby,player);
 
         if (!player.isDead) {
+            let sibling = player.tail.length > 0 ? [player.tail[0]] : [];
+            lobby.snakeMap[player.pos.y][player.pos.x].push({
+                accountID: player.accountID,
+                siblings: sibling,
+                x: player.pos.x,
+                y: player.pos.y,
+            });
+            if (sibling.length == 1) {
+                snakeMapAddSibling(lobby,player.accountID,player.pos.y,player.pos.x)
+            }
+
+
             //Test Tile UnderPlayer
             let mapTile = currentBoard.map[player.pos.y][player.pos.x].tile;
             if (mapTile.onOver) runItemFunction(lobby,player,mapTile,"onOver");
@@ -1711,7 +1755,6 @@ function server_movePlayers(lobby) {
                     y: playerY,
                     direction: player.moving,
                 });
-                //drawPlayerBox(player); //REALLY LAGGY We should Update that specific part of their card.
                 player.growTail--;
                 if (player.tail.length > player.longestTail) player.longestTail = player.tail.length;
             } else if(player.tail.length > 0) {
@@ -1720,7 +1763,13 @@ function server_movePlayers(lobby) {
                     y: playerY,
                     direction: player.moving,
                 });
-                lobby.updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y});
+                lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x].push({
+                    accountID: player.accountID,
+                    siblings: [player.tail[0].pos],
+                    x: player.tail[player.tail.length-1].x,
+                    y: player.tail[player.tail.length-1].y,
+                });
+                lobby.updateSnakeCells.push(lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x]);
                 
 
                 let tail = player.tail[player.tail.length-1];
@@ -1729,21 +1778,19 @@ function server_movePlayers(lobby) {
                     if (mapItem.canCollide) runItemFunction(lobby,player,mapItem,"offCollision");
                 }
                 
+                snakeMapRemove(lobby,player.accountID,tail.y,tail.x);
                 player.tail.pop();
             } else {
+                snakeMapRemove(lobby,player.accountID,playerY,playerX);
                 if (currentBoard.map[playerY][playerX].item) {
                     let mapItem = currentBoard.map[playerY][playerX].item;
                     if (mapItem.canCollide) runItemFunction(lobby,player,mapItem,"offCollision");
                 }
             }
             if (player.tail.length > 0)
-                lobby.updateSnakeCells.push({x: player.tail[player.tail.length-1].x,y: player.tail[player.tail.length-1].y});
-
+                lobby.updateSnakeCells.push(lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x]);
             
-            lobby.updateSnakeCells.push({
-                x: playerX,
-                y: playerY,
-            })
+            lobby.updateSnakeCells.push(lobby.snakeMap[playerY][playerX]);
             
             //End Growing Tail
         } else {
