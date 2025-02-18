@@ -1613,8 +1613,7 @@ function snakeMapRemove(lobby,index,y,x) {
     let group = snakeMap[y][x];
     for (let i = 0; i < group.length; i++) {
         if (group[i].index == index) {
-            console.log("DELETING")
-            snakeMap[y][x].splice(i,1);
+            lobby.snakeMap[y][x].splice(i,1);
             return;
         }
     }
@@ -1752,7 +1751,7 @@ function server_movePlayers(lobby) {
                 y: player.pos.y,
             });
             if (sibling.length == 1) {
-                console.log(sibling);
+                console.log(sibling[0]);
                 snakeMapAddSibling(lobby,player.index,sibling[0].y,sibling[0].x,player.pos.y,player.pos.x)
             }
 
