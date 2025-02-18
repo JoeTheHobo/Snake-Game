@@ -189,7 +189,7 @@ function server_renderPlayers() {
                 let active = []
                 for (let j = 0; j < obj.siblings.length; j++) {
                     let sibling = obj.siblings[j];
-                    console.log(1,sibling)
+                    console.log(sibling.x,obj.x,sibling,y,obj.y)
                     if (sibling.x < obj.x) active.push("left");
                     if (sibling.x > obj.x) active.push("right");
                     if (sibling.y < obj.y) active.push("top");
