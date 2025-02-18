@@ -1629,6 +1629,7 @@ function snakeMapAddSibling(lobby,index,posY,posX,sibY,sibX) {
     let group = snakeMap[posY][posX];
     for (let i = 0; i < group.length; i++) {
         if (group[i].index == index) {
+            if (group[i].type == "tail") return;
             group[i].siblings.push({
                 x: sibX,
                 y: sibY,
