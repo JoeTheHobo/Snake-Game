@@ -146,7 +146,7 @@ function drawImage(image, direction, xPos, yPos, width, height,cnvs = canvas_pla
     diCtx.restore();
 }
 function drawRotated(list,direction,xPos, yPos, width, height) {
-    if (direction == false) direction = "up";
+    if (!direction) direction = "up";
     let image = list[direction];
     ctx_players.drawImage(image,xPos,yPos,width,height);
 }
@@ -209,7 +209,6 @@ function server_renderPlayers() {
     
                 if (obj.type == "tail") {
                     image = player.canvas.tail;
-                    console.log(active)
                     if (active.includes("right")) direction = "left";
                     if (active.includes("left")) direction = "right";
                     if (active.includes("down")) direction = "up";
