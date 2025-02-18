@@ -244,9 +244,7 @@ function server_renderPlayers() {
                     }
                 }
 
-                ctx_players.globalAlpha = 1/k;
                 drawRotated(image,direction,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
-                ctx_players.globalAlpha = 1;
     
             }
         }
