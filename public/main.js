@@ -186,7 +186,6 @@ function server_renderPlayers() {
             }
             if (obj.type == "body" || obj.type == "tail") {
                 let active = []
-                console.log(obj.siblings)
                 for (let j = 0; j < obj.siblings.length; j++) {
                     let sibling = obj.siblings[j];
                     if (sibling.x < obj.x) active.push("left");
@@ -210,11 +209,10 @@ function server_renderPlayers() {
     
                 if (obj.type == "tail") {
                     image = player.canvas.tail;
-                    console.log(active)
                     if (active.includes("right")) direction = "left"; //<
                     if (active.includes("left")) direction = "up";
-                    if (active.includes("down")) direction = "right";
-                    if (active.includes("up")) direction = "down"; //v
+                    if (active.includes("bottom")) direction = "right";
+                    if (active.includes("top")) direction = "down"; //v
                 } else {
                     if (active.includes("left") && active.includes("right")) {
                         image = player.canvas.body;
