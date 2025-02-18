@@ -192,6 +192,8 @@ function server_renderPlayers() {
                     if (sibling.x > obj.x) active.push("right");
                     if (sibling.y < obj.y) active.push("top");
                     if (sibling.y > obj.y) active.push("bottom");
+                    ctx_players.fillStyle = "white";
+                    ctx_players.fillRect((sibling.x*gridSize)+5,(sibling.y*gridSize)+5,10,10)
                 }
     
                 //For Tunnels
