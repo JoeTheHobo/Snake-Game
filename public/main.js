@@ -220,7 +220,7 @@ function server_renderPlayers() {
                         else active.push("bottom");
                     }
                     if (obj.type == "tail") {
-                        active = ["left"];
+                        active = ["AHHH"];
                     }
                 }
                 /* 
@@ -235,6 +235,7 @@ function server_renderPlayers() {
     
                 if (obj.type == "tail") {
                     image = player.canvas.tail;
+                    console.log(active)
                     if (active.includes("right")) direction = "right"; 
                     if (active.includes("left")) direction = "left"; 
                     if (active.includes("bottom")) direction = "down"; 
