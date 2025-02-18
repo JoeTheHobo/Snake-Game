@@ -708,11 +708,11 @@ io.on('connection', (socket) => {
 
             player.longestTail = 0;
             player.timeSurvived = 0;
-            player.moving = false;
+            player.moving = "right";
             player.growTail = 0;
             player.tail = [];
             player.moveQueue = [];
-            player.prevMove = "right";
+            player.prevMove = "start";
             player.moveTik = 0;
             player.moveSpeed = 1;
             player.turboDuration = 0;
@@ -875,8 +875,10 @@ io.on('connection', (socket) => {
         }
         */
 
+        lobby.gameStatus = "prepare";
         io.emit("preparingGame",lobby);
         setTimeout(function() {
+            lobby.gameStatus = "game";
             lobby.gameLoop();
         },3000)
         
@@ -884,17 +886,29 @@ io.on('connection', (socket) => {
 
     })
     socket.on("movePlayerKey",(direction) => {
+        let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        if (!lobby) return;
+
+        if (lobby.gameStatus == "prepare") {
+            onlineAccounts[socket.id].player.moving = direction;
+            return;
+        }
+
         if (onlineAccounts[socket.id].player.moveQueue.length >= 4) return;
         onlineAccounts[socket.id].player.moveQueue.push(direction);
     })
     socket.on("fireItem",() => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         let player = onlineAccounts[socket.id].player;
+        if (!lobby || !player) return;
+
         useItem(lobby,player);
     })
     socket.on("changeItem",(change) => {
         let player = onlineAccounts[socket.id].player;
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        if (!lobby || !player) return;
+
         let currentGameMode = lobby.gameMode;
         player.selectingItem += change;
         if (player.selectingItem < 0) player.selectingItem = currentGameMode.howManyItemsCanPlayersUse-1;
