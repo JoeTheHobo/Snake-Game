@@ -669,7 +669,10 @@ io.on('connection', (socket) => {
         for (let i = 0; i < lobby.board.map.length; i++) {
             let toPush = [];
             for (let j = 0; j < lobby.board.map[i].length; j++) {
-                toPush.push([])
+                toPush.push([{
+                    x: j,
+                    y: i,
+                }])
             }
             lobby.snakeMap.push(toPush);
         }
@@ -1618,8 +1621,8 @@ function snakeMapRemove(lobby,index,y,x) {
         }
     }
 }
-function snakeMapAddSibling(snakeMap,index,posY,posX,sibY,sibX) {
-    console.log(posY,posX)
+function snakeMapAddSibling(lobby,index,posY,posX,sibY,sibX) {
+    let snakeMap = lobby.snakeMap;
     let group = snakeMap[posY][posX];
     for (let i = 0; i < group.length; i++) {
         if (group[i].index == index) {

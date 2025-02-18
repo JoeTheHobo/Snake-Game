@@ -153,6 +153,10 @@ function drawRotated(list,direction,xPos, yPos, width, height) {
 function server_renderPlayers() {
     for (let i = 0; i < updateSnakeCells.length; i++) {
         let arr = updateSnakeCells[i];
+
+        //Clear Cell
+        ctx_players.clearRect(arr[0].x*gridSize,arr[0].y*gridSize,gridSize,gridSize);
+
         for (let k = 0; k < arr.length; k++) {
             let obj = arr[k];
 
@@ -164,9 +168,6 @@ function server_renderPlayers() {
                 } 
             }
             if (!player) break;
-    
-            //Clear Cell
-            ctx_players.clearRect(obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
     
             if (obj.type == "head") {
                 drawRotated(player.canvas.head,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
