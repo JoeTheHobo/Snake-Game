@@ -1748,18 +1748,6 @@ function server_movePlayers(lobby) {
         if (!player.isDead) testItemUnderPlayer(lobby,player);
 
         if (!player.isDead) {
-            let sibling = player.tail.length > 0 ? [player.tail[0]] : [];
-            lobby.snakeMap[player.pos.y][player.pos.x].push({
-                index: player.index,
-                siblings: sibling,
-                type: "head",
-                x: player.pos.x,
-                y: player.pos.y,
-            });
-            if (sibling.length == 1) {
-                snakeMapAddSibling(lobby,player.index,sibling[0].y,sibling[0].x,player.pos.y,player.pos.x)
-            }
-
 
             //Test Tile UnderPlayer
             let mapTile = currentBoard.map[player.pos.y][player.pos.x].tile;
@@ -1807,6 +1795,18 @@ function server_movePlayers(lobby) {
                 lobby.updateSnakeCells.push(lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x]);
             }
 
+            let sibling = player.tail.length > 0 ? [player.tail[0]] : [];
+            lobby.snakeMap[player.pos.y][player.pos.x].push({
+                index: player.index,
+                siblings: sibling,
+                type: "head",
+                x: player.pos.x,
+                y: player.pos.y,
+            });
+            if (sibling.length == 1) {
+                snakeMapAddSibling(lobby,player.index,sibling[0].y,sibling[0].x,player.pos.y,player.pos.x)
+            }
+            
             lobby.updateSnakeCells.push(lobby.snakeMap[playerY][playerX]);
             lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);
 
