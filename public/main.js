@@ -224,7 +224,7 @@ function server_renderPlayers() {
                     if (active.includes("bottom") && active.includes("left")) direction = "down";
                 }
     
-                drawRotated(image,direction,tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+                drawRotated(image,direction,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
     
             }
         }
