@@ -238,7 +238,6 @@ function server_renderPlayers() {
     
                 if (obj.type == "tail") {
                     image = player.canvas.tail;
-                    console.log(active)
                     if (active.includes("right")) direction = "right"; 
                     if (active.includes("left")) direction = "left"; 
                     if (active.includes("bottom")) direction = "down"; 
@@ -1601,8 +1600,7 @@ function setUpProductionHTML() {
     holder.innerHTML = "";
     for (let i = 0; i < Object.entries(production).length; i++) {
         let entry = Object.entries(production)[i];
-        if (entry[1].showIf !== productionType) continue;
-        console.log("eyo")
+        if (entry[1].showIF !== productionType) continue;
 
         let div = holder.create("div");
         div.className = "production_holder";
