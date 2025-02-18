@@ -160,7 +160,7 @@ function server_renderPlayers() {
                 break;
             } 
         }
-        if (!player) return;
+        if (!player) break;
 
         //Clear Cell
         ctx_players.clearRect(obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
