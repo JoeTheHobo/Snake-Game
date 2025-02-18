@@ -1595,7 +1595,6 @@ function snakeMapSetType(lobby,index,y,x,type) {
     let group = snakeMap[y][x];
     for (let i = 0; i < group.length; i++) {
         if (group[i].index == index) {
-            console.log(type)
             lobby.snakeMap[y][x].type = type;
             return;
         }
@@ -1776,7 +1775,6 @@ function server_movePlayers(lobby) {
                     y: playerY,
                     direction: player.moving,
                 });
-                snakeMapSetType(lobby,player.index,player.tail[0].y,player.tail[0].x,"body");
                 player.growTail--;
                 if (player.tail.length > player.longestTail) player.longestTail = player.tail.length;
             } else if(player.tail.length > 0) {
@@ -1796,7 +1794,6 @@ function server_movePlayers(lobby) {
                 
                 snakeMapRemove(lobby,player.index,tail.y,tail.x);
                 player.tail.pop();
-                snakeMapSetType(lobby,player.index,player.tail[player.tail.length-1].y,player.tail[player.tail.length-1].x,"tail");
             } else {
                 snakeMapRemove(lobby,player.index,playerY,playerX);
                 if (currentBoard.map[playerY][playerX].item) {
@@ -1804,9 +1801,12 @@ function server_movePlayers(lobby) {
                     if (mapItem.canCollide) runItemFunction(lobby,player,mapItem,"offCollision");
                 }
             }
-            if (player.tail.length > 0)
+            if (player.tail.length > 0) {
+                snakeMapSetType(lobby,player.index,player.tail[0].y,player.tail[0].x,"body");
+                snakeMapSetType(lobby,player.index,player.tail[player.tail.length-1].y,player.tail[player.tail.length-1].x,"tail");
                 lobby.updateSnakeCells.push(lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x]);
-            
+            }
+
             lobby.updateSnakeCells.push(lobby.snakeMap[playerY][playerX]);
             lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);
 
