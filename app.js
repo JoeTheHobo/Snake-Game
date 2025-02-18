@@ -712,7 +712,7 @@ io.on('connection', (socket) => {
             player.growTail = 0;
             player.tail = [];
             player.moveQueue = [];
-            player.prevMove = "start";
+            player.prevMove = "right";
             player.moveTik = 0;
             player.moveSpeed = 1;
             player.turboDuration = 0;
@@ -772,6 +772,7 @@ io.on('connection', (socket) => {
             updateSnakeCells: lobby.updateSnakeCells,
             updateCells: lobby.updateCells,
         },lobby.id)
+
         lobby.gameLoop = function() {
             let timestamp = Date.now();
             this.deltaTime = (timestamp - this.lastTimestamp) / (1000/60);
@@ -873,7 +874,12 @@ io.on('connection', (socket) => {
             },1000)
         }
         */
-        lobby.gameLoop();
+
+        io.emit("preparingGame",lobby);
+        setTimeout(function() {
+            lobby.gameLoop();
+        },3000)
+        
         //lobby.timerLoop();
 
     })
