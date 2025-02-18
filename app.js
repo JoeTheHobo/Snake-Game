@@ -1777,7 +1777,7 @@ function server_movePlayers(lobby) {
                     direction: player.moving,
                 });
                 lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x].push({
-                    accountID: player.accountID,
+                    playerID: player.id,
                     siblings: [player.tail[0].pos],
                     x: player.tail[player.tail.length-1].x,
                     y: player.tail[player.tail.length-1].y,
