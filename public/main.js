@@ -156,6 +156,7 @@ function server_renderPlayers() {
 
         //Clear Cell
         ctx_players.clearRect(arr[0].x*gridSize,arr[0].y*gridSize,gridSize,gridSize);
+        console.log("----------------")
         for (let k = 1; k < arr.length; k++) {
             let obj = arr[k];
 
@@ -185,6 +186,7 @@ function server_renderPlayers() {
                 }
             }
             if (obj.type == "body" || obj.type == "tail") {
+                if (obj.type == "tail") console.log("tail");
                 let active = []
                 for (let j = 0; j < obj.siblings.length; j++) {
                     let sibling = obj.siblings[j];
