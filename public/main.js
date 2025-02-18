@@ -148,7 +148,6 @@ function drawImage(image, direction, xPos, yPos, width, height,cnvs = canvas_pla
 function drawRotated(list,direction,xPos, yPos, width, height) {
     if (!direction) direction = "up";
     let image = list[direction];
-    console.log(image)
     ctx_players.drawImage(image,xPos,yPos,width,height);
 }
 function server_renderPlayers() {
@@ -159,6 +158,7 @@ function server_renderPlayers() {
         ctx_players.clearRect(arr[0].x*gridSize,arr[0].y*gridSize,gridSize,gridSize);
         for (let k = 1; k < arr.length; k++) {
             let obj = arr[k];
+            console.log(obj.siblings)
 
             let player;
             for (let j = 0; j < activePlayers.length; j++) {
@@ -189,6 +189,7 @@ function server_renderPlayers() {
                 let active = []
                 for (let j = 0; j < obj.siblings.length; j++) {
                     let sibling = obj.siblings[j];
+                    console.log(1,sibling)
                     if (sibling.x < obj.x) active.push("left");
                     if (sibling.x > obj.x) active.push("right");
                     if (sibling.y < obj.y) active.push("top");
