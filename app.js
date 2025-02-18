@@ -1781,14 +1781,6 @@ function server_movePlayers(lobby) {
                     y: playerY,
                     direction: player.moving,
                 });
-                /*
-                lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x].push({
-                    index: player.index,
-                    siblings: [player.tail[0].pos],
-                    x: player.tail[player.tail.length-1].x,
-                    y: player.tail[player.tail.length-1].y,
-                });
-                */
                 lobby.updateSnakeCells.push(lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x]);
                 
 
@@ -1798,9 +1790,10 @@ function server_movePlayers(lobby) {
                     if (mapItem.canCollide) runItemFunction(lobby,player,mapItem,"offCollision");
                 }
                 
+                snakeMapSetType(lobby,player.index,player.tail[0].y,player.tail[0].x,"body");
                 snakeMapRemove(lobby,player.index,tail.y,tail.x);
                 player.tail.pop();
-                snakeMapSetTail(lobby,player.index,player.tail[player.tail.length-1].y,player.tail[player.tail.length-1].x);
+                snakeMapSetType(lobby,player.index,player.tail[player.tail.length-1].y,player.tail[player.tail.length-1].x,"tail");
             } else {
                 snakeMapRemove(lobby,player.index,playerY,playerX);
                 if (currentBoard.map[playerY][playerX].item) {
