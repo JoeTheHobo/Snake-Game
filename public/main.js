@@ -209,6 +209,7 @@ function server_renderPlayers() {
     
                 if (obj.type == "tail") {
                     image = player.canvas.tail;
+                    console.log(active)
                     if (active.includes("right")) direction = "left";
                     if (active.includes("left")) direction = "right";
                     if (active.includes("down")) direction = "up";
@@ -229,7 +230,6 @@ function server_renderPlayers() {
                     if (active.includes("right") && active.includes("bottom")) direction = "right";
                     if (active.includes("bottom") && active.includes("left")) direction = "down";
                 }
-                console.log(image,direction)
                 drawRotated(image,direction,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
     
             }
