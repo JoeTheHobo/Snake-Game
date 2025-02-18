@@ -1597,7 +1597,6 @@ function snakeMapSetType(lobby,index,y,x,type) {
         if (group[i].index == index) {
             lobby.snakeMap[y][x][i].type = type;
             if (type == "tail" && lobby.snakeMap[y][x][i].siblings.length > 1) lobby.snakeMap[y][x][i].siblings.shift();
-            if (type == "tail" && group.length > 2) console.log(group)
             return;
         }
     }
@@ -1808,6 +1807,7 @@ function server_movePlayers(lobby) {
             if (player.tail.length > 0) {
                 snakeMapSetType(lobby,player.index,player.tail[0].y,player.tail[0].x,"body");
                 snakeMapSetType(lobby,player.index,player.tail[player.tail.length-1].y,player.tail[player.tail.length-1].x,"tail");
+                if (lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x].length > 2) console.log(lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x])
                 lobby.updateSnakeCells.push(lobby.snakeMap[player.tail[player.tail.length-1].y][player.tail[player.tail.length-1].x]);
             }
 
