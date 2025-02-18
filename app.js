@@ -892,6 +892,22 @@ io.on('connection', (socket) => {
 
         if (lobby.gameStatus == "prepare") {
             onlineAccounts[socket.id].player.moving = direction;
+
+            emitingActivePlayers = Object.values(lobby.activePlayers).map(({ index, selectingItem, items, tail,moving,shield }) => ({
+                index,
+                selectingItem,
+                items,
+                tailLength: tail.length + 1,
+                moving,
+                shield,
+            }));
+
+            io.emit("updatePositions",{
+                updatedPlayers: emitingActivePlayers,
+                updateSnakeCells: lobby.updateSnakeCells,
+                updateCells: lobby.updateCells,
+            },lobby.id)
+            
             return;
         }
 

@@ -151,29 +151,22 @@ function drawRotated(list,direction,xPos, yPos, width, height) {
     ctx_players.drawImage(image,xPos,yPos,width,height);
 }
 function server_renderPlayers() {
-    console.log(1)
     for (let i = 0; i < updateSnakeCells.length; i++) {
         let arr = updateSnakeCells[i];
-        console.log(1.3)
         //Clear Cell
         ctx_players.clearRect(arr[0].x*gridSize,arr[0].y*gridSize,gridSize,gridSize);
         for (let k = 1; k < arr.length; k++) {
             let obj = arr[k];
-            console.log(1.5)
             let player;
             for (let j = 0; j < activePlayers.length; j++) {
-                console.log(1.6)
                 if (activePlayers[j].index === obj.index) {
-                    console.log(1.7)
                     player = activePlayers[j];
                     break;
                 } 
             }
             if (!player) break;
-            console.log(2);
     
             if (obj.type == "head") {
-                console.log(3);
                 drawRotated(player.canvas.head,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
             
                 if (player.shield == 1){
