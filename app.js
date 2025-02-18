@@ -784,7 +784,7 @@ io.on('connection', (socket) => {
 
 
             if (!this.gameEnd) {
-                setTimeout(() => this.gameLoop(), 60);
+                setTimeout(() => this.gameLoop(), 500/*60*/);
             } else {
                 this.isActiveGame = false;
 
