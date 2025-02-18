@@ -152,79 +152,81 @@ function drawRotated(list,direction,xPos, yPos, width, height) {
 }
 function server_renderPlayers() {
     for (let i = 0; i < updateSnakeCells.length; i++) {
-        let obj = updateSnakeCells[i];
-        let player;
-        for (let j = 0; j < activePlayers.length; j++) {
-            console.log(activePlayers[j].index == obj.index,activePlayers[j].index,obj.index);
-            if (activePlayers[j].index === obj.index) {
-                player = activePlayers[j];
-                break;
-            } 
-        }
-        console.log(player)
-        if (!player) break;
+        let arr = updateSnakeCells[i];
+        for (let k = 0; k < arr.length; k++) {
+            let obj = arr[k];
 
-        //Clear Cell
-        ctx_players.clearRect(obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
-
-        if (obj.type == "head") {
-            drawRotated(player.canvas.head,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
-        
-            if (player.shield == 1){
-                let item = getItem("bronzeShield");
-                drawImage(getItemCanvas(item.name),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);
+            let player;
+            for (let j = 0; j < activePlayers.length; j++) {
+                if (activePlayers[j].index === obj.index) {
+                    player = activePlayers[j];
+                    break;
+                } 
             }
-            if (player.shield == 2){
-                let item = getItem("silverShield");
-                drawImage(getItemCanvas(item.name),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);
+            if (!player) break;
+    
+            //Clear Cell
+            ctx_players.clearRect(obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
+    
+            if (obj.type == "head") {
+                drawRotated(player.canvas.head,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
+            
+                if (player.shield == 1){
+                    let item = getItem("bronzeShield");
+                    drawImage(getItemCanvas(item.name),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);
+                }
+                if (player.shield == 2){
+                    let item = getItem("silverShield");
+                    drawImage(getItemCanvas(item.name),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);
+                }
+                if (player.shield == 3){
+                    let item = getItem("goldShield");
+                    drawImage(getItemCanvas(item.name),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);
+                }
             }
-            if (player.shield == 3){
-                let item = getItem("goldShield");
-                drawImage(getItemCanvas(item.name),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);
+            if (obj.type == "body" || obj.type == "tail") {
+                let active = []
+                for (let j = 0; j < obj.siblings.length; j++) {
+                    let sibling = obj.siblings[j];
+                    if (sibling.x < obj.x) active.push("left");
+                    if (sibling.x > obj.x) active.push("right");
+                    if (sibling.y < obj.y) active.push("top");
+                    if (sibling.y > obj.y) active.push("bottom");
+                }
+    
+                //For Tunnels
+                if (active.length == 1 && active[0] !== "down" && obj.type == "body") active.push("down");
+    
+                /* 
+                    snakeTurn directions
+                    up = Top - Right
+                    left = Top - Left
+                    right = Right - Bottom
+                    down =  Bottom - Left
+                */
+    
+                let direction, image;
+    
+                if (obj.type == "tail") image = player.canvas.tail;
+                if (active.includes("left") && active.includes("right")) {
+                    image = player.canvas.body;
+                    direction = "right";
+                }
+                if (active.includes("top") && active.includes("bottom")) {
+                    image = player.canvas.body;
+                    direction = "up";
+                }
+                if (!image) {
+                    image = player.canvas.turn;
+                    if (active.includes("top") && active.includes("right")) direction = "up";
+                    if (active.includes("top") && active.includes("left")) direction = "left";
+                    if (active.includes("right") && active.includes("bottom")) direction = "right";
+                    if (active.includes("bottom") && active.includes("left")) direction = "down";
+                }
+    
+                drawRotated(image,direction,tailX*gridSize,tailY*gridSize,gridSize,gridSize);
+    
             }
-        }
-        if (obj.type == "body" || obj.type == "tail") {
-            let active = []
-            for (let j = 0; j < obj.siblings.length; j++) {
-                let sibling = obj.siblings[j];
-                if (sibling.x < obj.x) active.push("left");
-                if (sibling.x > obj.x) active.push("right");
-                if (sibling.y < obj.y) active.push("top");
-                if (sibling.y > obj.y) active.push("bottom");
-            }
-
-            //For Tunnels
-            if (active.length == 1 && active[0] !== "down" && obj.type == "body") active.push("down");
-
-            /* 
-                snakeTurn directions
-                up = Top - Right
-                left = Top - Left
-                right = Right - Bottom
-                down =  Bottom - Left
-            */
-
-            let direction, image;
-
-            if (obj.type == "tail") image = player.canvas.tail;
-            if (active.includes("left") && active.includes("right")) {
-                image = player.canvas.body;
-                direction = "right";
-            }
-            if (active.includes("top") && active.includes("bottom")) {
-                image = player.canvas.body;
-                direction = "up";
-            }
-            if (!image) {
-                image = player.canvas.turn;
-                if (active.includes("top") && active.includes("right")) direction = "up";
-                if (active.includes("top") && active.includes("left")) direction = "left";
-                if (active.includes("right") && active.includes("bottom")) direction = "right";
-                if (active.includes("bottom") && active.includes("left")) direction = "down";
-            }
-
-            drawRotated(image,direction,tailX*gridSize,tailY*gridSize,gridSize,gridSize);
-
         }
     }
     updateSnakeCells = [];
