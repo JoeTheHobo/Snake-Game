@@ -1603,7 +1603,7 @@ let production = {
         timeStart: 0,
         type: "dom",
         showIF: "server",
-        dataType: "size",
+        dataType: "bytes",
     },
 }
 function setUpProductionHTML() {
@@ -1637,7 +1637,7 @@ function updateProduction() {
         if (entry[1].times.length == 0) entry[1].times.push(0);
         entry[1].average = entry[1].times.avg();
         if (entry[1].dataType == "ms") $("production_" + entry[0]).innerHTML = entry[1].average.toFixed(4) + "ms";
-        if (entry[1].dataType == "size") $("production_" + entry[0]).innerHTML = entry[1].average.toFixed(4) + "mb";
+        if (entry[1].dataType == "bytes") $("production_" + entry[0]).innerHTML = entry[1].average.toFixed(4) + "bytes";
     }
 }
 function gameLoop() {
