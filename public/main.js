@@ -1602,6 +1602,7 @@ function setUpProductionHTML() {
     for (let i = 0; i < Object.entries(production).length; i++) {
         let entry = Object.entries(production)[i];
         if (entry[1].showIf !== productionType) continue;
+        console.log("eyo")
 
         let div = holder.create("div");
         div.className = "production_holder";
@@ -1620,13 +1621,13 @@ function setUpProductionHTML() {
 function updateProduction() {
     for (let i = 0; i < Object.entries(production).length; i++) {
         let entry = Object.entries(production)[i];
-        console.log(entry[0])
-        if (production[entry[0]].times.length > 1000) {
-            production[entry[0]].times.shift();
+
+        if (entry[1].times.length > 1000) {
+            entry[1].times.shift();
         }
-        if (production[entry[0]].times.length == 0) production[entry[0]].times.push(0);
-        production[entry[0]].average = production[entry[0]].times.avg();
-        $("production_" + entry[0]).innerHTML = production[entry[0]].average.toFixed(4) + "ms";
+        if (entry[1].times.length == 0) entry[1].times.push(0);
+        entry[1].average = entry[1].times.avg();
+        $("production_" + entry[0]).innerHTML = entry[1].average.toFixed(4) + "ms";
     }
 }
 function gameLoop() {
