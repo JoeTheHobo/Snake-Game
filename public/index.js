@@ -57,7 +57,7 @@ socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     $(".servers_online_text").innerHTML = onlineCount;
 })
 socket.on("settingLobbyBoards",(boardsList) => {
-    localAccount.lobbyBoards = [];
+    localAccount.lobbyBoards = boardsList;
 })
 socket.on("startingGame", (lobby) => {
     productionType = "server";

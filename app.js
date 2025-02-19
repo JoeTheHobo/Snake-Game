@@ -609,12 +609,14 @@ io.on('connection', (socket) => {
         //Varify Board Here -To Be Added
         board = fixBoard(JSON.parse(board));
         lobby.lobbyBoards.push(board);
+        console.log("LobbyBoardLength:",lobby.lobbyBoards.length)
     })
     socket.on("askForLobbyBoards", () => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;
         if (lobby.hostID !== socket.id) return;
 
+        console.log("LobbyBoardLength:",lobby.lobbyBoards.length)
         io.emit("settingLobbyBoards",lobby.lobbyBoards);
 
     })
