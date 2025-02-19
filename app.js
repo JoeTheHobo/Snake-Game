@@ -435,7 +435,7 @@ io.on('connection', (socket) => {
         lobbies[id].code = (rnd(1000,5000)) + "";
         lobbies[id].serverType = "Hidden";
         lobbies[id].gameMode = lobby.gameMode;
-        lobbies[id].maxPlayers = 8;
+        lobbies[id].playerMax = 8;
         onlineAccounts[socket.id].lobby = lobbies[lobby.id].id;
         onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
 
