@@ -448,7 +448,6 @@ io.on('connection', (socket) => {
                 lobbyList[lobby.id].code = "";
             }
         }
-        console.log(lobbyList)
         io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
         io.emit("setClientLobby",socket.id,lobbies[lobby.id])
     })
@@ -609,14 +608,12 @@ io.on('connection', (socket) => {
         //Varify Board Here -To Be Added
         board = fixBoard(JSON.parse(board));
         lobby.lobbyBoards.push(board);
-        console.log("LobbyBoardLength:",lobby.lobbyBoards.length)
     })
     socket.on("askForLobbyBoards", () => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;
         if (lobby.hostID !== socket.id) return;
 
-        console.log("LobbyBoardLength:",lobby.lobbyBoards.length)
         io.emit("settingLobbyBoards",lobby.lobbyBoards);
 
     })
@@ -673,8 +670,7 @@ io.on('connection', (socket) => {
         let newHost = onlineAccounts[player.accountID];
         if (!newHost) return;
         if (lobby.id !== newHost.lobby) return;
-
-        lobby.hostID = newHost.accountID;
+        lobby.hostID = newHost.id;
         lobby.hostName = newHost.username;
 
         let username = newHost.username;
@@ -833,7 +829,6 @@ io.on('connection', (socket) => {
             moving,
             shield,
         }));
-        console.log(lobby.updateSnakeCells);
         io.emit("updatePositions",{
             updatedPlayers: emitingActivePlayers,
             updateSnakeCells: lobby.updateSnakeCells,
