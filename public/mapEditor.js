@@ -876,14 +876,14 @@ $("me_button").on("click",function() {
     if (localAccount.isInLobby) {
         makePopUp([
             {type: "title",text: "Save As New Board?"},
-            {type: "text",text: "If you click no you can play with changes but they're not saved."},
             [
-                {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"No",onClick: () => {
+                {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Don't Save To New Board",onClick: () => {
                     setScene("lobby");
                     socket.emit("changeServerBoard",JSON.stringify(shortenBoard(currentBoard)));
                 }},
                 {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Save To New Board",onClick: () => {
                     saveBoard();
+                    currentBoard.cantEdit = true;
                     boards.push(structuredClone(currentBoard));
                     saveBoards();
                     setScene("lobby");
