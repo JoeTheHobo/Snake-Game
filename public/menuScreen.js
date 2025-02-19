@@ -296,7 +296,7 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder) {
 
             if (["image"].includes(l.type)) div = holder.create("img");
             if (["canvas"].includes(l.type)) div = holder.create("canvas");
-            if (["title","text","label","delete"].includes(l.type)) div = holder.create("div");
+            if (["title","text","label","delete","close"].includes(l.type)) div = holder.create("div");
             if (["keyBind","slider","input"].includes(l.type)) div = holder.create("input");
 
             if (l.text) div.innerHTML = l.text;
