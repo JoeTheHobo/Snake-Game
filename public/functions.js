@@ -692,6 +692,7 @@ function importMap(textFile) {
     board = JSON.parse(decompressed);
     board = fixBoard(board);
     board.cantEdit = false;
+
     boards.push(board);
     currentBoardIndex = boards.length - 1;
     currentBoard = boards[currentBoardIndex];
@@ -1372,6 +1373,7 @@ function updateLobbyPage(lobby) {
     if (localAccount.id == lobby.hostID) {
         $(".hostOnly").show();
         $(".hostFlex").show("flex");
+        $(".playerOnly").hide();
 
         if (lobby.board.recommendedGameMode) {
             $("sc_boards_recommendedGameMode").show();
@@ -1385,7 +1387,10 @@ function updateLobbyPage(lobby) {
         else $(".lobbyCode").show()
         
     }
-    else $(".hostOnly").hide();
+    else {
+        $(".hostOnly").hide();
+        $(".playerOnly").show();
+    }
 
     localAccount.lobbyBoard = lobby.board;
     currentBoard = lobby.board;
@@ -1505,6 +1510,13 @@ function generateBoardsPopup(type) {
         })
     }
 
+    if (type == "lobby") {
+        for (let i = 0; i < localAccount.lobbyBoards.length; i++) {
+            let board = localAccount.lobbyBoards[i];
+            generateBoard(parent,board);
+        }
+        return;
+    }
     for (let i = 0; i < boards.length; i++) {
         let board = boards[i];
         if (type == "preset" && board.cantEdit) generateBoard(parent,board);
@@ -1522,6 +1534,7 @@ function showBoardMenu(func) {
     selectTabInBoardMenu("preset");
     $(".chooseBoardPopup").func = func;
     $(".chooseBoardPopup").show("flex");
+    socket.emit("askForLobbyBoards");
 }
 function loadGameModesToPopup(func) {
     let parent = $(".cgm_list");

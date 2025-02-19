@@ -14,6 +14,7 @@ const localAccount = {
     players: [],
     startTime: false,
     isInLobby: false,
+    lobbyBoards: [],
 };
 let gameType = "local";
 
@@ -34,6 +35,7 @@ socket.on("setPlayer", (id,account) =>{
     localAccount.gameModes = account.gameModes;
     localAccount.username = account.username;
     localAccount.isInLobby = false;
+    localAccount.lobbyBoards = [];
 });
 socket.on("setClientLobby",(socketID,lobby) => {
     if (socketID !== localAccount.id) return;
@@ -54,6 +56,9 @@ socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     loadServersHTML();
     $(".servers_online_text").innerHTML = onlineCount;
 })
+socket.on("settingLobbyBoards",(boardsList) => {
+    localAccount.lobbyBoards = [];
+})
 socket.on("startingGame", (lobby) => {
     productionType = "server";
     setUpProductionHTML();
@@ -72,7 +77,8 @@ socket.on("startingGame", (lobby) => {
     updateSnakeCells = [];
     updateCells = [];
     currentGameMode = lobby.gameMode;
-                    
+
+    $(".closeWhenGameStarts").hide();
     setScene("game");
     $(".pauseGamePopup").hide();
     $("playerCardsHolder").innerHTML = "";

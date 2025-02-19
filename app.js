@@ -436,6 +436,7 @@ io.on('connection', (socket) => {
         lobbies[id].serverType = "Hidden";
         lobbies[id].gameMode = lobby.gameMode;
         lobbies[id].playerMax = 8;
+        lobbies[id].lobbyBoards = [];
         onlineAccounts[socket.id].lobby = lobbies[lobby.id].id;
         onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[0]);
 
@@ -599,6 +600,23 @@ io.on('connection', (socket) => {
 
         lobby.gameMode = gameMode;
         io.emit("updateLobbyPage",lobby);
+    })
+    socket.on("addBoardToLobbyBoards",(board) => {
+        let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        if (!lobby) return;
+        if (!board) return;
+
+        //Varify Board Here -To Be Added
+        board = fixBoard(JSON.parse(board));
+        lobby.lobbyBoards.push(board);
+    })
+    socket.on("askForLobbyBoards", () => {
+        let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        if (!lobby) return;
+        if (lobby.hostID !== socket.id) return;
+
+        io.emit("settingLobbyBoards",lobby.lobbyBoards);
+
     })
     socket.on("changeServerBoard",(board) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];

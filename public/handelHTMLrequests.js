@@ -239,3 +239,9 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
         ],
     ],localAccount.players[0],false,true);
 })
+
+$(".sc_addLobbyBoard").on("click",function() {
+    showBoardMenu(function(board) {
+        socket.emit("addBoardToLobbyBoards",JSON.stringify(shortenBoard(board)));
+    }) 
+})

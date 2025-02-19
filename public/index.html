@@ -25,7 +25,7 @@
                     <div class="servers_button" id="quitServerButton">Quit Server</div>
                     <div class="sc_tb_lobbyName">Jimmy's Lobby</div>
                     
-                    <div class="sc_tb_right">
+                    <div class="sc_tb_righthostFlex">
                         <div class="servers_button hostOnly lobbyCode">XX24125</div>
                         <div class="serverTypeDropdown hostOnly">
                             <div class="sdd_content">
@@ -44,10 +44,11 @@
                 <div class="sc_content">
                     <div class="sc_content_columns">
                         <div class="sc_contentColumn">
-                            <div class="sc_aboveBoardsRow hostOnly hostFlex">
-                                <div class="sc_chooseboard sc_boardOptions">Change Board</div>
-                                <div class="sc_editboard sc_boardOptions">Edit Board</div>
-                                <div class="sc_importboard sc_boardOptions">Import Board</div>
+                            <div class="sc_aboveBoardsRow">
+                                <div class="sc_chooseboard sc_boardOptions hostOnly">Change Board</div>
+                                <div class="sc_editboard sc_boardOptions hostOnly">Edit Board</div>
+                                <div class="sc_importboard sc_boardOptions hostOnly">Import Board</div>
+                                <div class="sc_addLobbyBoard sc_boardOptions playerOnly">Add Lobby Board</div>
                             </div>
                             <canvas class="sc_boards_canvas"></canvas>
                             <div class="sc_title" id="sc_boards_boardName">Board: Custom Board #9</div>
@@ -317,7 +318,7 @@
             <img class="np_img" src="img/go.png">
         </div>
     </div>
-    <div class="endScreenStats">
+    <div class="endScreenStats closeWhenGameStarts">
         <div class="endScreenSnakes">
             <img class="endScreenSnakeAniation" id="endScreenSnake1" src="img/endScreenSnake.png">
             <img class="endScreenSnakeAniation" id="endScreenSnake3" src="img/endScreenSnake.png">
@@ -367,11 +368,12 @@
         
     </div>
 
-    <div class="customizeSnakePopup"></div>
-    <div class="chooseBoardPopup">
+    <div class="customizeSnakePopup closeWhenGameStarts"></div>
+    <div class="chooseBoardPopup closeWhenGameStarts">
         <div class="cbp_tabsList">
             <div class="cbp_tab" id="cbp_personal">Personal Board</div>
             <div class="cbp_tab" id="cbp_preset">Preset Board</div>
+            <div class="cbp_tab" id="cbp_lobby">Lobby Imported</div>
         </div>
         <div class="cbp_boardsList">
 
@@ -381,7 +383,7 @@
         </div>
     </div>
 
-    <div class="chooseGameModePopup">
+    <div class="chooseGameModePopup closeWhenGameStarts">
         <div class="cgm_list"></div>
 
         <div class="cbp_bottom">
