@@ -876,7 +876,7 @@ $("me_button").on("click",function() {
     if (localAccount.isInLobby) {
         makePopUp([
             {type: "title",text: "Save As New Board?"},
-            {type: "subtitle",text: "If you click no you can play with changes but they're not saved."},
+            {type: "text",text: "If you click no you can play with changes but they're not saved."},
             [
                 {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"No",onClick: () => {
                     setScene("lobby");
