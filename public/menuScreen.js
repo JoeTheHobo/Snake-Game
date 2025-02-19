@@ -267,6 +267,7 @@ function generateHTMLList(holder,listObj,contentObj,contentHTML) {
     if (forceOpen) forceOpen.open();
 }
 function generateHTMLContent(holder,contentList,valueObj,contentHolder,updateLobby = false) {
+    console.log("generateHTMLContent",updateLobby)
     holder.innerHTML = "";
     holder.tags = {};
 
