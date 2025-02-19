@@ -26,15 +26,15 @@ function loadServersHTML() {
 
         let boardName = column.create("div");
         boardName.className = "server_board_name";
-        boardName.innerHTML = server.board.name;
+        boardName.innerHTML = server.hostName + "'s Lobby";
 
         let hostName = column.create("div");
         hostName.className = "server_host_name";
-        hostName.innerHTML = "Host: " + server.hostName;
+        hostName.innerHTML = "Board: " + server.board.name;
 
         let gameMode = column.create("div");
         gameMode.className = "server_game_mode_name";
-        gameMode.innerHTML = server.gameMode.name;
+        gameMode.innerHTML = "Gamemode: " + server.gameMode.name;
 
         let activePlayers = server_holder.create("div");
         activePlayers.className = "server_active_players";
