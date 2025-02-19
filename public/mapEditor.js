@@ -883,7 +883,7 @@ $("me_button").on("click",function() {
                 }},
                 {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Save To New Board",onClick: () => {
                     saveBoard();
-                    currentBoard.cantEdit = true;
+                    currentBoard.cantEdit = false;
                     boards.push(structuredClone(currentBoard));
                     saveBoards();
                     setScene("lobby");
