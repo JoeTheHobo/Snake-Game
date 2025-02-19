@@ -307,7 +307,7 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder) {
                     color: "white",
                 })
             }
-            if (l.type == "delete") {
+            if (l.type == "delete" && contentHolder) {
                 div.classAdd("hover");
                 div.innerHTML = "Delete"
                 div.css({
@@ -450,7 +450,7 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder) {
             if (l.tag) {
                 originalParent.tags[l.tag] = div;
             }
-            if (l.bind) {
+            if (l.bind && contentHolder) {
                 div.on("input",function() {
                     if (l.bind.type == "!==") if (this.value !== "") obj[l.bind.key] = this.value;
                     if (l.bind.type == "set" || !l.type) obj[l.bind.key] = this.value;

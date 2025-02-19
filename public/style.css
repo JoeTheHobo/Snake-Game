@@ -1918,7 +1918,23 @@ html {
   background-color: #838383;
   font-size: 20px;
 }
+.customizeSnakePopup {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  display: none;
+  width: 40%;
+  height: 60%;
+  flex-direction: column;
+  border-radius: 5px;
+  background: rgb(26, 26, 26);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  z-index: 1000;
 
+}
 .chooseBoardPopup {
   position: absolute;
   top: 0;

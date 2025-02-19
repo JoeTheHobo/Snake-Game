@@ -204,6 +204,10 @@ socket.on("setCode",(id,oldCode) => {
     if (localAccount.id !== id) return;
     chooseCodePopUp(oldCode);
 })
+socket.on("setPlayerToHomeScreen",(accountID) => {
+    if (localAccount.id !== accountID) return;
+    setScene("newMenu");
+})
 function chooseCodePopUp(code) {
     makePopUp([
         {type: "title",text: "Set Code"},

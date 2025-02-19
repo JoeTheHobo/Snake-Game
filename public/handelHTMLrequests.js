@@ -167,3 +167,51 @@ $("button_backToLobby").on("click",function() {
 
     setScene("lobby")
 })
+$(".sc_bb_customizeSnakeHolder").on("click",function() {
+    $(".customizeSnakePopup").show();
+    generateHTMLContent($(".customizeSnakePopup"),[
+        {type: "title",text: "Appearance"},
+        [
+            [{type: "image", src: "snakeHead.png",filter: "player",tag:"image",width: "200px",height: "200px",background: "white",borderRadius: "5px",}],
+            [
+                {type: "text",text: "Snake Name"},
+                {type: "input",value: ".name", tag: "name", bind: {key: "name",type: "!==",value: "",update: {externalKey: "name",type: "innerHTML"}}},
+                {type: "text",text: "Hue"},
+                {type: "slider", value: ".color",min: 0, max: 360,bind: {key: "color",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
+                {type: "text",text: "Sepia"},
+                {type: "slider", value: ".color2",min: 0, max: 100,bind: {key: "color2",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
+                {type: "text",text: "Contrast"},
+                {type: "slider", value: ".color3",min: 0, max: 200,bind: {key: "color3",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
+            ],
+        ],
+        {type: "title",text: "Key Binds"},
+        [
+            [
+                {type: "label",text: "Move Left"},
+                {type: "label",text: "Move Down"},
+                {type: "label",text: "Move Right"},
+                {type: "label",text: "Move Up"},
+            ],
+            [
+                {type: "keyBind",value: ".leftKey",bind: {key: "leftKey",type: "set"}},
+                {type: "keyBind",value: ".downKey",bind: {key: "downKey",type: "set"}},
+                {type: "keyBind",value: ".rightKey",bind: {key: "rightKey",type: "set"}},
+                {type: "keyBind", value: ".upKey",bind: {key: "upKey",type: "set"}},
+            ],
+            [
+                {type: "label",text: "Scroll Left"},
+                {type: "label",text: "Scroll Right"},
+                {type: "label",text: "Use Item"},
+
+            ],
+            [
+                {type: "keyBind", value: ".useItem1",bind: {key: "useItem1",type: "set"}},
+                {type: "keyBind", value: ".useItem2",bind: {key: "useItem2",type: "set"}},
+                {type: "keyBind", value: ".fireItem",bind: {key: "fireItem",type: "set"}},
+
+            ]
+        ],
+        {type: "title",text: "Danger Zone"},
+        {type: "delete", delete: localAccount.players,deleteLoad: loadCustomizeSnakeScreen}
+    ],localAccount.players[0]);
+})

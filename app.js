@@ -619,6 +619,52 @@ io.on('connection', (socket) => {
 
         lobby.code = code;
     })
+    socket.on("kickPlayerFromLobby",(player) => {
+        let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        if (!lobby) return;
+        if (lobby.hostID !== socket.id) return;
+
+        let kickedPlayer = onlineAccounts[player.accountID];
+        if (!kickedPlayer) return;
+        if (lobby.id !== kickedPlayer.lobby) return;
+
+        kickedPlayer.lobby = false;
+
+        for (let i = 0; i < lobby.players.length; i++) {
+            if (lobby.players[i].accountID === kickedPlayer.accountID) {
+                let username = kickedPlayer.username;
+                lobby.chats.push({
+                    account: null,
+                    message: username + " Got Kicked From Lobby",
+                })
+                io.emit("setPlayerToHomeScreen",kickedPlayer.accountID);
+                lobby.players.splice(i,1);
+                break;
+            }
+        }
+
+        io.emit("updateLobbyPage",lobby);
+    })
+    socket.on("setLobbyHost",(player) => {
+        let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        if (!lobby) return;
+        if (lobby.hostID !== socket.id) return;
+
+        let newHost = onlineAccounts[player.accountID];
+        if (!newHost) return;
+        if (lobby.id !== newHost.lobby) return;
+
+        lobby.hostID = newHost.accountID;
+        lobby.hostName = newHost.username;
+
+        let username = newHost.username;
+        lobby.chats.push({
+            account: null,
+            message: username + " Is The New Lobby Host",
+        })
+
+        io.emit("updateLobbyPage",lobby);
+    })
     socket.on("changeLobbyType",(type) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;

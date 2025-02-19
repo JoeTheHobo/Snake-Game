@@ -1407,7 +1407,7 @@ function updateLobbyPage(lobby) {
     
             if (i % 2 == 0) holder.style.background = "#696969";
     
-            function makeImage(holder,className,src,filter = false) {
+            function makeImage(holder,className,src,filter = false,func) {
                 let imageHolder = holder.create("div");
                 imageHolder.className = className;
                 let image = imageHolder.create("img");
@@ -1417,6 +1417,9 @@ function updateLobbyPage(lobby) {
                 if (filter) {
                     image.style.filter = `hue-rotate(${filter.color}deg) sepia(${filter.color2}%) contrast(${filter.color3}%)`
                 }
+                imageHolder.on("click",function() {
+                    func(player);
+                })
     
             }
             makeImage(holder,"lobbySnakeImageHolder","img/snakeHead.png",lobby.activePlayers[i]);
@@ -1432,8 +1435,12 @@ function updateLobbyPage(lobby) {
             rightContent.className = "lobbyPlayersRight";
     
             makeImage(rightContent,"lobbyFriendsIcon","img/menuIcons/friend.png");
-            if (isHost) makeImage(rightContent,"lobbyHostIcon","img/menuIcons/makeHost.png");
-            if (isHost) makeImage(rightContent,"lobbyBanIcon","img/menuIcons/banPlayer.png");
+            if (isHost) makeImage(rightContent,"lobbyHostIcon","img/menuIcons/makeHost.png",false,function(player) {
+                socket.emit("setLobbyHost",player);
+            });
+            if (isHost) makeImage(rightContent,"lobbyBanIcon","img/menuIcons/banPlayer.png",false,function(player) {
+                socket.emit("kickPlayerFromLobby",player);
+            });
     
         }
     }
