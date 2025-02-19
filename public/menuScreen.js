@@ -301,6 +301,26 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder) {
 
             if (l.text) div.innerHTML = l.text;
 
+            if (l.type == "close") {
+                div.css({
+                    position: "absolute",
+                    top:  10,
+                    right: 10,
+                    color: "red",
+                    width: "30px",
+                    height: "30px",
+                    lineHeight: "30px",
+                    textAlign: "center",
+                    fontSize: "20px",
+                    fontWeight: "bold",
+                    borderRadius: "5px",
+                    border: "2px solid black",
+                    background: "white",
+                })
+                div.on("click",function() {
+                    originalParent.hide();
+                })
+            }
             if (l.type == "title") {
                 div.css({
                     fontSize: "30px",

@@ -185,6 +185,7 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
             ],
         ],
         {type: "title",text: "Key Binds"},
+        {type: "close"},
         [
             [
                 {type: "label",text: "Move Left"},
@@ -211,7 +212,5 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
 
             ]
         ],
-        {type: "title",text: "Danger Zone"},
-        {type: "delete", delete: localAccount.players,deleteLoad: loadCustomizeSnakeScreen}
     ],localAccount.players[0]);
 })
