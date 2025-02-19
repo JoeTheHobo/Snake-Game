@@ -270,7 +270,7 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder,updateLob
     holder.innerHTML = "";
     holder.tags = {};
 
-    function generateContent(list,obj,parent,direction = "column",originalParent) {
+    function generateContent(list,obj,parent,direction = "column",originalParent,updateLobby) {
         let holder = parent.create("div");
         holder.css({
             display: "flex",
@@ -498,7 +498,7 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder,updateLob
         }
     }
 
-    generateContent(contentList,valueObj,holder,"column",holder)
+    generateContent(contentList,valueObj,holder,"column",holder,updateLobby)
 }
 
 

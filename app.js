@@ -999,10 +999,13 @@ io.on('connection', (socket) => {
         if (checksOut === true) {
             onlineAccounts[socket.id].players = players;
             if (updateLobby) {
+                console.log("Yeap1")
                 let account = onlineAccounts[socket.id];
                 let lobby = lobbies[account.lobby];
                 if (!account) return;
+                console.log("Yeap2")
                 if (!lobby) return;
+                console.log("Yeap3")
 
                 io.emit("updateLobbyPage",lobby);
                 
