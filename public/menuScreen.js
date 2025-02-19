@@ -481,14 +481,14 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder,updateLob
                     if (l.save  == undefined || l.save == true) {
                         savePlayers(updateLobby);
                     }
-                    if (l.bind.update && contentHolder) {
+                    if (l.bind.update) {
                         let value = obj[l.bind.key];
                         
                         if (l.bind.update.type == "filterPlayer") {
-                            if (l.bind.update.externalKey) contentHolder.tags[l.bind.update.externalKey].style.filter = `hue-rotate(${obj.color}deg) sepia(${obj.color2}%) contrast(${obj.color3}%)`;
+                            if (l.bind.update.externalKey && contentHolder) contentHolder.tags[l.bind.update.externalKey].style.filter = `hue-rotate(${obj.color}deg) sepia(${obj.color2}%) contrast(${obj.color3}%)`;
                             if (l.bind.update.key) originalParent.tags[l.bind.update.key].style.filter = `hue-rotate(${obj.color}deg) sepia(${obj.color2}%) contrast(${obj.color3}%)`;
                         } else {
-                            if (l.bind.update.externalKey) contentHolder.tags[l.bind.update.externalKey][l.bind.update.type] = value;
+                            if (l.bind.update.externalKey && contentHolder) contentHolder.tags[l.bind.update.externalKey][l.bind.update.type] = value;
                             if (l.bind.update.key) originalParent.tags[l.bind.update.key][l.bind.update.type] = value;
                         }
                     }
