@@ -272,6 +272,7 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder,updateLob
     holder.tags = {};
 
     function generateContent(list,obj,parent,direction = "column",originalParent,updateLobby) {
+        console.log("generateContent",updateLobby);
         let holder = parent.create("div");
         holder.css({
             display: "flex",
@@ -287,7 +288,7 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder,updateLob
             let l = list[i];
 
             if (_type(l).type == "array") {
-                generateContent(l,obj,holder,(direction == "column" ? "row" : "column"),originalParent);
+                generateContent(l,obj,holder,(direction == "column" ? "row" : "column"),originalParent,updateLobby);
                 continue;
             }
 
