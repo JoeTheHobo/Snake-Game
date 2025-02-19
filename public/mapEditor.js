@@ -883,8 +883,9 @@ $("me_button").on("click",function() {
                 }},
                 {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Save To New Board",onClick: () => {
                     saveBoard();
-                    currentBoard.cantEdit = false;
-                    boards.push(structuredClone(currentBoard));
+                    let newBoard = structuredClone(currentBoard);
+                    newBoard.cantEdit = false;
+                    boards.push(newBoard);
                     saveBoards();
                     setScene("lobby");
                     socket.emit("changeServerBoard",JSON.stringify(shortenBoard(currentBoard)));
