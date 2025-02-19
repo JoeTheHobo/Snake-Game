@@ -94,7 +94,9 @@ function fixTileDifferencesMapEditor(map) {
         map[d.y][d.x].tile = pos;
     }
 }
-function openMapEditor(boardComingIn) {
+function openMapEditor(boardComingIn,isFromServer = false) {
+    if (isFromServer) $("me_playButton").hide();
+
     board = boardComingIn;
     currentBoard.originalMap = forceAllCellsToBeTheirOwn(board.originalMap);
     oldMap = structuredClone(currentBoard.originalMap);
@@ -873,8 +875,13 @@ function saveBoard(saveDifferences = false) {
 $("me_button").on("click",function() {
     if ($("saveStatus").innerHTML == "Board Saved") {
         saveBoard();
-        setScene("newMenu");
-        loadBoardsScreen();
+        if (localAccount.isInLobby) {
+            setScene("lobby");
+            socket.emit("changeServerBoard",JSON.stringify(shortenBoard(currentBoard)));
+        } else {
+            setScene("newMenu");
+            loadBoardsScreen();
+        }
         return;
     }
     makePopUp([

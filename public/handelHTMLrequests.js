@@ -144,7 +144,7 @@ $(".sc_chooseboard").on("click",function() {
     }) 
 })
 $(".sc_editboard").on("click",function() {
-
+    openMapEditor(localAccount.lobbyBoard,"server");
 })
 $(".sc_importboard").on("click",function() {
     
