@@ -2054,6 +2054,7 @@ html {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  margin-bottom: 5px;
 }
 .sc_boardOptions {
   width: 30%;
