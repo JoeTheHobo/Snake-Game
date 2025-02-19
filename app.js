@@ -437,7 +437,7 @@ io.on('connection', (socket) => {
         lobbies[id].gameMode = lobby.gameMode;
         lobbies[id].playerMax = 8;
         onlineAccounts[socket.id].lobby = lobbies[lobby.id].id;
-        onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
+        onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[0]);
 
         const lobbyList = {};
         for (const lobbyID in lobbies) {
@@ -523,7 +523,7 @@ io.on('connection', (socket) => {
                 message: onlineAccounts[socket.id].username + " Joined The Lobby",
             })
             onlineAccounts[socket.id].lobby =  lobby.id;
-            onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[onlineAccounts[socket.id].selectedPlayerIndex]);
+            onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[0]);
             let lobbyList = {};
             for (const lobbyID in lobbies) {
                 let lobby = lobbies[lobbyID];
@@ -999,13 +999,13 @@ io.on('connection', (socket) => {
         if (checksOut === true) {
             onlineAccounts[socket.id].players = players;
             if (updateLobby) {
-                console.log("Yeap1")
                 let account = onlineAccounts[socket.id];
                 let lobby = lobbies[account.lobby];
                 if (!account) return;
-                console.log("Yeap2")
                 if (!lobby) return;
-                console.log("Yeap3")
+
+                onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[0]);
+                lobby.activePlayers = getPlayersList(lobby.players);
 
                 io.emit("updateLobbyPage",lobby);
                 
