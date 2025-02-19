@@ -116,6 +116,7 @@ $("joinServer").on("click",function() {
 $("quitServerButton").on("click",function() {
     socket.emit("quitServer");
     setScene("newMenu");
+    localAccount.isInLobby = false;
 })
 $("startServerButton").on("click",function() {
     server_startGame();
@@ -141,6 +142,30 @@ $(".sc_chooseboard").on("click",function() {
     showBoardMenu(function(board) {
         socket.emit("changeServerBoard",JSON.stringify(shortenBoard(board)));
     }) 
+})
+$(".sc_editboard").on("click",function() {
+
+})
+$(".sc_importboard").on("click",function() {
+    
+    // Create an input element of type file
+    const input = document.createElement('input');
+    input.type = 'file';
+
+    // When the user selects a file
+    input.addEventListener('change', (event) => {
+        const file = event.target.files[0]; // Get the first selected file
+        if (file) {
+            readFileContent(file); // Read the content of the file
+
+        } else {
+        alert('No file selected!');
+        }
+    });
+
+    // Programmatically click the input to open the file dialog
+    input.click();
+                
 })
 $(".servers_invite_button").on("click",function() {
     socket.emit("searchingHiddenServer",$(".servers_invite_input").value);

@@ -698,7 +698,10 @@ function importMap(textFile) {
 
     saveBoards();
     ls.save("currentBoardIndex",currentBoardIndex);
-    loadBoardsScreen()
+    if (!localAccount.isInLobby) loadBoardsScreen()
+    else {
+        socket.emit("changeServerBoard",JSON.stringify(shortenBoard(board)));
+    }
     try {
     } catch {
         console.warn("Incorect File")

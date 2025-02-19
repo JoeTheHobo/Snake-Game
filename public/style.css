@@ -2056,6 +2056,7 @@ html {
   width: 100%;
 }
 .sc_boardOptions {
+  width: 30%;
   height: 30px;
   border-radius: 5px;
   margin-top: 5px;
@@ -2066,9 +2067,6 @@ html {
   font-size: 20px;
   cursor: url('./img/pointer.cur'), auto;
   transition: all .2s ease;
-
-}
-.sc_chooseboard {
 
 }
 .sc_boardOptions:hover {

@@ -13,6 +13,7 @@ const localAccount = {
     updateCells: [],
     players: [],
     startTime: false,
+    isInLobby: false,
 };
 let gameType = "local";
 
@@ -32,6 +33,7 @@ socket.on("setPlayer", (id,account) =>{
     localAccount.boards = account.boards;
     localAccount.gameModes = account.gameModes;
     localAccount.username = account.username;
+    localAccount.isInLobby = false;
 });
 socket.on("setClientLobby",(socketID,lobby) => {
     if (socketID !== localAccount.id) return;
@@ -39,6 +41,7 @@ socket.on("setClientLobby",(socketID,lobby) => {
     socket.emit("requestUpdateLobbyPage");
     updateLobbyPage(lobby);
     setScene("lobby");
+    localAccount.isInLobby = true;
 })
 socket.on("updateLobbyPage",(lobby) => {
     updateLobbyPage(lobby);
@@ -207,6 +210,7 @@ socket.on("setCode",(id,oldCode) => {
 socket.on("setPlayerToHomeScreen",(accountID) => {
     if (localAccount.id !== accountID) return;
     setScene("newMenu");
+    localAccount.isInLobby = false;
 })
 function chooseCodePopUp(code) {
     makePopUp([
