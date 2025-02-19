@@ -266,7 +266,7 @@ function generateHTMLList(holder,listObj,contentObj,contentHTML) {
 
     if (forceOpen) forceOpen.open();
 }
-function generateHTMLContent(holder,contentList,valueObj,contentHolder) {
+function generateHTMLContent(holder,contentList,valueObj,contentHolder,updateLobby = false) {
     holder.innerHTML = "";
     holder.tags = {};
 
@@ -316,7 +316,10 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder) {
                     borderRadius: "5px",
                     border: "2px solid black",
                     background: "white",
+                    cursor: "url('./img/pointer.cur'), auto",
                 })
+                div.classAdd("hover");
+                div.innerHTML = "X";
                 div.on("click",function() {
                     originalParent.hide();
                 })
@@ -470,15 +473,15 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder) {
             if (l.tag) {
                 originalParent.tags[l.tag] = div;
             }
-            if (l.bind && contentHolder) {
+            if (l.bind) {
                 div.on("input",function() {
                     if (l.bind.type == "!==") if (this.value !== "") obj[l.bind.key] = this.value;
                     if (l.bind.type == "set" || !l.type) obj[l.bind.key] = this.value;
 
                     if (l.save  == undefined || l.save == true) {
-                        savePlayers();
+                        savePlayers(updateLobby);
                     }
-                    if (l.bind.update) {
+                    if (l.bind.update && contentHolder) {
                         let value = obj[l.bind.key];
                         
                         if (l.bind.update.type == "filterPlayer") {
@@ -490,9 +493,6 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder) {
                         }
                     }
                 })
-
-                
-
             }
 
         }

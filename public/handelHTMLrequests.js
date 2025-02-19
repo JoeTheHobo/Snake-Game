@@ -212,5 +212,5 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
 
             ]
         ],
-    ],localAccount.players[0]);
+    ],localAccount.players[0],false,true);
 })

@@ -987,7 +987,7 @@ io.on('connection', (socket) => {
         onlineAccounts[socket.id].players.push(newPlayer());
         io.emit("playersBeenMade",onlineAccounts[socket.id].players);
     })
-    socket.on("localSendingPlayers",(players) => {
+    socket.on("localSendingPlayers",(players,updateLobby = false) => {
         if (!players) {
             console.log("Tried Sending: " + players)
             return;
@@ -998,6 +998,15 @@ io.on('connection', (socket) => {
         }
         if (checksOut === true) {
             onlineAccounts[socket.id].players = players;
+            if (updateLobby) {
+                let account = onlineAccounts[socket.id];
+                let lobby = lobbies[account.lobby];
+                if (!account) return;
+                if (!lobby) return;
+
+                io.emit("updateLobbyPage",lobby);
+                
+            }
         } else {
             onlineAccounts[socket.id].kickPlayer = true;
             io.emit("kickPlayer",socket.id,"Hacked Players: " + checksOut + " [Code: 7834]");
