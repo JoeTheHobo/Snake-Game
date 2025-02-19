@@ -2048,12 +2048,18 @@ html {
   cursor: url('./img/pointer.cur'), auto;
 
 }
-.sc_chooseboard {
-  width: 60%;
+.sc_aboveBoardsRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.sc_boardOptions {
   height: 30px;
   border-radius: 5px;
   margin-top: 5px;
-  background: white;
+  background: rgb(218, 218, 218);
   display: flex;
   text-align: center;
   line-height: 30px;
@@ -2062,8 +2068,11 @@ html {
   transition: all .2s ease;
 
 }
-.sc_chooseboard:hover {
-  background: rgb(206, 206, 206);
+.sc_chooseboard {
+
+}
+.sc_boardOptions:hover {
+  background: rgb(187, 187, 187);
 
 }
 
