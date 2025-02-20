@@ -1460,6 +1460,7 @@ function updateLobbyPage(lobby) {
                     [
                         {type: "text",text: "Allow Board Submissions",color: "white"},
                         {type: "checkbox",value: lobby.activePlayers[i].canSubmitBoards,onClick: function(a,b,c,div) {
+                            console.log(div)
                             socket.emit("setPlayerBoardSubbmisionStatus",lobby.activePlayers[i],div.checked);
                         }},
                     ],
