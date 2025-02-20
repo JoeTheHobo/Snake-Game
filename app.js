@@ -609,9 +609,11 @@ io.on('connection', (socket) => {
         io.emit("updateLobbyPage",lobby);
     })
     socket.on("addBoardToLobbyBoards",(board) => {
+        if (!onlineAccounts[socket.id].player.canSubmitBoards) return;
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;
         if (!board) return;
+
 
         //Varify Board Here -To Be Added
         board = fixBoard(JSON.parse(board));

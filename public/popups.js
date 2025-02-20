@@ -114,7 +114,8 @@ function makePopUp(objects,settings = {}) {
                     div.type = "checkbox";
                     div.checked = obj.value;
                     div.css({
-                        
+                        width: "30px",
+                        height: "30px",
                     })
                 }
                 if (obj.type == "number") {
