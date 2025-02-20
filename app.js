@@ -505,6 +505,7 @@ io.on('connection', (socket) => {
         io.emit("updateLobbyPage",lobby);
     })
     socket.on("joinLobby",(lobbyID,playerID,code) => {
+        console.log(0,socket.id,playerID)
         if (socket.id !== playerID){
             socket.disconnect();
             return;
@@ -576,11 +577,9 @@ io.on('connection', (socket) => {
         for (const lobbyID in lobbies) {
             let lobby = lobbies[lobbyID];
             if (lobby.serverType !== "Hidden") continue;
-            console.log(lobby.code,value,value === lobby.code,value + "" === lobby.code + "");
             if (lobby.code === value) {
-                console.log("YASS");
-                socket.emit("joinLobby",lobby.id,socket.id,value)
-                break;
+                socket.emit("joinLobby",lobby.id,socket.id,value);
+                return;
             }
         }
     })
