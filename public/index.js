@@ -214,6 +214,7 @@ socket.on("setCode",(id,oldCode) => {
     chooseCodePopUp(oldCode);
 })
 socket.on("setPlayerToHomeScreen",(accountID) => {
+    console.log(localAccount.id,accountID);
     if (localAccount.id !== accountID) return;
     setScene("newMenu");
     localAccount.isInLobby = false;
