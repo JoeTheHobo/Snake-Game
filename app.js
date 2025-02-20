@@ -511,21 +511,16 @@ io.on('connection', (socket) => {
         io.emit("updateLobbyPage",lobby);
     })
     socket.on("joinLobby",(lobbyID,playerID,code) => {
-        console.log(0,socket.id,playerID)
         if (socket.id !== playerID){
             socket.disconnect();
             return;
         };
-        console.log(1)
         let lobby = lobbies[lobbyID];
         if (!lobby) return;
-        console.log(2)
 
         if (lobby.serverType == "Private" || lobby.serverType == "Hidden") {
-            console.log(3)
             if (lobby.code !== code) return;
         }
-        console.log(4)
 
         if (lobby.players.length <= lobby.playerMax) {
             lobby.players.push(playerID);
@@ -675,11 +670,13 @@ io.on('connection', (socket) => {
         io.emit("updateLobbyPage",lobby);
     })
     socket.on("setLobbyHost",(player) => {
+        console.log(player)
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;
         if (lobby.hostID !== socket.id) return;
 
-        let newHost = onlineAccounts[player.accountID];
+        let newHost = onlineAccounts[player.accountID]; 
+        console.log(newHost);
         if (!newHost) return;
         if (lobby.id !== newHost.lobby) return;
         lobby.hostID = newHost.id;

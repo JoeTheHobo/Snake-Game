@@ -152,6 +152,8 @@ function makePopUp(objects,settings = {}) {
                 }
                 
                 if (obj.type == "input") {
+
+                    console.log(obj.border);
                     
                     if (obj.value) div.value = obj.value;
                     if (obj.placeholder) div.placeholder = obj.placeholder;
