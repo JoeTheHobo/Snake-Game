@@ -107,7 +107,7 @@ function makePopUp(objects,settings = {}) {
                         height: obj.height || "40px",
                         lineHeight: obj.lineHeight || "40px",
                         userSelect: obj.userSelect || "none",
-                        border: obj.board || "none",
+                        border: obj.border || "none",
                     })
                 }
                 if (obj.type == "number") {
@@ -152,8 +152,6 @@ function makePopUp(objects,settings = {}) {
                 }
                 
                 if (obj.type == "input") {
-
-                    console.log(obj.border);
                     
                     if (obj.value) div.value = obj.value;
                     if (obj.placeholder) div.placeholder = obj.placeholder;
