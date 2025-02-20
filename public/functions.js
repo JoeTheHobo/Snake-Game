@@ -1370,6 +1370,7 @@ function updatePlayerCard(player,whatToUpdate = "all") {
 
 
 function updateLobbyPage(lobby) {
+    console.log(lobby.players)
     if (localAccount.id == lobby.hostID) {
         $(".hostOnly").show();
         //$(".hostFlex").show("flex");
