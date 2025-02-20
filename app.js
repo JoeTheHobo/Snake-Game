@@ -350,15 +350,15 @@ const onlineAccounts = {};
 
 io.on('connection', (socket) => {
     console.log('a user connected');
+    let userName = "Guest#" + rnd(5000);
     onlineAccounts[socket.id] = {
         id: socket.id,
-        players: [ newPlayer(socket.id) ],
-        selectedPlayerIndex: 0,
+        players: [ newPlayer(socket.id,userName) ],
         player: false,
         gameModes: [],
         boards: [],
         lobby: false,
-        username: "Guest#" + rnd(5000),
+        username: userName,
         chatNameColor: rnd("color"),
     }
     let lobbyList = {};
@@ -1005,7 +1005,7 @@ io.on('connection', (socket) => {
 
     //Menu
     socket.on("createNewPlayer",() => {
-        onlineAccounts[socket.id].players.push(newPlayer());
+        onlineAccounts[socket.id].players.push(newPlayer(socket.id,onlineAccounts[socket.id].username));
         io.emit("playersBeenMade",onlineAccounts[socket.id].players);
     })
     socket.on("localSendingPlayers",(players,updateLobby = false) => {
@@ -1984,7 +1984,7 @@ function server_movePlayers(lobby) {
 
 
 //Players Menu
-function newPlayer(socketID) {
+function newPlayer(socketID,accountName) {
     return {
         downKey: "s",
         upKey: "w",
@@ -2021,6 +2021,7 @@ function newPlayer(socketID) {
         status: [],
         active: false, 
         accountID: socketID,
+        accountName: accountName,
     }
 }
 function checkPlayer(player,socketID) {

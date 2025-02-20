@@ -107,6 +107,7 @@ function makePopUp(objects,settings = {}) {
                         height: obj.height || "40px",
                         lineHeight: obj.lineHeight || "40px",
                         userSelect: obj.userSelect || "none",
+                        border: obj.board || "none",
                     })
                 }
                 if (obj.type == "number") {

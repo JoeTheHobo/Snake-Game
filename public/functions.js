@@ -1436,7 +1436,7 @@ function updateLobbyPage(lobby) {
     
             }
             makeImage(holder,"lobbySnakeImageHolder","img/snakeHead.png",lobby.activePlayers[i]);
-    
+            
             let snakeName = holder.create("div");
             snakeName.className = "lobbySnakeName";
             snakeName.innerHTML = isYou ? "You" : lobby.activePlayers[i].name;
@@ -1446,13 +1446,24 @@ function updateLobbyPage(lobby) {
     
             let rightContent = holder.create("div");
             rightContent.className = "lobbyPlayersRight";
-    
-            makeImage(rightContent,"lobbyFriendsIcon","img/menuIcons/friend.png");
-            if (isHost) makeImage(rightContent,"lobbyHostIcon","img/menuIcons/makeHost.png",false,function(player) {
-                socket.emit("setLobbyHost",player);
-            });
-            if (isHost) makeImage(rightContent,"lobbyBanIcon","img/menuIcons/banPlayer.png",false,function(player) {
-                socket.emit("kickPlayerFromLobby",player);
+            
+            //Friends to Be Added Later
+            //makeImage(rightContent,"lobbyFriendsIcon","img/menuIcons/friend.png");
+            if (isHost) makeImage(rightContent,"lobbyEditPlayerIcon","img/edit.png",false,function(player) {
+                makePopUp([
+                    {type: "title",color: "white",text: "Player Options: " + player.accountName},
+                    {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "none",border: "3px solid white",text:"Make Host",onClick: function() {
+                        socket.emit("setLobbyHost",player);
+                    }},
+                    {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "none",border: "3px solid white",text:"Kick Player",onClick: function() {
+                        socket.emit("kickPlayerFromLobby",player);
+                    }},
+                ],{
+                    exit: {
+                        cursor: "url('./img/pointer.cur'), auto",
+                    },
+                    id: "playerOptions",
+                })
             });
     
         }
@@ -1476,6 +1487,7 @@ function updateLobbyPage(lobby) {
     }
 
     setTimeout(function() {
+        console.log($(".sc_boards_canvas").clientWidth,$(".sc_boards_canvas").clientHeight);
         $(".sc_boards_canvas").width = $(".sc_boards_canvas").clientWidth;
         $(".sc_boards_canvas").height = $(".sc_boards_canvas").clientHeight; 
         drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);
