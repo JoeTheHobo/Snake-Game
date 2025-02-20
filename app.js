@@ -570,7 +570,7 @@ io.on('connection', (socket) => {
     })
     socket.on("searchingHiddenServer",(value) => {
         for (const lobby in lobbies) {
-            if (lobby.serverType !== "Hiddem") continue;
+            if (lobby.serverType !== "Hidden") continue;
             if (lobby.code === value) {
                 socket.emit("joinLobby",lobby.id,socket.id,value)
                 break;
