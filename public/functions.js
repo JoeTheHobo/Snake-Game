@@ -1411,8 +1411,8 @@ function updateLobbyPage(lobby) {
     if (lobby.activePlayers) {
         for (let i = 0; i < lobby.activePlayers.length; i++) {
             let isYou = false;
+            player = lobby.activePlayers[i];
             if (lobby.activePlayers[i].accountID === localAccount.id)  {
-                player = lobby.activePlayers[i];
                 isYou = true;
             }
             let holder = playersHolder.create("div");

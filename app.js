@@ -670,13 +670,11 @@ io.on('connection', (socket) => {
         io.emit("updateLobbyPage",lobby);
     })
     socket.on("setLobbyHost",(player) => {
-        console.log(player)
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;
         if (lobby.hostID !== socket.id) return;
 
         let newHost = onlineAccounts[player.accountID]; 
-        console.log(newHost);
         if (!newHost) return;
         if (lobby.id !== newHost.lobby) return;
         lobby.hostID = newHost.id;
