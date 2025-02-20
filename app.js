@@ -661,7 +661,7 @@ io.on('connection', (socket) => {
                     account: null,
                     message: username + " Got Kicked From Lobby",
                 })
-                io.emit("setPlayerToHomeScreen",kickedPlayer.accountID);
+                io.emit("setPlayerToHomeScreen",kickedPlayer.id);
                 lobby.players.splice(i,1);
                 break;
             }
