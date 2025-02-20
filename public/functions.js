@@ -1411,8 +1411,8 @@ function updateLobbyPage(lobby) {
     if (lobby.activePlayers) {
         for (let i = 0; i < lobby.activePlayers.length; i++) {
             let isYou = false;
-            player = lobby.activePlayers[i];
             if (lobby.activePlayers[i].accountID === localAccount.id)  {
+                player = lobby.activePlayers[i];
                 isYou = true;
             }
             let holder = playersHolder.create("div");
@@ -1453,10 +1453,10 @@ function updateLobbyPage(lobby) {
                 makePopUp([
                     {type: "title",color: "white",text: "Player Options: " + player.accountName},
                     {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "none",className: "hoverBorderBlue",border: "3px solid white",text:"Make Host",onClick: function() {
-                        socket.emit("setLobbyHost",player);
+                        socket.emit("setLobbyHost",lobby.activePlayers[i]);
                     }},
                     {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "none",className: "hoverBorderBlue", border: "3px solid white",text:"Kick Player",onClick: function() {
-                        socket.emit("kickPlayerFromLobby",player);
+                        socket.emit("kickPlayerFromLobby",lobby.activePlayers[i]);
                     }},
                 ],{
                     exit: {

@@ -644,6 +644,7 @@ io.on('connection', (socket) => {
         lobby.code = code;
     })
     socket.on("kickPlayerFromLobby",(player) => {
+        console.log(player)
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;
         if (lobby.hostID !== socket.id) return;
