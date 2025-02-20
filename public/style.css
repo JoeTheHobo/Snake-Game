@@ -1192,7 +1192,7 @@ html {
 .server_lock_holder {
   aspect-ratio: 1/1;
   height: 25px;
-  margin-left: 10px;
+  margin-right: 5px;
 }
 .server_lock_image {
   width: 100%;

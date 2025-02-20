@@ -101,7 +101,7 @@ $("joinServer").on("click",function() {
             
             {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "black",text:"Join Server",onClick: (ids) => {
                 const {code} = ids;
-                socket.emit("joinLobby",lobby,localAccount.id,code.value);
+                socket.emit("joinLobby",serverSelected.id,localAccount.id,code.value);
             }},
         ],{
             exit: {
