@@ -31,7 +31,7 @@ function loadServersHTML() {
         boardName.className = "server_board_name";
         boardName.innerHTML = server.hostName + "'s Lobby";
 
-        if (server.type == "private") {
+        if (server.serverType == "Private") {
             let lockImageHolder = boardTitleContainer.create("div");
             lockImageHolder.className = "server_lock_holder";
             let lockImage = boardTitleContainer.create("img");
