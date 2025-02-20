@@ -1395,8 +1395,7 @@ function updateLobbyPage(lobby) {
     currentBoard = lobby.board;
 
     $(".lobbyCode").innerHTML = lobby.code;
-    console.log(lobby.players,lobby.players.length);
-    $(".sc_playerCount").innerHTML = `Players (${lobby.players.length}/${lobby.maxPlayers})`;
+    $("sc_playerCount").innerHTML = `Players (${lobby.players.length}/${lobby.maxPlayers})`;
     
     $(".sc_tb_lobbyName").innerHTML = lobby.hostName + lobby.hostTag + "'s Lobby";
 
