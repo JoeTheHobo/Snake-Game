@@ -576,7 +576,9 @@ io.on('connection', (socket) => {
         for (const lobbyID in lobbies) {
             let lobby = lobbies[lobbyID];
             if (lobby.serverType !== "Hidden") continue;
+            console.log(lobby.code,value,value === lobby.code,value + "" === lobby.code + "");
             if (lobby.code === value) {
+                console.log("YASS");
                 socket.emit("joinLobby",lobby.id,socket.id,value)
                 break;
             }
