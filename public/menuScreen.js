@@ -27,10 +27,6 @@ function loadServersHTML() {
         let boardTitleContainer = column.create("div");
         boardTitleContainer.className = "server_title_container";
 
-        let boardName = boardTitleContainer.create("div");
-        boardName.className = "server_board_name";
-        boardName.innerHTML = server.hostName + "'s Lobby";
-
         if (server.serverType == "Private") {
             let lockImageHolder = boardTitleContainer.create("div");
             lockImageHolder.className = "server_lock_holder";
@@ -38,6 +34,10 @@ function loadServersHTML() {
             lockImage.className = "server_lock_image";
             lockImage.src = "img/menuIcons/lock.png";
         }
+
+        let boardName = boardTitleContainer.create("div");
+        boardName.className = "server_board_name";
+        boardName.innerHTML = server.hostName + "'s Lobby";
 
         let hostName = column.create("div");
         hostName.className = "server_host_name";
