@@ -1452,10 +1452,10 @@ function updateLobbyPage(lobby) {
             if (isHost) makeImage(rightContent,"lobbyEditPlayerIcon","img/edit.png",false,function(player) {
                 makePopUp([
                     {type: "title",color: "white",text: "Player Options: " + player.accountName},
-                    {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "none",className: "hoverBorderBlue",border: "3px solid white",text:"Make Host",onClick: function() {
+                    {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "none",class: "hoverBorderBlue",border: "3px solid white",text:"Make Host",onClick: function() {
                         socket.emit("setLobbyHost",player);
                     }},
-                    {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "none",className: "hoverBorderBlue", border: "3px solid white",text:"Kick Player",onClick: function() {
+                    {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "none",class: "hoverBorderBlue", border: "3px solid white",text:"Kick Player",onClick: function() {
                         socket.emit("kickPlayerFromLobby",player);
                     }},
                 ],{

@@ -1882,7 +1882,7 @@ html {
 
 }
 .lobbyEditPlayerIcon {
-  filter: brightness(99999999%);
+  filter: grayscale(100%) brightness(100000%);
 }
 
 
