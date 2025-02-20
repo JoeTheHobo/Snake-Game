@@ -655,19 +655,20 @@ io.on('connection', (socket) => {
         kickedPlayer.lobby = false;
 
         for (let i = 0; i < lobby.players.length; i++) {
-            if (lobby.players[i].accountID === kickedPlayer.accountID) {
+            if (lobby.players[i] === kickedPlayer.id) {
                 let username = kickedPlayer.username + kickedPlayer.tag;
                 lobby.chats.push({
                     account: null,
                     message: username + " Got Kicked From Lobby",
                 })
-                io.emit("setPlayerToHomeScreen",kickedPlayer.id);
                 lobby.players.splice(i,1);
                 break;
             }
         }
         lobby.activePlayers = getPlayersList(lobby.players);
 
+        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
+        io.emit("setPlayerToHomeScreen",kickedPlayer.id);
         io.emit("updateLobbyPage",lobby);
     })
     socket.on("setLobbyHost",(player) => {
