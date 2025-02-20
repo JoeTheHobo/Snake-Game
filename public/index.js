@@ -46,6 +46,7 @@ socket.on("setClientLobby",(socketID,lobby) => {
     localAccount.isInLobby = true;
 })
 socket.on("updateLobbyPage",(lobby) => {
+    if (localAccount.lobbyID !== lobby.id) return;
     updateLobbyPage(lobby);
 })
 socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
