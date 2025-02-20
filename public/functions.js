@@ -1479,7 +1479,7 @@ function updateLobbyPage(lobby) {
         $(".sc_boards_canvas").width = $(".sc_boards_canvas").clientWidth;
         $(".sc_boards_canvas").height = $(".sc_boards_canvas").clientHeight; 
         drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);
-    },1)
+    },5)
 }
 function generateBoardsPopup(type) {
     let parent = $(".cbp_boardsList");
