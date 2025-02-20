@@ -175,11 +175,13 @@ function makePopUp(objects,settings = {}) {
                         lineHeight: obj.lineHeight || "40px",
                         userSelect: obj.userSelect || "none",
 
-                        outline: obj.outline || "none",
+                        border: obj.border || "none",
 
                     })
                 }
 
+                if (obj.className);
+                    div.classAdd(obj.className);
 
                 div.parent = parent;
                 if (obj.id) parent.ids[obj.id] = div;

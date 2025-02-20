@@ -1870,7 +1870,7 @@ html {
   cursor: url('./img/pointer.cur'), auto;
 
 }
-.lobbyHostIcon {
+.lobbyHostIcon,.lobbyEditPlayerIcon {
   height: 100%;
   aspect-ratio: 1/1;
   cursor: url('./img/pointer.cur'), auto;
@@ -2195,4 +2195,11 @@ html {
 }
 #np_img_go {
   width: 25% !important;
+}
+
+.hoverBorderBlue {
+  transition: all .2s ease;
+}
+.hoverBorderBlue:hover {
+  border: 3px solid rgb(115, 144, 240);
 }
