@@ -1474,13 +1474,16 @@ function updateLobbyPage(lobby) {
         }
     }
     
-    $(".sc_bb_snakeImg").style.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`; 
+    if (player) {
+        $(".sc_bb_snakeImg").style.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`; 
 
-    if (player.canSubmitBoards) {
-        $(".canAddSubbmisionsOnly").show();
-    } else {
-        $(".canAddSubbmisionsOnly").hide();
+        if (player.canSubmitBoards) {
+            $(".canAddSubbmisionsOnly").show();
+        } else {
+            $(".canAddSubbmisionsOnly").hide();
+        }
     }
+    
 
     let chatHolder = $(".sc_chatHolder");
     chatHolder.innerHTML = "";
