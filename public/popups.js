@@ -196,7 +196,6 @@ function makePopUp(objects,settings = {}) {
                 if (obj.onClick) {
                     div.onClickFunc = obj.onClick;
                     div.on("click",function() {
-                        console.log(this)
                         this.onClickFunc(this.parent.ids,param,this);
                     });
                 }
