@@ -34,7 +34,7 @@ function loadServersHTML() {
         if (server.serverType == "Private") {
             let lockImageHolder = boardTitleContainer.create("div");
             lockImageHolder.className = "server_lock_holder";
-            let lockImage = boardTitleContainer.create("img");
+            let lockImage = lockImageHolder.create("img");
             lockImage.className = "server_lock_image";
             lockImage.src = "img/menuIcons/lock.png";
         }
