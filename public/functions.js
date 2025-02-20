@@ -1373,7 +1373,6 @@ function updateLobbyPage(lobby) {
     if (localAccount.id == lobby.hostID) {
         $(".hostOnly").show();
         //$(".hostFlex").show("flex");
-        $(".playerOnly").hide();
 
         if (lobby.board.recommendedGameMode) {
             $("sc_boards_recommendedGameMode").show();
