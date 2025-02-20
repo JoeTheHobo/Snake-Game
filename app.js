@@ -380,32 +380,41 @@ io.on('connection', (socket) => {
     socket.on('disconnect', (reason) => {
         let username = onlineAccounts[socket.id].username + onlineAccounts[socket.id].tag;
         console.log("A user disconnected due to " + reason);
-        if (onlineAccounts[socket.id].lobby && onlineAccounts[socket.id].lobby.activePlayers) {
+        if (onlineAccounts[socket.id].lobby) {
             let lobby = lobbies[onlineAccounts[socket.id].lobby];
-            for (let i = 0; i < lobby.activePlayers.length; i++) {
-                if (lobby.activePlayers[i].accountID === socket.id) {
-                    snakeMapRemoveAll(lobby,lobby.activePlayers[i]);
-                    lobbies[onlineAccounts[socket.id].lobby].activePlayers[i] = false; 
+            if (lobby.isInGame) {
+                for (let i = 0; i < lobby.activePlayers.length; i++) {
+                    if (lobby.activePlayers[i].accountID === socket.id) {
+                        deletePlayer(lobby,lobby.activePlayers[i],false,false,true);
+                    }
                 }
             }
+            
             for (let i = 0; i < lobby.players.length; i++) {
                 if (lobby.players[i] === socket.id) {
                     lobby.players.splice(i,1); 
                 }
             }
+
             if (lobby.players.length < 1) {
                 delete lobbies[lobby.id];
-                let lobbyList = {};
-                for (const lobby in lobbies) {
-                    if (lobby.serverType !== "Hidden") lobbyList[lobby.id] = lobby;
-                }
             } else {
                 lobby.chats.push({
                     account: null,
                     message: username + " Quit The Lobby",
                 })
+
+                if (lobby.hostID == socket.id) {
+                    lobby.hostID = lobby.players[0];
+                    lobby.hostName = onlineAccounts[lobby.players[0]].username;
+                    lobby.hostTag = onlineAccounts[lobby.players[0]].tag;
+                }
+            
+                lobby.activePlayers = getPlayersList(lobby.players);
+
                 io.emit("updateLobbyPage",lobby);
             }
+
             let lobbyList = {};
             for (const lobbyID in lobbies) {
                 let lobby = lobbies[lobbyID];
@@ -419,7 +428,6 @@ io.on('connection', (socket) => {
         
         io.emit("kickPlayer",socket.id,"Disconnected due to " + reason + " [Code: 002]");
         delete onlineAccounts[socket.id];
-        //io.emit('updatePlayers', onlineAccounts);
     }) 
 
     socket.on("newLobby", (lobby) =>{
@@ -442,6 +450,7 @@ io.on('connection', (socket) => {
         lobbies[id].gameMode = lobby.gameMode;
         lobbies[id].playerMax = 8;
         lobbies[id].lobbyBoards = [];
+        lobbies[id].isInGame = false;
         onlineAccounts[socket.id].lobby = lobbies[lobby.id].id;
         onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[0]);
 
@@ -749,7 +758,7 @@ io.on('connection', (socket) => {
         console.log("Server Started")
         lobby.board.map = structuredClone(lobby.board.originalMap);
 
-        
+        lobby.isInGame = true;
         lobby.board.doColorRender = false;
         lobby.specialItemIteration = 0;
         lobby.specialItemActiveChance = 4;
@@ -904,6 +913,7 @@ io.on('connection', (socket) => {
                 setTimeout(() => this.gameLoop(), 60);
             } else {
                 this.isActiveGame = false;
+                this.isInGame = false;
 
                 //Kill Any Non Dead Snakes
                 for (let i = 0; i < this.activePlayers.length; i++) {
