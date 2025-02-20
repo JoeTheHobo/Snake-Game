@@ -530,6 +530,7 @@ io.on('connection', (socket) => {
             })
             onlineAccounts[socket.id].lobby =  lobby.id;
             onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[0]);
+            onlineAccounts[socket.id].player.canSubmitBoards = false;
             let lobbyList = {};
             for (const lobbyID in lobbies) {
                 let lobby = lobbies[lobbyID];
@@ -643,6 +644,21 @@ io.on('connection', (socket) => {
 
         lobby.code = code;
     })
+    socket.on("setPlayerBoardSubbmisionStatus",(player, value) => {
+        let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        if (!lobby) return;
+        if (lobby.hostID !== socket.id) return;
+
+        let activePlayer = onlineAccounts[player.accountID];
+        if (!activePlayer) return;
+        if (lobby.id !== activePlayer.lobby) return;
+
+        activePlayer.player.canSubmitBoards = value;
+
+        lobby.activePlayers = getPlayersList(lobby.players);
+        
+        io.emit("updateLobbyPage",lobby);
+    })
     socket.on("kickPlayerFromLobby",(player) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;
@@ -667,6 +683,15 @@ io.on('connection', (socket) => {
         }
         lobby.activePlayers = getPlayersList(lobby.players);
 
+        let lobbyList = {};
+        for (const lobbyID in lobbies) {
+            let lobby = lobbies[lobbyID];
+            if (lobby.serverType !== "Hidden") {
+                lobbyList[lobby.id] = structuredClone(lobby);
+                lobbyList[lobby.id].code = "";
+            }
+        }
+        io.emit("updateLobbies", lobbyList, Object.keys(onlineAccounts).length, lobby,socket.id);
         io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
         io.emit("setPlayerToHomeScreen",kickedPlayer.id);
         io.emit("updateLobbyPage",lobby);

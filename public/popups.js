@@ -42,7 +42,7 @@ function makePopUp(objects,settings = {}) {
             if (_type(obj).type == "array") createObjs(obj,holder,direction == "row" ? "col" : "row",parent,param)
             else {
                 let div;
-                if (["number","input"].includes(obj.type)) div = holder.create("input");
+                if (["number","input","checkbox"].includes(obj.type)) div = holder.create("input");
                 if (["title","button","text"].includes(obj.type)) div = holder.create("div");
                 if (obj.text) div.innerHTML = obj.text;
 
@@ -108,6 +108,13 @@ function makePopUp(objects,settings = {}) {
                         lineHeight: obj.lineHeight || "40px",
                         userSelect: obj.userSelect || "none",
                         border: obj.border || "none",
+                    })
+                }
+                if (obj.type == "checkbox") {
+                    div.type = "checkbox";
+                    div.checked = obj.value;
+                    div.css({
+                        
                     })
                 }
                 if (obj.type == "number") {
@@ -189,7 +196,7 @@ function makePopUp(objects,settings = {}) {
                 if (obj.onClick) {
                     div.onClickFunc = obj.onClick;
                     div.on("click",function() {
-                        this.onClickFunc(this.parent.ids,param)
+                        this.onClickFunc(this.parent.ids,param,this)
                     });
                 }
                 if (obj.close) {

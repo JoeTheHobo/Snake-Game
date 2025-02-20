@@ -1389,8 +1389,8 @@ function updateLobbyPage(lobby) {
     }
     else {
         $(".hostOnly").hide();
-        $(".playerOnly").show();
     }
+
 
     localAccount.lobbyBoard = lobby.board;
     currentBoard = lobby.board;
@@ -1458,6 +1458,12 @@ function updateLobbyPage(lobby) {
                     {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "none",className: "hoverBorderBlue", border: "3px solid white",text:"Kick Player",onClick: function() {
                         socket.emit("kickPlayerFromLobby",lobby.activePlayers[i]);
                     }},
+                    [
+                        {type: "text",text: "Allow Board Submissions",color: "white"},
+                        {type: "checkbox",value: lobby.activePlayers[i].canSubmitBoards,onClick: function(a,b,c,div) {
+                            socket.emit("setPlayerBoardSubbmisionStatus",lobby.activePlayers[i],div.checked);
+                        }},
+                    ],
                 ],{
                     exit: {
                         cursor: "url('./img/pointer.cur'), auto",
@@ -1469,7 +1475,13 @@ function updateLobbyPage(lobby) {
         }
     }
     
-    if (player) $(".sc_bb_snakeImg").style.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`; 
+    $(".sc_bb_snakeImg").style.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`; 
+
+    if (player.canSubmitBoards) {
+        $(".canAddSubbmisionsOnly").show();
+    } else {
+        $(".canAddSubbmisionsOnly").hide();
+    }
 
     let chatHolder = $(".sc_chatHolder");
     chatHolder.innerHTML = "";
@@ -1487,11 +1499,10 @@ function updateLobbyPage(lobby) {
     }
 
     setTimeout(function() {
-        console.log($(".sc_boards_canvas").clientWidth,$(".sc_boards_canvas").clientHeight);
         $(".sc_boards_canvas").width = $(".sc_boards_canvas").clientWidth;
         $(".sc_boards_canvas").height = $(".sc_boards_canvas").clientHeight; 
         drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);
-    },1000)
+    },200);
 }
 function generateBoardsPopup(type) {
     let parent = $(".cbp_boardsList");
