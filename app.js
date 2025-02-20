@@ -320,7 +320,9 @@ function rnd(num,to,exp) {
         return num.rnd();
     }
 }
-
+function formatNumber(num) {
+    return num.toString().padStart(4, '0');
+}
 
 
 
@@ -350,7 +352,8 @@ const onlineAccounts = {};
 
 io.on('connection', (socket) => {
     console.log('a user connected');
-    let userName = "Guest#" + rnd(5000);
+    let userName = playerNames1.rnd() + playerNames2.rnd();
+    let tag = "#" + formatNumber(Object.keys(onlineAccounts).length);
     onlineAccounts[socket.id] = {
         id: socket.id,
         players: [ newPlayer(socket.id,userName) ],

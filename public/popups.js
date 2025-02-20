@@ -179,7 +179,7 @@ function makePopUp(objects,settings = {}) {
 
                     })
                 }
-                console.log(div,obj.className);
+                console.log(div,obj,obj.className);
                 if (obj.className);
                     div.classAdd(obj.className);
 
