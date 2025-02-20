@@ -578,7 +578,7 @@ io.on('connection', (socket) => {
             let lobby = lobbies[lobbyID];
             if (lobby.serverType !== "Hidden") continue;
             if (lobby.code === value) {
-                socket.emit("joinLobby",lobby.id,socket.id,value);
+                socket.listeners("joinLobby")[0](lobby.id,socket.id,value);
                 return;
             }
         }
