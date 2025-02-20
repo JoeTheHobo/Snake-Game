@@ -1881,9 +1881,6 @@ html {
   cursor: url('./img/pointer.cur'), auto;
 
 }
-.lobbyEditPlayerIcon {
-  filter: grayscale(100%) brightness(100000%);
-}
 
 
 .serverTypeDropdown {

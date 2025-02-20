@@ -179,9 +179,9 @@ function makePopUp(objects,settings = {}) {
 
                     })
                 }
-                console.log(div,obj,obj.class);
-                if (obj.class);
-                    div.classAdd(obj.class);
+
+                if (obj.className)
+                    div.classAdd(obj.className);
 
                 div.parent = parent;
                 if (obj.id) parent.ids[obj.id] = div;
