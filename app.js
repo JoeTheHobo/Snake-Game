@@ -509,12 +509,16 @@ io.on('connection', (socket) => {
             socket.disconnect();
             return;
         };
+        console.log(1)
         let lobby = lobbies[lobbyID];
         if (!lobby) return;
+        console.log(2)
 
         if (lobby.serverType == "Private" || lobby.serverType == "Hidden") {
+            console.log(3)
             if (lobby.code !== code) return;
         }
+        console.log(4)
 
         if (lobby.players.length <= lobby.playerMax) {
             lobby.players.push(playerID);
@@ -569,12 +573,9 @@ io.on('connection', (socket) => {
         io.emit("updateLobbyPage",lobby);
     })
     socket.on("searchingHiddenServer",(value) => {
-        console.log("value: ",value);
         for (const lobbyID in lobbies) {
             let lobby = lobbies[lobbyID];
-            console.log(lobbyID,lobby.serverType,lobby);
             if (lobby.serverType !== "Hidden") continue;
-            console.log(lobby.code)
             if (lobby.code === value) {
                 socket.emit("joinLobby",lobby.id,socket.id,value)
                 break;
