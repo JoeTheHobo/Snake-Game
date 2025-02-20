@@ -24,9 +24,20 @@ function loadServersHTML() {
         let column = server_holder.create("div");
         column.className = "server_column";
 
-        let boardName = column.create("div");
+        let boardTitleContainer = column.create("div");
+        boardTitleContainer.className = "server_title_container";
+
+        let boardName = boardTitleContainer.create("div");
         boardName.className = "server_board_name";
         boardName.innerHTML = server.hostName + "'s Lobby";
+
+        if (server.type == "private") {
+            let lockImageHolder = boardTitleContainer.create("div");
+            lockImageHolder.className = "server_lock_holder";
+            let lockImage = boardTitleContainer.create("img");
+            lockImage.className = "server_lock_image";
+            lockImage.src = "img/menuIcons/lock.png";
+        }
 
         let hostName = column.create("div");
         hostName.className = "server_host_name";
@@ -40,10 +51,12 @@ function loadServersHTML() {
         activePlayers.className = "server_active_players";
         activePlayers.innerHTML = server.players.length + "/" + server.playerMax; 
 
+        /* To Be Added Later When Board Author is a thing
         let boardAuthor = server_holder.create("div");
         boardAuthor.className = "server_board_author";
         boardAuthor.innerHTML = "Board Created By: " + (server.board.author || "4ChanLoverXX");
-        
+        */
+
         server_holder.server = server;
         server_holder.on("click",function() {
             $(".server_holder").classRemove("serverSelected");
