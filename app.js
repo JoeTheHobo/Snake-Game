@@ -569,7 +569,8 @@ io.on('connection', (socket) => {
         io.emit("updateLobbyPage",lobby);
     })
     socket.on("searchingHiddenServer",(value) => {
-        for (const lobby in lobbies) {
+        for (const lobbyID in lobbies) {
+            let lobby = lobbies[lobbyID];
             if (lobby.serverType !== "Hidden") continue;
             if (lobby.code === value) {
                 socket.emit("joinLobby",lobby.id,socket.id,value)
