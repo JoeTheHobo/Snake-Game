@@ -356,12 +356,13 @@ io.on('connection', (socket) => {
     let tag = "#" + formatNumber(Object.keys(onlineAccounts).length);
     onlineAccounts[socket.id] = {
         id: socket.id,
-        players: [ newPlayer(socket.id,userName) ],
+        players: [ newPlayer(socket.id,userName,tag) ],
         player: false,
         gameModes: [],
         boards: [],
         lobby: false,
         username: userName,
+        tag: tag,
         chatNameColor: rnd("color"),
     }
     let lobbyList = {};
@@ -377,7 +378,7 @@ io.on('connection', (socket) => {
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
-        let username = onlineAccounts[socket.id].username;
+        let username = onlineAccounts[socket.id].username + onlineAccounts[socket.id].tag;
         console.log("A user disconnected due to " + reason);
         if (onlineAccounts[socket.id].lobby && onlineAccounts[socket.id].lobby.activePlayers) {
             let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -458,7 +459,7 @@ io.on('connection', (socket) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;
 
-        let username = onlineAccounts[socket.id].username;
+        let username = onlineAccounts[socket.id].username + onlineAccounts[socket.id].tag;
         for (let i = 0; i < lobby.players.length; i++) {
             if (lobby.players[i] == socket.id) {
                 onlineAccounts[socket.id].lobbyID = false;
@@ -528,7 +529,7 @@ io.on('connection', (socket) => {
             lobby.players.push(playerID);
             lobby.chats.push({
                 account: null,
-                message: onlineAccounts[socket.id].username + " Joined The Lobby",
+                message: onlineAccounts[socket.id].username + onlineAccounts[socket.id].tag + " Joined The Lobby",
             })
             onlineAccounts[socket.id].lobby =  lobby.id;
             onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[0]);
@@ -564,7 +565,7 @@ io.on('connection', (socket) => {
         let account;
         for (let i = 0; i < lobby.players.length; i++) {
             if (lobby.players[i] == socket.id) {
-                account = onlineAccounts[lobby.players[i]].username;
+                account = onlineAccounts[lobby.players[i]].username + onlineAccounts[lobby.players[i]].tag;
             }
         }
 
@@ -658,7 +659,7 @@ io.on('connection', (socket) => {
 
         for (let i = 0; i < lobby.players.length; i++) {
             if (lobby.players[i].accountID === kickedPlayer.accountID) {
-                let username = kickedPlayer.username;
+                let username = kickedPlayer.username + kickedPlayer.tag;
                 lobby.chats.push({
                     account: null,
                     message: username + " Got Kicked From Lobby",
@@ -682,7 +683,7 @@ io.on('connection', (socket) => {
         lobby.hostID = newHost.id;
         lobby.hostName = newHost.username;
 
-        let username = newHost.username;
+        let username = newHost.username + newHost.tag;
         lobby.chats.push({
             account: null,
             message: username + " Is The New Lobby Host",
@@ -1008,7 +1009,7 @@ io.on('connection', (socket) => {
 
     //Menu
     socket.on("createNewPlayer",() => {
-        onlineAccounts[socket.id].players.push(newPlayer(socket.id,onlineAccounts[socket.id].username));
+        onlineAccounts[socket.id].players.push(newPlayer(socket.id,onlineAccounts[socket.id].username),onlineAccounts[socket.id].tag);
         io.emit("playersBeenMade",onlineAccounts[socket.id].players);
     })
     socket.on("localSendingPlayers",(players,updateLobby = false) => {
@@ -1987,7 +1988,7 @@ function server_movePlayers(lobby) {
 
 
 //Players Menu
-function newPlayer(socketID,accountName) {
+function newPlayer(socketID,accountName,accountTag) {
     return {
         downKey: "s",
         upKey: "w",
@@ -2025,6 +2026,7 @@ function newPlayer(socketID,accountName) {
         active: false, 
         accountID: socketID,
         accountName: accountName,
+        accountTag: accountTag,
     }
 }
 function checkPlayer(player,socketID) {

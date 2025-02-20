@@ -1439,7 +1439,7 @@ function updateLobbyPage(lobby) {
             
             let snakeName = holder.create("div");
             snakeName.className = "lobbySnakeName";
-            snakeName.innerHTML = isYou ? "You" : lobby.activePlayers[i].accountName;
+            snakeName.innerHTML = isYou ? "You" : lobby.activePlayers[i].accountName + lobby.activePlayers[i].accountTag;
             if (lobby.hostID == lobby.activePlayers[i].accountID) snakeName.innerHTML += " (Host)";
     
             if (isYou) continue;
