@@ -431,6 +431,7 @@ io.on('connection', (socket) => {
         lobbies[id].id = id;
         lobbies[id].hostID = socket.id;
         lobbies[id].hostName = onlineAccounts[socket.id].username;
+        lobbies[id].hostTag = onlineAccounts[socket.id].tag;
         lobbies[id].players = [socket.id];
         lobbies[id].chats = [{
             account: null,
@@ -482,6 +483,7 @@ io.on('connection', (socket) => {
             if (lobby.hostID == socket.id) {
                 lobby.hostID = lobby.players[0];
                 lobby.hostName = onlineAccounts[lobby.players[0]].username;
+                lobby.hostTag = onlineAccounts[lobby.players[0]].tag;
             }
         
             lobby.activePlayers = getPlayersList(lobby.players);
@@ -682,6 +684,7 @@ io.on('connection', (socket) => {
         if (lobby.id !== newHost.lobby) return;
         lobby.hostID = newHost.id;
         lobby.hostName = newHost.username;
+        lobby.hostTag = newHost.tag;
 
         let username = newHost.username + newHost.tag;
         lobby.chats.push({

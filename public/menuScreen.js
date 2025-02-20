@@ -37,7 +37,7 @@ function loadServersHTML() {
 
         let boardName = boardTitleContainer.create("div");
         boardName.className = "server_board_name";
-        boardName.innerHTML = server.hostName + "'s Lobby";
+        boardName.innerHTML = server.hostName + server.hostTag + "'s Lobby";
 
         let hostName = column.create("div");
         hostName.className = "server_host_name";
