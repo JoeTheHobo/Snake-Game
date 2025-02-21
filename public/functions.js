@@ -1669,7 +1669,6 @@ function getAverageCanvasColor(canvas) {
 }
 
 function logGameModeChanges(holder,gameMode,logAll) {
-    console.log(gameMode,basedGameMode)
     holder.innerHTML = "";
 
     let alterations = [];
@@ -1687,15 +1686,16 @@ function logGameModeChanges(holder,gameMode,logAll) {
     let useArr = loggingSelectKeys;
     if (logAll) useArr = loggingSelectKeys.concat(loggingAllKeys)
 
-    console.log(useArr);
     for (let i = 0; i < useArr.length; i++) {
         let key = useArr[i];
+        console.log(basedGameMode[key],gameMode[key]);
         if (basedGameMode[key] !== gameMode[key]) alterations.push({
             key: formatString(key),
             oldValue: basedGameMode[key],
             newValue: gameMode[key],
         })
     }
+    console.log("alterations",alterations);
 
     for (let i = 0; i < alterations.length; i++) {
         let alt = alterations[i];
