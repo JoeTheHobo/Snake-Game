@@ -1708,4 +1708,10 @@ function logGameModeChanges(holder,gameMode,logAll) {
         let altOldValue = altHolder.create("div.gm_alt_oldValue");
         altOldValue.innerHTML = alt.oldValue;
     }
+    if (alterations.length == 0) {
+        let altHolder = holder.create("div.gm_alt_holder");
+
+        let altKey = altHolder.create("div.gm_alt_key");
+        altKey.innerHTML = "No Game Mode Alterations";
+    }
 }
