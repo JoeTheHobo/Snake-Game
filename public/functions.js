@@ -1395,13 +1395,13 @@ function updateLobbyPage(lobby) {
     currentBoard = lobby.board;
 
     $(".lobbyCode").innerHTML = lobby.code;
-    $("sc_playerCount").innerHTML = `Players (${lobby.players.length}/${lobby.maxPlayers})`;
+    $("sc_playerCount").innerHTML = `Players (${lobby.players.length}/${lobby.playerMax})`;
     
     $(".sc_tb_lobbyName").innerHTML = lobby.hostName + lobby.hostTag + "'s Lobby";
 
     $("sc_boards_boardName").innerHTML = "Board: " + lobby.board.name;
 
-    $(".sc_gmb_gameModeName").innerHTML = lobby.gameMode.name;
+    $(".sc_gmb_gameModeName").innerHTML = "Gamemode: " + lobby.gameMode.name;
 
     let player;
     let playersHolder = $(".sc_players_playersList");

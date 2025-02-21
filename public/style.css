@@ -1738,7 +1738,7 @@ html {
 .sc_gmb_gameModeName {
   font-size: 35px;
 }
-.sc_gmb_changeGameModeHolder {
+.sc_gmb_changeGameModeHolder,.sc_gmb_editGameModeHolder {
   height: 70%;
   aspect-ratio: 1/1; 
   border-radius: 5px;
@@ -1748,10 +1748,10 @@ html {
   justify-content: center;
   cursor: url('./img/pointer.cur'), auto;
 }
-.sc_gmb_changeGameModeHolder:hover {
+.sc_gmb_changeGameModeHolder:hover,.sc_gmb_editGameModeHolder:hover {
   background: rgb(156, 156, 156);
 }
-.sc_gmb_changeGameModeImg {
+.sc_gmb_changeGameModeImg,.sc_gmb_editGameModeImg {
   width: 100%;
   height: 100%;
 }
@@ -2077,7 +2077,7 @@ html {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   width: 100%;
   margin-bottom: 5px;
 }

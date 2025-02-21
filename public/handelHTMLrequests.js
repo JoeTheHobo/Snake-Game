@@ -178,12 +178,15 @@ $(".cbp_cancel").on("click",function() {
 $(".cbp_tab").on("click",function() {
     selectTabInBoardMenu(this.innerHTML.subset(0," \\before").toLowerCase());
 })
-$(".sc_gmb_changeGameModeImg").on("click",function() {
+$(".sc_gmb_changeGameModeHolder").on("click",function() {
     $(".chooseGameModePopup").show("flex");
     loadGameModesToPopup(function(gameMode) {
         socket.emit("changeServerGameMode",gameMode);
     });
 });
+$(".sc_gmb_editGameModeHolder").on("click",function() {
+    
+})
 $("sc_boards_recommendedGameMode").on("click",function() {
     socket.emit("changeGameModetoBoards");
 })
