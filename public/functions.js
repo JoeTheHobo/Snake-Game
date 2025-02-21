@@ -1677,7 +1677,7 @@ function logGameModeChanges(holder,gameMode,logAll) {
     let loggingAllKeys = ["respawnTimer","respawnGrowth"];
 
     function formatString(input) {
-        input = input.replaceAll("Mode_","");
+        input = input.replaceAll("mode_","");
         return input
             .replace(/([A-Z])/g, ' $1') // Add space before uppercase letters
             .trim()                      // Remove leading space if any
