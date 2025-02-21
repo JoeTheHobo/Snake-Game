@@ -1736,6 +1736,8 @@ html {
 }
 .sc_gmb_gameModeName {
   font-size: 35px;
+  display: inline-block; /* Allows inline behavior but respects width */
+  white-space: nowrap;   /* Prevents text from breaking into multiple lines */
 }
 .sc_gmb_changeGameModeHolder,.sc_gmb_editGameModeHolder {
   height: 90%;
