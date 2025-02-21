@@ -1678,7 +1678,7 @@ function logGameModeChanges(holder,gameMode,logAll) {
 
     function formatString(input) {
         return input
-            .replace(/^Mode_/, '')        // Remove "Mode_" if it appears at the start
+            .replace(/Mode_/g, '')        // Remove all instances of "Mode_"
             .replace(/([A-Z])/g, ' $1')   // Add space before uppercase letters
             .trim()                        // Remove leading space if any
             .replace(/\b\w/g, c => c.toUpperCase()); // Capitalize each word
