@@ -1500,6 +1500,8 @@ function updateLobbyPage(lobby) {
         else holder.style.color = "white";
     }
 
+    logGameModeChanges($(".sc_gameModeChanges"),lobby.gameMode,false);
+
     setTimeout(function() {
         $(".sc_boards_canvas").width = $(".sc_boards_canvas").clientWidth;
         $(".sc_boards_canvas").height = $(".sc_boards_canvas").clientHeight; 
@@ -1664,4 +1666,46 @@ function getAverageCanvasColor(canvas) {
     b = Math.round(b / totalPixels);
 
     return `rgb(${r}, ${g}, ${b})`; // Return as RGB string
+}
+
+function logGameModeChanges(holder,gameMode,logAll) {
+    holder.innerHTML = "";
+
+    let alterations = [];
+
+    let loggingSelectKeys = ["howManyItemsCanPlayersUse","mode_usingItemType","mode_whenInventoryFullWhereDoItemsGo","snakeVanishOnDeath","respawn","snakeCollision","teamCollision"];
+    let loggingAllKeys = ["respawnTimer","respawnGrowth"];
+
+    function formatString(input) {
+        return input
+            .replace(/([A-Z])/g, ' $1') // Add space before uppercase letters
+            .trim()                      // Remove leading space if any
+            .replace(/\b\w/g, c => c.toUpperCase()); // Capitalize each word
+    }
+
+    let useArr = loggingSelectKeys;
+    if (logAll) useArr = loggingSelectKeys.concat(loggingAllKeys)
+
+    for (let i = 0; i < useArr.length; i++) {
+        let key = useArr[i];
+        if (basedGameMode[key] !== gameMode[key]) alterations.push({
+            key: formatString(key),
+            oldValue: basedGameMode[key],
+            newValue: gameMode[key],
+        })
+    }
+
+    for (let i = 0; i < alterations.length; i++) {
+        let alt = alterations[i];
+        let altHolder = holder.create("div.gm_alt_holder");
+
+        let altKey = altHolder.create("div.gm_alt_key");
+        altKey.innerHTML = alt.key + ":";
+
+        let altNewValue = altHolder.create("div.gm_alt_newValue");
+        altNewValue.innerHTML = alt.newValue;
+
+        let altOldValue = altHolder.create("div.gm_alt_oldValue");
+        altOldValue.innerHTML = alt.oldValue;
+    }
 }
