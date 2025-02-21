@@ -2235,4 +2235,5 @@ html {
 .gm_alt_oldValue {
   margin-left: 5px;
   color: rgb(197, 6, 6);
+  text-decoration: line-through;
 }

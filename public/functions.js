@@ -1678,8 +1678,9 @@ function logGameModeChanges(holder,gameMode,logAll) {
 
     function formatString(input) {
         return input
-            .replace(/([A-Z])/g, ' $1') // Add space before uppercase letters
-            .trim()                      // Remove leading space if any
+            .replace(/^Mode_/, '')        // Remove "Mode_" if it appears at the start
+            .replace(/([A-Z])/g, ' $1')   // Add space before uppercase letters
+            .trim()                        // Remove leading space if any
             .replace(/\b\w/g, c => c.toUpperCase()); // Capitalize each word
     }
 
@@ -1688,15 +1689,12 @@ function logGameModeChanges(holder,gameMode,logAll) {
 
     for (let i = 0; i < useArr.length; i++) {
         let key = useArr[i];
-        console.log(basedGameMode[key],gameMode[key]);
         if (basedGameMode[key] !== gameMode[key]) alterations.push({
             key: formatString(key),
             oldValue: basedGameMode[key],
             newValue: gameMode[key],
         })
     }
-    console.log("alterations",alterations);
-
     for (let i = 0; i < alterations.length; i++) {
         let alt = alterations[i];
         let altHolder = holder.create("div.gm_alt_holder");
