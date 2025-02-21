@@ -1677,10 +1677,10 @@ function logGameModeChanges(holder,gameMode,logAll) {
     let loggingAllKeys = ["respawnTimer","respawnGrowth"];
 
     function formatString(input) {
+        input = input.replaceAll("Mode_","");
         return input
-            .replace(/Mode_/g, '')        // Remove all instances of "Mode_"
-            .replace(/([A-Z])/g, ' $1')   // Add space before uppercase letters
-            .trim()                        // Remove leading space if any
+            .replace(/([A-Z])/g, ' $1') // Add space before uppercase letters
+            .trim()                      // Remove leading space if any
             .replace(/\b\w/g, c => c.toUpperCase()); // Capitalize each word
     }
 
