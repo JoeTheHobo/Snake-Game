@@ -1372,7 +1372,7 @@ function updatePlayerCard(player,whatToUpdate = "all") {
 function updateLobbyPage(lobby) {
     if (localAccount.id == lobby.hostID) {
         $(".hostOnly").show();
-        //$(".hostFlex").show("flex");
+        $(".hostFlex").show("flex");
 
         if (lobby.board.recommendedGameMode) {
             $("sc_boards_recommendedGameMode").show();

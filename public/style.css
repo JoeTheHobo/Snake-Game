@@ -1749,7 +1749,7 @@ html {
   cursor: url('./img/pointer.cur'), auto;
 }
 .sc_gmb_changeGameModeHolder:hover,.sc_gmb_editGameModeHolder:hover {
-  background: rgb(156, 156, 156);
+  background: white;
 }
 .sc_gmb_changeGameModeImg,.sc_gmb_editGameModeImg {
   width: 70%;
