@@ -203,6 +203,22 @@ socket.on("updatePositions",(obj,lobbyID) => {
     server_renderPlayers();
     updateProduction();
 });
+socket.on("askToSpectate",(lobbyID,code) => {
+    makePopUp([
+        {type: "title",text: "Lobby Is In A Round"},
+        
+        [
+            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "black",text:"Don't Join"},
+            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "black",text:"Spectate", onClick: function() {
+                socket.emit("joinLobby",lobbyID,code,true);
+            }},
+        ],
+        
+    ],{
+        id: "lobbyInRound",
+
+    })
+})
 socket.on("updatedLocalAccount",(obj) => {
     localAccount.id = obj.id;
     localAccount.isInGame = obj.isInGame;
@@ -243,7 +259,7 @@ function updateLobbyToServer(lobby){
     socket.emit("newLobby", (lobby));  
 }
 function server_joinLobby(lobby) {
-    socket.emit("joinLobby",lobby,localAccount.id);
+    socket.emit("joinLobby",lobby);
 }
 function server_refreshLobby() {
     socket.emit("refreshLobbies",localAccount.id);

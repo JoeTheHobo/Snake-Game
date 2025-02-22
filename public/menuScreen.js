@@ -38,6 +38,13 @@ function loadServersHTML() {
         let boardName = boardTitleContainer.create("div");
         boardName.className = "server_board_name";
         boardName.innerHTML = server.hostName + server.hostTag + "'s Lobby";
+        
+        if (server.isInGame) {
+            let inInGameTitle = boardTitleContainer.create("div");
+            inInGameTitle.className = "server_isInGame";
+            inInGameTitle.innerHTML = "In-Game"
+
+        }
 
         let hostName = column.create("div");
         hostName.className = "server_host_name";

@@ -519,38 +519,41 @@ io.on('connection', (socket) => {
 
         io.emit("updateLobbyPage",lobby);
     })
-    socket.on("joinLobby",(lobbyID,playerID,code) => {
-        if (socket.id !== playerID){
-            socket.disconnect();
-            return;
-        };
+    socket.on("joinLobby",(lobbyID,code,spectate) => {
+        let account = onlineAccounts[socket.id];
+        if (account.lobby) return;
         let lobby = lobbies[lobbyID];
         if (!lobby) return;
 
         if (lobby.serverType == "Private" || lobby.serverType == "Hidden") {
             if (lobby.code !== code) return;
         }
+        if (lobby.players.length == lobby.playerMax) return;
 
-        if (lobby.players.length <= lobby.playerMax) {
-            lobby.players.push(playerID);
-            lobby.chats.push({
-                account: null,
-                message: onlineAccounts[socket.id].username + onlineAccounts[socket.id].tag + " Joined The Lobby",
-            })
-            onlineAccounts[socket.id].lobby =  lobby.id;
-            onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[0]);
-            onlineAccounts[socket.id].player.canSubmitBoards = false;
-            let lobbyList = {};
-            for (const lobbyID in lobbies) {
-                let lobby = lobbies[lobbyID];
-                if (lobby.serverType !== "Hidden") {
-                    lobbyList[lobby.id] = structuredClone(lobby);
-                    lobbyList[lobby.id].code = "";
-                }
-            }
-            io.emit("updateLobbies", lobbyList, Object.keys(onlineAccounts).length, lobby,socket.id);
-            io.emit("setClientLobby",socket.id,lobby)
+
+        if (lobby.isInGame && !spectate) {
+            io.emit("askToSpectate",lobbyID,code);
+            return;
         }
+        
+        lobby.players.push(socket.id);
+        lobby.chats.push({
+            account: null,
+            message: account.username + account.tag + " Joined The Lobby",
+        })
+        account.lobby = lobby.id;
+        account.player = structuredClone(account.players[0]);
+        account.player.canSubmitBoards = false;
+        let lobbyList = {};
+        for (const lobbyID in lobbies) {
+            let lobby = lobbies[lobbyID];
+            if (lobby.serverType !== "Hidden") {
+                lobbyList[lobby.id] = structuredClone(lobby);
+                lobbyList[lobby.id].code = "";
+            }
+        }
+        io.emit("updateLobbies", lobbyList, Object.keys(onlineAccounts).length, lobby,socket.id);
+        io.emit("setClientLobby",socket.id,lobby)
     })
     socket.on("refreshLobbies",(playerID) => {
         if (playerID !== socket.id) return;
@@ -589,7 +592,7 @@ io.on('connection', (socket) => {
             let lobby = lobbies[lobbyID];
             if (lobby.serverType !== "Hidden") continue;
             if (lobby.code === value) {
-                socket.listeners("joinLobby")[0](lobby.id,socket.id,value);
+                socket.listeners("joinLobby")[0](lobby.id,value);
                 return;
             }
         }
@@ -755,7 +758,6 @@ io.on('connection', (socket) => {
             socket.emit("kickPlayer","Caught Hacking [Code: 001]");
             return;
         }
-        console.log("Server Started")
         lobby.board.map = structuredClone(lobby.board.originalMap);
 
         lobby.isInGame = true;
@@ -992,6 +994,16 @@ io.on('connection', (socket) => {
         },3250)
         
         //lobby.timerLoop();
+        
+        let lobbyList = {};
+        for (const lobbyID in lobbies) {
+            let lobby = lobbies[lobbyID];
+            if (lobby.serverType !== "Hidden") {
+                lobbyList[lobby.id] = structuredClone(lobby);
+                lobbyList[lobby.id].code = "";
+            }
+        }
+        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
 
     })
     socket.on("movePlayerKey",(direction) => {

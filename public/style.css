@@ -2239,3 +2239,10 @@ html {
   color: rgb(197, 6, 6);
   text-decoration: line-through;
 }
+.server_isInGame {
+  height: 80%;
+  font-size: 25px;
+  border-radius: 15px;
+  background: rgb(206, 30, 30);
+  color: white;
+}

@@ -92,6 +92,17 @@ $("refreshServers").on("click",function() {
 })
 $("joinServer").on("click",function() {
     if (!serverSelected) return;
+
+    if (serverSelected.players.length === serverSelected.playerMax) {
+        makePopUp([
+            {type: "title",text: "Lobby Is Full"},
+            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "black",text:"Go Back"},
+        ],{
+            id: "FullPlayers",
+        })
+        return;
+    }
+
     if (serverSelected.serverType == "Private") {
         makePopUp([
             {type: "title",text: "What Is The Lobby Code?"},
@@ -101,7 +112,7 @@ $("joinServer").on("click",function() {
             
             {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "black",text:"Join Server",onClick: (ids) => {
                 const {code} = ids;
-                socket.emit("joinLobby",serverSelected.id,localAccount.id,code.value);
+                socket.emit("joinLobby",serverSelected.id,code.value);
             }},
         ],{
             exit: {
@@ -110,7 +121,11 @@ $("joinServer").on("click",function() {
             id: "guessCode",
 
         })
-    } else server_joinLobby(serverSelected.id);
+        return;
+    }
+
+
+    server_joinLobby(serverSelected.id);
     
 })
 $("quitServerButton").on("click",function() {
