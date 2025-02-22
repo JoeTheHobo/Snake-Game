@@ -848,7 +848,7 @@ io.on('connection', (socket) => {
         lobby.lastTimestamp = Date.now();
         lobby.updateTimeStamp = Date.now();
         lobby.updatePositionTimeStamp = Date.now();
-        lobby.timer = 0;
+        lobby.gameTimeStart = Date.now();
         lobby.boardStatusCount = 0;
         lobby.boardStatus = [];
 
@@ -964,14 +964,6 @@ io.on('connection', (socket) => {
                 
             }
         }
-        /*
-        lobby.timerLoop = function() {
-            setTimeout(() => {
-                this.timer++;
-                this.timerLoop();
-            },1000)
-        }
-        */
 
         lobby.gameStatus = "prepare";
         io.emit("preparingGame",lobby.id);
@@ -1447,7 +1439,7 @@ function deletePlayer(lobby,player,playerWhoKilled,item,instaKill = false){
         player.justDied = true;
 
         if (!currentGameMode.respawn) {
-            player.timeSurvived = lobby.timer;
+            player.timeSurvived = Math.floor((Date.now() - lobby.gameTimeStart) / 1000);
             let playersDead = 0;
             for (let i = 0; i < activePlayers.length; i++) {
                 if (activePlayers[i].isDead) playersDead++;
