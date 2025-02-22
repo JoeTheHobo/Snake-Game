@@ -1005,11 +1005,7 @@ function editGameMode(holder2,gameMode,htmlName) {
         let img = imgHolder.create("img");
         img.className = "spawn_image";
         
-        if (item.baseImg) {
-            let image = getImageFromItem(item,false);
-            img.src = $("item_" + image).src;
-        } else 
-            img.src = $("item_" + item.name).src;
+        img.src = getImageFromItem(item,src);
 
         imgHolder.gameMode = gameMode;
         imgHolder.item = item;

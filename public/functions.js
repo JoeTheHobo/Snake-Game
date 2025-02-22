@@ -1173,18 +1173,19 @@ function getItemValueFromList(item,list) {
     }
     return value;
 }
-function getImageFromItem(item,returnCanvas = true) {
+function getImageFromItem(item,returnType) {
     let image;
     if (item.baseImg) {
         image = item.name + "_";
         for (let i = 0; i < item.baseImgTags.length; i++) {
             image += getBaseImgFromTag(item,item.baseImgTags[i])
         }
-        if (!returnCanvas) return image;
-        image = getItemCanvas(image);
     } else {
-        image = getItemCanvas(item.name);
+        image = item.name;
     }
+
+    if (returnType == "canvas") image = getItemCanvas(image);
+    if (returnType == "src") image = $("item_" + image).src;
     return image;
 }
 function respawnPlayer(player,growthPercentage) {
@@ -1366,12 +1367,7 @@ function updatePlayerCard(player,whatToUpdate = "all") {
 
 
         let item = player.items[i];
-
-        if (item.baseImg) {
-            let imageSRC = getImageFromItem(item,false);
-            image.src = $("item_" + imageSRC).src;
-        } else 
-            image.src = $("item_" + item.name).src;
+        image.src = getImageFromItem(item,"src");
     }
 }
 

@@ -182,11 +182,7 @@ function me_loadDropdown(holder,group,name) {
             let itemHolder = itemsHolder.create("div");
             itemHolder.className = "me_itemHolder";
             let itemImage = itemHolder.create("img");
-            let image = getImageFromItem(item,false);
-            if (item.baseImg) {
-                itemImage.src = $(name + image).src;
-            } else 
-                itemImage.src = $(name + item.name).src;
+            itemImage.src = getImageFromItem(item,"src")
             itemImage.css({
                 width: "100%",
                 height: "100%",
@@ -379,7 +375,7 @@ function me_updateCell(ctx,x,y,opacity) {
     if (cell.item) {
         itemCounts.push("item_" + cell.item.name);
 
-        let image = getImageFromItem(cell.item);
+        let image = getImageFromItem(cell.item,"canvas");
         ctx.drawImage(image,Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
 
         if (cell.item.boardDestructibleCountRequired > 1) {
@@ -932,8 +928,7 @@ function goBackHome(save) {
 
 function loadObjectMenu() {
     if (selectedItem.cell.baseImg) {
-        let image = getImageFromItem(selectedItem.cell,false);
-        $(".me_ih_image").src = $(selectedItem.type +"_" + image).src;
+        $(".me_ih_image").src = getImageFromItem(selectedItem.cell,"src")
     } else 
         $(".me_ih_image").src = $(selectedItem.type +"_" + selectedItem.cell.name).src;
     let holder = $(".me_ih_settings");

@@ -8,7 +8,7 @@ function showGameTips() {
     let obj,imgSrc;
     if (tip.type == "items") {
         obj = getRealItem(tip.name);
-        let imageSRC = getImageFromItem(obj,false);
+        let imageSRC = getImageFromItem(obj,"src");
         console.log(imageSRC)
         imgSrc = $("item_" + imageSRC).src;
     }
