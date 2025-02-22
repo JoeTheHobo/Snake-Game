@@ -2251,6 +2251,7 @@ flex-direction: row;
   background:#8bc4e2;
 }
 .game_c1_playerIcon {
+  position: relative;
   width: 100%;
   z-index: 1;
 }
@@ -2458,6 +2459,12 @@ height: 100%;
   height: 100vh; /* Stretches from top to bottom */
 }
 .game_c1_snakeHead {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
   width: 50%;
   height: auto;
   transform: rotate(-90deg);
