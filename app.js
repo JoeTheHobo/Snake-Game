@@ -381,9 +381,9 @@ io.on('connection', (socket) => {
         if (onlineAccounts[socket.id].lobby) {
             let lobby = lobbies[onlineAccounts[socket.id].lobby];
             if (lobby.isInGame) {
-                for (let i = 0; i < lobby.activePlayers.length; i++) {
-                    if (lobby.activePlayers[i].accountID === socket.id) {
-                        deletePlayer(lobby,lobby.activePlayers[i],false,false,true);
+                for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+                    if (lobby.inGamePlayers[i].accountID === socket.id) {
+                        deletePlayer(lobby,lobby.inGamePlayers[i],false,false,true);
                     }
                 }
             }
@@ -774,10 +774,10 @@ io.on('connection', (socket) => {
 
 
         //Resetting Players
-        lobby.activePlayers = getPlayersList(lobby.players);
+        lobby.inGamePlayers = getPlayersList(lobby.players);
 
-        for (let i = 0; i < lobby.activePlayers.length; i++) {
-            let player = lobby.activePlayers[i];
+        for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+            let player = lobby.inGamePlayers[i];
             player.isPlayer = true;
             //Ressurect Player
             player.isDead = false;
@@ -901,32 +901,30 @@ io.on('connection', (socket) => {
                 this.isInGame = false;
 
                 //Kill Any Non Dead Snakes
-                for (let i = 0; i < this.activePlayers.length; i++) {
-                    if (activePlayers[i] == false) continue;
-                    if (!this.activePlayers[i].isDead) {
-                        deletePlayer(this,this.activePlayers[i],false,false,true);
+                for (let i = 0; i < this.inGamePlayers.length; i++) {
+                    if (!this.inGamePlayers[i].isDead) {
+                        deletePlayer(this,this.inGamePlayers[i],false,false,true);
                     }
                 }
 
-                let longestTail = this.activePlayers[0].longestTail;
-                let timeSurvived = this.activePlayers[0].timeSurvived;
-                let mostKills = this.activePlayers[0].playerKills;
-                let longestTailPlayer = this.activePlayers[0];
-                let timeSurvivedPlayer = this.activePlayers[0];
-                let mostKillsPlayer = this.activePlayers[0];
-                for (let i = 1; i < this.activePlayers.length; i++) {
-                    if (activePlayers[i] == false) continue;
-                    if (this.activePlayers[i].longestTail > longestTail) {
-                        longestTail = this.activePlayers[i].longestTail;
-                        longestTailPlayer = this.activePlayers[i];
+                let longestTail = this.inGamePlayers[0].longestTail;
+                let timeSurvived = this.inGamePlayers[0].timeSurvived;
+                let mostKills = this.inGamePlayers[0].playerKills;
+                let longestTailPlayer = this.inGamePlayers[0];
+                let timeSurvivedPlayer = this.inGamePlayers[0];
+                let mostKillsPlayer = this.inGamePlayers[0];
+                for (let i = 1; i < this.inGamePlayers.length; i++) {
+                    if (this.inGamePlayers[i].longestTail > longestTail) {
+                        longestTail = this.inGamePlayers[i].longestTail;
+                        longestTailPlayer = this.inGamePlayers[i];
                     }
-                    if (this.activePlayers[i].timeSurvived > timeSurvived) {
-                        timeSurvived = this.activePlayers[i].timeSurvived;
-                        timeSurvivedPlayer = this.activePlayers[i];
+                    if (this.inGamePlayers[i].timeSurvived > timeSurvived) {
+                        timeSurvived = this.inGamePlayers[i].timeSurvived;
+                        timeSurvivedPlayer = this.inGamePlayers[i];
                     }
-                    if (this.activePlayers[i].playerKills > mostKills) {
-                        mostKills = this.activePlayers[i].mostKills;
-                        mostKillsPlayer = this.activePlayers[i];
+                    if (this.inGamePlayers[i].playerKills > mostKills) {
+                        mostKills = this.inGamePlayers[i].mostKills;
+                        mostKillsPlayer = this.inGamePlayers[i];
                     }
                 }
 
@@ -993,7 +991,7 @@ io.on('connection', (socket) => {
         if (lobby.gameStatus == "prepare") {
             player.moving = direction;
 
-            emitingActivePlayers = Object.values(lobby.activePlayers).map(({ index, selectingItem, items, tail,moving,shield }) => ({
+            emitingActivePlayers = Object.values(lobby.inGamePlayers).map(({ index, selectingItem, items, tail,moving,shield }) => ({
                 index,
                 selectingItem,
                 items,
@@ -1159,7 +1157,7 @@ function fixTileDifferences(currentBoard,map) {
 function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio = true) {
     let currentGameMode = lobby.gameMode;
     let currentBoard = lobby.board;
-    let activePlayers = lobby.activePlayers; 
+    let activePlayers = lobby.inGamePlayers; 
     let isPlayer = name.isPlayer;
     let itemIndex = false;
     let item;
@@ -1420,7 +1418,7 @@ function specialItemManager(lobby) {
 }
 function deletePlayer(lobby,player,playerWhoKilled,item,instaKill = false){
     let currentGameMode = lobby.gameMode;
-    let activePlayers = lobby.activePlayers;
+    let activePlayers = lobby.inGamePlayers;
 
     let damage;
     if (item) damage = item.damage;
@@ -1444,7 +1442,6 @@ function deletePlayer(lobby,player,playerWhoKilled,item,instaKill = false){
             player.timeSurvived = lobby.timer;
             let playersDead = 0;
             for (let i = 0; i < activePlayers.length; i++) {
-                if (activePlayers[i] == false) playersDead++;
                 if (activePlayers[i].isDead) playersDead++;
             }
             if (playersDead == activePlayers.length) {
@@ -1841,13 +1838,12 @@ function getPlayersList(playerIds) {
 }
 
 function server_movePlayers(lobby) {
-    activePlayers = lobby.activePlayers;
+    activePlayers = lobby.inGamePlayers;
     let currentBoard = lobby.board;
     let currentGameMode = lobby.gameMode;
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
         
-        if (player == false) continue;
         if (player.isDead) continue;
         if ((player.moveTik*1/*lobby.deltaTime*/) < (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             player.moveTik++;
@@ -1921,7 +1917,6 @@ function server_movePlayers(lobby) {
         
             // Step 1: Populate occupiedPositions with all players' tails & positions
             for (let a = 0; a < activePlayers.length; a++) {
-                if (activePlayers[a] == false) continue;
                 let checkedPlayer = activePlayers[a];
                 if (checkedPlayer.isDead && currentGameMode.snakeVanishOnDeath) continue;
                 if (findPlayersTeam(checkedPlayer) === findPlayersTeam(player) && !currentGameMode.teamCollision && findPlayersTeam(player) !== "white") continue;
