@@ -1232,6 +1232,15 @@ function respawnPlayer(player,growthPercentage) {
 let global_wallImage = new Image();
     global_wallImage.src = "img/gameUI/repeatableWall.png";
 function setGameScene(players) {
+
+    let player;
+    for (let i = 0; i < players.length; i++) {
+        if (players[i].accountID = localAccount.id) {
+            player = players[i];
+            break;
+        }
+    }
+
     let holder;
     //Making Item Inventory
     holder = $(".game_cc_pi_wall_holder");
@@ -1279,8 +1288,9 @@ function setGameScene(players) {
     }
 
 
-    //Adding Player Wall
-    
+    //Setting Player Snake Color
+    $(".game_c1_snakeHead").style.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
+
 
 }
 function updateGameScene(player) {

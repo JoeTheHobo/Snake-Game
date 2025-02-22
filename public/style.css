@@ -2244,14 +2244,14 @@ display: flex;
 flex-direction: row;
 }
 .game_column {
-display: flex;
-flex-direction: column;
-height: 100%;
-width: 15%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 15%;
+  background:#8bc4e2;
 }
 .game_c1_playerIcon {
   width: 100%;
-  background:#8bc4e2;
   z-index: 1;
 }
 .game_c1_wallImg {
@@ -2317,8 +2317,9 @@ height: 25%;
   display: flex;
   width: 100%;
   flex-grow: 1;
-  background:#8bc4e2;
   z-index: 1;
+  align-items: center;
+  justify-content: center;
 }
 .playercard_holder {
   position: absolute;
@@ -2455,4 +2456,9 @@ height: 100%;
   left: 5px;
   z-index: 0;
   height: 100vh; /* Stretches from top to bottom */
+}
+.game_c1_snakeHead {
+  width: 50%;
+  height: auto;
+  transform: rotate(-90deg);
 }
