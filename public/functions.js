@@ -1247,7 +1247,11 @@ function setGameScene(players) {
     for (let i = 0; i < count; i++) {
         let img = holder.create("img");
         img.className = "gmae_cc_pi_wall";
-        img.src = global_wallImage;
+        img.src = global_wallImage.src;
+        img.css({
+            width: global_wallImage.width + "px",
+            height: global_wallImage.height + "px",
+        })
     }
     
 
