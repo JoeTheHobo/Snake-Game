@@ -1278,7 +1278,7 @@ function setGameScene(players) {
 }
 function updateGameScene(player) {
 
-
+    console.log(player.items);
     //Updating Inventory
     for (let i = 0; i < player.items.length; i++) {
         let holder = $("inventory_slot_" + i);
