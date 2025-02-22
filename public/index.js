@@ -64,6 +64,7 @@ socket.on("startingGame", (lobby) => {
     productionType = "server";
     setUpProductionHTML();
     if (localAccount.lobbyID !== lobby.id) return;
+    localAccount.isInGame = true;
 
     let foundPlayer = false;
     searchingForPlayer: for (let j = 0; j < lobby.players.length; j++) {
@@ -176,6 +177,7 @@ function showNumber(index) {
 }
 socket.on("updatePositions",(obj,lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;
+    if (!localAccount.isInGame) return; 
 
     const jsonString = JSON.stringify(obj);
     const sizeInBytes = new TextEncoder().encode(jsonString).length;
@@ -218,13 +220,6 @@ socket.on("askToSpectate",(accountID,lobbyID,code) => {
         id: "lobbyInRound",
 
     })
-})
-socket.on("updatedLocalAccount",(obj) => {
-    localAccount.id = obj.id;
-    localAccount.isInGame = obj.isInGame;
-    currentBoard = obj.board;
-    updateCells = updateCells.concat(obj.updateCells);
-    renderCells();
 })
 socket.on("setCode",(id,oldCode) => {
     if (localAccount.id !== id) return;
