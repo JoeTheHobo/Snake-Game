@@ -1290,7 +1290,7 @@ function updateGameScene(player) {
         let item = player.items[i];
 
         if (player.selectingItem === i) holder.$(".game_cc_pi_item_wallIMG2").css({
-            filter: "hue-rotate(90deg)",
+            filter: "invert(100%)",
         })
 
         if (item == "empty") {
