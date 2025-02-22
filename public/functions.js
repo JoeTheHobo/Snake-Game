@@ -1253,9 +1253,23 @@ function setGameScene(players) {
             height: global_wallImage.height + "px",
         })
     }
-    
+    //Making Item Containers
+    holder = $(".game_cc_pi_items_holder");
+    holder.innerHTML = "";
+    for (let i = 0; i < currentGameMode.howManyItemsCanPlayersUse; i++) {
+        let div = holder.create("div");
+        div.className = "game_cc_pi_item_holder";
 
-    
+        let img = div.create("div");
+        img.src = "img/gameUI/wallItemWhole.png";
+        img.css({
+            width: "auto",
+            height: (.84*global_wallImage.height) + "px",
+        })
+
+        
+    }
+
 }
 function generatePlayerCards(players) {
     return;
