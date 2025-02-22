@@ -152,11 +152,10 @@ socket.on("endGame",(obj,lobbyID) => {
 
     showEndScreen()
 })
-socket.on("preparingGame",(lobby) => {
+socket.on("preparingGame",(lobbyID) => {
+    if (localAccount.lobbyID !== lobbyID) return;
     $(".numbersPopup").show();
     showNumber(3);
-
-
 })
 function showNumber(index) {
     if (index == 0) index = "go";

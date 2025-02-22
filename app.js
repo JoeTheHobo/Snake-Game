@@ -987,7 +987,7 @@ io.on('connection', (socket) => {
         */
 
         lobby.gameStatus = "prepare";
-        io.emit("preparingGame",lobby);
+        io.emit("preparingGame",lobby.id);
         setTimeout(function() {
             lobby.gameStatus = "game";
             lobby.gameLoop();
