@@ -2251,9 +2251,11 @@ width: 15%;
 }
 .game_c1_playerIcon {
   width: 100%;
-  height: 25%;
   background:#8bc4e2;
-
+}
+.game_c1_wallImg {
+  width: 100%;
+  height: auto;
 }
 .game_column_canvas {
 width: 70%;
@@ -2313,7 +2315,7 @@ height: 25%;
 #playerCardsHolder {
   display: flex;
   width: 100%;
-  height: 75%;
+  flex-grow: 1;
   background:#8bc4e2;
 }
 .playercard_holder {
