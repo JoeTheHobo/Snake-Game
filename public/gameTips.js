@@ -17,8 +17,8 @@ function showGameTips() {
     }
 
     $(".gameTip_img").src = imgSrc;
-    $(".gameTip_name").innerHTML = obj.name;
-    $(".gameTip_tip").innerHTML = obj.tip;
+    $(".gameTip_name").innerHTML = tip.name;
+    $(".gameTip_tip").innerHTML = tip.tip;
     
     setTimeout(function() {
         holder.classRemove("hide");
