@@ -1278,7 +1278,6 @@ function setGameScene(players) {
 }
 function updateGameScene(player) {
 
-    console.log(player.items);
     //Updating Inventory
     for (let i = 0; i < player.items.length; i++) {
         let holder = $("inventory_slot_" + i);
@@ -1287,6 +1286,8 @@ function updateGameScene(player) {
             holder.$(".game_cc_pi_item_img").src = "img/backgrounds/clear.png";
             continue;
         }
+
+        console.log(holder.$(".game_cc_pi_item_img"));
         
         holder.$(".game_cc_pi_item_img").src = getImageFromItem(item,"src");
     }
