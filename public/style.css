@@ -1105,7 +1105,7 @@ html {
   transition: all .2s ease-in-out;
 }
 .playButtonSounds:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 
 }
 .servers_button_inactive { 
