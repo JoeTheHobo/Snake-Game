@@ -178,7 +178,6 @@ function showNumber(index) {
 socket.on("updatePositions",(obj,lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;
     if (!localAccount.isInGame) return; 
-    console.log(localAccount.isInGame);
 
     const jsonString = JSON.stringify(obj);
     const sizeInBytes = new TextEncoder().encode(jsonString).length;
