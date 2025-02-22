@@ -1100,6 +1100,11 @@ html {
 }
 .servers_button:hover {
   background: #a0a0a0;
+}
+.playButtonSounds {
+  transition: all .2s ease-in-out;
+}
+.playButtonSounds:hover {
   transform: scale(1.1);
 
 }
