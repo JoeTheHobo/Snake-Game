@@ -1230,6 +1230,7 @@ function respawnPlayer(player,growthPercentage) {
 }
 
 function generatePlayerCards(players) {
+    return;
     let playerCardsHolder = $("playerCardsHolder");
     playerCardsHolder.innerHTML = "";
     for (let i = 0; i < players.length; i++) {
@@ -1345,6 +1346,7 @@ function generatePlayerCards(players) {
     }
 }
 function updatePlayerCard(player,whatToUpdate = "all") {
+    return;
     if (!player) return;
 
     let cardHolder = $("playercard_" + player.name +"_"+ player.id);
