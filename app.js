@@ -1775,7 +1775,7 @@ function respawnPlayer(lobby,player,growthPercentage) {
     player.justTeleported = false;
     player.moveQueue = [];
     player.moveTik = 0;
-    player.moveSpeed = 6;
+    player.moveSpeed = 1;
     player.turboDuration = 0;
     player.turboActive = false;
     player.shield = 0;
