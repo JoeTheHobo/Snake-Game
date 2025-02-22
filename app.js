@@ -995,14 +995,12 @@ io.on('connection', (socket) => {
         
         //lobby.timerLoop();
         
-        let lobbyList = {};
-        for (const lobbyID in lobbies) {
-            let lobby = lobbies[lobbyID];
-            if (lobby.serverType !== "Hidden") {
-                lobbyList[lobby.id] = structuredClone(lobby);
-                lobbyList[lobby.id].code = "";
-            }
-        }
+        let lobbyList = Object.values(lobbies)
+            .filter(lobby => lobby.serverType !== "Hidden")
+            .reduce((acc, lobby) => {
+                acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
+                return acc;
+            }, {});
         io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
 
     })
