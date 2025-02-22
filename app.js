@@ -523,7 +523,7 @@ io.on('connection', (socket) => {
 
 
         if (lobby.isInGame && !spectate) {
-            io.emit("askToSpectate",lobbyID,code);
+            io.emit("askToSpectate",socket.id,lobbyID,code);
             return;
         }
         

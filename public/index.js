@@ -202,7 +202,8 @@ socket.on("updatePositions",(obj,lobbyID) => {
     server_renderPlayers();
     updateProduction();
 });
-socket.on("askToSpectate",(lobbyID,code) => {
+socket.on("askToSpectate",(accountID,lobbyID,code) => {
+    if (localAccount.id !== accountID) return;
     makePopUp([
         {type: "title",text: "Lobby Is In A Round"},
         
