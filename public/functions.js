@@ -1260,14 +1260,14 @@ function setGameScene(players) {
         let div = holder.create("div");
         div.className = "game_cc_pi_item_holder";
 
-        let img = div.create("div");
+        let img = div.create("img");
         img.src = "img/gameUI/wallItemWhole.png";
         img.css({
             width: "auto",
             height: (.84*global_wallImage.height) + "px",
         })
 
-        
+
     }
 
 }
