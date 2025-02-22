@@ -467,10 +467,11 @@ io.on('connection', (socket) => {
         let username = onlineAccounts[socket.id].username + onlineAccounts[socket.id].tag;
         for (let i = 0; i < lobby.players.length; i++) {
             if (lobby.players[i] == socket.id) {
-                onlineAccounts[socket.id].lobbyID = false;
                 lobby.players.splice(i,1);
             }
         }
+
+        onlineAccounts[socket.id].lobby = false;
 
         if (lobby.players.length == 0) {
             delete lobbies[lobby.id];

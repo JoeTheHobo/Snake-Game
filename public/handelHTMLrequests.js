@@ -132,6 +132,7 @@ $("quitServerButton").on("click",function() {
     socket.emit("quitServer");
     setScene("newMenu");
     localAccount.isInLobby = false;
+    localAccount.lobbyID = false;
 })
 $("startServerButton").on("click",function() {
     server_startGame();
@@ -265,7 +266,7 @@ $(".sc_addLobbyBoard").on("click",function() {
 })
 
 $("quitGameButton").on("click",function() {
-    
+
 })
 $("endGameButton").on("click",function() {
     

@@ -198,7 +198,8 @@ socket.on("updatePositions",(obj,lobbyID) => {
             local_player.shield = server_player.shield;
             local_player.tailLength = server_player.tailLength;
             
-            updateGameScene(local_player);
+            if (local_player.accountID === localAccount.id) updateGameScene(local_player);
+            //Will have to update glags of individual players
         }
     }
 
