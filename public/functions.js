@@ -1239,17 +1239,12 @@ function setGameScene(players) {
     let holder_width = holder.offsetWidth;
     let holder_height = holder.offsetHeight;
 
-    console.log(1,holder_width,holder_height);
-
     let aspectRatio = global_wallImage.width / global_wallImage.height;
-    console.log(2,aspectRatio);
     global_wallImage.height = holder_height;
     global_wallImage.width = holder_height * aspectRatio;
-    console.log(3,global_wallImage.width,global_wallImage.height);
 
     let count = Math.ceil(holder_width / global_wallImage.width);
-    console.log(4,count)
-    for (let i = 0; i < count.length; i++) {
+    for (let i = 0; i < count; i++) {
         let img = holder.create("img");
         img.className = "gmae_cc_pi_wall";
         img.src = global_wallImage;
