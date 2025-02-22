@@ -1261,8 +1261,8 @@ function setGameScene(players) {
         div.className = "game_cc_pi_item_holder";
         div.id = "inventory_slot_" + i;
         div.css({
-            width: "auto",
             height: (.83*global_wallImage.height) + "px",
+            aspectRatio: "102/95",
         })
 
         let img = div.create("img");
