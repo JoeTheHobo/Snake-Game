@@ -1290,7 +1290,7 @@ function updateGameScene(player) {
         let item = player.items[i];
 
         if (player.selectingItem === i) holder.$(".game_cc_pi_item_wallIMG2").css({
-            filter: "brightness(1.75)",
+            filter: "blur(30px) saturate(5)",
         })
 
         if (item == "empty") {
