@@ -2283,12 +2283,15 @@ html {
   flex-direction: row;
   align-items: center;
   padding: 5px;
-  background: rgb(43, 43, 43);
+  background: rgb(22, 22, 22);
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   transition: all 1s ease-in-out;
+  border-radius: 5px;
+
 }
 .gameTipHolder.show {
   transform: translateX(0);
+  margin-right: 20px;
   display: flex;
 }
 
