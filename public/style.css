@@ -2280,7 +2280,6 @@ html {
   z-index: 500;
   right: -100%;
   top: 20px;
-  visibility: hidden;
   flex-direction: row;
   align-items: center;
   padding: 5px;
