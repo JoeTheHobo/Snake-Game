@@ -2227,8 +2227,10 @@ html {
 
 
 .scene_game {
+  display: flex;
   flex-direction: column;
-
+  width: 100%;
+  height: 100%;
 }
 .game_topRow {
   width: 100%;
