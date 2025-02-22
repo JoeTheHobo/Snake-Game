@@ -1256,8 +1256,8 @@ function setGameScene(players) {
     //Making Item Containers
     holder = $(".game_cc_pi_items_holder");
     holder.innerHTML = "";
-    console.log(currentGameMode.howManyItemsCanPlayersUse);
     for (let i = 0; i < currentGameMode.howManyItemsCanPlayersUse; i++) {
+        console.log(i)
         let div = holder.create("div");
         div.className = "game_cc_pi_item_holder";
 
