@@ -1781,7 +1781,7 @@ function respawnPlayer(lobby,player,growthPercentage) {
     player.shield = 0;
 
 
-    spawn(player);
+    spawn(lobby,player);
     growPlayer(player,length);
 }
 function snakeMapSetType(lobby,index,y,x,type) {
