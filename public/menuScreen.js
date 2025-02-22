@@ -1005,7 +1005,7 @@ function editGameMode(holder2,gameMode,htmlName) {
         let img = imgHolder.create("img");
         img.className = "spawn_image";
         
-        img.src = getImageFromItem(item,src);
+        img.src = getImageFromItem(item,"src");
 
         imgHolder.gameMode = gameMode;
         imgHolder.item = item;
