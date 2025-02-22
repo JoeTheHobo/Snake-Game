@@ -106,7 +106,7 @@ socket.on("startingGame", (lobby) => {
     setUpPlayerCanvas();
     renderGame();
     renderCells();
-    generatePlayerCards(activePlayers);
+    setGameScene(activePlayers);
     serverGameLoop();
 
     let color = _color(getAverageCanvasColor(canvas_tiles)).darken(10).ogColor;

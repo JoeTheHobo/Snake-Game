@@ -1229,6 +1229,21 @@ function respawnPlayer(player,growthPercentage) {
     updatePlayerCard(player);
 }
 
+let global_wallImage = new Image();
+    global_wallImage.src = "img/gameUI/repeatableWall.png";
+function setGameScene(players) {
+    let holder;
+    //Making Item Inventory
+    holder = $(".game_cc_playerItems");
+    holder.innerHTML = "";
+    let width = holder.offsetWidth;
+    let height = holder.offsetHeight;
+
+    
+    
+
+    
+}
 function generatePlayerCards(players) {
     return;
     let playerCardsHolder = $("playerCardsHolder");
