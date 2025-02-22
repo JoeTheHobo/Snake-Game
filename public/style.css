@@ -2252,6 +2252,7 @@ width: 15%;
 .game_c1_playerIcon {
   width: 100%;
   background:#8bc4e2;
+  z-index: 1;
 }
 .game_c1_wallImg {
   width: 100%;
@@ -2317,6 +2318,7 @@ height: 25%;
   width: 100%;
   flex-grow: 1;
   background:#8bc4e2;
+  z-index: 1;
 }
 .playercard_holder {
   position: absolute;
