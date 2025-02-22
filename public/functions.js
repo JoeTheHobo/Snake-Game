@@ -1257,21 +1257,41 @@ function setGameScene(players) {
     holder = $(".game_cc_pi_items_holder");
     holder.innerHTML = "";
     for (let i = 0; i < currentGameMode.howManyItemsCanPlayersUse; i++) {
-        console.log(i)
         let div = holder.create("div");
         div.className = "game_cc_pi_item_holder";
-
-        let img = div.create("img");
-        img.src = "img/gameUI/wallItemWhole.png";
-        img.css({
+        div.id = "inventory_slot_" + i;
+        div.css({
             width: "auto",
-            height: (.84*global_wallImage.height) + "px",
+            height: (.83*global_wallImage.height) + "px",
         })
 
+        let img = div.create("img");
+        img.className = "game_cc_pi_item_wallIMG";
+        img.src = "img/gameUI/wallItemWhole.png";
+
+        let itemImg = div.create("img");
+        itemImg.className = "game_cc_pi_item_img";
+        itemImg.src = "img/backgrounds/clear.png";
 
     }
 
 }
+function updateGameScene(player) {
+
+
+    //Updating Inventory
+    for (let i = 0; i < player.items.length; i++) {
+        let holder = $("inventory_slot_" + i);
+        let item = player.items[i];
+        if (item == "empty") {
+            holder.$(".game_cc_pi_item_img").src = "img/backgrounds/clear.png";
+            continue;
+        }
+        
+        holder.$(".game_cc_pi_item_img").src = getImageFromItem(item,"src");
+    }
+}
+
 function generatePlayerCards(players) {
     return;
     let playerCardsHolder = $("playerCardsHolder");

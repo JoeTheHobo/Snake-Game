@@ -197,8 +197,8 @@ socket.on("updatePositions",(obj,lobbyID) => {
             local_player.moving = server_player.moving;
             local_player.shield = server_player.shield;
             local_player.tailLength = server_player.tailLength;
-
-            updatePlayerCard(local_player);
+            
+            updateGameScene(local_player);
         }
     }
 
