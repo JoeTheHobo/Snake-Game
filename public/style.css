@@ -2380,3 +2380,13 @@ border: 3px solid gold !important;
 width: 100%;
 height: 100%;
 }
+
+.game_cc_pi_wall_holder {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  align-items: center;
+}

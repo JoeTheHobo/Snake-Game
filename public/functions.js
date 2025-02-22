@@ -1234,12 +1234,21 @@ let global_wallImage = new Image();
 function setGameScene(players) {
     let holder;
     //Making Item Inventory
-    holder = $(".game_cc_playerItems");
+    holder = $(".game_cc_pi_wall_holder");
     holder.innerHTML = "";
-    let width = holder.offsetWidth;
-    let height = holder.offsetHeight;
+    let holder_width = holder.offsetWidth;
+    let holder_height = holder.offsetHeight;
 
-    
+    let aspectRatio = global_wallImage.width / global_wallImage.height;
+    global_wallImage.height = holder_height;
+    global_wallImage.width = holder_height * aspectRatio;
+
+    let count = Math.ceil(holder_width / global_wallImage.width);
+    for (let i = 0; i < count.length; i++) {
+        let img = holder.create("img");
+        img.className = "gmae_cc_pi_wall";
+        img.src = global_wallImage;
+    }
     
 
     
