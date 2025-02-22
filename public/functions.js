@@ -1594,15 +1594,12 @@ function updateLobbyPage(lobby) {
 
     logGameModeChanges($(".sc_gameModeChanges"),lobby.gameMode,false);
 
-    $(".sc_boards_canvas").width = $(".sc_boards_canvas").clientWidth;
-    $(".sc_boards_canvas").height = $(".sc_boards_canvas").clientHeight; 
-    drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);
-    setTimeout(function() {
+    requestAnimationFrame(() => {
         console.log($(".sc_boards_canvas").clientWidth,$(".sc_boards_canvas").clientHeight);
         $(".sc_boards_canvas").width = $(".sc_boards_canvas").clientWidth;
         $(".sc_boards_canvas").height = $(".sc_boards_canvas").clientHeight; 
         drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);
-    },400);
+    });
 }
 function generateBoardsPopup(type) {
     let parent = $(".cbp_boardsList");
