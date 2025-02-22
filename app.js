@@ -1756,6 +1756,34 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function respawnPlayer(lobby,player,growthPercentage) {
+    let length = Math.round((growthPercentage/100) * player.tail.length);
+
+    //Delete Old Tail
+    snakeMapRemoveAll(lobby,player);
+
+    player.isDead = false;
+    player.tail = [];
+    player.items = [];
+    for (let j = 0; j < currentGameMode.howManyItemsCanPlayersUse; j++) {
+        player.items.push("empty");
+    }
+    let team = findPlayersTeam(player);
+    player.status = ["status_" + team];
+    player.justDied = false;
+    player.bodyArmor = 1;
+    player.justTeleported = false;
+    player.moveQueue = [];
+    player.moveTik = 0;
+    player.moveSpeed = 6;
+    player.turboDuration = 0;
+    player.turboActive = false;
+    player.shield = 0;
+
+
+    spawn(player);
+    growPlayer(player,length);
+}
 function snakeMapSetType(lobby,index,y,x,type) {
     let snakeMap = lobby.snakeMap;
     let group = snakeMap[y][x];
