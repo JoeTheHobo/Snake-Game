@@ -971,8 +971,8 @@ html {
 
 
 
-#scene_newMenu {
-  
+#scene_newMenu, #scene_lobby {
+  justify-content: flex-start !important;
 }
 .menu_background {
   position: absolute;
@@ -987,7 +987,7 @@ html {
 
 }
 .logo_image {
-  width: 700px;
+  width: 30%;
   height: auto;
   position: relative;
   
@@ -1000,6 +1000,7 @@ html {
 }
 
 .menu_holder {
+  margin-top: -1%;
   z-index: 1;
   width: 70%;
   height: 60%;
@@ -2253,4 +2254,24 @@ html {
   color: white;
   margin-left: 15px;
   padding: 2px;
+}
+
+.versionNumber {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  color: white;
+  font-size: 25px;
+}
+.linksHolder {
+  z-index: 500;
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.linksHolder > a {
+  margin: 20px;
+  font-size: 20px;
+  color: rgb(53, 240, 240);
 }
