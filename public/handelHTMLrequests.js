@@ -263,3 +263,10 @@ $(".sc_addLobbyBoard").on("click",function() {
         socket.emit("addBoardToLobbyBoards",JSON.stringify(shortenBoard(board)));
     }) 
 })
+
+$("quitGameButton").on("click",function() {
+    
+})
+$("endGameButton").on("click",function() {
+    
+})
