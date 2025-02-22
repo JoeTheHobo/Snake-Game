@@ -2317,6 +2317,7 @@ html {
   font-size: 25px;
 }
 .gameTip_tip {
+  margin-left: 5px;
   font-size: 23px;
   max-width: 420px;
   color: white;
