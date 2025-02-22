@@ -1235,7 +1235,7 @@ function setGameScene(players) {
 
     let player;
     for (let i = 0; i < players.length; i++) {
-        if (players[i].accountID = localAccount.id) {
+        if (players[i].accountID == localAccount.id) {
             player = players[i];
             break;
         }
@@ -1595,7 +1595,6 @@ function updateLobbyPage(lobby) {
     logGameModeChanges($(".sc_gameModeChanges"),lobby.gameMode,false);
 
     requestAnimationFrame(() => {
-        console.log($(".sc_boards_canvas").clientWidth,$(".sc_boards_canvas").clientHeight);
         $(".sc_boards_canvas").width = $(".sc_boards_canvas").clientWidth;
         $(".sc_boards_canvas").height = $(".sc_boards_canvas").clientHeight; 
         drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);

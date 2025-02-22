@@ -471,6 +471,14 @@ io.on('connection', (socket) => {
             }
         }
 
+        if (lobby.isInGame) {
+            for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+                if (lobby.inGamePlayers[i].accountID === socket.id) {
+                    deletePlayer(lobby,lobby.inGamePlayers[i],false,false,true);
+                }
+            }
+        }
+
         onlineAccounts[socket.id].lobby = false;
 
         if (lobby.players.length == 0) {
@@ -715,6 +723,15 @@ io.on('connection', (socket) => {
         })
 
         io.emit("updateLobbyPage",lobby);
+    })
+    socket.on("endGame",() => {
+        let account = onlineAccounts[socket.id];
+        let lobby = lobbies[account.lobby];
+        if (!lobby) return;
+        if (lobby.hostID !== socket.id) return;
+        if (!lobby.isInGame) return;
+
+        lobby.gameEnd = true;
     })
     socket.on("changeLobbyType",(type) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];

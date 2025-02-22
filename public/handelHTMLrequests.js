@@ -266,8 +266,12 @@ $(".sc_addLobbyBoard").on("click",function() {
 })
 
 $("quitGameButton").on("click",function() {
+    socket.emit("quitServer");
+    setScene("newMenu");
+    localAccount.isInLobby = false;
+    localAccount.lobbyID = false;
 
 })
 $("endGameButton").on("click",function() {
-    
+    socket.emit("endGame");
 })
