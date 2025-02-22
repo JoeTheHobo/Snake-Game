@@ -1287,8 +1287,6 @@ function updateGameScene(player) {
             continue;
         }
 
-        console.log(holder.$(".game_cc_pi_item_img"));
-        
         holder.$(".game_cc_pi_item_img").src = getImageFromItem(item,"src");
     }
 }
