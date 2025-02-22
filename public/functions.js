@@ -1236,8 +1236,8 @@ function setGameScene(players) {
     //Making Item Inventory
     holder = $(".game_cc_pi_wall_holder");
     holder.innerHTML = "";
-    let holder_width = $(".game_cc_playerItems").offsetWidth;
-    let holder_height = $(".game_cc_playerItems").offsetHeight;
+    let holder_width = holder.offsetWidth;
+    let holder_height = holder.offsetHeight;
 
     console.log(1,holder_width,holder_height);
 
