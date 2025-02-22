@@ -2305,7 +2305,7 @@ html {
   align-items: center;
 }
 .gameTip_img_holder {
-  width: 60%;
+  width: 60px;
   aspect-ratio: 1/1;
 }
 .gameTip_img {
