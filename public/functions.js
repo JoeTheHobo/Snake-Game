@@ -1278,6 +1278,10 @@ function setGameScene(players) {
 
     }
 
+
+    //Adding Player Wall
+    
+
 }
 function updateGameScene(player) {
 
@@ -1290,7 +1294,7 @@ function updateGameScene(player) {
         let item = player.items[i];
 
         if (player.selectingItem === i) holder.$(".game_cc_pi_item_wallIMG2").css({
-            filter: "brightness(1.2)",
+            filter: "brightness(1.5)",
         })
 
         if (item == "empty") {
