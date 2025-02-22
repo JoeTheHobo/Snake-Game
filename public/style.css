@@ -2251,6 +2251,7 @@ flex-direction: row;
   background:#8bc4e2;
 }
 .game_c1_playerIcon {
+  margin-top: auto;
   position: relative;
   width: 100%;
   z-index: 1;
