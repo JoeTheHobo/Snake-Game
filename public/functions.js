@@ -1715,3 +1715,15 @@ function logGameModeChanges(holder,gameMode,logAll) {
         altKey.innerHTML = "No Game Mode Alterations";
     }
 }
+
+
+const hoverSound = new Audio("sounds/menuSounds/buttonHover.mp3");
+const clickSound = new Audio("sounds/menuSounds/buttonClick.mp3");
+function playSound(sound) {
+    sound.currentTime = 0; // Reset audio to start
+    sound.play();
+}
+$(".playButtonSounds").forEach(button => {
+    button.addEventListener("mouseenter", () => playSound(hoverSound)); // Hover sound
+    button.addEventListener("click", () => playSound(clickSound)); // Click sound
+});
