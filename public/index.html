@@ -188,28 +188,47 @@
         <div class="versionNumber">Alpha 1.0</div>
     </div>
     <div class="scene" id="scene_game">
-        <canvas class="game_canvas" id="render_background"></canvas>
-        <canvas class="game_canvas" id="render_tiles"></canvas>
-        <canvas class="game_canvas" id="render_items"></canvas>
-        <canvas class="game_canvas" id="render_players"></canvas>
-        <canvas class="game_canvas" id="render_overhangs"></canvas>
-        <canvas class="game_canvas" id="render_top"></canvas>
+        <div class="game_topRow">
+            <div class="servers_button playButtonSounds">Quit Game</div>
+            <div class="servers_button playButtonSounds">End Game</div>
+            <div class="boardStatusHolder"></div>
+        </div>
 
-        <canvas class="firstPersonCanvas firstPersonCanvas_master"></canvas>
-        <canvas class="firstPersonCanvas firstPersonCanvas_tl"></canvas>
-        <canvas class="firstPersonCanvas firstPersonCanvas_tm"></canvas>
-        <canvas class="firstPersonCanvas firstPersonCanvas_tr"></canvas>
-        <canvas class="firstPersonCanvas firstPersonCanvas_lm"></canvas>
-        <canvas class="firstPersonCanvas firstPersonCanvas_rm"></canvas>
-        <canvas class="firstPersonCanvas firstPersonCanvas_bl"></canvas>
-        <canvas class="firstPersonCanvas firstPersonCanvas_bm"></canvas>
-        <canvas class="firstPersonCanvas firstPersonCanvas_br"></canvas>
-        <canvas class="firstPersonMap"></canvas>
-        <canvas class="extraCanvas"></canvas>
+        <div class="game_column">
+            <div id="playerCardsHolder"></div>
+            <div class="game_c1_playerIcon"></div>
+        </div>
+        <div class="game_column_canvas">
+            <div class="game_cc_game">
+                <canvas class="game_canvas" id="render_background"></canvas>
+                <canvas class="game_canvas" id="render_tiles"></canvas>
+                <canvas class="game_canvas" id="render_items"></canvas>
+                <canvas class="game_canvas" id="render_players"></canvas>
+                <canvas class="game_canvas" id="render_overhangs"></canvas>
+                <canvas class="game_canvas" id="render_top"></canvas>
+        
+                <canvas class="firstPersonCanvas firstPersonCanvas_master"></canvas>
+                <canvas class="firstPersonCanvas firstPersonCanvas_tl"></canvas>
+                <canvas class="firstPersonCanvas firstPersonCanvas_tm"></canvas>
+                <canvas class="firstPersonCanvas firstPersonCanvas_tr"></canvas>
+                <canvas class="firstPersonCanvas firstPersonCanvas_lm"></canvas>
+                <canvas class="firstPersonCanvas firstPersonCanvas_rm"></canvas>
+                <canvas class="firstPersonCanvas firstPersonCanvas_bl"></canvas>
+                <canvas class="firstPersonCanvas firstPersonCanvas_bm"></canvas>
+                <canvas class="firstPersonCanvas firstPersonCanvas_br"></canvas>
+                <canvas class="firstPersonMap"></canvas>
+                <canvas class="extraCanvas"></canvas>
+            </div>
+            <div class="game_cc_playerItems">
 
-        <div class="boardStatusHolder"></div>
+            </div>
+        </div>
+        <div class="game_column">
+            <div class="game_c1_extra"></div>
+            <div class="game_c1_stats"></div>
+        </div>
 
-        <div id="playerCardsHolder"></div>
+        
         <div class="pauseGamePopup">
             <div class="title">Paused</div>
             <div class="pixel" id="button_playAgain"><p>Restart</p></div>

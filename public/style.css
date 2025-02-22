@@ -23,33 +23,6 @@ html {
     height: 100%;
     align-items: center;
 }
-.firstPersonCanvas {
-  display: none;
-  position: absolute;
-  background: white;
-}
-.firstPersonCanvas_master {
-  visibility: hidden;
-}
-.game_canvas {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  margin: auto;
-}
-.singlePlayerCanvas {
-  margin: 0 !important;
-  transition: all .4s ease;
-}
-.boardStatusHolder {
-  position: absolute;
-  height: 60px;
-  display: flex;
-  flex-direction: row;
-  z-index: 1000;
-}
 .edit_canvas {
     position: absolute;
     left: 0;
@@ -1523,81 +1496,6 @@ html {
   z-index: 500;
   pointer-events: none;
 }
-.playercard_holder {
-  position: absolute;
-}
-.playercard_background {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: -1;
-}
-.playercard_leftStats {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.playercard_text {
-  font-size: 20px;
-  color: black;
-}
-.playercard_left_row1 {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-evenly;
-  width: 100%;
-}
-.playercard_playerImgHolder {
-  width: 40%;
-  aspect-ratio: 1/.7;
-  border: 3px solid black;
-}
-.playercard_playerImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  margin-top: 2px;
-}
-.playercard_left1_col_size {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.playercard_inventory {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 90%;
-}
-.playercard_inventory_row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  flex-grow: 1;
-}
-.playercard_inventory_slot {
-  flex: 1 1 0px; /* Prevent shrinking */
-  min-width: 0;  /* Ensures flex items shrink properly */
-  min-height: 0; 
-  border: 3px solid black;
-  aspect-ratio: 1/1;
-  display: flex; /* Ensures image fills the slot */
-  align-items: center;
-  justify-content: center;
-  overflow: hidden; /* Ensures image doesn't affect layout */
-}
-.playercard_invetory_slot_selected {
-  border: 3px solid gold !important;
-
-}
-.playercard_inventory_image {
-  width: 100%;
-  height: 100%;
-}
 
 .servers_online_holder {
   display: flex;
@@ -2321,4 +2219,172 @@ html {
   font-size: 23px;
   max-width: 420px;
   color: white;
+}
+
+
+
+
+
+
+.scene_game {
+  flex-direction: column;
+
+}
+.game_topRow {
+  width: 100%;
+  background-color: #3e3e3e;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.boardStatusHolder {
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.game_column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 15%;
+  border: 1px solid red;
+}
+.game_c1_playerIcon {
+  border: 1px solid rgb(17, 0, 255);
+  width: 100%;
+  height: 25%;
+
+}
+.game_column_canvas {
+  width: 70%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid red;
+}
+.game_cc_game {
+  width: 100%;
+  height: 85%;
+  position: relative;
+}
+.firstPersonCanvas {
+  display: none;
+  position: absolute;
+  background: white;
+}
+.firstPersonCanvas_master {
+  visibility: hidden;
+}
+.game_canvas {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+}
+.singlePlayerCanvas {
+  margin: 0 !important;
+  transition: all .4s ease;
+}
+.game_cc_playerItems {
+  width: 100%;
+  height: 15%;
+  border: 1px solid rgb(17, 0, 255);
+}
+.game_c1_extra {
+  border: 1px solid rgb(17, 0, 255);
+  width: 100%;
+  height: 75%;
+
+}
+.game_c1_stats {
+  border: 1px solid rgb(17, 0, 255);
+  width: 100%;
+  height: 25%;
+
+}
+
+
+.playercard_holder {
+  width: 100%;
+  height: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  border: 1px solid rgb(17, 0, 255);
+}
+.playercard_background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+}
+.playercard_leftStats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.playercard_text {
+  font-size: 20px;
+  color: black;
+}
+.playercard_left_row1 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+.playercard_playerImgHolder {
+  width: 40%;
+  aspect-ratio: 1/.7;
+  border: 3px solid black;
+}
+.playercard_playerImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin-top: 2px;
+}
+.playercard_left1_col_size {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.playercard_inventory {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+}
+.playercard_inventory_row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  flex-grow: 1;
+}
+.playercard_inventory_slot {
+  flex: 1 1 0px; /* Prevent shrinking */
+  min-width: 0;  /* Ensures flex items shrink properly */
+  min-height: 0; 
+  border: 3px solid black;
+  aspect-ratio: 1/1;
+  display: flex; /* Ensures image fills the slot */
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Ensures image doesn't affect layout */
+}
+.playercard_invetory_slot_selected {
+  border: 3px solid gold !important;
+
+}
+.playercard_inventory_image {
+  width: 100%;
+  height: 100%;
 }
