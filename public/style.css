@@ -1100,6 +1100,7 @@ html {
 }
 .servers_button:hover {
   background: #a0a0a0;
+  transform: scale(1.1);
 
 }
 .servers_button_inactive { 
