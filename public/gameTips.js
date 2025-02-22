@@ -8,7 +8,7 @@ function showGameTips() {
     let obj,imgSrc;
     if (tip.type == "items") {
         obj = getRealItem(tip.name);
-        let imageSRC = getImageFromItem(item,false);
+        let imageSRC = getImageFromItem(obj,false);
         imgSrc = $("item_" + imageSRC).src;
     }
     if (tip.type == "tiles") obj = getTile(tip.name);
