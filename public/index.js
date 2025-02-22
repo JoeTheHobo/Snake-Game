@@ -207,7 +207,7 @@ socket.on("askToSpectate",(lobbyID,code) => {
         {type: "title",text: "Lobby Is In A Round"},
         
         [
-            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "black",text:"Don't Join"},
+            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "black",text:"Quit"},
             {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "black",text:"Spectate", onClick: function() {
                 socket.emit("joinLobby",lobbyID,code,true);
             }},

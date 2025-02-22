@@ -2240,10 +2240,11 @@ html {
   text-decoration: line-through;
 }
 .server_isInGame {
-  height: 70%;
-  font-size: 20px;
+  height: 67%;
+  font-size: 18px;
   border-radius: 10px;
   background: rgb(206, 30, 30);
   color: white;
   margin-left: 15px;
+  padding: 2px;
 }
