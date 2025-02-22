@@ -12,6 +12,7 @@ let updateSnakeCells = [];
 
 let activePlayers;
 let activePlayerCount = [];
+let showingGameTips = false;
 //End Players
 
 
@@ -617,6 +618,12 @@ function setScene(scene,lobby) {
         if (localAccount.id != lobby.host){
             $("button_startGame").hide();
         }
+    }
+    if (scene == "lobby") {
+        showingGameTips = true;
+        showGameTips();
+    } else {
+        showingGameTips = false;
     }
 }
 
