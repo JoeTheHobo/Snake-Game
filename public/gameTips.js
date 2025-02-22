@@ -27,7 +27,8 @@ function showGameTips() {
         setTimeout(function() {
             holder.classRemove("show");
             holder.classAdd("hide");
-            if (showingGameTips) showGameTips();
+            if (!showingGameTips) return;
+            setTimeout(showGameTips,1000)
         },15000);
     },3000);
 }
