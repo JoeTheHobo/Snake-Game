@@ -1267,7 +1267,10 @@ function setGameScene(players) {
 
         let img = div.create("img");
         img.className = "game_cc_pi_item_wallIMG";
-        img.src = "img/gameUI/wallItemWhole.png";
+        img.src = "img/gameUI/WallItemWindow.png";
+        let img2 = div.create("img");
+        img2.className = "game_cc_pi_item_wallIMG2";
+        img2.src = "img/gameUI/windowBackground.png";
 
         let itemImg = div.create("img");
         itemImg.className = "game_cc_pi_item_img";
@@ -1278,10 +1281,18 @@ function setGameScene(players) {
 }
 function updateGameScene(player) {
 
+    $(".game_cc_pi_item_wallIMG2").css({
+        filter: "none",
+    })
     //Updating Inventory
     for (let i = 0; i < player.items.length; i++) {
         let holder = $("inventory_slot_" + i);
         let item = player.items[i];
+
+        if (player.selectingItem === i) holder.$(".game_cc_pi_item_wallIMG2").css({
+            filter: "brightness(1.75)",
+        })
+
         if (item == "empty") {
             holder.$(".game_cc_pi_item_img").src = "img/backgrounds/clear.png";
             continue;
