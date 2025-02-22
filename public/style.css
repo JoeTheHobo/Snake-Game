@@ -2249,9 +2249,10 @@ flex-direction: row;
   height: 100%;
   width: 15%;
   background:#8bc4e2;
-  align-items: flex-end;
 }
 .game_c1_playerIcon {
+  display: flex;
+  align-items: flex-end;
   position: relative;
   width: 100%;
   z-index: 1;
