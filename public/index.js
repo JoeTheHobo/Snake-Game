@@ -132,6 +132,7 @@ socket.on("endGame",(obj,lobbyID) => {
     let seconds = obj.seconds;
     let longestTail = obj.longestTail;
     let mostKills = obj.mostKills;
+    let winningPlayer = obj.winningPlayer;
 
     $(".longestTimePlayerImg").style.filter = `hue-rotate(${timeSurvivedPlayer.color}deg) sepia(${timeSurvivedPlayer.color2}%) contrast(${timeSurvivedPlayer.color3}%)`;
     $(".longestTailPlayerImg").style.filter = `hue-rotate(${longestTailPlayer.color}deg) sepia(${longestTailPlayer.color2}%) contrast(${longestTailPlayer.color3}%)`;
@@ -150,6 +151,11 @@ socket.on("endGame",(obj,lobbyID) => {
     }
 
     $("winnerStat").hide();
+    if (winningPlayer) {
+        $("winnerStat").show("flex");
+        $(".winnerPlayerImg").style.filter = `hue-rotate(${winningPlayer.color}deg) sepia(${winningPlayer.color2}%) contrast(${winningPlayer.color3}%)`;
+        $(".engGame_playerNameWinner").innerHTML = winningPlayer.accountName;
+    }
 
     showEndScreen()
 })

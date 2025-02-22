@@ -811,6 +811,7 @@ io.on('connection', (socket) => {
             player.turboDuration = 0;
             player.turboActive = false;
             player.shield = 0;
+            player.winGame = false;
             
             player.playerKills = 0;
             player.index = i;
@@ -872,29 +873,35 @@ io.on('connection', (socket) => {
             server_movePlayers(this)
             this.lastTimestamp = timestamp;
 
-            if (onlineAccounts[socket.id]) {
-                emitingActivePlayers = Object.values(this.activePlayers).map(({ index, selectingItem, items, tail,moving,shield }) => ({
-                    index,
-                    selectingItem,
-                    items,
-                    tailLength: tail.length + 1,
-                    moving,
-                    shield,
-                }));
+            emitingActivePlayers = Object.values(this.inGamePlayers).map(({ index, selectingItem, items, tail,moving,shield }) => ({
+                index,
+                selectingItem,
+                items,
+                tailLength: tail.length + 1,
+                moving,
+                shield,
+            }));
 
-                io.emit("updatePositions",{
-                    updatedPlayers: emitingActivePlayers,
-                    updateSnakeCells: this.updateSnakeCells,
-                    updateCells: this.updateCells,
-                },this.id)
-            }
+            io.emit("updatePositions",{
+                updatedPlayers: emitingActivePlayers,
+                updateSnakeCells: this.updateSnakeCells,
+                updateCells: this.updateCells,
+            },this.id)
+
             this.updatePositionTimeStamp = timestamp;
             this.updateSnakeCells = [];
             this.updateCells = [];
             
+            //Check If Anyone Got The Crown
+            let winningPlayer = false;
+            for (let i = 0; i < this.inGamePlayers.length; i++) {
+                if (this.inGamePlayers[i].winGame) {
+                    winningPlayer = this.inGamePlayers[i];
+                    break;
+                }
+            }
 
-
-            if (!this.gameEnd) {
+            if (!this.gameEnd && !winningPlayer) {
                 setTimeout(() => this.gameLoop(), 60);
             } else {
                 this.isActiveGame = false;
@@ -943,6 +950,7 @@ io.on('connection', (socket) => {
                     mostKillsPlayer: mostKillsPlayer,
                     minutes: minutes,
                     seconds: seconds,
+                    winningPlayer: winningPlayer,
                 },lobby.id)
 
                 
@@ -1693,7 +1701,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         player.shield = collision.shield;
     }
     if (collision.winGame === true) {
-        endScreen(player);
+        player.winGame = true;
     }
     if (collision.canvasFilter?.active == true) {
         ctx_players.filter = collision.canvasFilter.filter;

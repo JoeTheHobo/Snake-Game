@@ -1011,7 +1011,6 @@ function endScreen(player = false) {
         $("winnerStat").show("flex");
         $(".winnerPlayerImg").style.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
         $(".engGame_playerNameWinner").innerHTML = player.name;
-
     }
 }
 function deletePlayer(player,playerWhoKilled,item,instaKill = false){
