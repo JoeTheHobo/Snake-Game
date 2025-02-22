@@ -40,7 +40,7 @@ gameTips.push({
 gameTips.push({
     type: "items",
     name: "turbo",
-    tip: "Pick up Turbo And Active To Speed Up Your Snake!",
+    tip: "Pick up Turbo And Activate To Speed Up Your Snake!",
 })
 gameTips.push({
     type: "items",
@@ -50,7 +50,7 @@ gameTips.push({
 gameTips.push({
     type: "items",
     name: "bronzeShield",
-    tip: "Pick Up Shield And Active To Protect Yourself!",
+    tip: "Pick Up Shield And Activate To Protect Yourself!",
 })
 gameTips.push({
     type: "items",
@@ -81,4 +81,24 @@ gameTips.push({
     type: "items",
     name: "flag",
     tip: "You can set the flag to your team color!",
+})
+gameTips.push({
+    type: "tiles",
+    name: "sand",
+    tip: "Sand tiles slow you down",
+})
+gameTips.push({
+    type: "tiles",
+    name: "water",
+    tip: "Water tiles slow you down",
+})
+gameTips.push({
+    type: "tiles",
+    name: "pathway",
+    tip: "Pathway tiles slow you down",
+})
+gameTips.push({
+    type: "tiles",
+    name: "Piano",
+    tip: "You can play music with piano tiles!",
 })
