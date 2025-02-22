@@ -2,14 +2,8 @@ let gameTips = [];
 
 function showGameTips() {
     let holder = $(".gameTipHolder");
-    holder.css({
-        display: "none",
-        trasnition: "none",
-    })
-    holder.offsetWidth; //Buffer
-    holder.css({
-        left: window.innerWidth + "px",
-    })
+    holder.classRemove("show");
+    holder.classAdd("hide");
 
     let tip = gameTips.rnd();
     let obj,imgSrc;
@@ -27,20 +21,15 @@ function showGameTips() {
     $(".gameTip_tip").innerHTML = obj.tip;
     
     setTimeout(function() {
-        holder.css({
-            display: "flex",
-            trasnition: "all 1s ease-in-out",
-            left: "auto",
-        })
-        holder.offsetWidth; //Buffer
-        holder.css({
-            right: 0,
-        })
+        holder.classRemove("hide");
+        holder.classAdd("show");
 
         setTimeout(function() {
+            holder.classRemove("show");
+            holder.classAdd("hide");
             if (showingGameTips) showGameTips();
         },15000);
-    },5000);
+    },3000);
 }
 
 gameTips.push({

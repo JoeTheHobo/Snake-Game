@@ -2278,12 +2278,24 @@ html {
 .gameTipHolder {
   position: absolute;
   z-index: 500;
-  right: 20px;
+  right: -100%;
   top: 20px;
-  display: flex;
   visibility: hidden;
   flex-direction: row;
   align-items: center;
+  padding: 5px;
+  background: rgb(43, 43, 43);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  transition: transform 0.5s ease-in-out;
+}
+.gameTipHolder.show {
+  transform: translateX(-100%);
+  display: flex;
+}
+
+.gameTipHolder.hide {
+  transform: translateX(0);
+  display: none;
 }
 .gameTip_left {
   width: 100px;
