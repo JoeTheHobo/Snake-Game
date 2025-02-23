@@ -120,11 +120,10 @@ function loadServerCreation() {
         {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", className: "playButtonSounds", background: "black",text:"Host Server", onClick: function(parentIDS,param,button) {
             const {hidden, public, private, input} = parentIDS;
             let serverType = false;
-            if (hidden.style.background === "#8bc4e2") serverType = "Hidden";
-            if (public.style.background === "#8bc4e2") serverType = "Public";
-            if (private.style.background === "#8bc4e2") serverType = "Private";
+            if (hidden.style.background === "rgb(139, 196, 226)") serverType = "Hidden";
+            if (public.style.background === "rgb(139, 196, 226)") serverType = "Public";
+            if (private.style.background === "rgb(139, 196, 226)") serverType = "Private";
 
-            console.log(hidden,public,private)
             let code = input.value;
             if (code === "") code = rnd(1000,9999);
 
