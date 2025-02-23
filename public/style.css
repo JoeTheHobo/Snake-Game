@@ -2619,16 +2619,10 @@ height: 100%;
 }
 
 
-.adfsholder {
-  position: absolute;
-  left: 0;
-  top: 50px;
-
-}
 .game_c2_stats {
   position: relative;
   display: flex;
-  width: 300px;
+  width: 100%;
   aspect-ratio: 277/294;
   z-index: 1000;
   box-sizing: border-box;
