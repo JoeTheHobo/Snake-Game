@@ -2132,7 +2132,7 @@ margin-left: 5px;
 .game_c2_info_text {
   width: 100%;
   text-align: center;
-  font-size: 3vw;
+  font-size: 2vw;
 
 }
 .numbersPopup {
@@ -2144,7 +2144,7 @@ margin-left: 5px;
 }
 .np_img_holder {
   position: absolute;
-  width: 90%;
+  width: 60%;
   aspect-ratio: 1/1;
 }
 .np_img {
