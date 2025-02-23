@@ -1446,7 +1446,7 @@ function updateBoardStatusTracker(statusList) {
         hotAirHolder.id = "hotAir_" + addStatus[i];
         let img = hotAirHolder.create("img");
         img.className = "hotAirImg";
-        img.src = "img/gameUI/hotair_" + addStatus[i] + ".png";
+        img.src = "img/gameUI/hotAir_" + addStatus[i] + ".png";
         let text = hotAirHolder.create("div");
         text.className = "hotAirText";
         text.innerHTML = allStatus[addStatus[i]].count;
@@ -1463,7 +1463,7 @@ function updateBoardStatusTracker(statusList) {
         },1000);
     }
 
-    oldBoardStatus = allStatus;
+    oldBoardStatus = structuredClone(allStatus);
 }
 function updateGameFlags(player) {
     let flag = $("playercard_" + player.index);
