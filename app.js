@@ -329,7 +329,6 @@ function formatNumber(num) {
  
 const { timeStamp } = require('console');
 const express = require('express');
-const LZString = require("lz-string");
 const app = express();
 
 //socket.io setup
@@ -757,6 +756,15 @@ io.on('connection', (socket) => {
             }, {});
         io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
     })
+    socket.on("updateClientPositions",(updatedPlayers,updateSnakeCells,updateCells,playSounds,boardStatus,lobbyID) => {
+        io.emit("updatePositions",{
+            updatedPlayers: updatedPlayers,
+            updateSnakeCells: updateSnakeCells,
+            updateCells: updateCells,
+            playSounds: playSounds,
+            boardStatus: boardStatus,
+        },lobbyID)
+    })
     socket.on("startGame", () =>{
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;
@@ -885,13 +893,8 @@ io.on('connection', (socket) => {
             shield,
             playerKills,
         }));
-        io.emit("updatePositions",{
-            updatedPlayers: emitingActivePlayers,
-            updateSnakeCells: lobby.updateSnakeCells,
-            updateCells: lobby.updateCells,
-            playSounds: [],
-            boardStatus: lobby.board.boardStatus,
-        },lobby.id)
+        
+        socket.listeners("updateClientPositions")[0](emitingActivePlayers,lobby.updateSnakeCells,lobby.updateCells,[],lobby.board.boardStatus,lobby.id);
 
         lobby.gameLoop = function() {
             let timestamp = Date.now();
@@ -909,13 +912,7 @@ io.on('connection', (socket) => {
                 playerKills,
             }));
 
-            io.emit("updatePositions",{
-                updatedPlayers: emitingActivePlayers,
-                updateSnakeCells: this.updateSnakeCells,
-                updateCells: this.updateCells,
-                playSounds: this.playSounds,
-                boardStatus: lobby.board.boardStatus,
-            },this.id)
+            socket.listeners("updateClientPositions")[0](emitingActivePlayers,this.updateSnakeCells,this.updateCells,this.playSounds,this.board.boardStatus,this.id);
 
             this.updatePositionTimeStamp = timestamp;
             this.updateSnakeCells = [];
@@ -1033,13 +1030,7 @@ io.on('connection', (socket) => {
 
             lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);
 
-            io.emit("updatePositions",{
-                updatedPlayers: emitingActivePlayers,
-                updateSnakeCells: lobby.updateSnakeCells,
-                updateCells: lobby.updateCells,
-                boardStatus: [],
-                playSounds: [],
-            },lobby.id)
+            socket.listeners("updateClientPositions")[0](emitingActivePlayers,lobby.updateSnakeCells,lobby.updateCells,[],[],lobby.id);
             
             return;
         }
