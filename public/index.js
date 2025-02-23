@@ -183,9 +183,9 @@ socket.on("startingGame", (lobby) => {
     serverGameLoop();
 
     let color = _color(getAverageCanvasColor(canvas_tiles)).darken(10).ogColor;
-    console.log(color)
     document.body.style.background = color;
     
+    io.emit("snakeIsReady");
 
 })
 socket.on("endGame",(obj,lobbyID) => {

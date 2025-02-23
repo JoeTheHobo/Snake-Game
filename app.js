@@ -783,6 +783,7 @@ io.on('connection', (socket) => {
         lobby.board.map = structuredClone(lobby.board.originalMap);
 
         lobby.isInGame = true;
+        lobby.readyPlayers = [];
         lobby.board.doColorRender = false;
         lobby.specialItemIteration = 0;
         lobby.specialItemActiveChance = 4;
@@ -1005,13 +1006,6 @@ io.on('connection', (socket) => {
         }
 
         lobby.gameStatus = "prepare";
-        io.emit("preparingGame",lobby.id);
-        setTimeout(function() {
-            lobby.gameStatus = "game";
-            lobby.gameLoop();
-        },4000)
-        
-        //lobby.timerLoop();
         
         let lobbyList = Object.values(lobbies)
             .filter(lobby => lobby.serverType !== "Hidden")
@@ -1022,6 +1016,23 @@ io.on('connection', (socket) => {
         io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
 
     })
+    socket.on("snakeIsReady", () => {
+        let account = onlineAccounts[socket.id];
+        let lobby = lobbies[account.lobby];
+        if (!lobby) return;
+        if (!lobby.isInGame) return;
+
+        lobby.readyPlayers.push(socket.id);
+
+        if (lobby.readyPlayers.length === lobby.inGamePlayers) {
+            io.emit("preparingGame",lobby.id);
+            setTimeout(function() {
+                lobby.gameStatus = "game";
+                lobby.gameLoop();
+            },4000)
+        }
+
+    });
     socket.on("movePlayerKey",(direction) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         let player = onlineAccounts[socket.id].player;
