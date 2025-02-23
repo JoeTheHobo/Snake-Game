@@ -1421,10 +1421,8 @@ function updateBoardStatusTracker(statusList) {
     let availableSpots = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
     availableSpots = availableSpots.shuffle();
     for (let i = 0; i < global_gameColors.length; i++) {
-        let color = global_gameColors[0];
-
-        console.log(color,allStatus[color])
-
+        let color = global_gameColors[i][0];
+        
         if (oldBoardStatus[color] === 0 && allStatus[color].count > 0) addStatus.push(color);
         if (allStatus[color].count === 0 && oldBoardStatus[color] > 0) removeStatus.push(color);
         if (allStatus[color].count !== oldBoardStatus[color]) updateStatus.push(color);
