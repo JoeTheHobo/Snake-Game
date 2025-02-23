@@ -1452,6 +1452,7 @@ function updateBoardStatusTracker(statusList) {
         text.innerHTML = allStatus[addStatus[i]].count;
     }
     for (let i = 0; i < updateStatus.length; i++) {
+        console.log("hotAir_" + removeStatus[i]);
         let hotAirHolder = $("hotAir_" + removeStatus[i]);
         if (hotAirHolder)
             hotAirHolder.$(".hotAirText").innerHTML = allStatus[updateStatus[i]].count;
