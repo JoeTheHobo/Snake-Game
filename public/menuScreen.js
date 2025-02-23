@@ -922,7 +922,10 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
     let deletehtml = `<div class="gameModes_settings_title">Danger Zone</div>
     <div class="gameModes_fullWidth hover"><div class="gameModes_deleteButton">Delete Game Mode</div></div>`;
     if (server) deletehtml = ``;
+    let returnhtml = `<div class="gameModes_fullWidth hover"><div class="gameModes_returnButton">Exit Game Mode Customization</div></div>`;
+    if (!server) returnhtml = ``;
     html_gameModesHolder.innerHTML = `
+        ${returnhtml}
         <div class="gameModes_settings_title">General Settings</div>
         <div class="settingsHolder"></div>
         <div class="gameModes_settings_title">Item Settings</div>
@@ -956,6 +959,10 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
                     
                 }
             }
+        })
+    } else {
+        $(".gameModes_returnButton").on("click",function() {
+            $(".customizeGamemodePopup").hide();
         })
     }
     

@@ -528,6 +528,19 @@ display: flex;
 align-items: center;
 justify-content: center;
 }
+.gameModes_returnButton {
+  width: 60%;
+  height: 50px;
+  border-radius: 5px;
+  user-select: none;
+  background: #000000;
+  text-align: center;
+  line-height: 50px;
+  font-size: 30px;
+  color: rgb(255, 255, 255);
+  cursor: url('./img/pointer.cur'), auto;
+
+}
 .gameModes_deleteButton {
 width: 60%;
 height: 50px;
