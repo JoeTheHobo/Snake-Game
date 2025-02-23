@@ -2340,6 +2340,7 @@ transition: all .4s ease;
   width: 100%;
   flex-grow: 1;
   z-index: 1;
+  overflow: hidden;
   position: relative;
 }
 .sc_boards_boardName {
@@ -2734,7 +2735,8 @@ height: 100%;
   box-sizing: border-box;
 }
 .hotAirHide {
-  left: 0px;
+  left: 0px !important;
+  transform: translateX(-100%);
 }
 .hotAirPos1 {
   top: 2%;
