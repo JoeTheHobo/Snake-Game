@@ -246,7 +246,7 @@ function showNumber(index) {
 
 }
 socket.on("finishPingTest",(ping) => {
-    production.ping.times.push(sizeInBytes);
+    production.ping.times.push(ping);
 })
 socket.on("updatePositions",(obj,lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;
