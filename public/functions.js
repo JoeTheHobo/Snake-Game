@@ -1304,19 +1304,21 @@ function setGameScene(players) {
         clone.style.display = "flex";
         clone.style.width = ($("playerCardsHolder").offsetWidth-5) + "px";
 
-        flagHolder.appendChild(clone);
-        let flag = $("playercard_" + player.index);
+        clone.querySelector(".pc_c1_img").style.filter = getPlayerFilter(player);
 
-        flag.$(".pc_c1_img").style.filter = getPlayerFilter(player);
-        flag.$(".pc_c1_minutes").innerHTML = "00";
-        flag.$(".pc_c1_seconds").innerHTML = "00";
-        flag.$(".pc_c1_name").innerHTML = player.accountName;
-        flag.$(".pc_c1_points").innerHTML = 0;
-        flag.$(".pc_c1_length").innerHTML = 1;
-        flag.$(".pc_c1_kills").innerHTML = 0;
-        flag.$(".pc_c2_headImg").src = "";
-        flag.$(".pc_c2_bodyImg").src = "";
-        flag.$(".pc_c2_tailImg").src = "";
+        clone.querySelector(".pc_c1_minutes").innerHTML = "00";
+        clone.querySelector(".pc_c1_seconds").innerHTML = "00";
+        clone.querySelector(".pc_c1_name").innerHTML = player.accountName;
+        clone.querySelector(".pc_c1_points").innerHTML = 0;
+        clone.querySelector(".pc_c1_length").innerHTML = 1;
+        clone.querySelector(".pc_c1_kills").innerHTML = 0;
+
+        clone.querySelector(".pc_c2_headImg").src = "";
+        clone.querySelector(".pc_c2_bodyImg").src = "";
+        clone.querySelector(".pc_c2_tailImg").src = "";
+        
+
+        flagHolder.appendChild(clone);
     }
 
 
