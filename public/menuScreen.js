@@ -917,7 +917,7 @@ function loadGameModesScreen(index = false) {
 }
 
 function editGameMode(holder2,gameMode,htmlName,server = false) {
-    if (gameMode.cantEdit) return;
+    if (gameMode.cantEdit && !server) return;
     let html_gameModesHolder = holder2;
     let deletehtml = `<div class="gameModes_settings_title">Danger Zone</div>
     <div class="gameModes_fullWidth hover"><div class="gameModes_deleteButton">Delete Game Mode</div></div>`;
