@@ -2068,8 +2068,8 @@ function newPlayer(socketID,accountName,accountTag) {
         fireItem: "r",
         name: playerNames1.rnd() + playerNames2.rnd(),
         color: rnd(360), //Hue
-        color2: 0, //Brightness
-        color3: 100, //Contrast
+        color2: rnd(300), //Saturation
+        color3: rnd(20,200), //Brightness
         moving: false,
         growTail: 0,
         isDead: false,
@@ -2105,8 +2105,8 @@ function checkPlayer(player,socketID) {
     if (Number(player.color) < 0) return "color-1";
     if (Number(player.color) > 360) return "color-2";
     if (Number(player.color2) < 0) return "color2-1";
-    if (Number(player.color2) > 1000) return "color2-2";
-    if (Number(player.color3) < 0) return "color3-1";
+    if (Number(player.color2) > 300) return "color2-2";
+    if (Number(player.color3) < 20) return "color3-1";
     if (Number(player.color3) > 200) return "color3-2";
 
     if (player.accountID !== socketID) return "socketId-1" + player.accountID + "," + socketID;

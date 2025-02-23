@@ -223,7 +223,7 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
                 {type: "text",text: "Hue"},
                 {type: "slider", value: ".color",min: 0, max: 360,bind: {key: "color",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
                 {type: "text",text: "Saturation"},
-                {type: "slider", value: ".color2",min: 0, max: 1000,bind: {key: "color2",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
+                {type: "slider", value: ".color2",min: 20, max: 300,bind: {key: "color2",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
                 {type: "text",text: "Brightness"},
                 {type: "slider", value: ".color3",min: 0, max: 200,bind: {key: "color3",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
             ],
