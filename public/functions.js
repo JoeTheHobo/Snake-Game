@@ -1461,7 +1461,7 @@ function updateBoardStatusTracker(statusList) {
 
         setTimeout(function() {
             hotAirHolder.classAdd(`hotAirPos${location}`);
-        },10)
+        },100)
     }
     for (let i = 0; i < updateStatus.length; i++) {
         let hotAirHolder = $("hotAir_" + updateStatus[i]);

@@ -2724,7 +2724,7 @@ height: 100%;
   aspect-ratio: 75/173;
 
   top: 100%;
-  
+
   animation: bobbing 3s ease-in-out infinite;
 
 }
@@ -2746,8 +2746,8 @@ height: 100%;
   box-sizing: border-box;
 }
 .hotAirHide {
-  left: 0px !important;
-  transform: translateX(-100%);
+  left: 0 !important;
+  transform: translateX(-200%);
 }
 .hotAirPos1 {
   top: 2%;
