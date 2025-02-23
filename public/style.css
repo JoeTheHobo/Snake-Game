@@ -2477,6 +2477,7 @@ height: 100%;
 
 
 .pc_holder {
+  position: relative;
   aspect-ratio: 5312/2432;
   display: none;
   flex-direction: row;
