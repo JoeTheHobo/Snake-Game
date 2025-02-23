@@ -1326,14 +1326,14 @@ function setGameScene(players) {
 function updateGameFlags(player) {
     let flag = $("playercard_" + player.index);
 
-    flag.$(".pc_c1_minutes").innerHTML = "00";
-    flag.$(".pc_c1_seconds").innerHTML = "00";
-    flag.$(".pc_c1_points").innerHTML = 0;
-    flag.$(".pc_c1_length").innerHTML = player.tailLength;
-    flag.$(".pc_c1_kills").innerHTML = player.playerKills;
-    flag.$(".pc_c2_headImg").src = "";
-    flag.$(".pc_c2_bodyImg").src = "";
-    flag.$(".pc_c2_tailImg").src = "";
+    flag.querySelector(".pc_c1_minutes").innerHTML = "00";
+    flag.querySelector(".pc_c1_seconds").innerHTML = "00";
+    flag.querySelector(".pc_c1_points").innerHTML = 0;
+    flag.querySelector(".pc_c1_length").innerHTML = player.tailLength;
+    flag.querySelector(".pc_c1_kills").innerHTML = player.playerKills;
+    flag.querySelector(".pc_c2_headImg").src = "";
+    flag.querySelector(".pc_c2_bodyImg").src = "";
+    flag.querySelector(".pc_c2_tailImg").src = "";
 }
 function updateGameScene(player) {
 
