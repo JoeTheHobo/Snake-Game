@@ -9,12 +9,11 @@ function showGameTips() {
     let obj,imgSrc;
     if (tip.type == "items") {
         obj = getRealItem(tip.name);
-        imgSrc = getImageFromItem(obj,"src");
     }
     if (tip.type == "tiles") {
         obj = getTile(tip.name);
-        imgSrc = $("tile_" + tip.name).src;
     }
+    imgSrc = getImageFromItem(tip.type.subset(0,"s\\before"),obj,"src");
 
     $(".gameTip_img").src = imgSrc;
     $(".gameTip_name").innerHTML = tip.name;
