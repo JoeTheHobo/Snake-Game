@@ -1415,8 +1415,6 @@ function updateBoardStatusTracker(statusList) {
         allStatus[statusList[i]].count++;
     }
 
-    console.log(allStatus)
-
     let addStatus = [];
     let removeStatus = [];
     let updateStatus = [];
@@ -1442,6 +1440,7 @@ function updateBoardStatusTracker(statusList) {
     for (let i = 0; i < addStatus.length; i++) {
         let location = availableSpots[0];
         availableSpots.splice(0,1);
+        allStatus[addStatus[i]].location = location;
 
         let hotAirHolder = holder.create("div");
         hotAirHolder.className = `hotAirHolder hotAirPos${location}`;
