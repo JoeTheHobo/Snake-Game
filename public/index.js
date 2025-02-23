@@ -17,7 +17,11 @@ const localAccount = {
     lobbyBoards: [],
 };
 let gameType = "local";
+let serverTimeOffset = 0;
 
+socket.on("server_time", (serverTimestamp) => {
+    serverTimeOffset = serverTimestamp - Date.now(); // Calculate offset
+});
 socket.on("kickPlayer",(playerID,message) => {
     if (playerID !== localAccount.id) return;
     killSwitch = true;

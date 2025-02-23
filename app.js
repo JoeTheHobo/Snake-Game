@@ -756,6 +756,7 @@ io.on('connection', (socket) => {
             }, {});
         io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
     })
+    socket.emit("server_time", Date.now());
     socket.on("ping_test", (timestamp) => {
         const latency = Date.now() - timestamp;
         io.emit("finishPingTest",latency);
