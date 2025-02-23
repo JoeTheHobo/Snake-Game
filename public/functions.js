@@ -1302,6 +1302,7 @@ function setGameScene(players) {
         clone.id = "playercard_" + player.index;
 
         clone.style.display = "flex";
+        clone.style.width = ($("playerCardsHolder").offsetWidth-5) + "px";
 
         clone.$(".pc_c1_img").style.filter = getPlayerFilter(player);
 
@@ -1323,6 +1324,7 @@ function setGameScene(players) {
 }
 function updateGameFlags(player) {
     let flag = $("playercard_" + player.index);
+    console.log(flag)
 
     flag.$(".pc_c1_minutes").innerHTML = "00";
     flag.$(".pc_c1_seconds").innerHTML = "00";
