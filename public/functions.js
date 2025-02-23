@@ -1424,7 +1424,6 @@ function updateBoardStatusTracker(statusList) {
         let color = global_gameColors[i][0];
         if (color == "white") continue;
 
-        console.log(oldBoardStatus[color].count,allStatus[color].count);
         if (oldBoardStatus[color].count === 0 && allStatus[color].count > 0) addStatus.push(color);
         if (allStatus[color].count === 0 && oldBoardStatus[color].count > 0) removeStatus.push(color);
         if (allStatus[color].count !== oldBoardStatus[color].count) updateStatus.push(color);
@@ -1436,6 +1435,8 @@ function updateBoardStatusTracker(statusList) {
             }
         }
     }
+
+    console.log(addStatus,removeStatus,updateStatus)
 
 
     for (let i = 0; i < addStatus.length; i++) {
