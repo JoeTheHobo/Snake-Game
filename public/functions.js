@@ -1304,6 +1304,8 @@ function setGameScene(players) {
         clone.style.display = "flex";
         clone.style.width = ($("playerCardsHolder").offsetWidth-5) + "px";
 
+        let playersTeam = findPlayersTeam(player);
+        clone.$(".pc_banner").src = "img/status/playerCard_" + playersTeam + "_left.png";
         clone.$(".pc_c1_img").style.filter = getPlayerFilter(player);
 
         clone.$("pc_c1_minutes").innerHTML = "00";
@@ -1313,9 +1315,9 @@ function setGameScene(players) {
         clone.$("pc_c1_length").innerHTML = 1;
         clone.$("pc_c1_kills").innerHTML = 0;
 
-        clone.$("pc_c2_headImg").src = "";
-        clone.$("pc_c2_bodyImg").src = "";
-        clone.$("pc_c2_tailImg").src = "";
+        clone.$("pc_c2_headImg").src = "img/backgrounds/clear.png";
+        clone.$("pc_c2_bodyImg").src = "img/backgrounds/clear.png";
+        clone.$("pc_c2_tailImg").src = "img/backgrounds/clear.png";
         
 
         flagHolder.appendChild(clone);
@@ -1326,14 +1328,18 @@ function setGameScene(players) {
 function updateGameFlags(player) {
     let flag = $("playercard_" + player.index);
 
+    let playersTeam = findPlayersTeam(player);
+    if (flag.$(".pc_banner").src !== "img/status/playerCard_" + playersTeam + "_left.png")
+        flag.$(".pc_banner").src = "img/status/playerCard_" + playersTeam + "_left.png";
+
     flag.$("pc_c1_minutes").innerHTML = "00";
     flag.$("pc_c1_seconds").innerHTML = "00";
     flag.$("pc_c1_points").innerHTML = 0;
     flag.$("pc_c1_length").innerHTML = player.tailLength;
     flag.$("pc_c1_kills").innerHTML = player.playerKills;
-    flag.$("pc_c2_headImg").src = "";
-    flag.$("pc_c2_bodyImg").src = "";
-    flag.$("pc_c2_tailImg").src = "";
+    flag.$("pc_c2_headImg").src = "img/backgrounds/clear.png";
+    flag.$("pc_c2_bodyImg").src = "img/backgrounds/clear.png";
+    flag.$("pc_c2_tailImg").src = "img/backgrounds/clear.png";
 }
 function updateGameScene(player) {
 
