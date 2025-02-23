@@ -598,15 +598,15 @@ function loadCustomizeSnakeScreen(index = false) {
         [
             {type: "title",text: "Appearance"},
             [
-                [{type: "image", src: "snakeHead.png",filter: "player",tag:"image",width: "200px",height: "200px",background: "white",borderRadius: "5px",}],
+                [{type: "image", src: "snakeHead.png",filter: "player",tag:"image",width: "200px",height: "200px",background: "none",borderRadius: "5px",}],
                 [
                     {type: "text",text: "Snake Name"},
                     {type: "input",value: ".name", tag: "name", bind: {key: "name",type: "!==",value: "",update: {externalKey: "name",type: "innerHTML"}}},
                     {type: "text",text: "Hue"},
                     {type: "slider", value: ".color",min: 0, max: 360,bind: {key: "color",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
-                    {type: "text",text: "Sepia"},
-                    {type: "slider", value: ".color2",min: 0, max: 100,bind: {key: "color2",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
-                    {type: "text",text: "Contrast"},
+                    {type: "text",text: "Saturation"},
+                    {type: "slider", value: ".color2",min: 0, max: 1000,bind: {key: "color2",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
+                    {type: "text",text: "Brightness"},
                     {type: "slider", value: ".color3",min: 0, max: 200,bind: {key: "color3",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
                 ],
             ],
