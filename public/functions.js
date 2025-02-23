@@ -1529,6 +1529,7 @@ function updateLobbyPage(lobby) {
     }
 
     localAccount.lobbyBoard = lobby.board;
+    localAccount.lobbyGamemode = lobby.gameMode;
     currentBoard = lobby.board;
 
     $(".lobbyCode").innerHTML = lobby.code;

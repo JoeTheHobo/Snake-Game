@@ -1841,6 +1841,22 @@ cursor: url('./img/pointer.cur'), auto;
 background-color: #838383;
 font-size: 20px;
 }
+.customizeGamemodePopup {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  display: none;
+  width: 40%;
+  height: 60%;
+  flex-direction: column;
+  border-radius: 5px;
+  background: rgb(26, 26, 26);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  z-index: 1000;
+}
 .customizeSnakePopup {
 position: absolute;
 top: 0;
@@ -2316,6 +2332,9 @@ width: 100%;
 height: 25%;
 
 }
+.sc_boards_boardName {
+
+}
 
 #playerCardsHolder {
   display: flex;
@@ -2323,7 +2342,7 @@ height: 25%;
   flex-grow: 1;
   z-index: 1;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 .playercard_holder {
   position: absolute;

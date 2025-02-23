@@ -916,9 +916,12 @@ function loadGameModesScreen(index = false) {
         });
 }
 
-function editGameMode(holder2,gameMode,htmlName) {
+function editGameMode(holder2,gameMode,htmlName,server = false) {
     if (gameMode.cantEdit) return;
     let html_gameModesHolder = holder2;
+    let deletehtml = `<div class="gameModes_settings_title">Danger Zone</div>
+    <div class="gameModes_fullWidth hover"><div class="gameModes_deleteButton">Delete Game Mode</div></div>`;
+    if (!server) deletehtml = ``;
     html_gameModesHolder.innerHTML = `
         <div class="gameModes_settings_title">General Settings</div>
         <div class="settingsHolder"></div>
@@ -926,33 +929,35 @@ function editGameMode(holder2,gameMode,htmlName) {
         <div class="onSpawnHolder"></div>
         <div class="gameModes_settings_title" id="gameModes_item_selected_name">Nothing Selected</div>
         <div class="gameModes_item_settings"></div>
-        <div class="gameModes_settings_title">Danger Zone</div>
-        <div class="gameModes_fullWidth hover"><div class="gameModes_deleteButton">Delete Game Mode</div></div>
+        
+        ${deletehtml}
         
     `;
 
-    $(".gameModes_deleteButton").on("click",function() {
-        for (let i = 0; i < gameModes.length; i++) {
-            if (gameModes[i].id === gameMode.id) {
-                makePopUp([
-                    {type: "text",text: "Delete " + gameMode.name},
-                    {type: "title",text: "Are You Sure?"},
-                    [
-                        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
-                        {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Delete",onClick: () => {
-                            gameModes.splice(i,1);
-                            holder2.innerHTML = "";
-                            loadGameModesScreen();
-                            saveAllGameModes()
-                        }},
-                    ],
-                ],{
-                    id: "deletePopUp",
-                })
-                
+    if (!server) {
+        $(".gameModes_deleteButton").on("click",function() {
+            for (let i = 0; i < gameModes.length; i++) {
+                if (gameModes[i].id === gameMode.id) {
+                    makePopUp([
+                        {type: "text",text: "Delete " + gameMode.name},
+                        {type: "title",text: "Are You Sure?"},
+                        [
+                            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
+                            {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Delete",onClick: () => {
+                                gameModes.splice(i,1);
+                                holder2.innerHTML = "";
+                                loadGameModesScreen();
+                                saveAllGameModes()
+                            }},
+                        ],
+                    ],{
+                        id: "deletePopUp",
+                    })
+                    
+                }
             }
-        }
-    })
+        })
+    }
     
     function addSetting(title,type,value,func,list) {
         let holder = $(".settingsHolder").create("div");
@@ -995,18 +1000,21 @@ function editGameMode(holder2,gameMode,htmlName) {
         })
         
     }
-    addSetting("Game Mode Name","input",gameMode.name,function(value,input) {
-        if (value !== "")
-        gameMode.name = value;
-        htmlName.innerHTML = value;
-        saveAllGameModes();
-    });
+    if (htmlName) {
+        addSetting("Game Mode Name","input",gameMode.name,function(value,input) {
+            if (value !== "")
+            gameMode.name = value;
+            htmlName.innerHTML = value;
+            saveAllGameModes();
+        });
+    }
     addSetting("Inventory Slots","number",gameMode.howManyItemsCanPlayersUse,function(value,input) {
         if (value < 0) input.value = 0;
         if (value > 10) input.value = 10;
 
         gameMode.howManyItemsCanPlayersUse = value;
-        saveAllGameModes();
+        if (!server) saveAllGameModes();
+        else socket.emit("editServerGameMode",gameMode);
     });
     addSetting("Using Items Type","dropdown",gameMode.mode_usingItemType,function(value) {
         gameMode.mode_usingItemType = value;
@@ -1014,42 +1022,50 @@ function editGameMode(holder2,gameMode,htmlName) {
             $("gm_inventoryslots").value = 2;
             gameMode.howManyItemsCanPlayersUse = 2;
         }
-        saveAllGameModes();
+        if (!server) saveAllGameModes();
+        else socket.emit("editServerGameMode",gameMode);
     },["direct","scroll"]);
     addSetting("Full Inventory","dropdown",gameMode.mode_whenInventoryFullWhereDoItemsGo,function(value) {
         gameMode.mode_whenInventoryFullWhereDoItemsGo = value;
-        saveAllGameModes();
+        if (!server) saveAllGameModes();
+        else socket.emit("editServerGameMode",gameMode);
     },["noPickUp","select","recycle"]);
     addSetting("Snake Vanish On Death","dropdown",gameMode.snakeVanishOnDeath,function(value) {
         gameMode.snakeVanishOnDeath = value == "true" ? true : false;
-        saveAllGameModes();
+        if (!server) saveAllGameModes();
+        else socket.emit("editServerGameMode",gameMode);
     },["true","false"]);
     addSetting("Respawn","dropdown",gameMode.respawn,function(value) {
         gameMode.respawn = value == "true" ? true : false;
-        saveAllGameModes();
+        if (!server) saveAllGameModes();
+        else socket.emit("editServerGameMode",gameMode);
     },["true","false"]);
     addSetting("Respawn Timer (Seconds)","number",gameMode.respawnTimer,function(value,input) {
         if (value < 0) input.value = 0;
         gameMode.respawnTimer = value;
-        saveAllGameModes();
+        if (!server) saveAllGameModes();
+        else socket.emit("editServerGameMode",gameMode);
     });
     addSetting("Respawn Tail %","number",gameMode.respawnGrowth,function(value,input) {
         if (value < 0) input.value = 0;
         if (value > 100) input.value = 100;
         gameMode.respawnGrowth = value;
-        saveAllGameModes();
+        if (!server) saveAllGameModes();
+        else socket.emit("editServerGameMode",gameMode);
     });
     addSetting("Snake Collision","dropdown",gameMode.snakeCollision,function(value) {
         gameMode.snakeCollision = value == "true" ? true : false;
-        saveAllGameModes();
+        if (!server) saveAllGameModes();
+        else socket.emit("editServerGameMode",gameMode);
     },["true","false"]);
     addSetting("Team Collision","dropdown",gameMode.teamCollision,function(value) {
         gameMode.teamCollision = value == "true" ? true : false;
-        saveAllGameModes();
+        if (!server) saveAllGameModes();
+        else socket.emit("editServerGameMode",gameMode);
     },["true","false"]);
 
 
-    let html_onSpawnHolder = $(".onSpawnHolder");
+    let html_onSpawnHolder = html_gameModesHolder.$(".onSpawnHolder");
     let allItems = html_onSpawnHolder.create("div");
     allItems.className = "allItems";
     let itemEditor = html_onSpawnHolder.create("div");
@@ -1075,11 +1091,11 @@ function editGameMode(holder2,gameMode,htmlName) {
             $(".spawn_holder").classRemove("spawn_itemSelected");
             this.holder.classAdd("spawn_itemSelected");
             $("gameModes_item_selected_name").innerHTML = this.item.name;
-            gameMode_editItem(this.item,$(".gameModes_item_settings"),this.gameMode)
+            gameMode_editItem(this.item,$(".gameModes_item_settings"),server,gameMode)
         })
     }
 }
-function gameMode_editItem(item,html_holder,gameMode) {
+function gameMode_editItem(item,html_holder,server,gameMode) {
     html_holder.innerHTML = "";
 
     function addSetting(title,type,value,func,list) {
@@ -1140,48 +1156,56 @@ function gameMode_editItem(item,html_holder,gameMode) {
     addSetting("Spawn Rate","number",item.specialSpawnWeight,function(value) {
         item.specialSpawnWeight = Number(value);
         if (value < 0) return;
-        saveAllGameModes();
+        if (!server) saveAllGameModes();
+        else socket.emit("editServerGameMode",gameMode);
     });
     addSetting("Visible","toggle",item.visible,function(value) {
         item.visible = value;
-        saveAllGameModes();
+        if (!server) saveAllGameModes();
+        else socket.emit("editServerGameMode",gameMode);
     });
     addSetting("Plays Audio","toggle",item.playSounds,function(value) {
         item.playSounds = value;
-        saveAllGameModes();
+        if (!server) saveAllGameModes();
+        else socket.emit("editServerGameMode",gameMode);
     });
 
     if (item.canEat == true && item.onEat.growPlayer > 0 ) {
         addSetting("Grow Player","number",item.onEat.growPlayer,function(value) {
             if (value < 0) return;
             item.onEat.growPlayer = Number(value);
-            saveAllGameModes();
+            if (!server) saveAllGameModes();
+            else socket.emit("editServerGameMode",gameMode);
         });
     }
     if (item.canEat == true) {
         addSetting("Attempt Spawn Random Item","toggle",item.onEat.spawnRandomItem,function(value) {
             item.onEat.spawnRandomItem = value;
-            saveAllGameModes();
+            if (!server) saveAllGameModes();
+            else socket.emit("editServerGameMode",gameMode);
         });
     }
     if (item.canEat == true && item.onEat.shield > 0) {
         addSetting("Give Shield","number",item.onEat.shield,function(value) {
             item.onEat.shield = Number(value);
-            saveAllGameModes();
+            if (!server) saveAllGameModes();
+            else socket.emit("editServerGameMode",gameMode);
         });
     }
     if (item.canEat == true && item.onEat.giveturbo) {
         addSetting("Turbo Duration","number",item.onEat.turbo.duration,function(value) {
         if (value < 0) return;
         item.onEat.turbo.duration = Number(value);
-        saveAllGameModes();
+        if (!server) saveAllGameModes();
+        else socket.emit("editServerGameMode",gameMode);
         });
     }
     if (item.canEat == true && item.onEat.giveturbo) {
         addSetting("Turbo Speed","number",item.onEat.turbo.moveSpeed,function(value) {
         if (value < 0) return;
         item.onEat.turbo.moveSpeed = value;
-        saveAllGameModes();
+        if (!server) saveAllGameModes();
+        else socket.emit("editServerGameMode",gameMode);
         });
     }
 

@@ -85,17 +85,17 @@ gameTips.push({
 gameTips.push({
     type: "tiles",
     name: "sand",
-    tip: "Sand tiles slow you down",
+    tip: "Sand tiles slow you down.",
 })
 gameTips.push({
     type: "tiles",
     name: "water",
-    tip: "Water tiles slow you down",
+    tip: "Water tiles slow you down.",
 })
 gameTips.push({
     type: "tiles",
     name: "pathway",
-    tip: "Pathway tiles slow you down",
+    tip: "Pathway tiles speed you up.",
 })
 gameTips.push({
     type: "tiles",
