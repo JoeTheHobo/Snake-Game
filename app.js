@@ -443,7 +443,6 @@ io.on('connection', (socket) => {
             message: "Lobby Created",
         }];
         lobbies[id].code = lobby.code + "";
-        console.log(lobby.serverType)
         lobbies[id].serverType = lobby.serverType;
         lobbies[id].gameMode = lobby.gameMode;
         lobbies[id].playerMax = 8;

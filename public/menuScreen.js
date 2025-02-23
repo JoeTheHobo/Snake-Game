@@ -123,10 +123,11 @@ function loadServerCreation() {
             if (hidden.style.background === "#8bc4e2") serverType = "Hidden";
             if (public.style.background === "#8bc4e2") serverType = "Public";
             if (private.style.background === "#8bc4e2") serverType = "Private";
+
+            console.log(hidden,public,private)
             let code = input.value;
             if (code === "") code = rnd(1000,9999);
 
-            console.log(serverType)
             let board = shortenBoard(boards[0]);
             let lobby = {
                 board: JSON.stringify(board),
