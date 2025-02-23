@@ -1323,6 +1323,19 @@ function setGameScene(players) {
         flagHolder.appendChild(clone);
     }
 
+    //Setting Up Active Snakes Stats
+    $(".game_c2_playerStatus").src = `img/gameUI/activePlayerInfo_${findPlayersTeam(player)}.png`;
+    $(".game_c2_name").innerHTML = player.accountName;
+
+    $("game_c2_points").innerHTML = 0;
+    $("game_c2_length").innerHTML = 1;
+    $("game_c2_kills").innerHTML = 0;
+    $("game_c2_minutes").innerHTML = "00";
+    $("game_c2_seconds").innerHTML = "00";
+    $(".game_c2_c1_tail").src = "img/backgrounds/clear.png";
+    $(".game_c2_c1_head").src = "img/backgrounds/clear.png";
+    $(".game_c2_c1_body").src = "img/backgrounds/clear.png";
+
 
 }
 function updateGameFlags(player) {
@@ -1362,6 +1375,17 @@ function updateGameScene(player) {
 
         holder.$(".game_cc_pi_item_img").src = getImageFromItem("item",item,"src");
     }
+    //Updating Player Stats
+    if ($(".game_c2_playerStatus").src !== `img/gameUI/activePlayerInfo_${findPlayersTeam(player)}.png`)
+        $(".game_c2_playerStatus").src = `img/gameUI/activePlayerInfo_${findPlayersTeam(player)}.png`;
+    $("game_c2_points").innerHTML = 0;
+    $("game_c2_length").innerHTML = player.tailLength;
+    $("game_c2_kills").innerHTML = player.playerKills;
+    $("game_c2_minutes").innerHTML = "00";
+    $("game_c2_seconds").innerHTML = "00";
+    $(".game_c2_c1_tail").src = "img/backgrounds/clear.png";
+    $(".game_c2_c1_head").src = "img/backgrounds/clear.png";
+    $(".game_c2_c1_body").src = "img/backgrounds/clear.png";
 }
 
 function generatePlayerCards(players) {
