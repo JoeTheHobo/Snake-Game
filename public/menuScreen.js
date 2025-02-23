@@ -126,7 +126,7 @@ function loadServerCreation() {
             let code = input.value;
             if (code === "") code = rnd(1000,9999);
 
-
+            console.log(serverType)
             let board = shortenBoard(boards[0]);
             let lobby = {
                 board: JSON.stringify(board),
