@@ -75,16 +75,75 @@ function loadServersHTML() {
 }
 
 function loadServerCreation() {
-    //let holder = $(".content_servers");
-    //holder.innerHTML = "";
+    
+    makePopUp([
+        {type: "title",text: "Choose Lobby Type", color: "white"},
+        [
+            {type: "button",id:"hidden", cursor: "url('./img/pointer.cur'), auto", width: "100px", className: "playButtonSounds popup_makeServer_button", background: "black",text:"Hidden",onClick: function(parentIDS,params,div) {
+                $(".popup_makeServer_button").css({
+                    background: "black",
+                    color: "white",
+                });
+                div.css({
+                    background: "#8bc4e2",
+                    color: "black",
+                })
+                $(".popup_makeServer_input").show();
+                $(".popup_makeServer_input").value = rnd(1000,9999);
+            }},
+            {type: "button",id:"public",cursor: "url('./img/pointer.cur'), auto", width: "100px", className: "playButtonSounds popup_makeServer_button", background: "#8bc4e2", color: "black",text:"Public",onClick: function(parentIDS,params,div) {
+                $(".popup_makeServer_button").css({
+                    background: "black",
+                    color: "white",
+                });
+                div.css({
+                    background: "#8bc4e2",
+                    color: "black",
+                })
+                $(".popup_makeServer_input").hide();
+            }},
+            {type: "button",id:"private",cursor: "url('./img/pointer.cur'), auto", width: "100px", className: "playButtonSounds popup_makeServer_button", background: "black",text:"Private",onClick: function(parentIDS,params,div) {
+                $(".popup_makeServer_button").css({
+                    background: "black",
+                    color: "white",
+                });
+                div.css({
+                    background: "#8bc4e2",
+                    color: "black",
+                })
 
-    let board = shortenBoard(boards[0]);
+                $(".popup_makeServer_input").show();
+                $(".popup_makeServer_input").value = rnd(1000,9999);
+            }},
+        ],
+        {type: "input", id: "input",display: "none", className: "popup_makeServer_input",},
+        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", className: "playButtonSounds", background: "black",text:"Host Server", onClick: function(parentIDS,param,button) {
+            const {hidden, public, private, input} = parentIDS;
+            let serverType = false;
+            if (hidden.style.background === "#8bc4e2") serverType = "Hidden";
+            if (public.style.background === "#8bc4e2") serverType = "Public";
+            if (private.style.background === "#8bc4e2") serverType = "Private";
+            let code = input.value;
+            if (code === "") code = rnd(1000,9999);
 
-    let lobby = {
-        board: JSON.stringify(board),
-        gameMode: gameModes[0],
-    }
-    updateLobbyToServer(lobby);
+
+            let board = shortenBoard(boards[0]);
+            let lobby = {
+                board: JSON.stringify(board),
+                gameMode: gameModes[0],
+                code: code,
+                serverType: serverType,
+            }
+            updateLobbyToServer(lobby);
+        }},
+    ],{
+        id: "makeServer",
+        exit: {
+            cursor: "url('./img/pointer.cur'), auto",
+        },
+    })
+
+    
 }
 
 function generateHTMLScreen(holder,listObj,contentObj) {
@@ -1006,7 +1065,7 @@ function editGameMode(holder2,gameMode,htmlName) {
         let img = imgHolder.create("img");
         img.className = "spawn_image";
         
-        img.src = getImageFromItem(item,"src");
+        img.src = getImageFromItem("item",item,"src");
 
         imgHolder.gameMode = gameMode;
         imgHolder.item = item;

@@ -182,8 +182,10 @@ function makePopUp(objects,settings = {}) {
                         height: obj.height || "40px",
                         lineHeight: obj.lineHeight || "40px",
                         userSelect: obj.userSelect || "none",
+                        display: obj.display || "block",
 
                         border: obj.border || "none",
+                        outline: obj.outline || "none",
 
                     })
                 }

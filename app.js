@@ -442,8 +442,8 @@ io.on('connection', (socket) => {
             account: null,
             message: "Lobby Created",
         }];
-        lobbies[id].code = (rnd(1000,5000)) + "";
-        lobbies[id].serverType = "Hidden";
+        lobbies[id].code = lobby.code + "";
+        lobbies[id].serverType = lobby.serverType;
         lobbies[id].gameMode = lobby.gameMode;
         lobbies[id].playerMax = 8;
         lobbies[id].lobbyBoards = [];
