@@ -2130,7 +2130,8 @@ margin-left: 5px;
   align-items: center;
 }
 .game_c2_info_text {
-  font-size: 2vw;
+  font-size: 1.6vw;
+  text-align: center;
   font-weight: bold;
   color: #ffffff;
   background: linear-gradient(45deg, #ff6ec7, #ff9a8b); /* Gradient text color */
