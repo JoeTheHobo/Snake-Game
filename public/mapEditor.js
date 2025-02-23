@@ -875,8 +875,10 @@ $("me_button").on("click",function() {
             {type: "title",text: "Save As New Board?"},
             [
                 {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Don't Save To New Board",onClick: () => {
-                    setScene("lobby");
+                    saveBoard();
+                    console.log(currentBoard.originalMap[0][0].tile)
                     socket.emit("changeServerBoard",JSON.stringify(shortenBoard(currentBoard)));
+                    setScene("lobby");
                 }},
                 {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Save To New Board",onClick: () => {
                     saveBoard();
