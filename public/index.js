@@ -185,6 +185,7 @@ socket.on("startingGame", (lobby) => {
     renderCells();
     setGameScene(activePlayers);
     serverGameLoop();
+    generatePreGamePlayerInfo(activePlayers);
 
     let color = _color(getAverageCanvasColor(canvas_tiles)).darken(10).ogColor;
     document.body.style.background = color;
@@ -192,6 +193,35 @@ socket.on("startingGame", (lobby) => {
     socket.emit("snakeIsReady");
 
 })
+function generatePreGamePlayerInfo(players) {
+    $(".preGamePlayerInfo").innerHTML = "";
+    $(".preGamePlayerInfo").show();
+
+    for (let i = 0; i < players.length; i++) {
+        let player = players[i];
+        let holder = $(".preGamePlayerInfo").create("div");
+        holder.className = "pgpi_card";
+        holder.id = "pgpi_" + player.index;
+
+        holder.css({
+            left: ((player.pos.x*gridSize)+$("playerCardsHolder").offsetWidth) + "px",
+            top: ((player.pos.y*gridSize)+$(".game_topRow").offsetHeight) + "px",
+        })
+
+        let title = holder.create("div");
+        title.innerHTML = player.accountName;
+        title.className = "pgpi_title";
+
+        if (localAccount.id === player.accountID) {
+            let ring = holder.create("div");
+            ring.className = "pgpi_ring";
+        }
+        
+    }
+}
+function updatePreGamePlayerInfo(player) {
+
+}
 socket.on("endGame",(obj,lobbyID) => {
     obj = uint8ArrayToObject(obj);
     if (localAccount.lobbyID !== lobbyID) return;
@@ -250,6 +280,7 @@ function showNumber(index) {
         setTimeout(function() {
             $(".game_c2_info").hide();
             $(".game_c2_extra").show();
+            $(".preGamePlayerInfo").hide();
         },250);
         return;
     }
