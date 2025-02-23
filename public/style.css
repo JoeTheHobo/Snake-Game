@@ -2709,7 +2709,14 @@ height: 100%;
 }
 
 
-
+@keyframes bobbing {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10%);
+  }
+}
 .hotAirHolder {
   position: absolute;
   transition: all 1s ease-in-out;
@@ -2717,6 +2724,8 @@ height: 100%;
   aspect-ratio: 75/173;
 
   top: 100%;
+  
+  animation: bobbing 3s ease-in-out infinite;
 
 }
 .hotAirImg {
