@@ -2130,7 +2130,7 @@ margin-left: 5px;
   align-items: center;
 }
 .game_c2_info_text {
-  font-size: 3rem;
+  font-size: 2vw;
   font-weight: bold;
   color: #ffffff;
   background: linear-gradient(45deg, #ff6ec7, #ff9a8b); /* Gradient text color */
@@ -2140,16 +2140,6 @@ margin-left: 5px;
   letter-spacing: 5px;
   padding: 20px;
   position: relative;
-}
-.game_c2_info_text::before {
-  content: ' ';
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.2);
-  z-index: -1;
 }
 .numbersPopup {
   display: flex;
