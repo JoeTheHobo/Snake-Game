@@ -1415,6 +1415,8 @@ function updateBoardStatusTracker(statusList) {
         allStatus[statusList[i]].count++;
     }
 
+    console.log(allStatus)
+
     let addStatus = [];
     let removeStatus = [];
     let updateStatus = [];
