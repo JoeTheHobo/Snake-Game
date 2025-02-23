@@ -251,7 +251,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
 
     const sizeInBytes = new TextEncoder().encode(obj).length;
     production.updatePositions_recieveData.times.push(sizeInBytes);
-    console.lg(obj)
+    console.log(obj)
     obj = JSON.parse(LZString.decompressFromBase64(obj));
 
     for (let i = 0; i < obj.updatedPlayers.length; i++) {
