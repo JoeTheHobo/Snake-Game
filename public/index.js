@@ -65,6 +65,7 @@ socket.on("settingLobbyBoards",(boardsList) => {
 })
 socket.on("startingGame", (lobby) => {
     lobby = uint8ArrayToObject(lobby);
+    console.log(lobby)
     productionType = "server";
     setUpProductionHTML();
     if (localAccount.lobbyID !== lobby.id) return;
