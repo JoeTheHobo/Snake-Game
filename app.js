@@ -873,7 +873,6 @@ io.on('connection', (socket) => {
         lobby.updatePositionTimeStamp = Date.now();
         lobby.gameTimeStart = Date.now();
         lobby.boardStatusCount = 0;
-        lobby.boardStatus = [];
 
         io.emit("startingGame", lobby,onlineAccounts[socket.id].player);
         emitingActivePlayers = Object.values(lobby.activePlayers).map(({ index, selectingItem, items, tail,moving,shield,playerKills }) => ({
@@ -890,6 +889,7 @@ io.on('connection', (socket) => {
             updateSnakeCells: lobby.updateSnakeCells,
             updateCells: lobby.updateCells,
             playSounds: [],
+            boardStatus: lobby.board.boardStatus,
         },lobby.id)
 
         lobby.gameLoop = function() {
@@ -913,6 +913,7 @@ io.on('connection', (socket) => {
                 updateSnakeCells: this.updateSnakeCells,
                 updateCells: this.updateCells,
                 playSounds: this.playSounds,
+                boardStatus: lobby.board.boardStatus,
             },this.id)
 
             this.updatePositionTimeStamp = timestamp;
@@ -1035,6 +1036,8 @@ io.on('connection', (socket) => {
                 updatedPlayers: emitingActivePlayers,
                 updateSnakeCells: lobby.updateSnakeCells,
                 updateCells: lobby.updateCells,
+                boardStatus: [],
+                playSounds: [],
             },lobby.id)
             
             return;

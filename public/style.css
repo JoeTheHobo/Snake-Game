@@ -2340,6 +2340,7 @@ transition: all .4s ease;
   width: 100%;
   flex-grow: 1;
   z-index: 1;
+  position: relative;
 }
 .sc_boards_boardName {
 
@@ -2624,7 +2625,7 @@ height: 100%;
   display: flex;
   width: 100%;
   aspect-ratio: 277/294;
-  z-index: 1000;
+  z-index: 1;
   box-sizing: border-box;
   color: white;
 }

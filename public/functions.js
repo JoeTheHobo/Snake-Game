@@ -1287,6 +1287,8 @@ function setGameScene(players) {
 
     }
 
+    //Clear All Status'
+    $(".game_c2_extra").innerHTML = "";
 
     //Setting Player Snake Color
     $(".game_c1_snakeHead").style.filter = getPlayerFilter(player);
@@ -1337,6 +1339,9 @@ function setGameScene(players) {
     $(".game_c2_c1_body").src = "img/backgrounds/clear.png";
 
 
+}
+function updateBoardStatusTracker(statusList) {
+    console.log(statusList)
 }
 function updateGameFlags(player) {
     let flag = $("playercard_" + player.index);
