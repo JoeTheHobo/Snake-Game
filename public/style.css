@@ -2712,7 +2712,7 @@ height: 100%;
 .hotAirHolder {
   position: absolute;
   transition: all .5s ease-in-out;
-  width: 27%;
+  height: 23%;
   aspect-ratio: 75/173;
 
 }
@@ -2732,6 +2732,9 @@ height: 100%;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+}
+.hotAirHide {
+  left: 0px;
 }
 .hotAirPos1 {
   top: 2%;
