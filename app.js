@@ -885,15 +885,13 @@ io.on('connection', (socket) => {
             shield,
             playerKills,
         }));
-        let returnObj = {
+        io.emit("updatePositions",{
             updatedPlayers: emitingActivePlayers,
             updateSnakeCells: lobby.updateSnakeCells,
             updateCells: lobby.updateCells,
             playSounds: [],
             boardStatus: lobby.board.boardStatus,
-        };
-        let compressed = LZString.compressToBase64(JSON.stringify(returnObj));
-        io.emit("updatePositions",compressed,lobby.id)
+        },lobby.id)
 
         lobby.gameLoop = function() {
             let timestamp = Date.now();
@@ -910,15 +908,14 @@ io.on('connection', (socket) => {
                 shield,
                 playerKills,
             }));
-            let returnObj = {
+
+            io.emit("updatePositions",{
                 updatedPlayers: emitingActivePlayers,
                 updateSnakeCells: this.updateSnakeCells,
                 updateCells: this.updateCells,
                 playSounds: this.playSounds,
                 boardStatus: lobby.board.boardStatus,
-            };
-            let compressed = LZString.compressToBase64(JSON.stringify(returnObj));
-            io.emit("updatePositions",compressed,this.id)
+            },this.id)
 
             this.updatePositionTimeStamp = timestamp;
             this.updateSnakeCells = [];
@@ -1036,15 +1033,13 @@ io.on('connection', (socket) => {
 
             lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);
 
-            let returnObj = {
+            io.emit("updatePositions",{
                 updatedPlayers: emitingActivePlayers,
                 updateSnakeCells: lobby.updateSnakeCells,
                 updateCells: lobby.updateCells,
                 boardStatus: [],
                 playSounds: [],
-            };
-            let compressed = LZString.compressToBase64(JSON.stringify(returnObj));
-            io.emit("updatePositions",compressed,lobby.id)
+            },lobby.id)
             
             return;
         }

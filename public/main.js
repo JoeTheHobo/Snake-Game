@@ -1616,7 +1616,7 @@ function updateProduction() {
     for (let i = 0; i < Object.entries(production).length; i++) {
         let entry = Object.entries(production)[i];
 
-        if (entry[1].times.length > 1) {
+        if (entry[1].times.length > 100) {
             entry[1].times.shift();
         }
         if (entry[1].times.length == 0) entry[1].times.push(0);
