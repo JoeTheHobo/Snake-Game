@@ -182,7 +182,7 @@ function me_loadDropdown(holder,group,name) {
             let itemHolder = itemsHolder.create("div");
             itemHolder.className = "me_itemHolder";
             let itemImage = itemHolder.create("img");
-            itemImage.src = getImageFromItem(item,"src")
+            itemImage.src = getImageFromItem(name.subset(0,"_\\before"),item,"src")
             itemImage.css({
                 width: "100%",
                 height: "100%",
@@ -375,7 +375,7 @@ function me_updateCell(ctx,x,y,opacity) {
     if (cell.item) {
         itemCounts.push("item_" + cell.item.name);
 
-        let image = getImageFromItem(cell.item,"canvas");
+        let image = getImageFromItem("item",cell.item,"canvas");
         ctx.drawImage(image,Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
 
         if (cell.item.boardDestructibleCountRequired > 1) {
@@ -710,6 +710,7 @@ $("me_canvas").on("contextmenu",function(e) {
     e.preventDefault();
 })
 document.on('keydown', (e) => {
+    console.log($("scene_mapEditor").style.display);
     if ($("scene_mapEditor").style.display == "none") return;
     // Check if the currently focused element is an input, textarea, or select
     if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
@@ -928,7 +929,7 @@ function goBackHome(save) {
 
 function loadObjectMenu() {
     if (selectedItem.cell.baseImg) {
-        $(".me_ih_image").src = getImageFromItem(selectedItem.cell,"src")
+        $(".me_ih_image").src = getImageFromItem("item",selectedItem.cell,"src")
     } else 
         $(".me_ih_image").src = $(selectedItem.type +"_" + selectedItem.cell.name).src;
     let holder = $(".me_ih_settings");
@@ -1313,7 +1314,7 @@ function runTool(type) {
         if (history.length < 2) return;
 
         forwardHistory.push(history.pop());
-        currentBoard.originalMap = history[history.length-1];
+        currentBoard.originalMap = structuredClone(history[history.length-1]);
         $(".redo_tool").style.opacity = "1";
         if (history.length < 2) {
             $(".undo_tool").style.opacity = "0.5";

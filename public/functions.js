@@ -1173,7 +1173,7 @@ function getItemValueFromList(item,list) {
     }
     return value;
 }
-function getImageFromItem(item,returnType) {
+function getImageFromItem(type,item,returnType) {
     let image;
     if (item.baseImg) {
         image = item.name + "_";
@@ -1185,7 +1185,7 @@ function getImageFromItem(item,returnType) {
     }
 
     if (returnType == "canvas") image = getItemCanvas(image);
-    if (returnType == "src") image = $("item_" + image).src;
+    if (returnType == "src") image = $(type + "_" + image).src;
     return image;
 }
 function respawnPlayer(player,growthPercentage) {
@@ -1312,7 +1312,7 @@ function updateGameScene(player) {
             continue;
         }
 
-        holder.$(".game_cc_pi_item_img").src = getImageFromItem(item,"src");
+        holder.$(".game_cc_pi_item_img").src = getImageFromItem("item",item,"src");
     }
 }
 
@@ -1456,7 +1456,7 @@ function updatePlayerCard(player,whatToUpdate = "all") {
 
 
         let item = player.items[i];
-        image.src = getImageFromItem(item,"src");
+        image.src = getImageFromItem("item",item,"src");
     }
 }
 

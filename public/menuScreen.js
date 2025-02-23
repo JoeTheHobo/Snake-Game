@@ -620,17 +620,18 @@ function loadBoardsScreen(index = false) {
                         {type: "text", text: "Name"},
                         {type: "input", id:"name", placeholder: "Untitled", width: "200px"},
                     ],
+                    /*
                     [
                         {type: "text", text: "Width"},
                         {type: "number", id:"width", value: "50", min: 5, max: 70, width: "50px"},
                         {type: "text", text: "Height"},
                         {type: "number", id:"height", value: "30", min: 5, max: 70, width: "50px"},
                     ],
-                    
+                    */
                     {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "green",text:"Create",onClick: (ids) => {
                         const {name,width,height} = ids;
                         let boardName = name.value == "" ? "Untitled" : name.value;
-                        createBoard(boardName,width.value,height.value);
+                        createBoard(boardName,50,30/*width.value,height.value*/);
                         
                     }},
                 ],{
