@@ -1,5 +1,9 @@
 const socket = io({reconnection: false});
 
+function uint8ArrayToObject(uint8Array) {
+    const decoder = new TextDecoder();
+    return JSON.parse(decoder.decode(uint8Array)); // Converts back to object
+}
 //const player = new Player(x, y);
 //const players = {};
 let frontEndLobbies = {};
@@ -40,26 +44,27 @@ socket.on("setClientLobby",(socketID,lobby) => {
     if (socketID !== localAccount.id) return;
     localAccount.lobbyID = lobby.id;
     socket.emit("requestUpdateLobbyPage");
-    updateLobbyPage(lobby);
+    updateLobbyPage(uint8ArrayToObject(lobby));
     setScene("lobby");
     localAccount.isInLobby = true;
 })
 socket.on("updateLobbyPage",(lobby) => {
     if (localAccount.lobbyID !== lobby.id) return;
-    updateLobbyPage(lobby);
+    updateLobbyPage(uint8ArrayToObject(lobby));
 })
 socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     if (playerID) if (playerID !== localAccount.id) return;
     if ($(".content_servers").style.display == "none") return;
 
-    frontEndLobbies = backEndLobbies;
+    frontEndLobbies = uint8ArrayToObject(backEndLobbies);
     loadServersHTML();
     $(".servers_online_text").innerHTML = onlineCount;
 })
 socket.on("settingLobbyBoards",(boardsList) => {
-    localAccount.lobbyBoards = boardsList;
+    localAccount.lobbyBoards = uint8ArrayToObject(boardsList);
 })
 socket.on("startingGame", (lobby) => {
+    lobby = uint8ArrayToObject(lobby);
     productionType = "server";
     setUpProductionHTML();
     if (localAccount.lobbyID !== lobby.id) return;
@@ -181,6 +186,7 @@ socket.on("startingGame", (lobby) => {
 
 })
 socket.on("endGame",(obj,lobbyID) => {
+    obj = uint8ArrayToObject(obj);
     if (localAccount.lobbyID !== lobbyID) return;
     localAccount.isInGame = false;
     
@@ -251,10 +257,6 @@ socket.on("updatePositions",(obj,lobbyID) => {
     const jsonString = JSON.stringify(obj);
     const sizeInBytes = new TextEncoder().encode(jsonString).length;
     production.updatePositions_recieveData.times.push(sizeInBytes);
-    function uint8ArrayToObject(uint8Array) {
-        const decoder = new TextDecoder();
-        return JSON.parse(decoder.decode(uint8Array)); // Converts back to object
-    }
 
     obj = uint8ArrayToObject(obj);
 
