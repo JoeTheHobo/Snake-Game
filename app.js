@@ -1029,7 +1029,7 @@ io.on('connection', (socket) => {
             setTimeout(function() {
                 lobby.gameStatus = "game";
                 lobby.gameLoop();
-            },4000)
+            },3250)
         }
 
     });

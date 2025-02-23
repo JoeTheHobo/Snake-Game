@@ -161,6 +161,9 @@ socket.on("startingGame", (lobby) => {
     $(".firstPersonMap").hide();
     $(".firstPersonCanvas").hide();
     $(".extraCanvas").hide();
+    $(".game_c2_info").show("flex");
+    $(".gameInfoNumbers").hide();
+    $(".gameInfoWaiting").show("flex");
     
     //Draw On Background canvas
     let backgroundImage = new Image();
@@ -233,7 +236,8 @@ socket.on("endGame",(obj,lobbyID) => {
 })
 socket.on("preparingGame",(lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;
-    $(".numbersPopup").show();
+    $(".gameInfoWaiting").hide();
+    $(".gameInfoNumbers").show("flex");
     showNumber(3);
 })
 function showNumber(index) {
@@ -243,7 +247,7 @@ function showNumber(index) {
 
     if (index == "go") {
         setTimeout(function() {
-            $(".numbersPopup").hide();
+            $(".game_c2_info").hide();
         },250);
         return;
     }

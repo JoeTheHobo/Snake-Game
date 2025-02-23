@@ -2118,31 +2118,40 @@ margin-left: 5px;
 }
 
 
+.game_c2_info {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+.game_c2_info_text {
+  width: 100%;
+  text-align: center;
+  font-size: 3vw;
+
+}
 .numbersPopup {
-position: absolute;
-z-index: 700;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-display: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1/1;
 }
 .np_img_holder {
-position: absolute;
-left: 0;
-right: 0;
-top: 0;
-bottom: 0;
-margin: auto;
-width: 15%;
-aspect-ratio: 1/1;
+  position: absolute;
+  width: 90%;
+  aspect-ratio: 1/1;
 }
 .np_img {
 width: 100%;
 height: 100%;
 }
 #np_img_go {
-width: 25% !important;
+width: 50% !important;
 }
 
 .hoverBorderBlue {
