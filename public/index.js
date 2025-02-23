@@ -249,9 +249,11 @@ socket.on("updatePositions",(obj,lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;
     if (!localAccount.isInGame) return; 
 
-    const jsonString = JSON.stringify(obj);
-    const sizeInBytes = new TextEncoder().encode(jsonString).length;
+    const sizeInBytes = new TextEncoder().encode(obj).length;
     production.updatePositions_recieveData.times.push(sizeInBytes);
+
+    let obj = JSON.parse(LZString.decompressFromBase64(obj));
+
     for (let i = 0; i < obj.updatedPlayers.length; i++) {
         for (let j = 0; j < activePlayers.length; j++) {
             let local_player = activePlayers[j];

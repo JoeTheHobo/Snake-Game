@@ -329,6 +329,7 @@ function formatNumber(num) {
  
 const { timeStamp } = require('console');
 const express = require('express');
+const LZString = require("lz-string");
 const app = express();
 
 //socket.io setup
@@ -884,13 +885,15 @@ io.on('connection', (socket) => {
             shield,
             playerKills,
         }));
-        io.emit("updatePositions",{
+        let returnObj = {
             updatedPlayers: emitingActivePlayers,
             updateSnakeCells: lobby.updateSnakeCells,
             updateCells: lobby.updateCells,
             playSounds: [],
             boardStatus: lobby.board.boardStatus,
-        },lobby.id)
+        };
+        let compressed = LZString.compressToBase64(JSON.stringify(returnObj));
+        io.emit("updatePositions",compressed,lobby.id)
 
         lobby.gameLoop = function() {
             let timestamp = Date.now();
@@ -907,14 +910,15 @@ io.on('connection', (socket) => {
                 shield,
                 playerKills,
             }));
-
-            io.emit("updatePositions",{
+            let returnObj = {
                 updatedPlayers: emitingActivePlayers,
                 updateSnakeCells: this.updateSnakeCells,
                 updateCells: this.updateCells,
                 playSounds: this.playSounds,
                 boardStatus: lobby.board.boardStatus,
-            },this.id)
+            };
+            let compressed = LZString.compressToBase64(JSON.stringify(returnObj));
+            io.emit("updatePositions",compressed,this.id)
 
             this.updatePositionTimeStamp = timestamp;
             this.updateSnakeCells = [];
@@ -1032,13 +1036,15 @@ io.on('connection', (socket) => {
 
             lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);
 
-            io.emit("updatePositions",{
+            let returnObj = {
                 updatedPlayers: emitingActivePlayers,
                 updateSnakeCells: lobby.updateSnakeCells,
                 updateCells: lobby.updateCells,
                 boardStatus: [],
                 playSounds: [],
-            },lobby.id)
+            };
+            let compressed = LZString.compressToBase64(JSON.stringify(returnObj));
+            io.emit("updatePositions",compressed,lobby.id)
             
             return;
         }

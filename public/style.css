@@ -2747,6 +2747,7 @@ height: 100%;
 }
 .hotAirHide {
   left: -50% !important;
+  z-index: -1;
 }
 .hotAirPos1 {
   top: 2%;
