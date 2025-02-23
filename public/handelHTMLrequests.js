@@ -201,8 +201,8 @@ $(".sc_gmb_changeGameModeHolder").on("click",function() {
     });
 });
 $(".sc_gmb_editGameModeHolder").on("click",function() {
-    $("customizeGamemodePopup").show();
-    editGameMode($("customizeGamemodePopup"),localAccount.lobbyGamemode,false,"server");
+    $(".customizeGamemodePopup").show();
+    editGameMode($(".customizeGamemodePopup"),localAccount.lobbyGamemode,false,"server");
 })
 $("sc_boards_recommendedGameMode").on("click",function() {
     socket.emit("changeGameModetoBoards");
