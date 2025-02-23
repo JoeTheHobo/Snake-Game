@@ -756,6 +756,10 @@ io.on('connection', (socket) => {
             }, {});
         io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
     })
+    socket.on("ping_test", (timestamp) => {
+        const latency = Date.now() - timestamp;
+        io.emit("finishPingTest",latency);
+    });
     socket.on("updateClientPositions",(updatedPlayers,updateSnakeCells,updateCells,playSounds,boardStatus,lobbyID) => {
         function objectToUint8Array(obj) {
             const str = JSON.stringify(obj);

@@ -2032,3 +2032,8 @@ $(".playButtonSounds").forEach(button => {
 function getPlayerFilter(player) {
     return `hue-rotate(${player.color}deg) saturate(${player.color2}%) brightness(${player.color3}%)`;
 }
+
+// Client: Send ping every second
+setInterval(() => {
+    socket.emit("ping_test", Date.now());
+}, 1000);

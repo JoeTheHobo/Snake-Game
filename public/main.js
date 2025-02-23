@@ -1504,6 +1504,7 @@ let production = {
         times: [],
         average: 0,
         timeStart: 0,
+        cap: 100,
         type: "dom",
         showIF: "local",
         dataType: "ms",
@@ -1512,6 +1513,7 @@ let production = {
         times: [],
         average: 0,
         timeStart: 0,
+        cap: 100,
         type: "dom",
         showIF: "local",
         dataType: "ms",
@@ -1520,6 +1522,7 @@ let production = {
         times: [],
         average: 0,
         timeStart: 0,
+        cap: 100,
         type: "dom",
         showIF: "local",
         dataType: "ms",
@@ -1528,6 +1531,7 @@ let production = {
         times: [],
         average: 0,
         timeStart: 0,
+        cap: 100,
         type: "sub",
         showIF: "local",
         dataType: "ms",
@@ -1536,6 +1540,7 @@ let production = {
         times: [],
         average: 0,
         timeStart: 0,
+        cap: 100,
         type: "sub",
         showIF: "local",
         dataType: "ms",
@@ -1544,6 +1549,7 @@ let production = {
         times: [],
         average: 0,
         timeStart: 0,
+        cap: 100,
         type: "sub",
         showIF: "local",
         dataType: "ms",
@@ -1552,6 +1558,7 @@ let production = {
         times: [],
         average: 0,
         timeStart: 0,
+        cap: 100,
         type: "sub",
         showIF: "local",
         dataType: "ms",
@@ -1560,6 +1567,7 @@ let production = {
         times: [],
         average: 0,
         timeStart: 0,
+        cap: 100,
         type: "dom",
         showIF: "local",
         dataType: "ms",
@@ -1568,6 +1576,7 @@ let production = {
         times: [],
         average: 0,
         timeStart: 0,
+        cap: 100,
         type: "dom",
         showIF: "local",
         dataType: "ms",
@@ -1576,16 +1585,27 @@ let production = {
         times: [],
         average: 0,
         timeStart: 0,
+        cap: 100,
         type: "sub",
         showIF: "local",
         dataType: "ms",
     },
 
     //Server Play
+    ping: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        cap: 1,
+        type: "dom",
+        showIF: "server",
+        dataType: "ms",
+    },
     updatePositions_recieveData: {
         times: [],
         average: 0,
         timeStart: 0,
+        cap: 100,
         type: "dom",
         showIF: "server",
         dataType: "bytes",
@@ -1616,7 +1636,7 @@ function updateProduction() {
     for (let i = 0; i < Object.entries(production).length; i++) {
         let entry = Object.entries(production)[i];
 
-        if (entry[1].times.length > 100) {
+        if (entry[1].times.length > entry[1].cap) {
             entry[1].times.shift();
         }
         if (entry[1].times.length == 0) entry[1].times.push(0);
