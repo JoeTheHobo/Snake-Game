@@ -1343,7 +1343,6 @@ function setGameScene(players) {
 }
 function updateBoardStatusTracker(statusList) {
     let holder = $(".game_c2_extra");
-    console.log(statusList)
 
     let allStatus = {
         aquamarine: {
@@ -1423,7 +1422,7 @@ function updateBoardStatusTracker(statusList) {
     availableSpots = availableSpots.shuffle();
     for (let i = 0; i < global_gameColors.length; i++) {
         let color = global_gameColors[i][0];
-        if (color == "white") return;
+        if (color == "white") continue;
 
         console.log(oldBoardStatus[color].count,allStatus[color].count);
         if (oldBoardStatus[color].count === 0 && allStatus[color].count > 0) addStatus.push(color);
