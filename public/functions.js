@@ -1495,25 +1495,28 @@ function updateGameFlags(player) {
 }
 function updateGameScene(player) {
 
-    $(".game_cc_pi_item_wallIMG2").css({
-        filter: "none",
-    })
-    //Updating Inventory
-    for (let i = 0; i < player.items.length; i++) {
-        let holder = $("inventory_slot_" + i);
-        let item = player.items[i];
-
-        if (player.selectingItem === i) holder.$(".game_cc_pi_item_wallIMG2").css({
-            filter: "brightness(1.5)",
+    if ($(".game_cc_pi_item_wallIMG2")) {
+        $(".game_cc_pi_item_wallIMG2").css({
+            filter: "none",
         })
-
-        if (item == "empty") {
-            holder.$(".game_cc_pi_item_img").src = "img/backgrounds/clear.png";
-            continue;
+        //Updating Inventory
+        for (let i = 0; i < player.items.length; i++) {
+            let holder = $("inventory_slot_" + i);
+            let item = player.items[i];
+    
+            if (player.selectingItem === i) holder.$(".game_cc_pi_item_wallIMG2").css({
+                filter: "brightness(1.5)",
+            })
+    
+            if (item == "empty") {
+                holder.$(".game_cc_pi_item_img").src = "img/backgrounds/clear.png";
+                continue;
+            }
+    
+            holder.$(".game_cc_pi_item_img").src = getImageFromItem("item",item,"src");
         }
-
-        holder.$(".game_cc_pi_item_img").src = getImageFromItem("item",item,"src");
     }
+    
     //Updating Player Stats
     if ($(".game_c2_playerStatus").src !== `img/gameUI/activePlayerInfo_${findPlayersTeam(player)}.png`)
         $(".game_c2_playerStatus").src = `img/gameUI/activePlayerInfo_${findPlayersTeam(player)}.png`;
