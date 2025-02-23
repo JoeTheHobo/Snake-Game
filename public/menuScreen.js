@@ -921,7 +921,7 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
     let html_gameModesHolder = holder2;
     let deletehtml = `<div class="gameModes_settings_title">Danger Zone</div>
     <div class="gameModes_fullWidth hover"><div class="gameModes_deleteButton">Delete Game Mode</div></div>`;
-    if (!server) deletehtml = ``;
+    if (server) deletehtml = ``;
     html_gameModesHolder.innerHTML = `
         <div class="gameModes_settings_title">General Settings</div>
         <div class="settingsHolder"></div>
