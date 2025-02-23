@@ -1412,7 +1412,7 @@ function updateBoardStatusTracker(statusList) {
     }
 
     for (let i = 0; i < statusList.length; i++) {
-        allStatus[statusList[i]]++;
+        allStatus[statusList[i]].count++;
     }
 
     let addStatus = [];
@@ -1436,8 +1436,6 @@ function updateBoardStatusTracker(statusList) {
         }
     }
 
-    console.log(addStatus,removeStatus,updateStatus)
-
 
     for (let i = 0; i < addStatus.length; i++) {
         let location = availableSpots[0];
@@ -1453,16 +1451,16 @@ function updateBoardStatusTracker(statusList) {
         text.className = "hotAirText";
         text.innerHTML = allStatus[addStatus[i]].count;
     }
+    for (let i = 0; i < updateStatus.length; i++) {
+        let hotAirHolder = $("hotAir_" + removeStatus[i]);
+        hotAirHolder.$(".hotAirText").innerHTML = allStatus[updateStatus[i]].count;
+    }
     for (let i = 0; i < removeStatus.length; i++) {
         let hotAirHolder = $("hotAir_" + removeStatus[i]);
         hotAirHolder.classAdd("hotAirHide");
         setTimeout(function() {
             hotAirHolder.remove();
         },1000);
-    }
-    for (let i = 0; i < updateStatus.length; i++) {
-        let hotAirHolder = $("hotAir_" + removeStatus[i]);
-        hotAirHolder.$(".hotAirText").innerHTML = allStatus[updateStatus[i]].count;
     }
 
     oldBoardStatus = allStatus;
