@@ -1454,7 +1454,7 @@ function updateBoardStatusTracker(statusList) {
         hotAirHolder.id = "hotAir_" + addStatus[i];
         let img = hotAirHolder.create("img");
         img.className = "hotAirImg";
-        img.src = "img/gameUI/hotAir_" + addStatus[i] + ".png";
+        img.src = $("loadHotAir_" + addStatus[i]).src;
         let text = hotAirHolder.create("div");
         text.className = "hotAirText";
         text.innerHTML = allStatus[addStatus[i]].count;
