@@ -1343,7 +1343,6 @@ function setGameScene(players) {
 }
 function updateBoardStatusTracker(statusList) {
     let holder = $(".game_c2_extra");
-    console.log(oldBoardStatus.gold.count)
 
     let allStatus = {
         aquamarine: {
@@ -1454,7 +1453,7 @@ function updateBoardStatusTracker(statusList) {
     }
     for (let i = 0; i < updateStatus.length; i++) {
         let hotAirHolder = $("hotAir_" + removeStatus[i]);
-        hotAirHolder.$(".hotAirText").innerHTML = allStatus[updateStatus[i]].count;
+        //hotAirHolder.$(".hotAirText").innerHTML = allStatus[updateStatus[i]].count;
     }
     for (let i = 0; i < removeStatus.length; i++) {
         let hotAirHolder = $("hotAir_" + removeStatus[i]);
@@ -1464,8 +1463,7 @@ function updateBoardStatusTracker(statusList) {
         },1000);
     }
 
-    console.log(allStatus.gold.count)
-    oldBoardStatus = structuredClone(allStatus);
+    oldBoardStatus = allStatus;
 }
 function updateGameFlags(player) {
     let flag = $("playercard_" + player.index);
