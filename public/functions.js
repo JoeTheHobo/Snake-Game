@@ -1436,6 +1436,8 @@ function updateBoardStatusTracker(statusList) {
         }
     }
 
+    console.log(addStatus)
+
     for (let i = 0; i < addStatus.length; i++) {
         let location = availableSpots[0];
         availableSpots.splice(0,1);
