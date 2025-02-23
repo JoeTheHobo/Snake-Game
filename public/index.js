@@ -43,6 +43,7 @@ socket.on("setPlayer", (id,account) =>{
 socket.on("setClientLobby",(socketID,lobby) => {
     lobby = uint8ArrayToObject(lobby);
     if (socketID !== localAccount.id) return;
+    console.log(lobby)
     localAccount.lobbyID = lobby.id;
     socket.emit("requestUpdateLobbyPage");
     updateLobbyPage(lobby);
@@ -50,8 +51,9 @@ socket.on("setClientLobby",(socketID,lobby) => {
     localAccount.isInLobby = true;
 })
 socket.on("updateLobbyPage",(lobby) => {
+    lobby = uint8ArrayToObject(lobby);
     if (localAccount.lobbyID !== lobby.id) return;
-    updateLobbyPage(uint8ArrayToObject(lobby));
+    updateLobbyPage(lobby);
 })
 socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     if (playerID) if (playerID !== localAccount.id) return;
