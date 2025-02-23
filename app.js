@@ -605,6 +605,9 @@ io.on('connection', (socket) => {
         io.emit("updateLobbyPage",lobby);
 
     })
+    socket.on("editServerGameMode", (gamemode) => {
+        socket.listeners("changeServerGameMode")[0](gamemode);
+    })
     socket.on("changeServerGameMode",(gameMode) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;

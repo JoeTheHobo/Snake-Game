@@ -533,11 +533,11 @@ justify-content: center;
   height: 50px;
   border-radius: 5px;
   user-select: none;
-  background: #000000;
+  background: #09a323;
   text-align: center;
   line-height: 50px;
   font-size: 30px;
-  color: rgb(255, 255, 255);
+  color: rgb(66, 66, 66);
   cursor: url('./img/pointer.cur'), auto;
 
 }
