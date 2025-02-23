@@ -414,6 +414,14 @@ function getItemCanvas(itemName) {
         if (itemCanvas[i].name === itemName) return itemCanvas[i].canvas;
     }
 }
+for (let i = 0; i < global_gameColors.length; i++) {
+    let color = global_gameColors[i][0];
+    if (color == "white") continue;
+
+    let img = $(".imageHolder").create("img");
+    img.src = "img/gameUI/hotAir_" + color + ".png"
+    img.id = "loadHotAir_" + color;
+}
 
 
 
