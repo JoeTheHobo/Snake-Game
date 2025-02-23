@@ -1453,7 +1453,8 @@ function updateBoardStatusTracker(statusList) {
     }
     for (let i = 0; i < updateStatus.length; i++) {
         let hotAirHolder = $("hotAir_" + removeStatus[i]);
-        //hotAirHolder.$(".hotAirText").innerHTML = allStatus[updateStatus[i]].count;
+        if (hotAirHolder)
+            hotAirHolder.$(".hotAirText").innerHTML = allStatus[updateStatus[i]].count;
     }
     for (let i = 0; i < removeStatus.length; i++) {
         let hotAirHolder = $("hotAir_" + removeStatus[i]);
