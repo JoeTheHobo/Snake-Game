@@ -1301,6 +1301,8 @@ function setGameScene(players) {
         let clone = original.cloneNode(true);
         clone.id = "playercard_" + player.index;
 
+        clone.style.display = "flex";
+
         clone.$(".pc_c1_img").style.filter = getPlayerFilter(player);
 
         clone.$(".pc_c1_minutes").innerHTML = "00";
