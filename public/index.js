@@ -206,8 +206,8 @@ function generatePreGamePlayerInfo(players) {
         const rect = $("render_background").getBoundingClientRect();
 
         holder.css({
-            left: ((player.pos.x*gridSize)+rect.left-50) + "px",
-            top: ((player.pos.y*gridSize)+rect.top-50) + "px",
+            left: ((player.pos.x*gridSize)+rect.left-50+(gridSize/2)) + "px",
+            top: ((player.pos.y*gridSize)+rect.top-50+(gridSize/2)) + "px",
         })
 
         let title = holder.create("div");
