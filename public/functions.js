@@ -2035,6 +2035,10 @@ function getPlayerFilter(player) {
 
 // Client: Send ping every second
 setInterval(() => {
-    const localTimestamp = Date.now() + serverTimeOffset; // Adjust for offset
-    socket.emit("ping_test", localTimestamp);
+    const start = Date.now();
+
+    socket.emit("ping", () => {
+        const duration = Date.now() - start;
+        console.log(duration);
+    });
 }, 1000);
