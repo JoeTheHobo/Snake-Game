@@ -164,6 +164,7 @@ socket.on("startingGame", (lobby) => {
     $(".game_c2_info").show("flex");
     $(".gameInfoNumbers").hide();
     $(".gameInfoWaiting").show("flex");
+    $(".game_c2_extra").hide();
     
     //Draw On Background canvas
     let backgroundImage = new Image();
@@ -248,6 +249,7 @@ function showNumber(index) {
     if (index == "go") {
         setTimeout(function() {
             $(".game_c2_info").hide();
+            $(".game_c2_extra").show();
         },250);
         return;
     }
