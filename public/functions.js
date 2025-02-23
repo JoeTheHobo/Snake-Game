@@ -1469,9 +1469,6 @@ function updateLobbyPage(lobby) {
         if (lobby.board.recommendedGameMode) {
             $("sc_boards_recommendedGameMode").show();
             $("sc_boards_recommendedGameMode").innerHTML = "Recommended Game Mode: " + lobby.board.gameMode.name;
-
-            $(".sdd_title").innerHTML = lobby.serverType;
-            
         } else $("sc_boards_recommendedGameMode").hide();
 
         if (lobby.serverType == "Public") $(".lobbyCode").hide();
@@ -1481,7 +1478,7 @@ function updateLobbyPage(lobby) {
     else {
         $(".hostOnly").hide();
     }
-
+    $(".sdd_title").innerHTML = lobby.serverType;
 
     localAccount.lobbyBoard = lobby.board;
     currentBoard = lobby.board;
