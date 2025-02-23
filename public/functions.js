@@ -1304,27 +1304,25 @@ function setGameScene(players) {
         clone.style.display = "flex";
         clone.style.width = ($("playerCardsHolder").offsetWidth-5) + "px";
 
-        clone.$(".pc_c1_img").style.filter = getPlayerFilter(player);
-
-        clone.$(".pc_c1_minutes").innerHTML = "00";
-        clone.$(".pc_c1_seconds").innerHTML = "00";
-        clone.$(".pc_c1_name").innerHTML = player.accountName;
-        clone.$(".pc_c1_points").innerHTML = 0;
-        clone.$(".pc_c1_length").innerHTML = 1;
-        clone.$(".pc_c1_kills").innerHTML = 0;
-        clone.$(".pc_c2_headImg").src = "";
-        clone.$(".pc_c2_bodyImg").src = "";
-        clone.$(".pc_c2_tailImg").src = "";
-        
-
         flagHolder.appendChild(clone);
+        let flag = $("playercard_" + player.index);
+
+        flag.$(".pc_c1_img").style.filter = getPlayerFilter(player);
+        flag.$(".pc_c1_minutes").innerHTML = "00";
+        flag.$(".pc_c1_seconds").innerHTML = "00";
+        flag.$(".pc_c1_name").innerHTML = player.accountName;
+        flag.$(".pc_c1_points").innerHTML = 0;
+        flag.$(".pc_c1_length").innerHTML = 1;
+        flag.$(".pc_c1_kills").innerHTML = 0;
+        flag.$(".pc_c2_headImg").src = "";
+        flag.$(".pc_c2_bodyImg").src = "";
+        flag.$(".pc_c2_tailImg").src = "";
     }
 
 
 }
 function updateGameFlags(player) {
     let flag = $("playercard_" + player.index);
-    console.log(flag)
 
     flag.$(".pc_c1_minutes").innerHTML = "00";
     flag.$(".pc_c1_seconds").innerHTML = "00";
