@@ -1024,6 +1024,7 @@ io.on('connection', (socket) => {
 
         lobby.readyPlayers.push(socket.id);
 
+        console.log(lobby.readyPlayers,lobby.inGamePlayers);
         if (lobby.readyPlayers.length === lobby.inGamePlayers) {
             io.emit("preparingGame",lobby.id);
             setTimeout(function() {
