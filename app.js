@@ -889,6 +889,7 @@ io.on('connection', (socket) => {
             updatedPlayers: emitingActivePlayers,
             updateSnakeCells: lobby.updateSnakeCells,
             updateCells: lobby.updateCells,
+            playSounds: [],
         },lobby.id)
 
         lobby.gameLoop = function() {
@@ -911,11 +912,13 @@ io.on('connection', (socket) => {
                 updatedPlayers: emitingActivePlayers,
                 updateSnakeCells: this.updateSnakeCells,
                 updateCells: this.updateCells,
+                playSounds: this.playSounds,
             },this.id)
 
             this.updatePositionTimeStamp = timestamp;
             this.updateSnakeCells = [];
             this.updateCells = [];
+            this.playSounds = [];
             
             //Check If Anyone Got The Crown
             let winningPlayer = false;
@@ -1753,6 +1756,9 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             }
             doColorRender = true;
         },collision.canvasFilter.duration)
+    }
+    if (collision.playSound && item.playSounds && settings?.playAudio) {
+        lobby.playSounds.push("sounds/" + item.soundFolder + "/" + item.soundFolder + "_" + collision.playSound[0] + "_" + rnd(collision.playSound[1]) + ".mp3");
     }
 }
 function addPlayerStatus(lobby,player,itemName) {

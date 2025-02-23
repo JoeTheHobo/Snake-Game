@@ -537,7 +537,7 @@ justify-content: center;
   text-align: center;
   line-height: 50px;
   font-size: 30px;
-  color: rgb(66, 66, 66);
+  color: rgb(0, 0, 0);
   cursor: url('./img/pointer.cur'), auto;
 
 }
@@ -2353,6 +2353,7 @@ height: 25%;
 #playerCardsHolder {
   display: flex;
   width: 100%;
+  flex-direction: column;
   flex-grow: 1;
   z-index: 1;
   align-items: center;
