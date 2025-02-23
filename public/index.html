@@ -13,7 +13,6 @@
 </head>
 <body>
 
-
     <div class="scene" id="scene_lobby">
         <img draggable="false" src="img/main_menu_background.jpg" class="menu_background">
         
@@ -196,7 +195,8 @@
         <div class="game_bottomRow">
             <img class="game_flagPole" src="img/gameUI/flagPole.png" alt="">
             <div class="game_column">
-                <div id="playerCardsHolder"></div>
+                <div id="playerCardsHolder">
+                </div>
                 <div class="game_c1_playerIcon">
                     <img class="game_c1_wallImg" src="img/gameUI/playerProfilePicHolder.png" alt="">
                     <img class="game_c1_snakeHead" src="img/snakeHead.png" alt="">
@@ -458,6 +458,50 @@
     </div>
     <div id="playerCanvasHolder"></div>
     <div id="itemCanvasHolder"></div>
+
+    <!--For copying-->
+    <div class="pc_holder pc_original">
+        <img class="pc_background pc_banner" src="img/status/playerCard_aquamarine_left.png">
+        <img class="pc_background" src="img/status/flagStats.png">
+
+        <div class="pc_column1">
+            <div class="pc_c1_rowLarge">
+                <div class="pc_c1_imgHolder">
+                    <img class="pc_c1_img" src="img/snakeHead.png" alt="">
+                </div>
+                <div class="pc_c1_timerHolder">
+                    <div class="pc_c1_timer" id="pc_c1_minutes">24</div>
+                    <div class="pc_c1_timer" id="pc_c1_seconds">57</div>
+                </div>
+            </div>
+            <div class="pc_c1_row">
+                <div class="pc_c1_name">JoeTheHobo</div>
+            </div>
+            <div class="pc_c1_row">
+                <div class="pc_c1_statName">Points</div>
+                <div class="pc_c1_statName2" id="pc_c1_points">24</div>
+            </div>
+            <div class="pc_c1_row">
+                <div class="pc_c1_statName">Length</div>
+                <div class="pc_c1_statName2" id="pc_c1_length">200</div>
+            </div>
+            <div class="pc_c1_row">
+                <div class="pc_c1_statName">Kills</div>
+                <div class="pc_c1_statName2" id="pc_c1_kills">3</div>
+            </div>
+        </div>
+        <div class="pc_column2">
+            <div class="pc_c2_imgHolder">
+                <img class="pc_c2_img" id="pc_c2_headImg" src="img/goldShield.png" alt="">
+            </div>
+            <div class="pc_c2_imgHolder">
+                <img class="pc_c2_img" id="pc_c2_bodyImg" src="img/goldShield.png" alt="">
+            </div>
+            <div class="pc_c2_imgHolder">
+                <img class="pc_c2_img" id="pc_c2_tailImg" src="img/goldShield.png" alt="">
+            </div>
+        </div>
+    </div>
 
     <!--Insert All Library Sheets Below-->
     <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>

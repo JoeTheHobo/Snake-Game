@@ -226,6 +226,7 @@ function generateHTMLList(holder,listObj,contentObj,contentHTML) {
     })
     for (let i = 0; i < listObj.list.length; i++) {
         let content = listObj.list[i];
+        if (content.cantEdit) continue;
         let contentHolder = list.create("div");
 
         contentHolder.css({

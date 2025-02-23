@@ -641,6 +641,8 @@ io.on('connection', (socket) => {
         if (lobby.hostID !== socket.id) return;
         if (!board) return;
 
+        console.log("Board Changed")
+
         //Varify Board Here -To Be Added
         board = fixBoard(JSON.parse(board))
         lobby.board = board;
@@ -871,13 +873,14 @@ io.on('connection', (socket) => {
         lobby.boardStatus = [];
 
         io.emit("startingGame", lobby,onlineAccounts[socket.id].player);
-        emitingActivePlayers = Object.values(lobby.activePlayers).map(({ index, selectingItem, items, tail,moving,shield }) => ({
+        emitingActivePlayers = Object.values(lobby.activePlayers).map(({ index, selectingItem, items, tail,moving,shield,playerKills }) => ({
             index,
             selectingItem,
             items,
             tailLength: tail.length + 1,
             moving,
             shield,
+            playerKills,
         }));
         io.emit("updatePositions",{
             updatedPlayers: emitingActivePlayers,
@@ -891,13 +894,14 @@ io.on('connection', (socket) => {
             server_movePlayers(this)
             this.lastTimestamp = timestamp;
 
-            emitingActivePlayers = Object.values(this.inGamePlayers).map(({ index, selectingItem, items, tail,moving,shield }) => ({
+            emitingActivePlayers = Object.values(this.inGamePlayers).map(({ index, selectingItem, items, tail,moving,shield,playerKills }) => ({
                 index,
                 selectingItem,
                 items,
                 tailLength: tail.length + 1,
                 moving,
                 shield,
+                playerKills,
             }));
 
             io.emit("updatePositions",{
@@ -1009,13 +1013,14 @@ io.on('connection', (socket) => {
         if (lobby.gameStatus == "prepare") {
             player.moving = direction;
 
-            emitingActivePlayers = Object.values(lobby.inGamePlayers).map(({ index, selectingItem, items, tail,moving,shield }) => ({
+            emitingActivePlayers = Object.values(lobby.inGamePlayers).map(({ index, selectingItem, items, tail,moving,shield,playerKills }) => ({
                 index,
                 selectingItem,
                 items,
                 tailLength: tail.length + 1,
                 moving,
                 shield,
+                playerKills,
             }));
 
             lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);

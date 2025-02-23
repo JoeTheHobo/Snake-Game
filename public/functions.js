@@ -1291,7 +1291,45 @@ function setGameScene(players) {
     //Setting Player Snake Color
     $(".game_c1_snakeHead").style.filter = getPlayerFilter(player);
 
+    //Setting Up Other Player flags
+    let flagHolder = $("playerCardsHolder");
+    flagHolder.innerHTML = "";
+    const original = $(".pc_original");
+    for (let i = 0; i < players.length; i++) {
+        let player = players[i];
+        if (player.accountID == localAccount.id) continue;
+        let clone = original.cloneNode(true);
+        clone.id = "playercard_" + player.index;
 
+        clone.$(".pc_c1_img").style.filter = getPlayerFilter(player);
+
+        clone.$(".pc_c1_minutes").innerHTML = "00";
+        clone.$(".pc_c1_seconds").innerHTML = "00";
+        clone.$(".pc_c1_name").innerHTML = player.accountName;
+        clone.$(".pc_c1_points").innerHTML = 0;
+        clone.$(".pc_c1_length").innerHTML = 1;
+        clone.$(".pc_c1_kills").innerHTML = 0;
+        clone.$(".pc_c2_headImg").src = "";
+        clone.$(".pc_c2_bodyImg").src = "";
+        clone.$(".pc_c2_tailImg").src = "";
+        
+
+        flagHolder.appendChild(clone);
+    }
+
+
+}
+function updateGameFlags(player) {
+    let flag = $("playercard_" + player.index);
+
+    flag.$(".pc_c1_minutes").innerHTML = "00";
+    flag.$(".pc_c1_seconds").innerHTML = "00";
+    flag.$(".pc_c1_points").innerHTML = 0;
+    flag.$(".pc_c1_length").innerHTML = player.tailLength;
+    flag.$(".pc_c1_kills").innerHTML = player.playerKills;
+    flag.$(".pc_c2_headImg").src = "";
+    flag.$(".pc_c2_bodyImg").src = "";
+    flag.$(".pc_c2_tailImg").src = "";
 }
 function updateGameScene(player) {
 
