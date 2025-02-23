@@ -2130,8 +2130,6 @@ margin-left: 5px;
   align-items: center;
 }
 .game_c2_info_text {
-  width: 100%;
-  text-align: center;
   font-size: 2vw;
 
 }
@@ -2148,11 +2146,11 @@ margin-left: 5px;
   aspect-ratio: 1/1;
 }
 .np_img {
-width: 100%;
-height: 100%;
+  width: 100%;
+  height: 100%;
 }
 #np_img_go {
-width: 50% !important;
+  width: 70% !important;
 }
 
 .hoverBorderBlue {
