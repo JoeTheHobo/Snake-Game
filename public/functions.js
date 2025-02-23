@@ -1306,16 +1306,16 @@ function setGameScene(players) {
 
         clone.querySelector(".pc_c1_img").style.filter = getPlayerFilter(player);
 
-        clone.querySelector(".pc_c1_minutes").innerHTML = "00";
-        clone.querySelector(".pc_c1_seconds").innerHTML = "00";
+        clone.querySelector("pc_c1_minutes").innerHTML = "00";
+        clone.querySelector("pc_c1_seconds").innerHTML = "00";
         clone.querySelector(".pc_c1_name").innerHTML = player.accountName;
-        clone.querySelector(".pc_c1_points").innerHTML = 0;
-        clone.querySelector(".pc_c1_length").innerHTML = 1;
-        clone.querySelector(".pc_c1_kills").innerHTML = 0;
+        clone.querySelector("pc_c1_points").innerHTML = 0;
+        clone.querySelector("pc_c1_length").innerHTML = 1;
+        clone.querySelector("pc_c1_kills").innerHTML = 0;
 
-        clone.querySelector(".pc_c2_headImg").src = "";
-        clone.querySelector(".pc_c2_bodyImg").src = "";
-        clone.querySelector(".pc_c2_tailImg").src = "";
+        clone.querySelector("pc_c2_headImg").src = "";
+        clone.querySelector("pc_c2_bodyImg").src = "";
+        clone.querySelector("pc_c2_tailImg").src = "";
         
 
         flagHolder.appendChild(clone);
@@ -1326,14 +1326,14 @@ function setGameScene(players) {
 function updateGameFlags(player) {
     let flag = $("playercard_" + player.index);
 
-    flag.querySelector(".pc_c1_minutes").innerHTML = "00";
-    flag.querySelector(".pc_c1_seconds").innerHTML = "00";
-    flag.querySelector(".pc_c1_points").innerHTML = 0;
-    flag.querySelector(".pc_c1_length").innerHTML = player.tailLength;
-    flag.querySelector(".pc_c1_kills").innerHTML = player.playerKills;
-    flag.querySelector(".pc_c2_headImg").src = "";
-    flag.querySelector(".pc_c2_bodyImg").src = "";
-    flag.querySelector(".pc_c2_tailImg").src = "";
+    flag.querySelector("pc_c1_minutes").innerHTML = "00";
+    flag.querySelector("pc_c1_seconds").innerHTML = "00";
+    flag.querySelector("pc_c1_points").innerHTML = 0;
+    flag.querySelector("pc_c1_length").innerHTML = player.tailLength;
+    flag.querySelector("pc_c1_kills").innerHTML = player.playerKills;
+    flag.querySelector("pc_c2_headImg").src = "";
+    flag.querySelector("pc_c2_bodyImg").src = "";
+    flag.querySelector("pc_c2_tailImg").src = "";
 }
 function updateGameScene(player) {
 
