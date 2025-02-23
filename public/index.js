@@ -210,13 +210,13 @@ function generatePreGamePlayerInfo(players) {
             top: ((player.pos.y*gridSize)+rect.top-50+(gridSize/2)) + "px",
         })
 
-        let title = holder.create("div");
-        title.innerHTML = player.accountName;
-        title.className = "pgpi_title";
-
         if (localAccount.id === player.accountID) {
             let ring = holder.create("div");
             ring.className = "pgpi_ring";
+        } else {
+            let title = holder.create("div");
+            title.innerHTML = player.accountName;
+            title.className = "pgpi_title";
         }
         
     }
