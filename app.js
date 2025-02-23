@@ -2105,7 +2105,7 @@ function checkPlayer(player,socketID) {
     if (Number(player.color) < 0) return "color-1";
     if (Number(player.color) > 360) return "color-2";
     if (Number(player.color2) < 0) return "color2-1";
-    if (Number(player.color2) > 100) return "color2-2";
+    if (Number(player.color2) > 1000) return "color2-2";
     if (Number(player.color3) < 0) return "color3-1";
     if (Number(player.color3) > 200) return "color3-2";
 
