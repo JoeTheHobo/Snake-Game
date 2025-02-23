@@ -1850,6 +1850,35 @@ function generateBoardsPopup(type) {
         if (type == "preset" && board.cantEdit) generateBoard(parent,board);
         if (type == "personal" && !board.cantEdit) generateBoard(parent,board);
     }
+    if (type == "personal") {
+        let holder = parent.create("div");
+        holder.className = "cbp_board_holder";
+
+        let title = holder.create("div");
+        title.className = "cbp_board_import";
+        title.innerHTML = "+";
+
+        holder.board = board;
+        holder.on("click",function() {
+            // Create an input element of type file
+            const input = document.createElement('input');
+            input.type = 'file';
+
+            // When the user selects a file
+            input.addEventListener('change', (event) => {
+                const file = event.target.files[0]; // Get the first selected file
+                if (file) {
+                    readFileContent(file); // Read the content of the file
+                    generateBoardsPopup("personal");
+                } else {
+                alert('No file selected!');
+                }
+            });
+
+            // Programmatically click the input to open the file dialog
+            input.click();
+        })
+    }
 }
 function selectTabInBoardMenu(tab) {
     $(".cbp_tab").classRemove("cbp_tab_selected");

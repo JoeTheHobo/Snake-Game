@@ -1243,7 +1243,7 @@ document.body.onkeydown = function(e) {
             }
         }
     }
-    if (gameType == "server") {
+    if (gameType == "server" && !e.ctrlKey) {
         let activePlayer;
         for (let i = 0; i < activePlayers.length; i++) {
             if(activePlayers[i] == false) continue;

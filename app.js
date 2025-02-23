@@ -856,6 +856,9 @@ io.on('connection', (socket) => {
             player.turboActive = false;
             player.shield = 0;
             player.winGame = false;
+            player.headItem = false;
+            player.bodyItem = false;
+            player.tailItem = false;
             
             player.playerKills = 0;
             player.index = i;
@@ -2111,6 +2114,9 @@ function newPlayer(socketID,accountName,accountTag) {
         turboDuration: 0,
         turboActive: false,
         shield: 0,
+        headItem: false,
+        bodyItem: false,
+        tailItem: false,
         items: [],
         status: [],
         active: false, 
