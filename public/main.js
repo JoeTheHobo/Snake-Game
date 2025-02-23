@@ -990,9 +990,9 @@ function endScreen(player = false) {
     if ((seconds + "").length == 1) seconds = "0" + seconds;
 
 
-    $(".longestTimePlayerImg").style.filter = `hue-rotate(${timeSurvivedPlayer.color}deg) sepia(${timeSurvivedPlayer.color2}%) contrast(${timeSurvivedPlayer.color3}%)`;
-    $(".longestTailPlayerImg").style.filter = `hue-rotate(${longestTailPlayer.color}deg) sepia(${longestTailPlayer.color2}%) contrast(${longestTailPlayer.color3}%)`;
-    $(".mostKillsImg").style.filter = `hue-rotate(${mostKillsPlayer.color}deg) sepia(${mostKillsPlayer.color2}%) contrast(${mostKillsPlayer.color3}%)`;
+    $(".longestTimePlayerImg").style.filter = getPlayerFilter(timeSurvivedPlayer);
+    $(".longestTailPlayerImg").style.filter = getPlayerFilter(longestTailPlayer);
+    $(".mostKillsImg").style.filter = getPlayerFilter(mostKillsPlayer);
     $(".engGame_playerNameTime").innerHTML = timeSurvivedPlayer.name;
     $(".engGame_playerTime").innerHTML = minutes + ":" + seconds + " Minutes";
     $(".engGame_playerNameLength").innerHTML = longestTailPlayer.name;
@@ -1009,7 +1009,7 @@ function endScreen(player = false) {
     $("winnerStat").hide();
     if (player) {
         $("winnerStat").show("flex");
-        $(".winnerPlayerImg").style.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
+        $(".winnerPlayerImg").style.filter = getPlayerFilter(player);
         $(".engGame_playerNameWinner").innerHTML = player.name;
     }
 }
@@ -1302,7 +1302,7 @@ function setUpPlayerCanvas() {
             let playerCtx = playerCanvas.getContext("2d");
             playerCanvas.width = image.width;
             playerCanvas.height = image.height;
-            playerCtx.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
+            playerCtx.filter = getPlayerFilter(player);
 
             if (direction) {
                 drawImage(image,direction,0,0,image.width,image.height,playerCanvas);

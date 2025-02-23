@@ -299,7 +299,7 @@ function generateHTMLList(holder,listObj,contentObj,contentHTML) {
                     div.css({
                         height: "95%",
                         width: "auto",
-                        filter: obj.filter == "player" ? `hue-rotate(${index.color}deg) sepia(${index.color2}%) contrast(${index.color3}%)` : "",
+                        filter: obj.filter == "player" ? getPlayerFilter(index) : "",
                     })
                     div.src = "img/" + obj.src;
                 }
@@ -541,7 +541,7 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder,updateLob
 
             if (l.type == "image") {
                 div.css({
-                    filter: l.filter == "player" ? `hue-rotate(${obj.color}deg) sepia(${obj.color2}%) contrast(${obj.color3}%)` : "",
+                    filter: l.filter == "player" ? getPlayerFilter(obj) : "",
                     width: l.width,
                     height: l.height,
                     background: l.background,
@@ -564,8 +564,8 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder,updateLob
                         let value = obj[l.bind.key];
                         
                         if (l.bind.update.type == "filterPlayer") {
-                            if (l.bind.update.externalKey && contentHolder) contentHolder.tags[l.bind.update.externalKey].style.filter = `hue-rotate(${obj.color}deg) sepia(${obj.color2}%) contrast(${obj.color3}%)`;
-                            if (l.bind.update.key) originalParent.tags[l.bind.update.key].style.filter = `hue-rotate(${obj.color}deg) sepia(${obj.color2}%) contrast(${obj.color3}%)`;
+                            if (l.bind.update.externalKey && contentHolder) contentHolder.tags[l.bind.update.externalKey].style.filter = getPlayerFilter(obj);
+                            if (l.bind.update.key) originalParent.tags[l.bind.update.key].style.filter = getPlayerFilter(obj);
                         } else {
                             if (l.bind.update.externalKey && contentHolder) contentHolder.tags[l.bind.update.externalKey][l.bind.update.type] = value;
                             if (l.bind.update.key) originalParent.tags[l.bind.update.key][l.bind.update.type] = value;
@@ -775,7 +775,7 @@ function loadLocalScreen() {
                 let img = holder.create("img");
                 img.src = "img/snakeHead.png";
                 img.className = "local_content_snakeHead";
-                img.style.filter = `hue-rotate(${list[i].color}deg) sepia(${list[i].color2}%) contrast(${list[i].color3}%)`;
+                img.style.filter = getPlayerFilter(list[i]);
             }
 
             let title = holder.create("div");

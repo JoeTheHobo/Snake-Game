@@ -132,9 +132,9 @@ socket.on("endGame",(obj,lobbyID) => {
     let mostKills = obj.mostKills;
     let winningPlayer = obj.winningPlayer;
 
-    $(".longestTimePlayerImg").style.filter = `hue-rotate(${timeSurvivedPlayer.color}deg) sepia(${timeSurvivedPlayer.color2}%) contrast(${timeSurvivedPlayer.color3}%)`;
-    $(".longestTailPlayerImg").style.filter = `hue-rotate(${longestTailPlayer.color}deg) sepia(${longestTailPlayer.color2}%) contrast(${longestTailPlayer.color3}%)`;
-    $(".mostKillsImg").style.filter = `hue-rotate(${mostKillsPlayer.color}deg) sepia(${mostKillsPlayer.color2}%) contrast(${mostKillsPlayer.color3}%)`;
+    $(".longestTimePlayerImg").style.filter = getPlayerFilter(timeSurvivedPlayer);
+    $(".longestTailPlayerImg").style.filter = getPlayerFilter(longestTailPlayer);
+    $(".mostKillsImg").style.filter = getPlayerFilter(mostKillsPlayer);
     $(".engGame_playerNameTime").innerHTML = timeSurvivedPlayer.accountName;
     $(".engGame_playerTime").innerHTML = minutes + ":" + seconds + " Minutes";
     $(".engGame_playerNameLength").innerHTML = longestTailPlayer.accountName;
@@ -151,7 +151,7 @@ socket.on("endGame",(obj,lobbyID) => {
     $("winnerStat").hide();
     if (winningPlayer) {
         $("winnerStat").show("flex");
-        $(".winnerPlayerImg").style.filter = `hue-rotate(${winningPlayer.color}deg) sepia(${winningPlayer.color2}%) contrast(${winningPlayer.color3}%)`;
+        $(".winnerPlayerImg").style.filter = getPlayerFilter(winningPlayer);
         $(".engGame_playerNameWinner").innerHTML = winningPlayer.accountName;
     }
 

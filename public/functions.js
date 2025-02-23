@@ -378,7 +378,7 @@ function makeItemCanvas(image,filter = "",player) {
     let itemCtx = itemCanvas.getContext("2d");
 
     if (filter == "*P") {
-        filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
+        filter = getPlayerFilter(player);
     }
 
     itemCanvas.width = image.width;
@@ -1289,7 +1289,7 @@ function setGameScene(players) {
 
 
     //Setting Player Snake Color
-    $(".game_c1_snakeHead").style.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
+    $(".game_c1_snakeHead").style.filter = getPlayerFilter(player);
 
 
 }
@@ -1375,7 +1375,7 @@ function generatePlayerCards(players) {
         playerImgHolder.className = "playercard_playerImgHolder";
         let playerImg = playerImgHolder.create("img");
         playerImg.src = "img/snakeHead.png";
-        playerImg.style.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`;
+        playerImg.style.filter = getPlayerFilter(player);
         playerImg.className = "playercard_playerImg";
         playerImg.id = "playercard_img";
 
@@ -1516,7 +1516,7 @@ function updateLobbyPage(lobby) {
                 image.src = src;
     
                 if (filter) {
-                    image.style.filter = `hue-rotate(${filter.color}deg) sepia(${filter.color2}%) contrast(${filter.color3}%)`
+                    image.style.filter = getPlayerFilter(filter);
                 }
                 imageHolder.on("click",function() {
                     func(player);
@@ -1564,7 +1564,7 @@ function updateLobbyPage(lobby) {
     }
     
     if (player) {
-        $(".sc_bb_snakeImg").style.filter = `hue-rotate(${player.color}deg) sepia(${player.color2}%) contrast(${player.color3}%)`; 
+        $(".sc_bb_snakeImg").style.filter = getPlayerFilter(player); 
 
         if (player.canSubmitBoards && !isHost) {
             $(".canAddSubbmisionsOnly").show();
@@ -1816,3 +1816,7 @@ $(".playButtonSounds").forEach(button => {
     button.addEventListener("mouseenter", () => playSound(hoverSound)); // Hover sound
     button.addEventListener("click", () => playSound(clickSound)); // Click sound
 });
+
+function getPlayerFilter(player) {
+    return `hue-rotate(${player.color}deg) saturate(${player.color2}%) brightness(${player.color3}%)`;
+}
