@@ -208,10 +208,12 @@ socket.on("updatePositions",(obj,lobbyID) => {
     updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
     updateCells = updateCells.concat(obj.updateCells);
 
-    for (let i = 0; i < obj.playSounds.length; i++) {
-        let src = obj.playSounds[i];
-        var audio = new Audio(src);
-        audio.play();
+    if (obj.playSounds) {
+        for (let i = 0; i < obj.playSounds.length; i++) {
+            let src = obj.playSounds[i];
+            var audio = new Audio(src);
+            audio.play();
+        }
     }
     
     server_renderPlayers();

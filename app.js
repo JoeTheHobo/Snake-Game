@@ -1800,7 +1800,7 @@ function respawnPlayer(lobby,player,growthPercentage) {
     for (let j = 0; j < lobby.gameMode.howManyItemsCanPlayersUse; j++) {
         player.items.push("empty");
     }
-    let team = findPlayersTeam();
+    let team = findPlayersTeam(player);
     player.status = ["status_" + team];
     player.justDied = false;
     player.bodyArmor = 1;
