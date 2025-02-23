@@ -79,6 +79,72 @@ socket.on("startingGame", (lobby) => {
     updateSnakeCells = [];
     updateCells = [];
     currentGameMode = lobby.gameMode;
+    oldBoardStatus = {
+        aquamarine: {
+            count: 0,
+            location: false,
+        },
+        blue: {
+            count: 0,
+            location: false,
+        },
+        buff: {
+            count: 0,
+            location: false,
+        },
+        coral: {
+            count: 0,
+            location: false,
+        },
+        crimsonpurple: {
+            count: 0,
+            location: false,
+        },
+        gold: {
+            count: 0,
+            location: false,
+        },
+        green: {
+            count: 0,
+            location: false,
+        },
+        lemon: {
+            count: 0,
+            location: false,
+        },
+        lime: {
+            count: 0,
+            location: false,
+        },
+        magenta: {
+            count: 0,
+            location: false,
+        },
+        orange: {
+            count: 0,
+            location: false,
+        },
+        pink: {
+            count: 0,
+            location: false,
+        },
+        red: {
+            count: 0,
+            location: false,
+        },
+        skyblue: {
+            count: 0,
+            location: false,
+        },
+        slateblue: {
+            count: 0,
+            location: false,
+        },
+        venom: {
+            count: 0,
+            location: false,
+        },
+    }
 
     $(".closeWhenGameStarts").hide();
     setScene("game");

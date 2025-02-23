@@ -13,6 +13,7 @@ let updateSnakeCells = [];
 let activePlayers;
 let activePlayerCount = [];
 let showingGameTips = false;
+let oldBoardStatus = [];
 //End Players
 
 
@@ -1341,7 +1342,126 @@ function setGameScene(players) {
 
 }
 function updateBoardStatusTracker(statusList) {
-    console.log(statusList)
+    let holder = $(".game_c2_extra");
+
+    let allStatus = {
+        aquamarine: {
+            count: 0,
+            location: false,
+        },
+        blue: {
+            count: 0,
+            location: false,
+        },
+        buff: {
+            count: 0,
+            location: false,
+        },
+        coral: {
+            count: 0,
+            location: false,
+        },
+        crimsonpurple: {
+            count: 0,
+            location: false,
+        },
+        gold: {
+            count: 0,
+            location: false,
+        },
+        green: {
+            count: 0,
+            location: false,
+        },
+        lemon: {
+            count: 0,
+            location: false,
+        },
+        lime: {
+            count: 0,
+            location: false,
+        },
+        magenta: {
+            count: 0,
+            location: false,
+        },
+        orange: {
+            count: 0,
+            location: false,
+        },
+        pink: {
+            count: 0,
+            location: false,
+        },
+        red: {
+            count: 0,
+            location: false,
+        },
+        skyblue: {
+            count: 0,
+            location: false,
+        },
+        slateblue: {
+            count: 0,
+            location: false,
+        },
+        venom: {
+            count: 0,
+            location: false,
+        },
+    }
+
+    for (let i = 0; i < statusList.length; i++) {
+        allStatus[statusList[i]]++;
+    }
+
+    let addStatus = [];
+    let removeStatus = [];
+    let updateStatus = [];
+    let availableSpots = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
+    availableSpots = availableSpots.shuffle();
+    for (let i = 0; i < global_gameColors.length; i++) {
+        let color = global_gameColors[0];
+
+        if (oldBoardStatus[color] === 0 && allStatus[color].count > 0) addStatus.push(color);
+        if (allStatus[color].count === 0 && oldBoardStatus[color] > 0) removeStatus.push(color);
+        if (allStatus[color].count !== oldBoardStatus[color]) updateStatus.push(color);
+
+        allStatus[color].location = oldBoardStatus[color].location;
+        if (allStatus[color].location !== false) {
+            for (let j = 0; j < availableSpots.length; j++) {
+                if (availableSpots[j] === allStatus[color].location) availableSpots.splice(j,1);
+            }
+        }
+    }
+
+    for (let i = 0; i < addStatus.length; i++) {
+        let location = availableSpots[0];
+        availableSpots.splice(0,1);
+
+        let hotAirHolder = holder.create("div");
+        hotAirHolder.className = `hotAirHolder hotAirPos${location}`;
+        hotAirHolder.id = "hotAir_" + addStatus[i];
+        let img = hotAirHolder.create("img");
+        img.className = "hotAirImg";
+        img.src = "img/gameUI/hotair_" + addStatus[i] + ".png";
+        let text = hotAirHolder.create("div");
+        text.className = "hotAirText";
+        text.innerHTML = allStatus[addStatus[i]].count;
+    }
+    for (let i = 0; i < removeStatus.length; i++) {
+        let hotAirHolder = $("hotAir_" + removeStatus[i]);
+        hotAirHolder.classAdd("hotAirHide");
+        setTimeout(function() {
+            hotAirHolder.remove();
+        },1000);
+    }
+    for (let i = 0; i < updateStatus.length; i++) {
+        let hotAirHolder = $("hotAir_" + removeStatus[i]);
+        hotAirHolder.$(".hotAirText").innerHTML = allStatus[updateStatus[i]].count;
+    }
+    
+    oldBoardStatus = allStatus;
 }
 function updateGameFlags(player) {
     let flag = $("playercard_" + player.index);

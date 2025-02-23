@@ -2706,3 +2706,94 @@ height: 100%;
   width: 40%;
   box-sizing: border-box;
 }
+
+
+
+.hotAirHolder {
+  position: absolute;
+  transition: all .5s ease-in-out;
+  width: 27%;
+  aspect-ratio: 75/173;
+
+}
+.hotAirImg {
+  width: 100%;
+  height: 100%;
+}
+.hotAirText {
+  position: absolute;
+  color: black;
+  font-size: 1.5vw;
+  top: 60%;
+  left: 30%;
+  width: 39%;
+  height: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.hotAirPos1 {
+  top: 2%;
+  left: 1%;
+}
+.hotAirPos2 {
+  top: 25%;
+  left: 1%;
+}
+.hotAirPos3 {
+  top: 48%;
+  left: 1%;
+}
+.hotAirPos4 {
+  top: 71%;
+  left: 1%;
+}
+.hotAirPos5 {
+  left: 24%;
+  top: 8%;
+}
+.hotAirPos6 {
+  left: 24%;
+  top: 31%;
+}
+.hotAirPos7 {
+  left: 24%;
+  top: 54%;
+}
+.hotAirPos15 {
+  left: 24%;
+  top: 77%;
+}
+.hotAirPos16 {
+  left: 47%;
+  top: -3%;
+}
+.hotAirPos8 {
+  left: 47%;
+  top: 20%;
+}
+.hotAirPos9 {
+  left: 47%;
+  top: 43%;
+}
+.hotAirPos10 {
+  left: 47%;
+  top: 66%;
+}
+.hotAirPos11 {
+  left: 70%;
+  top: 9%;
+}
+.hotAirPos12 {
+  left: 70%;
+  top: 32%;
+}
+.hotAirPos13 {
+  left: 70%;
+  top: 55%;
+}
+.hotAirPos14 {
+  left: 70%;
+  top: 78%;
+}
