@@ -244,9 +244,6 @@ function showNumber(index) {
     },1000);
 
 }
-socket.on("finishPingTest",(ping) => {
-    production.ping.times.push(ping);
-})
 socket.on("updatePositions",(obj,lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;
     if (!localAccount.isInGame) return; 

@@ -2039,6 +2039,6 @@ setInterval(() => {
 
     socket.emit("ping", () => {
         const duration = Date.now() - start;
-        console.log(duration);
+        production.ping.times.push(duration);
     });
 }, 1000);
