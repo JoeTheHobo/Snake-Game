@@ -1323,7 +1323,7 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
             });
             lobby.updateSnakeCells.push(lobby.snakeMap[y][x]);
         } else {
-            //runItemFunction(name,currentGameMode.items[itemIndex],"onSpawn",{x:x,y:y},{playAudio: playAudio});
+            runItemFunction(lobby,name,currentGameMode.items[itemIndex],"onSpawn",{x:x,y:y},{playAudio: playAudio});
             currentBoard.map[y][x].item = structuredClone(currentGameMode.items[itemIndex]);
             currentBoard.map[y][x].item.pos = {
                 x: x,
