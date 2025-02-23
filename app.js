@@ -1775,7 +1775,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             doColorRender = true;
         },collision.canvasFilter.duration)
     }
-    if (collision.playSound && item.playSounds && settings?.playAudio) {
+    if (collision.playSound && item.playSounds && settings?.playAudio && lobby.playSounds) {
         lobby.playSounds.push("sounds/" + item.soundFolder + "/" + item.soundFolder + "_" + collision.playSound[0] + "_" + rnd(collision.playSound[1]) + ".mp3");
     }
 }
