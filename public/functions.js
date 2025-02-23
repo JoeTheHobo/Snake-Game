@@ -1423,6 +1423,8 @@ function updateBoardStatusTracker(statusList) {
     for (let i = 0; i < global_gameColors.length; i++) {
         let color = global_gameColors[0];
 
+        console.log(color,allStatus[color])
+
         if (oldBoardStatus[color] === 0 && allStatus[color].count > 0) addStatus.push(color);
         if (allStatus[color].count === 0 && oldBoardStatus[color] > 0) removeStatus.push(color);
         if (allStatus[color].count !== oldBoardStatus[color]) updateStatus.push(color);
@@ -1460,7 +1462,7 @@ function updateBoardStatusTracker(statusList) {
         let hotAirHolder = $("hotAir_" + removeStatus[i]);
         hotAirHolder.$(".hotAirText").innerHTML = allStatus[updateStatus[i]].count;
     }
-    
+
     oldBoardStatus = allStatus;
 }
 function updateGameFlags(player) {
