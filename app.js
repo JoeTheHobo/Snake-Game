@@ -757,13 +757,22 @@ io.on('connection', (socket) => {
         io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
     })
     socket.on("updateClientPositions",(updatedPlayers,updateSnakeCells,updateCells,playSounds,boardStatus,lobbyID) => {
-        io.emit("updatePositions",{
+        function objectToUint8Array(obj) {
+            const str = JSON.stringify(obj);
+            const encoder = new TextEncoder();
+            return encoder.encode(str); // Converts to Uint8Array
+        }
+
+
+        let obj = {
             updatedPlayers: updatedPlayers,
             updateSnakeCells: updateSnakeCells,
             updateCells: updateCells,
             playSounds: playSounds,
             boardStatus: boardStatus,
-        },lobbyID)
+        };
+        let data = objectToUint8Array(obj);
+        io.emit("updatePositions",data,lobbyID)
     })
     socket.on("startGame", () =>{
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
