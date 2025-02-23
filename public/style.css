@@ -1963,7 +1963,7 @@ padding: 15px;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: 5vw;
+  font-size: 7vh;
 }
 .cbp_board_holder:hover {
 border: 2px solid rgb(37, 185, 196);

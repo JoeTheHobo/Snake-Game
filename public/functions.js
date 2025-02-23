@@ -1869,7 +1869,7 @@ function generateBoardsPopup(type) {
                 const file = event.target.files[0]; // Get the first selected file
                 if (file) {
                     readFileContent(file); // Read the content of the file
-                    generateBoardsPopup("personal");
+                    $(".chooseBoardPopup").hide();
                 } else {
                 alert('No file selected!');
                 }
