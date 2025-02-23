@@ -41,10 +41,11 @@ socket.on("setPlayer", (id,account) =>{
     localAccount.lobbyBoards = [];
 });
 socket.on("setClientLobby",(socketID,lobby) => {
+    lobby = uint8ArrayToObject(lobby);
     if (socketID !== localAccount.id) return;
     localAccount.lobbyID = lobby.id;
     socket.emit("requestUpdateLobbyPage");
-    updateLobbyPage(uint8ArrayToObject(lobby));
+    updateLobbyPage(lobby);
     setScene("lobby");
     localAccount.isInLobby = true;
 })
@@ -65,7 +66,6 @@ socket.on("settingLobbyBoards",(boardsList) => {
 })
 socket.on("startingGame", (lobby) => {
     lobby = uint8ArrayToObject(lobby);
-    console.log(lobby)
     productionType = "server";
     setUpProductionHTML();
     if (localAccount.lobbyID !== lobby.id) return;
