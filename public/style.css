@@ -2712,9 +2712,12 @@ height: 100%;
 
 .hotAirHolder {
   position: absolute;
-  transition: all .5s ease-in-out;
+  transition: all 1s ease-in-out;
   height: 23%;
   aspect-ratio: 75/173;
+
+  bottom: 0;
+  right: 0;
 
 }
 .hotAirImg {

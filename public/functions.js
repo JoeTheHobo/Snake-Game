@@ -1442,7 +1442,7 @@ function updateBoardStatusTracker(statusList) {
         allStatus[addStatus[i]].location = location;
 
         let hotAirHolder = holder.create("div");
-        hotAirHolder.className = `hotAirHolder hotAirPos${location}`;
+        hotAirHolder.className = `hotAirHolder`;
         hotAirHolder.id = "hotAir_" + addStatus[i];
         let img = hotAirHolder.create("img");
         img.className = "hotAirImg";
@@ -1450,6 +1450,10 @@ function updateBoardStatusTracker(statusList) {
         let text = hotAirHolder.create("div");
         text.className = "hotAirText";
         text.innerHTML = allStatus[addStatus[i]].count;
+
+        setTimeout(function() {
+            hotAirHolder.classAdd(`hotAirPos${location}`);
+        },1)
     }
     for (let i = 0; i < updateStatus.length; i++) {
         let hotAirHolder = $("hotAir_" + updateStatus[i]);
