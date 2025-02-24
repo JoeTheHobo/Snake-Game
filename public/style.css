@@ -1678,8 +1678,8 @@ width: 100%;
   flex-direction: column;
   justify-content: end;
   align-items: end;
-  overflow-y: scroll;
-  height: 90%;
+  overflow-y: auto;
+  height: 300px;
   padding-bottom: 10px;
 }
 .sc_chatHolder::-webkit-scrollbar {
@@ -1740,7 +1740,6 @@ margin-left: 10px;
   flex-direction: column;
   align-items: center;
   height: 50%;
-  max-height: 50%;
   width: 100%;
 }
 .joinWaitingRoomButton {
