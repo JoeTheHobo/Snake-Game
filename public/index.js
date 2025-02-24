@@ -43,7 +43,6 @@ socket.on("setPlayer", (id,account) =>{
 socket.on("setClientLobby",(socketID,lobby) => {
     lobby = uint8ArrayToObject(lobby);
     if (socketID !== localAccount.id) return;
-    console.log(lobby)
     localAccount.lobbyID = lobby.id;
     socket.emit("requestUpdateLobbyPage");
     updateLobbyPage(lobby);
@@ -355,12 +354,15 @@ socket.on("updatePositions",(obj,lobbyID) => {
     updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
     updateCells = updateCells.concat(obj.updateCells);
 
-    for (let i = 0; i < obj.playSounds.length; i++) {
-        let src = obj.playSounds[i];
-        if (src == "sounds/mouse/mouse_spawn_1.mp3") continue;
-        var audio = new Audio(src);
-        audio.play();
+    if (obj.playSounds) {
+        for (let i = 0; i < obj.playSounds.length; i++) {
+            let src = obj.playSounds[i];
+            if (src == "sounds/mouse/mouse_spawn_1.mp3") continue;
+            var audio = new Audio(src);
+            audio.play();
+        }
     }
+    
 
     updateBoardStatusTracker(obj.boardStatus);
     
