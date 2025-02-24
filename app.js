@@ -895,7 +895,7 @@ io.on('connection', (socket) => {
         lobby.gameTimeStart = Date.now();
         lobby.boardStatusCount = 0;
 
-        io.emit("startingGame", objectToUint8Array(lobby),onlineAccounts[socket.id].player);
+        io.emit("startingGame", (lobby),onlineAccounts[socket.id].player);
         emitingActivePlayers = Object.values(lobby.activePlayers).map(({ index, selectingItem, items, tail,moving,shield,playerKills }) => ({
             index,
             selectingItem,
@@ -1007,14 +1007,15 @@ io.on('connection', (socket) => {
         }
 
         lobby.gameStatus = "prepare";
-
+        lobby.waiting = true;
         setTimeout(function() {
-            if (lobby.gameStatus === "game") return;
+            if (lobby.gameStatus === "game" || lobby.waiting == false) return;
+            lobby.waiting = false;
             io.emit("preparingGame",lobby.id);
             setTimeout(function() {
                 lobby.gameStatus = "game";
                 lobby.gameLoop();
-            },3600)
+            },4000)
         },15000);
         
         let lobbyList = Object.values(lobbies)
@@ -1039,13 +1040,13 @@ io.on('connection', (socket) => {
         io.emit("updatePreGamePlayerInfo",lobby.id,lobby.inGamePlayers)
 
         if (lobby.readyPlayers.length === lobby.inGamePlayers.length) {
-            if (lobby.gameStatus == "game") return;
-
+            if (lobby.gameStatus == "game" || lobby.waiting == false) return;
+            lobby.waiting = false;
             io.emit("preparingGame",lobby.id);
             setTimeout(function() {
                 lobby.gameStatus = "game";
                 lobby.gameLoop();
-            },3600)
+            },4000)
         }
 
     });
