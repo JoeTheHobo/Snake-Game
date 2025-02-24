@@ -1676,9 +1676,8 @@ width: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: end;
   align-items: end;
-  overflow-y: scroll;
+  overflow-y: auto;
   border: 1px solid red;
   height: 150px;
   max-height: 150px;
@@ -1750,11 +1749,12 @@ margin-top: 20px;
 }
 
 .lobby_chatHolder {
-width: 100%;
-font-size: 20px;
-display: flex;
-flex-direction: row;
-align-items: center;
+  width: 100%;
+  font-size: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-end;
 }
 
 .lobbyPlayerCard {
