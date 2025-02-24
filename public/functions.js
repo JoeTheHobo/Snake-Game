@@ -44,7 +44,7 @@ if (currentBoardIndex > boards.length - 1) currentBoardIndex = 0;
 let currentBoard = boards[currentBoardIndex];
 
 
-let gameModes = ls.get("gameModes",presetGameModes);
+let gameModes = presetGameModes;//ls.get("gameModes",presetGameModes);
 if (_type(gameModes).type == "string") gameModes = unZip(gameModes);
 let activeGameMode = ls.get("activeGameMode",0);
 if (!gameModes[activeGameMode]) activeGameMode = 0;
