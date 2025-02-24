@@ -242,6 +242,7 @@ socket.on("updatePreGamePlayerInfo",(players) => {
             $("pgpi_title_" + player.index).style.color = "blue";
         }
         if (player.preGameStatus == "ready") {
+            console.log($("pgpi_title_" + player.index));
             $("pgpi_title_" + player.index).innerHTML = player.accountName;
             $("pgpi_title_" + player.index).style.color = "white";
         }
