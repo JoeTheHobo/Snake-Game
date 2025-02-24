@@ -1531,7 +1531,7 @@ overflow: hidden;
 .menu_serverScreen {
   display: flex;
   width: 100%;
-  height: 500px;
+  height: 100%;
   flex-direction: column;
   align-items: center;
   padding: 15px;
@@ -1540,11 +1540,11 @@ overflow: hidden;
   box-sizing: border-box;    
 }
 .sc_topBar {
-width: 100%;
-height: 50px;
-display: flex;
-flex-direction: row;
-justify-content: space-between;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .sc_tb_lobbyName {
 color: white;
@@ -1678,9 +1678,8 @@ width: 100%;
   flex-direction: column;
   justify-content: end;
   align-items: end;
-  overflow-y: auto;
-  height: 100%;
-  max-height: 100%;
+  overflow-y: scroll;
+  height: 90%;
   padding-bottom: 10px;
 }
 .sc_chatHolder::-webkit-scrollbar {
@@ -1737,11 +1736,11 @@ height: 100%;
 margin-left: 10px;
 }
 .sc_half {
-display: flex;
-flex-direction: column;
-align-items: center;
-height: 50%;
-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 50%;
+  width: 100%;
 }
 .joinWaitingRoomButton {
 width: 28.5%;
