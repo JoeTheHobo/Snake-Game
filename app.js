@@ -1822,8 +1822,7 @@ function removePlayerStatus(lobby,player,itemName) {
 
 //From App.js
 function objectToUint8Array(obj) {
-    const cleanObj = JSON.parse(JSON.stringify(obj));
-    return msgpack.encode(cleanObj);
+    return JSON.stringify(obj);
 }
 function respawnPlayer(lobby,player,growthPercentage) {
     let length = Math.round((growthPercentage/100) * player.tail.length);

@@ -1,7 +1,7 @@
 const socket = io({reconnection: false});
 
 function uint8ArrayToObject(uint8Array) {
-    return msgpack.decode(uint8Array); // Convert binary back to object
+    return JSON.parse(uint8Array);
 }
 //const player = new Player(x, y);
 //const players = {};
