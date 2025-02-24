@@ -1487,6 +1487,8 @@ function deletePlayer(lobby,player,playerWhoKilled,item,instaKill = false){
     if (item) damage = item.damage;
     if (playerWhoKilled) damage = playerWhoKilled.bodyArmor;
 
+    if (damage === 0) playerDied = false;
+
     if (player.equiped.head?.protect) {
         player.equiped.head.protect -= damage;
         if (player.equiped.head.protect > 0) {
