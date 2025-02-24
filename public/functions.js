@@ -1804,6 +1804,8 @@ function updateLobbyPage(lobby) {
         else holder.style.color = "white";
     }
 
+    chatHolder.scrollTo({ top: chatHolder.scrollHeight, behavior: 'smooth' })
+
     logGameModeChanges($(".sc_gameModeChanges"),lobby.gameMode,false);
 
     requestAnimationFrame(() => {

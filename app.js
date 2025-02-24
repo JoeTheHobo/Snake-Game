@@ -572,7 +572,7 @@ io.on('connection', (socket) => {
         let account;
         for (let i = 0; i < lobby.players.length; i++) {
             if (lobby.players[i] == socket.id) {
-                account = onlineAccounts[lobby.players[i]].username + onlineAccounts[lobby.players[i]].tag;
+                account = onlineAccounts[lobby.players[i]].username;
             }
         }
 
