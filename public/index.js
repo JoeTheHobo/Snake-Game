@@ -1,8 +1,7 @@
 const socket = io({reconnection: false});
 
 function uint8ArrayToObject(uint8Array) {
-    const decoder = new TextDecoder();
-    return JSON.parse(decoder.decode(uint8Array)); // Converts back to object
+    return msgpack.decode(new Uint8Array(uint8Array));
 }
 //const player = new Player(x, y);
 //const players = {};
@@ -66,7 +65,7 @@ socket.on("settingLobbyBoards",(boardsList) => {
     localAccount.lobbyBoards = uint8ArrayToObject(boardsList);
 })
 socket.on("startingGame", (lobby) => {
-    //lobby = uint8ArrayToObject(lobby);
+    lobby = uint8ArrayToObject(lobby);
     productionType = "server";
     setUpProductionHTML();
     if (localAccount.lobbyID !== lobby.id) return;
@@ -255,7 +254,7 @@ socket.on("updatePreGamePlayerInfo",(lobbyID,players) => {
     }
 })
 socket.on("endGame",(obj,lobbyID) => {
-    //obj = uint8ArrayToObject(obj);
+    obj = uint8ArrayToObject(obj);
     if (localAccount.lobbyID !== lobbyID) return;
     localAccount.isInGame = false;
     

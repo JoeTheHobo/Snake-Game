@@ -895,7 +895,7 @@ io.on('connection', (socket) => {
         lobby.gameTimeStart = Date.now();
         lobby.boardStatusCount = 0;
 
-        io.emit("startingGame", (lobby),onlineAccounts[socket.id].player);
+        io.emit("startingGame", objectToUint8Array(lobby),onlineAccounts[socket.id].player);
         emitingActivePlayers = Object.values(lobby.activePlayers).map(({ index, selectingItem, items, tail,moving,shield,playerKills }) => ({
             index,
             selectingItem,
@@ -991,7 +991,7 @@ io.on('connection', (socket) => {
                     seconds: seconds,
                     winningPlayer: winningPlayer,
                 };
-                io.emit("endGame",obj,lobby.id)
+                io.emit("endGame",objectToUint8Array(obj),lobby.id)
 
                 
                 let lobbyList = Object.values(lobbies)
@@ -1823,9 +1823,7 @@ function removePlayerStatus(lobby,player,itemName) {
 
 //From App.js
 function objectToUint8Array(obj) {
-    const str = JSON.stringify(obj);
-    const encoder = new TextEncoder();
-    return encoder.encode(str); // Converts to Uint8Array
+    return msgpack.encode(obj);
 }
 function respawnPlayer(lobby,player,growthPercentage) {
     let length = Math.round((growthPercentage/100) * player.tail.length);
