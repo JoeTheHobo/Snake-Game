@@ -168,18 +168,9 @@ function server_renderPlayers() {
     
             if (obj.type == "head") {
                 drawRotated(player.canvas.head,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
-            
-                if (player.shield == 1){
-                    let item = getItem("bronzeShield");
-                    drawImage(getItemCanvas(item.name),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);
-                }
-                if (player.shield == 2){
-                    let item = getItem("silverShield");
-                    drawImage(getItemCanvas(item.name),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);
-                }
-                if (player.shield == 3){
-                    let item = getItem("goldShield");
-                    drawImage(getItemCanvas(item.name),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);
+                
+                if (player.equiped.head) {
+                    drawImage(getItemCanvas(player.equiped.head.name),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);
                 }
             }
             if (obj.type == "body" || obj.type == "tail") {
