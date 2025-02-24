@@ -215,15 +215,29 @@ function generatePreGamePlayerInfo(players) {
             ring.className = "pgpi_ring";
         } else {
             let title = holder.create("div");
-            title.innerHTML = player.accountName;
+            title.innerHTML = "Loading In...";
             title.className = "pgpi_title";
         }
         
     }
 }
-function updatePreGamePlayerInfo(player) {
-
-}
+socket.on("updatePreGamePlayerInfo",(players) => {
+    for (let i = 0; i < players.length; i++) {
+        let player = players[i];
+        if (player.preGameStatus == "waiting") {
+            $("pgpi_" + player.index).$(".pgpi_title").innerHTML = "Loading In..."
+            $("pgpi_" + player.index).$(".pgpi_title").style.color = "blue";
+        }
+        if (player.preGameStatus == "ready") {
+            $("pgpi_" + player.index).$(".pgpi_title").innerHTML = player.accountName;
+            $("pgpi_" + player.index).$(".pgpi_title").style.color = "white";
+        }
+        if (player.preGameStatus == "disconnected") {
+            $("pgpi_" + player.index).$(".pgpi_title").innerHTML = "Disconnected";
+            $("pgpi_" + player.index).$(".pgpi_title").style.color = "red";
+        }
+    }
+})
 socket.on("endGame",(obj,lobbyID) => {
     obj = uint8ArrayToObject(obj);
     if (localAccount.lobbyID !== lobbyID) return;

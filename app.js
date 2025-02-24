@@ -858,6 +858,7 @@ io.on('connection', (socket) => {
             
             player.playerKills = 0;
             player.index = i;
+            player.preGameStatus = "waiting";
 
             player.pos = {
                 x: false,
@@ -1032,6 +1033,10 @@ io.on('connection', (socket) => {
         if (!lobby.isInGame) return;
 
         lobby.readyPlayers.push(socket.id);
+        for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+            if (lobby.inGamePlayers[i].accountID == socket.id) lobby.inGamePlayers[i].preGameStatus = "ready";
+        }
+        io.emit("updatePreGamePlayerInfo",lobby.inGamePlayers)
 
         if (lobby.readyPlayers.length === lobby.inGamePlayers.length) {
             if (lobby.gameStatus == "game") return;
