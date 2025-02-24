@@ -991,7 +991,6 @@ io.on('connection', (socket) => {
                     seconds: seconds,
                     winningPlayer: winningPlayer,
                 };
-                obj = objectToUint8Array(obj);
                 io.emit("endGame",obj,lobby.id)
 
                 

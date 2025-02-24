@@ -255,7 +255,7 @@ socket.on("updatePreGamePlayerInfo",(lobbyID,players) => {
     }
 })
 socket.on("endGame",(obj,lobbyID) => {
-    obj = uint8ArrayToObject(obj);
+    //obj = uint8ArrayToObject(obj);
     if (localAccount.lobbyID !== lobbyID) return;
     localAccount.isInGame = false;
     
