@@ -1436,7 +1436,7 @@ function useItem(lobby,player) {
     
     let item = player.items[player.selectingItem];
     if (item == "empty") return;
-    if (item.cantUseIfStatus.length > 0) {
+    if (item.cantUseIfStatus?.length > 0) {
         for (let i = 0; i < item.cantUseIfStatus.length; i++) {
             let id = item.cantUseIfStatus[i];
             if (player.status.includes(id)) return;
