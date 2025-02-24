@@ -1014,8 +1014,8 @@ io.on('connection', (socket) => {
             setTimeout(function() {
                 lobby.gameStatus = "game";
                 lobby.gameLoop();
-            },3500)
-        },10000);
+            },3600)
+        },15000);
         
         let lobbyList = Object.values(lobbies)
             .filter(lobby => lobby.serverType !== "Hidden")
@@ -1045,7 +1045,7 @@ io.on('connection', (socket) => {
             setTimeout(function() {
                 lobby.gameStatus = "game";
                 lobby.gameLoop();
-            },3500)
+            },3600)
         }
 
     });
