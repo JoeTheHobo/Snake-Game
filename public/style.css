@@ -1678,6 +1678,7 @@ width: 100%;
   flex-direction: column;
   justify-content: end;
   align-items: end;
+  overflow: hidden;
   overflow-y: scroll;
   border: 1px solid red;
   height: 100%;
