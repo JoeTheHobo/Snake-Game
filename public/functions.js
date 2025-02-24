@@ -1544,18 +1544,24 @@ function updateGameScene(player) {
     //updating player equiped
     if (player.equiped.head) {
         $(".game_c2_c1_head").src = getImageFromItem("item",player.equiped.head,"src")
+        $(".game_c2_c1_text_head").innerHTML = player.equiped.head.whenEquiped.protect;
     } else {
         $(".game_c2_c1_head").src = "img/backgrounds/clear.png";
+        $(".game_c2_c1_text_head").innerHTML = "";
     }
     if (player.equiped.body) {
         $(".game_c2_c1_body").src = getImageFromItem("item",player.equiped.body,"src")
+        $(".game_c2_c1_text_body").innerHTML = player.equiped.head.whenEquiped.protect;
     } else {
         $(".game_c2_c1_body").src = "img/backgrounds/clear.png";
+        $(".game_c2_c1_text_body").innerHTML = "";
     }
     if (player.equiped.tail) {
         $(".game_c2_c1_tail").src = getImageFromItem("item",player.equiped.tail,"src")
+        $(".game_c2_c1_text_body").innerHTML = player.equiped.head.whenEquiped.protect;
     } else {
         $(".game_c2_c1_tail").src = "img/backgrounds/clear.png";
+        $(".game_c2_c1_text_tail").innerHTML = "";
     }
 }
 

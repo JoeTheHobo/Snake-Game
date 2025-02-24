@@ -2424,7 +2424,7 @@ items.push({
     canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: true, //(true/false) Does the item go into thep players inventory or is it used immediently
     whenEquiped: {
-        protect: 1, //How much it protects
+        protect: 2, //How much it protects
         absorb: 0, //How much item Absorbs before breaking it'self
     },
     onEat: {
@@ -2460,7 +2460,7 @@ items.push({
     pickUp: true,
     canEat: true,
     whenEquiped: {
-        protect: 2, //How much it protects
+        protect: 3, //How much it protects
         absorb: 0, //How much item Absorbs before breaking it'self
     },
     onEat: {
@@ -2497,7 +2497,7 @@ items.push({
     onEat_deleteMe: true,
     canEat: true,
     whenEquiped: {
-        protect: 3, //How much it protects
+        protect: 4, //How much it protects
         absorb: 0, //How much item Absorbs before breaking it'self
     },
     onEat: {
