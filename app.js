@@ -1443,8 +1443,8 @@ function useItem(lobby,player) {
         }
     }
     
-    runItemFunction(lobby,player,player.items[player.selectingItem],"onEat");
-    player.items[player.selectingItem] = "empty";
+    let returnItem = runItemFunction(lobby,player,player.items[player.selectingItem],"onEat");
+    player.items[player.selectingItem] = returnItem;
 }
 function specialItemManager(lobby) {
     let currentGameMode = lobby.gameMode;
@@ -1656,12 +1656,13 @@ function testItemUnderPlayer(lobby,player) {
     if (!itemIsDelete) deletePlayer(lobby,player);
 }
 function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: true}) {
+    let returnItem = "empty";
     let currentBoard = lobby.board;
-    if (!type) return;
+    if (!type) return returnItem;
 
     let collision = item[type];
 
-    if (!collision) return;
+    if (!collision) return returnItem;
 
     if (item.switchStatus == false || item.switchStatus == undefined) {
         item.switchStatus = true;
@@ -1706,14 +1707,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         let oldItem = structuredClone(player.equiped[collision.equip]);
         player.equiped[collision.equip] = structuredClone(item);
         if (oldItem) {
-            if (lobby.gameMode.mode_usingItemType == "scroll") {
-                console.log(player.items,player.selectingItem,oldItem)
-                player.items[player.selectingItem] = oldItem;
-            }
-            if (lobby.gameMode.mode_usingItemType == "direct") {
-                if (player.items[0] == "empty") player.items[0] == oldItem;
-                else player.items[1] == oldItem;
-            }
+            returnItem = oldItem;
         }
     }
     if (collision.setBaseImgTag) {
@@ -1796,6 +1790,8 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     if (collision.playSound && item.playSounds && settings?.playAudio && lobby.playSounds) {
         lobby.playSounds.push("sounds/" + item.soundFolder + "/" + item.soundFolder + "_" + collision.playSound[0] + "_" + rnd(collision.playSound[1]) + ".mp3");
     }
+
+    return returnItem;
 }
 function addPlayerStatus(lobby,player,itemName) {
     if (itemName.subset(0,5) == "status") {
