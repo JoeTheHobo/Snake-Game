@@ -215,7 +215,7 @@ function generatePreGamePlayerInfo(players) {
             ring.className = "pgpi_ring";
         } else {
             let title = holder.create("div");
-            title.innerHTML = "Loading In...";
+            title.innerHTML = "Loading";
             title.className = "pgpi_title";
         }
         
@@ -225,7 +225,7 @@ socket.on("updatePreGamePlayerInfo",(players) => {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
         if (player.preGameStatus == "waiting") {
-            $("pgpi_" + player.index).$(".pgpi_title").innerHTML = "Loading In..."
+            $("pgpi_" + player.index).$(".pgpi_title").innerHTML = "Loading";
             $("pgpi_" + player.index).$(".pgpi_title").style.color = "blue";
         }
         if (player.preGameStatus == "ready") {
