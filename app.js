@@ -1705,10 +1705,9 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     if (collision.equip) {
         let oldItem = structuredClone(player.equiped[collision.equip]);
         player.equiped[collision.equip] = structuredClone(item);
-        console.log("oldItem",oldItem)
         if (oldItem) {
-            console.log(lobby.gameMode.mode_usingItemType);
             if (lobby.gameMode.mode_usingItemType == "scroll") {
+                console.log(player.items,player.selectingItem,oldItem)
                 player.items[player.selectingItem] = oldItem;
             }
             if (lobby.gameMode.mode_usingItemType == "direct") {
