@@ -710,7 +710,6 @@ $("me_canvas").on("contextmenu",function(e) {
     e.preventDefault();
 })
 document.on('keydown', (e) => {
-    console.log($("scene_mapEditor").style.display);
     if ($("scene_mapEditor").style.display == "none") return;
     // Check if the currently focused element is an input, textarea, or select
     if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {

@@ -196,7 +196,6 @@ socket.on("startingGame", (lobby) => {
 function generatePreGamePlayerInfo(players) {
     $(".preGamePlayerInfo").innerHTML = "";
     $(".preGamePlayerInfo").show();
-    console.log(1)
 
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
@@ -235,10 +234,13 @@ function generatePreGamePlayerInfo(players) {
         
     }
 }
-socket.on("updatePreGamePlayerInfo",(players) => {
-    console.log(2)
+socket.on("updatePreGamePlayerInfo",(lobbyID,players) => {
+    if (localAccount.lobbyID !== lobbyID) return;
+    
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
+        if (player.accountID == localAccount.id) continue;
+
         if (player.preGameStatus == "waiting") {
             $("pgpi_title_" + player.index).innerHTML = "Loading";
             $("pgpi_title_" + player.index).style.color = "blue";

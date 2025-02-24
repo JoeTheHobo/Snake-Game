@@ -1036,7 +1036,7 @@ io.on('connection', (socket) => {
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
             if (lobby.inGamePlayers[i].accountID == socket.id) lobby.inGamePlayers[i].preGameStatus = "ready";
         }
-        io.emit("updatePreGamePlayerInfo",lobby.inGamePlayers)
+        io.emit("updatePreGamePlayerInfo",lobby.id,lobby.inGamePlayers)
 
         if (lobby.readyPlayers.length === lobby.inGamePlayers.length) {
             if (lobby.gameStatus == "game") return;
