@@ -1673,17 +1673,14 @@ filter: invert(100%);
 width: 100%;
 }
 .sc_chatHolder {
-width: 100%;
-display: flex;
-flex-direction: column;
-justify-content: end;
-align-items: end;
-overflow-y: scroll;
-height: 100%;
-padding-bottom: 10px;
-
--ms-overflow-style: none;  /* IE and Edge */
-scrollbar-width: none;  /* Firefox */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: end;
+  overflow-y: scroll;
+  height: 100%;
+  padding-bottom: 10px;
 }
 .sc_chatHolder::-webkit-scrollbar {
 display: none;
