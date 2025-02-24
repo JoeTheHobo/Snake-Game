@@ -225,12 +225,12 @@ socket.on("updatePreGamePlayerInfo",(players) => {
     console.log("eyo")
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
-        console.log(player.preGameStatus);
         if (player.preGameStatus == "waiting") {
             $("pgpi_" + player.index).$(".pgpi_title").innerHTML = "Loading";
             $("pgpi_" + player.index).$(".pgpi_title").style.color = "blue";
         }
         if (player.preGameStatus == "ready") {
+            console.log($("pgpi_" + player.index).$(".pgpi_title"));
             $("pgpi_" + player.index).$(".pgpi_title").innerHTML = player.accountName;
             $("pgpi_" + player.index).$(".pgpi_title").style.color = "white";
         }
