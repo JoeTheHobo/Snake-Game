@@ -327,7 +327,6 @@ function formatNumber(num) {
 
 
 const express = require('express');
-const msgpack = require("msgpack-lite");
 const app = express();
 
 //socket.io setup
