@@ -215,9 +215,21 @@ function generatePreGamePlayerInfo(players) {
             ring.className = "pgpi_ring";
         } else {
             let title = holder.create("div");
-            title.innerHTML = "Loading";
             title.className = "pgpi_title";
-            title.innerHTML = "pgpi_title_" + player.index;
+            title.id = "pgpi_title_" + player.index;
+            
+            if (player.preGameStatus == "waiting") {
+                title.innerHTML = "Loading";
+                title.style.color = "blue";
+            }
+            if (player.preGameStatus == "ready") {
+                title.innerHTML = player.accountName;
+                title.style.color = "white";
+            }
+            if (player.preGameStatus == "disconnected") {
+                title.innerHTML = "Disconnected";
+                title.style.color = "red";
+            }
         }
         
     }
@@ -225,13 +237,11 @@ function generatePreGamePlayerInfo(players) {
 socket.on("updatePreGamePlayerInfo",(players) => {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
-        console.log(player.index)
         if (player.preGameStatus == "waiting") {
             $("pgpi_title_" + player.index).innerHTML = "Loading";
             $("pgpi_title_" + player.index).style.color = "blue";
         }
         if (player.preGameStatus == "ready") {
-            console.log($("pgpi_" + player.index).$(".pgpi_title"));
             $("pgpi_title_" + player.index).innerHTML = player.accountName;
             $("pgpi_title_" + player.index).style.color = "white";
         }
