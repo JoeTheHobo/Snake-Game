@@ -377,7 +377,7 @@ io.on('connection', (socket) => {
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
-        let username = onlineAccounts[socket.id].username + onlineAccounts[socket.id].tag;
+        let username = onlineAccounts[socket.id].username;
         console.log("A user disconnected due to " + reason);
         if (onlineAccounts[socket.id].lobby) {
             let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -465,7 +465,7 @@ io.on('connection', (socket) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;
 
-        let username = onlineAccounts[socket.id].username + onlineAccounts[socket.id].tag;
+        let username = onlineAccounts[socket.id].username;
         for (let i = 0; i < lobby.players.length; i++) {
             if (lobby.players[i] == socket.id) {
                 lobby.players.splice(i,1);
@@ -540,7 +540,7 @@ io.on('connection', (socket) => {
         lobby.players.push(socket.id);
         lobby.chats.push({
             account: null,
-            message: account.username + account.tag + " Joined The Lobby",
+            message: account.username + " Joined The Lobby",
         })
         account.lobby = lobby.id;
         account.player = structuredClone(account.players[0]);
@@ -688,7 +688,7 @@ io.on('connection', (socket) => {
 
         for (let i = 0; i < lobby.players.length; i++) {
             if (lobby.players[i] === kickedPlayer.id) {
-                let username = kickedPlayer.username + kickedPlayer.tag;
+                let username = kickedPlayer.username;
                 lobby.chats.push({
                     account: null,
                     message: username + " Got Kicked From Lobby",
@@ -721,7 +721,7 @@ io.on('connection', (socket) => {
         lobby.hostName = newHost.username;
         lobby.hostTag = newHost.tag;
 
-        let username = newHost.username + newHost.tag;
+        let username = newHost.username;
         lobby.chats.push({
             account: null,
             message: username + " Is The New Lobby Host",
