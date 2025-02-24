@@ -236,7 +236,7 @@ function generatePreGamePlayerInfo(players) {
 }
 socket.on("updatePreGamePlayerInfo",(lobbyID,players) => {
     if (localAccount.lobbyID !== lobbyID) return;
-    
+
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
         if (player.accountID == localAccount.id) continue;
@@ -357,6 +357,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
 
     for (let i = 0; i < obj.playSounds.length; i++) {
         let src = obj.playSounds[i];
+        if (src == "sounds/mouse/mouse_spawn_1.mp3") continue;
         var audio = new Audio(src);
         audio.play();
     }

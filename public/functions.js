@@ -1807,8 +1807,8 @@ function updateLobbyPage(lobby) {
     logGameModeChanges($(".sc_gameModeChanges"),lobby.gameMode,false);
 
     requestAnimationFrame(() => {
-        $(".sc_boards_canvas").width = $(".sc_boards_canvas").clientWidth;
-        $(".sc_boards_canvas").height = $(".sc_boards_canvas").clientHeight; 
+        $(".sc_boards_canvas").width = $(".sc_canvas_holder").clientWidth;
+        $(".sc_boards_canvas").height = $(".sc_canvas_holder").clientHeight; 
         drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);
     });
 }
