@@ -327,6 +327,7 @@ function formatNumber(num) {
 
 
 const express = require('express');
+const msgpack = require("msgpack-lite");
 const app = express();
 
 //socket.io setup
@@ -1821,7 +1822,7 @@ function removePlayerStatus(lobby,player,itemName) {
 
 //From App.js
 function objectToUint8Array(obj) {
-    return obj;
+    return msgpack.encode(obj);
 }
 function respawnPlayer(lobby,player,growthPercentage) {
     let length = Math.round((growthPercentage/100) * player.tail.length);
