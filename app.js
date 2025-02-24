@@ -1006,6 +1006,15 @@ io.on('connection', (socket) => {
         }
 
         lobby.gameStatus = "prepare";
+
+        setTimeout(function() {
+            if (lobby.gameStatus === "game") return;
+            io.emit("preparingGame",lobby.id);
+            setTimeout(function() {
+                lobby.gameStatus = "game";
+                lobby.gameLoop();
+            },3250)
+        },10000);
         
         let lobbyList = Object.values(lobbies)
             .filter(lobby => lobby.serverType !== "Hidden")
@@ -1025,6 +1034,8 @@ io.on('connection', (socket) => {
         lobby.readyPlayers.push(socket.id);
 
         if (lobby.readyPlayers.length === lobby.inGamePlayers.length) {
+            if (lobby.gameStatus == "game") return;
+
             io.emit("preparingGame",lobby.id);
             setTimeout(function() {
                 lobby.gameStatus = "game";
