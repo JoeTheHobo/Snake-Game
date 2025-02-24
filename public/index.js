@@ -1,7 +1,7 @@
 const socket = io({reconnection: false});
 
 function uint8ArrayToObject(uint8Array) {
-    return msgpack.unpack(uint8Array);
+    return uint8Array;
 }
 //const player = new Player(x, y);
 //const players = {};

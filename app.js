@@ -326,7 +326,6 @@ function formatNumber(num) {
 
 
 
-const msgpack = require("msgpack5");
 const express = require('express');
 const app = express();
 
@@ -1822,7 +1821,7 @@ function removePlayerStatus(lobby,player,itemName) {
 
 //From App.js
 function objectToUint8Array(obj) {
-    return msgpack.pack(obj);
+    return obj;
 }
 function respawnPlayer(lobby,player,growthPercentage) {
     let length = Math.round((growthPercentage/100) * player.tail.length);
