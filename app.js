@@ -1014,7 +1014,7 @@ io.on('connection', (socket) => {
             setTimeout(function() {
                 lobby.gameStatus = "game";
                 lobby.gameLoop();
-            },3250)
+            },3500)
         },10000);
         
         let lobbyList = Object.values(lobbies)
@@ -1045,7 +1045,7 @@ io.on('connection', (socket) => {
             setTimeout(function() {
                 lobby.gameStatus = "game";
                 lobby.gameLoop();
-            },3250)
+            },3500)
         }
 
     });
