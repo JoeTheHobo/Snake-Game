@@ -217,26 +217,27 @@ function generatePreGamePlayerInfo(players) {
             let title = holder.create("div");
             title.innerHTML = "Loading";
             title.className = "pgpi_title";
+            title.innerHTML = "pgpi_title_" + player.index;
         }
         
     }
 }
 socket.on("updatePreGamePlayerInfo",(players) => {
-    console.log("eyo")
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
+        console.log(player.index)
         if (player.preGameStatus == "waiting") {
-            $("pgpi_" + player.index).$(".pgpi_title").innerHTML = "Loading";
-            $("pgpi_" + player.index).$(".pgpi_title").style.color = "blue";
+            $("pgpi_title_" + player.index).innerHTML = "Loading";
+            $("pgpi_title_" + player.index).style.color = "blue";
         }
         if (player.preGameStatus == "ready") {
             console.log($("pgpi_" + player.index).$(".pgpi_title"));
-            $("pgpi_" + player.index).$(".pgpi_title").innerHTML = player.accountName;
-            $("pgpi_" + player.index).$(".pgpi_title").style.color = "white";
+            $("pgpi_title_" + player.index).innerHTML = player.accountName;
+            $("pgpi_title_" + player.index).style.color = "white";
         }
         if (player.preGameStatus == "disconnected") {
-            $("pgpi_" + player.index).$(".pgpi_title").innerHTML = "Disconnected";
-            $("pgpi_" + player.index).$(".pgpi_title").style.color = "red";
+            $("pgpi_title_" + player.index).innerHTML = "Disconnected";
+            $("pgpi_title_" + player.index).style.color = "red";
         }
     }
 })
