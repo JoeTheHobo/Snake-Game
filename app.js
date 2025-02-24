@@ -1490,12 +1490,11 @@ function deletePlayer(lobby,player,playerWhoKilled,item,instaKill = false){
 
     if (damage === 0) playerDied = false;
 
-    console.log(player.equiped.head?.whenEquiped?.protect,player.equiped.head?.whenEquiped,player.equiped.head);
     if (player.equiped.head?.whenEquiped?.protect) {
-        console.log("EYY")
         player.equiped.head.whenEquiped.protect -= damage;
-        if (player.equiped.head.whenEquiped.protect > 0) {
+        if (player.equiped.head.whenEquiped.protect > -1) {
             playerDied = false;
+            if (player.equiped.head.whenEquiped.protect < 1) player.equiped.head = false;
         } else {
             player.equiped.head = false;
         }
