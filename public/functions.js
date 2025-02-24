@@ -1489,9 +1489,21 @@ function updateGameFlags(player) {
     flag.$("pc_c1_points").innerHTML = 0;
     flag.$("pc_c1_length").innerHTML = player.tailLength;
     flag.$("pc_c1_kills").innerHTML = player.playerKills;
-    flag.$("pc_c2_headImg").src = "img/backgrounds/clear.png";
-    flag.$("pc_c2_bodyImg").src = "img/backgrounds/clear.png";
-    flag.$("pc_c2_tailImg").src = "img/backgrounds/clear.png";
+    if (player.equiped.head) {
+        flag.$("pc_c2_headImg").src = getImageFromItem("item",player.equiped.head,"src");
+    } else {
+        flag.$("pc_c2_headImg").src = "img/backgrounds/clear.png";
+    }
+    if (player.equiped.body) {
+        flag.$("pc_c2_bodyImg").src = getImageFromItem("item",player.equiped.body,"src");
+    } else {
+        flag.$("pc_c2_bodyImg").src = "img/backgrounds/clear.png";
+    }
+    if (player.equiped.tail) {
+        flag.$("pc_c2_tailImg").src = getImageFromItem("item",player.equiped.tail,"src");
+    } else {
+        flag.$("pc_c2_tailImg").src = "img/backgrounds/clear.png";
+    }
 }
 function updateGameScene(player) {
 
@@ -1528,6 +1540,23 @@ function updateGameScene(player) {
     $(".game_c2_c1_tail").src = "img/backgrounds/clear.png";
     $(".game_c2_c1_head").src = "img/backgrounds/clear.png";
     $(".game_c2_c1_body").src = "img/backgrounds/clear.png";
+
+    //updating player equiped
+    if (player.equiped.head) {
+        $(".game_c2_c1_head").src = getImageFromItem("item",player.equiped.head,"src")
+    } else {
+        $(".game_c2_c1_head").src = "img/backgrounds/clear.png";
+    }
+    if (player.equiped.body) {
+        $(".game_c2_c1_body").src = getImageFromItem("item",player.equiped.body,"src")
+    } else {
+        $(".game_c2_c1_body").src = "img/backgrounds/clear.png";
+    }
+    if (player.equiped.tail) {
+        $(".game_c2_c1_tail").src = getImageFromItem("item",player.equiped.tail,"src")
+    } else {
+        $(".game_c2_c1_tail").src = "img/backgrounds/clear.png";
+    }
 }
 
 function generatePlayerCards(players) {

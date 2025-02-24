@@ -848,11 +848,12 @@ io.on('connection', (socket) => {
             player.moveSpeed = 1;
             player.turboDuration = 0;
             player.turboActive = false;
-            player.shield = 0;
             player.winGame = false;
-            player.headItem = false;
-            player.bodyItem = false;
-            player.tailItem = false;
+            player.equiped = {
+                head: false,
+                body: false,
+                tail: false,
+            };
             
             player.playerKills = 0;
             player.index = i;
@@ -894,14 +895,14 @@ io.on('connection', (socket) => {
         lobby.boardStatusCount = 0;
 
         io.emit("startingGame", objectToUint8Array(lobby),onlineAccounts[socket.id].player);
-        emitingActivePlayers = Object.values(lobby.activePlayers).map(({ index, selectingItem, items, tail,moving,shield,playerKills }) => ({
+        emitingActivePlayers = Object.values(lobby.activePlayers).map(({ index, selectingItem, items, tail,moving,playerKills,equiped }) => ({
             index,
             selectingItem,
             items,
             tailLength: tail.length + 1,
             moving,
-            shield,
             playerKills,
+            equiped,
         }));
         
         socket.listeners("updateClientPositions")[0](emitingActivePlayers,lobby.updateSnakeCells,lobby.updateCells,[],lobby.board.boardStatus,lobby.id);
@@ -912,14 +913,14 @@ io.on('connection', (socket) => {
             server_movePlayers(this)
             this.lastTimestamp = timestamp;
 
-            emitingActivePlayers = Object.values(this.inGamePlayers).map(({ index, selectingItem, items, tail,moving,shield,playerKills }) => ({
+            emitingActivePlayers = Object.values(this.inGamePlayers).map(({ index, selectingItem, items, tail,moving,playerKills,equiped }) => ({
                 index,
                 selectingItem,
                 items,
                 tailLength: tail.length + 1,
                 moving,
-                shield,
                 playerKills,
+                equiped,
             }));
 
             socket.listeners("updateClientPositions")[0](emitingActivePlayers,this.updateSnakeCells,this.updateCells,this.playSounds,this.board.boardStatus,this.id);
@@ -1055,14 +1056,14 @@ io.on('connection', (socket) => {
         if (lobby.gameStatus == "prepare") {
             player.moving = direction;
 
-            emitingActivePlayers = Object.values(lobby.inGamePlayers).map(({ index, selectingItem, items, tail,moving,shield,playerKills }) => ({
+            emitingActivePlayers = Object.values(lobby.inGamePlayers).map(({ index, selectingItem, items, tail,moving,playerKills,equiped }) => ({
                 index,
                 selectingItem,
                 items,
                 tailLength: tail.length + 1,
                 moving,
-                shield,
                 playerKills,
+                equiped,
             }));
 
             lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);
@@ -1481,13 +1482,21 @@ function deletePlayer(lobby,player,playerWhoKilled,item,instaKill = false){
     let currentGameMode = lobby.gameMode;
     let activePlayers = lobby.inGamePlayers;
 
+    let playerDied = true;
     let damage;
     if (item) damage = item.damage;
     if (playerWhoKilled) damage = playerWhoKilled.bodyArmor;
-    if (!item && !playerWhoKilled) damage = (player.shield+1);
-    player.shield -= damage;
 
-    if (player.shield < 0 || instaKill){
+    if (player.equiped.head?.protect) {
+        player.equiped.head.protect -= damage;
+        if (player.equiped.head.protect > 0) {
+            playerDied = false;
+        } else {
+            player.equiped.head = false;
+        }
+    }
+
+    if (playerDied || instaKill){
         if (playerWhoKilled) if (playerWhoKilled.name !== player.name) playerWhoKilled.playerKills++;
 
         //Delete Tail
@@ -1514,26 +1523,6 @@ function deletePlayer(lobby,player,playerWhoKilled,item,instaKill = false){
             },currentGameMode.respawnTimer * 1000);
         }
         return;
-    }
-
-    if (player.shield == 2) {
-        removePlayerStatus(lobby,player,"silverShield");
-        removePlayerStatus(lobby,player,"bronzeShield");
-        removePlayerStatus(lobby,player,"goldShield");
-
-        addPlayerStatus(lobby,player,"silverShield");
-    }
-    if (player.shield == 1) {
-        removePlayerStatus(lobby,player,"silverShield");
-        removePlayerStatus(lobby,player,"bronzeShield");
-        removePlayerStatus(lobby,player,"goldShield");
-
-        addPlayerStatus(lobby,player,"bronzeShield");
-    }
-    if (player.shield == 0) {
-        removePlayerStatus(lobby,player,"silverShield");
-        removePlayerStatus(lobby,player,"bronzeShield");
-        removePlayerStatus(lobby,player,"goldShield");
     }
 }
 function growPlayer(player,grow) {
@@ -1709,6 +1698,19 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         item.sendingBoardStatus = status;
         addBoardStatus(lobby,status,player);
     }
+    if (collision.equip) {
+        let oldItem = structuredClone(player.equiped[collision.equip]);
+        player.equiped[collision.equip] = structuredClone(item);
+        if (oldItem) {
+            if (lobby.gameMode.mode_usingItemType == "scroll") {
+                player.items[player.selectingItem] = oldItem;
+            }
+            if (lobby.gameMode.mode_usingItemType == "direct") {
+                if (player.items[0] == "empty") player.items[0] == oldItem;
+                else player.items[1] == oldItem;
+            }
+        }
+    }
     if (collision.setBaseImgTag) {
         let value = collision.setBaseImgTag.value;
         if (value == "*P") value = findPlayersTeam(player);
@@ -1749,9 +1751,6 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     }
     if (collision.deletePlayer) {
         deletePlayer(lobby,player,undefined,item);
-    }
-    if (collision.shield > 0) {
-        player.shield = collision.shield;
     }
     if (collision.winGame === true) {
         player.winGame = true;
@@ -1845,7 +1844,11 @@ function respawnPlayer(lobby,player,growthPercentage) {
     player.moveSpeed = 1;
     player.turboDuration = 0;
     player.turboActive = false;
-    player.shield = 0;
+    player.equiped = {
+        head: false,
+        body: false,
+        tail: false,
+    }
 
 
     spawn(lobby,player);
@@ -2138,10 +2141,11 @@ function newPlayer(socketID,accountName,accountTag) {
         timeSurvived: 0,
         turboDuration: 0,
         turboActive: false,
-        shield: 0,
-        headItem: false,
-        bodyItem: false,
-        tailItem: false,
+        equiped: {
+            head: false,
+            body: false,
+            tail: false,
+        },
         items: [],
         status: [],
         active: false, 
@@ -2230,20 +2234,6 @@ items.push({
             name: "pellet",
             count: 1,
         }],
-        shield: 0,
-        addStatus: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: {
-            duration: 50,
-            moveSpeed: 3,
-        },
-        deletePlayer: false,
-        canvasFilter: {
-            active: false,
-            filter: false,
-            duration: false,
-        },
         playSound: ["die",2], //Write the name of sound, and how many different Files there are.
         spawnRandomItem: true, //When eaten will it attempt to spawn in from item pool?
     },
@@ -2283,22 +2273,6 @@ items.push({
     pickUp: false,
     onEat: {
         growPlayer: 5,
-
-        spawn: [],
-        shield: 0,
-        addStatus: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: {
-            duration: 50,
-            moveSpeed: 3,
-        },
-        deletePlayer: false,
-        canvasFilter: {
-            active: false,
-            filter: false,
-            duration: false,
-        }
     },
     showInEditor: true,
     onStartSpawn: 0,
@@ -2342,17 +2316,6 @@ items.push({
             moveSpeed: 0,
         },
         addStatus: ["turbo"],
-
-        growPlayer: 0,
-        spawn: [],
-        shield: 0,
-        removeStatus: [],
-        deletePlayer: false,
-        canvasFilter: {
-            active: false,
-            filter: false,
-            duration: false,
-        }
     },
     showInEditor: true,
     onStartSpawn: 0,
@@ -2386,22 +2349,6 @@ items.push({
     pickUp: false,
     onEat: {
         deletePlayer: true,
-
-        growPlayer: 0,
-        spawn: [],
-        shield: 0,
-        addStatus: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: {
-            duration: 50,
-            moveSpeed: 3,
-        },
-        canvasFilter: {
-            active: false,
-            filter: false,
-            duration: false,
-        }
     },
     showInEditor: true,
     onStartSpawn: 0,
@@ -2441,22 +2388,6 @@ items.push({
     playSounds: true, //If Item should be muted or not;
     onEat: {
         deletePlayer: true,
-
-        growPlayer: 0,
-        spawn: [],
-        shield: 0,
-        addStatus: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: {
-            duration: 50,
-            moveSpeed: 3,
-        },
-        canvasFilter: {
-            active: false,
-            filter: false,
-            duration: false,
-        }
     },
     showInEditor: true,
     onStartSpawn: 0,
@@ -2491,25 +2422,12 @@ items.push({
     img: "bronzeShield.png", //(string) Image name
     canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: true, //(true/false) Does the item go into thep players inventory or is it used immediently
-    cantUseIfStatus: ["bronzeShield","silverShield"], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    whenEquiped: {
+        protect: 1, //How much it protects
+        absorb: 0, //How much item Absorbs before breaking it'self
+    },
     onEat: {
-        shield: 1,
-        addStatus: ["bronzeShield"],
-
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: {
-            duration: 50,
-            moveSpeed: 3,
-        },
-        deletePlayer: false,
-        canvasFilter: {
-            active: false,
-            filter: false,
-            duration: false,
-        }
+        equip: "head",
     },
     showInEditor: true,
     onStartSpawn: 0,
@@ -2540,25 +2458,12 @@ items.push({
     img: "silverShield.png",
     pickUp: true,
     canEat: true,
-    cantUseIfStatus: ["goldShield","silverShield"], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    whenEquiped: {
+        protect: 2, //How much it protects
+        absorb: 0, //How much item Absorbs before breaking it'self
+    },
     onEat: {
-        shield: 2,
-        addStatus: ["silverShield"],
-        removeStatus: ["bronzeShield"],
-
-        growPlayer: 0,
-        spawn: [],
-        giveturbo: false,
-        turbo: {
-            duration: 50,
-            moveSpeed: 3,
-        },
-        deletePlayer: false,
-        canvasFilter: {
-            active: false,
-            filter: false,
-            duration: false,
-        }
+        equip: "head",
     },
     showInEditor: true,
     onStartSpawn: 0,
@@ -2590,25 +2495,12 @@ items.push({
     pickUp: true,
     onEat_deleteMe: true,
     canEat: true,
-    cantUseIfStatus: ["goldShield"], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    whenEquiped: {
+        protect: 3, //How much it protects
+        absorb: 0, //How much item Absorbs before breaking it'self
+    },
     onEat: {
-        shield: 3,
-        addStatus: ["goldShield"],
-        removeStatus: ["bronzeShield","silverShield"],
-
-        growPlayer: 0,
-        spawn: [],
-        giveturbo: false,
-        turbo: {
-            duration: 50,
-            moveSpeed: 3,
-        },
-        deletePlayer: false,
-        canvasFilter: {
-            active: false,
-            filter: false,
-            duration: false,
-        }
+        equip: "head",
     },
     showInEditor: true,
     onStartSpawn: 0,
@@ -2641,17 +2533,6 @@ items.push({
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onEat: {
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: {
-            duration: 50,
-            moveSpeed: 3,
-        },
-        deletePlayer: false,
         canvasFilter: {
             active: true,
             filter: "invert(100%)",
@@ -2689,15 +2570,6 @@ items.push({
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onEat: {
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: false,
-        canvasFilter: false,
     },
     showInEditor: true,
     onStartSpawn: 0,
@@ -2730,15 +2602,6 @@ items.push({
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onEat: {
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: false,
-        canvasFilter: false,
     },
     showInEditor: true,
     onStartSpawn: 0,
@@ -2771,15 +2634,6 @@ items.push({
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onEat: {
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: false,
-        canvasFilter: false,
     },
     showInEditor: true,
     onStartSpawn: 0,
@@ -2813,15 +2667,6 @@ items.push({
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onEat: {
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: false,
-        canvasFilter: false,
     },
     showInEditor: true,
     onStartSpawn: 0,
@@ -2856,15 +2701,6 @@ items.push({
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onEat: {
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: false,
-        canvasFilter: false,
     },
     showInEditor: true,
     onStartSpawn: 0,
@@ -2898,14 +2734,6 @@ items.push({
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onEat: {
         addStatus: ["blueKey"],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: false,
-        canvasFilter: false,
     },
     showInEditor: true,
     onStartSpawn: 0,
@@ -2939,14 +2767,6 @@ items.push({
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onEat: {
         addStatus: ["redKey"],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: false,
-        canvasFilter: false,
     },
     showInEditor: true,
     onStartSpawn: 0,
@@ -2980,14 +2800,6 @@ items.push({
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onEat: {
         addStatus: ["greenKey"],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: false,
-        canvasFilter: false,
     },
     showInEditor: true,
     onStartSpawn: 0,
@@ -3030,15 +2842,6 @@ items.push({
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     onEat: {
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: true,
-        canvasFilter: false,
     },
 
     destructible: ["blueKey"],
@@ -3073,15 +2876,6 @@ items.push({
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     onEat: {
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: true,
-        canvasFilter: false,
     },
 
     destructible: ["redKey"],
@@ -3117,15 +2911,6 @@ items.push({
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     onEat: {
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: true,
-        canvasFilter: false,
     },
 
     destructible: ["greenKey"],
@@ -3160,15 +2945,6 @@ items.push({
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     onEat: {
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: true,
-        canvasFilter: false,
     },
 
     destructible: [],
@@ -3205,15 +2981,6 @@ items.push({
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     onEat: {
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: true,
-        canvasFilter: false,
     },
 
     canCollide: true, //If You should look at any colliding properties
@@ -3261,15 +3028,6 @@ items.push({
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     onEat: {
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: true,
-        canvasFilter: false,
     },
 
     canCollide: true, //If You should look at any colliding properties
@@ -3316,15 +3074,6 @@ items.push({
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     onEat: {
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: true,
-        canvasFilter: false,
     },
 
     canCollide: true, //If You should look at any colliding properties
@@ -3369,15 +3118,6 @@ items.push({
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     onEat: {
         winGame: true, //When Picked Up Does Game End?
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: true,
-        canvasFilter: false,
     },
 
     canCollide: false, //If You should look at any colliding properties
@@ -3423,16 +3163,6 @@ items.push({
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     onEat: {
-        winGame: false, //When Picked Up Does Game End?
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: true,
-        canvasFilter: false,
     },
 
     soundFolder: "flag",
@@ -3487,16 +3217,6 @@ items.push({
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     onEat: {
-        winGame: false, //When Picked Up Does Game End?
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: true,
-        canvasFilter: false,
     },
 
     canCollide: true, //If You should look at any colliding properties
@@ -3546,16 +3266,6 @@ items.push({
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     onEat: {
-        winGame: false, //When Picked Up Does Game End?
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: true,
-        canvasFilter: false,
     },
 
     canCollide: false, //If You should look at any colliding properties
@@ -3605,16 +3315,6 @@ items.push({
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     onEat: {
-        winGame: false, //When Picked Up Does Game End?
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: true,
-        canvasFilter: false,
     },
 
     canCollide: false, //If You should look at any colliding properties
@@ -3655,14 +3355,6 @@ items.push({
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onEat: {
         addStatus: ["Yellow_Key"],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: false,
-        canvasFilter: false,
     },
     showInEditor: true,
     onStartSpawn: 0,
@@ -3705,15 +3397,6 @@ items.push({
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     onEat: {
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: true,
-        canvasFilter: false,
     },
 
     destructible: ["Yellow_Key"],
@@ -3749,16 +3432,6 @@ items.push({
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     onEat: {
-        winGame: false, //When Picked Up Does Game End?
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: true,
-        canvasFilter: false,
     },
 
     canCollide: false, //If You should look at any colliding properties
@@ -3809,16 +3482,6 @@ items.push({
     canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
     pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
     onEat: {
-        winGame: false, //When Picked Up Does Game End?
-        addStatus: [],
-        shield: 0,
-        growPlayer: 0,
-        spawn: [],
-        removeStatus: [],
-        giveturbo: false,
-        turbo: false,
-        deletePlayer: true,
-        canvasFilter: false,
     },
 
     canCollide: true, //If You should look at any colliding properties
