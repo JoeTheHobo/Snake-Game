@@ -1350,9 +1350,9 @@ function startGame(solo = false) {
     renderEmotesList = [];
 
     currentBoard = boards[currentBoardIndex];
-    if (activeGameMode !== false) currentGameMode = gameModes[activeGameMode];
+    //if (activeGameMode !== false) currentGameMode = gameModes[activeGameMode];
 
-    currentGameMode = structuredClone(currentGameMode);
+    //currentGameMode = structuredClone(currentGameMode);
 
     currentBoard.location_tunnels = [];
     currentBoard.location_status = [];

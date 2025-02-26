@@ -226,7 +226,6 @@ function generateHTMLList(holder,listObj,contentObj,contentHTML) {
     })
     for (let i = 0; i < listObj.list.length; i++) {
         let content = listObj.list[i];
-        if (content.cantEdit) continue;
         let contentHolder = list.create("div");
 
         contentHolder.css({
@@ -243,7 +242,7 @@ function generateHTMLList(holder,listObj,contentObj,contentHTML) {
         contentHolder.classAdd("hover");
         contentHolder.classAdd("list_element")
 
-        if (!content.cantEdit || listObj.type !== "gameModes") {
+        if (listObj.type !== "gameModes") {
             contentHolder.open = function() {
                 $(".list_element").classRemove("list_selected");
                 this.classAdd("list_selected");
@@ -901,17 +900,12 @@ function loadGameModesScreen(index = false) {
     $("gameModes_tab").classAdd("menu_tab_selected");
     generateHTMLScreen($(".content_gameModes"),
         {
-            list: gameModes,
+            list: localAccount.gameModes,
             forceOpen: index,
             type: "gameModes",
             listContent: [{type: "title",text: ".name",tag: "name"}],
             top: [{type: "button",text: "New Game Mode",onClick: function() {
-                gameModes.push(structuredClone(gameModes[0]));
-                gameModes[gameModes.length-1].name = "Untitled";
-                gameModes[gameModes.length-1].cantEdit = false;
-                gameModes[gameModes.length-1].id = Date.now() + rnd(5000);
-                loadGameModesScreen(gameModes.length-1);
-                saveAllGameModes()
+                socket.emit("addNewGameMode","loadGameModesScreen");
             }}],
         });
 }
@@ -939,18 +933,15 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
 
     if (!server) {
         $(".gameModes_deleteButton").on("click",function() {
-            for (let i = 0; i < gameModes.length; i++) {
-                if (gameModes[i].id === gameMode.id) {
+            for (let i = 0; i < localAccount.gameModes.length; i++) {
+                if (localAccount.gameModes[i].id === gameMode.id) {
                     makePopUp([
                         {type: "text",text: "Delete " + gameMode.name},
                         {type: "title",text: "Are You Sure?"},
                         [
                             {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
                             {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Delete",onClick: () => {
-                                gameModes.splice(i,1);
-                                holder2.innerHTML = "";
-                                loadGameModesScreen();
-                                saveAllGameModes()
+                                socket.emit("deleteGameMode",gameMode.id,"editGameMode");
                             }},
                         ],
                     ],{
@@ -1009,10 +1000,13 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
     }
     if (htmlName) {
         addSetting("Game Mode Name","input",gameMode.name,function(value,input) {
-            if (value !== "")
+            if (value === "") value = "Untitled";
+            if (value.length > 15) return;
+            if (_type(value).type !== "string") return;
+
             gameMode.name = value;
             htmlName.innerHTML = value;
-            saveAllGameModes();
+            socket.emit("saveGamemode",gameMode);
         });
     }
     addSetting("Inventory Slots","number",gameMode.howManyItemsCanPlayersUse,function(value,input) {
@@ -1020,7 +1014,7 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
         if (value > 10) input.value = 10;
 
         gameMode.howManyItemsCanPlayersUse = value;
-        if (!server) saveAllGameModes();
+        if (!server) socket.emit("saveGamemode",gameMode);
         else socket.emit("editServerGameMode",gameMode);
     });
     addSetting("Using Items Type","dropdown",gameMode.mode_usingItemType,function(value) {
@@ -1029,45 +1023,46 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
             $("gm_inventoryslots").value = 2;
             gameMode.howManyItemsCanPlayersUse = 2;
         }
-        if (!server) saveAllGameModes();
+        if (!server) socket.emit("saveGamemode",gameMode);
         else socket.emit("editServerGameMode",gameMode);
     },["direct","scroll"]);
     addSetting("Full Inventory","dropdown",gameMode.mode_whenInventoryFullWhereDoItemsGo,function(value) {
         gameMode.mode_whenInventoryFullWhereDoItemsGo = value;
-        if (!server) saveAllGameModes();
+        if (!server) socket.emit("saveGamemode",gameMode);
         else socket.emit("editServerGameMode",gameMode);
     },["noPickUp","select","recycle"]);
     addSetting("Snake Vanish On Death","dropdown",gameMode.snakeVanishOnDeath,function(value) {
         gameMode.snakeVanishOnDeath = value == "true" ? true : false;
-        if (!server) saveAllGameModes();
+        if (!server) socket.emit("saveGamemode",gameMode);
         else socket.emit("editServerGameMode",gameMode);
     },["true","false"]);
     addSetting("Respawn","dropdown",gameMode.respawn,function(value) {
         gameMode.respawn = value == "true" ? true : false;
-        if (!server) saveAllGameModes();
+        if (!server) socket.emit("saveGamemode",gameMode);
         else socket.emit("editServerGameMode",gameMode);
     },["true","false"]);
     addSetting("Respawn Timer (Seconds)","number",gameMode.respawnTimer,function(value,input) {
         if (value < 0) input.value = 0;
+        if (value > 60) input.value = 60;
         gameMode.respawnTimer = value;
-        if (!server) saveAllGameModes();
+        if (!server) socket.emit("saveGamemode",gameMode);
         else socket.emit("editServerGameMode",gameMode);
     });
     addSetting("Respawn Tail %","number",gameMode.respawnGrowth,function(value,input) {
         if (value < 0) input.value = 0;
         if (value > 100) input.value = 100;
         gameMode.respawnGrowth = value;
-        if (!server) saveAllGameModes();
+        if (!server) socket.emit("saveGamemode",gameMode);
         else socket.emit("editServerGameMode",gameMode);
     });
     addSetting("Snake Collision","dropdown",gameMode.snakeCollision,function(value) {
         gameMode.snakeCollision = value == "true" ? true : false;
-        if (!server) saveAllGameModes();
+        if (!server) socket.emit("saveGamemode",gameMode);
         else socket.emit("editServerGameMode",gameMode);
     },["true","false"]);
     addSetting("Team Collision","dropdown",gameMode.teamCollision,function(value) {
         gameMode.teamCollision = value == "true" ? true : false;
-        if (!server) saveAllGameModes();
+        if (!server) socket.emit("saveGamemode",gameMode);
         else socket.emit("editServerGameMode",gameMode);
     },["true","false"]);
 
@@ -1077,8 +1072,8 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
     allItems.className = "allItems";
     let itemEditor = html_onSpawnHolder.create("div");
     itemEditor.className = "itemEditorHolder";
-    for (let i = 0; i < gameMode.items.length; i++) {
-        let item = gameMode.items[i];
+    for (let i = 0; i < items.length; i++) {
+        let item = items[i];
 
         if (!item.showInEditor) continue;
 
@@ -1104,6 +1099,19 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
 }
 function gameMode_editItem(item,html_holder,server,gameMode) {
     html_holder.innerHTML = "";
+    item = structuredClone(item);
+    for (let i = 0; i < gameMode.itemAlterations[item.name].length; i++) {
+        let alteration = gameMode.itemAlterations[item.name][i];
+        if (alteration.length == 4) {
+            item[alteration[0]][alteration[1]][alteration[2]] = alteration[3];
+        }
+        if (alteration.length == 3) {
+            item[alteration[0]][alteration[1]] = alteration[2];
+        }
+        if (alteration.length == 2) {
+            item[alteration[0]] = alteration[1];
+        }
+    }
 
     function addSetting(title,type,value,func,list) {
         let holder = html_holder.create("div");

@@ -1,4 +1,5 @@
 const socket = io({reconnection: false});
+let items = [];
 
 function uint8ArrayToObject(uint8Array) {
     return uint8Array;
@@ -26,8 +27,18 @@ socket.on("kickPlayer",(playerID,message) => {
     alert(message);
 
 })
+socket.on("updateLocalGameModes",(accountID,gameModes,sentFrom) => {
+    if (localAccount.id !== accountID) return;
+    localAccount.gameModes = gameModes;
 
-socket.on("setPlayer", (id,account) =>{
+    if (sentFrom == "loadGameModesScreen") {
+        loadGameModesScreen(localAccount.gameModes.length-1);
+    }
+    if (sentFrom == "editGameMode") {
+        loadGameModesScreen();
+    }
+})
+socket.on("setPlayer", (id,account,items) =>{
     if (localAccount.id !== false) return;
     localAccount.id = id;
     localAccount.isInGame = false;
@@ -38,6 +49,8 @@ socket.on("setPlayer", (id,account) =>{
     localAccount.username = account.username;
     localAccount.isInLobby = false;
     localAccount.lobbyBoards = [];
+
+    items = items;
 });
 socket.on("setClientLobby",(socketID,lobby) => {
     lobby = uint8ArrayToObject(lobby);

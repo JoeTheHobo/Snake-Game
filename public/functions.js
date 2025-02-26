@@ -43,13 +43,6 @@ let currentBoardIndex = ls.get("currentBoardIndex",0);
 if (currentBoardIndex > boards.length - 1) currentBoardIndex = 0;
 let currentBoard = boards[currentBoardIndex];
 
-
-let gameModes = presetGameModes;//ls.get("gameModes",presetGameModes);
-if (_type(gameModes).type == "string") gameModes = unZip(gameModes);
-let activeGameMode = ls.get("activeGameMode",0);
-if (!gameModes[activeGameMode]) activeGameMode = 0;
-ls.save("activeGameMode",activeGameMode);
-
 //Fix GameModes
 function mergeGameModes(basedGameMode, currentGameMode) {
     for (const key in basedGameMode) {
@@ -74,7 +67,6 @@ for (let i = 0; i < gameModes.length; i++) {
     mergeGameModes(basedGameMode,gameModes[i]);
 }
 
-let currentGameMode = gameModes[activeGameMode];
 
 let circleWalls = true;
 let specialItemLowChance = 1;
@@ -185,7 +177,6 @@ for (let i = 0; i < gameModes.length; i++) {
         }
     }
 }
-saveAllGameModes()
 
 //Setting Up Canvas
 $(".local_bottom_canvas").width = 142;
@@ -452,14 +443,14 @@ function newMap(width,height) {
 function getRealItem(name) {
     for (let i = 0; i < items.length; i++) {
         if (items[i].name == name) {
-            return cloneObject(items[i]);
+            return structuredClone(items[i]);
         }
     }
 }
 function getItem(name) {
     for (let i = 0; i < currentGameMode.items.length; i++) {
         if (currentGameMode.items[i].name == name) {
-            return cloneObject(currentGameMode.items[i]);
+            return structuredClone(currentGameMode.items[i]);
         }
     }
 }
@@ -582,7 +573,7 @@ function spawn(name,generateRandomItem = true,counting = false,playAudio = true)
             let sendPlayer = false;
             if (cameraFollowPlayer) sendPlayer = activePlayers[0];
             runItemFunction(sendPlayer,currentGameMode.items[itemIndex],"onSpawn",{x:x,y:y},{playAudio: playAudio});
-            currentBoard.map[y][x].item = cloneObject(currentGameMode.items[itemIndex]);
+            currentBoard.map[y][x].item = structuredClone(currentGameMode.items[itemIndex]);
             currentBoard.map[y][x].item.pos = {
                 x: x,
                 y: y,
@@ -742,9 +733,6 @@ function zip(what) {
 function unZip(what) {
     compressed = JSON.parse(what);
     return JSON.parse(pako.ungzip(compressed, { to: 'string' }));
-}
-function saveAllGameModes() {
-    ls.save("gameModes",zip(gameModes));
 }
 
 function saveBoards() {
@@ -1084,7 +1072,7 @@ function forceAllCellsToBeTheirOwn(map) {
     for (let i = 0; i < map.length; i++) {
         let row = [];
         for (let j = 0; j < map[i].length; j++) {
-            row.push(cloneObject(map[i][j]));
+            row.push(structuredClone(map[i][j]));
         }
         newMap.push(row);
     }

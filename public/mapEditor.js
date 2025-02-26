@@ -3,7 +3,7 @@ let selectedItem = {
     content: getRealItem("pellet"),
     canEdit: true,
     path: false,
-    cell: cloneObject(getRealItem("pellet")),
+    cell: structuredClone(getRealItem("pellet")),
 }
 let board;
 let mouseDown = false;
@@ -113,7 +113,7 @@ function openMapEditor(boardComingIn,isFromServer = false) {
         content: getRealItem("pellet"),
         canEdit: true,
         path: false,
-        cell: cloneObject(getRealItem("pellet")),
+        cell: structuredClone(getRealItem("pellet")),
     }
     $(".redo_tool").style.opacity = "0.5";
     $(".undo_tool").style.opacity = "0.5";
@@ -189,7 +189,7 @@ function me_loadDropdown(holder,group,name) {
             })
     
             itemHolder.type = name.subset(0,"_\\before");
-            itemHolder.content = cloneObject(item);
+            itemHolder.content = structuredClone(item);
             itemHolder.id = "me_" + name + item.name;
             itemHolder.on("click",function() {
                 selectedItem = {
@@ -350,7 +350,7 @@ function getRectPos(pos1,pos2) {
     };
 }
 function me_updateCell(ctx,x,y,opacity) {
-    let cell = cloneObject(board.originalMap[y][x]);
+    let cell = structuredClone(board.originalMap[y][x]);
 
     if (opacity) cell[selectedItem.type] = selectedItem.cell;
     else opacity = 1;
@@ -642,7 +642,7 @@ $("me_canvas").on("mouseup",function(e) {
                         }
                     }
                     
-                    currentBoard.originalMap[i][j][selectedItem.type] = cloneObject(selectedItem.cell);
+                    currentBoard.originalMap[i][j][selectedItem.type] = structuredClone(selectedItem.cell);
                 }
             }
             
@@ -735,7 +735,7 @@ document.on('keydown', (e) => {
                 content: getTile("grass"),
                 canEdit: true,
                 path: false,
-                cell: cloneObject(getTile("grass")),
+                cell: structuredClone(getTile("grass")),
             }
         } else {
             selectedItem = {
@@ -743,7 +743,7 @@ document.on('keydown', (e) => {
                 content: getRealItem("pellet"),
                 canEdit: true,
                 path: false,
-                cell: cloneObject(getRealItem("pellet")),
+                cell: structuredClone(getRealItem("pellet")),
             }
         }
         loadObjectMenu();
@@ -849,7 +849,7 @@ function tool_fill() {
     for (let i = upY; i < bottomY+1; i++) {
         for (let j = leftX; j < rightX+1; j++) {
             if (tool == "eraser") board.originalMap[i][j][selectedItem.type] = false;
-            else board.originalMap[i][j][selectedItem.type] = cloneObject(selectedItem.cell);
+            else board.originalMap[i][j][selectedItem.type] = structuredClone(selectedItem.cell);
         }
     }
 
@@ -1237,7 +1237,7 @@ function getArrayOfSelection() {
     for (let i = upY; i < bottomY+1; i++) {
         let row = [];
         for (let j = leftX; j < rightX+1; j++) {
-            row.push(cloneObject(map[i][j]));
+            row.push(structuredClone(map[i][j]));
         }
         newBoard.push(row);
     }
@@ -1377,10 +1377,10 @@ function paste(x,y,map,type) {
             if (j > currentBoard.originalMap[0].length-1) continue;
 
             if (!type)
-                currentBoard.originalMap[i][j] = cloneObject(map[i-y][j-x]);
+                currentBoard.originalMap[i][j] = structuredClone(map[i-y][j-x]);
             else {
-                if (type.includes("item")) currentBoard.originalMap[i][j].item = cloneObject(map[i-y][j-x].item);
-                if (type.includes("tile")) currentBoard.originalMap[i][j].tile = cloneObject(map[i-y][j-x].tile);
+                if (type.includes("item")) currentBoard.originalMap[i][j].item = structuredClone(map[i-y][j-x].item);
+                if (type.includes("tile")) currentBoard.originalMap[i][j].tile = structuredClone(map[i-y][j-x].tile);
             }
         }
     }
@@ -1467,7 +1467,7 @@ function useBucketTool(grid = currentBoard.originalMap, row = mouseY, col = mous
         }
 
         // Replace the current cell with the selected value
-        grid[r][c][selectedItem.type] = cloneObject(selectedItem.cell);
+        grid[r][c][selectedItem.type] = structuredClone(selectedItem.cell);
 
         // Recursively fill in all four directions (up, down, left, right)
         fill(r - 1, c); // Up
