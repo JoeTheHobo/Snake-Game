@@ -16,33 +16,6 @@ let showingGameTips = false;
 let oldBoardStatus = [];
 //End Players
 
-
-let boards = ls.get("boards",[]);
-if (_type(boards).type == "string") {
-    compressed = JSON.parse(boards);
-    boards = JSON.parse(pako.ungzip(compressed, { to: 'string' }));
-}
-let realBoards = [];
-for (let i = 0; i < boards.length; i++) {
-    if (boards[i].cantEdit !== true) realBoards.push(boards[i]);
-}
-boards = realBoards;
-boards = presetBoards.concat(boards);
-if (boards.length) {
-    for (let i = 0; i < boards.length; i++) {
-        boards[i] = fixBoard(boards[i]);
-
-        if (!boards[i].minPlayers) boards[i].minPlayers = 1;
-        if (!boards[i].maxPlayers) boards[i].maxPlayers = 8;
-        if (!boards[i].background) boards[i].backgrounds = backgrounds[0];
-        if (!boards[i].recommendedGameMode) boards[i].recommendedGameMode = false;
-        if (!boards[i].gameMode) boards[i].gameMode = false;
-    }
-}
-let currentBoardIndex = ls.get("currentBoardIndex",0);
-if (currentBoardIndex > boards.length - 1) currentBoardIndex = 0;
-let currentBoard = boards[currentBoardIndex];
-
 let circleWalls = true;
 let specialItemLowChance = 1;
 let specialItemHighChance = 6;
@@ -1064,10 +1037,8 @@ function drawBoardToCanvas(board,canvas,forceHeight) {
             if (cell.tile) {
                 ctx.drawImage($("tile_" + cell.tile.name),Xpos,Ypos,(gs),(gs));
             }
-            console.log(cell.item);
             if (cell.item) {
                 let image = getImageFromItem("item",cell.item,"canvas");
-                console.log(cell.item,image);
                 if (!image) continue;
                 ctx.drawImage(image,Xpos,Ypos,(gs),(gs));
             }

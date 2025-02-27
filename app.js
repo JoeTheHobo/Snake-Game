@@ -1,5 +1,6 @@
 var simple = require("./server_simple.js");
 const {presetGameModes} = require("./presetGameModes.js");
+const {presetBoards} = require("./presetBoards.js");
 const {items} = require("./server_items.js");
 const express = require('express');
 const app = express();
@@ -50,7 +51,7 @@ io.on('connection', (socket) => {
         }, {});
         
     io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
-    io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items,basedGameMode,presetGameModes);
+    io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items,basedGameMode,presetGameModes,presetBoards);
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
