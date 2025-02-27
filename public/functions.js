@@ -43,31 +43,6 @@ let currentBoardIndex = ls.get("currentBoardIndex",0);
 if (currentBoardIndex > boards.length - 1) currentBoardIndex = 0;
 let currentBoard = boards[currentBoardIndex];
 
-//Fix GameModes
-function mergeGameModes(basedGameMode, currentGameMode) {
-    for (const key in basedGameMode) {
-        if (basedGameMode.hasOwnProperty(key)) {
-            if (typeof basedGameMode[key] === 'object' && basedGameMode[key] !== null) {
-                // If the property is an object and not null, ensure currentGameMode has it as an object
-                if (!currentGameMode.hasOwnProperty(key) || typeof currentGameMode[key] !== 'object') {
-                    currentGameMode[key] = {};
-                }
-                // Recursively merge nested objects
-                mergeGameModes(basedGameMode[key], currentGameMode[key]);
-            } else {
-                // If the property is missing, copy it over
-                if (!currentGameMode.hasOwnProperty(key)) {
-                    currentGameMode[key] = basedGameMode[key];
-                }
-            }
-        }
-    }
-}
-for (let i = 0; i < gameModes.length; i++) {
-    mergeGameModes(basedGameMode,gameModes[i]);
-}
-
-
 let circleWalls = true;
 let specialItemLowChance = 1;
 let specialItemHighChance = 6;

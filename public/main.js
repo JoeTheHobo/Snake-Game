@@ -1767,5 +1767,3 @@ function specialItemManager() {
     }
 }
 
-
-setScene("newMenu")

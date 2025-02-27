@@ -48,7 +48,6 @@ let showFullGrid = false;
 
 let oldMap = [];
 
-loadObjectMenu();
 function fixItemDifferencesMapEditor(map) {
     if (!currentBoard.itemDifferences) return;
     for (let i = 0; i < currentBoard.itemDifferences.length; i++) {

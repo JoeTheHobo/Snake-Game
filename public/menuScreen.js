@@ -1098,7 +1098,7 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
     }
 }
 function getItemAlterations(gameMode,item) {
-    let item = structuredClone(item);
+    item = structuredClone(item);
     for (let i = 0; i < gameMode.itemAlterations.length; i++) {
         let gmaAlteration = gameMode.itemAlterations[i]; 
         if (gmaAlteration.name !== item.name) continue;
