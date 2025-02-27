@@ -151,7 +151,6 @@ io.on('connection', (socket) => {
     })
     socket.on("deleteBoard",(boardID,sentFrom) => {
         let account = onlineAccounts[socket.id];
-        console.log("eyo")
 
         decompressObject(account.boards,(err,decompressed) => {
             if (err) {
@@ -161,6 +160,7 @@ io.on('connection', (socket) => {
 
             account.boards = decompressed;
             for (let i = 0; i < account.boards.length; i++) {
+                console.log(account.boards[i].id,boardID);
                 if (account.boards[i].id === boardID) {
                     account.boards.splice(i,1);
                     io.emit("updatePlayersBoards",account.boards,sentFrom);
