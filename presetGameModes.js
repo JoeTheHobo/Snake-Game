@@ -35,3 +35,5 @@ presetGameModes.push({
     snakeCollision: true,
     teamCollision: true,
 })
+
+module.exports = { presetGameModes };

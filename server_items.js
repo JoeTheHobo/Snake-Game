@@ -1289,3 +1289,5 @@ items.push({
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
     snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
+
+module.exports = { items };
