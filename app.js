@@ -155,7 +155,7 @@ io.on('connection', (socket) => {
                 console.log(err);
                 return;
             }
-
+            console.log(compressed)
             io.emit("sendingZippedBoard",socket.id,compressed,board.name)
         })
 

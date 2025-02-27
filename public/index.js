@@ -78,7 +78,7 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
 });
 socket.on("sendingZippedBoard",(socketID,zippedBoard,boardName) => {
     if (socketID !== localAccount.id) return;
-
+    console.log(zippedBoard)
     downloadTextFile(boardName,JSON.stringify(zippedBoard));
 })
 socket.on("updatePlayersBoards",(socketID,boards,sentFrom) => {
