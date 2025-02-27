@@ -556,15 +556,12 @@ function hideScenes() {
 function setScene(scene,lobby) {
     hideScenes();
     $("scene_" + scene).show("flex");
-    console.log(scene);
-    if (scene == "servers") {
-        $(".sc_bb_snakeImg").css({
-            filter: getPlayerFilter(localAccount.serverSnake),
-        });
-    }
     if (scene == "newMenu") {
         loadServersHTML();
         $(".account_name").innerHTML = localAccount.id; 
+        $(".sc_bb_snakeImg").css({
+            filter: getPlayerFilter(localAccount.serverSnake),
+        });
     }
     if (scene == "waiting"){
         if (localAccount.id != lobby.host){
@@ -1068,17 +1065,7 @@ function drawBoardToCanvas(board,canvas,forceHeight) {
                 ctx.drawImage($("tile_" + cell.tile.name),Xpos,Ypos,(gs),(gs));
             }
             if (cell.item) {
-                
-                let image;
-                if (cell.item.baseImg) {
-                    image = cell.item.name + "_";
-                    for (let i = 0; i < cell.item.baseImgTags.length; i++) {
-                        image += getBaseImgFromTag(cell.item,cell.item.baseImgTags[i])
-                    }
-                    image = getItemCanvas(image);
-                } else {
-                    image = getItemCanvas(cell.item.name);
-                }
+                let image = getImageFromItem("item",cell.item,"canvas");
                 if (!image) return;
                 ctx.drawImage(image,Xpos,Ypos,(gs),(gs));
             }
