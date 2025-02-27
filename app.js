@@ -45,6 +45,7 @@ io.on('connection', (socket) => {
         tag: tag,
         chatNameColor: simple.rnd("color"),
     }
+
     let lobbyList = Object.values(lobbies)
         .filter(lobby => lobby.serverType !== "Hidden")
         .reduce((acc, lobby) => {
@@ -52,23 +53,38 @@ io.on('connection', (socket) => {
             return acc;
         }, {});
     
-    compressObject(onlineAccounts[socket.id].boards,(err,compressed) => {
-        if (err) {
-            console.log(err)
-            return;
-        }
-        onlineAccounts[socket.id].boards = compressed;
-        decompressObject(onlineAccounts[socket.id].boards,(err,decompressed) => {
+        
+    //Fix Preset Boards
+    let newPreset = [];
+    function retrieveAllPresetBoards(index) {
+        let buffer = base64ToArrayBuffer(presetBoards[index]);
+        decompressObject(buffer,(err,decompressed) => {
             if (err) {
                 console.log(err);
                 return;
             }
-            io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
-            io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items,basedGameMode,presetGameModes,presetBoards,backgrounds,tiles,decompressed);
+            newPreset.push(decompressed);
+            if (index == presetBoards.length-1) {
+                compressObject(onlineAccounts[socket.id].boards,(err,compressed) => {
+                    if (err) {
+                        console.log(err)
+                        return;
+                    }
+                    onlineAccounts[socket.id].boards = compressed;
+                    decompressObject(onlineAccounts[socket.id].boards,(err,decompressed) => {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        }
+                        io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
+                        io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items,basedGameMode,presetGameModes,newPreset,backgrounds,tiles,decompressed);
+                    })
+                })
+            } else retrieveAllPresetBoards(index+1);
         })
-    })
-    
-    
+        
+    }
+    retrieveAllPresetBoards(0);
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
@@ -1688,6 +1704,17 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function base64ToArrayBuffer(base64) {
+    const binaryString = atob(base64); // Decode Base64 to binary string
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    return bytes.buffer; // Return ArrayBuffer
+}
 // Function to compress an object
 function compressObject(obj, callback) {
     const jsonString = JSON.stringify(obj);
