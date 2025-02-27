@@ -1,6 +1,6 @@
 module.exports = {
     subset: function(string,start=0,end = undefined,...modifiers) {
-        return subset(string,start=0,end = undefined,...modifiers)
+        return subset(string,start,end,...modifiers)
     },
     shuffle: function(obj,) {
         if (_type(obj) == "string") {
