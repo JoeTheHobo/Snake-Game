@@ -1739,7 +1739,7 @@ io.on('connection', (socket) => {
     socket.on("deleteGameMode",(gameModeID,sentFrom) => {
         let account = onlineAccounts[socket.id];
         for (let i = 0; i < account.gameModes.length; i++) {
-            console.log(account.gameModes[i].id,gameModeID);
+            console.log(sentFrom)
             if (account.gameModes[i].id == gameModeID) {
                 account.gameModes.splice(i,1);
                 io.emit("updateLocalGameModes",account.gameModes,sentFrom)

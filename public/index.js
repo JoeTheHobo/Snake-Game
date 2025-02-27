@@ -52,6 +52,8 @@ socket.on("setPlayer", (id,account,server_items) =>{
     items = server_items;
 
     setScene("newMenu");
+    //Load All Item Images
+    setUpItemCanvas();
 });
 socket.on("setClientLobby",(socketID,lobby) => {
     lobby = uint8ArrayToObject(lobby);

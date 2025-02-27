@@ -345,7 +345,7 @@ function addItemCanvas(item,itemImg,name,filter = "",player) {
     }
 
 }
-setUpItemCanvas();
+
 function getItemCanvas(itemName) {
     for (let i = 0; i < itemCanvas.length; i++) {
         if (itemCanvas[i].name === itemName) return itemCanvas[i].canvas;
