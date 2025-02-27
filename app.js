@@ -1104,7 +1104,6 @@ function fixTileDifferences(currentBoard,map) {
     }
 }
 function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio = true) {
-    let currentGameMode = lobby.gameMode;
     let currentBoard = lobby.board;
     let activePlayers = lobby.inGamePlayers; 
     let isPlayer = name.isPlayer;
@@ -1133,6 +1132,7 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
     let allSpawns = simple.shuffle(currentBoard.location_spawns);
     while (foundSpot == false) {
         if (isPlayer) {
+            console.log(allSpawns)
             findingSpawner: for (let k = 0; k < allSpawns.length; k++) {
                 let playerOnIt = false;
                 for (let i = 0; i < activePlayers.length; i++) {
@@ -1140,6 +1140,8 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
                     if (activePlayers[i].pos.x == allSpawns[k].x && activePlayers[i].pos.y == allSpawns[k].y) playerOnIt = true;
                 }
                 if (playerOnIt) continue;
+
+                console.log("ey")
 
                 let playerTeam = findPlayersTeam(name);
                 let spawnTeam = allSpawns[k].item.spawnPlayerTeam || "white";
@@ -1313,9 +1315,9 @@ function removeBoardStatus(lobby,status,player) {
     }
 }
 function addBoardStatus(lobby,status,player) {
+    if (status == "white") return;
     let currentBoard = lobby.board;
     if (status == "*P") status = "P" + player.index;
-    console.log(status);
     currentBoard.boardStatus.push(status);
 }
 function useItem(lobby,player) {
