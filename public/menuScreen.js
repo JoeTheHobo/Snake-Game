@@ -1115,7 +1115,7 @@ function getItemAlterations(gameMode,item) {
     }
     return item;
 }
-function setItemAlteration(gameMode,item) {
+function setItemAlteration(gameMode,item,isServer) {
     let realItem = getRealItem(item.name);
     let differences = compareObjects(realItem,item);
 
@@ -1137,7 +1137,10 @@ function setItemAlteration(gameMode,item) {
         })
     }
 
-    socket.emit("saveGamemode",gameMode);
+    if (isServer)
+        socket.emit("editServerGameMode",gameMode);
+    else
+        socket.emit("saveGamemode",gameMode);  
 }
 function gameMode_editItem(item,html_holder,server,gameMode) {
     html_holder.innerHTML = "";
@@ -1202,62 +1205,53 @@ function gameMode_editItem(item,html_holder,server,gameMode) {
         if (value < 0) value = 0;
         if (value > 60) value = 60;
         item.onStartSpawn = Number(value);
-        if (!server) setItemAlteration(gameMode,item);
-        else socket.emit("editServerGameMode",gameMode);
+        setItemAlteration(gameMode,item,server);
     });
     addSetting("Spawn Rate","number",item.specialSpawnWeight,function(value) {
         if (value < 0) value = 0;
         item.specialSpawnWeight = Number(value);
-        if (!server) setItemAlteration(gameMode,item);
-        else socket.emit("editServerGameMode",gameMode);
+        setItemAlteration(gameMode,item,server);
     });
     addSetting("Visible","toggle",item.visible,function(value) {
         item.visible = value;
-        if (!server) setItemAlteration(gameMode,item);
-        else socket.emit("editServerGameMode",gameMode);
+        setItemAlteration(gameMode,item,server);
     });
     addSetting("Plays Audio","toggle",item.playSounds,function(value) {
         item.playSounds = value;
-        if (!server) setItemAlteration(gameMode,item);
-        else socket.emit("editServerGameMode",gameMode);
+        setItemAlteration(gameMode,item,server);
     });
 
     if (item.canEat == true && item.onEat.growPlayer > 0 ) {
         addSetting("Grow Player","number",item.onEat.growPlayer,function(value) {
             if (value < 0) value= 0;
             item.onEat.growPlayer = Number(value);
-            if (!server) setItemAlteration(gameMode,item);
-            else socket.emit("editServerGameMode",gameMode);
+            setItemAlteration(gameMode,item,server);
         });
     }
     if (item.canEat == true) {
         addSetting("Attempt Spawn Random Item","toggle",item.onEat.spawnRandomItem,function(value) {
             item.onEat.spawnRandomItem = value;
-            if (!server) setItemAlteration(gameMode,item);
-            else socket.emit("editServerGameMode",gameMode);
+            setItemAlteration(gameMode,item,server);
         });
     }
     if (item.canEat == true && item.onEat.shield > 0) {
         addSetting("Give Shield","number",item.onEat.shield,function(value) {
             item.onEat.shield = Number(value);
-            if (!server) setItemAlteration(gameMode,item);
-            else socket.emit("editServerGameMode",gameMode);
+            setItemAlteration(gameMode,item,server);
         });
     }
     if (item.canEat == true && item.onEat.giveturbo) {
         addSetting("Turbo Duration","number",item.onEat.turbo.duration,function(value) {
         if (value < 0) return;
         item.onEat.turbo.duration = Number(value);
-        if (!server) setItemAlteration(gameMode,item);
-        else socket.emit("editServerGameMode",gameMode);
+        setItemAlteration(gameMode,item,server);
         });
     }
     if (item.canEat == true && item.onEat.giveturbo) {
         addSetting("Turbo Speed","number",item.onEat.turbo.moveSpeed,function(value) {
         if (value < 0) return;
         item.onEat.turbo.moveSpeed = value;
-        if (!server) setItemAlteration(gameMode,item);
-        else socket.emit("editServerGameMode",gameMode);
+        setItemAlteration(gameMode,item,server);
         });
     }
 }
