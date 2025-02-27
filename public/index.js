@@ -1,5 +1,4 @@
 const socket = io({reconnection: false});
-let items = [];
 
 function uint8ArrayToObject(uint8Array) {
     return uint8Array;
