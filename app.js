@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
         }, {});
         
     io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
-    io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items,basedGameMode);
+    io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items,basedGameMode,presetGameModes);
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
@@ -956,7 +956,7 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
     let counter = 0;
     let foundSpot = false;
     let x,y,team = "white";
-    let allSpawns = shuffle(currentBoard.location_spawns);
+    let allSpawns = simple.shuffle(currentBoard.location_spawns);
     while (foundSpot == false) {
         if (isPlayer) {
             findingSpawner: for (let k = 0; k < allSpawns.length; k++) {

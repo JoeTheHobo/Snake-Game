@@ -37,7 +37,7 @@ socket.on("updateLocalGameModes",(accountID,gameModes,sentFrom) => {
         loadGameModesScreen();
     }
 })
-socket.on("setPlayer", (id,account,server_items,server_basedGameMode) =>{
+socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_presetGameModes) =>{
     if (localAccount.id !== false) return;
     localAccount.id = id;
     localAccount.isInGame = false;
@@ -51,6 +51,7 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode) =>{
 
     items = server_items;
     basedGameMode = server_basedGameMode;
+    presetGameModes = server_presetGameModes;
 
     setScene("newMenu");
     //Load All Item Images

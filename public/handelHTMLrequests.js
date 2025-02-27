@@ -175,7 +175,7 @@ $(".cbp_tab").on("click",function() {
 })
 $(".sc_gmb_changeGameModeHolder").on("click",function() {
     $(".chooseGameModePopup").show("flex");
-    loadGameModesToPopup(function(gameMode) {
+    loadGameModesToPopup("preset",function(gameMode) {
         socket.emit("changeServerGameMode",gameMode);
     });
 });

@@ -2041,26 +2041,34 @@ background: rgb(187, 187, 187);
 }
 
 .chooseGameModePopup {
-position: absolute;
-top: 0;
-right: 0;
-left: 0;
-bottom: 0;
-margin: auto;
-display: none;
-width: 20%;
-height: max-content;
-padding: 15px;
-flex-direction: column;
-border-radius: 5px;
-background: rgb(26, 26, 26);
-box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-z-index: 1000;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  display: none;
+  width: 20%;
+  height: 30%;
+  max-height: 30%;
+  padding: 15px;
+  flex-direction: column;
+  border-radius: 5px;
+  background: rgb(26, 26, 26);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  z-index: 1000;
+}
+.cgm_lists {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 .cgm_list {
-display: flex;
-flex-direction: column;
-width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-y: auto;
 }
 .cgm_gameMode_holder {
 border-radius: 5px;

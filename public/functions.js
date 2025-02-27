@@ -1,3 +1,5 @@
+const { presetGameModes } = require("../presetGameModes");
+
 ls.setID("snakegame");
 
 let killSwitch = false;
@@ -1867,9 +1869,17 @@ function showBoardMenu(func) {
     $(".chooseBoardPopup").show("flex");
     socket.emit("askForLobbyBoards");
 }
-function loadGameModesToPopup(func) {
+function loadGameModesToPopup(tab,func) {
+    $(".cgm_tab").classRemove("cbp_tab_selected");
+    $("cgm" + tab).classAdd("cbp_tab_selected");
+
     let parent = $(".cgm_list");
     parent.innerHTML = "";
+
+    let gameModes;
+    if (tab == "preset") gameModes = presetGameModes;
+    if (tab == "personal") gameModes = localAccount.gameModes;
+
     for (let i = 0; i < gameModes.length; i++) {
         let holder = parent.create("div");
         holder.className = "cgm_gameMode_holder";
