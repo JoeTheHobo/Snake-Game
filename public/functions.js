@@ -1064,6 +1064,7 @@ function drawBoardToCanvas(board,canvas,forceHeight) {
             if (cell.tile) {
                 ctx.drawImage($("tile_" + cell.tile.name),Xpos,Ypos,(gs),(gs));
             }
+            console.log(cell.item);
             if (cell.item) {
                 let image = getImageFromItem("item",cell.item,"canvas");
                 console.log(cell.item,image);
@@ -1073,8 +1074,6 @@ function drawBoardToCanvas(board,canvas,forceHeight) {
 
         }
     }
-
-
 }
 
 function drawTunnelCanvas(canvas,pos) {
