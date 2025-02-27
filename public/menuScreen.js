@@ -708,7 +708,7 @@ function loadBoardsScreen(index = false) {
 
     generateHTMLScreen($(".content_boards"),
         {
-            list: boards,
+            list: localAccount.boards,
             forceOpen: index,
             listContent: [{type: "title",text: ".name",tag: "name"},[{type: "button", text:"Export", onClick: (board) => {
                 const encoder = new TextEncoder();
