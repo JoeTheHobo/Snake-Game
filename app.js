@@ -223,7 +223,11 @@ io.on('connection', (socket) => {
             originalMap: newMap(width,height), 
             map: [],
             id: Date.now() + "_" + simple.rnd(1000),
+            accountID: socket.id,
             mouseOver: false,
+            boardAuthors: [{
+                id: socket.id,
+            }],
         };
 
         decompressObject(account.boards,(err,decompressed) => {
