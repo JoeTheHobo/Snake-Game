@@ -188,6 +188,7 @@ $(".sc_gmb_changeGameModeHolder").on("click",function() {
 $("me_gameMode").on("click",function() {
     
     $(".chooseGameModePopup").show("flex");
+    console.log("Here")
     loadGameModesToPopup("preset",function(gameMode) {
         console.log(gameMode);
         currentGameMode = gameMode;
