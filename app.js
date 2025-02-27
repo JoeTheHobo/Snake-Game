@@ -169,7 +169,7 @@ io.on('connection', (socket) => {
             gameMode: presetGameModes[0],
             originalMap: newMap(width,height), 
             map: [],
-            id: Date.now() + "_" + rnd(1000),
+            id: Date.now() + "_" + simple.rnd(1000),
             mouseOver: false,
         };
 
