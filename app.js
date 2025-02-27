@@ -184,7 +184,7 @@ io.on('connection', (socket) => {
 
             account.boards.push(board);
     
-            io.emit("updatePlayersBoards",socket.id,localAccount.boards,sentFrom)
+            io.emit("updatePlayersBoards",socket.id,account.boards,sentFrom)
             compressObject(account.boards,(err,compressed) => {
                 if (err) {
                     console.log(err)
