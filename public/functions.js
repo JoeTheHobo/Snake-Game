@@ -1868,7 +1868,7 @@ function showBoardMenu(func) {
     socket.emit("askForLobbyBoards");
 }
 function loadGameModesToPopup(tab,func) {
-    $(".cgm_tab").classRemove("cbp_tab_selected");
+    $(".cbp_tab").classRemove("cbp_tab_selected");
     $("cgm_" + tab).classAdd("cbp_tab_selected");
 
     let parent = $(".cgm_list");
