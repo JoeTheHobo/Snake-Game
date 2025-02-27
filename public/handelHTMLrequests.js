@@ -171,7 +171,13 @@ $(".cbp_cancel").on("click",function() {
     this.$P().$P().hide();
 })
 $(".cbp_tab").on("click",function() {
-    selectTabInBoardMenu(this.innerHTML.subset(0," \\before").toLowerCase());
+    let idStart = this.id.subset(0,"_\\before");
+    if (idStart == "cgm") 
+        loadGameModesToPopup(this.id.subset("_\\after","end"),function(gameMode) {
+            socket.emit("changeServerGameMode",gameMode);
+        })
+    if (idStart == "cbp")
+        selectTabInBoardMenu(this.innerHTML.subset(0," \\before").toLowerCase());
 })
 $(".sc_gmb_changeGameModeHolder").on("click",function() {
     $(".chooseGameModePopup").show("flex");

@@ -2064,6 +2064,8 @@ background: rgb(187, 187, 187);
   flex-direction: column;
   flex-grow: 1;
   box-sizing: border-box;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 .cgm_list {
   display: flex;
@@ -2072,10 +2074,11 @@ background: rgb(187, 187, 187);
   overflow-y: auto;
   overflow-x: hidden;
   box-sizing: border-box;
+  align-items: center;
 }
 .cgm_gameMode_holder {
 border-radius: 5px;
-width: 100%;
+width: 90%;
 height: 40px;
 font-size: 25px;
 color: white;
