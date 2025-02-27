@@ -32,6 +32,7 @@ socket.on("updateLocalGameModes",(accountID,gameModes,sentFrom) => {
     localAccount.gameModes = gameModes;
 
     if (sentFrom == "loadGameModesScreen") {
+        console.log("ey");
         loadGameModesScreen(localAccount.gameModes.length-1);
     }
     if (sentFrom == "editGameMode") {

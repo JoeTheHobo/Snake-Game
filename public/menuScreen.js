@@ -257,7 +257,7 @@ function generateHTMLList(holder,listObj,contentObj,contentHTML) {
         
         
 
-        if (listObj.forceOpen) {
+        if (listObj.forceOpen !== false) {
             forceOpen = contentHolder;
         }
 
