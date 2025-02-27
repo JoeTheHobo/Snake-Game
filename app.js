@@ -1143,6 +1143,8 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
                 let playerTeam = findPlayersTeam(name);
                 let spawnTeam = allSpawns[k].item.spawnPlayerTeam || "white";
 
+                console.log(playerTeam,spawnTeam)
+
                 if (playerTeam !== "white" && spawnTeam !== playerTeam) continue;
                 
                 x = allSpawns[k].x;
@@ -1212,7 +1214,6 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
 
     if (foundSpot == true) {
         if (isPlayer) {
-            console.log(team)
             name.pos.x = x;
             name.pos.y = y;
             addPlayerStatus(lobby,name,"status_" + team);
