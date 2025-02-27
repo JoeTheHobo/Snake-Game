@@ -130,7 +130,6 @@ function loadServerCreation() {
             let board = shortenBoard(boards[0]);
             let lobby = {
                 board: JSON.stringify(board),
-                gameMode: gameModes[0],
                 code: code,
                 serverType: serverType,
             }

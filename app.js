@@ -1,1624 +1,6 @@
-
-let items = [];
-items.push({
-    name: "pellet",
-    img: "snakeFood.png",
-    canEat: true,
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    pickUp: false,
-    onEat: {
-        growPlayer: 1,
-        spawn: [{
-            name: "pellet",
-            count: 1,
-        }],
-        playSound: ["die",2], //Write the name of sound, and how many different Files there are.
-        spawnRandomItem: true, //When eaten will it attempt to spawn in from item pool?
-    },
-    showInEditor: true,
-    onStartSpawn: 3,
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    teleport: false,
-    visible: true, //If show when playing
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-    soundFolder: "mouse",
-    playSounds: true, //If Item should be muted or not;
-    onSpawn: { //When item spawns run these
-        //playSound: ["spawn",1], //Write the name of sound, and how many different Files there are.
-    },
-
-    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    id: 1,
-    pack: "Food",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "super_pellet",
-    img: "snakeSuper.png",
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    canEat: true,
-    pickUp: false,
-    onEat: {
-        growPlayer: 5,
-    },
-    showInEditor: true,
-    onStartSpawn: 0,
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 50,
-    teleport: false,
-    playSounds: true, //If Item should be muted or not;
-    visible: true, //If show when playing
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    id: 2,
-    pack: "Food",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "turbo",
-    id: 3,
-    img: "speedPowerUp.png",
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    canEat: true,
-    pickUp: true,
-    onEat: {
-        giveturbo: true,
-        turbo: {
-            duration: 50,
-            moveSpeed: 3,
-        },
-        turboServer: {
-            duration: 50,
-            moveSpeed: 0,
-        },
-        addStatus: ["turbo"],
-    },
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 20,
-    teleport: false,
-    visible: true, //If show when playing
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "wall",
-    id: 4,
-    img: "rock.png",
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    canEat: false,
-    pickUp: false,
-    onEat: {
-        deletePlayer: true,
-    },
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 20,
-    teleport: false,
-    visible: true, //If show when playing
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    soundFolder: "rock",
-    onSpawn: { //When item spawns run these
-        playSound: ["spawn",1], //Write the name of sound, and how many different Files there are.
-    },
-
-    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 1, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "wall2",
-    id: 5,
-    img: "rock2.png",
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    canEat: false,
-    pickUp: false,
-    playSounds: true, //If Item should be muted or not;
-    onEat: {
-        deletePlayer: true,
-    },
-    showInEditor: true,
-    onStartSpawn: 0,
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 10,
-    teleport: false,
-    visible: true, //If show when playing
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-    
-    soundFolder: "rock",
-    onSpawn: { //When item spawns run these
-        playSound: ["spawn",1], //Write the name of sound, and how many different Files there are.
-    },
-
-    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 2, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "bronzeShield", //(string) Name Of Item
-    id: 6,
-    img: "bronzeShield.png", //(string) Image name
-    canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: true, //(true/false) Does the item go into thep players inventory or is it used immediently
-    whenEquiped: {
-        protect: 2, //How much it protects
-        absorb: 0, //How much item Absorbs before breaking it'self
-    },
-    onEat: {
-        equip: "head",
-    },
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 20,
-    teleport: false,
-    visible: true, //If show when playing
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "silverShield",
-    id: 7,
-    img: "silverShield.png",
-    pickUp: true,
-    canEat: true,
-    whenEquiped: {
-        protect: 3, //How much it protects
-        absorb: 0, //How much item Absorbs before breaking it'self
-    },
-    onEat: {
-        equip: "head",
-    },
-    showInEditor: true,
-    onStartSpawn: 0,
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 10,
-    teleport: false,
-    playSounds: true, //If Item should be muted or not;
-    visible: true, //If show when playing
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "goldShield",
-    id: 8,
-    img: "goldShield.png",
-    pickUp: true,
-    onEat_deleteMe: true,
-    canEat: true,
-    whenEquiped: {
-        protect: 4, //How much it protects
-        absorb: 0, //How much item Absorbs before breaking it'self
-    },
-    onEat: {
-        equip: "head",
-    },
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 5,
-    teleport: false,
-    visible: true, //If show when playing
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-    
-    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "lamp", //(string) Name Of Item
-    id: 9,
-    img: "Lamp.png", //(string) Image name
-    canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    onEat: {
-        canvasFilter: {
-            active: true,
-            filter: "invert(100%)",
-            duration: 5000,
-        }
-    },
-    showInEditor: false,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 1,
-    teleport: false,
-    visible: true, //If show when playing
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    pack: "Hidden",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "snakeHole", //(string) Name Of Item
-    id: 10,
-    img: "snakeHole1.png", //(string) Image name
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    onEat: {
-    },
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 4,
-    visible: true, //If show when playing
-    teleport: 0, //Teleport ID
-    spawnCount: 2, //How Many To Spawn In When Spawning
-    spawnLimit: 1, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-    
-    destructible: [false], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "snakeHole2", //(string) Name Of Item
-    id: 11,
-    img: "snakeHole2.png", //(string) Image name
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    onEat: {
-    },
-    showInEditor: true,
-    onStartSpawn: 0,
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 4,
-    playSounds: true, //If Item should be muted or not;
-    visible: true, //If show when playing
-    teleport: 1, //Teleport ID
-    spawnCount: 2, //How Many To Spawn In When Spawning
-    spawnLimit: 1, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    destructible: [false], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "snakeHole3", //(string) Name Of Item
-    id: 12,
-    img: "snakeHole3.png", //(string) Image name
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    onEat: {
-    },
-    showInEditor: true,
-    onStartSpawn: 0,
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 4,
-    playSounds: true, //If Item should be muted or not;
-    visible: true, //If show when playing
-    teleport: 2, //Teleport ID
-    spawnCount: 2, //How Many To Spawn In When Spawning
-    spawnLimit: 1, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    destructible: [false], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-//Spawn v
-items.push({
-    name: "spawn", //(string) Name Of Item
-    id: 13,
-    img: "spawn.png", //(string) Image name
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    onEat: {
-    },
-    showInEditor: true,
-    onStartSpawn: 0,
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    playSounds: true, //If Item should be muted or not;
-    visible: false, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: true, //Spawn players on this tile
-    spawnPlayerTeam: "white", //Tells which player to spawn here. "player" for all players
-
-    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: ["spawnPlayerTeam"], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    pack: "Mechanics",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-
-items.push({
-    name: "clear", //(string) Name Of Item
-    id: 14,
-    img: "noZone.png", //(string) Image name
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    onEat: {
-    },
-    showInEditor: true,
-    onStartSpawn: 0,
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    playSounds: true, //If Item should be muted or not;
-    visible: false, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    pack: "Mechanics",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "blueKey", //(string) Name Of Item
-    id: 15,
-    img: "blueKey.png", //(string) Image name
-    canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    onEat: {
-        addStatus: ["blueKey"],
-    },
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "redKey", //(string) Name Of Item
-    id: 16,
-    img: "redKey.png", //(string) Image name
-    canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    onEat: {
-        addStatus: ["redKey"],
-    },
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tiledestructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    
-    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "greenKey", //(string) Name Of Item
-    id: 17,
-    img: "greenKey.png", //(string) Image name
-    canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    onEat: {
-        addStatus: ["greenKey"],
-    },
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "blueLock", //(string) Name Of Item
-    id: 18,
-    img: "blueLock.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    showInEditor: true,
-    onStartSpawn: 0,
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    destructible: ["blueKey"],
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0,
-    playSounds: true, //If Item should be muted or not;
-    onDelete: {
-        removeStatus: ["blueKey"],
-
-    },
-    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "redLock", //(string) Name Of Item
-    id: 19,
-    img: "redLock.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    showInEditor: true,
-    onStartSpawn: 0,
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    destructible: ["redKey"],
-    playSounds: true, //If Item should be muted or not;
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0,
-    onDelete: {
-        removeStatus: ["redKey"],
-
-    },
-    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "greenLock", //(string) Name Of Item
-    id: 20,
-    img: "greenLock.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    showInEditor: true,
-    onStartSpawn: 0,
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-    playSounds: true, //If Item should be muted or not;
-
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    destructible: ["greenKey"],
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0,
-    onDelete: {
-        removeStatus: ["greenKey"],
-
-    },
-    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "stoneWall", //(string) Name Of Item
-    id: 21,
-    img: "stoneWall.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    destructible: [],
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0,
-    onDelete: {
-        removeStatus: [],
-
-    },
-    pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "switch", //(string) Name Of Item
-    id: 22,
-    baseImg: "items/item_switch_",
-    baseImgTags: [".onCollision.switchBoardStatus","_off"],
-    renderImages: [["*colors"],["_on","_off"]],
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    showInEditor: true,
-    onStartSpawn: 0,
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    playSounds: true, //If Item should be muted or not;
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    canCollide: true, //If You should look at any colliding properties
-    onCollision: { //When collisionType collides do these
-        switchBaseImgTag: { //Switch Between these images using Base Img
-            index: 1,
-            switch: ["_on","_off"],
-        },
-        switchBoardStatus: "red", //Switch Between giving these status'
-    },
-
-    destructible: [false],
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: ["onCollision","switchBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need 
-    renderStatusColor: "white", //Type To Render Color;
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0,
-    onDelete: {
-        removeStatus: [],
-
-    },
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "button", //(string) Name Of Item
-    id: 23,
-    baseImg: "items/item_buttonSubtract_", //BaseImgTags Will add to this, to say which image to use
-    baseImgTags: [".onCollision.removeBoardStatus"], 
-    renderImages: [["*colors"]], //All Variations it can be
-
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    showInEditor: true,
-    onStartSpawn: 0,
-    gameModeMenu_selectedItem: false,
-    playSounds: true, //If Item should be muted or not;
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    canCollide: true, //If You should look at any colliding properties
-    onCollision: { //When collisionType collides do these
-        switchImage: false, //Switch Between these images
-        switchBoardStatus: false, //Switch Between giving these status
-        removeBoardStatus: "red", //Add a status To the Board;
-    },
-
-    destructible: [false],
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: ["onCollision","removeBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    renderStatusColor: "white", //Type To Render Color;
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0,
-    onDelete: {
-        removeStatus: [],
-
-    },
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "buttonAdd", //(string) Name Of Item
-    id: 24,
-    
-    baseImg: "items/item_buttonAdd_", //BaseImgTags Will add to this, to say which image to use
-    baseImgTags: [".onCollision.addBoardStatus"], 
-    renderImages: [["*colors"]], //All Variations it can be
-
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    canCollide: true, //If You should look at any colliding properties
-    onCollision: { //When collisionType collides do these
-        switchImage: false, //Switch Between these images
-        switchBoardStatus: false, //Switch Between giving these status
-        addBoardStatus: "red", //Add a status To the Board;
-    },
-
-    destructible: [false],
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: ["onCollision","addBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    renderStatusColor: "white", //Type To Render Color;
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0,
-    onDelete: {
-        removeStatus: [],
-
-    },
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-
-items.push({
-    name: "crown", //(string) Name Of Item
-    id: 25,
-    img: "crown.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-        winGame: true, //When Picked Up Does Game End?
-    },
-
-    canCollide: false, //If You should look at any colliding properties
-    onCollision: { //When collisionType collides do these
-        switchImage: false, //Switch Between these images
-        switchBoardStatus: false, //Switch Between giving these status
-        addBoardStatus: false, //Add a status To the Board;
-        removeBoardStatus: false, //Remove a status To the Board;
-    },
-
-    destructible: [false],
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0,
-    onDelete: {
-        removeStatus: [],
-
-    },
-    pack: "Mechanics",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-
-items.push({
-    name: "flag", //(string) Name Of Item
-    id: 26,
-    baseImg: "items/item_flag_",
-    baseImgTags: ["white"],
-    renderImages: [["*colors2"]],
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    soundFolder: "flag",
-    canCollide: true, //If You should look at any colliding properties
-    onCollision: { //When collisionType collides do these
-        switchImage: false, //Switch Between these images
-        switchBoardStatus: false, //Switch Between giving these status
-        addBoardStatus: false, //Add a status To the Board;
-        removeBoardStatus: false, //Remove a status To the Board;
-        setBoardStatus: "*P", //Sets its world status to this, can only send out one status
-        setBaseImgTag: {
-            index: 0,
-            value: "*P",
-        }, //Change base image tag.
-        playSound: ["set",1],
-        tie: [".onCollision.setBoardStatus",".onCollision.setBaseImgTag.value"],
-    },
-
-    destructible: [false],
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: ["onCollision","setBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    renderStatusColor: "white", //Type To Render Color;
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0,
-    onDelete: {
-        removeStatus: [],
-
-    },
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-
-items.push({
-    name: "preassurePlate", //(string) Name Of Item
-    id: 27,
-    baseImg: "items/item_pressurePlate_",
-    baseImgTags: [".onCollision.addBoardStatus"],
-    renderImages: [["*colors"]],
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    canCollide: true, //If You should look at any colliding properties
-    onCollision: { //When snake collides do these
-        switchImage: false, //Switch Between these images
-        switchBoardStatus: false, //Switch Between giving these status
-        addBoardStatus: "red", //Add a status To the Board;
-        removeBoardStatus: false, //Remove a status To the Board;
-        setBoardStatus: false, //Sets its world status to this, can only send out one status
-        changeHue: false, //Change hue to this.
-        tie: [".onCollision.addBoardStatus",".offCollision.removeBoardStatus"],
-    },
-    offCollision: { //When snake leaves item
-        removeBoardStatus: "red", //Remove a status To the Board;
-    },
-
-    destructible: [false],
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: ["onCollision","addBoardStatus"], //Path to which status to render on top of item, leave blank if no render
-    renderStatusColor: "white", //Type To Render Color;
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0,
-    onDelete: {
-        removeStatus: [],
-
-    },
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "lockedCell", //(string) Name Of Item
-    id: 28,
-    img: "lockedCell.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    canCollide: false, //If You should look at any colliding properties
-    onCollision: { //When snake collides do these
-        switchImage: false, //Switch Between Main Image and This Image
-        switchBoardStatus: false, //Switch Between giving these status
-        addBoardStatus: false, //Add a status To the Board;
-        removeBoardStatus: false, //Remove a status To the Board;
-        setBoardStatus: false, //Sets its world status to this, can only send out one status
-        changeHue: false, //Change hue to this.
-    },
-    offCollision: { //When snake leaves item
-        removeBoardStatus: false, //Remove a status To the Board;
-    },
-
-
-    destructible: ["status_red"],
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: ["destructible"], //Path to which status to render on top of item, leave blank if no render
-    renderStatusColor: "white", //Type To Render Color;
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: false,
-    damage: 0,
-    onDelete: {
-        removeStatus: [],
-
-    },
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "boardLockedCell", //(string) Name Of Item
-    id: 29,
-    img: "boardLockedCell.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    canCollide: false, //If You should look at any colliding properties
-    onCollision: { //When snake collides do these
-        switchImage: false, //Switch Between Main Image and This Image
-        switchBoardStatus: false, //Switch Between giving these status
-        addBoardStatus: false, //Add a status To the Board;
-        removeBoardStatus: false, //Remove a status To the Board;
-        setBoardStatus: false, //Sets its world status to this, can only send out one status
-        changeHue: false, //Change hue to this.
-    },
-    offCollision: { //When snake leaves item
-        removeBoardStatus: false, //Remove a status To the Board;
-    },
-
-
-    destructible: ["yes"], //Leave Blank If Nothing can Destroy This. "yes" - Anyone can destroy this
-    boardDestructible: ["status_red"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: ["boardDestructible"], //Path to which status to render on top of item, leave blank if no render
-    renderStatusColor: "board", //Type To Render Color;
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: false,
-    damage: 0,
-    onDelete: {
-        removeStatus: [],
-
-    },
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-
-items.push({
-    name: "Yellow_Key", //(string) Name Of Item
-    id: 30,
-    img: "yellowKey.png", //(string) Image name
-    canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    onEat: {
-        addStatus: ["Yellow_Key"],
-    },
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tiledestructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    
-    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
-    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-items.push({
-    name: "Yellow_lock", //(string) Name Of Item
-    id: 31,
-    img: "yellowLock.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    showInEditor: true,
-    onStartSpawn: 0,
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    destructible: ["Yellow_Key"],
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0,
-    playSounds: true, //If Item should be muted or not;
-    onDelete: {
-        removeStatus: ["Yellow_Key"],
-
-    },
-    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
-})
-items.push({
-    name: "Sanke_Size_Gate", //(string) Name Of Item
-    id: 32,
-    img: "Sanke_Size_Gate.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    canCollide: false, //If You should look at any colliding properties
-    onCollision: { //When snake collides do these
-        switchImage: false, //Switch Between Main Image and This Image
-        switchBoardStatus: false, //Switch Between giving these status
-        addBoardStatus: false, //Add a status To the Board;
-        removeBoardStatus: false, //Remove a status To the Board;
-        setBoardStatus: false, //Sets its world status to this, can only send out one status
-        changeHue: false, //Change hue to this.
-    },
-    offCollision: { //When snake leaves item
-        removeBoardStatus: false, //Remove a status To the Board;
-    },
-
-
-    destructible: ["yes"], //Leave Blank If Nothing can Destroy This. "yes" - Anyone can destroy this
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: ["snakeSizeRequired"], //Path to which status to render on top of item, leave blank if no render
-    renderStatusColor: "white", //Type To Render Color;
-    snakeSizeRequired: 10, //How Big Snake Needs To Be To Pass Through This False if any
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: false,
-    damage: 0,
-    onDelete: {
-        removeStatus: [],
-
-    },
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
-})
-
-items.push({
-    name: "Weighted_Preassure_Plate", //(string) Name Of Item
-    id: 33,
-    img: "weightedPressurePlate.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    visible: true, //If show when playing
-    teleport: false, //Teleport ID
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    canCollide: true, //If You should look at any colliding properties
-    requiredSnakeSizeToCollide: 5,
-    onCollision: { //When snake collides do these
-        switchImage: false, //Switch Between these images
-        switchBoardStatus: false, //Switch Between giving these status
-        addBoardStatus: "A", //Add a status To the Board;
-        removeBoardStatus: false, //Remove a status To the Board;
-        setBoardStatus: false, //Sets its world status to this, can only send out one status
-        changeHue: false, //Change hue to this.
-    },
-    offCollision: { //When snake leaves item
-        removeBoardStatus: "A", //Remove a status To the Board;
-    },
-
-    destructible: [false],
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: ["requiredSnakeSizeToCollide"], //Path to which status to render on top of item, leave blank if no render
-    renderStatusColor: "white", //Type To Render Color;
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0,
-    onDelete: {
-        removeStatus: [],
-
-    },
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-})
-
-// everything I've moved is down here
-let playerNames1 = [
-    "Squabbling", "Terrifying", "Witty", "Sassy", "Mysterious",
-    "Jolly", "Spunky", "Clumsy", "Grumpy", "Cheeky",
-    "Funky", "Zesty", "Breezy", "Quirky", "Snarky",
-    "Boisterous", "Goofy", "Rambunctious", "Vivacious", "Frolicking"
-];
-let playerNames2 = [
-    "Cheesecake", "Martian", "Taco", "Wombat", "Penguin",
-    "Sasquatch", "Narwhal", "Donut", "Giraffe", "Unicorn",
-    "Robot", "Ostrich", "Dragon", "Platypus", "Sloth",
-    "Cactus", "Llama", "Cupcake", "Blobfish", "Banana"
-];
-
-//Subset v1
-String.prototype.subset = function(start=0,end = undefined,...modifiers) {
-    let startIndex = findIndex(this,start)
-    let endIndex = findIndex(this,end);
-
-    if (end === true) endIndex.index = this.length;
-    if (end === false || end === undefined) endIndex.index = startIndex.index;
-    if (endIndex.indexType == "count") endIndex.index = startIndex.index + endIndex.index;
-    if (!isNaN(end) && !(end == true || end == false)) endIndex.index = end;
-
-    if (startIndex.position == "full") startIndex.index -= startIndex.string.length - 1;
-
-    //Return With Modifers
-    let returnString = this.substring(startIndex.index,endIndex.index+1)
-    let modObj = {
-        length: returnString.length,
-        trim: [],
-        return: "string",
-    }
-
-    for (let i = 0; i < modifiers.length; i++) {
-        let setting = modifiers[i].split("\\");
-        setting[0] = setting[0].toLowerCase();
-        if (setting[0] == "limit" || setting[0] == "length") modObj.length = Number(setting[1])
-        if (setting[0] == "trim") modObj.trim.push(setting[1])
-        if (setting[0] == "return") modObj.return = setting[1];
-    }
-
-    for (let i = 0; i < modObj.trim.length; i++) {
-        returnString = returnString.replaceAll(modObj.trim[i],"");
-    }
-
-    if (modObj.return == "string")
-        return returnString.substring(0,modObj.length);
-    if (modObj.return == "number")
-        return Number(returnString.substring(0,modObj.length));
-}
-
-String.prototype.orCompare = function(...compares) {
-    for (let i = 0; i < compares.length; i++) {
-        if (this.toString() === compares[i]) return true;
-    }
-    return false;
-}
-String.prototype.andCompare = function(...compares) {
-    for (let i = 0; i < compares.length; i++) {
-        if (this !== compares[i]) return false;
-    }
-    return true;
-}
-function findIndex(string,searchString) {
-    let indexObj = {
-        position: "on", //before/on/after/full
-        indexType: "find",//index/count/find
-        caseSensitive: true, //true/false
-        add: 0, //Any Number
-        index: searchString, 
-        string: searchString,
-    }
-    searchingString: if (typeof searchString == "string") {
-
-        let stringArr = searchString.split("\\");
-
-        for (let i = 1; i < stringArr.length; i++) {
-            //Fix abriviations
-            if (stringArr[i] == "af") stringArr[i] = "after";
-            if (stringArr[i] == "be") stringArr[i] = "before";
-            if (stringArr[i] == "fu") stringArr[i] = "full";
-            if (stringArr[i] == "in") stringArr[i] = "index";
-            if (stringArr[i] == "co") stringArr[i] = "count";
-            if (stringArr[i] == "fi") stringArr[i] = "find";
-
-            //Find results
-            if (stringArr[i].orCompare("after","before","on","full")) indexObj.position = stringArr[i];
-            if (stringArr[i].orCompare("count","index")) indexObj.indexType = stringArr[i];
-            if (stringArr[i].orCompare("ci","cs")) indexObj.caseSensitive = stringArr[i] == "cs" ? true : false;
-            if (!isNaN(stringArr[i])) indexObj.add = Number(stringArr[i]);
-        }
-
-        indexObj.string = stringArr[0];
-
-        if (indexObj.indexType === "count" || indexObj.indexType === "index") {
-            searchString = Number(stringArr[0]);
-            break searchingString;
-        }
-
-        if (indexObj.caseSensitive)
-            searchString = string.indexOf(stringArr[0]);
-        else
-            searchString = string.toLowerCase().indexOf(stringArr[0].toLowerCase());
-
-        if (stringArr[0] === "*end") {
-            searchString = string.length-1;
-        }
-
-        if (searchString == -1) {
-            searchString = string.length;
-            break searchingString;
-        }
-
-        if (indexObj.position == "before") searchString -= 1;
-        if (indexObj.position == "after") searchString += stringArr[0].length;
-        if (indexObj.position == "full") searchString += stringArr[0].length-1;
-
-
-    }
-    indexObj.index = searchString + indexObj.add;
-
-    return indexObj;
-}
-function s_shuffle(array) {
-    let currentIndex = array.length,  randomIndex;
-  
-    // While there remain elements to shuffle...
-    while (currentIndex != 0) {
-  
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-  
-      // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
-    }
-  
-    return array;
-  }
-Array.prototype.shuffle = function() {
-    return s_shuffle(this);
-}
-String.prototype.shuffle = function() {
-    return s_shuffle(this.split('')).join("");
-}
-/*
-    _type v2 Documentation
-    _type(object) return a string of whatever the object is
-    Detailed is set to false, if you set it too true it will give you a detailed explanation of the type
-    All Types
-    ------------
-    number
-    string
-    array
-    object
-    boolean
-    number
-    function
-    HTMLElement
-    class
-    symbol
-    bigint
-    null
-    undefined
-*/
-function _type(ele) {
-    if (ele == null || ele == undefined) {
-        obj = {
-            type: ele+"",
-            value: ele,
-        }
-        return obj
-    }
-    
-    let returnName = ele.constructor.name;
-
-    let returnObj = {
-        type: ele.constructor.name.toLowerCase(),
-        detailedType: ele.constructor.name,
-        constructor: ele.constructor,
-        value: ele,
-        isNumber: false,
-    }
-    if (returnName == "HTMLElement") {
-        returnObj.type = "htmlelement";
-        returnObj.parent = ele.$P();
-        returnObj.children = ele.children;
-    }
-    if (returnObj.type == "number") {
-        returnObj.length = (ele + "").length;
-        returnObj.isNumber = true;
-    }
-    if (returnObj.type == "array") {
-        returnObj.length = ele.length;
-
-        let foundType = false;
-        searching: for (let i = 0; i < ele.length; i++) {
-            if (foundType === false) foundType = _type(ele[i]).type;
-            else {
-                if (foundType !== _type(ele[i]).type) {
-                    foundType = undefined;
-                    break searching;
-                }
-            }
-        }
-        if (foundType === undefined) returnObj.arrayType = "mixed";
-        if (foundType === false) returnObj.arrayType = "empty";
-        if (foundType === "number") returnObj.arrayType = "number";
-        if (foundType === "string") returnObj.arrayType = "string";
-        if (foundType === "array") returnObj.arrayType = "array";
-        if (foundType === "object") returnObj.arrayType = "object";
-    }
-    if (returnObj.type == "string") {
-        returnObj.length = ele.length;
-        returnObj.isNumber = !isNaN(ele);
-        if (ele.includes(" ") || ele === "") returnObj.isNumber = false;
-
-        returnObj.isUpperCase = ele.toUpperCase() == ele;
-        returnObj.isLowerCase = ele.toLowerCase() == ele;
-
-        returnObj.isColor = false;
-        
-        try {
-            JSON.parse(ele);
-            returnObj.isJSON = true;
-        } catch {
-            returnObj.isJSON = false;
-
-        }
-
-        //Testing If Color
-        //Hex
-        if (ele.charAt(0) == "#" && _type(ele.substring(1,ele.length)).isNumber && (ele.length == 4 || ele.length == 5 || ele.length == 7 || ele.length == 8)) {
-            returnObj.isColor = true;
-            returnObj.colorType = "hex";
-            returnObj.colorObject = _color(ele);
-        }  
-        //other colors
-        if (ele.charAt(ele.length-1) == ")" && ele.includes(",")) {
-            let colorTypes = ["rgb","rgba","cmyk","hsl","hsla","ryb","ryba"];
-            
-            let pass = false, colorType;
-
-            for (let i = 0; i < colorTypes.length; i++) {
-                if (ele.substring(0,colorTypes[i].length+1).toLowerCase() == colorTypes[i] + "(") {
-                    pass = true;
-                    colorType = colorTypes[i];
-                }
-            }
-
-            if (pass) {
-                returnObj.isColor = true;
-                returnObj.colorType = colorType;
-                returnObj.colorObject = _color(ele);
-            }
-        }
-
-    }
-
-    return returnObj;
-    
-}
-
-String.prototype.rnd = function(amt = false,l=[]) {
-    for (let i = 0; i < amt; i++) {
-        l.push(this.charAt(rnd(0,this.length - 1)));
-    }
-    return amt !== false ? l : this.charAt(rnd(0,this.length - 1));
-}
-Array.prototype.rnd = function(amt = false,l=[]) {
-    for (let i = 0; i < amt; i++) {
-        l.push(this[rnd(0,this.length - 1)]);
-    }
-    return amt !== false ? l : this[rnd(0,this.length - 1)];
-}
-
-function rnd(num,to,exp) {
-    if (!isNaN(num)) {
-        while (true) {
-            if (!to && to !== 0) {
-                to = num;
-                num = 1;
-            }
-            let finalNum = Math.floor((Math.random() * (to - num + 1)) + num);
-            let checked = true; 
-            if (exp) {
-                if (!exp.length) exp = [exp];
-                for (let i = 0; i < exp.length; i++) {
-                    if (exp[i] == finalNum) checked = false;
-                }
-            }
-            if (checked || !exp) return finalNum;
-        }
-    }
-
-    if (typeof num == 'string') {
-        if ((num.toLowerCase() == 'letter' || num.toLowerCase() == 'abc') && to !== false) {
-            let abc = 'abcdefghijklmnopqrstuvwxyz';
-            if (num === 'LETTER' || num === 'ABC') return abc.rnd().toUpperCase();
-            if (num === 'Letter' || num === 'Abc') return rnd(2) == 2 ? abc.rnd().toUpperCase() : abc.rnd();
-            return abc.rnd();
-        }
-
-        if (num == 'color') {
-            if (to == 'hex' || !to) {
-                let tool = '0123456789abcdef';
-                return '#' + tool.rnd() + tool.rnd() + tool.rnd() + tool.rnd() + tool.rnd() + tool.rnd();
-            }
-            if (to == 'rgb') return 'rgb(' + rnd(0,255) + ',' + rnd(0,255) + ',' + rnd(0,255) + ')';
-
-            return console.warn('Invalid Coler Format, try "hex" or "rgb"');
-        }
-
-        //Return Random Letter In String Num
-        return num.rnd();
-    }
-    if (typeof num == 'object') {
-        return num.rnd();
-    }
-}
-function formatNumber(num) {
-    return num.toString().padStart(4, '0');
-}
-
-
-
+var simple = require("./server_simple.js");
+import { presetGameModes } from "./presetGameModes.js";
+import { items } from "./server_items.js";
 const express = require('express');
 const app = express();
 
@@ -1643,7 +25,7 @@ const onlineAccounts = {};
 
 io.on('connection', (socket) => {
     console.log('a user connected');
-    let userName = playerNames1.rnd() + playerNames2.rnd();
+    let userName = simple.rnd(playerNames1) + simple.rnd(playerNames2);
     let tag = "#" + formatNumber(Object.keys(onlineAccounts).length);
     onlineAccounts[socket.id] = {
         id: socket.id,
@@ -1657,7 +39,7 @@ io.on('connection', (socket) => {
         lobby: false,
         username: userName,
         tag: tag,
-        chatNameColor: rnd("color"),
+        chatNameColor: simple.rnd("color"),
     }
     let lobbyList = Object.values(lobbies)
         .filter(lobby => lobby.serverType !== "Hidden")
@@ -1760,7 +142,7 @@ io.on('connection', (socket) => {
     socket.on("newLobby", (lobby) =>{
         if (!lobby) return;
 
-        let id = Date.now() + "_" + rnd(5000);
+        let id = Date.now() + "_" + simple.rnd(5000);
         lobbies[id] = lobby;
         lobbies[id].board = fixBoard(JSON.parse(lobbies[id].board));
         lobbies[id].id = id;
@@ -2481,7 +863,7 @@ function getItem(lobby,name) {
 }
 function findPlayersTeam(player) {
     for (let i = 0; i < player.status.length; i++) {
-        if (player.status[i].subset(0,5) == "status") return player.status[i].subset("_\\after","end");
+        if (simple.subset(player.status[i],0,5) == "status") return simple.subset(player.status[i],"_\\after","end");
     }
 }
 function calculateDistance(currentBoard,x1, y1, x2, y2, boardLength, boardHeight) {
@@ -2574,7 +956,7 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
     let counter = 0;
     let foundSpot = false;
     let x,y,team = "white";
-    let allSpawns = currentBoard.location_spawns.shuffle();
+    let allSpawns = shuffle(currentBoard.location_spawns);
     while (foundSpot == false) {
         if (isPlayer) {
             findingSpawner: for (let k = 0; k < allSpawns.length; k++) {
@@ -2599,8 +981,8 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
         }
         
         if (foundSpot === false) {
-            x = rnd(currentBoard.map[0].length)-1;
-            y = rnd(currentBoard.map.length)-1;
+            x = simple.rnd(currentBoard.map[0].length)-1;
+            y = simple.rnd(currentBoard.map.length)-1;
             if (currentBoard.map[y][x].item == false && currentBoard.map[y][x].tile.canSpawn) {
                 foundSpot = true;
                 checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
@@ -2782,11 +1164,11 @@ function specialItemManager(lobby) {
 
     if (lobby.specialItemIteration >= lobby.specialItemActiveChance) {
         lobby.specialItemIteration = 0;
-        lobby.specialItemActiveChance = rnd(lobby.specialItemLowChance,lobby.specialItemHighChance);
+        lobby.specialItemActiveChance = simple.rnd(lobby.specialItemLowChance,lobby.specialItemHighChance);
         // Calculate the total weight
         let totalWeight = 0;
         for (let i = 0; i < currentGameMode.items.length; i++) {
-            if (currentGameMode.items[i].spawnLimit < 1 && _type(currentGameMode.items[i].spawnLimit).type == "number") continue;
+            if (currentGameMode.items[i].spawnLimit < 1 && simple.type(currentGameMode.items[i].spawnLimit) == "number") continue;
             totalWeight += currentGameMode.items[i].specialSpawnWeight;
         }
 
@@ -2796,7 +1178,7 @@ function specialItemManager(lobby) {
         // Find the item corresponding to the random weight
         let cumulativeWeight = 0;
         findingItem: for (const item of currentGameMode.items) {
-            if (item.spawnLimit < 1 && _type(item.spawnLimit).type == "number") continue;
+            if (item.spawnLimit < 1 && simple.type(item.spawnLimit) == "number") continue;
 
             cumulativeWeight += item.specialSpawnWeight;
             if (randomWeight < cumulativeWeight) {
@@ -2891,7 +1273,7 @@ function testItemUnderPlayer(lobby,player) {
         runItemFunction(lobby,player,mapItem,"onEat");
     }
 
-    if (_type(mapItem.teleport).type == "number" && !player.justTeleported) {
+    if (simple.type(mapItem.teleport) == "number" && !player.justTeleported) {
         findingPortal: for (let z = 0; z < currentBoard.map.length; z++) {
             for (let h = 0; h < currentBoard.map[z].length; h++) {
                 if (!currentBoard.map[z][h].item) continue;
@@ -2911,7 +1293,7 @@ function testItemUnderPlayer(lobby,player) {
 
     if (mapItem.canCollide) {
         let pass = true;
-        if (_type(mapItem.requiredSnakeSizeToCollide).type == "number") {
+        if (simple.type(mapItem.requiredSnakeSizeToCollide) == "number") {
             if ((player.tail.length+1) >= mapItem.requiredSnakeSizeToCollide) pass = true;
             else pass = false;
         }
@@ -3063,7 +1445,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         }
     }
     if (collision.giveturbo) {
-        if (collision.turboServer.duration && _type(collision.turboServer.moveSpeed).type == "number") {
+        if (collision.turboServer.duration && simple.type(collision.turboServer.moveSpeed) == "number") {
             player.turboActive = true;
             player.turboDuration = collision.turboServer.duration;
             player.moveSpeed = collision.turboServer.moveSpeed;
@@ -3119,13 +1501,13 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         },collision.canvasFilter.duration)
     }
     if (collision.playSound && item.playSounds && settings?.playAudio && lobby.playSounds) {
-        lobby.playSounds.push("sounds/" + item.soundFolder + "/" + item.soundFolder + "_" + collision.playSound[0] + "_" + rnd(collision.playSound[1]) + ".mp3");
+        lobby.playSounds.push("sounds/" + item.soundFolder + "/" + item.soundFolder + "_" + collision.playSound[0] + "_" + simple.rnd(collision.playSound[1]) + ".mp3");
     }
 
     return returnItem;
 }
 function addPlayerStatus(lobby,player,itemName) {
-    if (itemName.subset(0,5) == "status") {
+    if (simple.subset(itemName0,5) == "status") {
         removePlayerStatus(lobby,player,"teamColor");
         player.status.push(itemName);
     } else {
@@ -3135,7 +1517,7 @@ function addPlayerStatus(lobby,player,itemName) {
 function removePlayerStatus(lobby,player,itemName) {
     if (itemName == "teamColor") {
         findingStatus: for (let i = 0; i < player.status.length; i++) {
-            if (player.status[i].subset(0,5) == "status") {
+            if (simple.subset(player.status[i],0,5) == "status") {
                 player.status.splice(i,1);
                 break findingStatus;
             }
@@ -3151,9 +1533,25 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+// everything I've moved is down here
+let playerNames1 = [
+    "Squabbling", "Terrifying", "Witty", "Sassy", "Mysterious",
+    "Jolly", "Spunky", "Clumsy", "Grumpy", "Cheeky",
+    "Funky", "Zesty", "Breezy", "Quirky", "Snarky",
+    "Boisterous", "Goofy", "Rambunctious", "Vivacious", "Frolicking"
+];
+let playerNames2 = [
+    "Cheesecake", "Martian", "Taco", "Wombat", "Penguin",
+    "Sasquatch", "Narwhal", "Donut", "Giraffe", "Unicorn",
+    "Robot", "Ostrich", "Dragon", "Platypus", "Sloth",
+    "Cactus", "Llama", "Cupcake", "Blobfish", "Banana"
+];
+function formatNumber(num) {
+    return num.toString().padStart(4, '0');
+}
 function checkGameMode(gameMode,accountID) {
     if (gameMode.accountID !== accountID) return "accountID";
-    if (_type(gameMode.name).type !== "string") return "name";
+    if (simple.type(gameMode.name) !== "string") return "name";
     if (gameMode.name.length > 15) return "name";
     if (gameMode.howManyItemsCanPlayersUse < 0 || gameMode.howManyItemsCanPlayersUse > 10) return "howManyItemsCanPlayersUse";
     if (!["scroll","direct"].includes(gameMode.mode_usingItemType)) return "mode_usingItemType";
@@ -3162,9 +1560,9 @@ function checkGameMode(gameMode,accountID) {
     if (![false,true].includes(gameMode.respawn)) return "respawn";
     if (![false,true].includes(gameMode.snakeCollision)) return "snakeCollision";
     if (![false,true].includes(gameMode.teamCollision)) return "teamCollision";
-    if (_type(gameMode.respawnGrowth).type !== "number") return "respawnGrowth";
+    if (simple.type(gameMode.respawnGrowth) !== "number") return "respawnGrowth";
     if (gameMode.respawnGrowth < 0 || gameMode.respawnGrowth > 100) return "respawnGrowth";
-    if (_type(gameMode.respawnTimer).type !== "number") return "respawnTimer";
+    if (simple.type(gameMode.respawnTimer) !== "number") return "respawnTimer";
     if (gameMode.respawnTimer < 0 || gameMode.respawnTimer > 60) return "respawnTimer";
 
     return true;
@@ -3351,7 +1749,7 @@ function server_movePlayers(lobby) {
         }            
 
         //Teleport Player If Needed
-        if (_type(player.justTeleported).type == "object") {
+        if (simple.type(player.justTeleported) == "object") {
             //deleteSnakeCells(); Add Later?
             cameraQuickZoom = "tunnel";
             player.pos.x = player.justTeleported.x;
@@ -3481,10 +1879,10 @@ function newPlayer(socketID,accountName,accountTag) {
         useItem1: "q",
         useItem2: "e",
         fireItem: "r",
-        name: playerNames1.rnd() + playerNames2.rnd(),
-        color: rnd(360), //Hue
-        color2: rnd(300), //Saturation
-        color3: rnd(20,200), //Brightness
+        name: rnd(playerNames1) + rnd(playerNames2),
+        color: simple.rnd(360), //Hue
+        color2: simple.rnd(300), //Saturation
+        color3: simple.rnd(20,200), //Brightness
         moving: false,
         growTail: 0,
         isDead: false,
@@ -3534,7 +1932,7 @@ function checkPlayer(player,socketID) {
 }
 
 function fixBoard(oldBoard) {
-    if (_type(oldBoard.originalMap[0][0]).type !== "array") return oldBoard;
+    if (simple.type(oldBoard.originalMap[0][0]) !== "array") return oldBoard;
 
     let board = structuredClone(oldBoard);
     board.map = [];
