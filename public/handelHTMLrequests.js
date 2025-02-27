@@ -191,6 +191,7 @@ $("me_gameMode").on("click",function() {
     loadGameModesToPopup("preset",function(gameMode) {
         currentGameMode = gameMode;
         currentBoard.gameMode = structuredClone(currentGameMode);
+        console.log(gameMode);
         $("me_gameMode").innerHTML = gameMode.name;
         $("saveStatus").innerHTML = "Board Is Not Saved";
     });
