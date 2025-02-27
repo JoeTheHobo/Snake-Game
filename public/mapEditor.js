@@ -1671,41 +1671,6 @@ $("me_background").on("click",function() {
         loadBackgroundContent(holder);
     }
 })
-$("me_gameMode").on("click",function() {
-    let holder = $(".gameModeSelectionScreen");
-    if (holder.style.display !== "none") holder.hide();
-    else {
-        holder.show("flex");
-        loadGameModesContent(holder);
-    }
-})
-function loadGameModesContent(parent) {
-    parent.innerHTML = "";
-    let list = gameModes;
-    let type = "gameModes";
-    for (let i = 0; i < list.length; i++) {
-        let holder = parent.create("div");
-        holder.className = `local_content_holder hover  local_content_${type}_${i} local_content_${type}`;
-
-        let title = holder.create("div");
-        title.innerHTML = list[i].name;
-        title.className = "local_content_title";
-
-        holder.object = list[i];
-        holder.type = type;
-        holder.index = i;
-        holder.on("click",function() {
-
-            activeGameMode = this.index;
-            ls.save("activeGameMode",activeGameMode)
-            currentGameMode = gameModes[activeGameMode];
-            board.gameMode = structuredClone(currentGameMode);
-            parent.hide();
-            $("me_gameMode").innerHTML = gameModes[activeGameMode].name;
-            $("saveStatus").innerHTML = "Board Is Not Saved";
-        })
-    }
-}
 
 function loadBackgroundContent(parent) {
     parent.innerHTML = "";
