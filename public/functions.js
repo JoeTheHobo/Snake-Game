@@ -1789,7 +1789,7 @@ function loadGameModesToPopup(tab,func) {
         holder.gameMode = gameModes[i];
         holder.on("click",function() {
             $(".chooseGameModePopup").hide()
-            console.log("ey")
+            console.log(func)
             func(this.gameMode);
         })
     }
