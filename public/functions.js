@@ -2,7 +2,6 @@ ls.setID("snakegame");
 
 let killSwitch = false;
 
-let currentBackground = backgrounds[0];
 
 let showPerformance = false;
 
