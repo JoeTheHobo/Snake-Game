@@ -834,7 +834,7 @@ io.on('connection', (socket) => {
         onlineAccounts[socket.id].players.push(newPlayer(socket.id,onlineAccounts[socket.id].username),onlineAccounts[socket.id].tag);
         io.emit("playersBeenMade",onlineAccounts[socket.id].players);
     })
-    socket.on("localSendingPlayers",(players,updateLobby = false) => {
+    socket.on("localSendingPlayers",(players,serverSnake,updateLobby = false) => {
         if (!players) {
             console.log("Tried Sending: " + players)
             return;
@@ -843,8 +843,10 @@ io.on('connection', (socket) => {
         for (let i = 0; i < players.length; i++) {
             if (checkPlayer(players[i],socket.id) !== true) checksOut = checkPlayer(players[i],socket.id);
         }
+        if (checkPlayer(serverSnake,socket.id) !== true) checksOut = checkPlayer(serverSnake,socket.id);
         if (checksOut === true) {
             onlineAccounts[socket.id].players = players;
+            onlineAccounts[socket.id].serverSnake = serverSnake;
             if (updateLobby) {
                 let account = onlineAccounts[socket.id];
                 let lobby = lobbies[account.lobby];

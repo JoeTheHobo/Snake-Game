@@ -471,6 +471,6 @@ socket.on("playersBeenMade",(players) => {
     loadCustomizeSnakeScreen(players.length-1);
 })
 function savePlayers(updateLobby = false) {
-    socket.emit("localSendingPlayers",localAccount.players,updateLobby);
+    socket.emit("localSendingPlayers",localAccount.players,localAccount.serverSnake,updateLobby);
 }
 //
