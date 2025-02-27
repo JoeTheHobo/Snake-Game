@@ -692,20 +692,7 @@ function loadBoardsScreen(index = false) {
             list: localAccount.boards,
             forceOpen: index,
             listContent: [{type: "title",text: ".name",tag: "name"},[{type: "button", text:"Export", onClick: (board) => {
-                const encoder = new TextEncoder();
-                const shortenBoardResult = shortenBoard(board);
-                
-                if (!shortenBoardResult) {
-                    throw new Error('shortenBoard(board) returned invalid data.');
-                }
-                
-                const jsonString = JSON.stringify(shortenBoardResult);
-                const encodedText = encoder.encode(jsonString);
-                
-                const compressed = pako.gzip(encodedText);
-
-                downloadTextFile(board.name,JSON.stringify(compressed));
-                  
+                socket.emit("getZippedBoard",board);
             }},{type: "button",special: true, text:"Edit", onClick: (board,index) => {
                 currentBoardIndex = index;
                 openMapEditor(board);

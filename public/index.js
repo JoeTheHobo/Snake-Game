@@ -76,6 +76,11 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
         img.id = "tile_" + tiles[i].name;
     }
 });
+socket.on("sendingZippedBoard",(socketID,zippedBoard,boardName) => {
+    if (socketID !== localAccount.id) return;
+
+    downloadTextFile(boardName,JSON.stringify(zippedBoard));
+})
 socket.on("updatePlayersBoards",(socketID,boards,sentFrom) => {
     if (socketID !== localAccount.id) return;
     localAccount.boards = boards;

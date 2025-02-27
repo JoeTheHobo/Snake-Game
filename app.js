@@ -149,6 +149,17 @@ io.on('connection', (socket) => {
             }
         })
     })
+    socket.on("getZippedBoard",(board) => {
+        compressObject(board,(err,compressed) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+
+            io.emit("sendingZippedBoard",socket.id,compressed,board.name)
+        })
+
+    });
     socket.on("deleteBoard",(boardID,sentFrom) => {
         let account = onlineAccounts[socket.id];
 
