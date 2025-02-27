@@ -521,7 +521,28 @@ io.on('connection', (socket) => {
             lobby.snakeMap.push(toPush);
         }
 
+        lobby.items = structuredClone(items);
+        
+        for (let i = 0; i < lobby.gameMode.itemAlterations.length; i++) {
+            let alterationGroup = lobby.gameMode.itemAlterations[i];
+            for (let k = 0; k < lobby.items.length; k++) {
+                let item = lobby.items[k];
+                if (item.name !== alterationGroup.name) continue;
 
+                for (let j = 0; j < alterationGroup.alterations.length; j++) {
+                    let alteration = alterationGroup.alterations[j];
+                    if (alteration.length == 4) {
+                        item[alteration[0]][alteration[1]][alteration[2]] = alteration[3];
+                    }
+                    if (alteration.length == 3) {
+                        item[alteration[0]][alteration[1]] = alteration[2];
+                    }
+                    if (alteration.length == 2) {
+                        item[alteration[0]] = alteration[1];
+                    }
+                }
+            }
+        }
 
 
         //Resetting Players
@@ -854,10 +875,9 @@ server.listen(port, () => {
 
 //Copying From Functions.js
 function getItem(lobby,name) {
-    let currentGameMode = lobby.gameMode;
-    for (let i = 0; i < currentGameMode.items.length; i++) {
-        if (currentGameMode.items[i].name == name) {
-            return structuredClone(currentGameMode.items[i]);
+    for (let i = 0; i < lobby.items.length; i++) {
+        if (lobby.items[i].name == name) {
+            return structuredClone(lobby.items[i]);
         }
     }
 }
