@@ -160,9 +160,9 @@ io.on('connection', (socket) => {
 
             account.boards = decompressed;
             for (let i = 0; i < account.boards.length; i++) {
-                console.log(account.boards[i].id,boardID);
                 if (account.boards[i].id === boardID) {
                     account.boards.splice(i,1);
+                    console.log(account.boards,sentFrom)
                     io.emit("updatePlayersBoards",account.boards,sentFrom);
                     compressObject(account.boards,(err,compressed) => {
                         if (err) {
