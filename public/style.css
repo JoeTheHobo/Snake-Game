@@ -2051,24 +2051,27 @@ background: rgb(187, 187, 187);
   width: 40%;
   height: 30%;
   max-height: 30%;
-  padding: 15px;
   flex-direction: column;
   border-radius: 5px;
   background: rgb(26, 26, 26);
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   z-index: 1000;
+  box-sizing: border-box;
 }
 .cgm_lists {
   width: 100%;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  box-sizing: border-box;
 }
 .cgm_list {
   display: flex;
   flex-direction: column;
   width: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 .cgm_gameMode_holder {
 border-radius: 5px;
