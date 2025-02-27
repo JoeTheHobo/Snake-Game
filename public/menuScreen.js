@@ -1097,21 +1097,54 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
         })
     }
 }
-function gameMode_editItem(item,html_holder,server,gameMode) {
-    html_holder.innerHTML = "";
-    item = structuredClone(item);
-    for (let i = 0; i < gameMode.itemAlterations[item.name].length; i++) {
-        let alteration = gameMode.itemAlterations[item.name][i];
-        if (alteration.length == 4) {
-            item[alteration[0]][alteration[1]][alteration[2]] = alteration[3];
-        }
-        if (alteration.length == 3) {
-            item[alteration[0]][alteration[1]] = alteration[2];
-        }
-        if (alteration.length == 2) {
-            item[alteration[0]] = alteration[1];
+function getItemAlterations(gameMode,item) {
+    let item = structuredClone(item);
+    for (let i = 0; i < gameMode.itemAlterations.length; i++) {
+        let gmaAlteration = gameMode.itemAlterations[i]; 
+        if (gmaAlteration.name !== item.name) continue;
+        
+        for (let j = 0; j < gmaAlteration.alterations.length; j++) {
+            let change = gmaAlteration.alterations[j];
+            if (change.length == 4) {
+                item[change[0]][change[1]][change[2]] = change[3];
+            }
+            if (change.length == 3) {
+                item[change[0]][change[1]] = change[2];
+            }
+            if (change.length == 2) {
+                item[change[0]] = change[1];
+            }
         }
     }
+    return item;
+}
+function setItemAlteration(gameMode,item) {
+    let realItem = getRealItem(item.name);
+    let differences = compareObjects(realItem,item);
+
+    let foundAlt = false;
+    for (let i = 0; i < gameMode.itemAlterations.length; i++) {
+        if (gameMode.itemAlterations[i].name !== item.name) continue;
+        if (differences.length == 0) {
+            gameMode.itemAlterations.splice(i,1);
+            break;
+        }
+        foundAlt = true;
+        gameMode.itemAlterations[i].alterations = differences;
+
+    }
+    if (foundAlt === false && differences.length > 0) {
+        gameMode.itemAlterations.push({
+            name: item.name,
+            alterations: differences,
+        })
+    }
+
+    socket.emit("saveGamemode",gameMode);
+}
+function gameMode_editItem(item,html_holder,server,gameMode) {
+    html_holder.innerHTML = "";
+    item = getItemAlterations(gameMode,item);
 
     function addSetting(title,type,value,func,list) {
         let holder = html_holder.create("div");
@@ -1169,19 +1202,19 @@ function gameMode_editItem(item,html_holder,server,gameMode) {
     }
 
     addSetting("Spawn Rate","number",item.specialSpawnWeight,function(value) {
-        item.specialSpawnWeight = Number(value);
         if (value < 0) return;
-        if (!server) saveAllGameModes();
+        item.specialSpawnWeight = Number(value);
+        if (!server) setItemAlteration(gameMode,item);
         else socket.emit("editServerGameMode",gameMode);
     });
     addSetting("Visible","toggle",item.visible,function(value) {
         item.visible = value;
-        if (!server) saveAllGameModes();
+        if (!server) setItemAlteration(gameMode,item);
         else socket.emit("editServerGameMode",gameMode);
     });
     addSetting("Plays Audio","toggle",item.playSounds,function(value) {
         item.playSounds = value;
-        if (!server) saveAllGameModes();
+        if (!server) setItemAlteration(gameMode,item);
         else socket.emit("editServerGameMode",gameMode);
     });
 
@@ -1189,21 +1222,21 @@ function gameMode_editItem(item,html_holder,server,gameMode) {
         addSetting("Grow Player","number",item.onEat.growPlayer,function(value) {
             if (value < 0) return;
             item.onEat.growPlayer = Number(value);
-            if (!server) saveAllGameModes();
+            if (!server) setItemAlteration(gameMode,item);
             else socket.emit("editServerGameMode",gameMode);
         });
     }
     if (item.canEat == true) {
         addSetting("Attempt Spawn Random Item","toggle",item.onEat.spawnRandomItem,function(value) {
             item.onEat.spawnRandomItem = value;
-            if (!server) saveAllGameModes();
+            if (!server) setItemAlteration(gameMode,item);
             else socket.emit("editServerGameMode",gameMode);
         });
     }
     if (item.canEat == true && item.onEat.shield > 0) {
         addSetting("Give Shield","number",item.onEat.shield,function(value) {
             item.onEat.shield = Number(value);
-            if (!server) saveAllGameModes();
+            if (!server) setItemAlteration(gameMode,item);
             else socket.emit("editServerGameMode",gameMode);
         });
     }
@@ -1211,7 +1244,7 @@ function gameMode_editItem(item,html_holder,server,gameMode) {
         addSetting("Turbo Duration","number",item.onEat.turbo.duration,function(value) {
         if (value < 0) return;
         item.onEat.turbo.duration = Number(value);
-        if (!server) saveAllGameModes();
+        if (!server) setItemAlteration(gameMode,item);
         else socket.emit("editServerGameMode",gameMode);
         });
     }
@@ -1219,9 +1252,8 @@ function gameMode_editItem(item,html_holder,server,gameMode) {
         addSetting("Turbo Speed","number",item.onEat.turbo.moveSpeed,function(value) {
         if (value < 0) return;
         item.onEat.turbo.moveSpeed = value;
-        if (!server) saveAllGameModes();
+        if (!server) setItemAlteration(gameMode,item);
         else socket.emit("editServerGameMode",gameMode);
         });
     }
-
 }
