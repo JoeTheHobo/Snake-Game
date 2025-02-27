@@ -31,14 +31,13 @@ socket.on("updateLocalGameModes",(accountID,gameModes,sentFrom) => {
     localAccount.gameModes = gameModes;
 
     if (sentFrom == "loadGameModesScreen") {
-        console.log("ey");
         loadGameModesScreen(localAccount.gameModes.length-1);
     }
     if (sentFrom == "editGameMode") {
         loadGameModesScreen();
     }
 })
-socket.on("setPlayer", (id,account,items) =>{
+socket.on("setPlayer", (id,account,server_items) =>{
     if (localAccount.id !== false) return;
     localAccount.id = id;
     localAccount.isInGame = false;
@@ -50,7 +49,7 @@ socket.on("setPlayer", (id,account,items) =>{
     localAccount.isInLobby = false;
     localAccount.lobbyBoards = [];
 
-    items = items;
+    items = server_items;
 
     setScene("newMenu");
 });
