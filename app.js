@@ -1742,6 +1742,7 @@ io.on('connection', (socket) => {
             console.log(sentFrom)
             if (account.gameModes[i].id == gameModeID) {
                 account.gameModes.splice(i,1);
+                console.log(account.gameModes)
                 io.emit("updateLocalGameModes",account.gameModes,sentFrom)
                 return;
             }
