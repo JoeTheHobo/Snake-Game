@@ -276,14 +276,14 @@ function rnd(num,to,exp) {
         if ((num.toLowerCase() == 'letter' || num.toLowerCase() == 'abc') && to !== false) {
             let abc = 'abcdefghijklmnopqrstuvwxyz';
             if (num === 'LETTER' || num === 'ABC') return abc.rnd().toUpperCase();
-            if (num === 'Letter' || num === 'Abc') return rnd(2) == 2 ? abc.rnd().toUpperCase() : abc.rnd();
+            if (num === 'Letter' || num === 'Abc') return rnd(2) == 2 ? rnd(abc).toUpperCase() : rnd(abc);
             return abc.rnd();
         }
 
         if (num == 'color') {
             if (to == 'hex' || !to) {
                 let tool = '0123456789abcdef';
-                return '#' + tool.rnd() + tool.rnd() + tool.rnd() + tool.rnd() + tool.rnd() + tool.rnd();
+                return '#' + rnd(tool) + rnd(tool) + rnd(tool) + rnd(tool) + rnd(tool) + rnd(tool);
             }
             if (to == 'rgb') return 'rgb(' + rnd(0,255) + ',' + rnd(0,255) + ',' + rnd(0,255) + ')';
 
