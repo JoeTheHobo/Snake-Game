@@ -156,7 +156,7 @@ io.on('connection', (socket) => {
         }];
         lobbies[id].code = lobby.code + "";
         lobbies[id].serverType = lobby.serverType;
-        lobbies[id].gameMode = lobby.gameMode;
+        lobbies[id].gameMode = presetGameModes[0];
         lobbies[id].playerMax = 8;
         lobbies[id].lobbyBoards = [];
         lobbies[id].isInGame = false;
