@@ -891,6 +891,14 @@ function loadLocalScreen() {
 
 
 function loadGameModesScreen(index = false) {
+    if (localAccount.gameModes.length == localAccount.gameModeLimit)
+        top = [];
+    else {
+        top = [{type: "button",text: "New Game Mode",onClick: function() {
+            socket.emit("addNewGameMode","loadGameModesScreen");
+        }}]
+    }
+
     $(".menu_tab").classRemove("menu_tab_selected");
     $(".menu_content").hide();
     $(".content_gameModes").show("flex");
@@ -901,9 +909,7 @@ function loadGameModesScreen(index = false) {
             forceOpen: index,
             type: "gameModes",
             listContent: [{type: "title",text: ".name",tag: "name"}],
-            top: [{type: "button",text: "New Game Mode",onClick: function() {
-                socket.emit("addNewGameMode","loadGameModesScreen");
-            }}],
+            top: top,
         });
 }
 

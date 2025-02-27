@@ -106,7 +106,6 @@ io.on('connection', (socket) => {
     socket.on("addNewGameMode",(sentFrom) => {
         let account = onlineAccounts[socket.id];
         if (account.gameModes.length > account.gameModeLimit) {
-            io.emit("fullGameModes",socket.id);
             return;
         }
 
