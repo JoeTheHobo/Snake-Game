@@ -1739,10 +1739,8 @@ io.on('connection', (socket) => {
     socket.on("deleteGameMode",(gameModeID,sentFrom) => {
         let account = onlineAccounts[socket.id];
         for (let i = 0; i < account.gameModes.length; i++) {
-            console.log(sentFrom)
             if (account.gameModes[i].id == gameModeID) {
                 account.gameModes.splice(i,1);
-                console.log(account.gameModes)
                 io.emit("updateLocalGameModes",socket.id,account.gameModes,sentFrom)
                 return;
             }
@@ -3176,7 +3174,7 @@ let basedGameMode = {
     howManyItemsCanPlayersUse: 2,
     mode_usingItemType: "scroll",
     mode_whenInventoryFullWhereDoItemsGo: "select",
-    itemAlterations: {},
+    itemAlterations: [],
     snakeVanishOnDeath: false,
     respawn: false,
     respawnTimer: 5,
