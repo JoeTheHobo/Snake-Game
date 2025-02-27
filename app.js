@@ -65,6 +65,7 @@ io.on('connection', (socket) => {
             }
             newPreset.push(decompressed);
             if (index == presetBoards.length-1) {
+                presetBoards = newPreset;
                 compressObject(onlineAccounts[socket.id].boards,(err,compressed) => {
                     if (err) {
                         console.log(err)
@@ -288,7 +289,7 @@ io.on('connection', (socket) => {
 
         let id = Date.now() + "_" + simple.rnd(5000);
         lobbies[id] = lobby;
-        lobbies[id].board = fixBoard(JSON.parse(lobbies[id].board));
+        lobbies[id].board = structuredClone(presetBoards[0]);
         lobbies[id].id = id;
         lobbies[id].hostID = socket.id;
         lobbies[id].hostName = onlineAccounts[socket.id].username;
