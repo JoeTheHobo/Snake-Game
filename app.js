@@ -1132,7 +1132,6 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
     let allSpawns = simple.shuffle(currentBoard.location_spawns);
     while (foundSpot == false) {
         if (isPlayer) {
-            console.log(allSpawns)
             findingSpawner: for (let k = 0; k < allSpawns.length; k++) {
                 let playerOnIt = false;
                 for (let i = 0; i < activePlayers.length; i++) {
@@ -1140,8 +1139,6 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
                     if (activePlayers[i].pos.x == allSpawns[k].x && activePlayers[i].pos.y == allSpawns[k].y) playerOnIt = true;
                 }
                 if (playerOnIt) continue;
-
-                console.log("ey")
 
                 let playerTeam = findPlayersTeam(name);
                 let spawnTeam = allSpawns[k].item.spawnPlayerTeam || "white";
@@ -1215,6 +1212,7 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
 
     if (foundSpot == true) {
         if (isPlayer) {
+            console.log(team)
             name.pos.x = x;
             name.pos.y = y;
             addPlayerStatus(lobby,name,"status_" + team);
