@@ -53,9 +53,6 @@ socket.on("setPlayer", (id,account,items) =>{
     items = items;
 
     setScene("newMenu");
-
-    //For Map Editor
-    loadObjectMenu();
 });
 socket.on("setClientLobby",(socketID,lobby) => {
     lobby = uint8ArrayToObject(lobby);

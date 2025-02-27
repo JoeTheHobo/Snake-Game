@@ -124,35 +124,6 @@ const perfectFrameTime = 1000 / 60;
 let deltaTime = 0;
 let lastTimestamp = 0;
 
-//Fix game Modes
-for (let i = 0; i < gameModes.length; i++) {
-    for (let j = 0; j < gameModes[i].items.length; j++) {
-        let item = gameModes[i].items[j];
-        let realItem = getRealItem(item.name);
-        for (const [key, value] of Object.entries(realItem)) {
-            if (item[key] === undefined) {
-                item[key] = value;
-            }
-        }
-
-        
-    }
-    for (let k = 0; k < items.length; k++) {
-        let realItem = items[k];
-        let found = false;
-        finding: for (let p = 0; p < gameModes[i].items.length; p++) {
-            let item = gameModes[i].items[p];
-            if (item.name == realItem.name) {
-                found = true;
-                break finding;
-            }
-        }
-        if (!found) {
-            gameModes[i].items.push(realItem);
-        }
-    }
-}
-
 //Setting Up Canvas
 $(".local_bottom_canvas").width = 142;
 $(".local_bottom_canvas").height = 80;

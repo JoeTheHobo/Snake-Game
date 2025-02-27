@@ -928,7 +928,7 @@ function goBackHome(save) {
 }
 
 function loadObjectMenu() {
-    if (selectedItem.cell.baseImg) {
+    if (selectedItem.cell?.baseImg) {
         $(".me_ih_image").src = getImageFromItem("item",selectedItem.cell,"src")
     } else 
         $(".me_ih_image").src = $(selectedItem.type +"_" + selectedItem.cell.name).src;
