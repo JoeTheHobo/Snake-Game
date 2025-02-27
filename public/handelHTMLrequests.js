@@ -173,9 +173,19 @@ $(".cbp_cancel").on("click",function() {
 $(".cbp_tab").on("click",function() {
     let idStart = this.id.subset(0,"_\\before");
     if (idStart == "cgm") 
-        loadGameModesToPopup(this.id.subset("_\\after","end"),function(gameMode) {
-            socket.emit("changeServerGameMode",gameMode);
-        })
+        if (localAccount.isInLobby) {
+            loadGameModesToPopup(this.id.subset("_\\after","end"),function(gameMode) {
+                socket.emit("changeServerGameMode",gameMode);
+            })
+        } else {
+            loadGameModesToPopup(this.id.subset("_\\after","end"),function(gameMode) {
+                console.log(gameMode);
+                currentGameMode = gameMode;
+                currentBoard.gameMode = structuredClone(currentGameMode);
+                $("me_gameMode").innerHTML = gameMode.name;
+                $("saveStatus").innerHTML = "Board Is Not Saved";
+            });
+        }
     if (idStart == "cbp")
         selectTabInBoardMenu(this.innerHTML.subset(0," \\before").toLowerCase());
 })
@@ -188,7 +198,6 @@ $(".sc_gmb_changeGameModeHolder").on("click",function() {
 $("me_gameMode").on("click",function() {
     
     $(".chooseGameModePopup").show("flex");
-    console.log("Here")
     loadGameModesToPopup("preset",function(gameMode) {
         console.log(gameMode);
         currentGameMode = gameMode;
