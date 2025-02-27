@@ -1,5 +1,3 @@
-const { presetGameModes } = require("../presetGameModes");
-
 ls.setID("snakegame");
 
 let killSwitch = false;
