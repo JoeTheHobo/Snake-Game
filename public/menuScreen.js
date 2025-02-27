@@ -164,6 +164,7 @@ function generateHTMLScreen(holder,listObj,contentObj) {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        overflowY: "auto",
     })
     let content = holder.create("div");
     content.css({
