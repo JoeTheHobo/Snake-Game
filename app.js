@@ -155,10 +155,8 @@ io.on('connection', (socket) => {
                 console.log(err);
                 return;
             }
-            console.log(compressed)
-            io.emit("sendingZippedBoard",socket.id,compressed,board.name)
+            io.emit("sendingZippedBoard",socket.id,compressed.toString("base64"),board.name)
         })
-
     });
     socket.on("deleteBoard",(boardID,sentFrom) => {
         let account = onlineAccounts[socket.id];
