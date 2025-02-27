@@ -612,8 +612,8 @@ io.on('connection', (socket) => {
             spawn(lobby,player);
         }
 
-        for (let i = 0; i < lobby.gameMode.items.length; i++) {
-            let item = lobby.gameMode.items[i];
+        for (let i = 0; i < lobby.items.length; i++) {
+            let item = lobby.items[i];
             for (let j = 0; j < Number(item.onStartSpawn); j++) {
                 spawn(lobby,item.name,false);
             }
@@ -957,10 +957,10 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
     let itemIndex = false;
     let item;
     if (!isPlayer) {
-        for (let i = 0; i < currentGameMode.items.length; i++) {
-            if (currentGameMode.items[i].name == name) {
+        for (let i = 0; i < lobby.items.length; i++) {
+            if (lobby.items[i].name == name) {
                 itemIndex = i;
-                item = currentGameMode.items[i];
+                item = lobby.items[i];
             }
         }
         if (item.spawnCount == undefined) item.spawnCount = 1;
@@ -1071,8 +1071,8 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
             });
             lobby.updateSnakeCells.push(lobby.snakeMap[y][x]);
         } else {
-            runItemFunction(lobby,name,currentGameMode.items[itemIndex],"onSpawn",{x:x,y:y},{playAudio: playAudio});
-            currentBoard.map[y][x].item = structuredClone(currentGameMode.items[itemIndex]);
+            runItemFunction(lobby,name,lobby.items[itemIndex],"onSpawn",{x:x,y:y},{playAudio: playAudio});
+            currentBoard.map[y][x].item = structuredClone(lobby.items[itemIndex]);
             currentBoard.map[y][x].item.pos = {
                 x: x,
                 y: y,
@@ -1180,16 +1180,14 @@ function useItem(lobby,player) {
     player.items[player.selectingItem] = returnItem;
 }
 function specialItemManager(lobby) {
-    let currentGameMode = lobby.gameMode;
-
     if (lobby.specialItemIteration >= lobby.specialItemActiveChance) {
         lobby.specialItemIteration = 0;
         lobby.specialItemActiveChance = simple.rnd(lobby.specialItemLowChance,lobby.specialItemHighChance);
         // Calculate the total weight
         let totalWeight = 0;
-        for (let i = 0; i < currentGameMode.items.length; i++) {
-            if (currentGameMode.items[i].spawnLimit < 1 && simple.type(currentGameMode.items[i].spawnLimit) == "number") continue;
-            totalWeight += currentGameMode.items[i].specialSpawnWeight;
+        for (let i = 0; i < lobby.items.length; i++) {
+            if (lobby.items[i].spawnLimit < 1 && simple.type(lobby.items[i].spawnLimit) == "number") continue;
+            totalWeight += lobby.items[i].specialSpawnWeight;
         }
 
         // Generate a random number between 0 and totalWeight
@@ -1197,7 +1195,7 @@ function specialItemManager(lobby) {
 
         // Find the item corresponding to the random weight
         let cumulativeWeight = 0;
-        findingItem: for (const item of currentGameMode.items) {
+        findingItem: for (const item of lobby.items) {
             if (item.spawnLimit < 1 && simple.type(item.spawnLimit) == "number") continue;
 
             cumulativeWeight += item.specialSpawnWeight;
