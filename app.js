@@ -151,6 +151,7 @@ io.on('connection', (socket) => {
     })
     socket.on("deleteBoard",(boardID,sentFrom) => {
         let account = onlineAccounts[socket.id];
+        console.log("eyo")
 
         decompressObject(account.boards,(err,decompressed) => {
             if (err) {
