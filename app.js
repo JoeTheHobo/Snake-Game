@@ -39,7 +39,7 @@ io.on('connection', (socket) => {
         gameModeLimit: 10,
         boardLimit: 10,
         playerLimit: 10,
-        boards: compressObject([]),
+        boards: [],
         lobby: false,
         username: userName,
         tag: tag,
@@ -51,9 +51,24 @@ io.on('connection', (socket) => {
             acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
             return acc;
         }, {});
-        
-    io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
-    io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items,basedGameMode,presetGameModes,presetBoards,backgrounds,tiles,decompressObject(onlineAccounts[socket.id].boards));
+    
+    compressObject(onlineAccounts[socket.id].boards,(err,compressed) => {
+        if (err) {
+            console.log(err)
+            return;
+        }
+        onlineAccounts[socket.id].boards = compressed;
+        decompressObject(onlineAccounts[socket.id].boards,(err,decompressed) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
+            io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items,basedGameMode,presetGameModes,presetBoards,backgrounds,tiles,decompressed);
+        })
+    })
+    
+    
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
@@ -131,11 +146,26 @@ io.on('connection', (socket) => {
             id: Date.now() + "_" + rnd(1000),
             mouseOver: false,
         };
-        account.boards = decompressObject(account.boards)
-        account.boards.push(board);
 
-        io.emit("updatePlayersBoards",socket.id,localAccount.boards,sentFrom)
-        account.boards = compressObject(account,boards);
+        decompressObject(account.boards,(err,decompressed) => {
+            if (err) {
+                console.log(err)
+                return;
+            }
+            account.boards = decompressed;
+            account.boards.push(board);
+    
+            io.emit("updatePlayersBoards",socket.id,localAccount.boards,sentFrom)
+            compressObject(account.boards,(err,compressed) => {
+                if (err) {
+                    console.log(err)
+                    return;
+                }
+                account.boards = compressed;
+            });
+        })
+
+        
     })
     socket.on("addNewGameMode",(sentFrom) => {
         let account = onlineAccounts[socket.id];
