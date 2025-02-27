@@ -1037,7 +1037,7 @@ function getItem(lobby,name) {
 }
 function findPlayersTeam(player) {
     for (let i = 0; i < player.status.length; i++) {
-        if (simple.subset(player.status[i],0,5) == "status") return simple.subset(player.status[i],"_\\after","end");
+        if (simple.subset(player.status[i],0,5) == "status") return player.status[i].split("_")[1];
     }
 }
 function calculateDistance(currentBoard,x1, y1, x2, y2, boardLength, boardHeight) {
@@ -1142,8 +1142,6 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
 
                 let playerTeam = findPlayersTeam(name);
                 let spawnTeam = allSpawns[k].item.spawnPlayerTeam || "white";
-
-                console.log(playerTeam,spawnTeam)
 
                 if (playerTeam !== "white" && spawnTeam !== playerTeam) continue;
                 
