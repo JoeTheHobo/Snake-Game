@@ -151,7 +151,6 @@ io.on('connection', (socket) => {
     })
     socket.on("createNewBoard",(boardName,width,height,sentFrom) => {
         let account = onlineAccounts[socket.id];
-        if (account.boards.length >= account.boardLimit) return;
 
         if (simple.type(boardName) !== "string") boardName = "Untitled";
         if (boardName.length > 15) boardName = "Untitled";
@@ -180,6 +179,9 @@ io.on('connection', (socket) => {
                 return;
             }
             account.boards = decompressed;
+            
+            if (account.boards.length >= account.boardLimit) return;
+
             account.boards.push(board);
     
             io.emit("updatePlayersBoards",socket.id,localAccount.boards,sentFrom)
