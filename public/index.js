@@ -28,14 +28,12 @@ socket.on("kickPlayer",(playerID,message) => {
 })
 socket.on("updateLocalGameModes",(accountID,gameModes,sentFrom) => {
     if (localAccount.id !== accountID) return;
-    console.log(gameModes);
     localAccount.gameModes = gameModes;
 
     if (sentFrom == "loadGameModesScreen") {
         loadGameModesScreen(localAccount.gameModes.length-1);
     }
     if (sentFrom == "editGameMode") {
-        console.log(localAccount.gameModes)
         loadGameModesScreen();
     }
 })

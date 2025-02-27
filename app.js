@@ -1743,7 +1743,7 @@ io.on('connection', (socket) => {
             if (account.gameModes[i].id == gameModeID) {
                 account.gameModes.splice(i,1);
                 console.log(account.gameModes)
-                io.emit("updateLocalGameModes",account.gameModes,sentFrom)
+                io.emit("updateLocalGameModes",socket.id,account.gameModes,sentFrom)
                 return;
             }
         }
