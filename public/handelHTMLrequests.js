@@ -179,7 +179,6 @@ $(".cbp_tab").on("click",function() {
             })
         } else {
             loadGameModesToPopup(this.id.subset("_\\after","end"),function(gameMode) {
-                console.log(gameMode);
                 currentGameMode = gameMode;
                 currentBoard.gameMode = structuredClone(currentGameMode);
                 $("me_gameMode").innerHTML = gameMode.name;
@@ -199,7 +198,6 @@ $("me_gameMode").on("click",function() {
     
     $(".chooseGameModePopup").show("flex");
     loadGameModesToPopup("preset",function(gameMode) {
-        console.log(gameMode);
         currentGameMode = gameMode;
         currentBoard.gameMode = structuredClone(currentGameMode);
         $("me_gameMode").innerHTML = gameMode.name;
