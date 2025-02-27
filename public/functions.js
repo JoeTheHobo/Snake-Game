@@ -11,7 +11,6 @@ let updateSnakeCells = [];
 
 let activePlayers;
 let activePlayerCount = [];
-let showingGameTips = false;
 let oldBoardStatus = [];
 //End Players
 

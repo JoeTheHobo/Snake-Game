@@ -25,4 +25,6 @@ let global_gameColors = [
     ["skyblue","#85d0ff"],
     ["slateblue","#7564ff"],
     ["venom","#6b7a00"],
-]
+];
+
+let showingGameTips = false;
