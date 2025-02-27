@@ -1716,10 +1716,15 @@ function generateBoardsPopup(type) {
         }
         return;
     }
-    for (let i = 0; i < boards.length; i++) {
-        let board = boards[i];
-        if (type == "preset" && board.cantEdit) generateBoard(parent,board);
-        if (type == "personal" && !board.cantEdit) generateBoard(parent,board);
+    if (type == "personal") {
+        for (let i = 0; i < localAccount.boards.length; i++) {
+            generateBoard(parent,localAccount.boards[i]);
+        }
+    }
+    if (type == "preset") {
+        for (let i = 0; i < presetBoards.length; i++) {
+            generateBoard(parent,presetBoards[i]);
+        }
     }
     /*
     if (type == "personal") {
