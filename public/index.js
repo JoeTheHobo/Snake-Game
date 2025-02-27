@@ -49,6 +49,9 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     localAccount.isInLobby = false;
     localAccount.lobbyBoards = [];
     localAccount.gameModeLimit = account.gameModeLimit;
+    localAccount.playerLimit = account.playerLimit;
+    localAccount.boardLimit = account.boardLimit;
+    localAccount.serverSnake = account.serverSnake;
 
     items = server_items;
     basedGameMode = server_basedGameMode;

@@ -240,7 +240,7 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
 
             ]
         ],
-    ],localAccount.players[0],false,true);
+    ],localAccount.serverSnake,false,true);
 })
 
 $(".sc_addLobbyBoard").on("click",function() {
