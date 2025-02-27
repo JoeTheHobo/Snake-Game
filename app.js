@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
         }, {});
         
     io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
-    io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items);
+    io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items,basedGameMode);
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
