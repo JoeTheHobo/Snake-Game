@@ -204,8 +204,6 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
         [
             [{type: "image", src: "snakeHead.png",filter: "player",tag:"image",width: "200px",height: "200px",background: "none",borderRadius: "5px",}],
             [
-                {type: "text",text: "Snake Name"},
-                {type: "input",value: ".name", tag: "name", bind: {key: "name",type: "!==",value: "",update: {externalKey: "name",type: "innerHTML"}}},
                 {type: "text",text: "Hue"},
                 {type: "slider", value: ".color",min: 0, max: 360,bind: {key: "color",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
                 {type: "text",text: "Saturation"},

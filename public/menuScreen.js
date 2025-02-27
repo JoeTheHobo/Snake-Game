@@ -555,9 +555,6 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder,updateLob
                     if (l.bind.type == "!==") if (this.value !== "") obj[l.bind.key] = this.value;
                     if (l.bind.type == "set" || !l.type) obj[l.bind.key] = this.value;
 
-                    if (l.save  == undefined || l.save == true) {
-                        savePlayers(updateLobby);
-                    }
                     if (l.bind.update) {
                         let value = obj[l.bind.key];
                         
@@ -570,6 +567,13 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder,updateLob
                         }
                     }
                 })
+                if (l.type == "slider") {
+                    div.on("change",function() {
+                        if (l.save  == undefined || l.save == true) {
+                            savePlayers(updateLobby);
+                        }
+                    })
+                }
             }
 
         }

@@ -29,8 +29,9 @@ io.on('connection', (socket) => {
     let tag = "#" + formatNumber(Object.keys(onlineAccounts).length);
     onlineAccounts[socket.id] = {
         id: socket.id,
-        players: [ newPlayer(socket.id,userName,tag) ],
+        players: [ ],
         player: false,
+        serverSnake: newPlayer(socket.id,userName,tag),
         gameModes: [],
         gameModeLimit: 10,
         boardLimit: 10,
@@ -160,7 +161,7 @@ io.on('connection', (socket) => {
         lobbies[id].lobbyBoards = [];
         lobbies[id].isInGame = false;
         onlineAccounts[socket.id].lobby = lobbies[lobby.id].id;
-        onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[0]);
+        onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].serverSnake);
 
         let lobbyList = Object.values(lobbies)
             .filter(lobby => lobby.serverType !== "Hidden")
@@ -253,7 +254,7 @@ io.on('connection', (socket) => {
             message: account.username + " Joined The Lobby",
         })
         account.lobby = lobby.id;
-        account.player = structuredClone(account.players[0]);
+        account.player = structuredClone(account.serverSnake);
         account.player.canSubmitBoards = false;
         let lobbyList = Object.values(lobbies)
             .filter(lobby => lobby.serverType !== "Hidden")
@@ -850,7 +851,7 @@ io.on('connection', (socket) => {
                 if (!account) return;
                 if (!lobby) return;
 
-                onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].players[0]);
+                onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].serverSnake);
                 lobby.activePlayers = getPlayersList(lobby.players);
 
                 io.emit("updateLobbyPage",objectToUint8Array(lobby));
