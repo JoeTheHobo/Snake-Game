@@ -78,9 +78,9 @@ function findIndex(string,searchString) {
             if (stringArr[i] == "fi") stringArr[i] = "find";
 
             //Find results
-            if (stringArr[i].orCompare("after","before","on","full")) indexObj.position = stringArr[i];
-            if (stringArr[i].orCompare("count","index")) indexObj.indexType = stringArr[i];
-            if (stringArr[i].orCompare("ci","cs")) indexObj.caseSensitive = stringArr[i] == "cs" ? true : false;
+            if (("after","before","on","full").includes(stringArr[i])) indexObj.position = stringArr[i];
+            if (("count","index").includes(stringArr[i])) indexObj.indexType = stringArr[i];
+            if (("ci","cs").includes(stringArr[i])) indexObj.caseSensitive = stringArr[i] == "cs" ? true : false;
             if (!isNaN(stringArr[i])) indexObj.add = Number(stringArr[i]);
         }
 
