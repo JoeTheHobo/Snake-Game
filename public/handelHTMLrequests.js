@@ -189,9 +189,9 @@ $("me_gameMode").on("click",function() {
     
     $(".chooseGameModePopup").show("flex");
     loadGameModesToPopup("preset",function(gameMode) {
+        console.log(gameMode);
         currentGameMode = gameMode;
         currentBoard.gameMode = structuredClone(currentGameMode);
-        console.log(gameMode);
         $("me_gameMode").innerHTML = gameMode.name;
         $("saveStatus").innerHTML = "Board Is Not Saved";
     });
