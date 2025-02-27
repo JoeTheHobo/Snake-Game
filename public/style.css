@@ -1500,12 +1500,23 @@ display: none;
 
 
 
-
+.servers_top_row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 50px;
+}
+.servers_top_row_right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 .servers_online_holder {
-display: flex;
-flex-direction: row;
-align-items: center;
-margin: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 .greenCircle {
 width: 17px;
