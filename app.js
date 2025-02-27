@@ -122,6 +122,33 @@ io.on('connection', (socket) => {
         io.emit("kickPlayer",socket.id,"Disconnected due to " + reason + " [Code: 002]");
         delete onlineAccounts[socket.id];
     }) 
+    socket.on("deleteBoard",(boardID,sentFrom) => {
+        let account = onlineAccounts[socket.id];
+
+        decompressObject(account.boards,(err,decompressed) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+
+            account.boards = decompressed;
+            for (let i = 0; i < account.boards.length; i++) {
+                if (account.boards[i].id === boardID) {
+                    account.boards.splice(i,1);
+                    io.emit("updatePlayersBoards",account.boards,sentFrom);
+                    compressObject(account.boards,(err,compressed) => {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        }
+                        account.boards = compressed;
+                    })
+                    return;
+                }
+            }
+        })
+
+    })
     socket.on("createNewBoard",(boardName,width,height,sentFrom) => {
         let account = onlineAccounts[socket.id];
         if (account.boards.length >= account.boardLimit) return;

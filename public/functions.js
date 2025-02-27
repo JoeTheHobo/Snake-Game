@@ -1721,6 +1721,7 @@ function generateBoardsPopup(type) {
         if (type == "preset" && board.cantEdit) generateBoard(parent,board);
         if (type == "personal" && !board.cantEdit) generateBoard(parent,board);
     }
+    /*
     if (type == "personal") {
         let holder = parent.create("div");
         holder.className = "cbp_board_holder";
@@ -1749,7 +1750,7 @@ function generateBoardsPopup(type) {
             // Programmatically click the input to open the file dialog
             input.click();
         })
-    }
+    }*/
 }
 function selectTabInBoardMenu(tab) {
     $(".cbp_tab").classRemove("cbp_tab_selected");

@@ -86,6 +86,12 @@ socket.on("updatePlayersBoards",(socketID,boards,sentFrom) => {
     if (sentFrom == "openMapEditor") {
         openMapEditor(localAccount.boards[currentBoardIndex]);
     }
+    if (sentFrom == "loadBoardsScreen") {
+        loadBoardsScreen();
+    }
+    if (sentFrom == "loadCustomizeSnakeScreen") {
+        loadCustomizeSnakeScreen();
+    }
 })
 socket.on("setClientLobby",(socketID,lobby) => {
     lobby = uint8ArrayToObject(lobby);

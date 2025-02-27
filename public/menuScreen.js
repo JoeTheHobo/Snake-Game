@@ -423,38 +423,19 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder,updateLob
                     cursor: "url('./img/pointer.cur'), auto",
                 })
                 div.on("click",function() {
-                    let saveArray = l.delete;
                     makePopUp([
                         {type: "text",text: "Delete " + contentHolder.tags["name"].innerHTML},
                         {type: "title",text: "Are You Sure?"},
                         [
                             {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
                             {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Delete",onClick: (ids,param) => {
-                                let saveArray = param.saveArray;
-
-                                let index = false;
-                                findingIndex: for (let i = 0; i < saveArray.length; i++) {
-                                    if (saveArray[i].id === obj.id) {
-                                        index = i;
-                                        break findingIndex;
-                                    }
+                                if (l.deleteLoad == "loadBoardsScreen") {
+                                    socket.emit("deleteBoard",obj.id,"loadBoardsScreen");
                                 }
-
-                                if (index === false) return;
-
-                                saveArray.splice(index,1);
-
-                                savePlayers();
-                                saveBoards();
-                                saveAllGameModes();
-                                l.deleteLoad();
                             }},
                         ],
                     ],{
                         id: "deletePopUp",
-                        parameter: {
-                            saveArray: saveArray,
-                        } 
                     })
                 })
             }
@@ -640,7 +621,7 @@ function loadCustomizeSnakeScreen(index = false) {
                 ]
             ],
             {type: "title",text: "Danger Zone"},
-            {type: "delete", delete: localAccount.players,deleteLoad: loadCustomizeSnakeScreen}
+            {type: "delete", delete: localAccount.players,deleteLoad: "loadCustomizeSnakeScreen"}
         ]
     )
 }
@@ -681,7 +662,7 @@ function loadBoardsScreen(index = false) {
                 id: "newBoard",
     
             })
-        }},{type: "button",text: "Import",onClick: () => {
+        }}/*,{type: "button",text: "Import",onClick: () => {
 
             // Create an input element of type file
             const input = document.createElement('input');
@@ -703,7 +684,7 @@ function loadBoardsScreen(index = false) {
 
             
 
-        }}]
+        }}*/]
     }
 
     generateHTMLScreen($(".content_boards"),
@@ -737,7 +718,7 @@ function loadBoardsScreen(index = false) {
                 drawBoardToCanvas(board.originalMap,canvas)
             }},
             {type: "title",special: "delete", text: "Danger Zone"},
-            {type: "delete", special: "delete", delete: boards,deleteLoad: loadBoardsScreen}
+            {type: "delete", special: "delete", delete: localAccount.boards,deleteLoad: "loadBoardsScreen"}
         ]
     )
 }
