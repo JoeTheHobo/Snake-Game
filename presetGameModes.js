@@ -21,11 +21,11 @@ presetGameModes.push({
     itemAlterations: [
         {
             name: "wall",
-            alterations: ["specialSpawnWeight",40],
+            alterations: [["specialSpawnWeight",40],["onStartSpawn",15]],
         },
         {
             name: "wall2",
-            alterations: ["specialSpawnWeight",20],
+            alterations: [["specialSpawnWeight",20]],
         },
     ],
     snakeVanishOnDeath: false,

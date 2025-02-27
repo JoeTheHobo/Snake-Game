@@ -1198,8 +1198,15 @@ function gameMode_editItem(item,html_holder,server,gameMode) {
         
     }
 
+    addSetting("At Start Spawn","number",item.onStartSpawn,function(value) {
+        if (value < 0) value = 0;
+        if (value > 60) value = 60;
+        item.onStartSpawn = Number(value);
+        if (!server) setItemAlteration(gameMode,item);
+        else socket.emit("editServerGameMode",gameMode);
+    });
     addSetting("Spawn Rate","number",item.specialSpawnWeight,function(value) {
-        if (value < 0) return;
+        if (value < 0) value = 0;
         item.specialSpawnWeight = Number(value);
         if (!server) setItemAlteration(gameMode,item);
         else socket.emit("editServerGameMode",gameMode);
@@ -1217,7 +1224,7 @@ function gameMode_editItem(item,html_holder,server,gameMode) {
 
     if (item.canEat == true && item.onEat.growPlayer > 0 ) {
         addSetting("Grow Player","number",item.onEat.growPlayer,function(value) {
-            if (value < 0) return;
+            if (value < 0) value= 0;
             item.onEat.growPlayer = Number(value);
             if (!server) setItemAlteration(gameMode,item);
             else socket.emit("editServerGameMode",gameMode);
