@@ -1527,6 +1527,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     return returnItem;
 }
 function addPlayerStatus(lobby,player,itemName) {
+    console.log(simple.subset(itemName,0,5),itemName)
     if (simple.subset(itemName,0,5) == "status") {
         removePlayerStatus(lobby,player,"teamColor");
         player.status.push(itemName);
