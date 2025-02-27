@@ -1879,7 +1879,7 @@ function newPlayer(socketID,accountName,accountTag) {
         useItem1: "q",
         useItem2: "e",
         fireItem: "r",
-        name: rnd(playerNames1) + rnd(playerNames2),
+        name: simple.rnd(playerNames1) + simple.rnd(playerNames2),
         color: simple.rnd(360), //Hue
         color2: simple.rnd(300), //Saturation
         color3: simple.rnd(20,200), //Brightness
