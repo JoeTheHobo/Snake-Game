@@ -1,6 +1,6 @@
 var simple = require("./server_simple.js");
-import { presetGameModes } from "./presetGameModes.js";
-import { items } from "./server_items.js";
+const {presetGameModes} = require("./presetGameModes.js");
+const {items} = require("./server_items.js");
 const express = require('express');
 const app = express();
 
