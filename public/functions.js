@@ -1869,7 +1869,7 @@ function showBoardMenu(func) {
 }
 function loadGameModesToPopup(tab,func) {
     $(".cgm_tab").classRemove("cbp_tab_selected");
-    $("cgm" + tab).classAdd("cbp_tab_selected");
+    $("cgm_" + tab).classAdd("cbp_tab_selected");
 
     let parent = $(".cgm_list");
     parent.innerHTML = "";
