@@ -708,7 +708,6 @@ function loadBoardsScreen(index = false) {
                   
             }},{type: "button",special: true, text:"Edit", onClick: (board,index) => {
                 currentBoardIndex = index;
-                currentBoard = boards[currentBoardIndex];
                 openMapEditor(board);
             }}]],
             top: addTop,
