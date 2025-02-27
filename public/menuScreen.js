@@ -687,13 +687,18 @@ function loadBoardsScreen(index = false) {
         }}*/]
     }
 
+    let adminControls = [];
+    if (ls.get("admin",false)) {
+        adminControls = {type: "button", text:"Export", onClick: (board) => {
+            socket.emit("getZippedBoard",board);
+        }}
+    }
+
     generateHTMLScreen($(".content_boards"),
         {
             list: localAccount.boards,
             forceOpen: index,
-            listContent: [{type: "title",text: ".name",tag: "name"},[{type: "button", text:"Export", onClick: (board) => {
-                socket.emit("getZippedBoard",board);
-            }},{type: "button",special: true, text:"Edit", onClick: (board,index) => {
+            listContent: [{type: "title",text: ".name",tag: "name"},[adminControls,{type: "button",special: true, text:"Edit", onClick: (board,index) => {
                 currentBoardIndex = index;
                 openMapEditor(board);
             }}]],
