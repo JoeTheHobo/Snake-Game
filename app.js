@@ -1,5 +1,5 @@
 const simple = require("./server_simple.js");
-const {presetGameModes} = require("./presetGameModes.js");
+let {presetGameModes} = require("./presetGameModes.js");
 const {presetBoards} = require("./presetBoards.js");
 const {items} = require("./server_items.js");
 const {tiles} = require("./server_tiles.js");
