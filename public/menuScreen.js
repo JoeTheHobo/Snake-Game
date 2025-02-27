@@ -894,12 +894,10 @@ function loadGameModesScreen(index = false) {
     if (localAccount.gameModes.length == localAccount.gameModeLimit)
         addTop = [];
     else {
-        console.log("hello")
         addTop = [{type: "button",text: "New Game Mode",onClick: function() {
             socket.emit("addNewGameMode","loadGameModesScreen");
         }}];
     }
-    console.log(addTop)
 
     $(".menu_tab").classRemove("menu_tab_selected");
     $(".menu_content").hide();
@@ -911,7 +909,7 @@ function loadGameModesScreen(index = false) {
             forceOpen: index,
             type: "gameModes",
             listContent: [{type: "title",text: ".name",tag: "name"}],
-            top: top,
+            top: addTop,
         });
 }
 
