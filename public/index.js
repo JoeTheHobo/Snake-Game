@@ -98,6 +98,7 @@ socket.on("startingGame", (lobby) => {
     } 
     if (!foundPlayer) return;
     
+    itemList = lobby.items;
     currentBoard = lobby.board;
     updateSnakeCells = [];
     updateCells = [];

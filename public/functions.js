@@ -394,9 +394,9 @@ function getRealItem(name) {
     }
 }
 function getItem(name) {
-    for (let i = 0; i < currentGameMode.items.length; i++) {
-        if (currentGameMode.items[i].name == name) {
-            return structuredClone(currentGameMode.items[i]);
+    for (let i = 0; i < itemList.length; i++) {
+        if (itemList[i].name == name) {
+            return structuredClone(itemList[i]);
         }
     }
 }
@@ -413,10 +413,10 @@ function spawn(name,generateRandomItem = true,counting = false,playAudio = true)
     let itemIndex = false;
     let item;
     if (!isPlayer) {
-        for (let i = 0; i < currentGameMode.items.length; i++) {
-            if (currentGameMode.items[i].name == name) {
+        for (let i = 0; i < itemList.length; i++) {
+            if (itemList[i].name == name) {
                 itemIndex = i;
-                item = currentGameMode.items[i];
+                item = itemList[i];
             }
         }
         if (item.spawnCount == undefined) item.spawnCount = 1;
@@ -518,8 +518,8 @@ function spawn(name,generateRandomItem = true,counting = false,playAudio = true)
         } else {
             let sendPlayer = false;
             if (cameraFollowPlayer) sendPlayer = activePlayers[0];
-            runItemFunction(sendPlayer,currentGameMode.items[itemIndex],"onSpawn",{x:x,y:y},{playAudio: playAudio});
-            currentBoard.map[y][x].item = structuredClone(currentGameMode.items[itemIndex]);
+            runItemFunction(sendPlayer,itemList[itemIndex],"onSpawn",{x:x,y:y},{playAudio: playAudio});
+            currentBoard.map[y][x].item = structuredClone(itemList[itemIndex]);
             currentBoard.map[y][x].item.pos = {
                 x: x,
                 y: y,

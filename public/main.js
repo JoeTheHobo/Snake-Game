@@ -1387,7 +1387,7 @@ function startGame(solo = false) {
     }
 
     currentBoard.boardStatus = [];
-    
+    //itemList = 
     doColorRender = false;
     activePlayers = activePlayerCount;
     if (solo) activePlayers = [activePlayers[0]];
@@ -1458,8 +1458,8 @@ function startGame(solo = false) {
         spawn(activePlayers[i]);
     }
 
-    for (let i = 0; i < currentGameMode.items.length; i++) {
-        let item = currentGameMode.items[i];
+    for (let i = 0; i < itemList.length; i++) {
+        let item = itemList[i];
         for (let j = 0; j < Number(item.onStartSpawn); j++) {
             spawn(item.name,false,false,false);
         }
@@ -1742,9 +1742,9 @@ function specialItemManager() {
         specialItemActiveChance = rnd(specialItemLowChance,specialItemHighChance);
         // Calculate the total weight
         let totalWeight = 0;
-        for (let i = 0; i < currentGameMode.items.length; i++) {
-            if (currentGameMode.items[i].spawnLimit < 1 && _type(currentGameMode.items[i].spawnLimit).type == "number") continue;
-            totalWeight += currentGameMode.items[i].specialSpawnWeight;
+        for (let i = 0; i < itemList.length; i++) {
+            if (itemList[i].spawnLimit < 1 && _type(itemList[i].spawnLimit).type == "number") continue;
+            totalWeight += itemList[i].specialSpawnWeight;
         }
 
         // Generate a random number between 0 and totalWeight
@@ -1752,7 +1752,7 @@ function specialItemManager() {
 
         // Find the item corresponding to the random weight
         let cumulativeWeight = 0;
-        findingItem: for (const item of currentGameMode.items) {
+        findingItem: for (const item of itemList) {
             if (item.spawnLimit < 1 && _type(item.spawnLimit).type == "number") continue;
 
             cumulativeWeight += item.specialSpawnWeight;
