@@ -1315,7 +1315,7 @@ function removeBoardStatus(lobby,status,player) {
 function addBoardStatus(lobby,status,player) {
     let currentBoard = lobby.board;
     if (status == "*P") status = "P" + player.index;
-
+    console.log(status);
     currentBoard.boardStatus.push(status);
 }
 function useItem(lobby,player) {
