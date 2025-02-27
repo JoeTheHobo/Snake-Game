@@ -556,6 +556,12 @@ function hideScenes() {
 function setScene(scene,lobby) {
     hideScenes();
     $("scene_" + scene).show("flex");
+    console.log(scene);
+    if (scene == "servers") {
+        $(".sc_bb_snakeImg").css({
+            filter: getPlayerFilter(localAccount.serverSnake),
+        });
+    }
     if (scene == "newMenu") {
         loadServersHTML();
         $(".account_name").innerHTML = localAccount.id; 
@@ -1748,7 +1754,9 @@ function updateLobbyPage(lobby) {
     }
     
     if (player) {
-        $(".sc_bb_snakeImg").style.filter = getPlayerFilter(player); 
+        $(".sc_bb_snakeImg").css({
+            filter: getPlayerFilter(player),
+        }); 
 
         if (player.canSubmitBoards && !isHost) {
             $(".canAddSubbmisionsOnly").show();

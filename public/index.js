@@ -472,5 +472,8 @@ socket.on("playersBeenMade",(players) => {
 })
 function savePlayers(updateLobby = false) {
     socket.emit("localSendingPlayers",localAccount.players,localAccount.serverSnake,updateLobby);
+    $(".sc_bb_snakeImg").css({
+        filter: getPlayerFilter(localAccount.serverSnake),
+    });
 }
 //
