@@ -891,6 +891,7 @@ function loadLocalScreen() {
 
 
 function loadGameModesScreen(index = false) {
+    console.log(localAccount.gameModes.length,localAccount.gameModeLimit);
     if (localAccount.gameModes.length == localAccount.gameModeLimit)
         top = [];
     else {
@@ -898,6 +899,7 @@ function loadGameModesScreen(index = false) {
             socket.emit("addNewGameMode","loadGameModesScreen");
         }}]
     }
+    console.log(top)
 
     $(".menu_tab").classRemove("menu_tab_selected");
     $(".menu_content").hide();
