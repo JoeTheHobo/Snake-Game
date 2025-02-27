@@ -1066,7 +1066,8 @@ function drawBoardToCanvas(board,canvas,forceHeight) {
             }
             if (cell.item) {
                 let image = getImageFromItem("item",cell.item,"canvas");
-                if (!image) return;
+                console.log(cell.item,image);
+                if (!image) continue;
                 ctx.drawImage(image,Xpos,Ypos,(gs),(gs));
             }
 
