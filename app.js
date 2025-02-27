@@ -162,8 +162,7 @@ io.on('connection', (socket) => {
             for (let i = 0; i < account.boards.length; i++) {
                 if (account.boards[i].id === boardID) {
                     account.boards.splice(i,1);
-                    console.log(account.boards,sentFrom)
-                    io.emit("updatePlayersBoards",account.boards,sentFrom);
+                    io.emit("updatePlayersBoards",socket.id,account.boards,sentFrom);
                     compressObject(account.boards,(err,compressed) => {
                         if (err) {
                             console.log(err);
