@@ -1512,11 +1512,13 @@ display: none;
   align-items: center;
   justify-content: center;
   height: 100%;
+  margin-right: 20px;
 }
 .servers_online_holder {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-left: 20px;
 }
 .greenCircle {
 width: 17px;
