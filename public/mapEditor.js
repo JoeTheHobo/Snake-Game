@@ -95,7 +95,7 @@ function fixTileDifferencesMapEditor(map) {
 }
 function openMapEditor(boardComingIn,isFromServer = false) {
     if (isFromServer) $("me_playButton").hide();
-    
+
     currentBoard = boardComingIn;
     board = boardComingIn;
     currentBoard.originalMap = forceAllCellsToBeTheirOwn(board.originalMap);
@@ -863,7 +863,8 @@ function saveBoard(saveDifferences = false) {
     let html_saveStatus = $("saveStatus");
     currentBoard.itemDifferences = findItemDifferences(currentBoard.originalMap);
     currentBoard.tileDifferences = findTileDifferences(currentBoard.originalMap);
-    saveBoards();
+
+    socket.emit("saveBoard",currentBoard);
 
     html_saveStatus.innerHTML = "Board Saved";
 }
@@ -875,7 +876,6 @@ $("me_button").on("click",function() {
             [
                 {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Don't Save To New Board",onClick: () => {
                     saveBoard();
-                    console.log(currentBoard.originalMap[0][0].tile)
                     socket.emit("changeServerBoard",JSON.stringify(shortenBoard(currentBoard)));
                     setScene("lobby");
                 }},
