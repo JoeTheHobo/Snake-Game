@@ -166,7 +166,7 @@ io.on('connection', (socket) => {
             maxPlayers: 8,
             background: backgrounds[0],
             recommendedGameMode: false,
-            gameMode: currentGameMode,
+            gameMode: presetGameModes[0],
             originalMap: newMap(width,height), 
             map: [],
             id: Date.now() + "_" + rnd(1000),
@@ -179,7 +179,7 @@ io.on('connection', (socket) => {
                 return;
             }
             account.boards = decompressed;
-            
+
             if (account.boards.length >= account.boardLimit) return;
 
             account.boards.push(board);
