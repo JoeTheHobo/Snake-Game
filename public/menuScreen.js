@@ -650,6 +650,62 @@ function loadBoardsScreen(index = false) {
     $(".menu_content").hide();
     $(".content_boards").show("flex");
     $("boards_tab").classAdd("menu_tab_selected");
+
+    let addTop = [];
+    if (localAccount.boards.length !== localAccount.boardLimit) {
+        addTop = [{type: "button",text: "New Board",onClick: function() {
+            makePopUp([
+                {type: "title",text: "New Board"},
+                [
+                    {type: "text", text: "Name"},
+                    {type: "input", id:"name", placeholder: "Untitled", width: "200px"},
+                ],
+                /*
+                [
+                    {type: "text", text: "Width"},
+                    {type: "number", id:"width", value: "50", min: 5, max: 70, width: "50px"},
+                    {type: "text", text: "Height"},
+                    {type: "number", id:"height", value: "30", min: 5, max: 70, width: "50px"},
+                ],
+                */
+                {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "green",text:"Create",onClick: (ids) => {
+                    const {name,width,height} = ids;
+                    let boardName = name.value == "" ? "Untitled" : name.value;
+                    socket.emit("createNewBoard",boardName,50,30,"openMapEditor");
+                    
+                }},
+            ],{
+                exit: {
+                    cursor: "url('./img/pointer.cur'), auto",
+                },
+                id: "newBoard",
+    
+            })
+        }},{type: "button",text: "Import",onClick: () => {
+
+            // Create an input element of type file
+            const input = document.createElement('input');
+            input.type = 'file';
+
+            // When the user selects a file
+            input.addEventListener('change', (event) => {
+                const file = event.target.files[0]; // Get the first selected file
+                if (file) {
+                    readFileContent(file); // Read the content of the file
+
+                } else {
+                alert('No file selected!');
+                }
+            });
+
+            // Programmatically click the input to open the file dialog
+            input.click();
+
+            
+
+        }}]
+    }
+
     generateHTMLScreen($(".content_boards"),
         {
             list: boards,
@@ -674,57 +730,7 @@ function loadBoardsScreen(index = false) {
                 currentBoard = boards[currentBoardIndex];
                 openMapEditor(board);
             }}]],
-            top: [{type: "button",text: "New Board",onClick: function() {
-                makePopUp([
-                    {type: "title",text: "New Board"},
-                    [
-                        {type: "text", text: "Name"},
-                        {type: "input", id:"name", placeholder: "Untitled", width: "200px"},
-                    ],
-                    /*
-                    [
-                        {type: "text", text: "Width"},
-                        {type: "number", id:"width", value: "50", min: 5, max: 70, width: "50px"},
-                        {type: "text", text: "Height"},
-                        {type: "number", id:"height", value: "30", min: 5, max: 70, width: "50px"},
-                    ],
-                    */
-                    {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "green",text:"Create",onClick: (ids) => {
-                        const {name,width,height} = ids;
-                        let boardName = name.value == "" ? "Untitled" : name.value;
-                        createBoard(boardName,50,30/*width.value,height.value*/);
-                        
-                    }},
-                ],{
-                    exit: {
-                        cursor: "url('./img/pointer.cur'), auto",
-                    },
-                    id: "newBoard",
-        
-                })
-            }},{type: "button",text: "Import",onClick: () => {
-
-                // Create an input element of type file
-                const input = document.createElement('input');
-                input.type = 'file';
-
-                // When the user selects a file
-                input.addEventListener('change', (event) => {
-                    const file = event.target.files[0]; // Get the first selected file
-                    if (file) {
-                        readFileContent(file); // Read the content of the file
-
-                    } else {
-                    alert('No file selected!');
-                    }
-                });
-
-                // Programmatically click the input to open the file dialog
-                input.click();
-
-                
-
-            }}],
+            top: addTop,
         },
         [
             {type: "canvas", width: "90%", height: "square",display: function(board,canvas) {

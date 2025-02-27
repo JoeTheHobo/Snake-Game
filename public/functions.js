@@ -2,7 +2,6 @@ ls.setID("snakegame");
 
 let killSwitch = false;
 
-let backgrounds = ["colors","water","space","clear"];
 let currentBackground = backgrounds[0];
 
 let showPerformance = false;
@@ -174,14 +173,6 @@ function adjustCanvasSize(gridx,gridy,zoom = 1) {
     }
     
 }
-
-for (let i = 0; i < tiles.length; i++) {
-    if (!tiles[i].img) continue;
-
-    let img = $(".imageHolder").create("img");
-    img.src = "img/" + tiles[i].img;
-    img.id = "tile_" + tiles[i].name;
-}
 function updateCanvasPositionToPlayer(player) {
     let playerX = player.pos.x;
     let playerY = player.pos.y;
@@ -343,20 +334,7 @@ function setResolution(gridx, gridy) {
 
 
 
-function newMap(width,height) {
-    _newMap = [];
-    for (let i = 0; i < height; i++) {
-        let arr = [];
-        for (let j = 0; j < width; j++) {
-            arr.push({
-                tile: getTile("grass"),
-                item: false,
-            })
-        }
-        _newMap.push(arr);
-    }
-    return _newMap;
-}
+
 
 
 function getRealItem(name) {
@@ -556,32 +534,6 @@ function pauseGame(displayPopup = true) {
     let html = $(".pauseGamePopup");
     if (displayPopup) html.show("flex");
     
-}
-function createBoard(name,width,height) {
-    width = Number(width);
-    height = Number(height);
-    boards.push({
-        name: name,
-        width: width,
-        height: height,
-        minPlayers: 1,
-        maxPlayers: 8,
-        background: backgrounds[0],
-        recommendedGameMode: false,
-        gameMode: currentGameMode,
-        map: newMap(width,height),
-        id: Date.now() + "_" + rnd(1000),
-        mouseOver: false,
-    })
-
-    currentBoardIndex = boards.length - 1;
-    currentBoard = boards[currentBoardIndex];
-    currentBoard.originalMap = currentBoard.map;
-
-    ls.save("currentBoardIndex",currentBoardIndex);
-    saveBoards();
-    
-    openMapEditor(currentBoard);
 }
 function downloadTextFile(filename, text) {
     // Create a Blob with the text

@@ -38,13 +38,13 @@ socket.on("updateLocalGameModes",(accountID,gameModes,sentFrom) => {
         loadGameModesScreen();
     }
 })
-socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_presetGameModes,server_presetBoards) =>{
+socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_presetGameModes,server_presetBoards,server_backgrounds,server_tiles,player_boards) =>{
     if (localAccount.id !== false) return;
     localAccount.id = id;
     localAccount.isInGame = false;
     localAccount.lobbyID = false;
     localAccount.players = account.players;
-    localAccount.boards = account.boards;
+    localAccount.boards = player_boards;
     localAccount.gameModes = account.gameModes;
     localAccount.username = account.username;
     localAccount.isInLobby = false;
@@ -55,43 +55,38 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     localAccount.serverSnake = account.serverSnake;
 
     items = server_items;
+    tiles = server_tiles;
     basedGameMode = server_basedGameMode;
     presetGameModes = server_presetGameModes;
-
-    //Add Preset Boards
-    presetBoards = server_presetBoards
-    let newPresets = [];
-    for (let i = 0; i < presetBoards.length; i++) {
-        const decompressed = pako.ungzip(JSON.parse(presetBoards[i]), { to: 'string' });
-        newPresets.push(JSON.parse(decompressed));
-    }
-    presetBoards = newPresets;
-
-    //Add Player Boards
-    compressed = JSON.parse(boards);
-    localAccount.boards = JSON.parse(pako.ungzip(compressed, { to: 'string' }));
-
-    //Fix All Boards
-    let toFixBoards = localAccount.boards.concat(presetBoards);
-    if (toFixBoards.length) {
-        for (let i = 0; i < toFixBoards.length; i++) {
-            toFixBoards[i] = fixBoard(toFixBoards[i]);
-
-            if (!toFixBoards[i].minPlayers) toFixBoards[i].minPlayers = 1;
-            if (!toFixBoards[i].maxPlayers) toFixBoards[i].maxPlayers = 8;
-            if (!toFixBoards[i].background) toFixBoards[i].backgrounds = backgrounds[0];
-            if (!toFixBoards[i].recommendedGameMode) toFixBoards[i].recommendedGameMode = false;
-            if (!toFixBoards[i].gameMode) toFixBoards[i].gameMode = false;
-        }
-    }
+    presetBoards = server_presetBoards;
 
     if (currentBoardIndex > localAccount.boards.length - 1) currentBoardIndex = 0;
+
+    backgrounds = server_backgrounds;
 
     setScene("newMenu");
     //Load All Item Images
     setUpItemCanvas();
-    //
+    //Load All Tile Images
+    for (let i = 0; i < tiles.length; i++) {
+        if (!tiles[i].img) continue;
+    
+        let img = $(".imageHolder").create("img");
+        img.src = "img/" + tiles[i].img;
+        img.id = "tile_" + tiles[i].name;
+    }
 });
+socket.on("updatePlayersBoards",(socketID,boards,sentFrom) => {
+    if (socketID !== localAccount.id) return;
+    localAccount.boards = boards;
+    
+    currentBoardIndex = localAccount.boards.length-1;
+    ls.save("currentBoardIndex",currentBoardIndex);
+    
+    if (sentFrom == "openMapEditor") {
+        openMapEditor(localAccount.boards[currentBoardIndex]);
+    }
+})
 socket.on("setClientLobby",(socketID,lobby) => {
     lobby = uint8ArrayToObject(lobby);
     if (socketID !== localAccount.id) return;

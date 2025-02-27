@@ -81,3 +81,5 @@ tiles.push({
 
 
 
+
+module.exports = { tiles };

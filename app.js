@@ -1,7 +1,9 @@
-var simple = require("./server_simple.js");
+const simple = require("./server_simple.js");
 const {presetGameModes} = require("./presetGameModes.js");
 const {presetBoards} = require("./presetBoards.js");
 const {items} = require("./server_items.js");
+const {tiles} = require("./server_tiles.js");
+const zlib = require('zlib');
 const express = require('express');
 const app = express();
 
@@ -37,7 +39,7 @@ io.on('connection', (socket) => {
         gameModeLimit: 10,
         boardLimit: 10,
         playerLimit: 10,
-        boards: [],
+        boards: compressObject([]),
         lobby: false,
         username: userName,
         tag: tag,
@@ -51,7 +53,7 @@ io.on('connection', (socket) => {
         }, {});
         
     io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
-    io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items,basedGameMode,presetGameModes,presetBoards);
+    io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items,basedGameMode,presetGameModes,presetBoards,backgrounds,tiles,decompressObject(onlineAccounts[socket.id].boards));
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
@@ -105,6 +107,36 @@ io.on('connection', (socket) => {
         io.emit("kickPlayer",socket.id,"Disconnected due to " + reason + " [Code: 002]");
         delete onlineAccounts[socket.id];
     }) 
+    socket.on("createNewBoard",(boardName,width,height,sentFrom) => {
+        let account = onlineAccounts[socket.id];
+        if (account.boards.length >= account.boardLimit) return;
+
+        if (simple.type(boardName) !== "string") boardName = "Untitled";
+        if (boardName.length > 15) boardName = "Untitled";
+        if (boardName == "") boardName = "Untitled";
+
+        width = 50;//Number(width);
+        height = 30;//Number(height);
+        let board = {
+            name: boardName,
+            width: width,
+            height: height,
+            minPlayers: 1,
+            maxPlayers: 8,
+            background: backgrounds[0],
+            recommendedGameMode: false,
+            gameMode: currentGameMode,
+            originalMap: newMap(width,height), 
+            map: [],
+            id: Date.now() + "_" + rnd(1000),
+            mouseOver: false,
+        };
+        account.boards = decompressObject(account.boards)
+        account.boards.push(board);
+
+        io.emit("updatePlayersBoards",socket.id,localAccount.boards,sentFrom)
+        account.boards = compressObject(account,boards);
+    })
     socket.on("addNewGameMode",(sentFrom) => {
         let account = onlineAccounts[socket.id];
         if (account.gameModes.length > account.gameModeLimit) {
@@ -877,6 +909,13 @@ server.listen(port, () => {
 
 
 //Copying From Functions.js
+function getTile(name) {
+    for (let i = 0; i < tiles.length; i++) {
+        if (tiles[i].name == name) {
+            return structuredClone(tiles[i]);
+        }
+    }
+}
 function getItem(lobby,name) {
     for (let i = 0; i < lobby.items.length; i++) {
         if (lobby.items[i].name == name) {
@@ -1554,6 +1593,42 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+// Function to compress an object
+function compressObject(obj, callback) {
+    const jsonString = JSON.stringify(obj);
+    zlib.gzip(jsonString, (err, compressedData) => {
+        if (err) {
+            return callback(err, null);
+        }
+        callback(null, compressedData);
+    });
+}
+
+// Function to decompress back to an object
+function decompressObject(compressedData, callback) {
+    zlib.gunzip(compressedData, (err, decompressedBuffer) => {
+        if (err) {
+            return callback(err, null);
+        }
+        const jsonString = decompressedBuffer.toString();
+        callback(null, JSON.parse(jsonString));
+    });
+}
+function newMap(width,height) {
+    _newMap = [];
+    for (let i = 0; i < height; i++) {
+        let arr = [];
+        for (let j = 0; j < width; j++) {
+            arr.push({
+                tile: getTile("grass"),
+                item: false,
+            })
+        }
+        _newMap.push(arr);
+    }
+    return _newMap;
+}
+let backgrounds = ["colors","water","space","clear"];
 // everything I've moved is down here
 let playerNames1 = [
     "Squabbling", "Terrifying", "Witty", "Sassy", "Mysterious",

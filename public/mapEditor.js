@@ -95,7 +95,8 @@ function fixTileDifferencesMapEditor(map) {
 }
 function openMapEditor(boardComingIn,isFromServer = false) {
     if (isFromServer) $("me_playButton").hide();
-
+    
+    currentBoard = boardComingIn;
     board = boardComingIn;
     currentBoard.originalMap = forceAllCellsToBeTheirOwn(board.originalMap);
     oldMap = structuredClone(currentBoard.originalMap);
