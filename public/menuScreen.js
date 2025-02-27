@@ -242,17 +242,15 @@ function generateHTMLList(holder,listObj,contentObj,contentHTML) {
         contentHolder.classAdd("hover");
         contentHolder.classAdd("list_element")
 
-        if (listObj.type !== "gameModes") {
-            contentHolder.open = function() {
-                $(".list_element").classRemove("list_selected");
-                this.classAdd("list_selected");
-                if (contentObj) generateHTMLContent(contentHTML,contentObj,content,contentHolder);
-                else editGameMode(contentHTML,content,contentHolder.tags["name"]); 
-            }
-            contentHolder.on("click",function() {
-                this.open();
-            })
+        contentHolder.open = function() {
+            $(".list_element").classRemove("list_selected");
+            this.classAdd("list_selected");
+            if (contentObj) generateHTMLContent(contentHTML,contentObj,content,contentHolder);
+            else editGameMode(contentHTML,content,contentHolder.tags["name"]); 
         }
+        contentHolder.on("click",function() {
+            this.open();
+        })
         
         
         
