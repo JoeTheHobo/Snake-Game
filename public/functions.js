@@ -1589,6 +1589,7 @@ function updateLobbyPage(lobby,type = "all",extra) {
         if (type == "all") reference = lobby.activePlayers;
         if (type == "players") reference = lobby;
 
+        console.log(reference)
         if (reference) {
             for (let i = 0; i < reference.length; i++) {
                 if (reference[i].accountID === localAccount.id)  {
@@ -1677,7 +1678,6 @@ function updateLobbyPage(lobby,type = "all",extra) {
     }
     
     if (type == "all" || type == "players") {
-        console.log(player);
         $(".sc_bb_snakeImg").css({
             filter: getPlayerFilter(player),
         }); 
