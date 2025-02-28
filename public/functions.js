@@ -1568,6 +1568,7 @@ function updateLobbyPage(lobby) {
     $(".sc_tb_lobbyName").innerHTML = lobby.hostName + lobby.hostTag + "'s Lobby";
 
     $("sc_boards_boardName").innerHTML = "Board: " + lobby.board.name;
+    console.log(lobby.board)
     if (lobby.board.boardAuthors.length == 1) $("sc_boards_boardRemixAuthor").hide(); 
     else {
         $("sc_boards_boardRemixAuthor").show();
