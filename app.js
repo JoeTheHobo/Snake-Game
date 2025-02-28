@@ -844,6 +844,7 @@ io.on('connection', (socket) => {
         lobby.gameTimeStart = Date.now();
         lobby.boardStatusCount = 0;
         lobby.playSounds = [];
+        lobby.boardStatus = [];
 
         io.emit("startingGame", objectToUint8Array(lobby),onlineAccounts[socket.id].player);
         
@@ -854,7 +855,7 @@ io.on('connection', (socket) => {
 
             socket.listeners("updateClientPositions")[0](this);
 
-            this.updatePositionTimeStamp = timestamp;
+            this.updatePositionTimeStamp = Date.now();
             this.updateSnakeCells = [];
             this.updateCells = [];
             this.playSounds = [];
