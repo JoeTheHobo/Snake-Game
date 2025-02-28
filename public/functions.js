@@ -1952,7 +1952,6 @@ function logGameModeChanges(holder,gameMode,logAll) {
             newValue: gameMode[key],
         })
     }
-    console.log(gameMode.itemAlterations)
     for (let i = 0; i < alterations.length; i++) {
         let alt = alterations[i];
         let altHolder = holder.create("div.gm_alt_holder");
@@ -1971,6 +1970,32 @@ function logGameModeChanges(holder,gameMode,logAll) {
 
         let altKey = altHolder.create("div.gm_alt_key");
         altKey.innerHTML = "No Game Mode Alterations";
+    }
+    for (let i = 0; i < gameMode.itemAlterations.length; i++) {
+        let itemName = gameMode.itemAlterations[i].name;
+        for (let j = 0; j < gameMode.itemAlterations[i].alterations.length; j++) {
+            let altList = gameMode.itemAlterations[i].alterations[j];
+            let realValue = getRealItem(itemName);
+            let key;
+            for (let k = 0; k < altList.length-1; k++) {
+                key += altList[k] + ": ";
+                realValue = realValue[altList[k]];
+            }
+            let value = altList[altList.length-1];
+
+            let altHolder = holder.create("div.gm_alt_holder");
+
+            let altKey = altHolder.create("div.gm_alt_key");
+            altKey.innerHTML = key + ":";
+
+            let altNewValue = altHolder.create("div.gm_alt_newValue");
+            altNewValue.innerHTML = value;
+
+            let altOldValue = altHolder.create("div.gm_alt_oldValue");
+            altOldValue.innerHTML = realValue;
+
+
+        }
     }
 }
 
