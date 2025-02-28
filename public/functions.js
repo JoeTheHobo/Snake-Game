@@ -1976,14 +1976,20 @@ function logGameModeChanges(holder,gameMode,logAll) {
         for (let j = 0; j < gameMode.itemAlterations[i].alterations.length; j++) {
             let altList = gameMode.itemAlterations[i].alterations[j];
             let realValue = getRealItem(itemName);
-            let key;
+
+            let altHolder = holder.create("div.gm_alt_holder");
+            let itemHolder = holder.create("div.gm_alt_item_holder");
+            let itemImage = itemHolder.create("img.gm_alt_item");
+            itemImage.src = getImageFromItem("item",realValue,"src");
+
+            let key = "";
             for (let k = 0; k < altList.length-1; k++) {
                 key += altList[k] + ": ";
                 realValue = realValue[altList[k]];
             }
             let value = altList[altList.length-1];
 
-            let altHolder = holder.create("div.gm_alt_holder");
+
 
             let altKey = altHolder.create("div.gm_alt_key");
             altKey.innerHTML = key + ":";
