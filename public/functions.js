@@ -1668,20 +1668,21 @@ function updateLobbyPage(lobby,type = "all") {
         }
     }
     
-    console.log(type)
     if (type == "all" || type == "chats") {
-        console.log("eyo")
+        if (type == "chats") reference = lobby;
+        if (type == "all") reference = lobby.chats;
+
         let chatHolder = $(".sc_chatHolder");
         chatHolder.innerHTML = "";
-        for (let i = 0; i < lobby.chats.length; i++) {
+        for (let i = 0; i < reference.length; i++) {
             let holder = chatHolder.create("div");
             holder.className = "lobby_chatHolder";
             let name = holder.create("div");
-            name.innerHTML = lobby.chats[i].account === null ? "" : lobby.chats[i].account + ": " ;
-            name.style.color = lobby.chats[i].color || "gray";
+            name.innerHTML = reference[i].account === null ? "" : reference[i].account + ": " ;
+            name.style.color = reference[i].color || "gray";
             name.style.marginRight = "5px";
             let text = holder.create("div");
-            text.innerHTML = lobby.chats[i].message;
+            text.innerHTML = reference[i].message;
             if (name === "") holder.style.color = "#696969";
             else holder.style.color = "white";
         }
