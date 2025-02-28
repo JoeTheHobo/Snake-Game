@@ -427,7 +427,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
         }
     }
 
-    if (obj.updateSnakeCells && obj.updateSnakeCells !== undefined) updateSnakeCells = updateSnakeCells.concat(msgpack.decode(obj.updateSnakeCells));
+    if (obj.updateSnakeCells) updateSnakeCells = updateSnakeCells.concat(msgpack.decode(obj.updateSnakeCells));
     if (obj.updateCells) updateCells = updateCells.concat(obj.updateCells);
 
     if (obj.playSounds) {

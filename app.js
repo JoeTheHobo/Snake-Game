@@ -1747,6 +1747,8 @@ function updateClientPositions(lobby) {
     };
     // Compare with previous object
     let changes = getChangedValues(lobby.oldObj, newObj);
+    console.log(changes.updateSnakeCells);
+    if (changes.updateSnakeCells) if (changes.updateSnakeCells == undefined) delete changes.updateSnakeCells;
     if (changes.updateSnakeCells) changes.updateSnakeCells = msgpack.encode(changes.updateSnakeCells);
     if (Object.keys(changes).length > 0) { // Only emit if there are changes
         io.emit("updatePositions", changes, lobby.id);
