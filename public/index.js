@@ -387,9 +387,23 @@ socket.on("updatePositions",(obj,lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;
     if (!localAccount.isInGame) return; 
 
-    const jsonString = JSON.stringify(obj);
-    const sizeInBytes = new TextEncoder().encode(jsonString).length;
+    let jsonString = JSON.stringify(obj);
+    let sizeInBytes = new TextEncoder().encode(jsonString).length;
     production.updatePositions_recieveData.times.push(sizeInBytes);
+    function productionHelper(key) {
+        if (obj[key]) {
+            jsonString = JSON.stringify(obj[key]);
+            sizeInBytes = new TextEncoder().encode(jsonString).length;
+            production["updatePositions_"+key].times.push(sizeInBytes);
+        } else {
+            production["updatePositions_"+key].times.push(0);
+        }
+    }
+    productionHelper("updatedPlayers");
+    productionHelper("updateSnakeCells");
+    productionHelper("updateCells");
+    productionHelper("playSounds");
+    productionHelper("boardStatus");
 
     if (obj.updatedPlayers) {
         for (let i = 0; i < obj.updatedPlayers.length; i++) {
