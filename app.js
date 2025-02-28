@@ -959,7 +959,7 @@ io.on('connection', (socket) => {
             player.moving = direction;
 
             lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);
-
+            lobby.oldObj.updateSnakeCells = [];
             updateClientPositions(lobby);
             
             return;
