@@ -528,6 +528,7 @@ io.on('connection', (socket) => {
         io.emit("updateLobbyPage", lobby.id, lobby.gameMode,"gameMode");
     })
     socket.on("addBoardToLobbyBoards",(board) => {
+        let account = onlineAccounts[socket.id];
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!onlineAccounts[socket.id].player.canSubmitBoards && lobby.hostID !== socket.id) return;
         if (!lobby) return;
