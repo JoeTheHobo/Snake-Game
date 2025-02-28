@@ -1738,41 +1738,15 @@ function updateClientPositions(lobby) {
         e: equiped 
     }));
 
-    function sanitizeData(data) {
-        if (typeof data === 'undefined') {
-            return null; // Replace undefined with null
-        }
-        
-        // Handle primitive types (number, string, etc.)
-        if (data === null || typeof data !== 'object') {
-            return data;
-        }
-    
-        // If it's an array, recursively sanitize each item
-        if (Array.isArray(data)) {
-            return data.map(sanitizeData);
-        }
-    
-        // If it's an object, recursively sanitize each key-value pair
-        const sanitizedObject = {};
-        for (const key in data) {
-            if (data.hasOwnProperty(key)) {
-                sanitizedObject[key] = sanitizeData(data[key]);
-            }
-        }
-        return sanitizedObject;
-    }
-    let sanitizedUpdateSnakeCells = sanitizeData(lobby.updateSnakeCells);
-    sanitizedUpdateSnakeCells = "apples";
-
     let newObj = {
         updatedPlayers: emitingActivePlayers,
-        updateSnakeCells: sanitizedUpdateSnakeCells,
+        updateSnakeCells: lobby.updateSnakeCells,
         updateCells: lobby.updateCells,
         playSounds: lobby.playSounds,
         boardStatus: lobby.boardStatus,
     };
     // Compare with previous object
+    console.log(lobby.updateSnakeCells)
     let changes = getChangedValues(lobby.oldObj, newObj);
     console.log(changes.updateSnakeCells)
     if (changes.updateSnakeCells) changes.updateSnakeCells = msgpack.encode(changes.updateSnakeCells);
