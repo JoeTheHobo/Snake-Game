@@ -1745,7 +1745,6 @@ function updateClientPositions(lobby) {
         playSounds: lobby.playSounds,
         boardStatus: lobby.boardStatus,
     };
-    console.log(newObj.updateSnakeCells)
 
     // Compare with previous object
     let changes = getChangedValues(lobby.oldObj, newObj);
