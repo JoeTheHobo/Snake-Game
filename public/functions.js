@@ -1560,7 +1560,7 @@ function updateLobbyPage(lobby,type = "all") {
         }
     }
 
-    if (type == "all")localAccount.lobbyBoard = lobby.board;
+    if (type == "all" || type == "board") localAccount.lobbyBoard = type == "all" ? lobby.board : lobby;
     if (type == "all" || type == "gameMode") localAccount.lobbyGamemode = type == "all" ? lobby.gameMode : lobby;
     if (type == "all") currentBoard = lobby.board;
 
@@ -1569,18 +1569,18 @@ function updateLobbyPage(lobby,type = "all") {
     
     if (type == "all") $(".sc_tb_lobbyName").innerHTML = lobby.hostName + lobby.hostTag + "'s Lobby";
 
-    if (type == "all") $("sc_boards_boardName").innerHTML = "Board: " + lobby.board.name;
-    if (type == "all") {
-        if (lobby.board.boardAuthors.length == 1) $("sc_boards_boardRemixAuthor").hide(); 
+    if (type == "all" || type == "board") $("sc_boards_boardName").innerHTML = "Board: " + localAccount.lobbyBoard.name;
+    if (type == "all" || type == "board") {
+        if (localAccount.lobbyBoard.boardAuthors.length == 1) $("sc_boards_boardRemixAuthor").hide(); 
         else {
             $("sc_boards_boardRemixAuthor").show();
-            $("sc_boards_boardRemixAuthor").innerHTML = "Remixed By: " + lobby.board.boardAuthors[lobby.board.boardAuthors.length-1].username;
+            $("sc_boards_boardRemixAuthor").innerHTML = "Remixed By: " + localAccount.lobbyBoard.boardAuthors[localAccount.lobbyBoard.boardAuthors.length-1].username;
         }
-        $("sc_boards_boardOriginalCreator").innerHTML = "Original Creator: " + lobby.board.boardAuthors[0].username;
+        $("sc_boards_boardOriginalCreator").innerHTML = "Original Creator: " + localAccount.lobbyBoard.boardAuthors[0].username;
     }
     
     
-    if (type == "all" || type == "gameMode") $(".sc_gmb_gameModeName").innerHTML = "Gamemode: " + (type == "all" ? lobby.gameMode.name : lobby.name);
+    if (type == "all" || type == "gameMode") $(".sc_gmb_gameModeName").innerHTML = "Gamemode: " + localAccount.lobbyGamemode.name;
     
     let player = localAccount.serverSnake;
     if (type == "all") {
@@ -1692,11 +1692,11 @@ function updateLobbyPage(lobby,type = "all") {
 
     if (type == "all" || type == "gameMode") logGameModeChanges($(".sc_gameModeChanges"),(type == "all" ? lobby.gameMode : lobby),false);
 
-    if (type == "all") {
+    if (type == "all" || type == "board") {
         requestAnimationFrame(() => {
             $(".sc_boards_canvas").width = $(".sc_canvas_holder").clientWidth;
             $(".sc_boards_canvas").height = $(".sc_canvas_holder").clientHeight; 
-            drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);
+            drawBoardToCanvas(localAccount.lobbyBoard.originalMap,$(".sc_boards_canvas"),true);
         });
     }
 }

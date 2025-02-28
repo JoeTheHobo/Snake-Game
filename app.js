@@ -569,7 +569,7 @@ io.on('connection', (socket) => {
         //Varify Board Here -To Be Added
         board = fixBoard(JSON.parse(board))
         lobby.board = board;
-        io.emit("updateLobbyPage", lobby.id, lobby);
+        io.emit("updateLobbyPage", lobby.id, lobby.board,"board");
     })
     socket.on("setCode",(code) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
