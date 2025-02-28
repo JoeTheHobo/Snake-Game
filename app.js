@@ -63,6 +63,8 @@ io.on('connection', (socket) => {
                 console.log(err);
                 return;
             }
+            decompressed.boardAuthors = false;
+            decompressed.accountID = false;
             newPreset.push(decompressed);
             if (index == presetBoards.length-1) {
                 presetBoards = newPreset;
