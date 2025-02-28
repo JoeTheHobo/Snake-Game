@@ -1668,8 +1668,9 @@ function updateLobbyPage(lobby,type = "all") {
         }
     }
     
-    
+    console.log(type)
     if (type == "all" || type == "chats") {
+        console.log("eyo")
         let chatHolder = $(".sc_chatHolder");
         chatHolder.innerHTML = "";
         for (let i = 0; i < lobby.chats.length; i++) {
