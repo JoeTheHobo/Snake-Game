@@ -217,6 +217,14 @@ io.on('connection', (socket) => {
         //Varify Board Here -To Be Added
         board = fixBoard(JSON.parse(board));
 
+        if (board.accountID !== socket.id) {
+            board.accountID = socket.id;
+            board.boardAuthors.push({
+                id: socket.id,
+                username: account.username,
+            })
+        }
+
         if (index > account.boardLimit-1) return;
 
         decompressObject(account.boards,(err,decompressed) => {
@@ -260,7 +268,7 @@ io.on('connection', (socket) => {
             gameMode: presetGameModes[0],
             originalMap: newMap(width,height), 
             map: [],
-            id: Date.now() + "_" + simple.rnd(1000),
+            id: Date.now() + "_" + simple.rnd(9999),
             accountID: socket.id,
             mouseOver: false,
             boardAuthors: [{
@@ -528,6 +536,13 @@ io.on('connection', (socket) => {
 
         //Varify Board Here -To Be Added
         board = fixBoard(JSON.parse(board));
+        if (board.accountID !== socket.id) {
+            board.accountID = socket.id;
+            board.boardAuthors.push({
+                id: socket.id,
+                username: account.username,
+            })
+        }
         lobby.lobbyBoards.push(board);
     })
     socket.on("askForLobbyBoards", () => {
