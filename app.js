@@ -843,7 +843,7 @@ io.on('connection', (socket) => {
             }
 
             if (!this.gameEnd && !winningPlayer) {
-                setTimeout(() => this.gameLoop(), 32);
+                setTimeout(() => this.gameLoop(), 60);
             } else {
                 this.isActiveGame = false;
                 this.isInGame = false;
@@ -1999,7 +1999,7 @@ function server_movePlayers(lobby) {
             if (player.turboDuration <= 0) {
                 player.turboActive = false;
                 removePlayerStatus(lobby,player,"turbo");
-                player.moveSpeed = 3;
+                player.moveSpeed = 1;
             }
         }
         player.moveTik = 0
