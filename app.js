@@ -515,7 +515,7 @@ io.on('connection', (socket) => {
         if (!gameMode) return;
 
         lobby.gameMode = gameMode;
-        io.emit("updateLobbyPage", lobby.id, lobby);
+        io.emit("updateLobbyPage", lobby.id, lobby.gameMode,"gameMode");
 
     })
     socket.on("editServerGameMode", (gamemode) => {
@@ -530,7 +530,7 @@ io.on('connection', (socket) => {
         //Varify Game Mode Here -To Be Added
 
         lobby.gameMode = gameMode;
-        io.emit("updateLobbyPage", lobby.id, lobby);
+        io.emit("updateLobbyPage", lobby.id, lobby.gameMode,"gameMode");
     })
     socket.on("addBoardToLobbyBoards",(board) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];

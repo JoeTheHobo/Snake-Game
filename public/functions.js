@@ -1561,7 +1561,7 @@ function updateLobbyPage(lobby,type = "all") {
     }
 
     if (type == "all")localAccount.lobbyBoard = lobby.board;
-    if (type == "all") localAccount.lobbyGamemode = lobby.gameMode;
+    if (type == "all" || type == "gameMode") localAccount.lobbyGamemode = type == "all" ? lobby.gameMode : lobby;
     if (type == "all") currentBoard = lobby.board;
 
     if (type == "all") $(".lobbyCode").innerHTML = lobby.code;
@@ -1580,7 +1580,7 @@ function updateLobbyPage(lobby,type = "all") {
     }
     
     
-    if (type == "all") $(".sc_gmb_gameModeName").innerHTML = "Gamemode: " + lobby.gameMode.name;
+    if (type == "all" || type == "gameMode") $(".sc_gmb_gameModeName").innerHTML = "Gamemode: " + (type == "all" ? lobby.gameMode.name : lobby.name);
     
     let player = localAccount.serverSnake;
     if (type == "all") {
@@ -1690,7 +1690,7 @@ function updateLobbyPage(lobby,type = "all") {
         chatHolder.scrollTo({ top: chatHolder.scrollHeight, behavior: 'smooth' })
     }
 
-    if (type == "all") logGameModeChanges($(".sc_gameModeChanges"),lobby.gameMode,false);
+    if (type == "all" || type == "gameMode") logGameModeChanges($(".sc_gameModeChanges"),(type == "all" ? lobby.gameMode : lobby),false);
 
     if (type == "all") {
         requestAnimationFrame(() => {
