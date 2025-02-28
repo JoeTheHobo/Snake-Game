@@ -415,8 +415,10 @@ socket.on("updatePositions",(obj,lobbyID) => {
     productionHelper("updateCells");
     productionHelper("playSounds");
     productionHelper("boardStatus");
-    production.updatePositions_recieveData.times.push(bytes);
     */
+    production.updatePositions_recieveData.times.push(obj.sizeInBytes);
+
+    obj = JSON.parse(pako.inflate(obj, { to: 'string' }));
 
     if (obj.updatedPlayers) {
         for (let i = 0; i < obj.updatedPlayers.length; i++) {
@@ -440,8 +442,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
     }
 
     if (obj.updateSnakeCells) {
-        console.log(obj.updateSnakeCells);
-        updateSnakeCells = updateSnakeCells.concat(JSON.parse(pako.inflate(obj.updateSnakeCells, { to: 'string' })));
+        updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
     }
     if (obj.updateCells) updateCells = updateCells.concat(obj.updateCells);
 

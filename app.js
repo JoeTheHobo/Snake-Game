@@ -1739,14 +1739,14 @@ function updateClientPositions(lobby) {
 
     let newObj = {
         updatedPlayers: emitingActivePlayers,
-        updateSnakeCells: pako.deflate(JSON.stringify(lobby.updateSnakeCells), { to: 'string' }),
+        updateSnakeCells: lobby.updateSnakeCells,
         updateCells: lobby.updateCells,
         playSounds: lobby.playSounds,
         boardStatus: lobby.boardStatus,
     };
 
     // Compare with previous object
-    let changes = getChangedValues(lobby.oldObj, newObj);
+    let changes = pako.deflate(JSON.stringify(getChangedValues(lobby.oldObj, newObj)), { to: 'string' });
 
     if (Object.keys(changes).length > 0) { // Only emit if there are changes
         io.emit("updatePositions", changes, lobby.id);
