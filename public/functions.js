@@ -2000,9 +2000,7 @@ function selectAllPlayerBoardsPopUp(sendTo) {
     }
 
     let boardClicked = function(board,index) {
-        socket.emit("changeServerBoard",JSON.stringify(shortenBoard(currentBoard)));
-        socket.emit("saveBoardToIndex",JSON.stringify(shortenBoard(currentBoard)),index);
-        setScene(sendTo);
+        socket.emit("saveBoardToIndex",JSON.stringify(shortenBoard(currentBoard)),index,"changeServerBoard");
     }
 
     for (let i = 0; i < localAccount.boardLimit; i++) {

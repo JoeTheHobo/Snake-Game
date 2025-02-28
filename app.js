@@ -242,7 +242,7 @@ io.on('connection', (socket) => {
             if (index > account.boards.length-1) account.boards.push(board); 
             else account.boards[index] = board;
     
-            io.emit("updatePlayersBoards",socket.id,account.boards,sentFrom)
+            io.emit("updatePlayersBoards",socket.id,account.boards,sentFrom,board)
             compressObject(account.boards,(err,compressed) => {
                 if (err) {
                     console.log(err)

@@ -80,7 +80,7 @@ socket.on("sendingZippedBoard",(socketID,zippedBoard,boardName) => {
     if (socketID !== localAccount.id) return;
     downloadTextFile(boardName,zippedBoard);
 })
-socket.on("updatePlayersBoards",(socketID,boards,sentFrom) => {
+socket.on("updatePlayersBoards",(socketID,boards,sentFrom,board) => {
     if (socketID !== localAccount.id) return;
     localAccount.boards = boards;
     
@@ -95,6 +95,10 @@ socket.on("updatePlayersBoards",(socketID,boards,sentFrom) => {
     }
     if (sentFrom == "loadCustomizeSnakeScreen") {
         loadCustomizeSnakeScreen();
+    }
+    if (sentFrom == "changeServerBoard") {
+        socket.emit("changeServerBoard",JSON.stringify(shortenBoard(board)));
+        setScene("lobby");
     }
 })
 socket.on("setClientLobby",(socketID,lobby) => {
