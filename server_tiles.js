@@ -26,7 +26,7 @@ tiles.push({
 tiles.push({
     name: "pathway",
     img: "path.png",
-    changePlayerSpeed: 2, //Player Speed Times This Number
+    changePlayerSpeed: 5, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 4,
     pack: "Fast Speed",//Which Item Pack Does This Group To (For Map Editor)

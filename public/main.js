@@ -477,7 +477,7 @@ function movePlayers() {
         
         if (player.isDead) continue;
         
-        if ((player.moveTik*deltaTime) >= (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed) || gameType == "server") {   
+        if ((player.moveTik*deltaTime) >= (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             if (player.turboActive == true) {
                 player.turboDuration --;
                 if (player.turboDuration <= 0) {
