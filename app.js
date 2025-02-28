@@ -361,7 +361,7 @@ io.on('connection', (socket) => {
         lobbies[id].playerMax = 8;
         lobbies[id].lobbyBoards = [];
         lobbies[id].isInGame = false;
-        lobbies[id].activePlayers = getPlayersList(lobby[id].players);
+        lobbies[id].activePlayers = getPlayersList(lobbies[id].players);
         onlineAccounts[socket.id].lobby = lobbies[lobby.id].id;
         onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].serverSnake);
 
