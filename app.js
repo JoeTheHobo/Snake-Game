@@ -454,6 +454,7 @@ io.on('connection', (socket) => {
         account.lobby = lobby.id;
         account.player = structuredClone(account.serverSnake);
         account.player.canSubmitBoards = false;
+        lobby.activePlayers = getPlayersList(lobby.players);
         let lobbyList = Object.values(lobbies)
             .filter(lobby => lobby.serverType !== "Hidden")
             .reduce((acc, lobby) => {
