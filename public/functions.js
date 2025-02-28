@@ -1588,7 +1588,7 @@ function updateLobbyPage(lobby,type = "all",extra) {
         if (type == "submissionStatus") reference = lobby;
         if (type == "all") reference = lobby.activePlayers;
         if (type == "players") reference = lobby;
-        console.log(reference,lobby)
+        
         if (reference) {
             for (let i = 0; i < reference.length; i++) {
                 if (reference[i].accountID === localAccount.id)  {
