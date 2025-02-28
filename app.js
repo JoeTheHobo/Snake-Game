@@ -683,6 +683,7 @@ io.on('connection', (socket) => {
         }
         lobby.board.map = structuredClone(lobby.board.originalMap);
 
+        lobby.oldObj = false;
         lobby.isInGame = true;
         lobby.readyPlayers = [];
         lobby.board.doColorRender = false;
@@ -1717,7 +1718,7 @@ function removePlayerStatus(lobby,player,itemName) {
 
 //From App.js
 function updateClientPositions(lobby) {
-    emitingActivePlayers = Object.values(lobby.inGamePlayers).map(({ 
+    let emitingActivePlayers = Object.values(lobby.inGamePlayers).map(({ 
         index, 
         selectingItem, 
         items, 
@@ -1726,25 +1727,47 @@ function updateClientPositions(lobby) {
         playerKills, 
         equiped 
     }) => ({
-        i: index,      // index → i
-        s: selectingItem, // selectingItem → s
-        it: items,     // items → it
-        t: tail.length + 1,  // tailLength → t
-        m: moving,     // moving → m
-        k: playerKills, // playerKills → k
-        e: equiped     // equiped → e
+        i: index,  
+        s: selectingItem, 
+        it: items, 
+        t: tail.length + 1,  
+        m: moving,  
+        k: playerKills, 
+        e: equiped 
     }));
 
-    let obj = {
+    let newObj = {
         updatedPlayers: emitingActivePlayers,
         updateSnakeCells: lobby.updateSnakeCells,
         updateCells: lobby.updateCells,
         playSounds: lobby.playSounds,
         boardStatus: lobby.boardStatus,
     };
-    let data = objectToUint8Array(obj);
-    io.emit("updatePositions",data,lobby.id)
+
+    // Compare with previous object
+    let changes = getChangedValues(lobby.oldObj, newObj);
+
+    if (Object.keys(changes).length > 0) { // Only emit if there are changes
+        io.emit("updatePositions", changes, lobby.id);
+    }
+
+    // Store the new state for next comparison
+    lobby.oldObj = newObj;
 }
+function getChangedValues(oldObj, newObj) {
+    if (!oldObj) return newObj; // If no old state, send everything
+
+    let changes = {};
+
+    for (let key in newObj) {
+        if (JSON.stringify(newObj[key]) !== JSON.stringify(oldObj[key])) {
+            changes[key] = newObj[key]; // Only store changed values
+        }
+    }
+
+    return changes;
+}
+
 function base64ToArrayBuffer(base64) {
     const binaryString = atob(base64); // Decode Base64 to binary string
     const len = binaryString.length;
