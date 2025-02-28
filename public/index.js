@@ -388,6 +388,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;
     if (!localAccount.isInGame) return; 
 
+    /*
     let bytes = 0;
     function productionHelper(key) {
         if (obj[key]) {
@@ -415,6 +416,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
     productionHelper("playSounds");
     productionHelper("boardStatus");
     production.updatePositions_recieveData.times.push(bytes);
+    */
 
     if (obj.updatedPlayers) {
         for (let i = 0; i < obj.updatedPlayers.length; i++) {
