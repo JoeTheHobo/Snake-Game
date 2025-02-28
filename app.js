@@ -1738,9 +1738,13 @@ function updateClientPositions(lobby) {
         e: equiped 
     }));
 
+    const sanitizedUpdateSnakeCells = JSON.parse(JSON.stringify(lobby.updateSnakeCells, (key, value) => {
+        return value === undefined ? null : value; // Replace undefined with null
+    }));
+
     let newObj = {
         updatedPlayers: emitingActivePlayers,
-        updateSnakeCells: msgpack.encode(lobby.updateSnakeCells),
+        updateSnakeCells: msgpack.encode(sanitizedUpdateSnakeCells),
         updateCells: lobby.updateCells,
         playSounds: lobby.playSounds,
         boardStatus: lobby.boardStatus,
