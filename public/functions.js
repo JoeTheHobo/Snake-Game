@@ -1982,7 +1982,7 @@ function logGameModeChanges(holder,gameMode,logAll) {
             let itemImage = itemHolder.create("img.gm_alt_item");
             itemImage.src = getImageFromItem("item",realValue,"src");
 
-            let key = "";
+            let key = itemName + ": ";
             for (let k = 0; k < altList.length-1; k++) {
                 key += altList[k] + ": ";
                 realValue = realValue[altList[k]];

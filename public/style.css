@@ -2244,8 +2244,9 @@ flex-direction: row;
 
 }
 .gm_alt_item_holder {
-  height: 100%;
+  height: 16px;
   aspect-ratio: 1/1;
+  margin-right: 5px;
 }
 .gm_alt_item {
   width: 100%;
