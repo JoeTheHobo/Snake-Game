@@ -374,6 +374,7 @@ function showNumber(index) {
             $(".game_c2_info").hide();
             $(".game_c2_extra").show();
             $(".preGamePlayerInfo").hide();
+            production.updatePositions_speed.timeStart = performance.now();
         },250);
         return;
     }
@@ -404,8 +405,6 @@ socket.on("updatePositions",(obj,lobbyID) => {
     productionHelper("updateCells");
     productionHelper("playSounds");
     productionHelper("boardStatus");
-
-    if (obj.updateSnakeCells) console.log(obj.updateSnakeCells)
 
     if (obj.updatedPlayers) {
         for (let i = 0; i < obj.updatedPlayers.length; i++) {
@@ -445,6 +444,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
     
     server_renderPlayers();
     updateProduction();
+    production.updatePositions_speed.times.push(performance.now() - production.updatePositions_speed.timeStart);
 });
 socket.on("askToSpectate",(accountID,lobbyID,code) => {
     if (localAccount.id !== accountID) return;

@@ -1582,12 +1582,23 @@ let production = {
         dataType: "ms",
     },
 
+
+    
     //Server Play
     ping: {
         times: [],
         average: 0,
         timeStart: 0,
         cap: 1,
+        type: "dom",
+        showIF: "server",
+        dataType: "ms",
+    },
+    updatePositions_speed: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        cap: 100,
         type: "dom",
         showIF: "server",
         dataType: "ms",
