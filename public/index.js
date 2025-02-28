@@ -316,9 +316,10 @@ socket.on("updatePreGamePlayerInfo",(lobbyID,players) => {
     }
 })
 socket.on("endGame",(obj,lobbyID) => {
-    obj = uint8ArrayToObject(obj);
+    obj = obj;
     if (localAccount.lobbyID !== lobbyID) return;
     localAccount.isInGame = false;
+    showEndScreen()
     
     $("playerCardsHolder").style.cursor = "";
     gameEnd = true;
@@ -356,7 +357,6 @@ socket.on("endGame",(obj,lobbyID) => {
         $(".engGame_playerNameWinner").innerHTML = winningPlayer.accountName;
     }
 
-    showEndScreen()
 })
 socket.on("preparingGame",(lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;

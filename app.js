@@ -925,7 +925,8 @@ io.on('connection', (socket) => {
                     seconds: seconds,
                     winningPlayer: winningPlayer,
                 };
-                io.emit("endGame",objectToUint8Array(obj),lobby.id)
+                console.log("OVER")
+                io.emit("endGame",obj,lobby.id)
 
                 
                 let lobbyList = Object.values(lobbies)
