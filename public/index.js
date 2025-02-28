@@ -416,7 +416,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
     productionHelper("playSounds");
     productionHelper("boardStatus");
     */
-    production.updatePositions_recieveData.times.push(obj.sizeInBytes);
+    production.updatePositions_recieveData.times.push(obj.byteLength);
 
     obj = JSON.parse(pako.inflate(obj, { to: 'string' }));
 
