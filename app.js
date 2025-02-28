@@ -1737,7 +1737,7 @@ function updateClientPositions(lobby) {
         k: playerKills, 
         e: equiped 
     }));
-
+    console.log(1,lobby.updateSnakeCells)
     let newObj = {
         updatedPlayers: emitingActivePlayers,
         updateSnakeCells: lobby.updateSnakeCells,
@@ -1747,12 +1747,13 @@ function updateClientPositions(lobby) {
     };
     // Compare with previous object
     let changes = getChangedValues(lobby.oldObj, newObj);
-    console.log(changes.updateSnakeCells);
+    console.log(2,changes.updateSnakeCells);
     if (changes.updateSnakeCells) if (changes.updateSnakeCells == undefined) delete changes.updateSnakeCells;
     if (changes.updateSnakeCells) changes.updateSnakeCells = msgpack.encode(changes.updateSnakeCells);
     if (Object.keys(changes).length > 0) { // Only emit if there are changes
         io.emit("updatePositions", changes, lobby.id);
     }
+    console.log(3,changes);
 
     // Store the new state for next comparison
     lobby.oldObj = newObj;
