@@ -405,6 +405,8 @@ socket.on("updatePositions",(obj,lobbyID) => {
     productionHelper("playSounds");
     productionHelper("boardStatus");
 
+    if (obj.updateSnakeCells) console.log(obj.updateSnakeCells)
+
     if (obj.updatedPlayers) {
         for (let i = 0; i < obj.updatedPlayers.length; i++) {
             for (let j = 0; j < activePlayers.length; j++) {
