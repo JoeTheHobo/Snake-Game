@@ -1587,6 +1587,7 @@ function updateLobbyPage(lobby,type = "all",extra) {
         let reference;
         if (type == "submissionStatus") reference = lobby;
         if (type == "all") reference = lobby.activePlayers;
+        if (type == "players") reference = lobby.activePlayers;
 
         if (reference) {
             for (let i = 0; i < reference.length; i++) {
