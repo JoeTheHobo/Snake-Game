@@ -1925,13 +1925,12 @@ function getAverageCanvasColor(canvas) {
     return `rgb(${r}, ${g}, ${b})`; // Return as RGB string
 }
 
-function logGameModeChanges(holder,gameMode,logAll) {
+function logGameModeChanges(holder,gameMode) {
     holder.innerHTML = "";
 
     let alterations = [];
 
-    let loggingSelectKeys = ["howManyItemsCanPlayersUse","mode_usingItemType","mode_whenInventoryFullWhereDoItemsGo","snakeVanishOnDeath","respawn","snakeCollision","teamCollision"];
-    let loggingAllKeys = ["respawnTimer","respawnGrowth"];
+    let loggingSelectKeys = ["howManyItemsCanPlayersUse","mode_usingItemType","mode_whenInventoryFullWhereDoItemsGo","snakeVanishOnDeath","respawn","snakeCollision","teamCollision","respawnTimer","respawnGrowth"];
 
     function formatString(input) {
         input = input.replaceAll("mode_","");
@@ -1942,7 +1941,6 @@ function logGameModeChanges(holder,gameMode,logAll) {
     }
 
     let useArr = loggingSelectKeys;
-    if (logAll) useArr = loggingSelectKeys.concat(loggingAllKeys)
 
     for (let i = 0; i < useArr.length; i++) {
         let key = useArr[i];
@@ -1964,12 +1962,6 @@ function logGameModeChanges(holder,gameMode,logAll) {
 
         let altOldValue = altHolder.create("div.gm_alt_oldValue");
         altOldValue.innerHTML = alt.oldValue;
-    }
-    if (alterations.length == 0) {
-        let altHolder = holder.create("div.gm_alt_holder");
-
-        let altKey = altHolder.create("div.gm_alt_key");
-        altKey.innerHTML = "No Game Mode Alterations";
     }
     for (let i = 0; i < gameMode.itemAlterations.length; i++) {
         let itemName = gameMode.itemAlterations[i].name;
@@ -2002,6 +1994,12 @@ function logGameModeChanges(holder,gameMode,logAll) {
 
 
         }
+    }
+    if (alterations.length == 0 && gameMode.itemAlterations.length == 0) {
+        let altHolder = holder.create("div.gm_alt_holder");
+
+        let altKey = altHolder.create("div.gm_alt_key");
+        altKey.innerHTML = "No Game Mode Alterations";
     }
 }
 
