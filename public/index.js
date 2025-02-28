@@ -110,12 +110,11 @@ socket.on("setClientLobby",(socketID,lobby) => {
     setScene("lobby");
     localAccount.isInLobby = true;
 })
-socket.on("updateLobbyPage",(lobby) => {
+socket.on("updateLobbyPage",(lobby,type) => {
     lobby = uint8ArrayToObject(lobby);
     if (localAccount.lobbyID !== lobby.id) return;
 
-    console.log("recieved")
-    updateLobbyPage(lobby);
+    updateLobbyPage(lobby,type);
 })
 socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     if (playerID) if (playerID !== localAccount.id) return;

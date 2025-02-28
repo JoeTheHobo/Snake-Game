@@ -1539,121 +1539,129 @@ function updatePlayerCard(player,whatToUpdate = "all") {
 }
 
 
-function updateLobbyPage(lobby) {
-    if (localAccount.id == lobby.hostID) {
-        $(".hostOnly").show();
-        $(".hostFlex").show("flex");
-
-        if (lobby.board.recommendedGameMode) {
-            $("sc_boards_recommendedGameMode").show();
-            $("sc_boards_recommendedGameMode").innerHTML = "Recommended Game Mode: " + lobby.board.gameMode.name;
-        } else $("sc_boards_recommendedGameMode").hide();
-        
-        $(".sdd_title").innerHTML = lobby.serverType;
-        if (lobby.serverType == "Public") $(".lobbyCode").hide();
-        else $(".lobbyCode").show()
-        
+function updateLobbyPage(lobby,type = "all") {
+    if (type == "all") {
+        if (localAccount.id == lobby.hostID) {
+            $(".hostOnly").show();
+            $(".hostFlex").show("flex");
+    
+            if (lobby.board.recommendedGameMode) {
+                $("sc_boards_recommendedGameMode").show();
+                $("sc_boards_recommendedGameMode").innerHTML = "Recommended Game Mode: " + lobby.board.gameMode.name;
+            } else $("sc_boards_recommendedGameMode").hide();
+            
+            $(".sdd_title").innerHTML = lobby.serverType;
+            if (lobby.serverType == "Public") $(".lobbyCode").hide();
+            else $(".lobbyCode").show()
+            
+        }
+        else {
+            $(".hostOnly").hide();
+        }
     }
-    else {
-        $(".hostOnly").hide();
+
+    if (type == "all")localAccount.lobbyBoard = lobby.board;
+    if (type == "all") localAccount.lobbyGamemode = lobby.gameMode;
+    if (type == "all") currentBoard = lobby.board;
+
+    if (type == "all") $(".lobbyCode").innerHTML = lobby.code;
+    if (type == "all") $("sc_playerCount").innerHTML = `Players (${lobby.players.length}/${lobby.playerMax})`;
+    
+    if (type == "all") $(".sc_tb_lobbyName").innerHTML = lobby.hostName + lobby.hostTag + "'s Lobby";
+
+    if (type == "all") $("sc_boards_boardName").innerHTML = "Board: " + lobby.board.name;
+    if (type == "all") {
+        if (lobby.board.boardAuthors.length == 1) $("sc_boards_boardRemixAuthor").hide(); 
+        else {
+            $("sc_boards_boardRemixAuthor").show();
+            $("sc_boards_boardRemixAuthor").innerHTML = "Remixed By: " + lobby.board.boardAuthors[lobby.board.boardAuthors.length-1].username;
+        }
+        $("sc_boards_boardOriginalCreator").innerHTML = "Original Creator: " + lobby.board.boardAuthors[0].username;
     }
+    
+    
+    if (type == "all") $(".sc_gmb_gameModeName").innerHTML = "Gamemode: " + lobby.gameMode.name;
+    
+    if (type == "all") {
 
-    localAccount.lobbyBoard = lobby.board;
-    localAccount.lobbyGamemode = lobby.gameMode;
-    currentBoard = lobby.board;
-
-    $(".lobbyCode").innerHTML = lobby.code;
-    $("sc_playerCount").innerHTML = `Players (${lobby.players.length}/${lobby.playerMax})`;
-    
-    $(".sc_tb_lobbyName").innerHTML = lobby.hostName + lobby.hostTag + "'s Lobby";
-
-    $("sc_boards_boardName").innerHTML = "Board: " + lobby.board.name;
-    if (lobby.board.boardAuthors.length == 1) $("sc_boards_boardRemixAuthor").hide(); 
-    else {
-        $("sc_boards_boardRemixAuthor").show();
-        $("sc_boards_boardRemixAuthor").innerHTML = "Remixed By: " + lobby.board.boardAuthors[lobby.board.boardAuthors.length-1].username;
-    }
-    $("sc_boards_boardOriginalCreator").innerHTML = "Original Creator: " + lobby.board.boardAuthors[0].username;
-    
-    $(".sc_gmb_gameModeName").innerHTML = "Gamemode: " + lobby.gameMode.name;
-    
-
-    let player;
-    let playersHolder = $(".sc_players_playersList");
-    playersHolder.innerHTML = "";
-    let isHost = lobby.hostID === localAccount.id;
-    if (lobby.activePlayers) {
-        for (let i = 0; i < lobby.activePlayers.length; i++) {
-            let isYou = false;
-            if (lobby.activePlayers[i].accountID === localAccount.id)  {
-                player = lobby.activePlayers[i];
-                isYou = true;
-            }
-            let holder = playersHolder.create("div");
-            holder.className = "lobbyPlayerCard";
-    
-            if (i % 2 == 0) holder.style.background = "#696969";
-    
-            function makeImage(holder,className,src,filter = false,func) {
-                let imageHolder = holder.create("div");
-                imageHolder.className = className;
-                let image = imageHolder.create("img");
-                image.className = "lobbyImage";
-                image.src = src;
-    
-                if (filter) {
-                    image.style.filter = getPlayerFilter(filter);
+        let player = localAccount.serverSnake;
+        let playersHolder = $(".sc_players_playersList");
+        playersHolder.innerHTML = "";
+        let isHost = lobby.hostID === localAccount.id;
+        if (lobby.activePlayers) {
+            for (let i = 0; i < lobby.activePlayers.length; i++) {
+                let isYou = false;
+                if (lobby.activePlayers[i].accountID === localAccount.id)  {
+                    isYou = true;
                 }
-                imageHolder.on("click",function() {
-                    func(player);
-                })
-    
-            }
-            makeImage(holder,"lobbySnakeImageHolder","img/snakeHead.png",lobby.activePlayers[i]);
-            
-            let snakeName = holder.create("div");
-            snakeName.className = "lobbySnakeName";
-            snakeName.innerHTML = isYou ? "You" : lobby.activePlayers[i].accountName + lobby.activePlayers[i].accountTag;
-            if (lobby.hostID == lobby.activePlayers[i].accountID) snakeName.innerHTML += " (Host)";
-    
-            if (isYou) continue;
-    
-            let rightContent = holder.create("div");
-            rightContent.className = "lobbyPlayersRight";
-            
-            //Friends to Be Added Later
-            //makeImage(rightContent,"lobbyFriendsIcon","img/menuIcons/friend.png");
-            if (isHost) makeImage(rightContent,"lobbyEditPlayerIcon","img/menuIcons/edit.png",false,function(player) {
-                makePopUp([
-                    {type: "title",color: "white",text: "Player Options: " + player.accountName},
-                    {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "none",className: "hoverBorderBlue",border: "3px solid white",text:"Make Host",onClick: function() {
-                        socket.emit("setLobbyHost",lobby.activePlayers[i]);
-                    }},
-                    {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "none",className: "hoverBorderBlue", border: "3px solid white",text:"Kick Player",onClick: function() {
-                        socket.emit("kickPlayerFromLobby",lobby.activePlayers[i]);
-                    }},
-                    [
-                        {type: "text",text: "Allow Board Submissions",color: "white"},
-                        {type: "checkbox",value: lobby.activePlayers[i].canSubmitBoards,onClick: function(a,b,div) {
-                            socket.emit("setPlayerBoardSubbmisionStatus",lobby.activePlayers[i],div.checked);
+                let holder = playersHolder.create("div");
+                holder.className = "lobbyPlayerCard";
+        
+                if (i % 2 == 0) holder.style.background = "#696969";
+        
+                function makeImage(holder,className,src,filter = false,func) {
+                    let imageHolder = holder.create("div");
+                    imageHolder.className = className;
+                    let image = imageHolder.create("img");
+                    image.className = "lobbyImage";
+                    image.src = src;
+        
+                    if (filter) {
+                        image.style.filter = getPlayerFilter(filter);
+                    }
+                    imageHolder.on("click",function() {
+                        func(player);
+                    })
+        
+                }
+                makeImage(holder,"lobbySnakeImageHolder","img/snakeHead.png",lobby.activePlayers[i]);
+                
+                let snakeName = holder.create("div");
+                snakeName.className = "lobbySnakeName";
+                snakeName.innerHTML = isYou ? "You" : lobby.activePlayers[i].accountName + lobby.activePlayers[i].accountTag;
+                if (lobby.hostID == lobby.activePlayers[i].accountID) snakeName.innerHTML += " (Host)";
+        
+                if (isYou) continue;
+        
+                let rightContent = holder.create("div");
+                rightContent.className = "lobbyPlayersRight";
+                
+                //Friends to Be Added Later
+                //makeImage(rightContent,"lobbyFriendsIcon","img/menuIcons/friend.png");
+                if (isHost) makeImage(rightContent,"lobbyEditPlayerIcon","img/menuIcons/edit.png",false,function(player) {
+                    makePopUp([
+                        {type: "title",color: "white",text: "Player Options: " + player.accountName},
+                        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "none",className: "hoverBorderBlue",border: "3px solid white",text:"Make Host",onClick: function() {
+                            socket.emit("setLobbyHost",lobby.activePlayers[i]);
                         }},
-                    ],
-                ],{
-                    exit: {
-                        cursor: "url('./img/pointer.cur'), auto",
-                    },
-                    id: "playerOptions",
-                })
-            });
-    
+                        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "none",className: "hoverBorderBlue", border: "3px solid white",text:"Kick Player",onClick: function() {
+                            socket.emit("kickPlayerFromLobby",lobby.activePlayers[i]);
+                        }},
+                        [
+                            {type: "text",text: "Allow Board Submissions",color: "white"},
+                            {type: "checkbox",value: lobby.activePlayers[i].canSubmitBoards,onClick: function(a,b,div) {
+                                socket.emit("setPlayerBoardSubbmisionStatus",lobby.activePlayers[i],div.checked);
+                            }},
+                        ],
+                    ],{
+                        exit: {
+                            cursor: "url('./img/pointer.cur'), auto",
+                        },
+                        id: "playerOptions",
+                    })
+                });
+        
+            }
         }
     }
     
-    if (player) {
+    if (type == "all") {
         $(".sc_bb_snakeImg").css({
             filter: getPlayerFilter(player),
         }); 
-
+    }
+    
+    if (type == "all") {
         if (player.canSubmitBoards && !isHost) {
             $(".canAddSubbmisionsOnly").show();
         } else {
@@ -1661,31 +1669,35 @@ function updateLobbyPage(lobby) {
         }
     }
     
-
-    let chatHolder = $(".sc_chatHolder");
-    chatHolder.innerHTML = "";
-    for (let i = 0; i < lobby.chats.length; i++) {
-        let holder = chatHolder.create("div");
-        holder.className = "lobby_chatHolder";
-        let name = holder.create("div");
-        name.innerHTML = lobby.chats[i].account === null ? "" : lobby.chats[i].account + ": " ;
-        name.style.color = lobby.chats[i].color || "gray";
-        name.style.marginRight = "5px";
-        let text = holder.create("div");
-        text.innerHTML = lobby.chats[i].message;
-        if (name === "") holder.style.color = "#696969";
-        else holder.style.color = "white";
+    
+    if (type == "all" || type == "chats") {
+        let chatHolder = $(".sc_chatHolder");
+        chatHolder.innerHTML = "";
+        for (let i = 0; i < lobby.chats.length; i++) {
+            let holder = chatHolder.create("div");
+            holder.className = "lobby_chatHolder";
+            let name = holder.create("div");
+            name.innerHTML = lobby.chats[i].account === null ? "" : lobby.chats[i].account + ": " ;
+            name.style.color = lobby.chats[i].color || "gray";
+            name.style.marginRight = "5px";
+            let text = holder.create("div");
+            text.innerHTML = lobby.chats[i].message;
+            if (name === "") holder.style.color = "#696969";
+            else holder.style.color = "white";
+        }
+    
+        chatHolder.scrollTo({ top: chatHolder.scrollHeight, behavior: 'smooth' })
     }
 
-    chatHolder.scrollTo({ top: chatHolder.scrollHeight, behavior: 'smooth' })
+    if (type == "all") logGameModeChanges($(".sc_gameModeChanges"),lobby.gameMode,false);
 
-    logGameModeChanges($(".sc_gameModeChanges"),lobby.gameMode,false);
-
-    requestAnimationFrame(() => {
-        $(".sc_boards_canvas").width = $(".sc_canvas_holder").clientWidth;
-        $(".sc_boards_canvas").height = $(".sc_canvas_holder").clientHeight; 
-        drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);
-    });
+    if (type == "all") {
+        requestAnimationFrame(() => {
+            $(".sc_boards_canvas").width = $(".sc_canvas_holder").clientWidth;
+            $(".sc_boards_canvas").height = $(".sc_canvas_holder").clientHeight; 
+            drawBoardToCanvas(lobby.board.originalMap,$(".sc_boards_canvas"),true);
+        });
+    }
 }
 function generateBoardsPopup(type) {
     let parent = $(".cbp_boardsList");
