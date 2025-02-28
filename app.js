@@ -771,7 +771,7 @@ io.on('connection', (socket) => {
             player.moveQueue = [];
             player.prevMove = "start";
             player.moveTik = 0;
-            player.moveSpeed = 3;
+            player.moveSpeed = 1;
             player.turboDuration = 0;
             player.turboActive = false;
             player.winGame = false;
@@ -1885,7 +1885,7 @@ function respawnPlayer(lobby,player,growthPercentage) {
     player.justTeleported = false;
     player.moveQueue = [];
     player.moveTik = 0;
-    player.moveSpeed = 3;
+    player.moveSpeed = 1;
     player.turboDuration = 0;
     player.turboActive = false;
     player.equiped = {
