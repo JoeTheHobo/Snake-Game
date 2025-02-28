@@ -1762,8 +1762,8 @@ function updateClientPositions(lobby) {
         }
         return sanitizedObject;
     }
-    const sanitizedUpdateSnakeCells = sanitizeData(lobby.updateSnakeCells);
-    console.log(sanitizedUpdateSnakeCells);
+    let sanitizedUpdateSnakeCells = sanitizeData(lobby.updateSnakeCells);
+    sanitizedUpdateSnakeCells = "apples";
 
     let newObj = {
         updatedPlayers: emitingActivePlayers,
