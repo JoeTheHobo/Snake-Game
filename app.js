@@ -361,6 +361,7 @@ io.on('connection', (socket) => {
         lobbies[id].playerMax = 8;
         lobbies[id].lobbyBoards = [];
         lobbies[id].isInGame = false;
+        lobbies[id].activePlayers = getPlayersList(lobby[id].players);
         onlineAccounts[socket.id].lobby = lobbies[lobby.id].id;
         onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].serverSnake);
 
@@ -425,12 +426,6 @@ io.on('connection', (socket) => {
                 }, {});
             io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
         }
-    })
-    socket.on("requestUpdateLobbyPage",() => {
-        let lobby = lobbies[onlineAccounts[socket.id].lobby];
-        lobby.activePlayers = getPlayersList(lobby.players);
-
-        io.emit("updateLobbyPage", lobby.id, lobby);
     })
     socket.on("joinLobby",(lobbyID,code,spectate) => {
         let account = onlineAccounts[socket.id];
