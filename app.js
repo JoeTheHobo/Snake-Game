@@ -6,6 +6,8 @@ const {tiles} = require("./server_tiles.js");
 const zlib = require('zlib');
 const express = require('express');
 const app = express();
+const msgpack = require('msgpack-lite');
+
 
 //socket.io setup
 const http = require('http');
@@ -1738,7 +1740,7 @@ function updateClientPositions(lobby) {
 
     let newObj = {
         updatedPlayers: emitingActivePlayers,
-        updateSnakeCells: JSON.stringify(lobby.updateSnakeCells),
+        updateSnakeCells: msgpack.encode(lobby.updateSnakeCells),
         updateCells: lobby.updateCells,
         playSounds: lobby.playSounds,
         boardStatus: lobby.boardStatus,
