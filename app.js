@@ -494,6 +494,7 @@ io.on('connection', (socket) => {
             color: onlineAccounts[socket.id].chatNameColor,
         })
 
+        console.log("Sending")
         io.emit("updateLobbyPage", lobby, { compress: true });
     })
     socket.on("searchingHiddenServer",(value) => {

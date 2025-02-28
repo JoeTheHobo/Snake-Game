@@ -113,6 +113,8 @@ socket.on("setClientLobby",(socketID,lobby) => {
 socket.on("updateLobbyPage",(lobby) => {
     lobby = uint8ArrayToObject(lobby);
     if (localAccount.lobbyID !== lobby.id) return;
+
+    console.log("recieved")
     updateLobbyPage(lobby);
 })
 socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
