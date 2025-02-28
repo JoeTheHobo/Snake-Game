@@ -1738,9 +1738,32 @@ function updateClientPositions(lobby) {
         e: equiped 
     }));
 
-    const sanitizedUpdateSnakeCells = JSON.parse(JSON.stringify(lobby.updateSnakeCells, (key, value) => {
-        return value === undefined ? null : value; // Replace undefined with null
-    }));
+    function sanitizeData(data) {
+        if (typeof data === 'undefined') {
+            return null; // Replace undefined with null
+        }
+        
+        // Handle primitive types (number, string, etc.)
+        if (data === null || typeof data !== 'object') {
+            return data;
+        }
+    
+        // If it's an array, recursively sanitize each item
+        if (Array.isArray(data)) {
+            return data.map(sanitizeData);
+        }
+    
+        // If it's an object, recursively sanitize each key-value pair
+        const sanitizedObject = {};
+        for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+                sanitizedObject[key] = sanitizeData(data[key]);
+            }
+        }
+        return sanitizedObject;
+    }
+    const sanitizedUpdateSnakeCells = sanitizeData(lobby.updateSnakeCells);
+    console.log(sanitizedUpdateSnakeCells);
 
     let newObj = {
         updatedPlayers: emitingActivePlayers,
