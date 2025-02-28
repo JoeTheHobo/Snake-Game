@@ -463,8 +463,8 @@ io.on('connection', (socket) => {
                 acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
                 return acc;
             }, {});
-        io.emit("updateLobbies", objectToUint8Array(lobbyList), Object.keys(onlineAccounts).length, lobby,socket.id);
-        io.emit("setClientLobby",socket.id,objectToUint8Array(lobby))
+        io.emit("updateLobbies", lobbyList, Object.keys(onlineAccounts).length, lobby,socket.id);
+        io.emit("setClientLobby",socket.id,lobby)
     })
     socket.on("refreshLobbies",(playerID) => {
         if (playerID !== socket.id) return;
@@ -474,7 +474,7 @@ io.on('connection', (socket) => {
                 acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
                 return acc;
             }, {});
-        io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
+        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
     })
     socket.on("sendChat",(message) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
