@@ -462,7 +462,8 @@ io.on('connection', (socket) => {
                 return acc;
             }, {});
         io.emit("updateLobbies", lobbyList, Object.keys(onlineAccounts).length, lobby,socket.id);
-        io.emit("setClientLobby",socket.id,lobby)
+        io.emit("updateLobbyPage", lobby.id, lobby.activePlayers, lobby.hostID, "players");
+        io.emit("setClientLobby",socket.id,lobby);
     })
     socket.on("refreshLobbies",(playerID) => {
         if (playerID !== socket.id) return;
