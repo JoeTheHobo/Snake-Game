@@ -1738,6 +1738,7 @@ function updateClientPositions(lobby) {
         e: equiped 
     }));
 
+    console.log(lobby.updateSnakeCells)
     let newObj = {
         updatedPlayers: emitingActivePlayers,
         updateSnakeCells: msgpack.encode(lobby.updateSnakeCells),
