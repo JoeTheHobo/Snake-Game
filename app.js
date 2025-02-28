@@ -843,7 +843,7 @@ io.on('connection', (socket) => {
             }
 
             if (!this.gameEnd && !winningPlayer) {
-                setTimeout(() => this.gameLoop(), 16);
+                setTimeout(() => this.gameLoop(), 32);
             } else {
                 this.isActiveGame = false;
                 this.isInGame = false;
