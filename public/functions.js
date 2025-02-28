@@ -1568,17 +1568,12 @@ function updateLobbyPage(lobby) {
     $(".sc_tb_lobbyName").innerHTML = lobby.hostName + lobby.hostTag + "'s Lobby";
 
     $("sc_boards_boardName").innerHTML = "Board: " + lobby.board.name;
-    if (!lobby.board.boardAuthors) {
-        $("sc_boards_boardRemixAuthor").hide(); 
-        $("sc_boards_boardOriginalCreator").innerHTML = "Preset Board";
-    } else {
-        if (lobby.board.boardAuthors.length == 1) $("sc_boards_boardRemixAuthor").hide(); 
-        else {
-            $("sc_boards_boardRemixAuthor").show();
-            $("sc_boards_boardRemixAuthor").innerHTML = "Remixed By: " + lobby.board.boardAuthors[lobby.board.boardAuthors.length-1].username;
-        }
-        $("sc_boards_boardOriginalCreator").innerHTML = "Original Creator: " + lobby.board.boardAuthors[0].username;
+    if (lobby.board.boardAuthors.length == 1) $("sc_boards_boardRemixAuthor").hide(); 
+    else {
+        $("sc_boards_boardRemixAuthor").show();
+        $("sc_boards_boardRemixAuthor").innerHTML = "Remixed By: " + lobby.board.boardAuthors[lobby.board.boardAuthors.length-1].username;
     }
+    $("sc_boards_boardOriginalCreator").innerHTML = "Original Creator: " + lobby.board.boardAuthors[0].username;
     
     $(".sc_gmb_gameModeName").innerHTML = "Gamemode: " + lobby.gameMode.name;
     
