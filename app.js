@@ -673,35 +673,6 @@ io.on('connection', (socket) => {
     socket.on("ping", (callback) => {
         callback();
     });
-    socket.on("updateClientPositions",(lobby) => {
-        emitingActivePlayers = Object.values(lobby.inGamePlayers).map(({ 
-            index, 
-            selectingItem, 
-            items, 
-            tail, 
-            moving, 
-            playerKills, 
-            equiped 
-        }) => ({
-            i: index,      // index → i
-            s: selectingItem, // selectingItem → s
-            it: items,     // items → it
-            t: tail.length + 1,  // tailLength → t
-            m: moving,     // moving → m
-            k: playerKills, // playerKills → k
-            e: equiped     // equiped → e
-        }));
-
-        let obj = {
-            updatedPlayers: emitingActivePlayers,
-            updateSnakeCells: lobby.updateSnakeCells,
-            updateCells: lobby.updateCells,
-            playSounds: lobby.playSounds,
-            boardStatus: lobby.boardStatus,
-        };
-        let data = objectToUint8Array(obj);
-        io.emit("updatePositions",data,lobby.id)
-    })
     socket.on("startGame", () =>{
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;
@@ -848,12 +819,12 @@ io.on('connection', (socket) => {
 
         io.emit("startingGame", objectToUint8Array(lobby),onlineAccounts[socket.id].player);
         
-        socket.listeners("updateClientPositions")[0](lobby);
+        updateClientPositions(lobby)
 
         lobby.gameLoop = function() {
             server_movePlayers(this)
 
-            socket.listeners("updateClientPositions")[0](this);
+            updateClientPositions(this);
 
             this.updatePositionTimeStamp = Date.now();
             this.updateSnakeCells = [];
@@ -988,7 +959,7 @@ io.on('connection', (socket) => {
 
             lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);
 
-            socket.listeners("updateClientPositions")[0](lobby);
+            updateClientPositions(lobby);
             
             return;
         }
@@ -1745,6 +1716,35 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function updateClientPositions(lobby) {
+    emitingActivePlayers = Object.values(lobby.inGamePlayers).map(({ 
+        index, 
+        selectingItem, 
+        items, 
+        tail, 
+        moving, 
+        playerKills, 
+        equiped 
+    }) => ({
+        i: index,      // index → i
+        s: selectingItem, // selectingItem → s
+        it: items,     // items → it
+        t: tail.length + 1,  // tailLength → t
+        m: moving,     // moving → m
+        k: playerKills, // playerKills → k
+        e: equiped     // equiped → e
+    }));
+
+    let obj = {
+        updatedPlayers: emitingActivePlayers,
+        updateSnakeCells: lobby.updateSnakeCells,
+        updateCells: lobby.updateCells,
+        playSounds: lobby.playSounds,
+        boardStatus: lobby.boardStatus,
+    };
+    let data = objectToUint8Array(obj);
+    io.emit("updatePositions",data,lobby.id)
+}
 function base64ToArrayBuffer(base64) {
     const binaryString = atob(base64); // Decode Base64 to binary string
     const len = binaryString.length;
