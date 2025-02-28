@@ -391,20 +391,18 @@ socket.on("updatePositions",(obj,lobbyID) => {
     const sizeInBytes = new TextEncoder().encode(jsonString).length;
     production.updatePositions_recieveData.times.push(sizeInBytes);
 
-    obj = uint8ArrayToObject(obj);
-
     for (let i = 0; i < obj.updatedPlayers.length; i++) {
         for (let j = 0; j < activePlayers.length; j++) {
             let local_player = activePlayers[j];
             let server_player = obj.updatedPlayers[i];
-            if (local_player.index !== server_player.index) continue;
+            if (local_player.index !== server_player.i) continue;
 
-            local_player.selectingItem = server_player.selectingItem;
-            local_player.items = server_player.items;
-            local_player.moving = server_player.moving;
-            local_player.equiped = server_player.equiped;
-            local_player.tailLength = server_player.tailLength;
-            local_player.playerKills = server_player.playerKills;
+            local_player.selectingItem = server_player.s;
+            local_player.items = server_player.it;
+            local_player.moving = server_player.m;
+            local_player.equiped = server_player.e;
+            local_player.tailLength = server_player.t;
+            local_player.playerKills = server_player.k;
 
             if (local_player.accountID === localAccount.id) updateGameScene(local_player);
             else updateGameFlags(local_player);
