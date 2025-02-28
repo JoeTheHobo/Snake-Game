@@ -6,8 +6,6 @@ const {tiles} = require("./server_tiles.js");
 const zlib = require('zlib');
 const express = require('express');
 const app = express();
-const msgpack = require('msgpack-lite');
-
 
 //socket.io setup
 const http = require('http');
@@ -1737,23 +1735,21 @@ function updateClientPositions(lobby) {
         k: playerKills, 
         e: equiped 
     }));
-    console.log(1,lobby.updateSnakeCells)
+
     let newObj = {
         updatedPlayers: emitingActivePlayers,
-        updateSnakeCells: lobby.updateSnakeCells,
+        updateSnakeCells: JSON.stringify(lobby.updateSnakeCells),
         updateCells: lobby.updateCells,
         playSounds: lobby.playSounds,
         boardStatus: lobby.boardStatus,
     };
+
     // Compare with previous object
     let changes = getChangedValues(lobby.oldObj, newObj);
-    console.log(2,changes.updateSnakeCells);
-    if (changes.updateSnakeCells) if (changes.updateSnakeCells == undefined) delete changes.updateSnakeCells;
-    if (changes.updateSnakeCells) changes.updateSnakeCells = msgpack.encode(changes.updateSnakeCells);
+
     if (Object.keys(changes).length > 0) { // Only emit if there are changes
         io.emit("updatePositions", changes, lobby.id);
     }
-    console.log(3,changes);
 
     // Store the new state for next comparison
     lobby.oldObj = newObj;
