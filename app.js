@@ -25,6 +25,28 @@ app.get('/', (req, res) => {
 const lobbies = {};
 const onlineAccounts = {};
 
+let newPreset = [];
+function retrieveAllPresetBoards(index) {
+    let buffer = base64ToArrayBuffer(presetBoards[index]);
+    decompressObject(buffer,(err,decompressed) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        decompressed.boardAuthors = [{
+            id: false,
+            username: "Preset Board",
+        }];
+        decompressed.accountID = false;
+        newPreset.push(decompressed);
+        if (index == presetBoards.length-1) {
+            presetBoards = newPreset;
+        } else retrieveAllPresetBoards(index+1);
+    })
+    
+}
+retrieveAllPresetBoards(0);
+
 
 io.on('connection', (socket) => {
     console.log('a user connected');
@@ -54,43 +76,22 @@ io.on('connection', (socket) => {
         }, {});
     
         
-    //Fix Preset Boards
-    let newPreset = [];
-    function retrieveAllPresetBoards(index) {
-        let buffer = base64ToArrayBuffer(presetBoards[index]);
-        decompressObject(buffer,(err,decompressed) => {
+    
+    compressObject(onlineAccounts[socket.id].boards,(err,compressed) => {
+        if (err) {
+            console.log(err)
+            return;
+        }
+        onlineAccounts[socket.id].boards = compressed;
+        decompressObject(onlineAccounts[socket.id].boards,(err,decompressed) => {
             if (err) {
                 console.log(err);
                 return;
             }
-            decompressed.boardAuthors = [{
-                id: false,
-                username: "Preset Board",
-            }];
-            decompressed.accountID = false;
-            newPreset.push(decompressed);
-            if (index == presetBoards.length-1) {
-                presetBoards = newPreset;
-                compressObject(onlineAccounts[socket.id].boards,(err,compressed) => {
-                    if (err) {
-                        console.log(err)
-                        return;
-                    }
-                    onlineAccounts[socket.id].boards = compressed;
-                    decompressObject(onlineAccounts[socket.id].boards,(err,decompressed) => {
-                        if (err) {
-                            console.log(err);
-                            return;
-                        }
-                        io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
-                        io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items,basedGameMode,presetGameModes,newPreset,backgrounds,tiles,decompressed);
-                    })
-                })
-            } else retrieveAllPresetBoards(index+1);
+            io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
+            io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items,basedGameMode,presetGameModes,newPreset,backgrounds,tiles,decompressed);
         })
-        
-    }
-    retrieveAllPresetBoards(0);
+    })
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
@@ -926,7 +927,6 @@ io.on('connection', (socket) => {
                     seconds: seconds,
                     winningPlayer: winningPlayer,
                 };
-                console.log("OVER")
                 io.emit("endGame",obj,lobby.id)
 
                 
