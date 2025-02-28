@@ -1978,7 +1978,7 @@ function logGameModeChanges(holder,gameMode,logAll) {
             let realValue = getRealItem(itemName);
 
             let altHolder = holder.create("div.gm_alt_holder");
-            let itemHolder = holder.create("div.gm_alt_item_holder");
+            let itemHolder = altHolder.create("div.gm_alt_item_holder");
             let itemImage = itemHolder.create("img.gm_alt_item");
             itemImage.src = getImageFromItem("item",realValue,"src");
 
@@ -1992,7 +1992,7 @@ function logGameModeChanges(holder,gameMode,logAll) {
 
 
             let altKey = altHolder.create("div.gm_alt_key");
-            altKey.innerHTML = key + ":";
+            altKey.innerHTML = key;
 
             let altNewValue = altHolder.create("div.gm_alt_newValue");
             altNewValue.innerHTML = value;
