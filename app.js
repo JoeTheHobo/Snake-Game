@@ -1748,7 +1748,6 @@ function updateClientPositions(lobby) {
     // Compare with previous object
     let changes = getChangedValues(lobby.oldObj, newObj);
     if (changes.updateSnakeCells) changes.updateSnakeCells = msgpack.encode(changes.updateSnakeCells);
-
     if (Object.keys(changes).length > 0) { // Only emit if there are changes
         io.emit("updatePositions", changes, lobby.id);
     }
@@ -1763,8 +1762,7 @@ function getChangedValues(oldObj, newObj) {
 
     for (let key in newObj) {
         if (JSON.stringify(newObj[key]) !== JSON.stringify(oldObj[key])) {
-            if (newObj[key] !== undefined)
-                changes[key] = newObj[key]; // Only store changed values
+            changes[key] = newObj[key]; // Only store changed values
         }
     }
 
