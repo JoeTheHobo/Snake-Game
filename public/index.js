@@ -427,7 +427,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
         }
     }
 
-    if (obj.updateSnakeCells) updateSnakeCells = updateSnakeCells.concat(JSON.parse(obj.updateSnakeCells));
+    if (obj.updateSnakeCells) updateSnakeCells = updateSnakeCells.concat(JSON.parse(pako.inflate(obj.updateSnakeCells, { to: 'string' })));
     if (obj.updateCells) updateCells = updateCells.concat(obj.updateCells);
 
     if (obj.playSounds) {

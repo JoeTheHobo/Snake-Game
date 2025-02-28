@@ -21,6 +21,7 @@
     "lz-string": "^1.5.0",
     "msgpack-lite": "^0.1.26",
     "msgpack5": "^6.0.2",
+    "pako": "^2.1.0",
     "socket.io": "4.6.1"
   }
 }
