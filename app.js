@@ -1746,9 +1746,9 @@ function updateClientPositions(lobby) {
         boardStatus: lobby.boardStatus,
     };
     // Compare with previous object
-    console.log(lobby.updateSnakeCells)
+    console.log(1,lobby.updateSnakeCells)
     let changes = getChangedValues(lobby.oldObj, newObj);
-    console.log(changes.updateSnakeCells)
+    console.log(2,changes.updateSnakeCells)
     if (changes.updateSnakeCells) changes.updateSnakeCells = msgpack.encode(changes.updateSnakeCells);
 
     if (Object.keys(changes).length > 0) { // Only emit if there are changes
