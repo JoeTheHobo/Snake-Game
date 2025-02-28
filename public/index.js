@@ -388,34 +388,6 @@ socket.on("updatePositions",(obj,lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;
     if (!localAccount.isInGame) return; 
 
-    /*
-    let bytes = 0;
-    function productionHelper(key) {
-        if (obj[key]) {
-            let sizeInBytes;
-            
-            // Check if the object is an ArrayBuffer
-            if (obj[key] instanceof ArrayBuffer) {
-                sizeInBytes = obj[key].byteLength;
-            } else {
-                // For other objects, use JSON.stringify and calculate size as before
-                const jsonString = JSON.stringify(obj[key]);
-                sizeInBytes = new TextEncoder().encode(jsonString).length;
-            }
-
-            bytes += sizeInBytes;
-    
-            production["updatePositions_" + key].times.push(sizeInBytes);
-        } else {
-            production["updatePositions_" + key].times.push(0);
-        }
-    }
-    productionHelper("updatedPlayers");
-    productionHelper("updateSnakeCells");
-    productionHelper("updateCells");
-    productionHelper("playSounds");
-    productionHelper("boardStatus");
-    */
     production.updatePositions_recieveData.times.push(obj.byteLength);
 
     obj = JSON.parse(pako.inflate(obj, { to: 'string' }));

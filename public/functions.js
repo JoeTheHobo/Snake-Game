@@ -1588,7 +1588,7 @@ function updateLobbyPage(lobby,type = "all",extra) {
         if (type == "submissionStatus") reference = lobby;
         if (type == "all") reference = lobby.activePlayers;
         if (type == "players") reference = lobby;
-        
+
         if (reference) {
             for (let i = 0; i < reference.length; i++) {
                 if (reference[i].accountID === localAccount.id)  {
@@ -1952,6 +1952,7 @@ function logGameModeChanges(holder,gameMode,logAll) {
             newValue: gameMode[key],
         })
     }
+    console.log(gameMode.itemAlterations)
     for (let i = 0; i < alterations.length; i++) {
         let alt = alterations[i];
         let altHolder = holder.create("div.gm_alt_holder");

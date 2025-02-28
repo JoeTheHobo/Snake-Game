@@ -1583,7 +1583,7 @@ let production = {
     },
 
 
-    
+
     //Server Play
     ping: {
         times: [],
@@ -1609,51 +1609,6 @@ let production = {
         timeStart: 0,
         cap: 100,
         type: "dom",
-        showIF: "server",
-        dataType: "bytes",
-    },
-    updatePositions_updatedPlayers: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 100,
-        type: "sub",
-        showIF: "server",
-        dataType: "bytes",
-    },
-    updatePositions_updateSnakeCells: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 100,
-        type: "sub",
-        showIF: "server",
-        dataType: "bytes",
-    },
-    updatePositions_updateCells: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 100,
-        type: "sub",
-        showIF: "server",
-        dataType: "bytes",
-    },
-    updatePositions_playSounds: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 100,
-        type: "sub",
-        showIF: "server",
-        dataType: "bytes",
-    },
-    updatePositions_boardStatus: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 100,
-        type: "sub",
         showIF: "server",
         dataType: "bytes",
     },
