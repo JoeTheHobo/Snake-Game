@@ -859,12 +859,13 @@ function tool_fill() {
 
     clearSelection();
 }
-function saveBoard(saveDifferences = false) {
+function saveBoard() {
     let html_saveStatus = $("saveStatus");
     currentBoard.itemDifferences = findItemDifferences(currentBoard.originalMap);
     currentBoard.tileDifferences = findTileDifferences(currentBoard.originalMap);
 
-    socket.emit("saveBoard",currentBoard);
+    if (currentBoard.accountID === localAccount.id)
+        socket.emit("saveBoard",currentBoard);
 
     html_saveStatus.innerHTML = "Board Saved";
 }
@@ -872,21 +873,17 @@ function saveBoard(saveDifferences = false) {
 $("me_button").on("click",function() {
     if (localAccount.isInLobby) {
         makePopUp([
-            {type: "title",text: "Save As New Board?"},
+            {type: "title",text: "Save Board"},
             [
-                {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Don't Save To New Board",onClick: () => {
+                {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Add To Lobby Boards",onClick: () => {
                     saveBoard();
+                    socket.emit("addBoardToLobbyBoards",JSON.stringify(shortenBoard(currentBoard)));
                     socket.emit("changeServerBoard",JSON.stringify(shortenBoard(currentBoard)));
                     setScene("lobby");
                 }},
-                {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Save To New Board",onClick: () => {
+                {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Add To Your Boards",onClick: () => {
                     saveBoard();
-                    let newBoard = structuredClone(currentBoard);
-                    newBoard.cantEdit = false;
-                    boards.push(newBoard);
-                    saveBoards();
-                    setScene("lobby");
-                    socket.emit("changeServerBoard",JSON.stringify(shortenBoard(currentBoard)));
+                    selectAllPlayerBoardsPopUp("lobby");
                 }},
             ],
         ],{

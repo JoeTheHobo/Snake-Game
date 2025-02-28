@@ -1956,3 +1956,55 @@ setInterval(() => {
         production.ping.times.push(duration);
     });
 }, 1000);
+
+function selectAllPlayerBoardsPopUp(sendTo) {
+    let holder = $(".apb_list");
+    holder.innerHTML = "";
+
+    function generateBoard(grandParent,parent,board,func,index,text = undefined) {
+        let holder = parent.create("div");
+        holder.className = "cbp_board_holder";
+
+        if (board !== false) {
+            let canvas = holder.create("canvas");
+            canvas.className = "cbp_board_canvas";
+            requestAnimationFrame(function() {
+                canvas.width = canvas.clientWidth;
+                canvas.height = canvas.clientHeight;
+                drawBoardToCanvas(board.originalMap,canvas,true);
+            });
+    
+            let title = holder.create("div");
+            title.className = "cbp_board_title";
+            title.innerHTML = board.name;
+        }
+        if (board === false && text !== undefined) {
+            let title = holder.create("div");
+            title.className = "cbp_board_import";
+            title.innerHTML = text;
+        }
+
+        holder.board = board;
+        holder.index = index;
+        holder.on("click",function() {
+            if (grandParent) grandParent.hide();
+            func(this.board,this.index);
+        })
+    }
+
+    let boardClicked = function(board,index) {
+        socket.emit("changeServerBoard",JSON.stringify(shortenBoard(currentBoard)));
+        socket.emit("saveBoardToIndex",JSON.stringify(shortenBoard(currentBoard)),index);
+        setScene(sendTo);
+    }
+
+    for (let i = 0; i < localAccount.boardLimit; i++) {
+        if (localAccount.boards[i]) generateBoard($(".allPlayerBoardsPopup"),holder,localAccount.boards[i],boardClicked,i);
+        else if (i < localAccount.boardLimit - 1) {
+            generateBoard($(".allPlayerBoardsPopup"),holder,false,boardClicked,i,"+");
+            break;
+        }
+    }
+
+    $(".allPlayerBoardsPopup").show("flex");
+}

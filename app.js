@@ -28,20 +28,20 @@ const onlineAccounts = {};
 
 io.on('connection', (socket) => {
     console.log('a user connected');
-    let userName = simple.rnd(playerNames1) + simple.rnd(playerNames2);
+    let username = simple.rnd(playerNames1) + simple.rnd(playerNames2);
     let tag = "#" + formatNumber(Object.keys(onlineAccounts).length);
     onlineAccounts[socket.id] = {
         id: socket.id,
         players: [ ],
         player: false,
-        serverSnake: newPlayer(socket.id,userName,tag),
+        serverSnake: newPlayer(socket.id,username,tag),
         gameModes: [],
         gameModeLimit: 10,
         boardLimit: 10,
         playerLimit: 10,
         boards: [],
         lobby: false,
-        username: userName,
+        username: username,
         tag: tag,
         chatNameColor: simple.rnd("color"),
     }
@@ -140,6 +140,7 @@ io.on('connection', (socket) => {
         delete onlineAccounts[socket.id];
     }) 
     socket.on("saveBoard",(board) => {
+        if (board.accountID !== socket.id) return;
         //Check Board TO BE ADDED
 
         let account = onlineAccounts[socket.id];
@@ -164,6 +165,13 @@ io.on('connection', (socket) => {
                     return;
                 }
             }
+            compressObject(account.boards,(err,compressed) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                account.boards = compressed;
+            })
         })
     })
     socket.on("getZippedBoard",(board) => {
@@ -202,6 +210,36 @@ io.on('connection', (socket) => {
         })
 
     })
+    
+    socket.on("saveBoardToIndex",(board,index,sentFrom) => {
+        let account = onlineAccounts[socket.id];
+
+        //Varify Board Here -To Be Added
+        board = fixBoard(JSON.parse(board));
+
+        if (index > account.boardLimit-1) return;
+
+        decompressObject(account.boards,(err,decompressed) => {
+            if (err) {
+                console.log(err)
+                return;
+            }
+            account.boards = decompressed;
+
+            if (index > account.boards.length-1) account.boards.push(board); 
+            else account.boards[index] = board;
+    
+            io.emit("updatePlayersBoards",socket.id,account.boards,sentFrom)
+            compressObject(account.boards,(err,compressed) => {
+                if (err) {
+                    console.log(err)
+                    return;
+                }
+                account.boards = compressed;
+            });
+        })
+
+    });
     socket.on("createNewBoard",(boardName,width,height,sentFrom) => {
         let account = onlineAccounts[socket.id];
 
@@ -227,6 +265,7 @@ io.on('connection', (socket) => {
             mouseOver: false,
             boardAuthors: [{
                 id: socket.id,
+                username: onlineAccounts[socket.id].username,
             }],
         };
 
@@ -481,8 +520,8 @@ io.on('connection', (socket) => {
         io.emit("updateLobbyPage",objectToUint8Array(lobby));
     })
     socket.on("addBoardToLobbyBoards",(board) => {
-        if (!onlineAccounts[socket.id].player.canSubmitBoards) return;
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
+        if (!onlineAccounts[socket.id].player.canSubmitBoards && lobby.hostID !== socket.id) return;
         if (!lobby) return;
         if (!board) return;
 
