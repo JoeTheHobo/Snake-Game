@@ -1739,7 +1739,7 @@ function updateClientPositions(lobby) {
 
     let newObj = {
         updatedPlayers: emitingActivePlayers,
-        updateSnakeCells: pako.deflate(JSON.stringify(lobby.updateSnakeCells), { to: 'string' }),
+        updateSnakeCells: pako.deflate((lobby.updateSnakeCells), { to: 'string' }),
         updateCells: lobby.updateCells,
         playSounds: lobby.playSounds,
         boardStatus: lobby.boardStatus,
