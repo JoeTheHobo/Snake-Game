@@ -782,7 +782,7 @@ io.on('connection', (socket) => {
             player.moveQueue = [];
             player.prevMove = "start";
             player.moveTik = 0;
-            player.moveSpeed = 1;
+            player.moveSpeed = 6;
             player.turboDuration = 0;
             player.turboActive = false;
             player.winGame = false;
@@ -877,7 +877,7 @@ io.on('connection', (socket) => {
             }
 
             if (!this.gameEnd && !winningPlayer) {
-                setTimeout(() => this.gameLoop(), 60);
+                setTimeout(() => this.gameLoop(), 16);
             } else {
                 this.isActiveGame = false;
                 this.isInGame = false;
@@ -1878,7 +1878,7 @@ function respawnPlayer(lobby,player,growthPercentage) {
     player.justTeleported = false;
     player.moveQueue = [];
     player.moveTik = 0;
-    player.moveSpeed = 1;
+    player.moveSpeed = 6;
     player.turboDuration = 0;
     player.turboActive = false;
     player.equiped = {
@@ -1971,7 +1971,9 @@ function getPlayersList(playerIds) {
     }
     return list;
 }
-
+function movePlayer(lobby,player) {
+    
+}
 function server_movePlayers(lobby) {
     activePlayers = lobby.inGamePlayers;
     let currentBoard = lobby.board;
@@ -1980,7 +1982,7 @@ function server_movePlayers(lobby) {
         let player = activePlayers[i];
         
         if (player.isDead) continue;
-        if ((player.moveTik+currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed) < (player.moveSpeed)) {   
+        if ((player.moveTik) < (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             player.moveTik++;
             continue;
         }
@@ -1990,7 +1992,7 @@ function server_movePlayers(lobby) {
             if (player.turboDuration <= 0) {
                 player.turboActive = false;
                 removePlayerStatus(lobby,player,"turbo");
-                player.moveSpeed = 1;
+                player.moveSpeed = 6;
             }
         }
         player.moveTik = 0
