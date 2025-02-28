@@ -1677,6 +1677,7 @@ function updateLobbyPage(lobby,type = "all",extra) {
     }
     
     if (type == "all" || type == "players") {
+        console.log(player);
         $(".sc_bb_snakeImg").css({
             filter: getPlayerFilter(player),
         }); 
