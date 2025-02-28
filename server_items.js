@@ -90,7 +90,7 @@ items.push({
         },
         turboServer: {
             duration: 50,
-            moveSpeed: 3,
+            moveSpeed: 2,
         },
         addStatus: ["turbo"],
     },
