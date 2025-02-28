@@ -564,8 +564,6 @@ io.on('connection', (socket) => {
         if (lobby.hostID !== socket.id) return;
         if (!board) return;
 
-        console.log("Board Changed")
-
         //Varify Board Here -To Be Added
         board = fixBoard(JSON.parse(board))
         lobby.board = board;
@@ -592,7 +590,7 @@ io.on('connection', (socket) => {
 
         lobby.activePlayers = getPlayersList(lobby.players);
         
-        io.emit("updateLobbyPage", lobby.id, lobby);
+        io.emit("updateLobbyPage", lobby.id, lobby.activePlayers,lobby.hostID,"submissionStatus");
     })
     socket.on("kickPlayerFromLobby",(player) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -626,7 +624,7 @@ io.on('connection', (socket) => {
             }, {});
         io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
         io.emit("setPlayerToHomeScreen",kickedPlayer.id);
-        io.emit("updateLobbyPage", lobby.id, lobby);
+        io.emit("updateLobbyPage", lobby.id, lobby.activePlayers, lobby.hostID, "players");
     })
     socket.on("setLobbyHost",(player) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
