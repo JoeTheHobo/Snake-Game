@@ -63,10 +63,10 @@ io.on('connection', (socket) => {
                 console.log(err);
                 return;
             }
-            decompressed.boardAuthors = {
+            decompressed.boardAuthors = [{
                 id: false,
                 username: "Preset Board",
-            };
+            }];
             decompressed.accountID = false;
             newPreset.push(decompressed);
             if (index == presetBoards.length-1) {
