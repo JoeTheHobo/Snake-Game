@@ -388,30 +388,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
     if (localAccount.lobbyID !== lobbyID) return;
     if (!localAccount.isInGame) return; 
 
-    function calculateObjectSize(obj) {
-        let totalSizeInBytes = 0;
-    
-        // Iterate through each property of the object
-        for (let key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                let value = obj[key];
-    
-                // Check if the value is an ArrayBuffer
-                if (value instanceof ArrayBuffer) {
-                    totalSizeInBytes += value.byteLength;  // Add the size of the ArrayBuffer
-                } else {
-                    // Otherwise, serialize the value and calculate the size
-                    let jsonString = JSON.stringify(value);
-                    totalSizeInBytes += new TextEncoder().encode(jsonString).length;
-                }
-            }
-        }
-    
-        return totalSizeInBytes;
-    }
-    let sizeInBytes = calculateObjectSize(obj);
-    production.updatePositions_recieveData.times.push(sizeInBytes);
-    
+    let bytes = 0;
     function productionHelper(key) {
         if (obj[key]) {
             let sizeInBytes;
@@ -424,6 +401,8 @@ socket.on("updatePositions",(obj,lobbyID) => {
                 const jsonString = JSON.stringify(obj[key]);
                 sizeInBytes = new TextEncoder().encode(jsonString).length;
             }
+
+            bytes += sizeInBytes;
     
             production["updatePositions_" + key].times.push(sizeInBytes);
         } else {
@@ -435,6 +414,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
     productionHelper("updateCells");
     productionHelper("playSounds");
     productionHelper("boardStatus");
+    production.updatePositions_recieveData.times.push(bytes);
 
     if (obj.updatedPlayers) {
         for (let i = 0; i < obj.updatedPlayers.length; i++) {
