@@ -374,7 +374,6 @@ function showNumber(index) {
             $(".game_c2_info").hide();
             $(".game_c2_extra").show();
             $(".preGamePlayerInfo").hide();
-            production.updatePositions_speed.timeStart = performance.now();
         },250);
         return;
     }
@@ -385,6 +384,7 @@ function showNumber(index) {
 
 }
 socket.on("updatePositions",(obj,lobbyID) => {
+    production.updatePositions_speed.timeStart = performance.now();
     if (localAccount.lobbyID !== lobbyID) return;
     if (!localAccount.isInGame) return; 
 
