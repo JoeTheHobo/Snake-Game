@@ -128,7 +128,7 @@ io.on('connection', (socket) => {
             
                 lobby.activePlayers = getPlayersList(lobby.players);
 
-                io.emit("updateLobbyPage", lobby, { compress: true });
+                io.emit("updateLobbyPage", lobby);
             }
 
             
@@ -416,7 +416,7 @@ io.on('connection', (socket) => {
                 message: username + " Quit The Lobby",
             })
     
-            io.emit("updateLobbyPage", lobby, { compress: true });
+            io.emit("updateLobbyPage", lobby);
             let lobbyList = Object.values(lobbies)
                 .filter(lobby => lobby.serverType !== "Hidden")
                 .reduce((acc, lobby) => {
@@ -430,7 +430,7 @@ io.on('connection', (socket) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         lobby.activePlayers = getPlayersList(lobby.players);
 
-        io.emit("updateLobbyPage", lobby, { compress: true });
+        io.emit("updateLobbyPage", lobby);
     })
     socket.on("joinLobby",(lobbyID,code,spectate) => {
         let account = onlineAccounts[socket.id];
@@ -494,7 +494,7 @@ io.on('connection', (socket) => {
             color: onlineAccounts[socket.id].chatNameColor,
         })
 
-        io.emit("updateLobbyPage", lobby.chats,"chats", { compress: true });
+        io.emit("updateLobbyPage", lobby.chats,"chats");
     })
     socket.on("searchingHiddenServer",(value) => {
         for (const lobbyID in lobbies) {
@@ -515,7 +515,7 @@ io.on('connection', (socket) => {
         if (!gameMode) return;
 
         lobby.gameMode = gameMode;
-        io.emit("updateLobbyPage", lobby, { compress: true });
+        io.emit("updateLobbyPage", lobby);
 
     })
     socket.on("editServerGameMode", (gamemode) => {
@@ -530,7 +530,7 @@ io.on('connection', (socket) => {
         //Varify Game Mode Here -To Be Added
 
         lobby.gameMode = gameMode;
-        io.emit("updateLobbyPage", lobby, { compress: true });
+        io.emit("updateLobbyPage", lobby);
     })
     socket.on("addBoardToLobbyBoards",(board) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -569,7 +569,7 @@ io.on('connection', (socket) => {
         //Varify Board Here -To Be Added
         board = fixBoard(JSON.parse(board))
         lobby.board = board;
-        io.emit("updateLobbyPage", lobby, { compress: true });
+        io.emit("updateLobbyPage", lobby);
     })
     socket.on("setCode",(code) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -592,7 +592,7 @@ io.on('connection', (socket) => {
 
         lobby.activePlayers = getPlayersList(lobby.players);
         
-        io.emit("updateLobbyPage", lobby, { compress: true });
+        io.emit("updateLobbyPage", lobby);
     })
     socket.on("kickPlayerFromLobby",(player) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -626,7 +626,7 @@ io.on('connection', (socket) => {
             }, {});
         io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
         io.emit("setPlayerToHomeScreen",kickedPlayer.id);
-        io.emit("updateLobbyPage", lobby, { compress: true });
+        io.emit("updateLobbyPage", lobby);
     })
     socket.on("setLobbyHost",(player) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -646,7 +646,7 @@ io.on('connection', (socket) => {
             message: username + " Is The New Lobby Host",
         })
 
-        io.emit("updateLobbyPage", lobby, { compress: true });
+        io.emit("updateLobbyPage", lobby);
     })
     socket.on("endGame",() => {
         let account = onlineAccounts[socket.id];
@@ -666,7 +666,7 @@ io.on('connection', (socket) => {
         lobby.serverType = type;
 
         if (type == "Hidden" || type == "Private") io.emit("setCode",socket.id,lobby.code);
-        io.emit("updateLobbyPage", lobby, { compress: true });
+        io.emit("updateLobbyPage", lobby);
         let lobbyList = Object.values(lobbies)
             .filter(lobby => lobby.serverType !== "Hidden")
             .reduce((acc, lobby) => {
@@ -1064,7 +1064,7 @@ io.on('connection', (socket) => {
                 onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].serverSnake);
                 lobby.activePlayers = getPlayersList(lobby.players);
 
-                io.emit("updateLobbyPage", lobby, { compress: true });
+                io.emit("updateLobbyPage", lobby);
                 
             }
         } else {

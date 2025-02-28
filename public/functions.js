@@ -1582,9 +1582,8 @@ function updateLobbyPage(lobby,type = "all") {
     
     if (type == "all") $(".sc_gmb_gameModeName").innerHTML = "Gamemode: " + lobby.gameMode.name;
     
+    let player = localAccount.serverSnake;
     if (type == "all") {
-
-        let player = localAccount.serverSnake;
         let playersHolder = $(".sc_players_playersList");
         playersHolder.innerHTML = "";
         let isHost = lobby.hostID === localAccount.id;
