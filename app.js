@@ -1738,7 +1738,7 @@ function updateClientPositions(lobby) {
 
     let newObj = {
         updatedPlayers: emitingActivePlayers,
-        updateSnakeCells: lobby.updateSnakeCells,
+        updateSnakeCells: JSON.stringify(lobby.updateSnakeCells),
         updateCells: lobby.updateCells,
         playSounds: lobby.playSounds,
         boardStatus: lobby.boardStatus,
