@@ -10,7 +10,7 @@ tiles.push({
 tiles.push({
     name: "sand",
     img: "tilesand.png",
-    changePlayerSpeed: 0.5, //Player Speed Times This Number
+    changePlayerSpeed: 0.25, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 2,
     pack: "Slow Speed",//Which Item Pack Does This Group To (For Map Editor)
@@ -26,7 +26,7 @@ tiles.push({
 tiles.push({
     name: "pathway",
     img: "path.png",
-    changePlayerSpeed: 1.5, //Player Speed Times This Number
+    changePlayerSpeed: 2, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 4,
     pack: "Fast Speed",//Which Item Pack Does This Group To (For Map Editor)
@@ -42,7 +42,7 @@ tiles.push({
 tiles.push({
     name: "water",
     img: "tilewater.png",
-    changePlayerSpeed: 0.5, //Player Speed Times This Number
+    changePlayerSpeed: 0.25, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 6,
     pack: "Slow Speed",//Which Item Pack Does This Group To (For Map Editor)

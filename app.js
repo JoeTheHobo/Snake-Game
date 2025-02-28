@@ -89,7 +89,7 @@ io.on('connection', (socket) => {
                 return;
             }
             io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
-            io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items,basedGameMode,presetGameModes,newPreset,backgrounds,tiles,decompressed);
+            io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items,basedGameMode,presetGameModes,presetBoards,backgrounds,tiles,decompressed);
         })
     })
 
