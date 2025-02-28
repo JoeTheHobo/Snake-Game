@@ -393,11 +393,20 @@ socket.on("updatePositions",(obj,lobbyID) => {
     production.updatePositions_recieveData.times.push(sizeInBytes);
     function productionHelper(key) {
         if (obj[key]) {
-            jsonString = JSON.stringify(obj[key]);
-            sizeInBytes = new TextEncoder().encode(jsonString).length;
-            production["updatePositions_"+key].times.push(sizeInBytes);
+            let sizeInBytes;
+            
+            // Check if the object is an ArrayBuffer
+            if (obj[key] instanceof ArrayBuffer) {
+                sizeInBytes = obj[key].byteLength;
+            } else {
+                // For other objects, use JSON.stringify and calculate size as before
+                const jsonString = JSON.stringify(obj[key]);
+                sizeInBytes = new TextEncoder().encode(jsonString).length;
+            }
+    
+            production["updatePositions_" + key].times.push(sizeInBytes);
         } else {
-            production["updatePositions_"+key].times.push(0);
+            production["updatePositions_" + key].times.push(0);
         }
     }
     productionHelper("updatedPlayers");
