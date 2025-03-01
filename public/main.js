@@ -1690,15 +1690,16 @@ function updateProduction() {
     for (let i = 0; i < Object.entries(production).length; i++) {
         let entry = Object.entries(production)[i];
 
-        if (entry.type == "title") continue;
+        if (entry[1].type == "title") continue;
 
         if (entry[1].times.length > entry[1].cap) {
             entry[1].times.shift();
         }
         if (entry[1].times.length == 0) entry[1].times.push(0);
         entry[1].average = entry[1].times.avg();
-        if (entry[1].dataType == "ms") $("production_" + entry[0]).innerHTML = entry[1].average.toFixed(4) + "ms";
-        if (entry[1].dataType == "bytes") $("production_" + entry[0]).innerHTML = entry[1].average.toFixed(4) + "bytes";
+        if (entry[1].dataType == "ms") $("production_" + entry[0]).innerHTML = entry[1].average.toFixed(2) + "ms";
+        if (entry[1].dataType == "bytes") $("production_" + entry[0]).innerHTML = entry[1].average.toFixed(2) + "bytes";
+        if (entry[1].dataType == "mb") $("production_" + entry[0]).innerHTML = ((entry[1].average/1000000).toFixed(2)) + "mb";
     }
 }
 function gameLoop() {
