@@ -126,8 +126,6 @@ socket.on("settingLobbyBoards",(boardsList) => {
 })
 socket.on("startingGame", (lobby) => {
     lobby = (lobby);
-    productionType = "server";
-    setUpProductionHTML();
     if (localAccount.lobbyID !== lobby.id) return;
     localAccount.isInGame = true;
 
@@ -525,6 +523,9 @@ function savePlayers(updateLobby = false) {
     });
 }
 //
+
+productionType = "server";
+setUpProductionHTML();
 function updateProductionFunction() {
     updateProduction();
 
