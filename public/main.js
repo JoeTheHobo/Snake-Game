@@ -1632,13 +1632,13 @@ let production = {
     },
     server_player_count: {
         value: 0,
-        type: "count",
+        type: "dom",
         showIF: "server",
         dataType: "count",
     },
     server_lobby_count: {
         value: 0,
-        type: "count",
+        type: "dom",
         showIF: "server",
         dataType: "count",
     },
@@ -1713,10 +1713,10 @@ function setUpProductionHTML() {
             let value = holder.create("div");
             value.id = "production_" + entry[0];
             value.className = "production_value";
-            if (["ms","bytes","mb"].includes(entry[1].type)) {
+            if (["ms","bytes","mb"].includes(entry[1].dataType)) {
                 value.innerHTML = entry[1].average.toFixed(2);
             }
-            if (["count"].includes(entry[1].type)) {
+            if (["count"].includes(entry[1].dataType)) {
                 value.innerHTML = entry[1].count;
             }
              
@@ -1730,7 +1730,7 @@ function updateProduction() {
 
         if (entry[1].type == "title") continue;
 
-        if (["ms","bytes","mb"].includes(entry[1].type)) {
+        if (["ms","bytes","mb"].includes(entry[1].dataType)) {
             if (entry[1].times.length > entry[1].cap) {
                 entry[1].times.shift();
             }
