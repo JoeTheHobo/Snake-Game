@@ -1753,6 +1753,7 @@ function updateClientPositions(lobby,lobby_gameLoop_start = Date.now()) {
         c: lobby.updateCells,
         p: lobby.playSounds,
         b: lobby.boardStatus,
+        g: Date.now() - lobby_gameLoop_start,
     };
 
     // Compare with previous object
