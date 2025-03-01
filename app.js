@@ -12,8 +12,6 @@ const pako = require('pako');
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const { baremetalsolution } = require("googleapis/build/src/apis/baremetalsolution/index.js");
-const { backupdr } = require("googleapis/build/src/apis/backupdr/index.js");
 const io = new Server(server, { pingInterval: 25000, pingTimeout: 60000});
 
 
