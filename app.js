@@ -462,7 +462,7 @@ io.on('connection', (socket) => {
                 return acc;
             }, {});
         io.emit("updateLobbies", lobbyList, Object.keys(onlineAccounts).length, lobby,socket.id);
-        io.emit("updateLobbyPage", lobby.id, lobby.activePlayers, lobby.hostID, "players");
+        io.emit("updateLobbyPage", lobby.id, lobby.activePlayers, "players", lobby.hostID);
         io.emit("setClientLobby",socket.id,lobby);
     })
     socket.on("refreshLobbies",(playerID) => {
@@ -590,7 +590,7 @@ io.on('connection', (socket) => {
 
         lobby.activePlayers = getPlayersList(lobby.players);
         
-        io.emit("updateLobbyPage", lobby.id, lobby.activePlayers,lobby.hostID,"submissionStatus");
+        io.emit("updateLobbyPage", lobby.id, lobby.activePlayers,"submissionStatus",lobby.hostID);
     })
     socket.on("kickPlayerFromLobby",(player) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -624,7 +624,7 @@ io.on('connection', (socket) => {
             }, {});
         io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
         io.emit("setPlayerToHomeScreen",kickedPlayer.id);
-        io.emit("updateLobbyPage", lobby.id, lobby.activePlayers, lobby.hostID, "players");
+        io.emit("updateLobbyPage", lobby.id, lobby.activePlayers, "players",lobby.hostID);
     })
     socket.on("setLobbyHost",(player) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];

@@ -108,10 +108,9 @@ socket.on("setClientLobby",(socketID,lobby) => {
     setScene("lobby");
     localAccount.isInLobby = true;
 })
-socket.on("updateLobbyPage",(lobbyID,lobby,type) => {
+socket.on("updateLobbyPage",(lobbyID,lobby,type,extra) => {
     if (localAccount.lobbyID !== lobbyID) return;
-    console.log(type)
-    updateLobbyPage(lobby,type);
+    updateLobbyPage(lobby,type,extra);
 })
 socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     if (playerID) if (playerID !== localAccount.id) return;
