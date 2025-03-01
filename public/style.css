@@ -446,9 +446,11 @@ flex-direction: row;
 align-items: center;
 }
 .production_titletitle {
-color: rgb(15, 15, 15);
-font-size: 20px;
-font-weight: bold;
+  color: rgb(224, 224, 224);
+  font-size: 25px;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
 }
 .production_title {
 color: rgb(73, 194, 73);
