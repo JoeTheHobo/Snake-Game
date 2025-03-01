@@ -1151,14 +1151,15 @@ document.body.on("wheel",function(e) {
     updatePlayerCard(player);
 })
 document.body.onkeydown = function(e) {
-    if (killSwitch) return;
-    if (!isActiveGame) return;
     if (e.ctrlKey && e.key === 'q') {
         showPerformance = showPerformance ? false : true;
         
         if (showPerformance) $(".production").show("flex");
         else $(".production").hide();
     }
+    if (killSwitch) return;
+    if (!isActiveGame) return;
+    
     if (e.key !== "F5")
         e.preventDefault();
 
