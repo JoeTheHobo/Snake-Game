@@ -117,7 +117,13 @@ socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     if ($(".content_servers").style.display == "none") return;
 
     frontEndLobbies = (backEndLobbies);
-    loadServersHTML();
+    if (items.length > 0) {
+        loadServersHTML();
+    } else {
+        setTimeout(function() {
+            loadServersHTML();
+        },100)
+    }
     $(".servers_online_text").innerHTML = onlineCount;
 })
 socket.on("settingLobbyBoards",(boardsList) => {
