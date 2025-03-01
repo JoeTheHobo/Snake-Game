@@ -1725,6 +1725,9 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+setInterval(() => {
+    console.log(process.memoryUsage());
+  }, 5000);
 function updateClientPositions(lobby) {
     let emitingActivePlayers = Object.values(lobby.inGamePlayers).map(({ 
         index, 
