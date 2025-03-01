@@ -829,7 +829,7 @@ io.on('connection', (socket) => {
         updateClientPositions(lobby)
 
         lobby.gameLoop = function() {
-            let lobby_gameLoop_start = time.now();
+            let lobby_gameLoop_start = Date.now();
             server_movePlayers(this)
 
             updateClientPositions(this,lobby_gameLoop_start);
@@ -1754,7 +1754,7 @@ function updateClientPositions(lobby,lobby_gameLoop_start) {
         c: lobby.updateCells,
         p: lobby.playSounds,
         b: lobby.boardStatus,
-        g: time.now() - lobby_gameLoop_start,
+        g: Date.now() - lobby_gameLoop_start,
     };
 
     // Compare with previous object
