@@ -829,9 +829,10 @@ io.on('connection', (socket) => {
         updateClientPositions(lobby)
 
         lobby.gameLoop = function() {
+            let lobby_gameLoop_start = time.now();
             server_movePlayers(this)
 
-            updateClientPositions(this);
+            updateClientPositions(this,lobby_gameLoop_start);
 
             this.updatePositionTimeStamp = Date.now();
             this.updateSnakeCells = [];
@@ -1728,7 +1729,7 @@ function removePlayerStatus(lobby,player,itemName) {
 setInterval(() => {
     io.emit("updateMemorry",process.memoryUsage());
   }, 5000);
-function updateClientPositions(lobby) {
+function updateClientPositions(lobby,lobby_gameLoop_start) {
     let emitingActivePlayers = Object.values(lobby.inGamePlayers).map(({ 
         index, 
         selectingItem, 
@@ -1753,6 +1754,7 @@ function updateClientPositions(lobby) {
         c: lobby.updateCells,
         p: lobby.playSounds,
         b: lobby.boardStatus,
+        g: time.now() - lobby_gameLoop_start,
     };
 
     // Compare with previous object

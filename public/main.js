@@ -1595,6 +1595,10 @@ let production = {
         showIF: "server",
         dataType: "ms",
     },
+    In_Game_Client_Stats: {
+        type: "title",
+        showIF: "server",
+    },
     updatePositions_speed: {
         times: [],
         average: 0,
@@ -1612,6 +1616,19 @@ let production = {
         type: "dom",
         showIF: "server",
         dataType: "bytes",
+    },
+    In_Game_Server_Stats: {
+        type: "title",
+        showIF: "server",
+    },
+    lobby_gameLoop: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        cap: 100,
+        type: "dom",
+        showIF: "server",
+        dataType: "ms",
     },
     Memory_Ussage: {
         type: "title",
