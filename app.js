@@ -1729,7 +1729,7 @@ function removePlayerStatus(lobby,player,itemName) {
 setInterval(() => {
     io.emit("updateMemorry",process.memoryUsage());
   }, 5000);
-function updateClientPositions(lobby,lobby_gameLoop_start) {
+function updateClientPositions(lobby,lobby_gameLoop_start = Date.now()) {
     let emitingActivePlayers = Object.values(lobby.inGamePlayers).map(({ 
         index, 
         selectingItem, 
@@ -1747,7 +1747,6 @@ function updateClientPositions(lobby,lobby_gameLoop_start) {
         k: playerKills, 
         e: equiped 
     }));
-
     let newObj = {
         a: emitingActivePlayers,  
         s: lobby.updateSnakeCells,
