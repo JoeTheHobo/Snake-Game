@@ -117,10 +117,11 @@ socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     if ($(".content_servers").style.display == "none") return;
 
     frontEndLobbies = (backEndLobbies);
-    if (items.length > 0) {
+    if (items.length > 0 && tiles.length > 0) {
         loadServersHTML();
     } else {
         setTimeout(function() {
+            console.log("waited")
             loadServersHTML();
         },100)
     }
