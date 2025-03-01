@@ -1713,7 +1713,13 @@ function setUpProductionHTML() {
             let value = holder.create("div");
             value.id = "production_" + entry[0];
             value.className = "production_value";
-             value.innerHTML = entry[1].average.toFixed(2);
+            if (["ms","bytes","mb"].includes(entry[1].type)) {
+                value.innerHTML = entry[1].average.toFixed(2);
+            }
+            if (["count"].includes(entry[1].type)) {
+                value.innerHTML = entry[1].count;
+            }
+             
         }
         
     }
