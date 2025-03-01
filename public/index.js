@@ -382,6 +382,13 @@ function showNumber(index) {
     },1000);
 
 }
+socket.on("updateMemorry",(obj) => {
+    production.server_rss.times = [obj.rss];
+    production.server_heapTotal.times = [obj.heapTotal];
+    production.server_heapUsed.times = [obj.heapUsed];
+    production.server_external.times = [obj.external];
+    production.server_arrayBuffers.times = [obj.arrayBuffers];
+});
 socket.on("updatePositions",(obj,lobbyID) => {
     production.updatePositions_speed.timeStart = performance.now();
     if (localAccount.lobbyID !== lobbyID) return;
@@ -430,7 +437,6 @@ socket.on("updatePositions",(obj,lobbyID) => {
     if (obj.b) updateBoardStatusTracker(obj.b);
     
     server_renderPlayers();
-    updateProduction();
     production.updatePositions_speed.times.push(performance.now() - production.updatePositions_speed.timeStart);
 });
 socket.on("askToSpectate",(accountID,lobbyID,code) => {
@@ -519,3 +525,9 @@ function savePlayers(updateLobby = false) {
     });
 }
 //
+function updateProductionFunction() {
+    updateProduction();
+
+    requestAnimationFrame(updateProductionFunction);
+}
+updateProductionFunction();

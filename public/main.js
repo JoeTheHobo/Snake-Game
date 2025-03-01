@@ -1612,6 +1612,55 @@ let production = {
         showIF: "server",
         dataType: "bytes",
     },
+    Memory_Ussage: {
+        type: "title",
+        showIF: "server",
+    },
+    server_rss: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        cap: 1,
+        type: "dom",
+        showIF: "server",
+        dataType: "mb",
+    },
+    server_heapTotal: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        cap: 1,
+        type: "dom",
+        showIF: "server",
+        dataType: "mb",
+    },
+    server_heapUsed: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        cap: 1,
+        type: "dom",
+        showIF: "server",
+        dataType: "mb",
+    },
+    server_external: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        cap: 1,
+        type: "dom",
+        showIF: "server",
+        dataType: "mb",
+    },
+    server_arrayBuffers: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        cap: 1,
+        type: "dom",
+        showIF: "server",
+        dataType: "mb",
+    },
 }
 function setUpProductionHTML() {
     let holder = $(".production");
@@ -1627,6 +1676,8 @@ function setUpProductionHTML() {
             title.className = "production_title";
         if (entry[1].type == "sub")
             title.className = "production_titleSub";
+        if (entry[1].type == "title")
+            title.className = "production_titletitle";
         title.innerHTML = entry[0];
         let value = holder.create("div");
         value.id = "production_" + entry[0];
@@ -1637,6 +1688,8 @@ function setUpProductionHTML() {
 function updateProduction() {
     for (let i = 0; i < Object.entries(production).length; i++) {
         let entry = Object.entries(production)[i];
+
+        if (entry.type == "title") continue;
 
         if (entry[1].times.length > entry[1].cap) {
             entry[1].times.shift();
