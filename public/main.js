@@ -1683,7 +1683,7 @@ function setUpProductionHTML() {
         let value = holder.create("div");
         value.id = "production_" + entry[0];
         value.className = "production_value";
-        value.innerHTML = entry[1].average.toFixed(2);
+        if (entry[1].type !== "title") value.innerHTML = entry[1].average.toFixed(2);
     }
 }
 function updateProduction() {
