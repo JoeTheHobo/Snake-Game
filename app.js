@@ -829,9 +829,10 @@ io.on('connection', (socket) => {
         updateClientPositions(lobby)
 
         lobby.gameLoop = function() {
+            let lobby_gameLoop_start = Date.now();
             server_movePlayers(this)
 
-            updateClientPositions(this);
+            updateClientPositions(this,lobby_gameLoop_start);
 
             this.updatePositionTimeStamp = Date.now();
             this.updateSnakeCells = [];
@@ -1728,7 +1729,7 @@ function removePlayerStatus(lobby,player,itemName) {
 setInterval(() => {
     io.emit("updateMemorry",process.memoryUsage());
   }, 5000);
-function updateClientPositions(lobby) {
+function updateClientPositions(lobby,lobby_gameLoop_start = Date.now()) {
     let emitingActivePlayers = Object.values(lobby.inGamePlayers).map(({ 
         index, 
         selectingItem, 
@@ -1746,13 +1747,14 @@ function updateClientPositions(lobby) {
         k: playerKills, 
         e: equiped 
     }));
-
+    console.log(Date.now(),lobby_gameLoop_start);
     let newObj = {
         a: emitingActivePlayers,  
         s: lobby.updateSnakeCells,
         c: lobby.updateCells,
         p: lobby.playSounds,
         b: lobby.boardStatus,
+        g: (Date.now() - lobby_gameLoop_start),
     };
 
     // Compare with previous object
@@ -1773,7 +1775,6 @@ function getChangedValues(oldObj, newObj) {
 
     for (let key in newObj) {
         if (key == "s")
-            console.log(JSON.stringify(newObj[key]),JSON.stringify(oldObj[key]));
         if (JSON.stringify(newObj[key]) !== JSON.stringify(oldObj[key])) {
             changes[key] = newObj[key]; // Only store changed values
         }
