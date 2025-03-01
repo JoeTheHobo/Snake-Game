@@ -75,6 +75,7 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
         img.src = "img/" + tiles[i].img;
         img.id = "tile_" + tiles[i].name;
     }
+    renderMapsInServersTab = true;
 });
 socket.on("sendingZippedBoard",(socketID,zippedBoard,boardName) => {
     if (socketID !== localAccount.id) return;
@@ -117,14 +118,7 @@ socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     if ($(".content_servers").style.display == "none") return;
 
     frontEndLobbies = (backEndLobbies);
-    if (items.length > 0 && tiles.length > 0) {
-        loadServersHTML();
-    } else {
-        setTimeout(function() {
-            console.log("waited")
-            loadServersHTML();
-        },100)
-    }
+    loadServersHTML();
     $(".servers_online_text").innerHTML = onlineCount;
 })
 socket.on("settingLobbyBoards",(boardsList) => {

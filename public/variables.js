@@ -6,6 +6,7 @@ let currentBoard;
 let currentBoardIndex = ls.get("currentBoardIndex",0);
 let backgrounds;
 let tiles = [];
+let renderMapsInServersTab = false;
 
 let global_gameColors = [
     ["white","#ffffff"],

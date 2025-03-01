@@ -487,14 +487,7 @@ function setScene(scene,lobby) {
     hideScenes();
     $("scene_" + scene).show("flex");
     if (scene == "newMenu") {
-        if (items.length > 0 && tiles.length > 0) {
-            loadServersHTML();
-        } else {
-            setTimeout(function() {
-                console.log("waited")
-                loadServersHTML();
-            },100)
-        }
+        loadServersHTML();
         $(".account_name").innerHTML = localAccount.id; 
         $(".sc_bb_snakeImg").css({
             filter: getPlayerFilter(localAccount.serverSnake),
