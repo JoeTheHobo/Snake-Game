@@ -964,8 +964,9 @@ io.on('connection', (socket) => {
         if (lobby.gameStatus == "prepare") {
             player.moving = direction;
 
-            lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);
-            lobby.oldObj.updateSnakeCells = [];
+            let pushObj = structuredClone(lobby.snakeMap[player.pos.y][player.pos.x]);
+            pushObj.rnd = simple.rnd(9999);
+            lobby.updateSnakeCells.push(pushObj);
             updateClientPositions(lobby);
             
             return;
@@ -1752,7 +1753,6 @@ function updateClientPositions(lobby) {
 
     // Compare with previous object
     let changedList = getChangedValues(lobby.oldObj, newObj);
-    changedList.s = lobby.updateSnakeCells;
     let changes = pako.deflate(JSON.stringify(changedList), { to: 'string' });
 
     if (Object.keys(changes).length > 0) { // Only emit if there are changes
