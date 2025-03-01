@@ -109,7 +109,7 @@ socket.on("setClientLobby",(socketID,lobby) => {
     localAccount.isInLobby = true;
 })
 socket.on("updateLobbyPage",(lobbyID,lobby,type) => {
-    lobby = uint8ArrayToObject(lobby);
+    console.log(localAccount.lobbyID,lobbyID)
     if (localAccount.lobbyID !== lobbyID) return;
 
     updateLobbyPage(lobby,type);
@@ -118,15 +118,15 @@ socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
     if (playerID) if (playerID !== localAccount.id) return;
     if ($(".content_servers").style.display == "none") return;
 
-    frontEndLobbies = uint8ArrayToObject(backEndLobbies);
+    frontEndLobbies = (backEndLobbies);
     loadServersHTML();
     $(".servers_online_text").innerHTML = onlineCount;
 })
 socket.on("settingLobbyBoards",(boardsList) => {
-    localAccount.lobbyBoards = uint8ArrayToObject(boardsList);
+    localAccount.lobbyBoards = (boardsList);
 })
 socket.on("startingGame", (lobby) => {
-    lobby = uint8ArrayToObject(lobby);
+    lobby = (lobby);
     productionType = "server";
     setUpProductionHTML();
     if (localAccount.lobbyID !== lobby.id) return;
