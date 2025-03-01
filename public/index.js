@@ -391,19 +391,11 @@ socket.on("updatePositions",(obj,lobbyID) => {
 
     obj = JSON.parse(pako.inflate(obj, { to: 'string' }));
 
-    obj = {
-        updatedPlayers: obj[0],
-        updateSnakeCells: obj[1],
-        updateCells:obj[2],
-        playSounds:obj[3],
-        boardStatus: obj[4],
-    }
-
-    if (obj.updatedPlayers) {
-        for (let i = 0; i < obj.updatedPlayers.length; i++) {
+    if (obj.a) {
+        for (let i = 0; i < obj.a.length; i++) {
             for (let j = 0; j < activePlayers.length; j++) {
                 let local_player = activePlayers[j];
-                let server_player = obj.updatedPlayers[i];
+                let server_player = obj.a[i];
                 if (local_player.index !== server_player.i) continue;
     
                 local_player.selectingItem = server_player.s;
@@ -420,14 +412,14 @@ socket.on("updatePositions",(obj,lobbyID) => {
         }
     }
 
-    if (obj.updateSnakeCells) {
-        updateSnakeCells = updateSnakeCells.concat(obj.updateSnakeCells);
+    if (obj.s) {
+        updateSnakeCells = updateSnakeCells.concat(obj.s);
     }
-    if (obj.updateCells) updateCells = updateCells.concat(obj.updateCells);
+    if (obj.c) updateCells = updateCells.concat(obj.updateCells);
 
-    if (obj.playSounds) {
-        for (let i = 0; i < obj.playSounds.length; i++) {
-            let src = obj.playSounds[i];
+    if (obj.p) {
+        for (let i = 0; i < obj.p.length; i++) {
+            let src = obj.p[i];
             if (src == "sounds/mouse/mouse_spawn_1.mp3") continue;
             var audio = new Audio(src);
             audio.play();
@@ -435,7 +427,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
     }
     
 
-    if (obj.boardStatus) updateBoardStatusTracker(obj.boardStatus);
+    if (obj.b) updateBoardStatusTracker(obj.b);
     
     server_renderPlayers();
     updateProduction();

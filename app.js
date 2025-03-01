@@ -1742,13 +1742,13 @@ function updateClientPositions(lobby) {
         e: equiped 
     }));
 
-    let newObj = [
-        emitingActivePlayers,  
-        lobby.updateSnakeCells,
-        lobby.updateCells,
-        lobby.playSounds,
-        lobby.boardStatus,
-    ];
+    let newObj = {
+        a: emitingActivePlayers,  
+        s: lobby.updateSnakeCells,
+        c: lobby.updateCells,
+        p: lobby.playSounds,
+        b: lobby.boardStatus,
+    };
 
     // Compare with previous object
     let changes = pako.deflate(JSON.stringify(getChangedValues(lobby.oldObj, newObj)), { to: 'string' });
@@ -1765,11 +1765,9 @@ function getChangedValues(oldObj, newObj) {
 
     let changes = {};
 
-    for (let i = 0; i < newObj.length; i++) {
-        if (JSON.stringify(newObj[i]) !== JSON.stringify(oldObj[i])) {
-            changes[i] = newObj[i]; // Only store changed values
-        } else {
-            changes[i] = 0;
+    for (let key in newObj) {
+        if (JSON.stringify(newObj[key]) !== JSON.stringify(oldObj[key])) {
+            changes[key] = newObj[key]; // Only store changed values
         }
     }
 
