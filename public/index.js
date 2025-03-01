@@ -54,8 +54,8 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     localAccount.boardLimit = account.boardLimit;
     localAccount.serverSnake = account.serverSnake;
 
-    items = server_items;
-    tiles = server_tiles;
+    items = JSON.parse(pako.inflate(server_items, { to: 'string' }));
+    tiles = JSON.parse(pako.inflate(server_tiles, { to: 'string' }));
     basedGameMode = server_basedGameMode;
     presetGameModes = server_presetGameModes;
     presetBoards = server_presetBoards;

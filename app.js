@@ -90,7 +90,10 @@ io.on('connection', (socket) => {
                 return;
             }
             io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
-            io.emit('setPlayer', socket.id, onlineAccounts[socket.id],items,basedGameMode,presetGameModes,presetBoards,backgrounds,tiles,decompressed);
+            let sendItems = pako.deflate(JSON.stringify(items), { to: 'string' });
+            let sendTiles = pako.deflate(JSON.stringify(tiles), { to: 'string' });
+
+            io.emit('setPlayer', socket.id, onlineAccounts[socket.id],sendItems,basedGameMode,presetGameModes,presetBoards,backgrounds,sendTiles,decompressed);
         })
     })
 
