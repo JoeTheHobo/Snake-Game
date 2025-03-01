@@ -1775,7 +1775,6 @@ function getChangedValues(oldObj, newObj) {
 
     for (let key in newObj) {
         if (key == "s")
-            console.log(JSON.stringify(newObj[key]),JSON.stringify(oldObj[key]));
         if (JSON.stringify(newObj[key]) !== JSON.stringify(oldObj[key])) {
             changes[key] = newObj[key]; // Only store changed values
         }
