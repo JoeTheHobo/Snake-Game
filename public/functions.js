@@ -1589,7 +1589,6 @@ function updateLobbyPage(lobby,type = "all",extra) {
         if (type == "all") reference = lobby.activePlayers;
         if (type == "players") reference = lobby;
 
-        console.log(reference)
         if (reference) {
             for (let i = 0; i < reference.length; i++) {
                 if (reference[i].accountID === localAccount.id)  {
@@ -1606,6 +1605,7 @@ function updateLobbyPage(lobby,type = "all",extra) {
         let reference;
         if (type == "players") reference = lobby;
         if (type == "all") reference = lobby.activePlayers;
+        console.log(reference,localAccount.id)
 
         let playersHolder = $(".sc_players_playersList");
         playersHolder.innerHTML = "";
