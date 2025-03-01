@@ -1539,7 +1539,7 @@ function updatePlayerCard(player,whatToUpdate = "all") {
 }
 
 
-function updateLobbyPage(lobby,type = "all",extra) {
+function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
     if (type == "all") {
         if (localAccount.id == lobby.hostID) {
             $(".hostOnly").show();
@@ -1565,7 +1565,7 @@ function updateLobbyPage(lobby,type = "all",extra) {
     if (type == "all") currentBoard = lobby.board;
 
     if (type == "all") $(".lobbyCode").innerHTML = lobby.code;
-    if (type == "all") $("sc_playerCount").innerHTML = `Players (${lobby.players.length}/${lobby.playerMax})`;
+    if (type == "all" || type == "players") $("sc_playerCount").innerHTML = `Players (${type == "all" ? lobby.players.length : extra2}/${type == "all" ? lobby.playerMax : extra3})`;
     
     if (type == "all") $(".sc_tb_lobbyName").innerHTML = lobby.hostName + lobby.hostTag + "'s Lobby";
 
@@ -1605,7 +1605,6 @@ function updateLobbyPage(lobby,type = "all",extra) {
         let reference;
         if (type == "players") reference = lobby;
         if (type == "all") reference = lobby.activePlayers;
-        console.log(reference,localAccount.id)
 
         let playersHolder = $(".sc_players_playersList");
         playersHolder.innerHTML = "";
