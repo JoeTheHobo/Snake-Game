@@ -1747,14 +1747,12 @@ function updateClientPositions(lobby,lobby_gameLoop_start = Date.now()) {
         k: playerKills, 
         e: equiped 
     }));
-    console.log(Date.now(),lobby_gameLoop_start);
     let newObj = {
         a: emitingActivePlayers,  
         s: lobby.updateSnakeCells,
         c: lobby.updateCells,
         p: lobby.playSounds,
         b: lobby.boardStatus,
-        g: (Date.now() - lobby_gameLoop_start),
     };
 
     // Compare with previous object
