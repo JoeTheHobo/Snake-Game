@@ -383,6 +383,7 @@ function showNumber(index) {
 
 }
 socket.on("updatePositions",(obj,lobbyID) => {
+    console.log(obj);
     production.updatePositions_speed.timeStart = performance.now();
     if (localAccount.lobbyID !== lobbyID) return;
     if (!localAccount.isInGame) return; 
@@ -390,6 +391,15 @@ socket.on("updatePositions",(obj,lobbyID) => {
     production.updatePositions_recieveData.times.push(obj.byteLength);
 
     obj = JSON.parse(pako.inflate(obj, { to: 'string' }));
+
+    obj = {
+        updatedPlayers: obj[0],
+        updateSnakeCells: obj[1],
+        updateCells:obj[2],
+        playSounds:obj[3],
+        boardStatus: obj[4],
+    }
+    console.log(obj)
 
     if (obj.updatedPlayers) {
         for (let i = 0; i < obj.updatedPlayers.length; i++) {

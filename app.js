@@ -12,6 +12,8 @@ const pako = require('pako');
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const { baremetalsolution } = require("googleapis/build/src/apis/baremetalsolution/index.js");
+const { backupdr } = require("googleapis/build/src/apis/backupdr/index.js");
 const io = new Server(server, { pingInterval: 25000, pingTimeout: 60000});
 
 
@@ -1742,13 +1744,13 @@ function updateClientPositions(lobby) {
         e: equiped 
     }));
 
-    let newObj = {
-        updatedPlayers: emitingActivePlayers,
-        updateSnakeCells: lobby.updateSnakeCells,
-        updateCells: lobby.updateCells,
-        playSounds: lobby.playSounds,
-        boardStatus: lobby.boardStatus,
-    };
+    let newObj = [
+        emitingActivePlayers,  
+        lobby.updateSnakeCells,
+        lobby.updateCells,
+        lobby.playSounds,
+        lobby.boardStatus,
+    ];
 
     // Compare with previous object
     let changes = pako.deflate(JSON.stringify(getChangedValues(lobby.oldObj, newObj)), { to: 'string' });
@@ -1765,9 +1767,11 @@ function getChangedValues(oldObj, newObj) {
 
     let changes = {};
 
-    for (let key in newObj) {
-        if (JSON.stringify(newObj[key]) !== JSON.stringify(oldObj[key])) {
-            changes[key] = newObj[key]; // Only store changed values
+    for (let i = 0; i < newObj.length; i++) {
+        if (JSON.stringify(newObj[i]) !== JSON.stringify(oldObj[i])) {
+            changes[i] = newObj[i]; // Only store changed values
+        } else {
+            changes[i] = 0;
         }
     }
 
