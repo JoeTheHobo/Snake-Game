@@ -1631,22 +1631,16 @@ let production = {
         dataType: "ms",
     },
     server_player_count: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 1,
-        type: "dom",
+        value: 0,
+        type: "count",
         showIF: "server",
-        dataType: "mb",
+        dataType: "count",
     },
     server_lobby_count: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 1,
-        type: "dom",
+        value: 0,
+        type: "count",
         showIF: "server",
-        dataType: "mb",
+        dataType: "count",
     },
     Memory_Ussage: {
         type: "title",
@@ -1730,14 +1724,19 @@ function updateProduction() {
 
         if (entry[1].type == "title") continue;
 
-        if (entry[1].times.length > entry[1].cap) {
-            entry[1].times.shift();
+        if (["ms","bytes","mb"].includes(entry[1].type)) {
+            if (entry[1].times.length > entry[1].cap) {
+                entry[1].times.shift();
+            }
+            if (entry[1].times.length == 0) entry[1].times.push(0);
+            entry[1].average = entry[1].times.avg();
         }
-        if (entry[1].times.length == 0) entry[1].times.push(0);
-        entry[1].average = entry[1].times.avg();
+        
+        
         if (entry[1].dataType == "ms") $("production_" + entry[0]).innerHTML = entry[1].average.toFixed(2) + "ms";
         if (entry[1].dataType == "bytes") $("production_" + entry[0]).innerHTML = entry[1].average.toFixed(2) + "bytes";
         if (entry[1].dataType == "mb") $("production_" + entry[0]).innerHTML = ((entry[1].average/1000000).toFixed(2)) + "mb";
+        if (entry[1].dataType == "count") $("production_" + entry[0]).innerHTML = (entry[1].value);
     }
 }
 function gameLoop() {

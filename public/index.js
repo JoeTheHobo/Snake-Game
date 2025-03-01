@@ -117,8 +117,8 @@ socket.on("updateLobbies", (backEndLobbies,onlineCount, lobbyCount,playerID) =>{
     if (playerID) if (playerID !== localAccount.id) return;
     if ($(".content_servers").style.display == "none") return;
 
-    production.server_player_count.times = [onlineCount];
-    production.server_lobby_count.times = [lobbyCount];
+    production.server_player_count.value = onlineCount;
+    production.server_lobby_count.value = lobbyCount;
 
     frontEndLobbies = backEndLobbies;
     loadServersHTML();
