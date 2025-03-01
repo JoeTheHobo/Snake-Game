@@ -391,7 +391,6 @@ socket.on("updatePositions",(obj,lobbyID) => {
 
     obj = JSON.parse(pako.inflate(obj, { to: 'string' }));
 
-    console.log(obj)
     if (obj.a) {
         for (let i = 0; i < obj.a.length; i++) {
             for (let j = 0; j < activePlayers.length; j++) {
