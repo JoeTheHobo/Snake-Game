@@ -966,6 +966,7 @@ io.on('connection', (socket) => {
 
             let pushObj = structuredClone(lobby.snakeMap[player.pos.y][player.pos.x]);
             pushObj.rnd = simple.rnd(9999);
+            console.log(pushObj)
             lobby.updateSnakeCells.push(pushObj);
             updateClientPositions(lobby);
             
