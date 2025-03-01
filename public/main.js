@@ -1617,7 +1617,7 @@ let production = {
         showIF: "server",
         dataType: "bytes",
     },
-    In_Game_Server_Stats: {
+    Server_Stats: {
         type: "title",
         showIF: "server",
     },
@@ -1629,6 +1629,24 @@ let production = {
         type: "dom",
         showIF: "server",
         dataType: "ms",
+    },
+    server_player_count: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        cap: 1,
+        type: "dom",
+        showIF: "server",
+        dataType: "mb",
+    },
+    server_lobby_count: {
+        times: [],
+        average: 0,
+        timeStart: 0,
+        cap: 1,
+        type: "dom",
+        showIF: "server",
+        dataType: "mb",
     },
     Memory_Ussage: {
         type: "title",

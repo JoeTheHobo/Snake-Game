@@ -89,7 +89,7 @@ io.on('connection', (socket) => {
                 console.log(err);
                 return;
             }
-            io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
+            io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
             let sendItems = pako.deflate(JSON.stringify(items), { to: 'string' });
             let sendTiles = pako.deflate(JSON.stringify(tiles), { to: 'string' });
 
@@ -143,7 +143,7 @@ io.on('connection', (socket) => {
                     acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
                     return acc;
                 }, {});
-            io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
+            io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
         }
         
         io.emit("kickPlayer",socket.id,"Disconnected due to " + reason + " [Code: 002]");
@@ -376,8 +376,8 @@ io.on('connection', (socket) => {
                 acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
                 return acc;
             }, {});
-        io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
-        io.emit("setClientLobby",socket.id,objectToUint8Array(lobbies[lobby.id]))
+        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
+        io.emit("setClientLobby",socket.id,lobbies[lobby.id])
     })
     socket.on("quitServer",() => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -408,7 +408,7 @@ io.on('connection', (socket) => {
                     acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
                     return acc;
                 }, {});
-            io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
+            io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
         } else {
             if (lobby.hostID == socket.id) {
                 lobby.hostID = lobby.players[0];
@@ -429,7 +429,7 @@ io.on('connection', (socket) => {
                     acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
                     return acc;
                 }, {});
-            io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
+            io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
         }
     })
     socket.on("joinLobby",(lobbyID,code,spectate) => {
@@ -464,7 +464,7 @@ io.on('connection', (socket) => {
                 acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
                 return acc;
             }, {});
-        io.emit("updateLobbies", lobbyList, Object.keys(onlineAccounts).length, lobby,socket.id);
+        io.emit("updateLobbies", lobbyList, Object.keys(onlineAccounts).length, Object.keys(lobbies).length,socket.id);
         io.emit("updateLobbyPage", lobby.id, lobby.activePlayers, "players", lobby.hostID,lobby.players.length,lobby.playerMax);
         io.emit("setClientLobby",socket.id,lobby);
     })
@@ -476,7 +476,7 @@ io.on('connection', (socket) => {
                 acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
                 return acc;
             }, {});
-        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length);
+        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
     })
     socket.on("sendChat",(message) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -625,7 +625,7 @@ io.on('connection', (socket) => {
                 acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
                 return acc;
             }, {});
-        io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
+        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
         io.emit("setPlayerToHomeScreen",kickedPlayer.id);
         io.emit("updateLobbyPage", lobby.id, lobby.activePlayers, "players",lobby.hostID,lobby.players.length,lobby.playerMax);
     })
@@ -674,7 +674,7 @@ io.on('connection', (socket) => {
                 acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
                 return acc;
             }, {});
-        io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
+        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
     })
     socket.on("ping", (callback) => {
         callback();
@@ -908,7 +908,7 @@ io.on('connection', (socket) => {
                         acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
                         return acc;
                     }, {});
-                io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
+                io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
                 
             }
         }
@@ -931,7 +931,7 @@ io.on('connection', (socket) => {
                 acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
                 return acc;
             }, {});
-        io.emit("updateLobbies", objectToUint8Array(lobbyList),Object.keys(onlineAccounts).length);
+        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
 
     })
     socket.on("snakeIsReady", () => {

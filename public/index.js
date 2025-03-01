@@ -113,11 +113,14 @@ socket.on("updateLobbyPage",(lobbyID,lobby,type,extra,extra2,extra3) => {
     if (localAccount.lobbyID !== lobbyID) return;
     updateLobbyPage(lobby,type,extra,extra2,extra3);
 })
-socket.on("updateLobbies", (backEndLobbies,onlineCount, lobby,playerID) =>{
+socket.on("updateLobbies", (backEndLobbies,onlineCount, lobbyCount,playerID) =>{
     if (playerID) if (playerID !== localAccount.id) return;
     if ($(".content_servers").style.display == "none") return;
 
-    frontEndLobbies = (backEndLobbies);
+    production.server_player_count.times = [onlineCount];
+    production.server_lobby_count.times = [lobbyCount];
+
+    frontEndLobbies = backEndLobbies;
     loadServersHTML();
     $(".servers_online_text").innerHTML = onlineCount;
 })
