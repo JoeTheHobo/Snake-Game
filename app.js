@@ -16,8 +16,6 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, { pingInterval: 25000, pingTimeout: 60000});
 
-profanity.check("penis")
-
 const port = 3000;
 
 app.use(express.static('public'));
@@ -25,6 +23,8 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 })
+
+profanity.clean("penis is a setnece ew fuck")
 
 const lobbies = {};
 const onlineAccounts = {};
