@@ -9,7 +9,6 @@ const app = express();
 const pako = require('pako');
 const profanity = require("./profanity.js");
 
-profanity.check("penis")
 
 //socket.io setup
 const http = require('http');
@@ -17,8 +16,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, { pingInterval: 25000, pingTimeout: 60000});
 
-
-profanity.test();
+profanity.check("penis")
 
 const port = 3000;
 
