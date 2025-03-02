@@ -261,6 +261,7 @@ io.on('connection', (socket) => {
     socket.on("createNewBoard",(boardName,width,height,sentFrom) => {
         let account = onlineAccounts[socket.id];
 
+        console.log(boardName,simple.type(boardName),boardName.lengh)
         if (simple.type(boardName) !== "string") boardName = "Untitled";
         if (boardName.length > 15) boardName = "Untitled";
         if (boardName == "") boardName = "Untitled";
