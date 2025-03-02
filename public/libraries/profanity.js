@@ -111,7 +111,9 @@ function replaceAllBadWords(string, type,allowType = []) {
     return censoredString;
 }
 
+/*
 // CommonJS support for Node.js
 if (typeof module !== "undefined" && module.exports) {
     module.exports = profanity;
 }
+*/

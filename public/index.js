@@ -1,6 +1,3 @@
-profanity.test();
-
-
 const socket = io({reconnection: false});
 
 function uint8ArrayToObject(uint8Array) {

@@ -9,6 +9,8 @@ const app = express();
 const pako = require('pako');
 const profanity = require("./profanity.js");
 
+profanity.check("penis")
+
 //socket.io setup
 const http = require('http');
 const server = http.createServer(app);
