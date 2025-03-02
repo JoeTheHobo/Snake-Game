@@ -49,8 +49,6 @@ function retrieveAllPresetBoards(index) {
 }
 retrieveAllPresetBoards(0);
 
-
-console.log(profanity.clean("penis is a setnece ew fuck"));
 io.on('connection', (socket) => {
     console.log('a user connected');    
     let username = simple.rnd(playerNames1) + simple.rnd(playerNames2);
@@ -266,6 +264,7 @@ io.on('connection', (socket) => {
         if (simple.type(boardName) !== "string") boardName = "Untitled";
         if (boardName.length > 15) boardName = "Untitled";
         if (boardName == "") boardName = "Untitled";
+        boardName = profanity.clean(boardName);
 
         width = 50;//Number(width);
         height = 30;//Number(height);
