@@ -484,6 +484,7 @@ io.on('connection', (socket) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;
         if (message == "") return;
+        message = profanity.clean(message,true,["swear_soft"]);
 
         let account;
         for (let i = 0; i < lobby.players.length; i++) {
