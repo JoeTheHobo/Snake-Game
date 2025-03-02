@@ -1692,15 +1692,17 @@ filter: invert(100%);
 width: 100%;
 }
 .sc_chatHolder {
-  width: 100%;
+  width: 100%; /* Occupy full width of parent */
+  height: 100%; /* Occupy full height of parent */
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  height: 100%;
-  max-height: 100%;
-  flex-flow: column nowrap;
-  padding-bottom: 10px;
+  overflow-y: auto; /* Allow scrolling if content overflows */
+  flex-shrink: 0; /* Prevent shrinking */
+  flex-grow: 0; /* Prevent growing */
   box-sizing: border-box;
+  padding-bottom: 10px;
+  max-height: 100%; /* Ensures it doesn’t exceed parent's height */
+  max-width: 100%; /* Ensures it doesn’t exceed parent's width */
 }
 .sc_chatHolder > :first-child {
   margin-top: auto !important;
