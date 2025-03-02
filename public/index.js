@@ -4,7 +4,7 @@ function uint8ArrayToObject(uint8Array) {
     return uint8Array;
 }
 
-$(".sc_chatHolder").style.maxHeight = (0.19540805223068555 * window.innerHeight) + "px";
+$(".sc_chatHolder").style.maxHeight = (0.1627638737758433 * window.innerHeight) + "px";
 //const player = new Player(x, y);
 //const players = {};
 let frontEndLobbies = {};
