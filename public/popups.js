@@ -163,6 +163,7 @@ function makePopUp(objects,settings = {}) {
                     
                     if (obj.value) div.value = obj.value;
                     if (obj.placeholder) div.placeholder = obj.placeholder;
+                    if (obj.maxLength) div.maxLength = obj.maxLength;
 
                     div.css({
                         position: obj.position || "relative",

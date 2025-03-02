@@ -263,7 +263,7 @@ io.on('connection', (socket) => {
 
         console.log(boardName,simple.type(boardName),boardName.lengh)
         if (simple.type(boardName) !== "string") boardName = "Untitled";
-        if (boardName.length > 15) boardName = "Untitled";
+        if (boardName.length > 30) boardName = "Untitled";
         if (boardName == "") boardName = "Untitled";
         boardName = profanity.clean(boardName);
 

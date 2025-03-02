@@ -638,7 +638,7 @@ function loadBoardsScreen(index = false) {
                 {type: "title",text: "New Board"},
                 [
                     {type: "text", text: "Name"},
-                    {type: "input", id:"name", placeholder: "Untitled", width: "200px"},
+                    {type: "input", id:"name", maxLength: "30", placeholder: "Untitled", width: "200px"},
                 ],
                 /*
                 [
