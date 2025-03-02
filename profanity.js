@@ -4,10 +4,12 @@ const profanity = {
     }
 };
 
-// Export as default so it can be imported with any name
-export default profanity;
-
-// Ensure compatibility with Node.js (CommonJS)
+// CommonJS support for Node.js
 if (typeof module !== "undefined" && module.exports) {
     module.exports = profanity;
+}
+
+// Browser support: Attach to `window`
+if (typeof window !== "undefined") {
+    window.profanity = profanity;
 }

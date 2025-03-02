@@ -1,3 +1,5 @@
+profanity.test();
+
 
 const socket = io({reconnection: false});
 

@@ -7,7 +7,7 @@ const zlib = require('zlib');
 const express = require('express');
 const app = express();
 const pako = require('pako');
-import profanity from "./profanity.mjs"; // Can be named anything
+const profanity = require("./profanity.js");
 
 //socket.io setup
 const http = require('http');
