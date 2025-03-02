@@ -24,8 +24,6 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 })
 
-profanity.clean("penis is a setnece ew fuck")
-
 const lobbies = {};
 const onlineAccounts = {};
 
@@ -52,8 +50,9 @@ function retrieveAllPresetBoards(index) {
 retrieveAllPresetBoards(0);
 
 
+console.log(profanity.clean("penis is a setnece ew fuck"));
 io.on('connection', (socket) => {
-    console.log('a user connected');
+    console.log('a user connected');    
     let username = simple.rnd(playerNames1) + simple.rnd(playerNames2);
     let tag = "#" + formatNumber(Object.keys(onlineAccounts).length);
     onlineAccounts[socket.id] = {
