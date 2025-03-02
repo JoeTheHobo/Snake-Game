@@ -7,6 +7,7 @@ const zlib = require('zlib');
 const express = require('express');
 const app = express();
 const pako = require('pako');
+import profanity from "./profanity.mjs"; // Can be named anything
 
 //socket.io setup
 const http = require('http');
@@ -14,6 +15,8 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, { pingInterval: 25000, pingTimeout: 60000});
 
+
+profanity.test();
 
 const port = 3000;
 
