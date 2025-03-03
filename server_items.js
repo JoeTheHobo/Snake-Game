@@ -2,7 +2,6 @@ let items = [];
 items.push({
     name: "pellet",
     img: "snakeFood.png",
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 3,
     gameModeMenu_selectedItem: false,
@@ -17,27 +16,14 @@ items.push({
         //playSound: ["spawn",1], //Write the name of sound, and how many different Files there are.
     },
     onCollision: {
-        checkStatus: {
-            check: {
-                boardStatus: false,
-                playerTeamStatus: false,
-                playerStatusIncludes: false,
-                snakeSize: false,
-                playerHasEmptySlot: false,
-            },
-            pass: {
-                deleteMe: true,
-                growPlayer: 1,
-                spawn: [{
-                    name: "pellet",
-                    count: 1,
-                }],
-                playSound: ["die",2], //Write the name of sound, and how many different Files there are.
-                spawnRandomItem: true, //When eaten will it attempt to spawn in from item pool?
-            },
-            fail: {
-            }
-        },
+        deleteMe: true,
+        growPlayer: 1,
+        spawn: [{
+            name: "pellet",
+            count: 1,
+        }],
+        playSound: ["die",2], //Write the name of sound, and how many different Files there are.
+        spawnRandomItem: true, //When eaten will it attempt to spawn in from item pool?
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
@@ -50,7 +36,6 @@ items.push({
 items.push({
     name: "super_pellet",
     img: "snakeSuper.png",
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -62,21 +47,8 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
     
     onCollision: {
-        checkStatus: {
-            check: {
-                boardStatus: false,
-                playerTeamStatus: false,
-                playerStatusIncludes: false,
-                snakeSize: false,
-                playerHasEmptySlot: false,
-            },
-            pass: {
-                deleteMe: true,
-                growPlayer: 5,
-            },
-            fail: {
-            }
-        },
+        deleteMe: true,
+        growPlayer: 5,
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
@@ -89,7 +61,6 @@ items.push({
     name: "turbo",
     id: 3,
     img: "speedPowerUp.png",
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onActivate: {
         giveturbo: true,
         turbo: {
@@ -107,7 +78,6 @@ items.push({
             check: {
                 boardStatus: false,
                 playerTeamStatus: false,
-                playerStatusIncludes: false,
                 snakeSize: false,
                 playerHasEmptySlot: true,
             },
@@ -138,7 +108,6 @@ items.push({
     name: "wall",
     id: 4,
     img: "rock.png",
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -155,21 +124,8 @@ items.push({
     },
     
     onCollision: {
-        checkStatus: {
-            check: {
-                boardStatus: false,
-                playerTeamStatus: false,
-                playerStatusIncludes: false,
-                snakeSize: false,
-                playerHasEmptySlot: false,
-            },
-            pass: {
-                deleteMe: true,
-                dealDamage: 1,
-            },
-            fail: {
-            }
-        },
+        deleteMe: true,
+        dealDamage: 1,
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
@@ -181,7 +137,6 @@ items.push({
     name: "wall2",
     id: 5,
     img: "rock2.png",
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -196,21 +151,8 @@ items.push({
         playSound: ["spawn",1], //Write the name of sound, and how many different Files there are.
     },
     onCollision: {
-        checkStatus: {
-            check: {
-                boardStatus: false,
-                playerTeamStatus: false,
-                playerStatusIncludes: false,
-                snakeSize: false,
-                playerHasEmptySlot: false,
-            },
-            pass: {
-                deleteMe: true,
-                dealDamage: 2,
-            },
-            fail: {
-            }
-        },
+        deleteMe: true,
+        dealDamage: 2,
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
@@ -235,7 +177,6 @@ items.push({
             check: {
                 boardStatus: false,
                 playerTeamStatus: false,
-                playerStatusIncludes: false,
                 snakeSize: false,
                 playerHasEmptySlot: true,
             },
@@ -276,7 +217,6 @@ items.push({
             check: {
                 boardStatus: false,
                 playerTeamStatus: false,
-                playerStatusIncludes: false,
                 snakeSize: false,
                 playerHasEmptySlot: true,
             },
@@ -317,7 +257,6 @@ items.push({
             check: {
                 boardStatus: false,
                 playerTeamStatus: false,
-                playerStatusIncludes: false,
                 snakeSize: false,
                 playerHasEmptySlot: true,
             },
@@ -346,27 +285,13 @@ items.push({
     name: "lamp", //(string) Name Of Item
     id: 9,
     img: "Lamp.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onCollision: {
-        checkStatus: {
-            check: {
-                boardStatus: false,
-                playerTeamStatus: false,
-                playerStatusIncludes: false,
-                snakeSize: false,
-                playerHasEmptySlot: false,
-            },
-            pass: {
-                deleteMe: true,
-                canvasFilter: {
-                    active: true,
-                    filter: "invert(100%)",
-                    duration: 5000,
-                }
-            },
-            fail: {
-            }
-        },
+        deleteMe: true,
+        canvasFilter: {
+            active: true,
+            filter: "invert(100%)",
+            duration: 5000,
+        }
     },
     showInEditor: false,
     onStartSpawn: 0,
@@ -385,23 +310,7 @@ items.push({
     name: "snakeHole", //(string) Name Of Item
     id: 10,
     img: "snakeHole1.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list
-    onCollision: {
-        checkStatus: {
-            check: {
-                boardStatus: false,
-                playerTeamStatus: false,
-                playerStatusIncludes: false,
-                snakeSize: false,
-                playerHasEmptySlot: false,
-            },
-            pass: {
-                teleportPlayer: 0, //To Which ID
-            },
-            fail: {
-            }
-        },
-    },
+    teleport: 1, //To Which ID
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -419,23 +328,7 @@ items.push({
     name: "snakeHole2", //(string) Name Of Item
     id: 11,
     img: "snakeHole2.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    onCollision: {
-        checkStatus: {
-            check: {
-                boardStatus: false,
-                playerTeamStatus: false,
-                playerStatusIncludes: false,
-                snakeSize: false,
-                playerHasEmptySlot: false,
-            },
-            pass: {
-                teleportPlayer: 1, //To Which ID
-            },
-            fail: {
-            }
-        },
-    },
+    teleport: 2, //To Which ID
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -453,23 +346,7 @@ items.push({
     name: "snakeHole3", //(string) Name Of Item
     id: 12,
     img: "snakeHole3.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    onCollision: {
-        checkStatus: {
-            check: {
-                boardStatus: false,
-                playerTeamStatus: false,
-                playerStatusIncludes: false,
-                snakeSize: false,
-                playerHasEmptySlot: false,
-            },
-            pass: {
-                teleportPlayer: 2, //To Which ID
-            },
-            fail: {
-            }
-        },
-    },
+    teleport: 3, //To Which ID
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -489,7 +366,6 @@ items.push({
     name: "spawn", //(string) Name Of Item
     id: 13,
     img: "spawn.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onSpawn: { //When item spawns run these
         deleteMe: true,
     },
@@ -513,7 +389,6 @@ items.push({
     name: "clear", //(string) Name Of Item
     id: 14,
     img: "noZone.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -532,17 +407,16 @@ items.push({
     name: "blueKey", //(string) Name Of Item
     id: 15,
     img: "blueKey.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onCollision: {
         checkStatus: {
             check: {
                 boardStatus: false,
                 playerTeamStatus: false,
-                playerStatusIncludes: false,
                 snakeSize: false,
                 playerHasEmptySlot: true,
             },
             pass: {
+                deleteMe: true,
                 pickUp: true,
             },
             fail: {
@@ -566,17 +440,16 @@ items.push({
     name: "redKey", //(string) Name Of Item
     id: 16,
     img: "redKey.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onCollision: {
         checkStatus: {
             check: {
                 boardStatus: false,
                 playerTeamStatus: false,
-                playerStatusIncludes: false,
                 snakeSize: false,
                 playerHasEmptySlot: true,
             },
             pass: {
+                deleteMe: true,
                 pickUp: true,
             },
             fail: {
@@ -600,17 +473,16 @@ items.push({
     name: "greenKey", //(string) Name Of Item
     id: 17,
     img: "greenKey.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     onCollision: {
         checkStatus: {
             check: {
                 boardStatus: false,
                 playerTeamStatus: false,
-                playerStatusIncludes: false,
                 snakeSize: false,
                 playerHasEmptySlot: true,
             },
             pass: {
+                deleteMe: true,
                 pickUp: true,
             },
             fail: {
@@ -633,7 +505,6 @@ items.push({
     name: "blueLock", //(string) Name Of Item
     id: 18,
     img: "blueLock.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -647,7 +518,6 @@ items.push({
             check: {
                 boardStatus: false,
                 playerTeamStatus: false,
-                playerStatusIncludes: false,
                 snakeSize: false,
                 playerHasEmptySlot: false,
                 playerHasItem: [{
@@ -676,7 +546,6 @@ items.push({
     name: "redLock", //(string) Name Of Item
     id: 19,
     img: "redLock.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -691,7 +560,6 @@ items.push({
             check: {
                 boardStatus: false,
                 playerTeamStatus: false,
-                playerStatusIncludes: false,
                 snakeSize: false,
                 playerHasEmptySlot: false,
                 playerHasItem: [{
@@ -736,7 +604,6 @@ items.push({
             check: {
                 boardStatus: false,
                 playerTeamStatus: false,
-                playerStatusIncludes: false,
                 snakeSize: false,
                 playerHasEmptySlot: false,
                 playerHasItem: [{
@@ -764,7 +631,6 @@ items.push({
     name: "stoneWall", //(string) Name Of Item
     id: 21,
     img: "stoneWall.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -776,21 +642,7 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
     
     onCollision: {
-        checkStatus: {
-            check: {
-                boardStatus: false,
-                playerTeamStatus: false,
-                playerStatusIncludes: false,
-                snakeSize: false,
-                playerHasEmptySlot: false,
-                playerHasItem: false,
-            },
-            pass: {
-                killPlayer: true,
-            },
-            fail: {
-            }
-        },
+        killPlayer: true,
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
@@ -802,7 +654,6 @@ items.push({
     baseImg: "items/item_switch_",
     baseImgTags: [".onCollision.switchBoardStatus","_off"],
     renderImages: [["*colors"],["_on","_off"]],
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -813,7 +664,6 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
 
-    canCollide: true, //If You should look at any colliding properties
     onCollision: { //When collisionType collides do these
         switchBaseImgTag: { //Switch Between these images using Base Img
             index: 1,
@@ -833,7 +683,6 @@ items.push({
     baseImgTags: [".onCollision.removeBoardStatus"], 
     renderImages: [["*colors"]], //All Variations it can be
 
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -844,7 +693,6 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
 
-    canCollide: true, //If You should look at any colliding properties
     onCollision: { //When collisionType collides do these
         switchImage: false, //Switch Between these images
         switchBoardStatus: false, //Switch Between giving these status
@@ -858,12 +706,10 @@ items.push({
 items.push({
     name: "buttonAdd", //(string) Name Of Item
     id: 24,
-    
     baseImg: "items/item_buttonAdd_", //BaseImgTags Will add to this, to say which image to use
     baseImgTags: [".onCollision.addBoardStatus"], 
     renderImages: [["*colors"]], //All Variations it can be
 
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -874,7 +720,6 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
 
-    canCollide: true, //If You should look at any colliding properties
     onCollision: { //When collisionType collides do these
         switchImage: false, //Switch Between these images
         switchBoardStatus: false, //Switch Between giving these status
@@ -890,7 +735,6 @@ items.push({
     name: "crown", //(string) Name Of Item
     id: 25,
     img: "crown.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -902,21 +746,7 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     onCollision: {
-        checkStatus: {
-            check: {
-                boardStatus: false,
-                playerTeamStatus: false,
-                playerStatusIncludes: false,
-                snakeSize: false,
-                playerHasEmptySlot: false,
-                playerHasItem: false,
-            },
-            pass: {
-                winGame: true,
-            },
-            fail: {
-            }
-        },
+        winGame: true,
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
@@ -930,7 +760,6 @@ items.push({
     baseImg: "items/item_flag_",
     baseImgTags: ["white"],
     renderImages: [["*colors2"]],
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -942,7 +771,6 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     soundFolder: "flag",
-    canCollide: true, //If You should look at any colliding properties
     onCollision: { //When collisionType collides do these
         switchImage: false, //Switch Between these images
         switchBoardStatus: false, //Switch Between giving these status
@@ -968,7 +796,6 @@ items.push({
     baseImg: "items/item_pressurePlate_",
     baseImgTags: [".onCollision.addBoardStatus"],
     renderImages: [["*colors"]],
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -979,7 +806,6 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
 
-    canCollide: true, //If You should look at any colliding properties
     onCollision: { //When snake collides do these
         switchImage: false, //Switch Between these images
         switchBoardStatus: false, //Switch Between giving these status
@@ -1001,7 +827,6 @@ items.push({
     name: "lockedCell", //(string) Name Of Item
     id: 28,
     img: "lockedCell.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -1012,12 +837,6 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
 
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    canCollide: false, //If You should look at any colliding properties
     onCollision: { //When snake collides do these
         checkStatus: {
             check: {
@@ -1029,11 +848,7 @@ items.push({
                 playerHasItem: false,
             },
             pass: {
-                deleteMe: true,
-                removePlayerItem: [{
-                    name: "blueKey",
-                    count: 1,
-                }]
+
             },
             fail: {
                 killPlayer: true,
@@ -1044,7 +859,7 @@ items.push({
         removeBoardStatus: false, //Remove a status To the Board;
     },
 
-    renderStatusPath: ["destructible"], //Path to which status to render on top of item, leave blank if no render
+    renderStatusPath: ["onCollision","checkStatus","check","playerTeamStatus"], //Path to which status to render on top of item, leave blank if no render
     renderStatusColor: "white", //Type To Render Color;
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })
@@ -1052,7 +867,6 @@ items.push({
     name: "boardLockedCell", //(string) Name Of Item
     id: 29,
     img: "boardLockedCell.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -1064,38 +878,31 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
 
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    canCollide: false, //If You should look at any colliding properties
     onCollision: { //When snake collides do these
-        switchImage: false, //Switch Between Main Image and This Image
-        switchBoardStatus: false, //Switch Between giving these status
-        addBoardStatus: false, //Add a status To the Board;
-        removeBoardStatus: false, //Remove a status To the Board;
-        setBoardStatus: false, //Sets its world status to this, can only send out one status
-        changeHue: false, //Change hue to this.
-    },
-    offCollision: { //When snake leaves item
-        removeBoardStatus: false, //Remove a status To the Board;
+        checkStatus: {
+            check: {
+                boardStatus: {
+                    name: "red",
+                    count: 3,
+                },
+                playerTeamStatus: false,
+                playerStatusIncludes: false,
+                snakeSize: false,
+                playerHasEmptySlot: false,
+                playerHasItem: false,
+            },
+            pass: {
+                
+            },
+            fail: {
+                killPlayer: true,
+            }
+        },
     },
 
-
-    destructible: ["yes"], //Leave Blank If Nothing can Destroy This. "yes" - Anyone can destroy this
-    boardDestructible: ["status_red"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: ["boardDestructible"], //Path to which status to render on top of item, leave blank if no render
+    renderStatusPath: ["onCollision","checkStatus","check","boardStatus","name"], //Path to which status to render on top of item, leave blank if no render
     renderStatusColor: "board", //Type To Render Color;
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: false,
-    damage: 0,
-    onDelete: {
-        removeStatus: [],
-
-    },
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 
 items.push({
