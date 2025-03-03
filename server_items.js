@@ -909,12 +909,6 @@ items.push({
     name: "Yellow_Key", //(string) Name Of Item
     id: 30,
     img: "yellowKey.png", //(string) Image name
-    canEat: true, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
-    onEat: {
-        addStatus: ["Yellow_Key"],
-    },
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -925,24 +919,30 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tiledestructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    
-    destructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0, //How much damage to inflict to play when collided with
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
     pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
+
+    onCollision: {
+        checkStatus: {
+            check: {
+                boardStatus: false,
+                playerTeamStatus: false,
+                snakeSize: false,
+                playerHasEmptySlot: true,
+            },
+            pass: {
+                deleteMe: true,
+                pickUp: true,
+            },
+            fail: {
+            }
+        },
+    },
 })
 items.push({
     name: "Yellow_lock", //(string) Name Of Item
     id: 31,
     img: "yellowLock.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -952,31 +952,38 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
-
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    destructible: ["Yellow_Key"],
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0,
     playSounds: true, //If Item should be muted or not;
-    onDelete: {
-        removeStatus: ["Yellow_Key"],
-
-    },
     pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
+    onCollision: {
+        checkStatus: {
+            check: {
+                boardStatus: false,
+                playerTeamStatus: false,
+                snakeSize: false,
+                playerHasEmptySlot: false,
+                playerHasItem: [{
+                    name: "Yellow_Key",
+                    count: 1,
+                }],
+            },
+            pass: {
+                deleteMe: true,
+                removePlayerItem: [{
+                    name: "Yellow_Key",
+                    count: 1,
+                }]
+            },
+            fail: {
+                killPlayer: true,
+            }
+        },
+    },
 })
 items.push({
-    name: "Sanke_Size_Gate", //(string) Name Of Item
+    name: "Snake_Size_Gate", //(string) Name Of Item
     id: 32,
-    img: "Sanke_Size_Gate.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
+    img: "Snake_Size_Gate.png", //(string) Image name
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -988,37 +995,26 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
 
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    canCollide: false, //If You should look at any colliding properties
     onCollision: { //When snake collides do these
-        switchImage: false, //Switch Between Main Image and This Image
-        switchBoardStatus: false, //Switch Between giving these status
-        addBoardStatus: false, //Add a status To the Board;
-        removeBoardStatus: false, //Remove a status To the Board;
-        setBoardStatus: false, //Sets its world status to this, can only send out one status
-        changeHue: false, //Change hue to this.
-    },
-    offCollision: { //When snake leaves item
-        removeBoardStatus: false, //Remove a status To the Board;
+        checkStatus: {
+            check: {
+                boardStatus: false,
+                playerTeamStatus: false,
+                snakeSize: 10,
+                playerHasEmptySlot: false,
+                playerHasItem: false,
+            },
+            pass: {
+                
+            },
+            fail: {
+                killPlayer: true,
+            }
+        },
     },
 
-
-    destructible: ["yes"], //Leave Blank If Nothing can Destroy This. "yes" - Anyone can destroy this
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: ["snakeSizeRequired"], //Path to which status to render on top of item, leave blank if no render
+    renderStatusPath: ["onCollision","checkStatus","check","snakeSize"], //Path to which status to render on top of item, leave blank if no render
     renderStatusColor: "white", //Type To Render Color;
-    snakeSizeRequired: 10, //How Big Snake Needs To Be To Pass Through This False if any
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: false,
-    damage: 0,
-    onDelete: {
-        removeStatus: [],
-
-    },
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })
 
@@ -1026,7 +1022,6 @@ items.push({
     name: "Weighted_Preassure_Plate", //(string) Name Of Item
     id: 33,
     img: "weightedPressurePlate.png", //(string) Image name
-    cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -1038,38 +1033,42 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
 
-    canEat: false, //(true/false) Can the player consume item? If So it allows onEat_func
-    pickUp: false, //(true/false) Does the item go into thep players inventory or is it used immediently
-    onEat: {
-    },
-
-    canCollide: true, //If You should look at any colliding properties
-    requiredSnakeSizeToCollide: 5,
     onCollision: { //When snake collides do these
-        switchImage: false, //Switch Between these images
-        switchBoardStatus: false, //Switch Between giving these status
-        addBoardStatus: "A", //Add a status To the Board;
-        removeBoardStatus: false, //Remove a status To the Board;
-        setBoardStatus: false, //Sets its world status to this, can only send out one status
-        changeHue: false, //Change hue to this.
+        checkStatus: {
+            check: {
+                boardStatus: false,
+                playerTeamStatus: false,
+                snakeSize: 10,
+                playerHasEmptySlot: false,
+                playerHasItem: false,
+            },
+            pass: {
+                addBoardStatus: "red",
+            },
+            fail: {
+                
+            }
+        },
     },
     offCollision: { //When snake leaves item
-        removeBoardStatus: "A", //Remove a status To the Board;
+        check: {
+            boardStatus: false,
+            playerTeamStatus: false,
+            snakeSize: 10,
+            playerHasEmptySlot: false,
+            playerHasItem: false,
+        },
+        pass: {
+            removeBoardStatus: "red",
+        },
+        fail: {
+            
+        }
     },
 
-    destructible: [false],
-    boardDestructible: ["yes"], //What Status the world needs to destroy this. "yes" - Destroy no matter what
-    renderStatusPath: ["requiredSnakeSizeToCollide"], //Path to which status to render on top of item, leave blank if no render
+    renderStatusPath: ["onCollision","checkStatus","check","snakeSize"], //Path to which status to render on top of item, leave blank if no render
     renderStatusColor: "white", //Type To Render Color;
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    deleteOnDestruct: true, //When Destructible status is met do I delete myself?
-    damage: 0,
-    onDelete: {
-        removeStatus: [],
-
-    },
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
-    snakeSizeRequired: false, //How Big Snake Needs To Be To Pass Through This False if any
 })
 
 module.exports = { items };
