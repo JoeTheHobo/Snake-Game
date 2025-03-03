@@ -761,7 +761,7 @@ io.on('connection', (socket) => {
             //Set Player Item Usage
             player.howManyItemsCanIUse = lobby.gameMode.howManyItemsCanPlayersUse;
             player.whenInventoryIsFullInsertItemsAt = 0;
-            player.status = ["status_white"];
+            player.status = [];
             //Set All Player Items To Empty
             player.items = [];
             for (let j = 0; j < lobby.gameMode.howManyItemsCanPlayersUse; j++) {
@@ -797,6 +797,7 @@ io.on('connection', (socket) => {
                 x: false,
                 y: false,
             }
+            player.team = false;
             //Spawn Players
         }
 
@@ -1061,9 +1062,8 @@ function getItem(lobby,name) {
     }
 }
 function findPlayersTeam(player) {
-    for (let i = 0; i < player.status.length; i++) {
-        if (simple.subset(player.status[i],0,5) == "status") return player.status[i].split("_")[1];
-    }
+    if (player.team == false) return "white";
+    else return player.team;
 }
 function calculateDistance(currentBoard,x1, y1, x2, y2, boardLength, boardHeight) {
     boardLength = currentBoard.map[0].length;
@@ -1239,7 +1239,7 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
         if (isPlayer) {
             name.pos.x = x;
             name.pos.y = y;
-            addPlayerStatus(lobby,name,"status_" + team);
+            name.team = team;
             lobby.snakeMap[y][x].push({
                 index: name.index,
                 type: "head",
@@ -1657,9 +1657,6 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             removePlayerStatus(lobby,player,collision.removeStatus[i])
         }
     }
-    if (collision.deletePlayer) {
-        deletePlayer(lobby,player,undefined,item);
-    }
     if (collision.winGame === true) {
         player.winGame = true;
     }
@@ -1703,27 +1700,13 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     return returnItem;
 }
 function addPlayerStatus(lobby,player,itemName) {
-    if (simple.subset(itemName,0,5) == "status") {
-        removePlayerStatus(lobby,player,"teamColor");
-        player.status.push(itemName);
-    } else {
-        player.status.push(getItem(lobby,itemName).name);
-    }
+    player.status.push(getItem(lobby,itemName).name);
 }
 function removePlayerStatus(lobby,player,itemName) {
-    if (itemName == "teamColor") {
-        findingStatus: for (let i = 0; i < player.status.length; i++) {
-            if (simple.subset(player.status[i],0,5) == "status") {
-                player.status.splice(i,1);
-                break findingStatus;
-            }
-        }
-    } else {
-        findingStatus: for (let i = 0; i < player.status.length; i++) {
-            if (player.status[i] == getItem(lobby,itemName).name) {
-                player.status.splice(i,1);
-                break findingStatus;
-            }
+    findingStatus: for (let i = 0; i < player.status.length; i++) {
+        if (player.status[i] == getItem(lobby,itemName).name) {
+            player.status.splice(i,1);
+            break findingStatus;
         }
     }
 }
@@ -2215,6 +2198,7 @@ function newPlayer(socketID,accountName,accountTag) {
         accountID: socketID,
         accountName: accountName,
         accountTag: accountTag,
+        team: false,
     }
 }
 function checkPlayer(player,socketID) {
