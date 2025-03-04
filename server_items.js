@@ -61,34 +61,6 @@ items.push({
     name: "turbo",
     id: 3,
     img: "speedPowerUp.png",
-    onActivate: {
-        giveturbo: true,
-        turbo: {
-            duration: 50,
-            moveSpeed: 3,
-        },
-        turboServer: {
-            duration: 50,
-            moveSpeed: 2,
-        },
-        addStatus: ["turbo"],
-    },
-    onCollision: {
-        checkStatus: {
-            check: {
-                boardStatus: false,
-                playerTeamStatus: false,
-                snakeSize: false,
-                playerHasEmptySlot: true,
-            },
-            pass: {
-                deleteMe: true,
-                pickUp: true,
-            },
-            fail: {
-            }
-        },
-    },
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -98,11 +70,25 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
-
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    onDelete: { //Ran when item is destroyed
-    },
     pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
+    onActivate: {
+        giveTurbo: {
+            duration: 50,
+            moveSpeed: 2,
+        },
+    },
+    onCollision: {
+        checkStatus: {
+            check: {
+                playerHasEmptySlot: true,
+            },
+            pass: {
+                deleteMe: true,
+                pickUp: true,
+            }
+        },
+    },
 })
 items.push({
     name: "wall",
@@ -129,8 +115,6 @@ items.push({
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    onDelete: { //Ran when item is destroyed
-    },
     pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
@@ -156,15 +140,23 @@ items.push({
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    onDelete: { //Ran when item is destroyed
-        removeStatus: [], //Remove any status
-    },
     pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "bronzeShield", //(string) Name Of Item
     id: 6,
     img: "bronzeShield.png", //(string) Image name
+    showInEditor: true,
+    onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 20,
+    visible: true, //If show when playing
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
     whenEquiped: {
         protect: 2, //How much it protects
         absorb: 0, //How much item Absorbs before breaking it'self
@@ -175,36 +167,30 @@ items.push({
     onCollision: {
         checkStatus: {
             check: {
-                boardStatus: false,
-                playerTeamStatus: false,
-                snakeSize: false,
                 playerHasEmptySlot: true,
             },
             pass: {
                 deleteMe: true,
                 pickUp: true,
             },
-            fail: {
-            }
         },
     },
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 20,
-    visible: true, //If show when playing
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "silverShield",
     id: 7,
     img: "silverShield.png",
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 10,
+    playSounds: true, //If Item should be muted or not;
+    visible: true, //If show when playing
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
     whenEquiped: {
         protect: 3, //How much it protects
         absorb: 0, //How much item Absorbs before breaking it'self
@@ -215,36 +201,30 @@ items.push({
     onCollision: {
         checkStatus: {
             check: {
-                boardStatus: false,
-                playerTeamStatus: false,
-                snakeSize: false,
                 playerHasEmptySlot: true,
             },
             pass: {
                 deleteMe: true,
                 pickUp: true,
             },
-            fail: {
-            }
         },
     },
-    showInEditor: true,
-    onStartSpawn: 0,
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 10,
-    playSounds: true, //If Item should be muted or not;
-    visible: true, //If show when playing
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "goldShield",
     id: 8,
     img: "goldShield.png",
+    showInEditor: true,
+    onStartSpawn: 0,
+    playSounds: true, //If Item should be muted or not;
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 5,
+    visible: true, //If show when playing
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
     whenEquiped: {
         protect: 4, //How much it protects
         absorb: 0, //How much item Absorbs before breaking it'self
@@ -255,44 +235,19 @@ items.push({
     onCollision: {
         checkStatus: {
             check: {
-                boardStatus: false,
-                playerTeamStatus: false,
-                snakeSize: false,
                 playerHasEmptySlot: true,
             },
             pass: {
                 deleteMe: true,
                 pickUp: true,
             },
-            fail: {
-            }
         },
     },
-    showInEditor: true,
-    onStartSpawn: 0,
-    playSounds: true, //If Item should be muted or not;
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 5,
-    visible: true, //If show when playing
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: false, //Spawn players on this tile
-    
-    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "lamp", //(string) Name Of Item
     id: 9,
     img: "Lamp.png", //(string) Image name
-    onCollision: {
-        deleteMe: true,
-        canvasFilter: {
-            active: true,
-            filter: "invert(100%)",
-            duration: 5000,
-        }
-    },
     showInEditor: false,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -302,15 +257,22 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
-
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     pack: "Hidden",//Which Item Pack Does This Group To (For Map Editor)
+    onCollision: {
+        deleteMe: true,
+        canvasFilter: {
+            active: true,
+            filter: "invert(100%)",
+            duration: 5000,
+        }
+    },
 })
 items.push({
     name: "snakeHole", //(string) Name Of Item
     id: 10,
     img: "snakeHole1.png", //(string) Image name
-    teleport: 1, //To Which ID
+    teleport: 10, //To Which ID
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -320,7 +282,6 @@ items.push({
     spawnCount: 2, //How Many To Spawn In When Spawning
     spawnLimit: 1, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
-    
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
 })
@@ -328,7 +289,7 @@ items.push({
     name: "snakeHole2", //(string) Name Of Item
     id: 11,
     img: "snakeHole2.png", //(string) Image name
-    teleport: 2, //To Which ID
+    teleport: 11, //To Which ID
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -346,18 +307,16 @@ items.push({
     name: "snakeHole3", //(string) Name Of Item
     id: 12,
     img: "snakeHole3.png", //(string) Image name
-    teleport: 3, //To Which ID
+    teleport: 12, //To Which ID
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 4,
     playSounds: true, //If Item should be muted or not;
     visible: true, //If show when playing
-    teleport: 2, //Teleport ID
     spawnCount: 2, //How Many To Spawn In When Spawning
     spawnLimit: 1, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
-
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
 })
@@ -366,9 +325,6 @@ items.push({
     name: "spawn", //(string) Name Of Item
     id: 13,
     img: "spawn.png", //(string) Image name
-    onSpawn: { //When item spawns run these
-        deleteMe: true,
-    },
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -380,9 +336,11 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: true, //Spawn players on this tile
     spawnPlayerTeam: "white", //Tells which player to spawn here. "player" for all players
-
     renderStatusPath: ["spawnPlayerTeam"], //Path to which status to render on top of item, leave blank if no render
     pack: "Mechanics",//Which Item Pack Does This Group To (For Map Editor)
+    onSpawn: { //When item spawns run these
+        deleteMe: true,
+    },
 })
 
 items.push({
