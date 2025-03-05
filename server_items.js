@@ -2,6 +2,7 @@ let items = [];
 items.push({
     name: "pellet",
     img: "snakeFood.png",
+    type: "item",
     showInEditor: true,
     onStartSpawn: 3,
     gameModeMenu_selectedItem: false,
@@ -27,15 +28,13 @@ items.push({
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    boardDestructibleCountRequired: 1, //How many of these world status does it need
-    onDelete: { //Ran when item is destroyed
-    },
     id: 1,
     pack: "Food",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "super_pellet",
     img: "snakeSuper.png",
+    type: "item",
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -61,6 +60,7 @@ items.push({
     name: "turbo",
     id: 3,
     img: "speedPowerUp.png",
+    type: "item",
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -84,7 +84,6 @@ items.push({
                 playerHasEmptySlot: true,
             },
             pass: {
-                deleteMe: true,
                 pickUp: true,
             }
         },
@@ -94,6 +93,7 @@ items.push({
     name: "wall",
     id: 4,
     img: "rock.png",
+    type: "item",
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -121,6 +121,7 @@ items.push({
     name: "wall2",
     id: 5,
     img: "rock2.png",
+    type: "item",
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -146,6 +147,7 @@ items.push({
     name: "bronzeShield", //(string) Name Of Item
     id: 6,
     img: "bronzeShield.png", //(string) Image name
+    type: "item",
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -170,7 +172,6 @@ items.push({
                 playerHasEmptySlot: true,
             },
             pass: {
-                deleteMe: true,
                 pickUp: true,
             },
         },
@@ -180,6 +181,7 @@ items.push({
     name: "silverShield",
     id: 7,
     img: "silverShield.png",
+    type: "item",
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -204,7 +206,6 @@ items.push({
                 playerHasEmptySlot: true,
             },
             pass: {
-                deleteMe: true,
                 pickUp: true,
             },
         },
@@ -214,6 +215,7 @@ items.push({
     name: "goldShield",
     id: 8,
     img: "goldShield.png",
+    type: "item",
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -238,7 +240,6 @@ items.push({
                 playerHasEmptySlot: true,
             },
             pass: {
-                deleteMe: true,
                 pickUp: true,
             },
         },
@@ -248,6 +249,7 @@ items.push({
     name: "lamp", //(string) Name Of Item
     id: 9,
     img: "Lamp.png", //(string) Image name
+    type: "item",
     showInEditor: false,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -272,6 +274,7 @@ items.push({
     name: "snakeHole", //(string) Name Of Item
     id: 10,
     img: "snakeHole1.png", //(string) Image name
+    type: "item",
     teleport: 10, //To Which ID
     showInEditor: true,
     onStartSpawn: 0,
@@ -289,6 +292,7 @@ items.push({
     name: "snakeHole2", //(string) Name Of Item
     id: 11,
     img: "snakeHole2.png", //(string) Image name
+    type: "item",
     teleport: 11, //To Which ID
     showInEditor: true,
     onStartSpawn: 0,
@@ -307,6 +311,7 @@ items.push({
     name: "snakeHole3", //(string) Name Of Item
     id: 12,
     img: "snakeHole3.png", //(string) Image name
+    type: "item",
     teleport: 12, //To Which ID
     showInEditor: true,
     onStartSpawn: 0,
@@ -325,6 +330,7 @@ items.push({
     name: "spawn", //(string) Name Of Item
     id: 13,
     img: "spawn.png", //(string) Image name
+    type: "item",
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -347,6 +353,7 @@ items.push({
     name: "clear", //(string) Name Of Item
     id: 14,
     img: "noZone.png", //(string) Image name
+    type: "item",
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -365,6 +372,7 @@ items.push({
     name: "blueKey", //(string) Name Of Item
     id: 15,
     img: "blueKey.png", //(string) Image name
+    type: "item",
     onCollision: {
         checkStatus: {
             check: {
@@ -374,7 +382,6 @@ items.push({
                 playerHasEmptySlot: true,
             },
             pass: {
-                deleteMe: true,
                 pickUp: true,
             },
             fail: {
@@ -398,6 +405,7 @@ items.push({
     name: "redKey", //(string) Name Of Item
     id: 16,
     img: "redKey.png", //(string) Image name
+    type: "item",
     onCollision: {
         checkStatus: {
             check: {
@@ -407,7 +415,6 @@ items.push({
                 playerHasEmptySlot: true,
             },
             pass: {
-                deleteMe: true,
                 pickUp: true,
             },
             fail: {
@@ -431,6 +438,7 @@ items.push({
     name: "greenKey", //(string) Name Of Item
     id: 17,
     img: "greenKey.png", //(string) Image name
+    type: "item",
     onCollision: {
         checkStatus: {
             check: {
@@ -440,7 +448,6 @@ items.push({
                 playerHasEmptySlot: true,
             },
             pass: {
-                deleteMe: true,
                 pickUp: true,
             },
             fail: {
@@ -463,6 +470,7 @@ items.push({
     name: "blueLock", //(string) Name Of Item
     id: 18,
     img: "blueLock.png", //(string) Image name
+    type: "item",
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -504,6 +512,7 @@ items.push({
     name: "redLock", //(string) Name Of Item
     id: 19,
     img: "redLock.png", //(string) Image name
+    type: "item",
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -546,6 +555,7 @@ items.push({
     name: "greenLock", //(string) Name Of Item
     id: 20,
     img: "greenLock.png", //(string) Image name
+    type: "item",
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
     onStartSpawn: 0,
@@ -589,6 +599,7 @@ items.push({
     name: "stoneWall", //(string) Name Of Item
     id: 21,
     img: "stoneWall.png", //(string) Image name
+    type: "item",
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -609,6 +620,7 @@ items.push({
 items.push({
     name: "switch", //(string) Name Of Item
     id: 22,
+    type: "item",
     baseImg: "items/item_switch_",
     baseImgTags: [".onCollision.switchBoardStatus","_off"],
     renderImages: [["*colors"],["_on","_off"]],
@@ -637,6 +649,7 @@ items.push({
 items.push({
     name: "button", //(string) Name Of Item
     id: 23,
+    type: "item",
     baseImg: "items/item_buttonSubtract_", //BaseImgTags Will add to this, to say which image to use
     baseImgTags: [".onCollision.removeBoardStatus"], 
     renderImages: [["*colors"]], //All Variations it can be
@@ -664,6 +677,7 @@ items.push({
 items.push({
     name: "buttonAdd", //(string) Name Of Item
     id: 24,
+    type: "item",
     baseImg: "items/item_buttonAdd_", //BaseImgTags Will add to this, to say which image to use
     baseImgTags: [".onCollision.addBoardStatus"], 
     renderImages: [["*colors"]], //All Variations it can be
@@ -692,6 +706,7 @@ items.push({
 items.push({
     name: "crown", //(string) Name Of Item
     id: 25,
+    type: "item",
     img: "crown.png", //(string) Image name
     showInEditor: true,
     onStartSpawn: 0,
@@ -715,6 +730,7 @@ items.push({
 items.push({
     name: "flag", //(string) Name Of Item
     id: 26,
+    type: "item",
     baseImg: "items/item_flag_",
     baseImgTags: ["white"],
     renderImages: [["*colors2"]],
@@ -751,6 +767,7 @@ items.push({
 items.push({
     name: "preassurePlate", //(string) Name Of Item
     id: 27,
+    type: "item",
     baseImg: "items/item_pressurePlate_",
     baseImgTags: [".onCollision.addBoardStatus"],
     renderImages: [["*colors"]],
@@ -784,6 +801,7 @@ items.push({
 items.push({
     name: "lockedCell", //(string) Name Of Item
     id: 28,
+    type: "item",
     img: "lockedCell.png", //(string) Image name
     showInEditor: true,
     onStartSpawn: 0,
@@ -824,6 +842,7 @@ items.push({
 items.push({
     name: "boardLockedCell", //(string) Name Of Item
     id: 29,
+    type: "item",
     img: "boardLockedCell.png", //(string) Image name
     showInEditor: true,
     onStartSpawn: 0,
@@ -866,6 +885,7 @@ items.push({
 items.push({
     name: "Yellow_Key", //(string) Name Of Item
     id: 30,
+    type: "item",
     img: "yellowKey.png", //(string) Image name
     showInEditor: true,
     onStartSpawn: 0,
@@ -889,7 +909,6 @@ items.push({
                 playerHasEmptySlot: true,
             },
             pass: {
-                deleteMe: true,
                 pickUp: true,
             },
             fail: {
@@ -900,6 +919,7 @@ items.push({
 items.push({
     name: "Yellow_lock", //(string) Name Of Item
     id: 31,
+    type: "item",
     img: "yellowLock.png", //(string) Image name
     showInEditor: true,
     onStartSpawn: 0,
@@ -941,6 +961,7 @@ items.push({
 items.push({
     name: "Snake_Size_Gate", //(string) Name Of Item
     id: 32,
+    type: "item",
     img: "Snake_Size_Gate.png", //(string) Image name
     showInEditor: true,
     onStartSpawn: 0,
@@ -979,6 +1000,7 @@ items.push({
 items.push({
     name: "Weighted_Preassure_Plate", //(string) Name Of Item
     id: 33,
+    type: "item",
     img: "weightedPressurePlate.png", //(string) Image name
     showInEditor: true,
     onStartSpawn: 0,

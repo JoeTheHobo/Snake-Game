@@ -708,7 +708,6 @@ io.on('connection', (socket) => {
         lobby.board.location_tunnels = [];
         lobby.board.location_status = [];
         lobby.board.location_spawns = [];
-        lobby.board.boardStatus = [];
         lobby.snakeMap = [];
         for (let i = 0; i < lobby.board.map.length; i++) {
             let toPush = [];
@@ -1387,13 +1386,11 @@ function specialItemManager(lobby) {
         lobby.specialItemIteration++;
     }
 }
-function deletePlayer(lobby,player,playerWhoKilled,item,instaKill = false){
+function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false){
     let currentGameMode = lobby.gameMode;
     let activePlayers = lobby.inGamePlayers;
 
     let playerDied = true;
-    let damage;
-    if (item) damage = item.damage;
     if (playerWhoKilled) damage = playerWhoKilled.bodyArmor;
 
 
@@ -1567,9 +1564,12 @@ function testItemUnderPlayer(lobby,player) {
 function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: true}) {
     let returnItem = "empty";
     let currentBoard = lobby.board;
+    let currentGameMode = lobby.gameMode;
     if (!type) return returnItem;
 
-    let collision = item[type];
+    let collision;
+    if (simple.type(type) == "object") collision = type; 
+    else collision = item[type];
 
     if (!collision) return returnItem;
 
@@ -1695,6 +1695,94 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     }
     if (collision.playSound && item.playSounds && settings?.playAudio && lobby.playSounds) {
         lobby.playSounds.push("sounds/" + item.soundFolder + "/" + item.soundFolder + "_" + collision.playSound[0] + "_" + simple.rnd(collision.playSound[1]) + ".mp3");
+    }
+    if (collision.killPlayer) {
+        deletePlayer(lobby,player,false,false,true);
+    }
+    if (collision.deleteMe) {
+        if (item.type == "item") {
+            currentBoard[player.pos.y][player.pos.x].item = false;
+            lobby.updateCells.push({
+                x: player.pos.x,
+                y: player.pos.y,
+                item: false,
+            })
+        }
+    }
+    if (collision.pickUp) {
+        for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
+            if (player.items[k] == "empty") {
+                player.items[k] = structuredClone(item);
+                if (item.type == "item") {
+                    currentBoard[player.pos.y][player.pos.x].item = false;
+                    lobby.updateCells.push({
+                        x: player.pos.x,
+                        y: player.pos.y,
+                        item: false,
+                    })
+                }
+                break;
+            }
+        }
+    }
+    if (collision.dealDamage) {
+        deletePlayer(lobby,player,false,collision.dealDamage);
+    }
+    if (collision.removePlayerItem) {
+        for (let j = 0; j < collision.removePlayerItem.length; j++) {
+            let count = collision.removePlayerItem[j].count;
+            for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
+                if (count == 0) continue;
+                let playerSlot = player.items[k];
+                if (playerSlot == "empty") continue;
+                if (playerSlot.name == collision.removePlayerItem[j].name) {
+                    player.items[k] = "empty";
+                    count--;
+                }
+            }
+        }
+        
+    }
+    if (collision.checkStatus) {
+        let check = collision.checkStatus.check;
+        let passedCheck = true;
+        if (check.playerHasEmptySlot === true) {
+            let pass = false;
+            for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
+                if (player.items[k] === "empty") pass = true;
+            }
+            if (!pass) passedCheck = false;
+        }
+        if (check.playerHasItem) {
+            let pass = true;
+            for (let j = 0; j < check.playerHasItem.length; j++) {
+                let count = 0;
+                for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
+                    let playerSlot = player.items[k];
+                    if (playerSlot == check.playerHasItem.name) count++;
+                }
+                if (count < check.playerHasItem.count) pass = false;
+            }
+            if (!pass) passedCheck = false;
+        }
+        if (check.playerTeamStatus) {
+            if (player.team !== check.playerTeamStatus) passedCheck = false;
+        }
+        if (check.boardStatus) {
+            let count = 0;
+            for (let j = 0; j < lobby.boardStatus.length; j++) {
+                if (lobby.boardStatus[j] === check.boardStatus.name) count++;
+            }
+            if (count < check.boardStatus.count) passedCheck = false;
+        }
+        if (check.snakeSize) {
+            if (player.tail.length + 1 < check.snakeSize) passedCheck = false;
+        }
+
+
+        //Finish Checking
+        if (passedCheck) runItemFunction(lobby,player,item,collision.checkStatus.pass,itemPos,settings);
+        else runItemFunction(lobby,player,item,collision.checkStatus.fail,itemPos,settings);
     }
 
     return returnItem;
@@ -1978,9 +2066,6 @@ function getPlayersList(playerIds) {
     }
     return list;
 }
-function movePlayer(lobby,player) {
-    
-}
 function server_movePlayers(lobby) {
     activePlayers = lobby.inGamePlayers;
     let currentBoard = lobby.board;
@@ -2078,8 +2163,10 @@ function server_movePlayers(lobby) {
                 deletePlayer(lobby, player, killer);
             }
         }
+
         //Test Item Underplayer
-        if (!player.isDead) testItemUnderPlayer(lobby,player);
+        let mapItem = currentBoard[player.pos.y][player.pos.x].item;
+        if (mapItem) runItemFunction(lobby,player,mapItem,"onCollision");
 
         if (!player.isDead) {
 

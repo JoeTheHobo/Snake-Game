@@ -3,6 +3,7 @@ tiles.push({
     name: "grass",
     img: "background.png",
     changePlayerSpeed: 1, //Player Speed Times This Number
+    type: "tile",
     canSpawn: true, //If Items can spawn on tile
     id: 1,
     pack: "Regular Speed",//Which Item Pack Does This Group To (For Map Editor)
@@ -10,6 +11,7 @@ tiles.push({
 tiles.push({
     name: "sand",
     img: "tilesand.png",
+    type: "tile",
     changePlayerSpeed: 0.5, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 2,
@@ -18,6 +20,7 @@ tiles.push({
 tiles.push({
     name: "clear",
     img: "clear.png",
+    type: "tile",
     changePlayerSpeed: 1, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 3,
@@ -26,6 +29,7 @@ tiles.push({
 tiles.push({
     name: "pathway",
     img: "path.png",
+    type: "tile",
     changePlayerSpeed: 1.5, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 4,
@@ -34,6 +38,7 @@ tiles.push({
 tiles.push({
     name: "planks",
     img: "tileplanks.png",
+    type: "tile",
     changePlayerSpeed: 1, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 5,
@@ -42,6 +47,7 @@ tiles.push({
 tiles.push({
     name: "water",
     img: "tilewater.png",
+    type: "tile",
     changePlayerSpeed: 0.5, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 6,
@@ -50,6 +56,7 @@ tiles.push({
 tiles.push({
     name: "flower",
     img: "flower.png",
+    type: "tile",
     changePlayerSpeed: 1, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 7,
@@ -58,6 +65,7 @@ tiles.push({
 tiles.push({
     name: "Dirt",
     img: "dirtTile.jpg",
+    type: "tile",
     changePlayerSpeed: 1, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 8,
@@ -67,6 +75,7 @@ tiles.push({
 tiles.push({
     name: "Piano",
     img: "tile_piano.jpg",
+    type: "tile",
     changePlayerSpeed: 1, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
     id: 9,
