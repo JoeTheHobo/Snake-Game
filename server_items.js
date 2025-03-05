@@ -275,7 +275,9 @@ items.push({
     id: 10,
     img: "snakeHole1.png", //(string) Image name
     type: "item",
-    teleport: 10, //To Which ID
+    onCollision: {
+        teleport: 10,
+    },
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -293,7 +295,9 @@ items.push({
     id: 11,
     img: "snakeHole2.png", //(string) Image name
     type: "item",
-    teleport: 11, //To Which ID
+    onCollision: {
+        teleport: 11,
+    },
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -312,7 +316,9 @@ items.push({
     id: 12,
     img: "snakeHole3.png", //(string) Image name
     type: "item",
-    teleport: 12, //To Which ID
+    onCollision: {
+        teleport: 12,
+    },
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -337,7 +343,6 @@ items.push({
     specialSpawnWeight: 0,
     playSounds: true, //If Item should be muted or not;
     visible: false, //If show when playing
-    teleport: false, //Teleport ID
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: true, //Spawn players on this tile
@@ -360,7 +365,6 @@ items.push({
     specialSpawnWeight: 0,
     playSounds: true, //If Item should be muted or not;
     visible: false, //If show when playing
-    teleport: false, //Teleport ID
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
@@ -850,7 +854,6 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing
-    teleport: false, //Teleport ID
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
@@ -893,7 +896,6 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing
-    teleport: false, //Teleport ID
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tiledestructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
@@ -926,7 +928,6 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing
-    teleport: false, //Teleport ID
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
@@ -969,7 +970,6 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing
-    teleport: false, //Teleport ID
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
@@ -1008,7 +1008,6 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing
-    teleport: false, //Teleport ID
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
