@@ -875,7 +875,7 @@ $("me_button").on("click",function() {
         makePopUp([
             {type: "title",text: "Save Board"},
             [
-                {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Add To Lobby Boards",onClick: () => {
+                {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "blue",text:"Add To Lobby Boards",onClick: () => {
                     saveBoard();
                     socket.emit("addBoardToLobbyBoards",JSON.stringify(shortenBoard(currentBoard)));
                     socket.emit("changeServerBoard",JSON.stringify(shortenBoard(currentBoard)));
@@ -886,6 +886,9 @@ $("me_button").on("click",function() {
                     selectAllPlayerBoardsPopUp("lobby");
                 }},
             ],
+            {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Discard Changes",onClick: () => {
+                setScene("lobby");
+            }},
         ],{
             exit: {
                 cursor: "url('./img/pointer.cur'), auto",
