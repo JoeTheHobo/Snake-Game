@@ -574,7 +574,7 @@ io.on('connection', (socket) => {
 
         //Varify Board Here -To Be Added
         board = fixBoard(JSON.parse(board))
-        console.log(75,board.itemDifferences)
+        console.log(75,board.itemDifferences[0][0])
         lobby.board = board;
         io.emit("updateLobbyPage", lobby.id, lobby.board,"board");
     })
