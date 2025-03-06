@@ -107,8 +107,7 @@ function renderCells() {
             let subtract = 0;
             if (mapCell.renderStatusNumber.subtract) {
                 if (mapCell.renderStatusNumber.subtract[0] === "boardStatusCount") {
-                    console.log(mapCell.renderStatusNumber.subtract[1],mapCell.renderStatusNumber.subtract);
-                    subtract += localAccount.boardStatus[getBaseImgFromTag(mapCell.renderStatusNumber.subtract[1])].count;
+                    subtract += localAccount.boardStatus[getBaseImgFromTag(mapCell,mapCell.renderStatusNumber.subtract[1])].count;
                 }
             }
 

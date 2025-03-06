@@ -961,7 +961,6 @@ function drawTunnelCanvas(canvas,pos) {
 }
 
 function getBaseImgFromTag(item,tag) {
-    console.log(tag)
     if (tag.charAt(0) == ".") {
         return getItemValueFromList(item,tag.split("."));
     } else {
