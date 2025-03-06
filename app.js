@@ -821,7 +821,7 @@ io.on('connection', (socket) => {
         lobby.playSounds = [];
         lobby.boardStatus = [];
 
-        io.emit("startingGame", lobby, { to: 'string' }),onlineAccounts[socket.id].player);
+        io.emit("startingGame", lobby,onlineAccounts[socket.id].player);
         
         updateClientPositions(lobby)
 
