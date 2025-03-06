@@ -8,7 +8,7 @@ function renderGame() {
 
             if (cell.item === false) continue;
 
-            cell.item = structuredClone(getItem(cell.item.name));
+            cell.item = structuredClone(cell.item);
             if (cell.item == undefined) cell.item = false; //Prolly Will Need To Resolve Issue Later
             if (cell.item !== false) {
                 cell.item.pos = {
