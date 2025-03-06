@@ -1116,8 +1116,8 @@ function loadStatusSelectionScreen() {
         contentHolder.className = className;
         
         contentHolder.on("click",function() {
+            console.log(selectedItem.path)
             setValue(isSelectingOneCell(),selectedItem.cell,selectedItem.path,this.status);
-
             
             checkRenderThenRender();
             $(".statusSelectionScreen").hide();
@@ -1132,7 +1132,7 @@ function loadStatusSelectionScreen() {
 }
 function setValue(selectingOneCell,item,path,value,returnValue = false) {
     let ties = [];
-    console.log(path)
+    console.log(selectedItem.path,path)
     if (returnValue == true) return setNestedValue(item, path, value,true);
     setNestedValue(item, path, value);
     if (item.tie && returnValue !== "tie") ties = item.tie;
