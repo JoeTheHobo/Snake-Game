@@ -239,6 +239,7 @@ function setUpItemCanvas() {
         }
         
         if (item.renderImages) {
+            if (item.name == "goldShield") console.log("ey");
             for (let j = 0; j < item.renderImages.length; j++) {
                 if (item.renderImages[0] == "*colors") item.renderImages[0] = [
                     "aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
@@ -249,8 +250,10 @@ function setUpItemCanvas() {
             }
             combineStrings(item.renderImages);
         } 
-        else
+        else {
+            if (item.name == "goldShield") console.log("ey");
             addItemCanvas(item,item.baseImg + ".png",item.name)
+        }
     }
 }
 function makeItemCanvas(image,filter = "",player) {
