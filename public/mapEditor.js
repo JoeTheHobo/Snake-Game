@@ -1167,9 +1167,8 @@ function loadStatusSelectionScreen() {
                         let wantPath = ties[h][0].subset(1,"end").split(".");
                         let setPath = ties[h][1].subset(1,"end").split(".");
                         
-                        console.log(ties[h][0].subset(1,"end").split("."),setPath,helper(item,ties[h][0].subset(1,"end").split("."),false,true))
-                        
                         helper(item,setPath,helper(item,ties[h][0].subset(1,"end").split("."),false,true),"tie");
+                        console.log(item.offCollision)
                     }
                 }
             }
