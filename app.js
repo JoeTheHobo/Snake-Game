@@ -1298,12 +1298,12 @@ function getLocations(lobby) {
                         })
                     }
                     if (cell.item.updateOn) {
-                        for (let h = 0; h < cell.updateOn.length; h++) {
-                            if (cell.updateOn[h] == "boardStatus") {
+                        for (let h = 0; h < cell.item.updateOn.length; h++) {
+                            if (cell.item.updateOn[h] == "boardStatus") {
                                 lobby.board.location_status.push({
                                     x: x,
                                     y: y,
-                                    name: cell.name,
+                                    name: cell.item.name,
                                 })
                             }
                         }
