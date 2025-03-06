@@ -1301,8 +1301,8 @@ function getLocations(lobby) {
                         for (let h = 0; h < cell.item.updateOn.length; h++) {
                             if (cell.item.updateOn[h] == "boardStatus") {
                                 lobby.board.location_status.push({
-                                    x: x,
-                                    y: y,
+                                    x: j,
+                                    y: i,
                                     name: cell.item.name,
                                 })
                             }
