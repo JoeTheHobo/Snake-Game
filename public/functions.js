@@ -1523,7 +1523,7 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
             $(".hostOnly").hide();
         }
     }
-    if (type == "board" && localAccount.id === extra2) {
+    if (type == "board" && localAccount.id === extra) {
         if (lobby.recommendedGameMode) {
             $("sc_boards_recommendedGameMode").show();
             $("sc_boards_recommendedGameMode").innerHTML = "Recommended Game Mode: " + lobby.gameMode.name;
