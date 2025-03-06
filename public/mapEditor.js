@@ -865,8 +865,6 @@ function saveBoard() {
     currentBoard.itemDifferences = findItemDifferences(currentBoard.originalMap);
     currentBoard.tileDifferences = findTileDifferences(currentBoard.originalMap);
 
-    console.log(currentBoard.itemDifferences);
-
     if (currentBoard.accountID === localAccount.id)
         socket.emit("saveBoard",currentBoard);
 
