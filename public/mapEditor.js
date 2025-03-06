@@ -1076,11 +1076,10 @@ function loadObjectMenu() {
         if (object.onCollision?.setBoardStatus) {
             addSetting("Set Board Status","status",object.onCollision.setBoardStatus,["onCollision","setBoardStatus"]);
         }
-        if (object.onCollision?.removeBoardStatus !== false && object.onCollision.removeBoardStatus !== undefined) {
+        if (object.onCollision?.removeBoardStatus) {
             addSetting("Remove Board Status","status",object.onCollision.removeBoardStatus,["onCollision","removeBoardStatus"]);
         }
         if (object.spawnPlayerTeam) {
-            console.log("Ey")
             addSetting("Team Color","status",object.spawnPlayerTeam,["spawnPlayerTeam"]);
         }
         if (_type(object.onCollision?.checkStatus?.check?.snakeSize).type == "number") {
