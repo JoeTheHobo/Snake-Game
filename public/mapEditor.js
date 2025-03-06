@@ -1161,16 +1161,14 @@ function loadStatusSelectionScreen() {
                 }
 
                 if (ties) {
-                    if (tie.length) {
-                        for (let h = 0; h < ties.length; h++) {
-                            let wantPath = tie[0].split(".");
-                            wantPath.shift();
-                            let setPath = tie[1].split(".");
-                            setPath.shift();
-        
-                            
-                            helper(item,setPath,helper(item,wantPath,false,true),"tie");
-                        }
+                    for (let h = 0; h < ties.length; h++) {
+                        let wantPath = tie[0].split(".");
+                        wantPath.shift();
+                        let setPath = tie[1].split(".");
+                        setPath.shift();
+    
+                        
+                        helper(item,setPath,helper(item,wantPath,false,true),"tie");
                     }
                 }
             }
