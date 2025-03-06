@@ -953,8 +953,7 @@ function loadObjectMenu() {
             toggle.checked = value;
             toggle.path = path;
             toggle.on("change",function() {
-                console.log(selectedItem.cell,this.path,this.value)
-                setValue(isSelectingOneCell(),selectedItem.cell,this.path,this.value);
+                setValue(isSelectingOneCell(),selectedItem.cell,this.path,this.checked);
             })
         }
         if (type == "number") {
@@ -990,6 +989,7 @@ function loadObjectMenu() {
 
             select.path = path;
             select.onchange = function() {
+                console.log(this.value)
                 setValue(isSelectingOneCell(),selectedItem.cell,this.path,this.value);
             }
         }
