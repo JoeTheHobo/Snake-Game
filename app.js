@@ -1098,6 +1098,7 @@ function fixItemDifferences(lobby,map) {
             let change = d.differences[j];
             setNestedValue(pos,change,"_LAST_");
         }
+        console.log(77,pos.onCollision.addBoardStatus);
         map[d.y][d.x].item = pos;
         for (let i = 0; i < currentBoard.location_spawns.length; i++) {
             if (d.y == currentBoard.location_spawns[i].y && currentBoard.location_spawns[i].x == d.x) {
