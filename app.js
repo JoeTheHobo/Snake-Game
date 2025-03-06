@@ -796,7 +796,7 @@ io.on('connection', (socket) => {
                 x: false,
                 y: false,
             }
-            player.team = false;
+            player.team = "white";
             //Spawn Players
         }
 
@@ -1060,10 +1060,6 @@ function getItem(lobby,name) {
         }
     }
 }
-function findPlayersTeam(player) {
-    if (player.team == false) return "white";
-    else return player.team;
-}
 function calculateDistance(currentBoard,x1, y1, x2, y2, boardLength, boardHeight) {
     boardLength = currentBoard.map[0].length;
     boardHeight = currentBoard.map.length;
@@ -1164,7 +1160,7 @@ function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio =
                 }
                 if (playerOnIt) continue;
 
-                let playerTeam = findPlayersTeam(name);
+                let playerTeam = name.team;
                 let spawnTeam = allSpawns[k].item.spawnPlayerTeam || "white";
 
                 if (playerTeam !== "white" && spawnTeam !== playerTeam) continue;
@@ -1479,7 +1475,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     }
     if (collision.setBoardStatus) {
         let status = collision.setBoardStatus;
-        if (collision.setBoardStatus == "*P") status = findPlayersTeam(player);
+        if (collision.setBoardStatus == "*P") status = player.team;
         if (item.sendingBoardStatus === status) return;
 
         if (item.sendingBoardStatus !== false) {
@@ -1498,7 +1494,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     }
     if (collision.setBaseImgTag) {
         let value = collision.setBaseImgTag.value;
-        if (value == "*P") value = findPlayersTeam(player);
+        if (value == "*P") value = player.team;
         item.baseImgTags[collision.setBaseImgTag.index] = value;
 
         lobby.updateCells.push({
@@ -1575,6 +1571,9 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     }
     if (collision.killPlayer) {
         deletePlayer(lobby,player,false,false,true);
+    }
+    if (collision.spawnRandomItem) {
+        specialItemManager(lobby);
     }
     if (collision.deleteMe) {
         if (item.type == "item") {
@@ -1707,7 +1706,8 @@ function updateClientPositions(lobby,lobby_gameLoop_start = Date.now()) {
         tail, 
         moving, 
         playerKills, 
-        equiped 
+        equiped,
+        team
     }) => ({
         i: index,  
         s: selectingItem, 
@@ -1715,7 +1715,8 @@ function updateClientPositions(lobby,lobby_gameLoop_start = Date.now()) {
         t: tail.length + 1,  
         m: moving,  
         k: playerKills, 
-        e: equiped 
+        e: equiped,
+        te: team,
     }));
     let newObj = {
         a: emitingActivePlayers,  
@@ -1862,7 +1863,7 @@ function respawnPlayer(lobby,player,growthPercentage) {
     for (let j = 0; j < lobby.gameMode.howManyItemsCanPlayersUse; j++) {
         player.items.push("empty");
     }
-    let team = findPlayersTeam(player);
+    let team = player.team;
     player.status = ["status_" + team];
     player.justDied = false;
     player.bodyArmor = 1;
@@ -2044,7 +2045,7 @@ function server_movePlayers(lobby) {
             for (let a = 0; a < activePlayers.length; a++) {
                 let checkedPlayer = activePlayers[a];
                 if (checkedPlayer.isDead && currentGameMode.snakeVanishOnDeath) continue;
-                if (findPlayersTeam(checkedPlayer) === findPlayersTeam(player) && !currentGameMode.teamCollision && findPlayersTeam(player) !== "white") continue;
+                if (checkedPlayer.team === player.team && !currentGameMode.teamCollision && player.team !== "white") continue;
         
                 for (let b = 0; b < checkedPlayer.tail.length; b++) {
                     occupiedPositions.set(`${checkedPlayer.tail[b].x},${checkedPlayer.tail[b].y}`, checkedPlayer);
@@ -2181,7 +2182,7 @@ function newPlayer(socketID,accountName,accountTag) {
         accountID: socketID,
         accountName: accountName,
         accountTag: accountTag,
-        team: false,
+        team: "white",
     }
 }
 function checkPlayer(player,socketID) {

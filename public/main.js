@@ -581,7 +581,7 @@ function movePlayers() {
                     if(activePlayers[i] == false) continue;
                     let checkedPlayer = activePlayers[a];
                     if (checkedPlayer.isDead && currentGameMode.snakeVanishOnDeath) continue;
-                    if (findPlayersTeam(checkedPlayer) === findPlayersTeam(player) && !currentGameMode.teamCollision && findPlayersTeam(player) !== "white") continue;
+                    if (checkedPlayer.team === player.team && !currentGameMode.teamCollision && player.team !== "white") continue;
             
                     for (let b = 0; b < checkedPlayer.tail.length; b++) {
                         occupiedPositions.add(`${checkedPlayer.tail[b].x},${checkedPlayer.tail[b].y}`);
@@ -837,7 +837,7 @@ function runItemFunction(player,item,type,itemPos,settings = {playAudio: true}) 
     }
     if (collision.setBoardStatus) {
         let status = collision.setBoardStatus;
-        if (collision.setBoardStatus == "*P") status = findPlayersTeam(player);
+        if (collision.setBoardStatus == "*P") status = player.team;
         if (item.sendingBoardStatus === status) return;
 
         if (item.sendingBoardStatus !== false) {
@@ -849,7 +849,7 @@ function runItemFunction(player,item,type,itemPos,settings = {playAudio: true}) 
     }
     if (collision.setBaseImgTag) {
         let value = collision.setBaseImgTag.value;
-        if (value == "*P") value = findPlayersTeam(player);
+        if (value == "*P") value = player.team;
         item.baseImgTags[collision.setBaseImgTag.index] = value;
 
         updateCells.push({

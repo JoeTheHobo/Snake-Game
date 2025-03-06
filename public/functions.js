@@ -372,7 +372,7 @@ function spawn(name,generateRandomItem = true,counting = false,playAudio = true)
                 }
                 if (playerOnIt) continue;
 
-                let playerTeam = findPlayersTeam(name);
+                let playerTeam = name.team;
                 let spawnTeam = allSpawns[k].item.spawnPlayerTeam || "white";
 
                 if (playerTeam !== "white" && spawnTeam !== playerTeam) continue;
@@ -992,11 +992,6 @@ function drawTunnelCanvas(canvas,pos) {
     ctx.drawImage($(".firstPersonCanvas_master"),x-extra,y-extra,extra*2,extra*2,0,0,200,200);
 }
 
-function findPlayersTeam(player) {
-    for (let i = 0; i < player.status.length; i++) {
-        if (player.status[i].subset(0,5) == "status") return player.status[i].subset("_\\after","end");
-    }
-}
 function getBaseImgFromTag(item,tag) {
     if (tag.charAt(0) == ".") {
         return getItemValueFromList(item,tag.split("."));
@@ -1049,7 +1044,7 @@ function respawnPlayer(player,growthPercentage) {
     for (let j = 0; j < currentGameMode.howManyItemsCanPlayersUse; j++) {
         player.items.push("empty");
     }
-    let team = findPlayersTeam(player);
+    let team = player.team;
     player.status = ["status_" + team];
     player.justDied = false;
     player.bodyArmor = 1;
@@ -1144,7 +1139,7 @@ function setGameScene(players) {
         clone.style.display = "flex";
         clone.style.width = ($("playerCardsHolder").offsetWidth-5) + "px";
 
-        let playersTeam = findPlayersTeam(player);
+        let playersTeam = player.team;
         clone.$(".pc_banner").src = "img/status/playerCard_" + playersTeam + "_left.png";
         clone.$(".pc_c1_img").style.filter = getPlayerFilter(player);
 
@@ -1164,7 +1159,7 @@ function setGameScene(players) {
     }
 
     //Setting Up Active Snakes Stats
-    $(".game_c2_playerStatus").src = `img/gameUI/activePlayerInfo_${findPlayersTeam(player)}.png`;
+    $(".game_c2_playerStatus").src = `img/gameUI/activePlayerInfo_${player.team}.png`;
     $(".game_c2_name").innerHTML = player.accountName;
 
     $("game_c2_points").innerHTML = 0;
@@ -1309,7 +1304,7 @@ function updateBoardStatusTracker(statusList) {
 function updateGameFlags(player) {
     let flag = $("playercard_" + player.index);
 
-    let playersTeam = findPlayersTeam(player);
+    let playersTeam = player.team;
     if (flag.$(".pc_banner").src !== "img/status/playerCard_" + playersTeam + "_left.png")
         flag.$(".pc_banner").src = "img/status/playerCard_" + playersTeam + "_left.png";
 
@@ -1359,8 +1354,8 @@ function updateGameScene(player) {
     }
     
     //Updating Player Stats
-    if ($(".game_c2_playerStatus").src !== `img/gameUI/activePlayerInfo_${findPlayersTeam(player)}.png`)
-        $(".game_c2_playerStatus").src = `img/gameUI/activePlayerInfo_${findPlayersTeam(player)}.png`;
+    if ($(".game_c2_playerStatus").src !== `img/gameUI/activePlayerInfo_${player.team}.png`)
+        $(".game_c2_playerStatus").src = `img/gameUI/activePlayerInfo_${player.team}.png`;
     $("game_c2_points").innerHTML = 0;
     $("game_c2_length").innerHTML = player.tailLength;
     $("game_c2_kills").innerHTML = player.playerKills;
@@ -1516,7 +1511,7 @@ function updatePlayerCard(player,whatToUpdate = "all") {
 
     let cardHolder = $("playercard_" + player.name +"_"+ player.id);
 
-    if (whatToUpdate == "all" || whatToUpdate == "team") cardHolder.$("playercard_teamImg").src = `img/status/playerCard_${findPlayersTeam(player)}_${cardHolder.direction}.png`;
+    if (whatToUpdate == "all" || whatToUpdate == "team") cardHolder.$("playercard_teamImg").src = `img/status/playerCard_${player.team}_${cardHolder.direction}.png`;
 
     if (whatToUpdate == "all" || whatToUpdate == "size") cardHolder.$("playercard_size").innerHTML = player.tailLength;
     
