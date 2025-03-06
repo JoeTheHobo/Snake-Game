@@ -1116,7 +1116,6 @@ function loadStatusSelectionScreen() {
         contentHolder.className = className;
         
         contentHolder.on("click",function() {
-            console.log(selectedItem.path)
             setValue(isSelectingOneCell(),selectedItem.cell,selectedItem.path,this.status);
             
             checkRenderThenRender();
@@ -1132,7 +1131,6 @@ function loadStatusSelectionScreen() {
 }
 function setValue(selectingOneCell,item,path,value,returnValue = false) {
     let ties = [];
-    console.log(selectedItem.path,path)
     if (returnValue == true) return setNestedValue(item, path, value,true);
     setNestedValue(item, path, value);
     if (item.tie && returnValue !== "tie") ties = item.tie;
@@ -1150,7 +1148,7 @@ function setValue(selectingOneCell,item,path,value,returnValue = false) {
         for (let h = 0; h < ties.length; h++) {
             let setPath = ties[h][1].subset(1,"end").split(".");
             
-            setValue(selectingOneCell,item,setPath,setValue(item,ties[h][0].subset(1,"end").split("."),false,true),"tie");
+            setValue(selectingOneCell,item,setPath,setValue(selectingOneCell,item,ties[h][0].subset(1,"end").split("."),false,true),"tie");
         }
     }
 }
