@@ -769,6 +769,7 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+    tie: [[".onCollision.setBoardStatus",".onCollision.setBaseImgTag.value"]],
 
     soundFolder: "flag",
     onCollision: { //When collisionType collides do these
@@ -782,7 +783,7 @@ items.push({
             value: "*P",
         }, //Change base image tag.
         playSound: ["set",1],
-        tie: [".onCollision.setBoardStatus",".onCollision.setBaseImgTag.value"],
+        
     },
 
     renderStatusPath: ["onCollision","setBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
@@ -806,6 +807,7 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+    tie: [[".onCollision.addBoardStatus",".offCollision.removeBoardStatus"]],
 
     onCollision: { //When snake collides do these
         switchImage: false, //Switch Between these images
@@ -814,7 +816,7 @@ items.push({
         removeBoardStatus: false, //Remove a status To the Board;
         setBoardStatus: false, //Sets its world status to this, can only send out one status
         changeHue: false, //Change hue to this.
-        tie: [".onCollision.addBoardStatus",".offCollision.removeBoardStatus"],
+        
     },
     offCollision: { //When snake leaves item
         removeBoardStatus: "red", //Remove a status To the Board;
