@@ -1330,7 +1330,7 @@ function removeBoardStatus(lobby,status,player) {
         }
     }
     for (let i = 0; i < lobby.board.location_status.length; i++) {
-        let status = lobby.board.location_status;
+        let status = lobby.board.location_status[i];
         lobby.updateCells.push({
             x: status.x,
             y: status.y,
@@ -1343,7 +1343,7 @@ function addBoardStatus(lobby,status,player) {
     if (status == "*P") status = player.team;
     lobby.boardStatus.push(status);
     for (let i = 0; i < lobby.board.location_status.length; i++) {
-        let status = lobby.board.location_status;
+        let status = lobby.board.location_status[i];
         lobby.updateCells.push({
             x: status.x,
             y: status.y,
