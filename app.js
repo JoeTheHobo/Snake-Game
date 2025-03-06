@@ -1342,14 +1342,8 @@ function useItem(lobby,player) {
     
     let item = player.items[player.selectingItem];
     if (item == "empty") return;
-    if (item.cantUseIfStatus?.length > 0) {
-        for (let i = 0; i < item.cantUseIfStatus.length; i++) {
-            let id = item.cantUseIfStatus[i];
-            if (player.status.includes(id)) return;
-        }
-    }
-    
-    let returnItem = runItemFunction(lobby,player,player.items[player.selectingItem],"onEat");
+
+    let returnItem = runItemFunction(lobby,player,player.items[player.selectingItem],"onActivate");
     player.items[player.selectingItem] = returnItem;
 }
 function specialItemManager(lobby) {
@@ -1744,9 +1738,9 @@ function getChangedValues(oldObj, newObj) {
     let changes = {};
 
     for (let key in newObj) {
-        if (key == "s")
+        if (key == "s" || key == "it")
             changes[key] = newObj[key]; // Only store changed values
-        if (JSON.stringify(newObj[key]) !== JSON.stringify(oldObj[key])) {
+        else if (JSON.stringify(newObj[key]) !== JSON.stringify(oldObj[key])) {
             changes[key] = newObj[key]; // Only store changed values
         }
     }
