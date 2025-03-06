@@ -164,7 +164,6 @@ io.on('connection', (socket) => {
             for (let i = 0; i < account.boards.length; i++) {
                 if (account.boards[i].id === board.id) {
                     account.boards[i] = board;
-                    if (board.itemDifferences.length > 0) console.log(1,board.itemDifferences[0][0])
                     io.emit("updatePlayersBoards",socket.id,account.boards);
                     compressObject(account.boards,(err,compressed) => {
                         if (err) {
