@@ -250,7 +250,6 @@ function setUpItemCanvas() {
             combineStrings(item.renderImages);
         } 
         else {
-            if (item.name == "goldShield") console.log(item.baseImg + ".png",item.name);
             addItemCanvas(item,item.baseImg + ".png",item.name)
         }
     }
@@ -279,9 +278,7 @@ function addItemCanvas(item,itemImg,name,filter = "",player) {
     if ($("item_" + name)) return;
 
     let img = $(".imageHolder").create("img");
-    if(name == "goldShield") console.log(itemImg);
     img.src = "img/" + itemImg;
-    if(name == "goldShield") console.log(img.src);
     img.id = "item_" + name;
 
     img.onload = function() {
