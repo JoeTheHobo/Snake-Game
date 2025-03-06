@@ -2061,6 +2061,7 @@ function server_movePlayers(lobby) {
         }
 
         //Test Item Underplayer
+        console.log(currentBoard,player.pos.y,player.pos.x)
         let mapItem = currentBoard[player.pos.y][player.pos.x].item;
         if (mapItem) runItemFunction(lobby,player,mapItem,"onCollision");
 
