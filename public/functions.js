@@ -237,16 +237,18 @@ function setUpItemCanvas() {
         function processCombination(combination) {
             addItemCanvas(items[i],items[i].baseImg + combination + ".png",items[i].name + "_" + combination);
         }
-        for (let j = 0; j < item.renderImages.length; j++) {
-            if (item.renderImages[0] == "*colors") item.renderImages[0] = [
-                "aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
-            ]
-            if (item.renderImages[0] == "*colors2") item.renderImages[0] = [
-                "white","aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
-            ]
-        }
-        if (item.renderImages)
+        
+        if (item.renderImages) {
+            for (let j = 0; j < item.renderImages.length; j++) {
+                if (item.renderImages[0] == "*colors") item.renderImages[0] = [
+                    "aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
+                ]
+                if (item.renderImages[0] == "*colors2") item.renderImages[0] = [
+                    "white","aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
+                ]
+            }
             combineStrings(item.renderImages);
+        } 
         else
             addItemCanvas(item,item.baseImg,item.name)
     }
