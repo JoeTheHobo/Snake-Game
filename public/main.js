@@ -78,7 +78,8 @@ function renderCells() {
 
         let image;
         if (mapCell.baseImg) {
-            image = mapCell.name + "_";
+            image = mapCell.name;
+            if (mapCell.baseImgTags?.length > 0) image += "_";
             for (let i = 0; i < mapCell.baseImgTags.length; i++) {
                 image += getBaseImgFromTag(mapCell,mapCell.baseImgTags[i])
             }
