@@ -2044,6 +2044,7 @@ function selectAllPlayerBoardsPopUp(sendTo) {
     $(".allPlayerBoardsPopup").show("flex");
 }
 function setNestedValue(obj, path, value, toReturn = false) {
+    console.log(path)
     let lastKey = path.pop(); // Remove and store the last key
     if (value === "_LAST_") {
         value = lastKey; // If value is "_LAST_", use the last key as the value
