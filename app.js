@@ -728,15 +728,7 @@ io.on('connection', (socket) => {
 
                 for (let j = 0; j < alterationGroup.alterations.length; j++) {
                     let alteration = alterationGroup.alterations[j];
-                    if (alteration.length == 4) {
-                        item[alteration[0]][alteration[1]][alteration[2]] = alteration[3];
-                    }
-                    if (alteration.length == 3) {
-                        item[alteration[0]][alteration[1]] = alteration[2];
-                    }
-                    if (alteration.length == 2) {
-                        item[alteration[0]] = alteration[1];
-                    }
+                    setNestedValue(item,alteration,"_LAST_");
                 }
             }
         }
@@ -1078,15 +1070,7 @@ function fixItemDifferences(lobby,map) {
         if (!pos) continue;
         for (let j = 0; j < d.differences.length; j++) {
             let change = d.differences[j];
-            if (change.length == 4) {
-                pos[change[0]][change[1]][change[2]] = change[3];
-            }
-            if (change.length == 3) {
-                pos[change[0]][change[1]] = change[2];
-            }
-            if (change.length == 2) {
-                pos[change[0]] = change[1];
-            }
+            setNestedValue(pos,change,"_LAST_");
         }
         map[d.y][d.x].item = pos;
         for (let i = 0; i < currentBoard.location_spawns.length; i++) {
@@ -1109,13 +1093,7 @@ function fixTileDifferences(currentBoard,map) {
         if (!pos) continue;
         for (let j = 0; j < d.differences.length; j++) {
             let change = d.differences[j];
-            if (change.length == 4) {
-                pos[change[0]][change[1]][change[2]] = change[3];
-            }
-            if (change.length == 3) {
-                pos[change[0]][change[1]] = change[2];
-            }
-            if (change.length == 2) pos[change[0]] = change[1];
+            setNestedValue(pos,change,"_LAST_");
         }
         map[d.y][d.x].tile = pos;
     }

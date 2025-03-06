@@ -870,15 +870,7 @@ function fixItemDifferences(map) {
         if (!pos) continue;
         for (let j = 0; j < d.differences.length; j++) {
             let change = d.differences[j];
-            if (change.length == 4) {
-                pos[change[0]][change[1]][change[2]] = change[3];
-            }
-            if (change.length == 3) {
-                pos[change[0]][change[1]] = change[2];
-            }
-            if (change.length == 2) {
-                pos[change[0]] = change[1];
-            }
+            setNestedValue(pos,change,"_LAST_");
         }
         map[d.y][d.x].item = pos;
         for (let i = 0; i < currentBoard.location_spawns.length; i++) {
@@ -908,13 +900,7 @@ function fixTileDifferences(map) {
         if (!pos) continue;
         for (let j = 0; j < d.differences.length; j++) {
             let change = d.differences[j];
-            if (change.length == 4) {
-                pos[change[0]][change[1]][change[2]] = change[3];
-            }
-            if (change.length == 3) {
-                pos[change[0]][change[1]] = change[2];
-            }
-            if (change.length == 2) pos[change[0]] = change[1];
+            setNestedValue(pos,change,"_LAST_");
         }
         map[d.y][d.x].tile = pos;
     }
@@ -2072,4 +2058,13 @@ function selectAllPlayerBoardsPopUp(sendTo) {
     }
 
     $(".allPlayerBoardsPopup").show("flex");
+}
+function setNestedValue(obj, path, value) {
+    let lastKey = path.pop(); // Remove and store the last key
+    if (value === "_LAST_") {
+        value = lastKey; // If value is false, use the last key as the value
+        lastKey = path.pop(); // Get the new last key
+    }
+    let target = path.reduce((acc, key) => acc[key], obj);
+    target[lastKey] = value;
 }

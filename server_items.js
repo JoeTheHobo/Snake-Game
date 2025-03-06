@@ -1028,20 +1028,23 @@ items.push({
                 
             }
         },
+        tie: [".onCollision.checkStatus.pass.addBoardStatus",".offCollision.checkStatus.pass.removeBoardStatus"],
     },
     offCollision: { //When snake leaves item
-        check: {
-            boardStatus: false,
-            playerTeamStatus: false,
-            snakeSize: 10,
-            playerHasEmptySlot: false,
-            playerHasItem: false,
-        },
-        pass: {
-            removeBoardStatus: "red",
-        },
-        fail: {
-            
+        checkStatus: {
+            check: {
+                boardStatus: false,
+                playerTeamStatus: false,
+                snakeSize: 10,
+                playerHasEmptySlot: false,
+                playerHasItem: false,
+            },
+            pass: {
+                removeBoardStatus: "red",
+            },
+            fail: {
+                
+            }
         }
     },
 

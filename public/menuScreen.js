@@ -1090,15 +1090,7 @@ function getItemAlterations(gameMode,item) {
         
         for (let j = 0; j < gmaAlteration.alterations.length; j++) {
             let change = gmaAlteration.alterations[j];
-            if (change.length == 4) {
-                item[change[0]][change[1]][change[2]] = change[3];
-            }
-            if (change.length == 3) {
-                item[change[0]][change[1]] = change[2];
-            }
-            if (change.length == 2) {
-                item[change[0]] = change[1];
-            }
+            setNestedValue(item,change,"_LAST_");
         }
     }
     return item;

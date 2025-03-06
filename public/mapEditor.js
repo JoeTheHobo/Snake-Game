@@ -1007,18 +1007,15 @@ function loadObjectMenu() {
             select.path = path;
             select.onchange = function() {
                 let selectingOneCell = isSelectingOneCell();
-
-                if (this.path.length == 3) {
-                    selectedItem.cell[this.path[0]][this.path[1]][this.path[2]] = this.value;
-                    if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][this.path[0]][this.path[1]][this.path[2]] = this.value;
-                }
-                if (this.path.length == 2) {
-                    selectedItem.cell[this.path[0]][this.path[1]] = this.value;
-                    if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][this.path[0]][this.path[1]] = this.value;
-                }
-                if (this.path.length == 1) {
-                    selectedItem.cell[this.path[0]] = this.value;
-                    if (selectingOneCell) currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type][this.path[0]] = this.value;
+                
+                setNestedValue(selectedItem.cell, [...this.path], this.value);
+                
+                if (selectingOneCell) {
+                    setNestedValue(
+                        currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type],
+                        [...this.path],
+                        this.value
+                    );
                 }
             }
         }
@@ -1049,39 +1046,30 @@ function loadObjectMenu() {
             addSetting("Play Sound","dropdown",object.onOver?.playSound[0],["onOver","playSound",0],object.onOver?.playSound[2]);
         }
     } else {
-        if (object.boardDestructible[0] !== "yes") {
-            addSetting("Board Status Required","status",object.boardDestructible[0],["boardDestructible",0]);
+        if (object.onCollision?.checkStatus?.check?.boardStatus) {
+            addSetting("Board Status Required","status",object.onCollision.checkStatus.check.boardStatus.count,["onCollision","checkStatus","check","boardStatus","count"]);
         }
-        if (object.destructible.length > 0) {
-            if (object.destructible[0] !== "yes" && object.destructible[0] !== false && object.name !== "blueLock" && object.name !== "redLock" && object.name !== "greenLock") {
-                addSetting("Player Status Required","status",object.destructible[0],["destructible",0]);
-            }
+        if (object.onCollision?.checkStatus?.check?.playerTeamStatus) {
+            addSetting("Player Team Required","status",object.onCollision.checkStatus.check.playerTeamStatus,["onCollision","checkStatus","check","playerTeamStatus"]);
         }
-        if (object.canCollide) {
-            if (object.onCollision.switchBoardStatus !== false && object.onCollision.switchBoardStatus !== undefined) {
-                addSetting("Toggle Board Status","status",object.onCollision.switchBoardStatus,["onCollision","switchBoardStatus"]);
-            }
-            if (object.onCollision.addBoardStatus !== false && object.onCollision.addBoardStatus !== undefined) {
-                addSetting("Add Board Status","status",object.onCollision.addBoardStatus,["onCollision","addBoardStatus"]);
-            }
-            if (object.onCollision.setBoardStatus !== false && object.onCollision.setBoardStatus !== undefined) {
-                addSetting("Set Board Status","status",object.onCollision.setBoardStatus,["onCollision","setBoardStatus"]);
-            }
-            if (object.onCollision.removeBoardStatus !== false && object.onCollision.removeBoardStatus !== undefined) {
-                addSetting("Remove Board Status","status",object.onCollision.removeBoardStatus,["onCollision","removeBoardStatus"]);
-            }
+
+        if (object.onCollision?.switchBoardStatus) {
+            addSetting("Toggle Board Status","status",object.onCollision.switchBoardStatus,["onCollision","switchBoardStatus"]);
         }
-        if (object.name == "boardLockedCell")
-            addSetting("Board Status Required","number",object.boardDestructibleCountRequired,["boardDestructibleCountRequired"]);
-    
+        if (object.onCollision?.checkStatus?.pass?.addBoardStatus) {
+            addSetting("Add Board Status","status",object.onCollision?.checkStatus?.pass?.addBoardStatus,["onCollision","checkStatus","pass","addBoardStatus"]);
+        }
+        if (object.onCollision?.setBoardStatus) {
+            addSetting("Set Board Status","status",object.onCollision.setBoardStatus,["onCollision","setBoardStatus"]);
+        }
+        if (object.onCollision?.removeBoardStatus !== false && object.onCollision.removeBoardStatus !== undefined) {
+            addSetting("Remove Board Status","status",object.onCollision.removeBoardStatus,["onCollision","removeBoardStatus"]);
+        }
         if (object.spawnPlayerTeam) {
             addSetting("Team Color","status",object.spawnPlayerTeam,["spawnPlayerTeam"]);
         }
-        if (_type(object.snakeSizeRequired).type == "number") {
-            addSetting("Snake Size Required","number",object.snakeSizeRequired,["snakeSizeRequired"]);
-        }
-        if (_type(object.requiredSnakeSizeToCollide).type == "number") {
-            addSetting("Snake Size Required","number",object.requiredSnakeSizeToCollide,["requiredSnakeSizeToCollide"]);
+        if (_type(object.onCollision?.checkStatus?.check?.snakeSize).type == "number") {
+            addSetting("Snake Size Required","number",object.onCollision?.checkStatus?.check?.snakeSize,["onCollision","checkStatus","check","snakeSize"]);
         }
         
         addSetting("Visible","toggle",object.visible,["visible"]);
