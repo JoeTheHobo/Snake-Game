@@ -260,8 +260,6 @@ io.on('connection', (socket) => {
     });
     socket.on("createNewBoard",(boardName,width,height,sentFrom) => {
         let account = onlineAccounts[socket.id];
-
-        console.log(boardName,simple.type(boardName),boardName.lengh)
         if (simple.type(boardName) !== "string") boardName = "Untitled";
         if (boardName.length > 30) boardName = "Untitled";
         if (boardName == "") boardName = "Untitled";
@@ -970,7 +968,6 @@ io.on('connection', (socket) => {
 
             let pushObj = structuredClone(lobby.snakeMap[player.pos.y][player.pos.x]);
             pushObj.rnd = simple.rnd(9999);
-            console.log(pushObj)
             lobby.updateSnakeCells.push(pushObj);
             updateClientPositions(lobby);
             
