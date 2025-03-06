@@ -164,7 +164,7 @@ io.on('connection', (socket) => {
             for (let i = 0; i < account.boards.length; i++) {
                 if (account.boards[i].id === board.id) {
                     account.boards[i] = board;
-                    if (board.itemDifferences.length > 0) console.log(board.itemDifferences[0][0])
+                    if (board.itemDifferences.length > 0) console.log(1,board.itemDifferences[0][0])
                     io.emit("updatePlayersBoards",socket.id,account.boards);
                     compressObject(account.boards,(err,compressed) => {
                         if (err) {
@@ -173,7 +173,7 @@ io.on('connection', (socket) => {
                         }
                         account.boards = compressed;
                         decompressObject(account.boards,(err,decompressed) => {
-                            if (decompressed[0].itemDifferences.length > 0) console.log(decompressed[0].itemDifferences[0][0]);
+                            if (decompressed[0].itemDifferences.length > 0) console.log(2,decompressed[0].itemDifferences[0][0]);
                         })
                     })
                     return;
@@ -821,7 +821,7 @@ io.on('connection', (socket) => {
         lobby.playSounds = [];
         lobby.boardStatus = [];
 
-        io.emit("startingGame", pako.deflate(JSON.stringify(lobby), { to: 'string' }),onlineAccounts[socket.id].player);
+        io.emit("startingGame", lobby, { to: 'string' }),onlineAccounts[socket.id].player);
         
         updateClientPositions(lobby)
 
