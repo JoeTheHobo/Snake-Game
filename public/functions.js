@@ -992,6 +992,7 @@ function getItemValueFromList(item,list) {
     for (let i = 1; i < list.length; i++) {
         value = value[list[i]];
     }
+    console.log(32,value)
     return value;
 }
 function getImageFromItem(type,item,returnType) {

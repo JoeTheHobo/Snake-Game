@@ -798,7 +798,7 @@ io.on('connection', (socket) => {
         
 
         getLocations(lobby);
-        lobby.board.map = fixItemDifferences(lobby,lobby.board.map);
+        fixItemDifferences(lobby,lobby.board.map);
         fixTileDifferences(lobby,lobby.board,lobby.board.map);
 
 
@@ -1084,7 +1084,6 @@ function calculateDistance(currentBoard,x1, y1, x2, y2, boardLength, boardHeight
 function fixItemDifferences(lobby,map) {
     let currentBoard = lobby.board;
     if (!currentBoard.itemDifferences) return;
-    console.log(76,currentBoard.itemDifferences[0][0])
     for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
         let e = currentBoard.itemDifferences[i];
         let d = {
@@ -1099,14 +1098,12 @@ function fixItemDifferences(lobby,map) {
             setNestedValue(pos,change,"_LAST_");
         }
         map[d.y][d.x].item = pos;
-        console.log(77,map[d.y][d.x].item.onCollision.addBoardStatus);
         for (let i = 0; i < currentBoard.location_spawns.length; i++) {
             if (d.y == currentBoard.location_spawns[i].y && currentBoard.location_spawns[i].x == d.x) {
                 lobby.board.location_spawns[i].item = map[d.y][d.x].item;
             }
         }
     }
-    return map;
 }
 function fixTileDifferences(currentBoard,map) {
     if (!currentBoard.tileDifferences) return;
