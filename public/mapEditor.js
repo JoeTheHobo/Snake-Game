@@ -1162,10 +1162,10 @@ function loadStatusSelectionScreen() {
                 
                 if (ties) {
                     for (let h = 0; h < ties.length; h++) {
-                        console.log(ties[h][0]);
-                        let wantPath = ties[h][0].split(".");
+                        console.log(ties[h][0].subset(1,"end"));
+                        let wantPath = ties[h][0].subset(1,"end").split(".");
                         wantPath.shift();
-                        let setPath = ties[h][1].split(".");
+                        let setPath = ties[h][1].subset(1,"end").split(".");
                         setPath.shift();
                         
                         console.log(wantPath,setPath,helper(item,wantPath,false,true))
