@@ -83,6 +83,7 @@ function renderCells() {
             for (let i = 0; i < mapCell.baseImgTags.length; i++) {
                 image += getBaseImgFromTag(mapCell,mapCell.baseImgTags[i])
             }
+            if (mapCell.name == "buttonAdd") console.log(mapCell.baseImgTags,image);
             image = getItemCanvas(image);
         } else {
             image = getItemCanvas(mapCell.name);
