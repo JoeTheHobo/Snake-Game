@@ -214,6 +214,7 @@ socket.on("startingGame", (lobby) => {
             location: false,
         },
     }
+    localAccount.boardStatus = oldBoardStatus;
 
     $(".closeWhenGameStarts").hide();
     setScene("game");

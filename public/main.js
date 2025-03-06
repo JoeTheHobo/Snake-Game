@@ -95,13 +95,38 @@ function renderCells() {
             for (let i = 0; i < mapCell.baseImgTags.length; i++) {
                 image += getBaseImgFromTag(mapCell,mapCell.baseImgTags[i])
             }
-            if (mapCell.name == "buttonAdd") console.log(mapCell.baseImgTags,image);
             image = getItemCanvas(image);
         } else {
             image = getItemCanvas(mapCell.name);
         }
 
         ctx_items.drawImage(image,x*gridSize,y*gridSize,gridSize,gridSize);
+
+        if (mapCell.renderStatusNumber) {
+            let value = getBaseImgFromTag(mapCell,mapCell.renderStatusNumber.value);
+            let subtract = 0;
+            if (mapCell.renderStatusNumber.subtract) {
+                if (mapCell.renderStatusNumber.subtract[0] === "boardStatusCount") {
+                    subtract += localAccount.boardStatus[getBaseImgFromTag(mapCell.renderStatusNumber.subtract[1])].count;
+                }
+            }
+
+            value -= subtract;
+            if (value < 0) value = 0;
+
+
+            ctx_items.font = "16px VT323";
+            ctx_items.strokeStyle = "black";
+            ctx_items.fillStyle = "white";
+            ctx_items.lineWidth = 4;
+
+            let textWidth = ctx_items.measureText(value).width;
+            xPos = (x*(gridSize)) + ((gridSize)/2) - (textWidth/2);
+            yPos = (y*(gridSize)) + ((gridSize)/2)+5;
+
+            ctx_items.strokeText(count,xPos,yPos);
+            ctx_items.fillText(count,xPos,yPos);
+        }
     }
     updateCells = [];
 }

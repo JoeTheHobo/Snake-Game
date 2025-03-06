@@ -872,7 +872,6 @@ items.push({
     },
 
     renderStatusPath: ["onCollision","checkStatus","check","playerTeamStatus"], //Path to which status to render on top of item, leave blank if no render
-    renderStatusColor: "white", //Type To Render Color;
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
@@ -915,7 +914,10 @@ items.push({
     },
 
     renderStatusPath: ["onCollision","checkStatus","check","boardStatus","name"], //Path to which status to render on top of item, leave blank if no render
-    renderStatusColor: "board", //Type To Render Color;
+    renderStatusNumber: {
+        value: ".onCollision.checkStatus.check.boardStatus.count",
+        subtract: ["boardStatusCount",".onCollision.checkStatus.check.boardStatus.name"],
+    },
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })
 
