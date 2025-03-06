@@ -830,8 +830,9 @@ items.push({
     name: "lockedCell", //(string) Name Of Item
     id: 28,
     type: "item",
-    baseImg: "items/lockedCell",
-    baseImgTags: [],
+    baseImg: "items/item_playerLocked_",
+    baseImgTags: [".onCollision.checkStatus.check.playerTeamStatus"],
+    renderImages: [["*colors"]],
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -872,8 +873,9 @@ items.push({
     name: "boardLockedCell", //(string) Name Of Item
     id: 29,
     type: "item",
-    baseImg: "items/boardLockedCell",
-    baseImgTags: [],
+    baseImg: "items/item_boardLocked_",
+    baseImgTags: [".onCollision.checkStatus.check.boardStatus.name"],
+    renderImages: [["*colors"]],
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
