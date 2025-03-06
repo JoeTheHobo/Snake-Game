@@ -1161,6 +1161,7 @@ function loadStatusSelectionScreen() {
                 }
                 
                 if (ties) {
+                    console.log(ties);
                     for (let h = 0; h < ties.length; h++) {
                         let setPath = ties[h][1].subset(1,"end").split(".");
                         
