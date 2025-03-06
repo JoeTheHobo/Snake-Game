@@ -953,6 +953,7 @@ function loadObjectMenu() {
             toggle.checked = value;
             toggle.path = path;
             toggle.on("change",function() {
+                console.log(selectedItem.cell,this.path,this.value)
                 setValue(isSelectingOneCell(),selectedItem.cell,this.path,this.value);
             })
         }
