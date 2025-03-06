@@ -992,7 +992,6 @@ function getItemValueFromList(item,list) {
     for (let i = 1; i < list.length; i++) {
         value = value[list[i]];
     }
-    console.log(32,value)
     return value;
 }
 function getImageFromItem(type,item,returnType) {
@@ -1732,6 +1731,7 @@ function generateBoardsPopup(type) {
         holder.board = board;
         holder.on("click",function() {
             $(".chooseBoardPopup").hide();
+            console.log(733,this.board.originalMap[0][0])
             $(".chooseBoardPopup").func(this.board);
         })
     }
