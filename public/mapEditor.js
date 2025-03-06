@@ -1150,7 +1150,7 @@ function loadStatusSelectionScreen() {
                 let ties = [];
                 if (returnValue == true) return setNestedValue(item, path, value,true);
                 setNestedValue(item, path, value);
-                if (item.tie && returnValue !== "tie") ties = item.ties;
+                if (item.tie && returnValue !== "tie") ties = item.tie;
                 
                 if (selectingOneCell) {
                     setNestedValue(
@@ -1166,8 +1166,6 @@ function loadStatusSelectionScreen() {
                         wantPath.shift();
                         let setPath = ties[h][1].split(".");
                         setPath.shift();
-                        
-                        console.log(wantPath,setPath,helper(item,wantPath,false,true))
                         
                         helper(item,setPath,helper(item,wantPath,false,true),"tie");
                     }
