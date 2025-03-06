@@ -1,7 +1,8 @@
 let items = [];
 items.push({
     name: "pellet",
-    img: "snakeFood.png",
+    baseImg: "items/snakeFood",
+    baseImgTags: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 3,
@@ -33,7 +34,8 @@ items.push({
 })
 items.push({
     name: "super_pellet",
-    img: "snakeSuper.png",
+    baseImg: "items/snakeSuper",
+    baseImgTags: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -59,7 +61,8 @@ items.push({
 items.push({
     name: "turbo",
     id: 3,
-    img: "speedPowerUp.png",
+    baseImg: "items/speedPowerUp",
+    baseImgTags: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -92,7 +95,8 @@ items.push({
 items.push({
     name: "wall",
     id: 4,
-    img: "rock.png",
+    baseImg: "items/rock",
+    baseImgTags: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -120,7 +124,8 @@ items.push({
 items.push({
     name: "wall2",
     id: 5,
-    img: "rock2.png",
+    baseImg: "items/rock2",
+    baseImgTags: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -146,7 +151,8 @@ items.push({
 items.push({
     name: "bronzeShield", //(string) Name Of Item
     id: 6,
-    img: "bronzeShield.png", //(string) Image name
+    baseImg: "items/bronzeShield",
+    baseImgTags: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -180,7 +186,8 @@ items.push({
 items.push({
     name: "silverShield",
     id: 7,
-    img: "silverShield.png",
+    baseImg: "items/silverShield",
+    baseImgTags: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -214,7 +221,8 @@ items.push({
 items.push({
     name: "goldShield",
     id: 8,
-    img: "goldShield.png",
+    baseImg: "items/goldShield",
+    baseImgTags: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -248,7 +256,8 @@ items.push({
 items.push({
     name: "lamp", //(string) Name Of Item
     id: 9,
-    img: "Lamp.png", //(string) Image name
+    baseImg: "items/Lamp",
+    baseImgTags: [],
     type: "item",
     showInEditor: false,
     onStartSpawn: 0,
@@ -273,7 +282,8 @@ items.push({
 items.push({
     name: "snakeHole", //(string) Name Of Item
     id: 10,
-    img: "snakeHole1.png", //(string) Image name
+    baseImg: "items/snakeHole1",
+    baseImgTags: [],
     type: "item",
     onCollision: {
         teleport: 10,
@@ -293,7 +303,8 @@ items.push({
 items.push({
     name: "snakeHole2", //(string) Name Of Item
     id: 11,
-    img: "snakeHole2.png", //(string) Image name
+    baseImg: "items/snakeHole2",
+    baseImgTags: [],
     type: "item",
     onCollision: {
         teleport: 11,
@@ -314,7 +325,8 @@ items.push({
 items.push({
     name: "snakeHole3", //(string) Name Of Item
     id: 12,
-    img: "snakeHole3.png", //(string) Image name
+    baseImg: "items/snakeHole3",
+    baseImgTags: [],
     type: "item",
     onCollision: {
         teleport: 12,
@@ -335,7 +347,8 @@ items.push({
 items.push({
     name: "spawn", //(string) Name Of Item
     id: 13,
-    img: "spawn.png", //(string) Image name
+    baseImg: "items/spawn",
+    baseImgTags: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -357,7 +370,8 @@ items.push({
 items.push({
     name: "clear", //(string) Name Of Item
     id: 14,
-    img: "noZone.png", //(string) Image name
+    baseImg: "items/noZone",
+    baseImgTags: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -375,7 +389,8 @@ items.push({
 items.push({
     name: "blueKey", //(string) Name Of Item
     id: 15,
-    img: "blueKey.png", //(string) Image name
+    baseImg: "items/blueKey",
+    baseImgTags: [],
     type: "item",
     onCollision: {
         checkStatus: {
@@ -408,7 +423,8 @@ items.push({
 items.push({
     name: "redKey", //(string) Name Of Item
     id: 16,
-    img: "redKey.png", //(string) Image name
+    baseImg: "items/redKey",
+    baseImgTags: [],
     type: "item",
     onCollision: {
         checkStatus: {
@@ -441,7 +457,8 @@ items.push({
 items.push({
     name: "greenKey", //(string) Name Of Item
     id: 17,
-    img: "greenKey.png", //(string) Image name
+    baseImg: "items/greenKey",
+    baseImgTags: [],
     type: "item",
     onCollision: {
         checkStatus: {
@@ -473,7 +490,8 @@ items.push({
 items.push({
     name: "blueLock", //(string) Name Of Item
     id: 18,
-    img: "blueLock.png", //(string) Image name
+    baseImg: "items/blueLock",
+    baseImgTags: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -515,7 +533,8 @@ items.push({
 items.push({
     name: "redLock", //(string) Name Of Item
     id: 19,
-    img: "redLock.png", //(string) Image name
+    baseImg: "items/redLock",
+    baseImgTags: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -558,7 +577,8 @@ items.push({
 items.push({
     name: "greenLock", //(string) Name Of Item
     id: 20,
-    img: "greenLock.png", //(string) Image name
+    baseImg: "items/greenLock",
+    baseImgTags: [],
     type: "item",
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
@@ -602,7 +622,8 @@ items.push({
 items.push({
     name: "stoneWall", //(string) Name Of Item
     id: 21,
-    img: "stoneWall.png", //(string) Image name
+    baseImg: "items/stoneWall",
+    baseImgTags: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -711,7 +732,8 @@ items.push({
     name: "crown", //(string) Name Of Item
     id: 25,
     type: "item",
-    img: "crown.png", //(string) Image name
+    baseImg: "items/crown",
+    baseImgTags: [],
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -806,7 +828,8 @@ items.push({
     name: "lockedCell", //(string) Name Of Item
     id: 28,
     type: "item",
-    img: "lockedCell.png", //(string) Image name
+    baseImg: "items/lockedCell",
+    baseImgTags: [],
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -847,7 +870,8 @@ items.push({
     name: "boardLockedCell", //(string) Name Of Item
     id: 29,
     type: "item",
-    img: "boardLockedCell.png", //(string) Image name
+    baseImg: "items/boardLockedCell",
+    baseImgTags: [],
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -889,7 +913,8 @@ items.push({
     name: "Yellow_Key", //(string) Name Of Item
     id: 30,
     type: "item",
-    img: "yellowKey.png", //(string) Image name
+    baseImg: "items/yellowKey",
+    baseImgTags: [],
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -922,7 +947,8 @@ items.push({
     name: "Yellow_lock", //(string) Name Of Item
     id: 31,
     type: "item",
-    img: "yellowLock.png", //(string) Image name
+    baseImg: "items/yellowLock",
+    baseImgTags: [],
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -963,7 +989,8 @@ items.push({
     name: "Snake_Size_Gate", //(string) Name Of Item
     id: 32,
     type: "item",
-    img: "Snake_Size_Gate.png", //(string) Image name
+    baseImg: "items/Snake_Size_Gate",
+    baseImgTags: [],
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -1001,7 +1028,8 @@ items.push({
     name: "Weighted_Preassure_Plate", //(string) Name Of Item
     id: 33,
     type: "item",
-    img: "weightedPressurePlate.png", //(string) Image name
+    baseImg: "items/weightedPressurePlate",
+    baseImgTags: [],
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;

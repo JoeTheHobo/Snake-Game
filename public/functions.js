@@ -222,10 +222,6 @@ function setUpItemCanvas() {
 
     for (let i = 0; i < items.length; i++) {
         let item = items[i];
-        if (!item.baseImg) {
-            addItemCanvas(items[i],items[i].img,items[i].name);
-            continue;
-        }
 
         function combineStrings(arrays, prefix = "", index = 0) {
             if (index === arrays.length) {
@@ -249,7 +245,10 @@ function setUpItemCanvas() {
                 "white","aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
             ]
         }
-        combineStrings(item.renderImages);
+        if (item.renderImages)
+            combineStrings(item.renderImages);
+        else
+            addItemCanvas(item,item.baseImg,item.name)
     }
 }
 function makeItemCanvas(image,filter = "",player) {
@@ -995,7 +994,8 @@ function getItemValueFromList(item,list) {
 function getImageFromItem(type,item,returnType) {
     let image;
     if (item.baseImg) {
-        image = item.name + "_";
+        image = item.name;
+        if (item.baseImgTags) image += "_";
         for (let i = 0; i < item.baseImgTags.length; i++) {
             image += getBaseImgFromTag(item,item.baseImgTags[i])
         }
