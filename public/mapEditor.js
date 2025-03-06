@@ -1149,7 +1149,7 @@ function setValue(selectingOneCell,item,path,value,returnValue = false) {
         for (let h = 0; h < ties.length; h++) {
             let setPath = ties[h][1].subset(1,"end").split(".");
             
-            setValue(selectingOneCell,item,setPath,helper(item,ties[h][0].subset(1,"end").split("."),false,true),"tie");
+            setValue(selectingOneCell,item,setPath,setValue(item,ties[h][0].subset(1,"end").split("."),false,true),"tie");
         }
     }
 }
