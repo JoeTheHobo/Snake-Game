@@ -1316,21 +1316,19 @@ function getLocations(lobby) {
     }
 }
 function removeBoardStatus(lobby,status,player) {
-    let currentBoard = lobby.board;
-    if (status == "*P") status = "P" + player.index;
+    if (status == "*P") status = player.team;
 
-    checking: for (let i = 0; i < currentBoard.boardStatus.length; i++) {
-        if (currentBoard.boardStatus[i] == status) {
-            currentBoard.boardStatus.splice(i,1);
+    checking: for (let i = 0; i < lobby.boardStatus.length; i++) {
+        if (lobby.boardStatus[i] == status) {
+            lobby.boardStatus.splice(i,1);
             break checking;
         }
     }
 }
 function addBoardStatus(lobby,status,player) {
     if (status == "white") return;
-    let currentBoard = lobby.board;
-    if (status == "*P") status = "P" + player.index;
-    currentBoard.boardStatus.push(status);
+    if (status == "*P") status = player.team;
+    lobby.boardStatus.push(status);
 }
 function useItem(lobby,player) {
     if (player.status.includes(player.items[player.selectingItem].img)) return;
