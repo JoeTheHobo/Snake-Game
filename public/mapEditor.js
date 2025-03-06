@@ -888,6 +888,7 @@ $("me_button").on("click",function() {
             ],
             {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Discard Changes",onClick: () => {
                 currentBoard.originalMap = oldMap;
+                saveBoard();
                 setScene("lobby");
             }},
         ],{
