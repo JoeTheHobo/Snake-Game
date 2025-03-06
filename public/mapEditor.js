@@ -96,7 +96,7 @@ function fixTileDifferencesMapEditor(map) {
 function openMapEditor(boardComingIn,isFromServer = false) {
     //if (isFromServer) $("me_playButton").hide();
     $("me_playButton").hide(); // Change Later
-    
+
     currentBoard = boardComingIn;
     board = boardComingIn;
     currentBoard.originalMap = forceAllCellsToBeTheirOwn(board.originalMap);
@@ -1031,6 +1031,11 @@ function loadObjectMenu() {
                 border: "2px solid black",
             })
 
+            if (value == "*P") {
+                contentHolder.style.background = "white";
+                contentHolder.innerHTML = "@P";
+            }
+
             contentHolder.path = path;
             contentHolder.type = type;
             contentHolder.on("click",function() {
@@ -1059,6 +1064,9 @@ function loadObjectMenu() {
         }
         if (object.onCollision?.checkStatus?.pass?.addBoardStatus) {
             addSetting("Add Board Status","status",object.onCollision?.checkStatus?.pass?.addBoardStatus,["onCollision","checkStatus","pass","addBoardStatus"]);
+        }
+        if (object.onCollision?.addBoardStatus) {
+            addSetting("Add Board Status","status",object.onCollision?.addBoardStatus,["onCollision","addBoardStatus"]);
         }
         if (object.onCollision?.setBoardStatus) {
             addSetting("Set Board Status","status",object.onCollision.setBoardStatus,["onCollision","setBoardStatus"]);
