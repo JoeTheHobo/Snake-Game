@@ -172,9 +172,6 @@ io.on('connection', (socket) => {
                             return;
                         }
                         account.boards = compressed;
-                        decompressObject(account.boards,(err,decompressed) => {
-                            if (decompressed[0].itemDifferences.length > 0) console.log(2,decompressed[0].itemDifferences[0][0]);
-                        })
                     })
                     return;
                 }
@@ -574,7 +571,6 @@ io.on('connection', (socket) => {
 
         //Varify Board Here -To Be Added
         board = JSON.parse(pako.inflate(board, { to: 'string' }));
-        console.log(75,board.originalMap[0][0].item.onCollision);
         lobby.board = board;
         io.emit("updateLobbyPage", lobby.id, lobby.board,"board");
     })
@@ -694,9 +690,7 @@ io.on('connection', (socket) => {
             return;
         }
         
-        console.log(76,lobby.board.originalMap[0][0].item.onCollision.addBoardStatus);
         lobby.board.map = structuredClone(lobby.board.originalMap);
-        console.log(77,lobby.board.map[0][0].item.onCollision.addBoardStatus);
 
         lobby.oldObj = false;
         lobby.isInGame = true;
@@ -803,7 +797,6 @@ io.on('connection', (socket) => {
         getLocations(lobby);
         fixItemDifferences(lobby,lobby.board.map);
         fixTileDifferences(lobby,lobby.board,lobby.board.map);
-        console.log(78,lobby.board.map[0][0].item.onCollision.addBoardStatus);
 
 
         for (let i = 0; i < lobby.players.length; i++) {
@@ -826,7 +819,6 @@ io.on('connection', (socket) => {
         lobby.playSounds = [];
         lobby.boardStatus = [];
 
-        console.log(78,lobby.board.map[0][0].item.onCollision.addBoardStatus);
         io.emit("startingGame", lobby,onlineAccounts[socket.id].player);
         
         updateClientPositions(lobby)

@@ -1711,7 +1711,6 @@ function generateBoardsPopup(type) {
         holder.board = board;
         holder.on("click",function() {
             $(".chooseBoardPopup").hide();
-            console.log(733,this.board.originalMap[0][0].item.onCollision.addBoardStatus)
             $(".chooseBoardPopup").func(this.board);
         })
     }

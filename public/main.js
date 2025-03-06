@@ -1,6 +1,5 @@
 function renderGame() {
     renderTiles();
-    console.log(88,currentBoard.map[0][0].item.onCollision.addBoardStatus)
     ctx_items.clearRect(0,0,canvas_items.width,canvas_items.height);
     for (let i = 0; i < currentBoard.map.length; i++) {
         for (let j = 0; j < currentBoard.map[0].length; j++) {
