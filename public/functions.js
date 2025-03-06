@@ -998,7 +998,7 @@ function getImageFromItem(type,item,returnType) {
     let image;
     if (item.baseImg) {
         image = item.name;
-        if (item.baseImgTags) image += "_";
+        if (item.baseImgTags?.length > 0) image += "_";
         for (let i = 0; i < item.baseImgTags.length; i++) {
             image += getBaseImgFromTag(item,item.baseImgTags[i])
         }
