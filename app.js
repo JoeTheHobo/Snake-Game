@@ -1035,6 +1035,26 @@ server.listen(port, () => {
 
 
 //Copying From Functions.js
+function setNestedValue(obj, path, value, toReturn = false) {
+    let lastKey = path.pop(); // Remove and store the last key
+    if (value === "_LAST_") {
+        value = lastKey; // If value is "_LAST_", use the last key as the value
+        lastKey = path.pop(); // Get the new last key
+    }
+    
+    let target = path.reduce((acc, key) => {
+        if (acc && acc.hasOwnProperty(key)) return acc[key];
+        return undefined; // Exit early if the path doesn't exist
+    }, obj);
+
+    if (target === undefined || !target.hasOwnProperty(lastKey)) return; // Do nothing if path is invalid
+
+    if (toReturn) {
+        return target[lastKey]; // Return the value instead of setting it
+    } else {
+        target[lastKey] = value; // Set the value if not in return mode
+    }
+}
 function getTile(name) {
     for (let i = 0; i < tiles.length; i++) {
         if (tiles[i].name == name) {
