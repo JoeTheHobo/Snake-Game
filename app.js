@@ -1336,7 +1336,6 @@ function removeBoardStatus(lobby,status,player) {
 function addBoardStatus(lobby,status,player) {
     if (status == "white") return;
     if (status == "*P") status = player.team;
-    console.log(status)
     lobby.boardStatus.push(status);
 }
 function useItem(lobby,player) {
@@ -1723,14 +1722,12 @@ function updateClientPositions(lobby,lobby_gameLoop_start = Date.now()) {
         b: lobby.boardStatus,
         g: Date.now() - lobby_gameLoop_start,
     };
-    console.log("Board Status",lobby.boardStatus)
 
     // Compare with previous object
     let changedList = getChangedValues(lobby.oldObj, newObj);
     let changes = pako.deflate(JSON.stringify(changedList), { to: 'string' });
 
     if (Object.keys(changes).length > 0) { // Only emit if there are changes
-        console.log("Board Status2",changes.b)
         io.emit("updatePositions", changes, lobby.id);
     }
 
@@ -1743,7 +1740,7 @@ function getChangedValues(oldObj, newObj) {
     let changes = {};
 
     for (let key in newObj) {
-        if (key == "a")
+        if (key == "a" || key == "b")
             changes[key] = newObj[key]; // Only store changed values
         else if (JSON.stringify(newObj[key]) !== JSON.stringify(oldObj[key])) {
             changes[key] = newObj[key]; // Only store changed values
