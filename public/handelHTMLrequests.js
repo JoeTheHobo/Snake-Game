@@ -156,7 +156,8 @@ $(".sc_chat_input").on("keydown",function(e) {
 })
 $(".sc_chooseboard").on("click",function() {
     showBoardMenu(function(board) {
-        socket.emit("changeServerBoard",JSON.stringify(shortenBoard(board)));
+        console.log(734,board.originalMap[0][0].item.onCollision.addBoardStatus)
+        socket.emit("changeServerBoard",pako.deflate(JSON.stringify(board), { to: 'string' }));
     }) 
 })
 $(".sc_editboard").on("click",function() {

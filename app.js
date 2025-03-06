@@ -573,8 +573,8 @@ io.on('connection', (socket) => {
         if (!board) return;
 
         //Varify Board Here -To Be Added
-        board = fixBoard(JSON.parse(board))
-        console.log(75,board.itemDifferences[0][0])
+        board = JSON.parse(pako.inflate(board, { to: 'string' }));
+        console.log(75,board.originalMap[0][0].item.onCollision);
         lobby.board = board;
         io.emit("updateLobbyPage", lobby.id, lobby.board,"board");
     })

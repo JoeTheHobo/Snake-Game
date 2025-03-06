@@ -570,26 +570,6 @@ function importMap(textFile) {
         console.warn("Incorect File")
     }
 }
-function zip(what) {
-    const encoder = new TextEncoder();
-    const shortenResult = gameModes;
-
-    if (!shortenResult) {
-        throw new Error('shortenBoard(this.board) returned invalid data.');
-    }
-
-    const jsonString = JSON.stringify(shortenResult);
-    const encodedText = encoder.encode(jsonString);
-
-    const compressed = pako.gzip(encodedText);
-
-    return JSON.stringify(compressed);
-}
-function unZip(what) {
-    compressed = JSON.parse(what);
-    return JSON.parse(pako.ungzip(compressed, { to: 'string' }));
-}
-
 function saveBoards() {
     let newBoards = [];
     for (let i = 0; i < boards.length; i++) {
@@ -1731,7 +1711,7 @@ function generateBoardsPopup(type) {
         holder.board = board;
         holder.on("click",function() {
             $(".chooseBoardPopup").hide();
-            console.log(733,this.board.originalMap[0][0])
+            console.log(733,this.board.originalMap[0][0].item.onCollision.addBoardStatus)
             $(".chooseBoardPopup").func(this.board);
         })
     }
