@@ -250,7 +250,7 @@ function setUpItemCanvas() {
             combineStrings(item.renderImages);
         } 
         else
-            addItemCanvas(item,item.baseImg,item.name)
+            addItemCanvas(item,item.baseImg + ".png",item.name)
     }
 }
 function makeItemCanvas(image,filter = "",player) {
