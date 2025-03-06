@@ -693,7 +693,10 @@ io.on('connection', (socket) => {
             socket.emit("kickPlayer","Caught Hacking [Code: 001]");
             return;
         }
+        
+        console.log(76,lobby.board.originalMap[0][0].item.onCollision);
         lobby.board.map = structuredClone(lobby.board.originalMap);
+        console.log(77,lobby.board.map[0][0].item.onCollision);
 
         lobby.oldObj = false;
         lobby.isInGame = true;
@@ -800,6 +803,7 @@ io.on('connection', (socket) => {
         getLocations(lobby);
         fixItemDifferences(lobby,lobby.board.map);
         fixTileDifferences(lobby,lobby.board,lobby.board.map);
+        console.log(78,lobby.board.map[0][0].item.onCollision);
 
 
         for (let i = 0; i < lobby.players.length; i++) {
