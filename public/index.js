@@ -129,7 +129,7 @@ socket.on("settingLobbyBoards",(boardsList) => {
     localAccount.lobbyBoards = (boardsList);
 })
 socket.on("startingGame", (lobby) => {
-    lobby = (lobby);
+    lobby = JSON.parse(pako.inflate(lobby, { to: 'string' }));
     if (localAccount.lobbyID !== lobby.id) return;
     localAccount.isInGame = true;
 

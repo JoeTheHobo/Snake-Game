@@ -559,7 +559,7 @@ io.on('connection', (socket) => {
         if (!lobby) return;
         if (lobby.hostID !== socket.id) return;
 
-        io.emit("settingLobbyBoards",objectToUint8Array(lobby.lobbyBoards));
+        io.emit("settingLobbyBoards",lobby.lobbyBoards);
 
     })
     socket.on("changeServerBoard",(board) => {
@@ -825,7 +825,7 @@ io.on('connection', (socket) => {
         lobby.playSounds = [];
         lobby.boardStatus = [];
 
-        io.emit("startingGame", objectToUint8Array(lobby),onlineAccounts[socket.id].player);
+        io.emit("startingGame", pako.deflate(JSON.stringify(lobby), { to: 'string' }),onlineAccounts[socket.id].player);
         
         updateClientPositions(lobby)
 
@@ -1839,9 +1839,6 @@ let basedGameMode = {
     respawnGrowth: 50, //Percent
     snakeCollision: true,
     teamCollision: true,
-}
-function objectToUint8Array(obj) {
-    return obj;
 }
 function respawnPlayer(lobby,player,growthPercentage) {
     let length = Math.round((growthPercentage/100) * player.tail.length);
