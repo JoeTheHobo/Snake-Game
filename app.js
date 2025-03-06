@@ -1084,6 +1084,7 @@ function calculateDistance(currentBoard,x1, y1, x2, y2, boardLength, boardHeight
 function fixItemDifferences(lobby,map) {
     let currentBoard = lobby.board;
     if (!currentBoard.itemDifferences) return;
+    console.log(76,currentBoard.itemDifferences[0][0])
     for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
         let e = currentBoard.itemDifferences[i];
         let d = {
