@@ -1466,23 +1466,7 @@ function testItemUnderPlayer(lobby,player) {
         runItemFunction(lobby,player,mapItem,"onEat");
     }
 
-    if (simple.type(mapItem.teleport) == "number" && !player.justTeleported) {
-        findingPortal: for (let z = 0; z < currentBoard.map.length; z++) {
-            for (let h = 0; h < currentBoard.map[z].length; h++) {
-                if (!currentBoard.map[z][h].item) continue;
-                if (player.pos.x == h && player.pos.y == z) continue;
-                if (currentBoard.map[z][h].item.teleport === mapItem.teleport) {
-                    player.justTeleported = {
-                        x: h,
-                        y: z,
-                    }
-                    break findingPortal;
-                } 
-            }
-        }
-    } else {
-        player.justTeleported = false;
-    }
+    
 
     if (mapItem.canCollide) {
         let pass = true;
@@ -1742,6 +1726,25 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             }
         }
         
+    }
+    if (collision.teleport) {
+        if (!player.justTeleported) {
+            findingPortal: for (let z = 0; z < currentBoard.map.length; z++) {
+                for (let h = 0; h < currentBoard.map[z].length; h++) {
+                    if (!currentBoard.map[z][h].item) continue;
+                    if (player.pos.x == h && player.pos.y == z) continue;
+                    if (currentBoard.map[z][h].item.id === collision.teleport) {
+                        player.justTeleported = {
+                            x: h,
+                            y: z,
+                        }
+                        break findingPortal;
+                    } 
+                }
+            }
+        } else {
+            player.justTeleported = false;
+        }
     }
     if (collision.checkStatus) {
         let check = collision.checkStatus.check;
