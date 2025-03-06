@@ -130,7 +130,6 @@ socket.on("settingLobbyBoards",(boardsList) => {
 })
 socket.on("startingGame", (lobby) => {
     //lobby = JSON.parse(pako.inflate(lobby, { to: 'string' }));
-    console.log(lobby.board.itemDifferences)
     if (localAccount.lobbyID !== lobby.id) return;
     localAccount.isInGame = true;
 
