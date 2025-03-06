@@ -1506,6 +1506,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     }
     if (collision.giveturbo) {
         if (collision.turboServer.duration && simple.type(collision.turboServer.moveSpeed) == "number") {
+            console.log("TURBOO");
             player.turboActive = true;
             player.turboDuration = collision.turboServer.duration;
             player.moveSpeed = collision.turboServer.moveSpeed;
@@ -1735,7 +1736,7 @@ function getChangedValues(oldObj, newObj) {
     let changes = {};
 
     for (let key in newObj) {
-        if (key == "s" || key == "it")
+        if (key == "a")
             changes[key] = newObj[key]; // Only store changed values
         else if (JSON.stringify(newObj[key]) !== JSON.stringify(oldObj[key])) {
             changes[key] = newObj[key]; // Only store changed values
