@@ -1165,7 +1165,7 @@ function loadStatusSelectionScreen() {
                     console.log(ties)
                     for (let h = 0; h < ties.length; h++) {
                         let wantPath = ties[h][0].split(".");
-                        wantPath.shift();
+                        //wantPath.shift();
                         let setPath = ties[h][1].split(".");
                         setPath.shift();
                         
