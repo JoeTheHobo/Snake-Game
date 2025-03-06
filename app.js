@@ -2082,7 +2082,7 @@ function server_movePlayers(lobby) {
                 let tail = player.tail[player.tail.length-1];
                 if (currentBoard.map[tail.y][tail.x].item) {
                     let mapItem = currentBoard.map[tail.y][tail.x].item;
-                    if (mapItem.canCollide) runItemFunction(lobby,player,mapItem,"offCollision");
+                    if (mapItem.offCollision) runItemFunction(lobby,player,mapItem,"offCollision");
                 }
                 
                 snakeMapRemove(lobby,player.index,tail.y,tail.x);
@@ -2091,7 +2091,7 @@ function server_movePlayers(lobby) {
                 snakeMapRemove(lobby,player.index,playerY,playerX);
                 if (currentBoard.map[playerY][playerX].item) {
                     let mapItem = currentBoard.map[playerY][playerX].item;
-                    if (mapItem.canCollide) runItemFunction(lobby,player,mapItem,"offCollision");
+                    if (mapItem.offCollision) runItemFunction(lobby,player,mapItem,"offCollision");
                 }
             }
             if (player.tail.length > 0) {
