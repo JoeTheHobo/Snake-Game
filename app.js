@@ -1578,7 +1578,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     }
     if (collision.deleteMe) {
         if (item.type == "item") {
-            currentBoard[player.pos.y][player.pos.x].item = false;
+            currentBoard.map[player.pos.y][player.pos.x].item = false;
             lobby.updateCells.push({
                 x: player.pos.x,
                 y: player.pos.y,
@@ -1591,7 +1591,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             if (player.items[k] == "empty") {
                 player.items[k] = structuredClone(item);
                 if (item.type == "item") {
-                    currentBoard[player.pos.y][player.pos.x].item = false;
+                    currentBoard.map[player.pos.y][player.pos.x].item = false;
                     lobby.updateCells.push({
                         x: player.pos.x,
                         y: player.pos.y,
