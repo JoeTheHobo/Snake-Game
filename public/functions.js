@@ -281,6 +281,7 @@ function addItemCanvas(item,itemImg,name,filter = "",player) {
     let img = $(".imageHolder").create("img");
     if(name == "goldShield") console.log(itemImg);
     img.src = "img/" + itemImg;
+    if(name == "goldShield") console.log(img.src);
     img.id = "item_" + name;
 
     img.onload = function() {
