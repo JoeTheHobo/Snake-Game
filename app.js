@@ -694,9 +694,9 @@ io.on('connection', (socket) => {
             return;
         }
         
-        console.log(76,lobby.board.originalMap[0][0].item.onCollision);
+        console.log(76,lobby.board.originalMap[0][0].item.onCollision.addBoardStatus);
         lobby.board.map = structuredClone(lobby.board.originalMap);
-        console.log(77,lobby.board.map[0][0].item.onCollision);
+        console.log(77,lobby.board.map[0][0].item.onCollision.addBoardStatus);
 
         lobby.oldObj = false;
         lobby.isInGame = true;
@@ -803,7 +803,7 @@ io.on('connection', (socket) => {
         getLocations(lobby);
         fixItemDifferences(lobby,lobby.board.map);
         fixTileDifferences(lobby,lobby.board,lobby.board.map);
-        console.log(78,lobby.board.map[0][0].item.onCollision);
+        console.log(78,lobby.board.map[0][0].item.onCollision.addBoardStatus);
 
 
         for (let i = 0; i < lobby.players.length; i++) {
@@ -826,6 +826,7 @@ io.on('connection', (socket) => {
         lobby.playSounds = [];
         lobby.boardStatus = [];
 
+        console.log(78,lobby.board.map[0][0].item.onCollision.addBoardStatus);
         io.emit("startingGame", lobby,onlineAccounts[socket.id].player);
         
         updateClientPositions(lobby)
