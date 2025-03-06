@@ -1161,14 +1161,11 @@ function loadStatusSelectionScreen() {
                 }
 
                 if (ties) {
-                    console.log("ties");
                     for (let h = 0; h < ties.length; h++) {
-                        let wantPath = tie[0].split(".");
+                        let wantPath = ties[h][0].split(".");
                         wantPath.shift();
-                        let setPath = tie[1].split(".");
+                        let setPath = ties[h][1].split(".");
                         setPath.shift();
-
-                        console.log(wantPath,setPath)
     
                         
                         helper(item,setPath,helper(item,wantPath,false,true),"tie");
