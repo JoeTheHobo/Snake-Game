@@ -89,6 +89,7 @@ function renderCells() {
                 if (mapCell.hideWhen[j].equals.subset(0,2) == "@P.") {
                     equals = localAccount.player[mapCell.hideWhen[j].equals.subset(".\\after","end")];
                 }
+                if (subtract > 0) value -= subtract;
                 if (value === equals) pass = true;
             }
             if (pass) continue;
