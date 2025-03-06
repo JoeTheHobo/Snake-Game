@@ -1029,6 +1029,11 @@ function loadObjectMenu() {
                 cursor: "url('./img/pointer.cur'), auto",
                 borderRadius: "5px",
                 border: "2px solid black",
+                color: "black",
+                display: "flex",
+                fontSize: "20px",
+                alignItems: "center",
+                justifyContent: "center",
             })
 
             if (value == "*P") {
@@ -1075,6 +1080,7 @@ function loadObjectMenu() {
             addSetting("Remove Board Status","status",object.onCollision.removeBoardStatus,["onCollision","removeBoardStatus"]);
         }
         if (object.spawnPlayerTeam) {
+            console.log("Ey")
             addSetting("Team Color","status",object.spawnPlayerTeam,["spawnPlayerTeam"]);
         }
         if (_type(object.onCollision?.checkStatus?.check?.snakeSize).type == "number") {
