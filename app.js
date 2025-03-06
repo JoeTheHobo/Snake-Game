@@ -1297,12 +1297,16 @@ function getLocations(lobby) {
                             name: cell.item.name,
                         })
                     }
-                    if (cell.item.renderStatusPath.length > 0) {
-                        lobby.board.location_status.push({
-                            x: j,
-                            y: i,
-                            name: cell.item.name,
-                        })
+                    if (cell.item.updateOn) {
+                        for (let h = 0; h < cell.updateOn.length; h++) {
+                            if (cell.updateOn[h] == "boardStatus") {
+                                lobby.board.location_status.push({
+                                    x: x,
+                                    y: y,
+                                    name: cell.name,
+                                })
+                            }
+                        }
                     }
                     if (cell.item.spawnPlayerHere == true) {
                         lobby.board.location_spawns.push({
@@ -1325,11 +1329,27 @@ function removeBoardStatus(lobby,status,player) {
             break checking;
         }
     }
+    for (let i = 0; i < lobby.board.location_status.length; i++) {
+        let status = lobby.board.location_status;
+        lobby.updateCells.push({
+            x: status.x,
+            y: status.y,
+            item: status.item,
+        })
+    }
 }
 function addBoardStatus(lobby,status,player) {
     if (status == "white") return;
     if (status == "*P") status = player.team;
     lobby.boardStatus.push(status);
+    for (let i = 0; i < lobby.board.location_status.length; i++) {
+        let status = lobby.board.location_status;
+        lobby.updateCells.push({
+            x: status.x,
+            y: status.y,
+            item: status.item,
+        })
+    }
 }
 function useItem(lobby,player) {
     if (player.status.includes(player.items[player.selectingItem].img)) return;

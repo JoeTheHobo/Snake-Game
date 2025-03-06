@@ -918,6 +918,7 @@ items.push({
         value: ".onCollision.checkStatus.check.boardStatus.count",
         subtract: ["boardStatusCount",".onCollision.checkStatus.check.boardStatus.name"],
     },
+    updateOn: ["boardStatus"],
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })
 
