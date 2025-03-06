@@ -124,8 +124,8 @@ function renderCells() {
             xPos = (x*(gridSize)) + ((gridSize)/2) - (textWidth/2);
             yPos = (y*(gridSize)) + ((gridSize)/2)+5;
 
-            ctx_items.strokeText(count,xPos,yPos);
-            ctx_items.fillText(count,xPos,yPos);
+            ctx_items.strokeText(value,xPos,yPos);
+            ctx_items.fillText(value,xPos,yPos);
         }
     }
     updateCells = [];
