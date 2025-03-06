@@ -887,6 +887,13 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing
+    hideWhen: [
+        {
+            value: ".onCollision.checkStatus.check.boardStatus.count",
+            subtract: ["boardStatusCount",".onCollision.checkStatus.check.boardStatus.name"],
+            equals: 0,
+        }
+    ],
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile

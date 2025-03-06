@@ -79,7 +79,13 @@ function renderCells() {
             let pass = false;
             for (let j = 0; j < mapCell.hideWhen.length; j++) {
                 let value = getBaseImgFromTag(mapCell,mapCell.hideWhen[j].value);
+                let subtract = 0;
                 let equals = mapCell.hideWhen[j].equals;
+                if (mapCell.hideWhen[j].subtract) {
+                    if (mapCell.hideWhen[j].subtract[0] === "boardStatusCount") {
+                        subtract += localAccount.boardStatus[getBaseImgFromTag(mapCell,mapCell.hideWhen[j].subtract[1])].count;
+                    }
+                }
                 if (mapCell.hideWhen[j].equals.subset(0,2) == "@P.") {
                     equals = localAccount.player[mapCell.hideWhen[j].equals.subset(".\\after","end")];
                 }
