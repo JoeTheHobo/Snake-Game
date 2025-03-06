@@ -75,6 +75,18 @@ function renderCells() {
         ctx_items.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
         if (!mapCell.visible) continue;
         if (mapCell == false) continue;
+        if (mapCell.hideWhen) {
+            let pass = false;
+            for (let j = 0; j < mapCell.hideWhen.length; j++) {
+                let value = getBaseImgFromTag(mapCell,mapCell.hideWhen[j].value);
+                let equals = mapCell.hideWhen[j].equals;
+                if (mapCell.hideWhen[j].equals.subset(0,2) == "@P.") {
+                    equals = localAccount.player[mapCell.hideWhen[j].equals.subset(".\\after","end")];
+                }
+                if (value === equals) pass = true;
+            }
+            if (pass) continue;
+        }
 
         let image;
         if (mapCell.baseImg) {

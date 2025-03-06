@@ -137,6 +137,7 @@ socket.on("startingGame", (lobby) => {
     searchingForPlayer: for (let j = 0; j < lobby.players.length; j++) {
         if (localAccount.id === lobby.players[j]) {
             foundPlayer = true;
+            localAccount.player  = lobby.players[j];
             break searchingForPlayer;
         } 
     } 
@@ -416,7 +417,10 @@ socket.on("updatePositions",(obj,lobbyID) => {
                 local_player.tailLength = server_player.t;
                 local_player.playerKills = server_player.k;
     
-                if (local_player.accountID === localAccount.id) updateGameScene(local_player);
+                if (local_player.accountID === localAccount.id) {
+                    localAccount.player  = local_player;
+                    updateGameScene(local_player);
+                }
                 else updateGameFlags(local_player);
                 //Will have to update glags of individual players
             }
