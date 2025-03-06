@@ -571,7 +571,7 @@ io.on('connection', (socket) => {
         //Varify Board Here -To Be Added
         board = JSON.parse(pako.inflate(board, { to: 'string' }));
         lobby.board = board;
-        io.emit("updateLobbyPage", lobby.id, lobby.board,"board");
+        io.emit("updateLobbyPage", lobby.id, lobby.board,"board",lobby.hostID);
     })
     socket.on("setCode",(code) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];

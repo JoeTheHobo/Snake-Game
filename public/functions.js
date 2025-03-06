@@ -1508,7 +1508,7 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
         if (localAccount.id == lobby.hostID) {
             $(".hostOnly").show();
             $(".hostFlex").show("flex");
-    
+
             if (lobby.board.recommendedGameMode) {
                 $("sc_boards_recommendedGameMode").show();
                 $("sc_boards_recommendedGameMode").innerHTML = "Recommended Game Mode: " + lobby.board.gameMode.name;
@@ -1522,6 +1522,12 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
         else {
             $(".hostOnly").hide();
         }
+    }
+    if (type == "board" && localAccount.id === extra2) {
+        if (lobby.recommendedGameMode) {
+            $("sc_boards_recommendedGameMode").show();
+            $("sc_boards_recommendedGameMode").innerHTML = "Recommended Game Mode: " + lobby.gameMode.name;
+        } else $("sc_boards_recommendedGameMode").hide();
     }
 
     if (type == "all" || type == "board") localAccount.lobbyBoard = type == "all" ? lobby.board : lobby;
