@@ -1039,6 +1039,10 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+    tie: [
+        [".onCollision.checkStatus.pass.addBoardStatus",".offCollision.checkStatus.pass.removeBoardStatus"],
+        [".onCollision.checkStatus.check.snakeSize",".offCollision.checkStatus.check.snakeSize"]
+    ],
 
     onCollision: { //When snake collides do these
         checkStatus: {
@@ -1056,7 +1060,6 @@ items.push({
                 
             }
         },
-        tie: [".onCollision.checkStatus.pass.addBoardStatus",".offCollision.checkStatus.pass.removeBoardStatus"],
     },
     offCollision: { //When snake leaves item
         checkStatus: {

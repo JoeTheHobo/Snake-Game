@@ -1058,7 +1058,10 @@ function loadObjectMenu() {
         }
     } else {
         if (object.onCollision?.checkStatus?.check?.boardStatus) {
-            addSetting("Board Status Required","status",object.onCollision.checkStatus.check.boardStatus.count,["onCollision","checkStatus","check","boardStatus","count"]);
+            addSetting("Board Status Required","status",object.onCollision.checkStatus.check.boardStatus.name,["onCollision","checkStatus","check","boardStatus","name"]);
+        }
+        if (object.onCollision?.checkStatus?.check?.boardStatus) {
+            addSetting("Board Status Count","number",object.onCollision.checkStatus.check.boardStatus.count,["onCollision","checkStatus","check","boardStatus","count"]);
         }
         if (object.onCollision?.checkStatus?.check?.playerTeamStatus) {
             addSetting("Player Team Required","status",object.onCollision.checkStatus.check.playerTeamStatus,["onCollision","checkStatus","check","playerTeamStatus"]);
@@ -1144,34 +1147,34 @@ function loadStatusSelectionScreen() {
             let selectingOneCell = isSelectingOneCell();
 
             function helper(item,path,value,returnValue = false) {
-                let tie = false;
-                if (path.length == 3) {
-                    if (returnValue == true) return item[path[0]][path[1]][path[2]];
-                    item[path[0]][path[1]][path[2]] = value;
-                    if (item[path[0]][path[1]].tie && returnValue !== "tie") tie = item[path[0]][path[1]].tie;
+                let ties = [];
+                if (returnValue == true) return setNestedValue(item, path, value,true);
+                setNestedValue(item, path, value);
+                if (item.tie && returnValue !== "tie") ties = item.ties;
+                
+                if (selectingOneCell) {
+                    setNestedValue(
+                        currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type],
+                        selectedItem.path,
+                        this.value
+                    );
                 }
-                if (path.length == 2) {
-                    if (returnValue == true) return item[path[0]][path[1]];
-                    item[path[0]][path[1]] = value;
-                    if (item[path[0]].tie && returnValue !== "tie") tie = item[path[0]].tie;
-                }
-                if (path.length == 1) {
-                    if (returnValue == true) return item[path[0]];
-                    item[path[0]] = value;
-                    if (item.tie && returnValue !== "tie") tie = item.tie;
-                }
-                if (tie) {
-                    let wantPath = tie[0].split(".");
-                    wantPath.shift();
-                    let setPath = tie[1].split(".");
-                    setPath.shift();
 
-                    
-                    helper(item,setPath,helper(item,wantPath,false,true),"tie");
+                if (ties) {
+                    if (tie.length) {
+                        for (let h = 0; h < ties.length; h++) {
+                            let wantPath = tie[0].split(".");
+                            wantPath.shift();
+                            let setPath = tie[1].split(".");
+                            setPath.shift();
+        
+                            
+                            helper(item,setPath,helper(item,wantPath,false,true),"tie");
+                        }
+                    }
                 }
             }
             helper(selectedItem.cell,selectedItem.path,this.status);
-            if (selectingOneCell) helper(currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x],selectedItem.path,this.status);
 
             
             checkRenderThenRender();
