@@ -1063,6 +1063,9 @@ function fixItemDifferences(lobby,map) {
         }
         if (e[1] == 44 && e[2] == 13) console.log(1.4,"onCollisionType",simple.type(map[13][44].item.onCollision.checkStatus));
         map[d.y][d.x].item = pos;
+        if (e[1] == 44 && e[2] == 13) console.log(1.42,"onCollisionType",simple.type(map[13][44].item.onCollision.checkStatus));
+        if (e[1] == 44 && e[2] == 13) console.log(1.45,"pos",simple.type(pos.onCollision.checkStatus));
+        
         for (let i = 0; i < currentBoard.location_spawns.length; i++) {
             if (d.y == currentBoard.location_spawns[i].y && currentBoard.location_spawns[i].x == d.x) {
                 lobby.board.location_spawns[i].item = map[d.y][d.x].item;
