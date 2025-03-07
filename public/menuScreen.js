@@ -1028,11 +1028,11 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
         if (!server) socket.emit("saveGamemode",gameMode);
         else socket.emit("editServerGameMode",gameMode);
     },["noPickUp","select","recycle"]);
-    addSetting("Snake Vanish On Death","dropdown",gameMode.snakeVanishOnDeath,function(value) {
-        gameMode.snakeVanishOnDeath = value == "true" ? true : false;
+    addSetting("When Snakes Die","dropdown",gameMode.whenSnakesDie,function(value) {
+        gameMode.whenSnakesDie = value.toLowerCase();
         if (!server) socket.emit("saveGamemode",gameMode);
         else socket.emit("editServerGameMode",gameMode);
-    },["true","false"]);
+    },["Vanish","Remain","Become Food"]);
     addSetting("Respawn","dropdown",gameMode.respawn,function(value) {
         gameMode.respawn = value == "true" ? true : false;
         if (!server) socket.emit("saveGamemode",gameMode);

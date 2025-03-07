@@ -6,7 +6,7 @@ presetGameModes.push({
     mode_usingItemType: "scroll",
     mode_whenInventoryFullWhereDoItemsGo: "select",
     itemAlterations: [],
-    snakeVanishOnDeath: false,
+    whenSnakesDie: "remain", //vanish, remain, become food 
     respawn: false,
     respawnTimer: 5,
     respawnGrowth: 50, //Percent
@@ -28,7 +28,7 @@ presetGameModes.push({
             alterations: [["specialSpawnWeight",20],["onStartSpawn",20]],
         },
     ],
-    snakeVanishOnDeath: false,
+    whenSnakesDie: "remain", //vanish, remain, become food 
     respawn: false,
     respawnTimer: 5,
     respawnGrowth: 50, //Percent

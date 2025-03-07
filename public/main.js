@@ -311,7 +311,7 @@ function renderPlayers() {
         let player = activePlayers[i];
 
         if (player.isDead) {
-            if (player.justDied && currentGameMode.snakeVanishOnDeath == false) {
+            if (player.justDied && currentGameMode.whenSnakesDie == "remain") {
                 player.justDied = false;
             } else continue;
         }
@@ -629,7 +629,7 @@ function movePlayers() {
                 for (let a = 0; a < activePlayers.length; a++) {
                     if(activePlayers[i] == false) continue;
                     let checkedPlayer = activePlayers[a];
-                    if (checkedPlayer.isDead && currentGameMode.snakeVanishOnDeath) continue;
+                    if (checkedPlayer.isDead && currentGameMode.whenSnakesDie == "remain") continue;
                     if (checkedPlayer.team === player.team && !currentGameMode.teamCollision && player.team !== "white") continue;
             
                     for (let b = 0; b < checkedPlayer.tail.length; b++) {
@@ -1064,7 +1064,7 @@ function deletePlayer(player,playerWhoKilled,item,instaKill = false){
         if (playerWhoKilled) if (playerWhoKilled.name !== player.name) playerWhoKilled.playerKills++;
 
         //Delete Tail
-        if (currentGameMode.snakeVanishOnDeath) {
+        if (currentGameMode.whenSnakesDie == "vanish") {
             for (let i = 0; i < player.tail.length; i++) {
                 updateSnakeCells.push({
                     x: player.tail[i].x,

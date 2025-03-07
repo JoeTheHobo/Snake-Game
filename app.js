@@ -325,6 +325,7 @@ io.on('connection', (socket) => {
             if (account.gameModes[i].id == gameMode.id) {
                 if (checkGameMode(gameMode,socket.id) === true) {
                     account.gameModes[i] = gameMode;
+                    account.gameModes[i].whenSnakesDie = account.gameModes[i].whenSnakesDie.toLowerCase(); 
                     io.emit("updateLocalGameModes",account.gameModes)
                 }
             }
@@ -1375,8 +1376,11 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
         if (playerWhoKilled) if (playerWhoKilled.name !== player.name) playerWhoKilled.playerKills++;
 
         //Delete Tail
-        if (currentGameMode.snakeVanishOnDeath) {
+        if (currentGameMode.whenSnakesDie == "vanish") {
             snakeMapRemoveAll(lobby,player);
+        }
+        if (currentGameMode.whenSnakesDie == "become food") {
+            snakeMapSetFood(lobby,player,true);
         }
 
         //Delete Player
@@ -1803,7 +1807,7 @@ function checkGameMode(gameMode,accountID) {
     if (gameMode.howManyItemsCanPlayersUse < 0 || gameMode.howManyItemsCanPlayersUse > 10) return "howManyItemsCanPlayersUse";
     if (!["scroll","direct"].includes(gameMode.mode_usingItemType)) return "mode_usingItemType";
     if (!["noPickUp","recycle","select"].includes(gameMode.mode_whenInventoryFullWhereDoItemsGo)) return "mode_whenInventoryFullWhereDoItemsGo";
-    if (![false,true].includes(gameMode.snakeVanishOnDeath)) return "snakeVanishOnDeath";
+    if (!["vanish","remain","become food"].includes(gameMode.whenSnakesDie)) return "whenSnakesDie";
     if (![false,true].includes(gameMode.respawn)) return "respawn";
     if (![false,true].includes(gameMode.snakeCollision)) return "snakeCollision";
     if (![false,true].includes(gameMode.teamCollision)) return "teamCollision";
@@ -1820,7 +1824,7 @@ let basedGameMode = {
     mode_usingItemType: "scroll",
     mode_whenInventoryFullWhereDoItemsGo: "select",
     itemAlterations: [],
-    snakeVanishOnDeath: false,
+    whenSnakesDie: "remain",
     respawn: false,
     respawnTimer: 5,
     respawnGrowth: 50, //Percent
@@ -1881,7 +1885,8 @@ function snakeMapSetType(lobby,index,y,x,type) {
     }
     
 }
-function snakeMapRemoveAll(lobby,player) {
+
+function snakeMapRemoveAll(lobby,player,setFood) {
     let snakeMap = lobby.snakeMap;
     for (let i = 0; i < snakeMap.length; i++) {
         for (let j = 0; j < snakeMap[i].length; j++) {
@@ -1889,6 +1894,21 @@ function snakeMapRemoveAll(lobby,player) {
                 if (snakeMap[i][j][k].index == player.index) {
                     snakeMap[i][j].splice(k,1);
                     lobby.updateSnakeCells.push(lobby.snakeMap[i][j]);
+                    if (setFood && !currentBoard.map[y][x].item) {
+                        let x = j;
+                        let y = i;
+                        runItemFunction(lobby,false,lobby.items[0],"onSpawn",{x:x,y:y},{playAudio: false});
+                        currentBoard.map[y][x].item = structuredClone(lobby.items[0]);
+                        currentBoard.map[y][x].item.pos = {
+                            x: x,
+                            y: y,
+                        }
+                        lobby.updateCells.push({
+                            x: x,
+                            y: y,
+                            item: currentBoard.map[y][x].item,
+                        })
+                    }
                 }
             }
         }
@@ -2020,7 +2040,7 @@ function server_movePlayers(lobby) {
             // Step 1: Populate occupiedPositions with all players' tails & positions
             for (let a = 0; a < activePlayers.length; a++) {
                 let checkedPlayer = activePlayers[a];
-                if (checkedPlayer.isDead && currentGameMode.snakeVanishOnDeath) continue;
+                if (checkedPlayer.isDead && currentGameMode.whenSnakesDie == "remain") continue;
                 if (checkedPlayer.team === player.team && !currentGameMode.teamCollision && player.team !== "white") continue;
         
                 for (let b = 0; b < checkedPlayer.tail.length; b++) {

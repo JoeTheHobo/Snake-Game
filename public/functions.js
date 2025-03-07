@@ -1906,7 +1906,7 @@ function logGameModeChanges(holder,gameMode) {
 
     let alterations = [];
 
-    let loggingSelectKeys = ["howManyItemsCanPlayersUse","mode_usingItemType","mode_whenInventoryFullWhereDoItemsGo","snakeVanishOnDeath","respawn","snakeCollision","teamCollision","respawnTimer","respawnGrowth"];
+    let loggingSelectKeys = ["howManyItemsCanPlayersUse","mode_usingItemType","mode_whenInventoryFullWhereDoItemsGo","whenSnakesDie","respawn","snakeCollision","teamCollision","respawnTimer","respawnGrowth"];
 
     function formatString(input) {
         input = input.replaceAll("mode_","");
