@@ -1363,8 +1363,10 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
     let playerDied = true;
     if (playerWhoKilled) damage = playerWhoKilled.bodyArmor;
 
+    if (player.respawnProtected) damage = 0;
 
     if (damage === 0) playerDied = false;
+
 
     if (player.equiped.head?.whenEquiped?.protect) {
         player.equiped.head.whenEquiped.protect -= damage;
@@ -1866,8 +1868,12 @@ function respawnPlayer(lobby,player,growthPercentage) {
         tail: false,
     }
 
+    let onGoingRespawnProtectedCode = simple.rnd(1000);
+    player.onGoingRespawnProtectedTimer = onGoingRespawnProtectedCode;
     setTimeout(function() {
-        player.respawnProtected = false;
+        if (player.onGoingRespawnProtectedTimer === onGoingRespawnProtectedCode) {
+            player.respawnProtected = false;
+        }
     },lobby.gameMode.respawnProtection*1000);
 
 
