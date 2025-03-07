@@ -489,6 +489,7 @@ io.on('connection', (socket) => {
             serverType: serverType,
             code: code,
         },"settings",lobby.hostID);
+        updateLobbies();
 
     })
     socket.on("changeGameModetoBoards",() => {
@@ -646,18 +647,6 @@ io.on('connection', (socket) => {
         lobby.lobbyName = value;
 
         io.emit("updateLobbyPage", lobby.id, lobby.lobbyName, "lobbyName");
-        updateLobbies();
-    })
-    socket.on("changeLobbyType",(type) => {
-        let lobby = lobbies[onlineAccounts[socket.id].lobby];
-        if (!lobby) return;
-        if (lobby.hostID !== socket.id) return;
-        if (!["Hidden","Public","Private"].includes(type)) return;
-        
-        lobby.serverType = type;
-
-        if (type == "Hidden" || type == "Private") io.emit("setCode",socket.id,lobby.code);
-        io.emit("updateLobbyPage", lobby.id, lobby);
         updateLobbies();
     })
     socket.on("ping", (callback) => {

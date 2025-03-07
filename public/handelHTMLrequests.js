@@ -138,13 +138,6 @@ $("startServerButton").on("click",function() {
     server_startGame();
     $(".button_mapEditorHolder").hide();
 })
-
-$(".sc_tb_dd_option").on("click",function() {
-    socket.emit("changeLobbyType",this.innerHTML);
-    $(".sdd_title").innerHTML = this.innerHTML;
-    if (this.innerHTML == "Public") $(".lobbyCode").hide();
-    else $(".lobbyCode").show()
-})
 $(".lobbyCode").on("click",function() {
     chooseCodePopUp(this.innerHTML);
 })
