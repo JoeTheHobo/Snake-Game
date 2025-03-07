@@ -709,7 +709,6 @@ io.on('connection', (socket) => {
                 }
             }
         }
-        console.log(3,"itemDifferences",lobby.board.itemDifferences[0][0]);
 
 
         //Resetting Players
@@ -769,12 +768,9 @@ io.on('connection', (socket) => {
         }
 
         
-        console.log(4,"itemDifferences",lobby.board.itemDifferences[0][0]);
 
         getLocations(lobby);
         fixItemDifferences(lobby,lobby.board.map);
-        console.log(4,"itemDifferences",lobby.board.itemDifferences[0][0]);
-
         fixTileDifferences(lobby,lobby.board,lobby.board.map);
 
 
@@ -1047,7 +1043,6 @@ function calculateDistance(currentBoard,x1, y1, x2, y2, boardLength, boardHeight
     return dx + dy;
 }
 function fixItemDifferences(lobby,map) {
-    console.log(6,"itemDifferences",lobby.board.itemDifferences[0][0])
     let currentBoard = lobby.board;
     if (!currentBoard.itemDifferences) return;
     for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
@@ -1057,27 +1052,20 @@ function fixItemDifferences(lobby,map) {
             x: e[1],
             y: e[2],
         }
-        if (e[1] == 44 && e[2] == 13) console.log(1.2,"onCollisionType",simple.type(map[13][44].item.onCollision.checkStatus));
         let pos = structuredClone(map[d.y][d.x].item);
         if (!pos) continue;
-        if (e[1] == 44 && e[2] == 13) console.log(1.25,"differences",d.differences);
         for (let j = 0; j < d.differences.length; j++) {
             let change = d.differences[j];
             setNestedValue(pos,change,"_LAST_");
         }
-        if (e[1] == 44 && e[2] == 13) console.log(1.4,"onCollisionType",simple.type(map[13][44].item.onCollision.checkStatus));
         map[d.y][d.x].item = pos;
-        if (e[1] == 44 && e[2] == 13) console.log(1.42,"onCollisionType",simple.type(map[13][44].item.onCollision.checkStatus));
-        if (e[1] == 44 && e[2] == 13) console.log(1.45,"pos",simple.type(pos.onCollision.checkStatus));
         
         for (let i = 0; i < currentBoard.location_spawns.length; i++) {
             if (d.y == currentBoard.location_spawns[i].y && currentBoard.location_spawns[i].x == d.x) {
                 lobby.board.location_spawns[i].item = map[d.y][d.x].item;
             }
         }
-        if (e[1] == 44 && e[2] == 13) console.log(1.6,"onCollisionType",simple.type(map[13][44].item.onCollision.checkStatus));
     }
-    console.log(7,"itemDifferences",lobby.board.itemDifferences[0][0])
 }
 function fixTileDifferences(currentBoard,map) {
     if (!currentBoard.tileDifferences) return;
@@ -1396,7 +1384,7 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
             snakeMapRemoveAll(lobby,player);
         }
         if (currentGameMode.whenSnakesDie == "become food") {
-            snakeMapSetFood(lobby,player,true);
+            snakeMapRemoveAll(lobby,player,true);
         }
 
         //Delete Player
