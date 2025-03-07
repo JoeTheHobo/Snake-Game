@@ -118,7 +118,7 @@ function loadServerCreation() {
             }},
         ],
         {type: "input", id: "input",display: "none", className: "popup_makeServer_input",},
-        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", className: "playButtonSounds", background: "black",text:"Host Server", onClick: function(parentIDS,param,button) {
+        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", className: "playButtonSounds", background: "white", color: "black",text:"Host Server", onClick: function(parentIDS,param,button) {
             const {hidden, public, private, input} = parentIDS;
             let serverType = false;
             if (hidden.style.background === "rgb(139, 196, 226)") serverType = "Hidden";
