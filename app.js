@@ -414,7 +414,7 @@ io.on('connection', (socket) => {
         let lobby = lobbies[lobbyID];
         if (!lobby) return;
 
-        if (lobby.serverType == "Private" || lobby.serverType == "Hidden") {
+        if (lobby.serverType.toLowerCase() == "private" || lobby.serverType.toLowerCase() == "hidden") {
             if (lobby.code !== code) return;
         }
         if (lobby.players.length == lobby.playerMax) return;
@@ -465,7 +465,7 @@ io.on('connection', (socket) => {
     socket.on("searchingHiddenServer",(value) => {
         for (const lobbyID in lobbies) {
             let lobby = lobbies[lobbyID];
-            if (lobby.serverType !== "Hidden") continue;
+            if (lobby.serverType.toLowerCase() !== "hidden") continue;
             if (lobby.code === value) {
                 socket.listeners("joinLobby")[0](lobby.id,value);
                 return;
@@ -481,8 +481,6 @@ io.on('connection', (socket) => {
         let serverType = settings.serverType.toLowerCase();
         if (!["public","hidden","private"]) serverType = "public";
         lobby.serverType = serverType;
-
-        console.log(lobby.serverType)
         
         if (settings.code == "") settings.code = rnd(9999);
         lobby.code = settings.code + "";
@@ -1668,7 +1666,7 @@ function removePlayerStatus(lobby,player,itemName) {
 //From App.js
 function updateLobbies() {
     let lobbyList = Object.values(lobbies)
-        .filter(lobby => lobby.serverType !== "Hidden")
+        .filter(lobby => lobby.serverType.toLowerCase() !== "hidden")
         .reduce((acc, lobby) => {
             acc[lobby.id] = { ...lobby, code: "", gameLoop: "" };
             return acc;

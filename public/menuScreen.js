@@ -28,7 +28,7 @@ function loadServersHTML() {
         let boardTitleContainer = column.create("div");
         boardTitleContainer.className = "server_title_container";
 
-        if (server.serverType == "Private") {
+        if (server.serverType.toLowerCase() == "private") {
             let lockImageHolder = boardTitleContainer.create("div");
             lockImageHolder.className = "server_lock_holder";
             let lockImage = lockImageHolder.create("img");
@@ -121,9 +121,9 @@ function loadServerCreation(updateLobby = false,lobby) {
         {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", className: "playButtonSounds", background: "#D9D9D9", color: "black",text:(updateLobby ? "Update Settings" : "Host Server"), onClick: function(parentIDS,param,button) {
             const {hidden, public, private, input} = parentIDS;
             let serverType = false;
-            if (hidden.style.background === "rgb(139, 196, 226)") serverType = "Hidden";
-            if (public.style.background === "rgb(139, 196, 226)") serverType = "Public";
-            if (private.style.background === "rgb(139, 196, 226)") serverType = "Private";
+            if (hidden.style.background === "rgb(139, 196, 226)") serverType = "hidden";
+            if (public.style.background === "rgb(139, 196, 226)") serverType = "public";
+            if (private.style.background === "rgb(139, 196, 226)") serverType = "private";
 
             let code = input.value;
             if (code === "") code = rnd(1000,9999);
@@ -144,7 +144,7 @@ function loadServerCreation(updateLobby = false,lobby) {
     })
 
     if (updateLobby) {
-        if (lobby.serverType === "hidden" || lobby.serverType === "private") {
+        if (lobby.serverType.toLowerCase() === "hidden" || lobby.serverType.toLowerCase() === "private") {
             $(".public_server").style.background = "black";
             $(".public_server").style.color = "white";
             $(`.${lobby.serverType}_server`).style.background = "#8bc4e2";
