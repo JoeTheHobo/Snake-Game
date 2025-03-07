@@ -663,8 +663,9 @@ io.on('connection', (socket) => {
             return;
         }
         
-        console.log("onCollisionType",simple.type(lobby.board.originalMap[13][44].item.onCollision.checkStatus));
+        console.log(1,"itemDifferences",lobby.board.itemDifferences);
         lobby.board.map = structuredClone(lobby.board.originalMap);
+        console.log(2,"itemDifferences",lobby.board.itemDifferences);
 
         lobby.oldObj = false;
         lobby.isInGame = true;
@@ -708,6 +709,7 @@ io.on('connection', (socket) => {
                 }
             }
         }
+        console.log(3,"itemDifferences",lobby.board.itemDifferences);
 
 
         //Resetting Players
@@ -767,11 +769,11 @@ io.on('connection', (socket) => {
         }
 
         
+        console.log(4,"itemDifferences",lobby.board.itemDifferences);
 
         getLocations(lobby);
-        console.log("onCollisionType",simple.type(lobby.board.originalMap[13][44].item.onCollision.checkStatus));
         fixItemDifferences(lobby,lobby.board.map);
-        console.log("onCollisionType",simple.type(lobby.board.originalMap[13][44].item.onCollision.checkStatus));
+        console.log(4,"itemDifferences",lobby.board.itemDifferences);
 
         fixTileDifferences(lobby,lobby.board,lobby.board.map);
 
@@ -1044,7 +1046,7 @@ function calculateDistance(currentBoard,x1, y1, x2, y2, boardLength, boardHeight
     return dx + dy;
 }
 function fixItemDifferences(lobby,map) {
-    console.log(1,"onCollisionType",simple.type(map[13][44].item.onCollision.checkStatus));
+    console.log(6,"itemDifferences",lobby.board.itemDifferences)
     let currentBoard = lobby.board;
     if (!currentBoard.itemDifferences) return;
     for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
@@ -1074,7 +1076,7 @@ function fixItemDifferences(lobby,map) {
         }
         if (e[1] == 44 && e[2] == 13) console.log(1.6,"onCollisionType",simple.type(map[13][44].item.onCollision.checkStatus));
     }
-    console.log(3,"onCollisionType",simple.type(map[13][44].item.onCollision.checkStatus));
+    console.log(7,"itemDifferences",lobby.board.itemDifferences)
 }
 function fixTileDifferences(currentBoard,map) {
     if (!currentBoard.tileDifferences) return;
