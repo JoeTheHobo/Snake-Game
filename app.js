@@ -1822,7 +1822,7 @@ function checkGameMode(gameMode,accountID) {
     if (![false,true].includes(gameMode.respawn)) return "respawn";
     if (![false,true].includes(gameMode.snakeCollision)) return "snakeCollision";
     if (![false,true].includes(gameMode.teamCollision)) return "teamCollision";
-    if (simple.type(gameMode.respawnGrowth) !== "number") return "respawnGrowth";
+    gameMode.respawnGrowth = Number(gameMode.respawnGrowth);
     if (gameMode.respawnGrowth < 0 || gameMode.respawnGrowth > 100) return ["respawnGrowth",gameMode.respawnGrowth];
     if (gameMode.respawnProtection < 0 || gameMode.respawnProtection > 15) return ["respawnProtection",gameMode.respawnProtection];
     if (simple.type(gameMode.respawnTimer) !== "number") return "respawnTimer";
