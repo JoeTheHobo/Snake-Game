@@ -663,7 +663,7 @@ io.on('connection', (socket) => {
             return;
         }
         
-        console.log("onCollisionType",simple.type(lobby.board.originalMap[13][44].item.onCollision));
+        console.log("onCollisionType",simple.type(lobby.board.originalMap[13][44].item.onCollision.checkStatus));
         lobby.board.map = structuredClone(lobby.board.originalMap);
 
         lobby.oldObj = false;
@@ -769,9 +769,9 @@ io.on('connection', (socket) => {
         
 
         getLocations(lobby);
-        console.log("onCollisionType",simple.type(lobby.board.originalMap[13][44].item.onCollision));
+        console.log("onCollisionType",simple.type(lobby.board.originalMap[13][44].item.onCollision.checkStatus));
         fixItemDifferences(lobby,lobby.board.map);
-        console.log("onCollisionType",simple.type(lobby.board.originalMap[13][44].item.onCollision));
+        console.log("onCollisionType",simple.type(lobby.board.originalMap[13][44].item.onCollision.checkStatus));
 
         fixTileDifferences(lobby,lobby.board,lobby.board.map);
 
@@ -1044,7 +1044,7 @@ function calculateDistance(currentBoard,x1, y1, x2, y2, boardLength, boardHeight
     return dx + dy;
 }
 function fixItemDifferences(lobby,map) {
-    console.log(1,"onCollisionType",simple.type(map[13][44].item.onCollision));
+    console.log(1,"onCollisionType",simple.type(map[13][44].item.onCollision.checkStatus));
     let currentBoard = lobby.board;
     if (!currentBoard.itemDifferences) return;
     for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
@@ -1054,23 +1054,23 @@ function fixItemDifferences(lobby,map) {
             x: e[1],
             y: e[2],
         }
-        if (e[1] == 44 && e[2] == 13) console.log(1.2,"onCollisionType",simple.type(map[13][44].item.onCollision));
+        if (e[1] == 44 && e[2] == 13) console.log(1.2,"onCollisionType",simple.type(map[13][44].item.onCollision.checkStatus));
         let pos = structuredClone(map[d.y][d.x].item);
         if (!pos) continue;
         for (let j = 0; j < d.differences.length; j++) {
             let change = d.differences[j];
             setNestedValue(pos,change,"_LAST_");
         }
-        if (e[1] == 44 && e[2] == 13) console.log(1.4,"onCollisionType",simple.type(map[13][44].item.onCollision));
+        if (e[1] == 44 && e[2] == 13) console.log(1.4,"onCollisionType",simple.type(map[13][44].item.onCollision.checkStatus));
         map[d.y][d.x].item = pos;
         for (let i = 0; i < currentBoard.location_spawns.length; i++) {
             if (d.y == currentBoard.location_spawns[i].y && currentBoard.location_spawns[i].x == d.x) {
                 lobby.board.location_spawns[i].item = map[d.y][d.x].item;
             }
         }
-        if (e[1] == 44 && e[2] == 13) console.log(1.6,"onCollisionType",simple.type(map[13][44].item.onCollision));
+        if (e[1] == 44 && e[2] == 13) console.log(1.6,"onCollisionType",simple.type(map[13][44].item.onCollision.checkStatus));
     }
-    console.log(3,"onCollisionType",simple.type(map[13][44].item.onCollision),map[13][44].item.onCollision);
+    console.log(3,"onCollisionType",simple.type(map[13][44].item.onCollision.checkStatus));
 }
 function fixTileDifferences(currentBoard,map) {
     if (!currentBoard.tileDifferences) return;
