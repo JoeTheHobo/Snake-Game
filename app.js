@@ -1892,6 +1892,7 @@ function snakeMapSetType(lobby,index,y,x,type) {
 
 function snakeMapRemoveAll(lobby,player,setFood) {
     let snakeMap = lobby.snakeMap;
+    let currentBoard = lobby.board;
     for (let i = 0; i < snakeMap.length; i++) {
         for (let j = 0; j < snakeMap[i].length; j++) {
             for (let k = snakeMap[i][j].length-1; k > 0; k--) {
