@@ -1522,11 +1522,6 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
                 $("sc_boards_recommendedGameMode").show();
                 $("sc_boards_recommendedGameMode").innerHTML = "Recommended Game Mode: " + lobby.board.gameMode.name;
             } else $("sc_boards_recommendedGameMode").hide();
-            
-            $(".sdd_title").innerHTML = lobby.serverType;
-            if (lobby.serverType == "Public") $(".lobbyCode").hide();
-            else $(".lobbyCode").show()
-            
         }
         else {
             localAccount.isHost = false;
@@ -1548,7 +1543,6 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
     if (type == "all" || type == "gameMode") localAccount.lobbyGamemode = type == "all" ? lobby.gameMode : lobby;
     if (type == "all") currentBoard = lobby.board;
 
-    if (type == "all") $(".lobbyCode").innerHTML = lobby.code;
     if (type == "all" || type == "players") $("sc_playerCount").innerHTML = `Players (${type == "all" ? lobby.players.length : extra2}/${type == "all" ? lobby.playerMax : extra3})`;
 
     if (type == "all" || type == "board") $("sc_boards_boardName").innerHTML = "Board: " + localAccount.lobbyBoard.name;
