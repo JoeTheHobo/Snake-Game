@@ -481,6 +481,8 @@ io.on('connection', (socket) => {
         let serverType = settings.serverType.toLowerCase();
         if (!["public","hidden","private"]) serverType = "public";
         lobby.serverType = serverType;
+
+        console.log(lobby.serverType)
         
         if (settings.code == "") settings.code = rnd(9999);
         lobby.code = settings.code + "";

@@ -146,6 +146,7 @@ function loadServerCreation(updateLobby = false,lobby) {
     if (updateLobby) {
         if (lobby.serverType === "hidden" || lobby.serverType === "private") {
             $(".public_server").style.background = "black";
+            $(".public_server").style.color = "white";
             $(`.${lobby.serverType}_server`).style.background = "#8bc4e2";
             $(".popup_makeServer_input").show();
             $(".popup_makeServer_input").value = lobby.code;
