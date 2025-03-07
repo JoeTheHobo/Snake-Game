@@ -1103,5 +1103,32 @@ items.push({
     renderStatusColor: "white", //Type To Render Color;
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })
+items.push({
+    name: "deadSnake",
+    baseImg: "items/food",
+    baseImgTags: [],
+    type: "item",
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+    soundFolder: false,
+    playSounds: false, //If Item should be muted or not;
+    onSpawn: { //When item spawns run these
+
+    },
+    onCollision: {
+        deleteMe: true,
+        growPlayer: 1,
+    },
+
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    id: 34,
+    pack: "Food",//Which Item Pack Does This Group To (For Map Editor)
+})
 
 module.exports = { items };
