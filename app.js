@@ -1812,7 +1812,7 @@ function formatNumber(num) {
     return num.toString().padStart(4, '0');
 }
 function checkGameMode(gameMode,accountID) {
-    if (gameMode.accountID !== accountID) return "accountID";
+    //if (gameMode.accountID !== accountID) return "accountID";
     if (simple.type(gameMode.name) !== "string") return "name";
     if (gameMode.name.length > 15) return "name";
     if (gameMode.howManyItemsCanPlayersUse < 0 || gameMode.howManyItemsCanPlayersUse > 10) return "howManyItemsCanPlayersUse";
