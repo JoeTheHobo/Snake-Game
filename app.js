@@ -513,7 +513,7 @@ io.on('connection', (socket) => {
         if (!lobby) return;
         if (lobby.hostID !== socket.id) return;
         if (!gameMode) return;
-
+        console.log("YASS",checkGameMode(gameMode,socket.id))
         if (checkGameMode(gameMode,socket.id) === true) {
             lobby.gameMode = gameMode;
             io.emit("updateLobbyPage", lobby.id, lobby.gameMode,"gameMode");

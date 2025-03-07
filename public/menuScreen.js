@@ -1054,7 +1054,7 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
     });
     addSetting("Respawn Protection (seconds)","number",gameMode.respawnProtection,function(value,input) {
         if (value < 0) input.value = 0;
-        if (value > 100) input.value = 15;
+        if (value > 15) input.value = 15;
         gameMode.respawnProtection = value;
         if (!server) socket.emit("saveGamemode",gameMode);
         else socket.emit("editServerGameMode",gameMode);
