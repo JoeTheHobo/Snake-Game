@@ -366,6 +366,7 @@ io.on('connection', (socket) => {
         lobbies[id].playerMax = 8;
         lobbies[id].lobbyBoards = [];
         lobbies[id].isInGame = false;
+        lobbies[id].lobbyName = lobbies[id].hostName + "'s Lobby";
         onlineAccounts[socket.id].lobby = lobbies[lobby.id].id;
         onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].serverSnake);
         lobbies[id].activePlayers = getPlayersList(lobbies[id].players);
@@ -658,6 +659,19 @@ io.on('connection', (socket) => {
         if (!lobby.isInGame) return;
 
         lobby.gameEnd = true;
+    })
+    socket.on("changeLobbyName",(value) => {
+        let account = onlineAccounts[socket.id];
+        let lobby = lobbies[account.lobby];
+        if (!lobby) return;
+        if (lobby.hostID !== socket.id) return;
+        if (value.length > 20) return;
+        if (value === "") return;
+        value = profanity.clean(value);
+        lobby.lobbyName = value;
+
+        io.emit("updateLobbyPage", lobby.id, lobby.lobbyName, "lobbyName");
+        updateLobbies();
     })
     socket.on("changeLobbyType",(type) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];

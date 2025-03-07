@@ -278,4 +278,24 @@ $("quitGameButton").on("click",function() {
 $("endGameButton").on("click",function() {
     socket.emit("endGame");
 })
+$(".sc_tb_lobbyName").on("click",function() {
+    if (!localAccount.isHost) return;
+    
+    makePopUp([
+        {type: "title",color: "white",text: "Change Lobby Name"},
+        {type: "input",id: "input",maxLength: 20,value: $(".sc_tb_lobbyName").innerHTML},
+        {type: "button", close: true,text: "Finalize", onClick: function(ids) {
+            let {input} = ids;
+            if (input.value == "") return;
+            if (input.value.length > 20) return;
 
+            socket.emit("changeLobbyName",input.value);
+        }},
+    ],{
+        exit: {
+            cursor: "url('./img/pointer.cur'), auto",
+        },
+        id: "changeLobbyName",
+
+    })
+})

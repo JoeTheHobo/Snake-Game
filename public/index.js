@@ -105,6 +105,10 @@ socket.on("updatePlayersBoards",(socketID,boards,sentFrom,board) => {
 })
 socket.on("setClientLobby",(socketID,lobby) => {
     if (socketID !== localAccount.id) return;
+    
+    if (lobby.hostID == localAccount.id) localAccount.isHost = true;
+    else localAccount.isHost = false;
+
     localAccount.lobbyID = lobby.id;
     updateLobbyPage(lobby);
     setScene("lobby");

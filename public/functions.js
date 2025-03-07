@@ -1507,6 +1507,7 @@ function updatePlayerCard(player,whatToUpdate = "all") {
 function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
     if (type == "all") {
         if (localAccount.id == lobby.hostID) {
+            localAccount.isHost = true;
             $(".hostOnly").show();
             $(".hostFlex").show("flex");
 
@@ -1521,8 +1522,12 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
             
         }
         else {
+            localAccount.isHost = false;
             $(".hostOnly").hide();
         }
+    }
+    if (type == "all" || type == "lobbyName") {
+        $(".sc_tb_lobbyName").innerHTML = type == "all" ? lobby.lobbyName : lobby;
     }
     if (type == "board" && localAccount.id === extra) {
         if (lobby.recommendedGameMode) {
@@ -1537,8 +1542,6 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
 
     if (type == "all") $(".lobbyCode").innerHTML = lobby.code;
     if (type == "all" || type == "players") $("sc_playerCount").innerHTML = `Players (${type == "all" ? lobby.players.length : extra2}/${type == "all" ? lobby.playerMax : extra3})`;
-    
-    if (type == "all") $(".sc_tb_lobbyName").innerHTML = lobby.hostName + lobby.hostTag + "'s Lobby";
 
     if (type == "all" || type == "board") $("sc_boards_boardName").innerHTML = "Board: " + localAccount.lobbyBoard.name;
     if (type == "all" || type == "board") {
