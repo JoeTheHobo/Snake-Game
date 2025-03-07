@@ -1070,7 +1070,7 @@ function fixItemDifferences(lobby,map) {
         }
         if (e[1] == 44 && e[2] == 13) console.log(1.6,"onCollisionType",simple.type(map[13][44].item.onCollision));
     }
-    console.log(3,"onCollisionType",simple.type(map[13][44].item.onCollision));
+    console.log(3,"onCollisionType",simple.type(map[13][44].item.onCollision),map[13][44].item.onCollision);
 }
 function fixTileDifferences(currentBoard,map) {
     if (!currentBoard.tileDifferences) return;
