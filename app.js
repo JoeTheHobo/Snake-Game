@@ -1058,6 +1058,7 @@ function fixItemDifferences(lobby,map) {
         if (e[1] == 44 && e[2] == 13) console.log(1.25,"map",map[d.y][d.x].item);
         let pos = structuredClone(map[d.y][d.x].item);
         if (!pos) continue;
+        if (e[1] == 44 && e[2] == 13) console.log(1.25,"differences",d.differences);
         for (let j = 0; j < d.differences.length; j++) {
             let change = d.differences[j];
             setNestedValue(pos,change,"_LAST_");
