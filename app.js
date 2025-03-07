@@ -663,9 +663,7 @@ io.on('connection', (socket) => {
             return;
         }
         
-        console.log(1,"itemDifferences",lobby.board.itemDifferences[0][0]);
         lobby.board.map = structuredClone(lobby.board.originalMap);
-        console.log(2,"itemDifferences",lobby.board.itemDifferences[0][0]);
 
         lobby.oldObj = false;
         lobby.isInGame = true;
@@ -1899,7 +1897,7 @@ function snakeMapRemoveAll(lobby,player,setFood) {
                 if (snakeMap[i][j][k].index == player.index) {
                     snakeMap[i][j].splice(k,1);
                     lobby.updateSnakeCells.push(lobby.snakeMap[i][j]);
-                    if (setFood && !currentBoard.map[y][x].item) {
+                    if (setFood && !currentBoard.map[i][j].item) {
                         let x = j;
                         let y = i;
                         runItemFunction(lobby,false,lobby.items[0],"onSpawn",{x:x,y:y},{playAudio: false});
