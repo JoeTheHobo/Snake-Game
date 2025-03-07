@@ -1616,6 +1616,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     if (collision.checkStatus) {
         let check = collision.checkStatus.check;
         let passedCheck = true;
+        console.log(check)
         if (check.playerHasEmptySlot === true) {
             let pass = false;
             for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
