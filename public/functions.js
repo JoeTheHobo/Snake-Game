@@ -734,6 +734,7 @@ function findItemDifferences(map) {
             allDifferences.push([differences,j,i]);
         }
     }
+    console.log("CALLED")
     return allDifferences;
 }
 function findTileDifferences(map) {
