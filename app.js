@@ -517,6 +517,10 @@ io.on('connection', (socket) => {
         if (checkGameMode(gameMode,socket.id) === true) {
             lobby.gameMode = gameMode;
             io.emit("updateLobbyPage", lobby.id, lobby.gameMode,"gameMode");
+        } else {
+            onlineAccounts[socket.id].kickPlayer = true;
+            socket.emit("kickPlayer","Caught Hacking [Code: 956] " + checkGameMode(gameMode,socket.id));
+            return;
         }
 
         
