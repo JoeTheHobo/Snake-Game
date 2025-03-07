@@ -103,7 +103,7 @@ $("joinServer").on("click",function() {
         return;
     }
 
-    if (serverSelected.serverType == "Private") {
+    if (serverSelected.serverType.toLowerCase() == "private") {
         makePopUp([
             {type: "title",text: "What Is The Lobby Code?"},
             [
