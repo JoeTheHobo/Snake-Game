@@ -75,12 +75,12 @@ function loadServersHTML() {
     }
 }
 
-function loadServerCreation() {
+function loadServerCreation(updateLobby = false,lobby) {
     
     makePopUp([
         {type: "title",text: "Choose Lobby Type", color: "white"},
         [
-            {type: "button",id:"hidden", cursor: "url('./img/pointer.cur'), auto", width: "100px", className: "playButtonSounds popup_makeServer_button", background: "black",text:"Hidden",onClick: function(parentIDS,params,div) {
+            {type: "button",id:"hidden", cursor: "url('./img/pointer.cur'), auto", width: "100px", className: "hidden_server playButtonSounds popup_makeServer_button", background: "black",text:"Hidden",onClick: function(parentIDS,params,div) {
                 $(".popup_makeServer_button").css({
                     background: "black",
                     color: "white",
@@ -90,9 +90,9 @@ function loadServerCreation() {
                     color: "black",
                 })
                 $(".popup_makeServer_input").show();
-                $(".popup_makeServer_input").value = rnd(1000,9999);
+                $(".popup_makeServer_input").value = updateLobby ? lobby.code : rnd(1000,9999);
             }},
-            {type: "button",id:"public",cursor: "url('./img/pointer.cur'), auto", width: "100px", className: "playButtonSounds popup_makeServer_button", background: "#8bc4e2", color: "black",text:"Public",onClick: function(parentIDS,params,div) {
+            {type: "button",id:"public",cursor: "url('./img/pointer.cur'), auto", width: "100px", className: "public_server playButtonSounds popup_makeServer_button", background: "#8bc4e2", color: "black",text:"Public",onClick: function(parentIDS,params,div) {
                 $(".popup_makeServer_button").css({
                     background: "black",
                     color: "white",
@@ -103,7 +103,7 @@ function loadServerCreation() {
                 })
                 $(".popup_makeServer_input").hide();
             }},
-            {type: "button",id:"private",cursor: "url('./img/pointer.cur'), auto", width: "100px", className: "playButtonSounds popup_makeServer_button", background: "black",text:"Private",onClick: function(parentIDS,params,div) {
+            {type: "button",id:"private",cursor: "url('./img/pointer.cur'), auto", width: "100px", className: "private_server playButtonSounds popup_makeServer_button", background: "black",text:"Private",onClick: function(parentIDS,params,div) {
                 $(".popup_makeServer_button").css({
                     background: "black",
                     color: "white",
@@ -114,11 +114,11 @@ function loadServerCreation() {
                 })
 
                 $(".popup_makeServer_input").show();
-                $(".popup_makeServer_input").value = rnd(1000,9999);
+                $(".popup_makeServer_input").value = updateLobby ? lobby.code : rnd(1000,9999);
             }},
         ],
         {type: "input", id: "input",display: "none", className: "popup_makeServer_input",},
-        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", className: "playButtonSounds", background: "#D9D9D9", color: "black",text:"Host Server", onClick: function(parentIDS,param,button) {
+        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", className: "playButtonSounds", background: "#D9D9D9", color: "black",text:(updateLobby ? "Update Settings" : "Host Server"), onClick: function(parentIDS,param,button) {
             const {hidden, public, private, input} = parentIDS;
             let serverType = false;
             if (hidden.style.background === "rgb(139, 196, 226)") serverType = "Hidden";
@@ -132,7 +132,9 @@ function loadServerCreation() {
                 code: code,
                 serverType: serverType,
             }
-            updateLobbyToServer(lobby);
+
+            if (updateLobby) socket.emit("updateLobbySettings",lobby);
+            else updateLobbyToServer(lobby);
         }},
     ],{
         id: "makeServer",
@@ -140,6 +142,15 @@ function loadServerCreation() {
             cursor: "url('./img/pointer.cur'), auto",
         },
     })
+
+    if (updateLobby) {
+        if (lobby.serverType === "hidden" || lobby.serverType === "private") {
+            $(".public_server").style.background = "black";
+            $(`.${lobby.serverType}_server`).style.background = "#8bc4e2";
+            $(".popup_makeServer_input").show();
+            $(".popup_makeServer_input").value = lobby.code;
+        }
+    }
 
     
 }

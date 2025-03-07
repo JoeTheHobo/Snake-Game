@@ -1505,12 +1505,18 @@ function updatePlayerCard(player,whatToUpdate = "all") {
 
 
 function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
+    if (type == "settings") {
+        if (extra !== localAccount.id) return;
+        localAccount.lobby.code = lobby.code;
+        localAccount.lobby.serverType = lobby.serverType; 
+    }
     if (type == "all") {
+        localAccount.lobby = lobby;
         if (localAccount.id == lobby.hostID) {
             localAccount.isHost = true;
             $(".hostOnly").show();
             $(".hostFlex").show("flex");
-            $("sc_boards_boardName").classAdd("cursorSelector");
+            $(".sc_tb_lobbyName").classAdd("cursorSelector");
 
             if (lobby.board.recommendedGameMode) {
                 $("sc_boards_recommendedGameMode").show();
@@ -1524,7 +1530,7 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
         }
         else {
             localAccount.isHost = false;
-            $("sc_boards_boardName").classRemove("cursorSelector");
+            $(".sc_tb_lobbyName").classRemove("cursorSelector");
             $(".hostOnly").hide();
         }
     }

@@ -299,3 +299,6 @@ $(".sc_tb_lobbyName").on("click",function() {
 
     })
 })
+$(".serverSettings").on("click",function() {
+    loadServerCreation(true,localAccount.lobby);  
+})

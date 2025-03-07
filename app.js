@@ -345,6 +345,7 @@ io.on('connection', (socket) => {
             account: null,
             message: "Lobby Created",
         }];
+        if (lobby.code == "") lobby.code = rnd(9999);
         lobbies[id].code = lobby.code + "";
         let serverType = lobby.serverType.toLowerCase();
         if (!["public","hidden","private"]) serverType = "public";
@@ -470,6 +471,25 @@ io.on('connection', (socket) => {
                 return;
             }
         }
+    })
+    socket.on("updateLobbySettings",(settings) => {
+        let account = onlineAccounts[socket.id];
+        let lobby = lobbies[account.lobby];
+        if (!lobby) return;
+        if (lobby.hostID !== socket.id) return;
+
+        let serverType = settings.serverType.toLowerCase();
+        if (!["public","hidden","private"]) serverType = "public";
+        lobby.serverType = serverType;
+        
+        if (settings.code == "") settings.code = rnd(9999);
+        lobby.code = settings.code + "";
+
+        io.emit("updateLobbyPage", lobby.id, {
+            serverType: serverType,
+            code: code,
+        },"settings",lobby.hostID);
+
     })
     socket.on("changeGameModetoBoards",() => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
