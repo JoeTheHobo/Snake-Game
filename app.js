@@ -769,7 +769,10 @@ io.on('connection', (socket) => {
         
 
         getLocations(lobby);
+        console.log(lobby.board.map[13][44].item.onCollision);
         fixItemDifferences(lobby,lobby.board.map);
+        console.log(lobby.board.map[13][44].item.onCollision);
+
         fixTileDifferences(lobby,lobby.board,lobby.board.map);
 
 
@@ -1616,7 +1619,6 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     if (collision.checkStatus) {
         let check = collision.checkStatus.check;
         let passedCheck = true;
-        console.log(check)
         if (check.playerHasEmptySlot === true) {
             let pass = false;
             for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
