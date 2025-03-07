@@ -119,11 +119,11 @@ socket.on("updateLobbyPage",(lobbyID,lobby,type,extra,extra2,extra3) => {
     updateLobbyPage(lobby,type,extra,extra2,extra3);
 })
 socket.on("updateLobbies", (backEndLobbies,onlineCount, lobbyCount,) =>{
+    production.server_player_count.value = onlineCount;
+    production.server_lobby_count.value = lobbyCount;
     if (localAccount.isInLobby) return;
     if ($(".content_servers").style.display == "none") return;
 
-    production.server_player_count.value = onlineCount;
-    production.server_lobby_count.value = lobbyCount;
 
     frontEndLobbies = backEndLobbies;
     loadServersHTML();
