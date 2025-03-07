@@ -469,35 +469,11 @@ socket.on("askToSpectate",(accountID,lobbyID,code) => {
 
     })
 })
-socket.on("setCode",(id,oldCode) => {
-    if (localAccount.id !== id) return;
-    chooseCodePopUp(oldCode);
-})
 socket.on("setPlayerToHomeScreen",(accountID) => {
     if (localAccount.id !== accountID) return;
     setScene("newMenu");
     localAccount.isInLobby = false;
 })
-function chooseCodePopUp(code) {
-    makePopUp([
-        {type: "title",text: "Set Code"},
-        [
-            {type: "input", id:"code", value:code, placeholder: "Type A Code", width: "200px"},
-        ],
-        
-        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "black",text:"Done",onClick: (ids) => {
-            const {code} = ids;
-            if (code.value == "") return;
-
-            $(".lobbyCode").innerHTML = code.value;
-            socket.emit("setCode",code.value);
-        }},
-    ],{
-        id: "chooseCode",
-
-    })
-}
-
 function updateLobbyToServer(lobby){
     socket.emit("newLobby", (lobby));  
 }

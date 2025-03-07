@@ -138,9 +138,6 @@ $("startServerButton").on("click",function() {
     server_startGame();
     $(".button_mapEditorHolder").hide();
 })
-$(".lobbyCode").on("click",function() {
-    chooseCodePopUp(this.innerHTML);
-})
 $(".sc_chat_input").on("keydown",function(e) {
     if (e.key == "Enter") {
         socket.emit("sendChat",this.value);
