@@ -334,7 +334,7 @@ io.on('connection', (socket) => {
         if (!lobby) return;
 
         let id = Date.now() + "_" + simple.rnd(5000);
-        lobbies[id] = lobby;
+        lobbies[id] = {};
         lobbies[id].board = structuredClone(presetBoards[0]);
         lobbies[id].id = id;
         lobbies[id].hostID = socket.id;
@@ -346,18 +346,25 @@ io.on('connection', (socket) => {
             message: "Lobby Created",
         }];
         lobbies[id].code = lobby.code + "";
-        lobbies[id].serverType = lobby.serverType;
+        let serverType = lobby.serverType.toLowerCase();
+        if (!["public","hidden","private"]) serverType = "public";
+        lobbies[id].serverType = serverType;
         lobbies[id].gameMode = presetGameModes[0];
-        lobbies[id].playerMax = 8;
+        if (!lobby.playerMax) lobby.playerMax = 8;
+        let playerMax = Number(lobby.playerMax);
+        if (!simple.type(playerMax,true).isWholeNumber) playerMax = 8;
+        if (playerMax < 1) playerMax = 1;
+        if (playerMax > 8) playerMax = 8;
+        lobbies[id].playerMax = playerMax;
         lobbies[id].lobbyBoards = [];
         lobbies[id].isInGame = false;
         lobbies[id].lobbyName = lobbies[id].hostName + "'s Lobby";
-        onlineAccounts[socket.id].lobby = lobbies[lobby.id].id;
+        onlineAccounts[socket.id].lobby = id;
         onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].serverSnake);
         lobbies[id].activePlayers = getPlayersList(lobbies[id].players);
 
+        io.emit("setClientLobby",socket.id,lobbies[id])
         updateLobbies();
-        io.emit("setClientLobby",socket.id,lobbies[lobby.id])
     })
     socket.on("quitServer",() => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];

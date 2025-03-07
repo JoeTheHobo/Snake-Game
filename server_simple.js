@@ -178,6 +178,7 @@ function _type(ele,isFull) {
     if (returnObj.type == "number") {
         returnObj.length = (ele + "").length;
         returnObj.isNumber = true;
+        returnObj.isWholeNumber = Number.isInteger(ele);
     }
     if (returnObj.type == "array") {
         returnObj.length = ele.length;
