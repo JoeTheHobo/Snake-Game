@@ -1652,7 +1652,7 @@ function updateLobbies() {
     let lobbyList = Object.values(lobbies)
         .filter(lobby => lobby.serverType !== "Hidden")
         .reduce((acc, lobby) => {
-            acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
+            acc[lobby.id] = { ...lobby, code: "", gameLoop: "" };
             return acc;
         }, {});
     io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
