@@ -78,6 +78,7 @@ function renderCells() {
         if (mapCell.hideWhen) {
             let pass = false;
             for (let j = 0; j < mapCell.hideWhen.length; j++) {
+                console.log(mapCell)
                 let value = getBaseImgFromTag(mapCell,mapCell.hideWhen[j].value);
                 let subtract = 0;
                 let equals = mapCell.hideWhen[j].equals;
