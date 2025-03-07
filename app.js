@@ -1055,7 +1055,7 @@ function fixItemDifferences(lobby,map) {
             y: e[2],
         }
         if (e[1] == 44 && e[2] == 13) console.log(1.2,"onCollisionType",simple.type(map[13][44].item.onCollision.checkStatus));
-        if (e[1] == 44 && e[2] == 13) console.log(1.25,"map",simple.type(map[d.y][d.x].item));
+        if (e[1] == 44 && e[2] == 13) console.log(1.25,"map",map[d.y][d.x].item);
         let pos = structuredClone(map[d.y][d.x].item);
         if (!pos) continue;
         for (let j = 0; j < d.differences.length; j++) {
