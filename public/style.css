@@ -1751,6 +1751,7 @@ width: 100%;
 }
 .sc_bb_customizeSnakeHolder {
   display: flex;
+  margin-left: auto;
   flex-direction: row;
   align-items: center;
   width: 30%;
