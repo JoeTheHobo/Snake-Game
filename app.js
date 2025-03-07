@@ -487,7 +487,7 @@ io.on('connection', (socket) => {
 
         io.emit("updateLobbyPage", lobby.id, {
             serverType: serverType,
-            code: code,
+            code: lobby.code,
         },"settings",lobby.hostID);
         updateLobbies();
 
