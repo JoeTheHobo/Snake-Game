@@ -32,7 +32,7 @@ function retrieveAllPresetBoards(index) {
     let buffer = base64ToArrayBuffer(presetBoards[index]);
     decompressObject(buffer,(err,decompressed) => {
         if (err) {
-            console.log(err);
+            console.log(1,err);
             return;
         }
         decompressed.boardAuthors = [{
@@ -71,13 +71,13 @@ io.on('connection', (socket) => {
     
     compressObject(onlineAccounts[socket.id].boards,(err,compressed) => {
         if (err) {
-            console.log(err)
+            console.log(2,err)
             return;
         }
         onlineAccounts[socket.id].boards = compressed;
         decompressObject(onlineAccounts[socket.id].boards,(err,decompressed) => {
             if (err) {
-                console.log(err);
+                console.log(3,err);
                 return;
             }
             updateLobbies();
@@ -141,7 +141,7 @@ io.on('connection', (socket) => {
         let account = onlineAccounts[socket.id];
         decompressObject(account.boards,(err,decompressed) => {
             if (err) {
-                console.log(err);
+                console.log(4,err);
                 return;
             }
 
@@ -152,7 +152,7 @@ io.on('connection', (socket) => {
                     io.emit("updatePlayersBoards",socket.id,account.boards);
                     compressObject(account.boards,(err,compressed) => {
                         if (err) {
-                            console.log(err);
+                            console.log(5,err);
                             return;
                         }
                         account.boards = compressed;
@@ -162,7 +162,7 @@ io.on('connection', (socket) => {
             }
             compressObject(account.boards,(err,compressed) => {
                 if (err) {
-                    console.log(err);
+                    console.log(6,err);
                     return;
                 }
                 account.boards = compressed;
@@ -172,7 +172,7 @@ io.on('connection', (socket) => {
     socket.on("getZippedBoard",(board) => {
         compressObject(board,(err,compressed) => {
             if (err) {
-                console.log(err);
+                console.log(7,err);
                 return;
             }
             io.emit("sendingZippedBoard",socket.id,compressed.toString("base64"),board.name)
@@ -183,7 +183,7 @@ io.on('connection', (socket) => {
 
         decompressObject(account.boards,(err,decompressed) => {
             if (err) {
-                console.log(err);
+                console.log(8,err);
                 return;
             }
 
@@ -194,7 +194,7 @@ io.on('connection', (socket) => {
                     io.emit("updatePlayersBoards",socket.id,account.boards,sentFrom);
                     compressObject(account.boards,(err,compressed) => {
                         if (err) {
-                            console.log(err);
+                            console.log(9,err);
                             return;
                         }
                         account.boards = compressed;
@@ -224,7 +224,7 @@ io.on('connection', (socket) => {
 
         decompressObject(account.boards,(err,decompressed) => {
             if (err) {
-                console.log(err)
+                console.log(10,err)
                 return;
             }
             account.boards = decompressed;
@@ -235,7 +235,7 @@ io.on('connection', (socket) => {
             io.emit("updatePlayersBoards",socket.id,account.boards,sentFrom,board)
             compressObject(account.boards,(err,compressed) => {
                 if (err) {
-                    console.log(err)
+                    console.log(11,err)
                     return;
                 }
                 account.boards = compressed;
@@ -274,7 +274,7 @@ io.on('connection', (socket) => {
 
         decompressObject(account.boards,(err,decompressed) => {
             if (err) {
-                console.log(err)
+                console.log(12,err)
                 return;
             }
             account.boards = decompressed;
@@ -286,7 +286,7 @@ io.on('connection', (socket) => {
             io.emit("updatePlayersBoards",socket.id,account.boards,sentFrom)
             compressObject(account.boards,(err,compressed) => {
                 if (err) {
-                    console.log(err)
+                    console.log(13,err)
                     return;
                 }
                 account.boards = compressed;
@@ -2205,8 +2205,6 @@ function fixBoard(oldBoard) {
 
     let board = structuredClone(oldBoard);
     board.map = [];
-
-    console.log("I AM HERE");
 
     board.originalMap = decompressMap(board.originalMap);
 
