@@ -68,15 +68,6 @@ io.on('connection', (socket) => {
         tag: tag,
         chatNameColor: simple.rnd("color"),
     }
-
-    let lobbyList = Object.values(lobbies)
-        .filter(lobby => lobby.serverType !== "Hidden")
-        .reduce((acc, lobby) => {
-            acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
-            return acc;
-        }, {});
-    
-        
     
     compressObject(onlineAccounts[socket.id].boards,(err,compressed) => {
         if (err) {
@@ -89,7 +80,7 @@ io.on('connection', (socket) => {
                 console.log(err);
                 return;
             }
-            io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
+            updateLobbies();
             let sendItems = pako.deflate(JSON.stringify(items), { to: 'string' });
             let sendTiles = pako.deflate(JSON.stringify(tiles), { to: 'string' });
 
@@ -137,13 +128,7 @@ io.on('connection', (socket) => {
             }
 
             
-            let lobbyList = Object.values(lobbies)
-                .filter(lobby => lobby.serverType !== "Hidden")
-                .reduce((acc, lobby) => {
-                    acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
-                    return acc;
-                }, {});
-            io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
+            updateLobbies();
         }
         
         io.emit("kickPlayer",socket.id,"Disconnected due to " + reason + " [Code: 002]");
@@ -371,13 +356,7 @@ io.on('connection', (socket) => {
         onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].serverSnake);
         lobbies[id].activePlayers = getPlayersList(lobbies[id].players);
 
-        let lobbyList = Object.values(lobbies)
-            .filter(lobby => lobby.serverType !== "Hidden")
-            .reduce((acc, lobby) => {
-                acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
-                return acc;
-            }, {});
-        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
+        updateLobbies();
         io.emit("setClientLobby",socket.id,lobbies[lobby.id])
     })
     socket.on("quitServer",() => {
@@ -403,13 +382,7 @@ io.on('connection', (socket) => {
 
         if (lobby.players.length == 0) {
             delete lobbies[lobby.id];
-            let lobbyList = Object.values(lobbies)
-                .filter(lobby => lobby.serverType !== "Hidden")
-                .reduce((acc, lobby) => {
-                    acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
-                    return acc;
-                }, {});
-            io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
+            updateLobbies();
         } else {
             if (lobby.hostID == socket.id) {
                 lobby.hostID = lobby.players[0];
@@ -424,13 +397,7 @@ io.on('connection', (socket) => {
             })
     
             io.emit("updateLobbyPage", lobby.id, lobby);
-            let lobbyList = Object.values(lobbies)
-                .filter(lobby => lobby.serverType !== "Hidden")
-                .reduce((acc, lobby) => {
-                    acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
-                    return acc;
-                }, {});
-            io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
+            updateLobbies();
         }
     })
     socket.on("joinLobby",(lobbyID,code,spectate) => {
@@ -459,25 +426,12 @@ io.on('connection', (socket) => {
         account.player = structuredClone(account.serverSnake);
         account.player.canSubmitBoards = false;
         lobby.activePlayers = getPlayersList(lobby.players);
-        let lobbyList = Object.values(lobbies)
-            .filter(lobby => lobby.serverType !== "Hidden")
-            .reduce((acc, lobby) => {
-                acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
-                return acc;
-            }, {});
-        io.emit("updateLobbies", lobbyList, Object.keys(onlineAccounts).length, Object.keys(lobbies).length,socket.id);
+        updateLobbies();
         io.emit("updateLobbyPage", lobby.id, lobby.activePlayers, "players", lobby.hostID,lobby.players.length,lobby.playerMax);
         io.emit("setClientLobby",socket.id,lobby);
     })
-    socket.on("refreshLobbies",(playerID) => {
-        if (playerID !== socket.id) return;
-        let lobbyList = Object.values(lobbies)
-            .filter(lobby => lobby.serverType !== "Hidden")
-            .reduce((acc, lobby) => {
-                acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
-                return acc;
-            }, {});
-        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
+    socket.on("refreshLobbies",() => {
+        updateLobbies();
     })
     socket.on("sendChat",(message) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -621,13 +575,7 @@ io.on('connection', (socket) => {
         }
         lobby.activePlayers = getPlayersList(lobby.players);
 
-        let lobbyList = Object.values(lobbies)
-            .filter(lobby => lobby.serverType !== "Hidden")
-            .reduce((acc, lobby) => {
-                acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
-                return acc;
-            }, {});
-        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
+        updateLobbies();
         io.emit("setPlayerToHomeScreen",kickedPlayer.id);
         io.emit("updateLobbyPage", lobby.id, lobby.activePlayers, "players",lobby.hostID,lobby.players.length,lobby.playerMax);
     })
@@ -683,13 +631,7 @@ io.on('connection', (socket) => {
 
         if (type == "Hidden" || type == "Private") io.emit("setCode",socket.id,lobby.code);
         io.emit("updateLobbyPage", lobby.id, lobby);
-        let lobbyList = Object.values(lobbies)
-            .filter(lobby => lobby.serverType !== "Hidden")
-            .reduce((acc, lobby) => {
-                acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
-                return acc;
-            }, {});
-        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
+        updateLobbies();
     })
     socket.on("ping", (callback) => {
         callback();
@@ -910,13 +852,7 @@ io.on('connection', (socket) => {
                 io.emit("endGame",obj,lobby.id)
 
                 
-                let lobbyList = Object.values(lobbies)
-                    .filter(lobby => lobby.serverType !== "Hidden")
-                    .reduce((acc, lobby) => {
-                        acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
-                        return acc;
-                    }, {});
-                io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
+                updateLobbies();
                 
             }
         }
@@ -933,13 +869,7 @@ io.on('connection', (socket) => {
             },4000)
         },15000);
         
-        let lobbyList = Object.values(lobbies)
-            .filter(lobby => lobby.serverType !== "Hidden")
-            .reduce((acc, lobby) => {
-                acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
-                return acc;
-            }, {});
-        io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
+        updateLobbies();
 
     })
     socket.on("snakeIsReady", () => {
@@ -1718,6 +1648,15 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function updateLobbies() {
+    let lobbyList = Object.values(lobbies)
+        .filter(lobby => lobby.serverType !== "Hidden")
+        .reduce((acc, lobby) => {
+            acc[lobby.id] = { ...lobby, code: "", gameLoop: "" }; 
+            return acc;
+        }, {});
+    io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
+}
 setInterval(() => {
     io.emit("updateMemorry",process.memoryUsage());
   }, 5000);

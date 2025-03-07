@@ -105,7 +105,7 @@ socket.on("updatePlayersBoards",(socketID,boards,sentFrom,board) => {
 })
 socket.on("setClientLobby",(socketID,lobby) => {
     if (socketID !== localAccount.id) return;
-    
+
     if (lobby.hostID == localAccount.id) localAccount.isHost = true;
     else localAccount.isHost = false;
 
@@ -118,8 +118,8 @@ socket.on("updateLobbyPage",(lobbyID,lobby,type,extra,extra2,extra3) => {
     if (localAccount.lobbyID !== lobbyID) return;
     updateLobbyPage(lobby,type,extra,extra2,extra3);
 })
-socket.on("updateLobbies", (backEndLobbies,onlineCount, lobbyCount,playerID) =>{
-    if (playerID) if (playerID !== localAccount.id) return;
+socket.on("updateLobbies", (backEndLobbies,onlineCount, lobbyCount,) =>{
+    if (localAccount.isInLobby) return;
     if ($(".content_servers").style.display == "none") return;
 
     production.server_player_count.value = onlineCount;
@@ -505,7 +505,7 @@ function server_joinLobby(lobby) {
     socket.emit("joinLobby",lobby);
 }
 function server_refreshLobby() {
-    socket.emit("refreshLobbies",localAccount.id);
+    socket.emit("refreshLobbies");
 }
 
 function server_startGame(){
