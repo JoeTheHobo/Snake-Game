@@ -1825,7 +1825,7 @@ function checkGameMode(gameMode,accountID) {
     gameMode.respawnGrowth = Number(gameMode.respawnGrowth);
     if (gameMode.respawnGrowth < 0 || gameMode.respawnGrowth > 100) return ["respawnGrowth",gameMode.respawnGrowth];
     if (gameMode.respawnProtection < 0 || gameMode.respawnProtection > 15) return ["respawnProtection",gameMode.respawnProtection];
-    if (simple.type(gameMode.respawnTimer) !== "number") return "respawnTimer";
+    gameMode.respawnTimer = Number(gameMode.respawnTimer);
     if (gameMode.respawnTimer < 0 || gameMode.respawnTimer > 60) return "respawnTimer";
 
     return true;
