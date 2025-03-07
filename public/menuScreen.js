@@ -1052,6 +1052,13 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
         if (!server) socket.emit("saveGamemode",gameMode);
         else socket.emit("editServerGameMode",gameMode);
     });
+    addSetting("Respawn Protection (seconds)","number",gameMode.respawnProtection,function(value,input) {
+        if (value < 0) input.value = 0;
+        if (value > 100) input.value = 15;
+        gameMode.respawnProtection = value;
+        if (!server) socket.emit("saveGamemode",gameMode);
+        else socket.emit("editServerGameMode",gameMode);
+    });
     addSetting("Snake Collision","dropdown",gameMode.snakeCollision,function(value) {
         gameMode.snakeCollision = value == "true" ? true : false;
         if (!server) socket.emit("saveGamemode",gameMode);

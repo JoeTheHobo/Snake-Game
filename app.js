@@ -514,10 +514,12 @@ io.on('connection', (socket) => {
         if (lobby.hostID !== socket.id) return;
         if (!gameMode) return;
 
-        //Varify Game Mode Here -To Be Added
+        if (checkGameMode(gameMode,socket.id) === true) {
+            lobby.gameMode = gameMode;
+            io.emit("updateLobbyPage", lobby.id, lobby.gameMode,"gameMode");
+        }
 
-        lobby.gameMode = gameMode;
-        io.emit("updateLobbyPage", lobby.id, lobby.gameMode,"gameMode");
+        
     })
     socket.on("addBoardToLobbyBoards",(board) => {
         let account = onlineAccounts[socket.id];
@@ -1815,6 +1817,7 @@ function checkGameMode(gameMode,accountID) {
     if (![false,true].includes(gameMode.teamCollision)) return "teamCollision";
     if (simple.type(gameMode.respawnGrowth) !== "number") return "respawnGrowth";
     if (gameMode.respawnGrowth < 0 || gameMode.respawnGrowth > 100) return "respawnGrowth";
+    if (gameMode.respawnProtection < 0 || gameMode.respawnProtection > 15) return "respawnGrowth";
     if (simple.type(gameMode.respawnTimer) !== "number") return "respawnTimer";
     if (gameMode.respawnTimer < 0 || gameMode.respawnTimer > 60) return "respawnTimer";
 
@@ -1830,6 +1833,7 @@ let basedGameMode = {
     respawn: false,
     respawnTimer: 5,
     respawnGrowth: 50, //Percent
+    respawnProtection: 3, //Seconds
     snakeCollision: true,
     teamCollision: true,
 }
@@ -1855,11 +1859,16 @@ function respawnPlayer(lobby,player,growthPercentage) {
     player.moveSpeed = 6;
     player.turboDuration = 0;
     player.turboActive = false;
+    player.respawnProtected = true;
     player.equiped = {
         head: false,
         body: false,
         tail: false,
     }
+
+    setTimeout(function() {
+        player.respawnProtected = false;
+    },lobby.gameMode.respawnProtection*1000);
 
 
     spawn(lobby,player);

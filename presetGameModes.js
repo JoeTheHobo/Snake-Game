@@ -10,6 +10,7 @@ presetGameModes.push({
     respawn: false,
     respawnTimer: 5,
     respawnGrowth: 50, //Percent
+    respawnProtection: 3, //Seconds
     snakeCollision: true,
     teamCollision: true,
 })
@@ -32,6 +33,7 @@ presetGameModes.push({
     respawn: false,
     respawnTimer: 5,
     respawnGrowth: 50, //Percent
+    respawnProtection: 3, //Seconds
     snakeCollision: true,
     teamCollision: true,
 })
