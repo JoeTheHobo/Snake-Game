@@ -663,6 +663,7 @@ io.on('connection', (socket) => {
             return;
         }
         
+        console.log(lobby.board.originalMap[13][44].onCollision);
         lobby.board.map = structuredClone(lobby.board.originalMap);
 
         lobby.oldObj = false;
