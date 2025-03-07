@@ -769,9 +769,9 @@ io.on('connection', (socket) => {
         
 
         getLocations(lobby);
-        console.log(lobby.board.map[13][44].item.onCollision);
+        console.log(lobby.board.originalMap[13][44].item.onCollision);
         fixItemDifferences(lobby,lobby.board.map);
-        console.log(lobby.board.map[13][44].item.onCollision);
+        console.log(lobby.board.originalMap[13][44].item.onCollision);
 
         fixTileDifferences(lobby,lobby.board,lobby.board.map);
 
