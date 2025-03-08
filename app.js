@@ -768,6 +768,7 @@ io.on('connection', (socket) => {
                 y: false,
             }
             player.team = "white";
+            player.invinsibleBodyEffect = false;
             //Spawn Players
         }
 
@@ -1680,6 +1681,12 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function rerenderSnake(lobby,player) {
+    for (let i = 0; i < player.tail.length; i++) {
+        lobby.updateSnakeCells.push(lobby.snakeMap[player.tail[i].y][player.tail[i].x]);
+    }
+    lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);
+}
 function updateLobbies() {
     let lobbyList = Object.values(lobbies)
         .filter(lobby => lobby.serverType.toLowerCase() !== "hidden")
@@ -1701,7 +1708,8 @@ function updateClientPositions(lobby,lobby_gameLoop_start = Date.now()) {
         moving, 
         playerKills, 
         equiped,
-        team
+        team,
+        invinsibleBodyEffect,
     }) => ({
         i: index,  
         s: selectingItem, 
@@ -1711,6 +1719,7 @@ function updateClientPositions(lobby,lobby_gameLoop_start = Date.now()) {
         k: playerKills, 
         e: equiped,
         te: team,
+        ibe: invinsibleBodyEffect,
     }));
     let newObj = {
         a: emitingActivePlayers,  
@@ -1872,15 +1881,14 @@ function respawnPlayer(lobby,player,growthPercentage) {
         body: false,
         tail: false,
     }
+    player.invinsibleBodyEffect = 0;
 
     let onGoingRespawnProtectedCode = simple.rnd(1000);
     player.onGoingRespawnProtectedTimer = onGoingRespawnProtectedCode;
-    console.log(1,lobby.gameMode.respawnProtection)
     setTimeout(function() {
-        console.log(2)
         if (player.onGoingRespawnProtectedTimer === onGoingRespawnProtectedCode) {
-            console.log(3);
             player.respawnProtected = false;
+            player.invinsibleBodyEffect = false;
         }
     },lobby.gameMode.respawnProtection*1000);
 
@@ -1996,6 +2004,12 @@ function server_movePlayers(lobby) {
         if ((player.moveTik) < (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             player.moveTik++;
             continue;
+        }
+
+        if (simple.type(player.invinsibleBodyEffect) == "number") {
+            player.invinsibleBodyEffect++;
+            rerenderSnake(lobby,player);
+            if (player.invinsibleBodyEffect > 6) player.invinsibleBodyEffect = 0;
         }
 
         if (player.turboActive == true) {
@@ -2205,6 +2219,7 @@ function newPlayer(socketID,accountName,accountTag) {
         accountName: accountName,
         accountTag: accountTag,
         team: "white",
+        invinsibleBodyEffect: false,
     }
 }
 function checkPlayer(player,socketID) {

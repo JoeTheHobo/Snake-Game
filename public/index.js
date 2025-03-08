@@ -421,6 +421,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
                 local_player.equiped = server_player.e;
                 local_player.tailLength = server_player.t;
                 local_player.playerKills = server_player.k;
+                local_player.invinsibleBodyEffect = server_player.ibe;
     
                 if (local_player.accountID === localAccount.id) {
                     localAccount.player  = local_player;

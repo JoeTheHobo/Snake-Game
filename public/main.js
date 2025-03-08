@@ -216,7 +216,9 @@ function server_renderPlayers() {
             if (!player) break;
     
             if (obj.type == "head") {
-                drawRotated(player.canvas.head,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
+                let headObject = player.canvas.head;
+                if (_type(player.invinsibleBodyEffect).type == "number") headObject = player.canvas.head.colors[player.invinsibleBodyEffect];
+                drawRotated(headObject,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
                 
                 if (player.equiped.head) {
                     drawImage(getItemCanvas(player.equiped.head.name),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);
@@ -275,22 +277,27 @@ function server_renderPlayers() {
                 let direction, image;
     
                 if (obj.type == "tail") {
-                    image = player.canvas.tail;
+                    
+                    if (_type(player.invinsibleBodyEffect).type == "number") image = player.canvas.tail.colors[player.invinsibleBodyEffect];
+                    else image = player.canvas.tail;
                     if (active.includes("right")) direction = "right"; 
                     if (active.includes("left")) direction = "left"; 
                     if (active.includes("bottom")) direction = "down"; 
                     if (active.includes("top")) direction = "up"; 
                 } else {
                     if (active.includes("left") && active.includes("right")) {
-                        image = player.canvas.body;
+                        if (_type(player.invinsibleBodyEffect).type == "number") image = player.canvas.body.colors[player.invinsibleBodyEffect];
+                        else image = player.canvas.body;
                         direction = "right";
                     }
                     if (active.includes("top") && active.includes("bottom")) {
-                        image = player.canvas.body;
+                        if (_type(player.invinsibleBodyEffect).type == "number") image = player.canvas.body.colors[player.invinsibleBodyEffect];
+                        else image = player.canvas.body;
                         direction = "up";
                     }
                     if (!image) {
-                        image = player.canvas.turn;
+                        if (_type(player.invinsibleBodyEffect).type == "number") image = player.canvas.turn.colors[player.invinsibleBodyEffect];
+                        else image = player.canvas.turn;
                         if (active.includes("top") && active.includes("right")) direction = "up";
                         if (active.includes("top") && active.includes("left")) direction = "left";
                         if (active.includes("right") && active.includes("bottom")) direction = "right";
@@ -1384,7 +1391,7 @@ function setUpPlayerCanvas() {
         let parts = ["body","tail","turn","head"];
         let partsTag = ["img_snakeBody","img_snakeTail","img_snakeTurn","img_snakeHead"];
         let directions = ["left","right","up","down"];
-        let colors = [0,51,102,153,204,255,305,356];
+        let colors = [50,100,150,200,250,300,350];
         for (let p = 0; p < parts.length; p++) {
             player.canvas[parts[p]].colors = [];
             for (let c = 0; c < colors.length; c++) {
