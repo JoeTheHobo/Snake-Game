@@ -223,6 +223,10 @@ function server_renderPlayers() {
                 if (player.equiped.head) {
                     drawImage(getItemCanvas(player.equiped.head.name),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);
                 }
+
+                if (localAccount.renderTeamColors) {
+                    drawRotated(player.canvas.head.teams[player.team],player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
+                }
             }
             if (obj.type == "body" || obj.type == "tail") {
                 let active = []
@@ -274,12 +278,13 @@ function server_renderPlayers() {
                     down =  Bottom - Left
                 */
     
-                let direction, image;
+                let direction, image,imageTeams;
     
                 if (obj.type == "tail") {
                     
                     if (_type(player.invinsibleBodyEffect).type == "number") image = player.canvas.tail.colors[player.invinsibleBodyEffect];
                     else image = player.canvas.tail;
+                    imageTeams = player.canvas.tail.teams[player.team]
                     if (active.includes("right")) direction = "right"; 
                     if (active.includes("left")) direction = "left"; 
                     if (active.includes("bottom")) direction = "down"; 
@@ -288,16 +293,19 @@ function server_renderPlayers() {
                     if (active.includes("left") && active.includes("right")) {
                         if (_type(player.invinsibleBodyEffect).type == "number") image = player.canvas.body.colors[player.invinsibleBodyEffect];
                         else image = player.canvas.body;
+                        imageTeams = player.canvas.body.teams[player.team];
                         direction = "right";
                     }
                     if (active.includes("top") && active.includes("bottom")) {
                         if (_type(player.invinsibleBodyEffect).type == "number") image = player.canvas.body.colors[player.invinsibleBodyEffect];
                         else image = player.canvas.body;
+                        imageTeams = player.canvas.body.teams[player.team];
                         direction = "up";
                     }
                     if (!image) {
                         if (_type(player.invinsibleBodyEffect).type == "number") image = player.canvas.turn.colors[player.invinsibleBodyEffect];
                         else image = player.canvas.turn;
+                        imageTeams = player.canvas.turn.teams[player.team];
                         if (active.includes("top") && active.includes("right")) direction = "up";
                         if (active.includes("top") && active.includes("left")) direction = "left";
                         if (active.includes("right") && active.includes("bottom")) direction = "right";
@@ -306,7 +314,9 @@ function server_renderPlayers() {
                 }
 
                 drawRotated(image,direction,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
-    
+                if (localAccount.renderTeamColors) {
+                    drawRotated(imageTeams,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
+                }
             }
         }
     }
@@ -1333,6 +1343,10 @@ document.body.onkeydown = function(e) {
                 }
             }
         }
+        if (e.key == activePlayer.toggleTeamsKey) {
+            localAccount.renderTeamColors = localAccount.renderTeamColors ? false : true;
+            socket.emit("rerenderAllSnakes");
+        }
         if (e.key == activePlayer.dropItem) {
             socket.emit("dropItem");
         }
@@ -1348,18 +1362,27 @@ function setUpPlayerCanvas() {
         if(activePlayers[i] == false) continue;
         let player = activePlayers[i];
 
-        function getCanvas(image,direction,filter) {
+        function getCanvas(image,direction,filter,outline) {
             if (filter) filter = `hue-rotate(${filter}deg)`;
             let playerCanvas = html_playerCanvasHolder.create("canvas");
             let playerCtx = playerCanvas.getContext("2d");
             playerCanvas.width = image.width;
             playerCanvas.height = image.height;
-            playerCtx.filter = filter ? filter : getPlayerFilter(player);
+            if (!outline) playerCtx.filter = filter ? filter : getPlayerFilter(player);
 
             if (direction) {
                 drawImage(image,direction,0,0,image.width,image.height,playerCanvas);
             } else {
                 playerCtx.drawImage(image,0,0);
+            }
+            if (outline) {
+                const imageData = playerCtx.getImageData(0, 0, playerCanvas.width, playerCanvas.height);
+                const pixels = imageData.data;
+                const width = playerCanvas.width;
+                const height = playerCanvas.height;
+
+                const edgeData = edgeDetection(pixels, width, height);
+                playerCtx.putImageData(edgeData, 0, 0);
             }
             return playerCanvas;
         }
@@ -1406,7 +1429,69 @@ function setUpPlayerCanvas() {
             }
         }
 
+        let teams = [
+            "white","aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
+        ]
+        for (let p = 0; p < parts.length; p++) {
+            player.canvas[parts[p]].teamOutlines = {};
+            for (let c = 0; c < teams.length; c++) {
+                player.canvas[parts[p]].teamsOutlines[teams[c]] = {};
+                for (let d = 0; d < directions.length; d++) {
+                    player.canvas[parts[p]].teamsOutlines[teams[c]][directions[d]] = getCanvas($(partsTag[p]),directions[d],false,true);
+
+                }
+            }
+        }
+
     }
+}
+
+// Function to apply a Sobel filter for edge detection
+function edgeDetection(pixels, width, height) {
+    const output = new Uint8ClampedArray(pixels.length);
+    const grayscale = new Uint8ClampedArray(width * height);
+
+    // Convert image to grayscale
+    for (let i = 0; i < pixels.length; i += 4) {
+        const avg = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
+        grayscale[i / 4] = avg;
+    }
+
+    // Sobel filter kernels
+    const sobelX = [
+        [-1, 0, 1],
+        [-2, 0, 2],
+        [-1, 0, 1]
+    ];
+    const sobelY = [
+        [-1, -2, -1],
+        [0,  0,  0],
+        [1,  2,  1]
+    ];
+
+    // Apply Sobel filter
+    for (let y = 1; y < height - 1; y++) {
+        for (let x = 1; x < width - 1; x++) {
+            let gx = 0;
+            let gy = 0;
+
+            for (let i = -1; i <= 1; i++) {
+                for (let j = -1; j <= 1; j++) {
+                    const pixelIdx = (x + j + (y + i) * width);
+                    gx += grayscale[pixelIdx] * sobelX[i + 1][j + 1];
+                    gy += grayscale[pixelIdx] * sobelY[i + 1][j + 1];
+                }
+            }
+
+            const magnitude = Math.sqrt(gx * gx + gy * gy);
+            const edgeIdx = (y * width + x) * 4;
+
+            output[edgeIdx] = output[edgeIdx + 1] = output[edgeIdx + 2] = magnitude > 50 ? 255 : 0; // Edge color
+            output[edgeIdx + 3] = 255; // Alpha channel
+        }
+    }
+
+    return new ImageData(output, width, height);
 }
 
 let cameraFollowPlayer = false;

@@ -939,6 +939,14 @@ io.on('connection', (socket) => {
         if (onlineAccounts[socket.id].player.moveQueue.length >= 4) return;
         onlineAccounts[socket.id].player.moveQueue.push(direction);
     })
+    socket.on("rerenderAllSnakes", () => {
+        let account = onlineAccounts[socket.id];
+        let lobby = lobbies[account.lobby];
+        let player = account.player;
+        if (!lobby || !player) return;
+
+        rerenderSnake(lobby,lobby.activePlayers);
+    })
     socket.on("dropItem",() => {
         let account = onlineAccounts[socket.id];
         let lobby = lobbies[account.lobby];
@@ -1709,6 +1717,12 @@ function removePlayerStatus(lobby,player,itemName) {
 
 //From App.js
 function rerenderSnake(lobby,player) {
+    if (simple.type(player) == "array") {
+        for (let i = 0; i < player.length; i++) {
+            rerenderSnake(lobby,player[i]);
+        }
+        return;
+    }
     for (let i = 0; i < player.tail.length; i++) {
         lobby.updateSnakeCells.push(lobby.snakeMap[player.tail[i].y][player.tail[i].x]);
     }
@@ -2214,6 +2228,7 @@ function newPlayer(socketID,accountName,accountTag) {
         useItem2: "e",
         fireItem: "r",
         dropItem: "f",
+        toggleTeamsKey: "Shift",
         name: simple.rnd(playerNames1) + simple.rnd(playerNames2),
         color: simple.rnd(360), //Hue
         color2: simple.rnd(300), //Saturation

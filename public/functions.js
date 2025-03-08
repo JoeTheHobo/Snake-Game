@@ -777,68 +777,6 @@ function compareObjects(obj1, obj2, path = []) {
 
     return differences;
 }
-
-function loadBoardStatus(index) {
-    let holder = $(".boardStatusHolder");
-    holder.innerHTML = "";
-
-    let statusSize = cameraFollowPlayer ? 40 : 25;
-
-    let statusGroups = [];
-    for (let i = 0; i < currentBoard.boardStatus.length; i++) {
-        let foundStatus = false;
-        for (let j = 0; j < statusGroups.length; j++) {
-            if (statusGroups[j][0] === currentBoard.boardStatus[i]) {
-                statusGroups[j].push(currentBoard.boardStatus[i]);
-                foundStatus = true;
-            }    
-        }
-        if (foundStatus) continue;
-        statusGroups.push([currentBoard.boardStatus[i]]);
-    }
-
-    for (let i = 0; i < statusGroups.length; i++) {
-        let status = statusGroups[i][0];
-        let count = statusGroups[i].length;
-
-
-        let contentHolder = holder.create("div");
-        contentHolder.css({
-            width: "max-content",
-            minWidth: "20px",
-            textAlign: "center",
-            paddingLeft: "3px",
-            paddingRight: "3px",
-            height: statusSize + "px",
-            margin: "2px",
-            borderRadius: "5px",
-            border: "2px solid black",
-            background: getColorFromTeam(status),
-            fontFamily: "VT323",
-        })
-
-        if (count > 1) {
-            let text = contentHolder.create("div");
-            text.innerHTML = count; 
-            text.css({
-                width: "100%",
-                color: "black",
-                fontWeight: "bold",
-                fontSize: statusSize+ "px",
-                lineHeight: statusSize + "px",
-                textAlign: "center",
-                fontFamily: "VT323",
-            })
-        }
-        
-
-        
-    }
-
-    updateStatusCells();
-}
-
-
 function fixItemDifferences(map) {
     if (!currentBoard.itemDifferences) return;
     for (let i = 0; i < currentBoard.itemDifferences.length; i++) {

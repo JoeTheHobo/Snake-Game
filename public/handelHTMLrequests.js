@@ -241,6 +241,7 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
                 {type: "label",text: "Scroll Right"},
                 {type: "label",text: "Use Item"},
                 {type: "label",text: "Drop Item"},
+                {type: "label",text: "Toggle Teams"},
 
             ],
             [
@@ -248,6 +249,7 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
                 {type: "keyBind", value: ".useItem2",bind: {key: "useItem2",type: "set"}},
                 {type: "keyBind", value: ".fireItem",bind: {key: "fireItem",type: "set"}},
                 {type: "keyBind", value: ".dropItem",bind: {key: "dropItem",type: "set"}},
+                {type: "keyBind", value: ".toggleTeamsKey",bind: {key: "toggleTeamsKey",type: "set"}},
 
             ]
         ],
