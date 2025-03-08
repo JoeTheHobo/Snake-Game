@@ -240,6 +240,7 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
                 {type: "label",text: "Scroll Left"},
                 {type: "label",text: "Scroll Right"},
                 {type: "label",text: "Use Item"},
+                {type: "label",text: "Drop Item"},
 
             ],
             [

@@ -622,6 +622,7 @@ function loadCustomizeSnakeScreen(index = false) {
                     {type: "label",text: "Scroll Left"},
                     {type: "label",text: "Scroll Right"},
                     {type: "label",text: "Use Item"},
+                    {type: "label",text: "Drop Item"},
 
                 ],
                 [
