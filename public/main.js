@@ -1394,7 +1394,7 @@ function setUpPlayerCanvas() {
                 // fill with color
                 playerOutlineCtx.globalCompositeOperation = "source-in";
                 playerOutlineCtx.fillStyle = _color(outline).ogColor;
-                playerOutlineCtx.fillRect(0,0,canvas.width, canvas.height);
+                playerOutlineCtx.fillRect(0,0,playerOutlineCanvas.width, playerOutlineCanvas.height);
 
                 return playerOutlineCanvas;
             } else return playerCanvas;
