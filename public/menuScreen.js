@@ -537,7 +537,8 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder,updateLob
                     background: l.background,
                     borderRadius: l.borderRadius,
                 })
-                div.src = "img/" + l.src;
+                if (l.src == ".snakeSkinHead") div.src = "img/snakeSkins/snake_" + obj.snakeSkin + "_head.png";
+                else div.src = "img/" + l.src;
             }
             if (l.tag) {
                 originalParent.tags[l.tag] = div;
@@ -585,7 +586,7 @@ function loadCustomizeSnakeScreen(index = false) {
         {
             list: localAccount.players,
             forceOpen: index,
-            listContent: [{type: "image",src: "snakeHead.png", filter: "player",tag: "image"},{type: "title",text: ".name",tag: "name"}],
+            listContent: [{type: "image",src: ".snakeSkinHead", filter: "player",tag: "image"},{type: "title",text: ".name",tag: "name"}],
             top: [{type: "button",text: "New Snake",onClick: function() {
                 getAndLoadNewPlayer();
             }}],
@@ -593,7 +594,7 @@ function loadCustomizeSnakeScreen(index = false) {
         [
             {type: "title",text: "Appearance"},
             [
-                [{type: "image", src: "snakeHead.png",filter: "player",tag:"image",width: "200px",height: "200px",background: "none",borderRadius: "5px",}],
+                [{type: "image", src: ".snakeSkinHead",filter: "player",tag:"image",width: "200px",height: "200px",background: "none",borderRadius: "5px",}],
                 [
                     {type: "text",text: "Snake Name"},
                     {type: "input",value: ".name", tag: "name", bind: {key: "name",type: "!==",value: "",update: {externalKey: "name",type: "innerHTML"}}},
@@ -769,7 +770,7 @@ function loadLocalScreen() {
 
             if (type == "snakes") {
                 let img = holder.create("img");
-                img.src = "img/snakeHead.png";
+                img.src = "img/snakeSkins/snake_" + list[i].snakeSkin + "_head.png";
                 img.className = "local_content_snakeHead";
                 img.style.filter = getPlayerFilter(list[i]);
             }
