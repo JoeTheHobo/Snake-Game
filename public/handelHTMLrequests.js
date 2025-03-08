@@ -246,6 +246,7 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
                 {type: "keyBind", value: ".useItem1",bind: {key: "useItem1",type: "set"}},
                 {type: "keyBind", value: ".useItem2",bind: {key: "useItem2",type: "set"}},
                 {type: "keyBind", value: ".fireItem",bind: {key: "fireItem",type: "set"}},
+                {type: "keyBind", value: ".dropItem",bind: {key: "dropItem",type: "set"}},
 
             ]
         ],
