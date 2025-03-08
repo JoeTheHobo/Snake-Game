@@ -1378,7 +1378,7 @@ function setUpPlayerCanvas() {
             if (outline) {
                 outline = _color(outline).ogColor;
 
-                const imageData = ctx.getImageData(0, 0, playerCanvas.width, playerCanvas.height);
+                const imageData = playerCtx.getImageData(0, 0, playerCanvas.width, playerCanvas.height);
                 const data = imageData.data;// Convert hex to RGB
                 const r = parseInt(outline.substring(1, 3), 16);
                 const g = parseInt(outline.substring(3, 5), 16);
