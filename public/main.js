@@ -1397,7 +1397,7 @@ function setUpPlayerCanvas() {
                 playerOutlineCtx.fillRect(0,0,playerOutlineCanvas.width, playerOutlineCanvas.height);
 
                 // draw original image in normal mode
-                ctx.globalCompositeOperation = "source-over";
+                playerOutlineCtx.globalCompositeOperation = "source-over";
                 if (direction) {
                     drawImage(image,direction,0,0,image.width,image.height,playerOutlineCanvas);
                 } else {
