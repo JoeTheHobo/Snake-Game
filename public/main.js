@@ -1392,7 +1392,7 @@ function setUpPlayerCanvas() {
                     playerOutlineCtx.drawImage(playerCanvas, x + dArr[i]*s, y + dArr[i+1]*s);
                 
                 // fill with color
-                playerOutlineCtx.globalCompositeOperation = "source-in";w
+                playerOutlineCtx.globalCompositeOperation = "source-in";
                 playerOutlineCtx.fillStyle = _color(outline).ogColor;
                 playerOutlineCtx.fillRect(0,0,playerOutlineCanvas.width, playerOutlineCanvas.height);
 
