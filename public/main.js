@@ -225,7 +225,7 @@ function server_renderPlayers() {
                 }
 
                 if (localAccount.renderTeamColors) {
-                    drawRotated(player.canvas.head.teams[player.team],player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
+                    drawRotated(player.canvas.head.teamOutlines[player.team],player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
                 }
             }
             if (obj.type == "body" || obj.type == "tail") {
@@ -284,7 +284,7 @@ function server_renderPlayers() {
                     
                     if (_type(player.invinsibleBodyEffect).type == "number") image = player.canvas.tail.colors[player.invinsibleBodyEffect];
                     else image = player.canvas.tail;
-                    imageTeams = player.canvas.tail.teams[player.team]
+                    imageTeams = player.canvas.tail.teamOutlines[player.team]
                     if (active.includes("right")) direction = "right"; 
                     if (active.includes("left")) direction = "left"; 
                     if (active.includes("bottom")) direction = "down"; 
@@ -293,19 +293,19 @@ function server_renderPlayers() {
                     if (active.includes("left") && active.includes("right")) {
                         if (_type(player.invinsibleBodyEffect).type == "number") image = player.canvas.body.colors[player.invinsibleBodyEffect];
                         else image = player.canvas.body;
-                        imageTeams = player.canvas.body.teams[player.team];
+                        imageTeams = player.canvas.body.teamOutlines[player.team];
                         direction = "right";
                     }
                     if (active.includes("top") && active.includes("bottom")) {
                         if (_type(player.invinsibleBodyEffect).type == "number") image = player.canvas.body.colors[player.invinsibleBodyEffect];
                         else image = player.canvas.body;
-                        imageTeams = player.canvas.body.teams[player.team];
+                        imageTeams = player.canvas.body.teamOutlines[player.team];
                         direction = "up";
                     }
                     if (!image) {
                         if (_type(player.invinsibleBodyEffect).type == "number") image = player.canvas.turn.colors[player.invinsibleBodyEffect];
                         else image = player.canvas.turn;
-                        imageTeams = player.canvas.turn.teams[player.team];
+                        imageTeams = player.canvas.turn.teamOutlines[player.team];
                         if (active.includes("top") && active.includes("right")) direction = "up";
                         if (active.includes("top") && active.includes("left")) direction = "left";
                         if (active.includes("right") && active.includes("bottom")) direction = "right";
