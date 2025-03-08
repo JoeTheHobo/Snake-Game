@@ -1338,12 +1338,13 @@ function setUpPlayerCanvas() {
         if(activePlayers[i] == false) continue;
         let player = activePlayers[i];
 
-        function getCanvas(image,direction) {
+        function getCanvas(image,direction,filter) {
+            if (filter) filter = `hue-rotate(${filter}deg)`;
             let playerCanvas = html_playerCanvasHolder.create("canvas");
             let playerCtx = playerCanvas.getContext("2d");
             playerCanvas.width = image.width;
             playerCanvas.height = image.height;
-            playerCtx.filter = getPlayerFilter(player);
+            playerCtx.filter = /*filter ? filter : getPlayerFilter(player)*/getPlayerFilter(player) + " " + filter;
 
             if (direction) {
                 drawImage(image,direction,0,0,image.width,image.height,playerCanvas);
@@ -1377,6 +1378,21 @@ function setUpPlayerCanvas() {
                 right: getCanvas($("img_snakeHead"),"right"),
                 up: getCanvas($("img_snakeHead"),"up"),
                 down: getCanvas($("img_snakeHead"),"down"),
+            }
+        }
+
+        let parts = ["body","tail","turn","head"];
+        let partsTag = ["img_snakeBody","img_snakeTail","img_snakeTurn","img_snakeHead"];
+        let directions = ["left","right","up","down"];
+        let colors = [0,51,102,153,204,255,305,356];
+        for (let p = 0; p < parts.length; p++) {
+            player.canvas[parts[p]].colors = [];
+            for (let c = 0; c < colors.length; c++) {
+                player.canvas[parts[p]].colors.push({});
+                for (let d = 0; d < directions.length; d++) {
+                    player.canvas[parts[p]].colors[c][directions[d]] = getCanvas($(partsTag[p]),directions[d],colors[c]);
+
+                }
             }
         }
 
