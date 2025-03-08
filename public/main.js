@@ -1391,7 +1391,7 @@ function setUpPlayerCanvas() {
         let parts = ["body","tail","turn","head"];
         let partsTag = ["img_snakeBody","img_snakeTail","img_snakeTurn","img_snakeHead"];
         let directions = ["left","right","up","down"];
-        let colors = [50,100,150,200,250,300,350];
+        let colors = [0, 30, 60, 120, 180, 240, 300];
         for (let p = 0; p < parts.length; p++) {
             player.canvas[parts[p]].colors = [];
             for (let c = 0; c < colors.length; c++) {
