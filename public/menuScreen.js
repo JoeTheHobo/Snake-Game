@@ -558,6 +558,7 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder,updateLob
                             if (l.bind.update.key) originalParent.tags[l.bind.update.key][l.bind.update.type] = value;
                         }
                     }
+                    savePlayers(updateLobby);
                 })
                 if (l.type == "slider") {
                     div.on("change",function() {
