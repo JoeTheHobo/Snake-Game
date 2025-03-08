@@ -1382,10 +1382,10 @@ function setUpPlayerCanvas() {
                 playerOutlineCanvas.height = image.height;
 
                 var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
-                    s = 4,  // thickness scale
+                    s = 6,  // thickness scale
                     i = 0,  // iterator
                     x = 5,  // final position
-                    y = 5;
+                    y = 3;
                 
                 // draw images at offsets from the array scaled by s
                 for(; i < dArr.length; i += 2)
