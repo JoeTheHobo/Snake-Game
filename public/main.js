@@ -225,7 +225,7 @@ function server_renderPlayers() {
                 }
 
                 if (localAccount.renderTeamColors) {
-                    drawRotated(player.canvas.head.teamOutlines[player.team],player.moving,0,0);
+                    drawRotated(player.canvas.head.teamOutlines[player.team],player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
                 }
             }
             if (obj.type == "body" || obj.type == "tail") {
@@ -1367,14 +1367,14 @@ function setUpPlayerCanvas() {
             let playerCtx = playerCanvas.getContext("2d");
             playerCanvas.width = image.width;
             playerCanvas.height = image.height;
-            playerCtx.filter = filter ? filter : getPlayerFilter(player);
+            if (!outline) playerCtx.filter = filter ? filter : getPlayerFilter(player);
 
             if (direction) {
                 drawImage(image,direction,0,0,image.width,image.height,playerCanvas);
             } else {
                 playerCtx.drawImage(image,0,0);
             }
-            if (outline == "AHH") {
+            if (outline) {
                 outline = _color(outline).ogColor;
 
                 const imageData = playerCtx.getImageData(0, 0, playerCanvas.width, playerCanvas.height);
