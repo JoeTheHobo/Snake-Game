@@ -28,10 +28,10 @@ let bodyParts = ["body","tail","turn","head"];
 for (let i = 0; i < snakeSkins.length; i++) {
     for (let j = 0; j < bodyParts.length; j++) {
         let img = $(".imageHolder").create("img");
-        img.src = `img/snakeSkins/${snakeSkins[i]}/snake_${snakeSkins[i]}_${bodyParts[j]}`;
+        img.src = `img/snakeSkins/${snakeSkins[i]}/snake_${snakeSkins[i]}_${bodyParts[j]}.png`;
         img.id = `img_snakeSkin_${snakeSkins[i]}_${bodyParts[j]}`;
         let imgOutline = $(".imageHolder").create("img");
-        imgOutline.src = `img/snakeSkins/${snakeSkins[i]}/snake_${snakeSkins[i]}_${bodyParts[j]}_outline`;
+        imgOutline.src = `img/snakeSkins/${snakeSkins[i]}/snake_${snakeSkins[i]}_${bodyParts[j]}_outline.png`;
         imgOutline.id = `img_snakeSkin_${snakeSkins[i]}_${bodyParts[j]}_outline`;
     }
 }
