@@ -30,7 +30,7 @@ for (let i = 0; i < snakeSkins.length; i++) {
         let img = $(".imageHolder").create("img");
         img.src = `img/snakeSkins/${snakeSkins[i]}/snake_${snakeSkins[i]}_${bodyParts[j]}`;
         img.id = `img_snakeSkin_${snakeSkins[i]}_${bodyParts[j]}`;
-        let imgOutline = $("imageHolder").create("img");
+        let imgOutline = $(".imageHolder").create("img");
         imgOutline.src = `img/snakeSkins/${snakeSkins[i]}/snake_${snakeSkins[i]}_${bodyParts[j]}_outline`;
         imgOutline.id = `img_snakeSkin_${snakeSkins[i]}_${bodyParts[j]}_outline`;
     }
