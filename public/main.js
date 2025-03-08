@@ -225,7 +225,7 @@ function server_renderPlayers() {
                 }
 
                 if (localAccount.renderTeamColors) {
-                    drawRotated(player.canvas.head.teamOutlines[player.team],player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
+                    drawRotated(player.canvas.head.teamOutlines[player.team],player.moving,0,0);
                 }
             }
             if (obj.type == "body" || obj.type == "tail") {
