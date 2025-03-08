@@ -1368,7 +1368,7 @@ function setUpPlayerCanvas() {
             let playerCtx = playerCanvas.getContext("2d");
             playerCanvas.width = image.width;
             playerCanvas.height = image.height;
-            if (!outline) playerCtx.filter = filter ? filter : getPlayerFilter(player);
+            playerCtx.filter = filter ? filter : getPlayerFilter(player);
 
             if (direction) {
                 drawImage(image,direction,0,0,image.width,image.height,playerCanvas);
@@ -1399,9 +1399,9 @@ function setUpPlayerCanvas() {
                 // draw original image in normal mode
                 playerOutlineCtx.globalCompositeOperation = "source-over";
                 if (direction) {
-                    drawImage(image,direction,0,0,image.width,image.height,playerOutlineCanvas);
+                    drawImage(playerCanvas,direction,0,0,image.width,image.height,playerOutlineCanvas);
                 } else {
-                    playerOutlineCtx.drawImage(image,0,0);
+                    playerOutlineCtx.drawImage(playerCanvas,0,0);
                 }
                 return playerOutlineCanvas;
             } else return playerCanvas;
