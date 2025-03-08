@@ -513,7 +513,6 @@ io.on('connection', (socket) => {
         if (!lobby) return;
         if (lobby.hostID !== socket.id) return;
         if (!gameMode) return;
-        console.log("YASS",checkGameMode(gameMode,socket.id))
         if (checkGameMode(gameMode,socket.id) === true) {
             lobby.gameMode = gameMode;
             io.emit("updateLobbyPage", lobby.id, lobby.gameMode,"gameMode");
@@ -798,16 +797,17 @@ io.on('connection', (socket) => {
         lobby.boardStatusCount = 0;
         lobby.playSounds = [];
         lobby.boardStatus = [];
+        lobby.lobby_gameLoop_start = false;
 
         io.emit("startingGame", lobby,onlineAccounts[socket.id].player);
         
         updateClientPositions(lobby)
 
         lobby.gameLoop = function() {
-            let lobby_gameLoop_start = Date.now();
+            lobby.lobby_gameLoop_start = Date.now();
             server_movePlayers(this)
 
-            updateClientPositions(this,lobby_gameLoop_start);
+            updateClientPositions(this);
 
             this.updatePositionTimeStamp = Date.now();
             this.updateSnakeCells = [];
@@ -1699,7 +1699,9 @@ function updateLobbies() {
 setInterval(() => {
     io.emit("updateMemorry",process.memoryUsage());
   }, 5000);
-function updateClientPositions(lobby,lobby_gameLoop_start = Date.now()) {
+function updateClientPositions(lobby) {
+    let lobby_gameLoop_start = lobby.lobby_gameLoop_start;
+    if (!lobby_gameLoop_start) lobby_gameLoop_start = Date.now();
     let emitingActivePlayers = Object.values(lobby.inGamePlayers).map(({ 
         index, 
         selectingItem, 
@@ -1889,6 +1891,8 @@ function respawnPlayer(lobby,player,growthPercentage) {
         if (player.onGoingRespawnProtectedTimer === onGoingRespawnProtectedCode) {
             player.respawnProtected = false;
             player.invinsibleBodyEffect = false;
+            rerenderSnake(lobby,player);
+            updateClientPositions(lobby)
         }
     },lobby.gameMode.respawnProtection*1000);
 
