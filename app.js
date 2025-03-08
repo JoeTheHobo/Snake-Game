@@ -939,6 +939,15 @@ io.on('connection', (socket) => {
         if (onlineAccounts[socket.id].player.moveQueue.length >= 4) return;
         onlineAccounts[socket.id].player.moveQueue.push(direction);
     })
+    socket.on("dropItem",() => {
+        let account = onlineAccounts[socket.id];
+        let lobby = lobbies[account.lobby];
+        let player = account.player;
+        if (!lobby || !player) return;
+
+        dropItem(lobby,player)
+
+    })
     socket.on("fireItem",() => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         let player = onlineAccounts[socket.id].player;
@@ -1322,9 +1331,27 @@ function addBoardStatus(lobby,status,player) {
         })
     }
 }
+function dropItem(lobby,player) {
+    let item = player.items[player.selectingItem];
+    if (item == "empty") return;
+    let x = player.pos.x;
+    let y = player.pos.y;
+    let currentBoard = lobby.board;
+    if (currentBoard.map[y][x].item) return;
+    currentBoard.map[y][x].item = item;
+    currentBoard.map[y][x].item.pos = {
+        x: x,
+        y: y,
+    }
+    lobby.updateCells.push({
+        x: x,
+        y: y,
+        item: currentBoard.map[y][x].item,
+    })
+
+    player.items[player.selectingItem] = "empty";
+}
 function useItem(lobby,player) {
-    if (player.status.includes(player.items[player.selectingItem].img)) return;
-    
     let item = player.items[player.selectingItem];
     if (item == "empty") return;
 
@@ -2187,6 +2214,7 @@ function newPlayer(socketID,accountName,accountTag) {
         useItem1: "q",
         useItem2: "e",
         fireItem: "r",
+        dropItem: "f",
         name: simple.rnd(playerNames1) + simple.rnd(playerNames2),
         color: simple.rnd(360), //Hue
         color2: simple.rnd(300), //Saturation

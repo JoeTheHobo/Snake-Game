@@ -1333,6 +1333,9 @@ document.body.onkeydown = function(e) {
                 }
             }
         }
+        if (e.key == activePlayer.dropItem) {
+            socket.emit("dropItem");
+        }
     }
     
 }
