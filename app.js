@@ -2265,6 +2265,7 @@ function newPlayer(socketID,accountName,accountTag) {
         accountTag: accountTag,
         team: "white",
         invinsibleBodyEffect: false,
+        snakeSkin: "classic",
     }
 }
 function checkPlayer(player,socketID) {

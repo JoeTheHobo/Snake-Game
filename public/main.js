@@ -1376,62 +1376,54 @@ function setUpPlayerCanvas() {
                 playerCtx.drawImage(image,0,0);
             }
             if (outline) {
-                let playerOutlineCanvas = html_playerCanvasHolder.create("canvas");
-                let playerOutlineCtx = playerOutlineCanvas.getContext("2d");
-                playerOutlineCanvas.width = image.width;
-                playerOutlineCanvas.height = image.height;
+                outline = _color(outline).ogColor;
 
-                var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
-                    s = 10,  // thickness scale
-                    i = 0,  // iterator
-                    x = 3,  // final position
-                    y = 3;
-                
-                // draw images at offsets from the array scaled by s
-                for(; i < dArr.length; i += 2)
-                    playerOutlineCtx.drawImage(playerCanvas, x + dArr[i]*s, y + dArr[i+1]*s);
-                
-                // fill with color
-                playerOutlineCtx.globalCompositeOperation = "source-in";
-                playerOutlineCtx.fillStyle = _color(outline).ogColor;
-                playerOutlineCtx.fillRect(0,0,playerOutlineCanvas.width, playerOutlineCanvas.height);
-
-                // draw original image in normal mode
-                playerOutlineCtx.globalCompositeOperation = "source-over";
-                playerOutlineCtx.drawImage(playerCanvas,0,0);
-                return playerOutlineCanvas;
-            } else return playerCanvas;
+                const imageData = ctx.getImageData(0, 0, playerCanvas.width, playerCanvas.height);
+                const data = imageData.data;// Convert hex to RGB
+                const r = parseInt(outline.substring(1, 3), 16);
+                const g = parseInt(outline.substring(3, 5), 16);
+                const b = parseInt(outline.substring(5, 7), 16);
+                for (let i = 0; i < data.length; i += 4) {
+                    if (data[i + 3] > 0) { // Check if pixel is not transparent
+                        data[i] = r;     // Red
+                        data[i + 1] = g; // Green
+                        data[i + 2] = b; // Blue
+                    }
+                }
+                playerCtx.putImageData(imageData, 0, 0);
+            }
+            return playerCanvas;
         }
 
         player.canvas = {
             body: {
-                left: getCanvas($("img_snakeBody"),"left"),
-                right: getCanvas($("img_snakeBody"),"right"),
-                up: getCanvas($("img_snakeBody"),"up"),
-                down: getCanvas($("img_snakeBody"),"down"),
+                left: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_body"),"left"),
+                right: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_body"),"right"),
+                up: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_body"),"up"),
+                down: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_body"),"down"),
             },
             tail: {
-                left: getCanvas($("img_snakeTail"),"left"),
-                right: getCanvas($("img_snakeTail"),"right"),
-                up: getCanvas($("img_snakeTail"),"up"),
-                down: getCanvas($("img_snakeTail"),"down"),
+                left: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_tail"),"left"),
+                right: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_tail"),"right"),
+                up: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_tail"),"up"),
+                down: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_tail"),"down"),
             },
             turn: {
-                left: getCanvas($("img_snakeTurn"),"left"),
-                right: getCanvas($("img_snakeTurn"),"right"),
-                up: getCanvas($("img_snakeTurn"),"up"),
-                down: getCanvas($("img_snakeTurn"),"down"),
+                left: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_turn"),"left"),
+                right: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_turn"),"right"),
+                up: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_turn"),"up"),
+                down: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_turn"),"down"),
             },
             head: {
-                left: getCanvas($("img_snakeHead"),"left"),
-                right: getCanvas($("img_snakeHead"),"right"),
-                up: getCanvas($("img_snakeHead"),"up"),
-                down: getCanvas($("img_snakeHead"),"down"),
+                left: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_head"),"left"),
+                right: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_head"),"right"),
+                up: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_head"),"up"),
+                down: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_head"),"down"),
             }
         }
 
         let parts = ["body","tail","turn","head"];
-        let partsTag = ["img_snakeBody","img_snakeTail","img_snakeTurn","img_snakeHead"];
+        let partsTag = ["img_snakeSkin_" + player.snakeSkin + "_body","img_snakeSkin_" + player.snakeSkin + "_tail","img_snakeSkin_" + player.snakeSkin + "_turn","img_snakeSkin_" + player.snakeSkin + "_head"];
         let directions = ["left","right","up","down"];
         let colors = [50,100,150,200,250,300,350];
         for (let p = 0; p < parts.length; p++) {
@@ -1453,7 +1445,7 @@ function setUpPlayerCanvas() {
             for (let c = 0; c < teams.length; c++) {
                 player.canvas[parts[p]].teamOutlines[teams[c]] = {};
                 for (let d = 0; d < directions.length; d++) {
-                    player.canvas[parts[p]].teamOutlines[teams[c]][directions[d]] = getCanvas($(partsTag[p]),directions[d],false,teams[c]);
+                    player.canvas[parts[p]].teamOutlines[teams[c]][directions[d]] = getCanvas($(partsTag[p] + "_outline"),directions[d],false,teams[c]);
 
                 }
             }

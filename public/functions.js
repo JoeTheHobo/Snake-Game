@@ -23,7 +23,18 @@ let timer, gameEnd;
 let gamePaused = false;
 let isActiveGame = false;
 let doColorRender = false;
-
+let snakeSkins = ["classic"];
+let bodyParts = ["body","tail","turn","head"];
+for (let i = 0; i < snakeSkins.length; i++) {
+    for (let j = 0; j < bodyParts.length; j++) {
+        let img = $("imageHolder").create("img");
+        img.src = `snakeSkins/${snakeSkins[i]}/snake_${snakeSkins[i]}_${bodyParts[j]}`;
+        img.id = `img_snakeSkin_${snakeSkins[i]}_${bodyParts[j]}`;
+        let imgOutline = $("imageHolder").create("img");
+        imgOutline.src = `snakeSkins/${snakeSkins[i]}/snake_${snakeSkins[i]}_${bodyParts[j]}_outline`;
+        imgOutline.id = `img_snakeSkin_${snakeSkins[i]}_${bodyParts[j]}_outline`;
+    }
+}
 //Setting up colors
 
 function getColorFromTeam(color) {
