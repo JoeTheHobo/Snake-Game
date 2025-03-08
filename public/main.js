@@ -264,7 +264,6 @@ function server_renderPlayers() {
                         else active.push("bottom");
                     }
                     if (obj.type == "tail") {
-                        console.log(active)
                         if (active[0] == "bottom") active = ["left"];
                         else active = ["bottom"];
                     }
@@ -1375,7 +1374,7 @@ function setUpPlayerCanvas() {
             } else {
                 playerCtx.drawImage(image,0,0);
             }
-            if (outline) {
+            if (outline == "AHH") {
                 outline = _color(outline).ogColor;
 
                 const imageData = playerCtx.getImageData(0, 0, playerCanvas.width, playerCanvas.height);
