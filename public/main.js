@@ -1362,7 +1362,7 @@ function setUpPlayerCanvas() {
         if(activePlayers[i] == false) continue;
         let player = activePlayers[i];
 
-        function getCanvas(image,direction,filter,outline) {
+        function getCanvas(image,direction,filter,outline = false) {
             if (filter) filter = `hue-rotate(${filter}deg)`;
             let playerCanvas = html_playerCanvasHolder.create("canvas");
             let playerCtx = playerCanvas.getContext("2d");
@@ -1376,15 +1376,28 @@ function setUpPlayerCanvas() {
                 playerCtx.drawImage(image,0,0);
             }
             if (outline) {
-                const imageData = playerCtx.getImageData(0, 0, playerCanvas.width, playerCanvas.height);
-                const pixels = imageData.data;
-                const width = playerCanvas.width;
-                const height = playerCanvas.height;
+                let playerOutlineCanvas = html_playerCanvasHolder.create("canvas");
+                let playerOutlineCtx = playerOutlineCanvas.getContext("2d");
+                playerOutlineCanvas.width = image.width;
+                playerOutlineCanvas.height = image.height;
 
-                const edgeData = edgeDetection(pixels, width, height);
-                playerCtx.putImageData(edgeData, 0, 0);
-            }
-            return playerCanvas;
+                var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
+                    s = 2,  // thickness scale
+                    i = 0,  // iterator
+                    x = 5,  // final position
+                    y = 5;
+                
+                // draw images at offsets from the array scaled by s
+                for(; i < dArr.length; i += 2)
+                    playerOutlineCtx.drawImage(image, x + dArr[i]*s, y + dArr[i+1]*s);
+                
+                // fill with color
+                playerOutlineCtx.globalCompositeOperation = "source-in";
+                playerOutlineCtx.fillStyle = _color(outline).ogColor;
+                playerOutlineCtx.fillRect(0,0,canvas.width, canvas.height);
+
+                return playerOutlineCanvas;
+            } else return playerCanvas;
         }
 
         player.canvas = {
@@ -1437,61 +1450,13 @@ function setUpPlayerCanvas() {
             for (let c = 0; c < teams.length; c++) {
                 player.canvas[parts[p]].teamOutlines[teams[c]] = {};
                 for (let d = 0; d < directions.length; d++) {
-                    player.canvas[parts[p]].teamOutlines[teams[c]][directions[d]] = getCanvas($(partsTag[p]),directions[d],false,true);
+                    player.canvas[parts[p]].teamOutlines[teams[c]][directions[d]] = getCanvas($(partsTag[p]),directions[d],false,teams[c]);
 
                 }
             }
         }
 
     }
-}
-
-// Function to apply a Sobel filter for edge detection
-function edgeDetection(pixels, width, height) {
-    const output = new Uint8ClampedArray(pixels.length);
-    const grayscale = new Uint8ClampedArray(width * height);
-
-    // Convert image to grayscale
-    for (let i = 0; i < pixels.length; i += 4) {
-        const avg = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
-        grayscale[i / 4] = avg;
-    }
-
-    // Sobel filter kernels
-    const sobelX = [
-        [-1, 0, 1],
-        [-2, 0, 2],
-        [-1, 0, 1]
-    ];
-    const sobelY = [
-        [-1, -2, -1],
-        [0,  0,  0],
-        [1,  2,  1]
-    ];
-
-    // Apply Sobel filter
-    for (let y = 1; y < height - 1; y++) {
-        for (let x = 1; x < width - 1; x++) {
-            let gx = 0;
-            let gy = 0;
-
-            for (let i = -1; i <= 1; i++) {
-                for (let j = -1; j <= 1; j++) {
-                    const pixelIdx = (x + j + (y + i) * width);
-                    gx += grayscale[pixelIdx] * sobelX[i + 1][j + 1];
-                    gy += grayscale[pixelIdx] * sobelY[i + 1][j + 1];
-                }
-            }
-
-            const magnitude = Math.sqrt(gx * gx + gy * gy);
-            const edgeIdx = (y * width + x) * 4;
-
-            output[edgeIdx] = output[edgeIdx + 1] = output[edgeIdx + 2] = magnitude > 50 ? 255 : 0; // Edge color
-            output[edgeIdx + 3] = 255; // Alpha channel
-        }
-    }
-
-    return new ImageData(output, width, height);
 }
 
 let cameraFollowPlayer = false;
