@@ -537,7 +537,7 @@ function generateHTMLContent(holder,contentList,valueObj,contentHolder,updateLob
                     background: l.background,
                     borderRadius: l.borderRadius,
                 })
-                if (l.src == ".snakeSkinHead") div.src = "img/snakeSkins/snake_" + obj.snakeSkin + "_head.png";
+                if (l.src == ".snakeSkinHead") div.src = "img/snakeSkins/" + obj.snakeSkin + "/snake_" + obj.snakeSkin + "_head.png";
                 else div.src = "img/" + l.src;
             }
             if (l.tag) {
@@ -770,7 +770,7 @@ function loadLocalScreen() {
 
             if (type == "snakes") {
                 let img = holder.create("img");
-                img.src = "img/snakeSkins/snake_" + list[i].snakeSkin + "_head.png";
+                img.src = "img/snakeSkins/" + list[i].snakeSkin + "/snake_" + list[i].snakeSkin + "_head.png";
                 img.className = "local_content_snakeHead";
                 img.style.filter = getPlayerFilter(list[i]);
             }
