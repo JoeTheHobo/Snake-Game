@@ -1368,7 +1368,6 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
     let playerDied = true;
     if (playerWhoKilled) damage = playerWhoKilled.bodyArmor;
 
-    console.log(player.respawnProtected)
     if (player.respawnProtected) damage = 0;
 
     if (damage === 0) playerDied = false;
