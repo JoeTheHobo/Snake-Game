@@ -1026,11 +1026,6 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
         if (!server) socket.emit("saveGamemode",gameMode);
         else socket.emit("editServerGameMode",gameMode);
     },["direct","scroll"]);
-    addSetting("Full Inventory","dropdown",gameMode.mode_whenInventoryFullWhereDoItemsGo,function(value) {
-        gameMode.mode_whenInventoryFullWhereDoItemsGo = value;
-        if (!server) socket.emit("saveGamemode",gameMode);
-        else socket.emit("editServerGameMode",gameMode);
-    },["noPickUp","select","recycle"]);
     addSetting("When Snakes Die","dropdown",gameMode.whenSnakesDie,function(value) {
         gameMode.whenSnakesDie = value.toLowerCase();
         if (!server) socket.emit("saveGamemode",gameMode);

@@ -4,7 +4,6 @@ presetGameModes.push({
     name: "Classic",
     howManyItemsCanPlayersUse: 2,
     mode_usingItemType: "scroll",
-    mode_whenInventoryFullWhereDoItemsGo: "select",
     itemAlterations: [],
     whenSnakesDie: "remain", //vanish, remain, become food 
     respawn: false,
@@ -18,7 +17,6 @@ presetGameModes.push({
     name: "Rocky",
     howManyItemsCanPlayersUse: 2,
     mode_usingItemType: "scroll",
-    mode_whenInventoryFullWhereDoItemsGo: "select",
     itemAlterations: [
         {
             name: "wall",

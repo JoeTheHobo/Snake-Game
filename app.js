@@ -1855,7 +1855,6 @@ function checkGameMode(gameMode,accountID) {
     if (gameMode.name.length > 15) return "name";
     if (gameMode.howManyItemsCanPlayersUse < 0 || gameMode.howManyItemsCanPlayersUse > 10) return "howManyItemsCanPlayersUse";
     if (!["scroll","direct"].includes(gameMode.mode_usingItemType)) return "mode_usingItemType";
-    if (!["noPickUp","recycle","select"].includes(gameMode.mode_whenInventoryFullWhereDoItemsGo)) return "mode_whenInventoryFullWhereDoItemsGo";
     if (!["vanish","remain","become food"].includes(gameMode.whenSnakesDie)) return "whenSnakesDie";
     if (![false,true].includes(gameMode.respawn)) return "respawn";
     if (![false,true].includes(gameMode.snakeCollision)) return "snakeCollision";
@@ -1872,7 +1871,6 @@ let basedGameMode = {
     name: "Untitled",
     howManyItemsCanPlayersUse: 2,
     mode_usingItemType: "scroll",
-    mode_whenInventoryFullWhereDoItemsGo: "select",
     itemAlterations: [],
     whenSnakesDie: "remain",
     respawn: false,
