@@ -1382,7 +1382,7 @@ function setUpPlayerCanvas() {
                 playerOutlineCanvas.height = image.height;
 
                 var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
-                    s = 2,  // thickness scale
+                    s = 4,  // thickness scale
                     i = 0,  // iterator
                     x = 5,  // final position
                     y = 5;
@@ -1392,7 +1392,7 @@ function setUpPlayerCanvas() {
                     playerOutlineCtx.drawImage(playerCanvas, x + dArr[i]*s, y + dArr[i+1]*s);
                 
                 // fill with color
-                playerOutlineCtx.globalCompositeOperation = "source-in";
+                playerOutlineCtx.globalCompositeOperation = "source-in";w
                 playerOutlineCtx.fillStyle = _color(outline).ogColor;
                 playerOutlineCtx.fillRect(0,0,playerOutlineCanvas.width, playerOutlineCanvas.height);
 
