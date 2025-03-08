@@ -1435,9 +1435,9 @@ function setUpPlayerCanvas() {
         for (let p = 0; p < parts.length; p++) {
             player.canvas[parts[p]].teamOutlines = {};
             for (let c = 0; c < teams.length; c++) {
-                player.canvas[parts[p]].teamsOutlines[teams[c]] = {};
+                player.canvas[parts[p]].teamOutlines[teams[c]] = {};
                 for (let d = 0; d < directions.length; d++) {
-                    player.canvas[parts[p]].teamsOutlines[teams[c]][directions[d]] = getCanvas($(partsTag[p]),directions[d],false,true);
+                    player.canvas[parts[p]].teamOutlines[teams[c]][directions[d]] = getCanvas($(partsTag[p]),directions[d],false,true);
 
                 }
             }
