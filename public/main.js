@@ -1389,13 +1389,20 @@ function setUpPlayerCanvas() {
                 
                 // draw images at offsets from the array scaled by s
                 for(; i < dArr.length; i += 2)
-                    playerOutlineCtx.drawImage(image, x + dArr[i]*s, y + dArr[i+1]*s);
+                    playerOutlineCtx.drawImage(playerCanvas, x + dArr[i]*s, y + dArr[i+1]*s);
                 
                 // fill with color
                 playerOutlineCtx.globalCompositeOperation = "source-in";
                 playerOutlineCtx.fillStyle = _color(outline).ogColor;
                 playerOutlineCtx.fillRect(0,0,playerOutlineCanvas.width, playerOutlineCanvas.height);
 
+                // draw original image in normal mode
+                ctx.globalCompositeOperation = "source-over";
+                if (direction) {
+                    drawImage(image,direction,0,0,image.width,image.height,playerOutlineCanvas);
+                } else {
+                    playerOutlineCtx.drawImage(image,0,0);
+                }
                 return playerOutlineCanvas;
             } else return playerCanvas;
         }
