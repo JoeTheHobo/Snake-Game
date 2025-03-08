@@ -985,6 +985,7 @@ io.on('connection', (socket) => {
         if (checksOut === true) {
             onlineAccounts[socket.id].players = players;
             onlineAccounts[socket.id].serverSnake = serverSnake;
+            console.log(onlineAccounts[socket.id].serverSnake.dropItem)
             if (updateLobby) {
                 let account = onlineAccounts[socket.id];
                 let lobby = lobbies[account.lobby];
