@@ -1351,7 +1351,7 @@ function setUpPlayerCanvas() {
             let playerCtx = playerCanvas.getContext("2d");
             playerCanvas.width = image.width;
             playerCanvas.height = image.height;
-            playerCtx.filter = /*filter ? filter : getPlayerFilter(player)*/getPlayerFilter(player) + " " + filter;
+            playerCtx.filter = filter ? filter : getPlayerFilter(player);
 
             if (direction) {
                 drawImage(image,direction,0,0,image.width,image.height,playerCanvas);
@@ -1391,7 +1391,7 @@ function setUpPlayerCanvas() {
         let parts = ["body","tail","turn","head"];
         let partsTag = ["img_snakeBody","img_snakeTail","img_snakeTurn","img_snakeHead"];
         let directions = ["left","right","up","down"];
-        let colors = [0, 30, 60, 120, 180, 240, 300];
+        let colors = [50,100,150,200,250,300,350];
         for (let p = 0; p < parts.length; p++) {
             player.canvas[parts[p]].colors = [];
             for (let c = 0; c < colors.length; c++) {
