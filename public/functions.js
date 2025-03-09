@@ -939,46 +939,6 @@ function getImageFromItem(type,item,returnType) {
     if (returnType == "src") image = $(type + "_" + image).src;
     return image;
 }
-function respawnPlayer(player,growthPercentage) {
-    let length = Math.round((growthPercentage/100) * player.tail.length);
-
-    //Delete Old Tail
-    for (let i = 0; i < player.tail.length; i++) {
-        updateSnakeCells.push({
-            x: player.tail[i].x,
-            y: player.tail[i].y,
-            player: player
-        })
-    }
-    updateSnakeCells.push({
-        x: player.pos.x,
-        y: player.pos.y,
-        player: player
-    })
-
-    player.isDead = false;
-    player.tail = [];
-    player.items = [];
-    for (let j = 0; j < currentGameMode.howManyItemsCanPlayersUse; j++) {
-        player.items.push("empty");
-    }
-    let team = player.team;
-    player.status = ["status_" + team];
-    player.justDied = false;
-    player.bodyArmor = 1;
-    player.justTeleported = false;
-    player.moveQueue = [];
-    player.moveTik = 0;
-    player.moveSpeed = 6;
-    player.turboDuration = 0;
-    player.turboActive = false;
-    player.shield = 0;
-
-
-    spawn(player);
-    growPlayer(player,length);
-    updatePlayerCard(player);
-}
 
 let global_wallImage = new Image();
     global_wallImage.src = "img/gameUI/repeatableWall.png";
@@ -1017,6 +977,7 @@ function setGameScene(players) {
     holder = $(".game_cc_pi_items_holder");
     holder.innerHTML = "";
     for (let i = 0; i < currentGameMode.howManyItemsCanPlayersUse; i++) {
+        let selectingThis = player.selectingItem == i;
         let div = holder.create("div");
         div.className = "game_cc_pi_item_holder";
         div.id = "inventory_slot_" + i;
@@ -1030,11 +991,14 @@ function setGameScene(players) {
         img.src = "img/gameUI/WallItemWindow.png";
         let img2 = div.create("img");
         img2.className = "game_cc_pi_item_wallIMG2";
-        img2.src = "img/gameUI/windowBackground.png";
+        if (selectingThis) img2.src = "img/gameUI/windowBackgroundSelected.png";
+        else img2.src = "img/gameUI/windowBackground.png";
 
         let itemImg = div.create("img");
         itemImg.className = "game_cc_pi_item_img";
         itemImg.src = "img/backgrounds/clear.png";
+
+        let textField = div.create("div.game_cc_pi_item_text");
 
     }
 
@@ -1251,24 +1215,29 @@ function updateGameFlags(player) {
 function updateGameScene(player) {
 
     if ($(".game_cc_pi_item_wallIMG2")) {
-        $(".game_cc_pi_item_wallIMG2").css({
-            filter: "none",
-        })
+
         //Updating Inventory
         for (let i = 0; i < player.items.length; i++) {
             let holder = $("inventory_slot_" + i);
             let item = player.items[i];
     
-            if (player.selectingItem === i) holder.$(".game_cc_pi_item_wallIMG2").css({
-                filter: "brightness(1.5)",
-            })
+            if (player.selectingItem === i) holder.$(".game_cc_pi_item_wallIMG2").src = "img/gameUI/windowBackgroundSelected.png";
+            else {
+                holder.$(".game_cc_pi_item_wallIMG2").src = "img/gameUI/windowBackground.png";
+            }
     
             if (item == "empty") {
                 holder.$(".game_cc_pi_item_img").src = "img/backgrounds/clear.png";
+                holder.$(".game_cc_pi_item_text").innerHTML = "";
                 continue;
             }
     
             holder.$(".game_cc_pi_item_img").src = getImageFromItem("item",item,"src");
+            if (item.whenEquiped.protect) {
+                holder.$(".game_cc_pi_item_text").innerHTML = item.whenEquiped.protect;
+            } else {
+                holder.$(".game_cc_pi_item_text").innerHTML = "";
+            }
         }
     }
     

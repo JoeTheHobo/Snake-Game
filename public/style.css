@@ -2612,6 +2612,13 @@ height: 100%;
   width: 50%;
   height: auto;
 }
+.game_cc_pi_item_text {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  font-size: 25px;
+  color: white;
+}
 .game_cc_wallConector {
   height: 100%;
   width: auto;
