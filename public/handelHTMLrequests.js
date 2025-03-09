@@ -146,7 +146,7 @@ $(".sc_chat_input").on("keydown",function(e) {
 })
 $(".sc_chooseboard").on("click",function() {
     showBoardMenu(function(board) {
-        socket.emit("changeServerBoard",pako.deflate(shortenBoard(board), { to: 'string' }));
+        socket.emit("changeServerBoard",pako.deflate(JSON.stringify(shortenBoard(board)), { to: 'string' }));
     }) 
 })
 $(".sc_editboard").on("click",function() {
@@ -258,7 +258,7 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
 
 $(".sc_addLobbyBoard").on("click",function() {
     showBoardMenu(function(board) {
-        socket.emit("addBoardToLobbyBoards",pako.deflate(shortenBoard(board), { to: 'string' }));
+        socket.emit("addBoardToLobbyBoards",pako.deflate(JSON.stringify(shortenBoard(board)), { to: 'string' }));
     }) 
 })
 

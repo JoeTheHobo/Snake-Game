@@ -868,7 +868,7 @@ function saveBoard(sendToServer = true) {
     currentBoard.tileDifferences = findTileDifferences(currentBoard.originalMap);
 
     if (currentBoard.accountID === localAccount.id && sendToServer)
-        socket.emit("saveBoard",pako.deflate(shortenBoard(currentBoard), { to: 'string' }));
+        socket.emit("saveBoard",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }));
 
     html_saveStatus.innerHTML = "Board Saved";
 }
@@ -880,8 +880,8 @@ $("me_button").on("click",function() {
             [
                 {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "blue",text:"Add To Lobby Boards",onClick: () => {
                     saveBoard(false);
-                    socket.emit("addBoardToLobbyBoards",pako.deflate(shortenBoard(currentBoard), { to: 'string' }));
-                    socket.emit("changeServerBoard",pako.deflate(shortenBoard(currentBoard), { to: 'string' }));
+                    socket.emit("addBoardToLobbyBoards",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }));
+                    socket.emit("changeServerBoard",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }));
                     setScene("lobby");
                 }},
                 {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Add To Your Boards",onClick: () => {
