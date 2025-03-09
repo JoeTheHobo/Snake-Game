@@ -314,7 +314,7 @@ function server_renderPlayers() {
 
                 drawRotated(image,direction,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
                 if (localAccount.renderTeamColors) {
-                    drawRotated(imageTeams,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
+                    drawRotated(imageTeams,direction,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
                 }
             }
         }
