@@ -454,7 +454,7 @@ document.body.onkeydown = function(e) {
     }
     
 }
-function getPlayerCanvas(holder,image,direction,filter,outline = false) {
+function getPlayerCanvas(holder,image,direction,filter,outline = false,player) {
     if (filter) filter = `hue-rotate(${filter}deg)`;
     let playerCanvas = holder.create("canvas");
     let playerCtx = playerCanvas.getContext("2d");
@@ -515,7 +515,6 @@ function loadSnakeSkins() {
             for (let c = 0; c < teams.length; c++) {
                 snakeSkinCanvasObj[skin][parts[p]].teamOutlines[teams[c]] = {};
                 for (let d = 0; d < directions.length; d++) {
-                    console.log($(partsTag[p] + "_outline"),partsTag[p] + "_outline");
                     snakeSkinCanvasObj[skin][parts[p]].teamOutlines[teams[c]][directions[d]] = getPlayerCanvas($("snakeSkinsHolder"),$(partsTag[p] + "_outline"),directions[d],false,teams[c]);
                 }
             }
@@ -532,28 +531,28 @@ function setUpPlayerCanvas() {
 
         player.canvas = {
             body: {
-                left: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_body"),"left"),
-                right: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_body"),"right"),
-                up: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_body"),"up"),
-                down: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_body"),"down"),
+                left: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_body"),"left",false,false,player),
+                right: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_body"),"right",false,false,player),
+                up: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_body"),"up",false,false,player),
+                down: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_body"),"down",false,false,player),
             },
             tail: {
-                left: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_tail"),"left"),
-                right: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_tail"),"right"),
-                up: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_tail"),"up"),
-                down: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_tail"),"down"),
+                left: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_tail"),"left",false,false,player),
+                right: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_tail"),"right",false,false,player),
+                up: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_tail"),"up",false,false,player),
+                down: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_tail"),"down",false,false,player),
             },
             turn: {
-                left: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_turn"),"left"),
-                right: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_turn"),"right"),
-                up: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_turn"),"up"),
-                down: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_turn"),"down"),
+                left: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_turn"),"left",false,false,player),
+                right: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_turn"),"right",false,false,player),
+                up: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_turn"),"up",false,false,player),
+                down: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_turn"),"down",false,false,player),
             },
             head: {
-                left: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_head"),"left"),
-                right: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_head"),"right"),
-                up: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_head"),"up"),
-                down: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_head"),"down"),
+                left: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_head"),"left",false,false,player),
+                right: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_head"),"right",false,false,player),
+                up: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_head"),"up",false,false,player),
+                down: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_head"),"down",false,false,player),
             }
         }
 
