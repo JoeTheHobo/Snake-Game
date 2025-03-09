@@ -99,7 +99,7 @@ socket.on("updatePlayersBoards",(socketID,boards,sentFrom,board) => {
         loadCustomizeSnakeScreen();
     }
     if (sentFrom == "changeServerBoard") {
-        socket.emit("changeServerBoard",JSON.stringify(shortenBoard(board)));
+        socket.emit("changeServerBoard",pako.deflate(shortenBoard(board), { to: 'string' }));
         setScene("lobby");
     }
 })

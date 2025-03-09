@@ -574,7 +574,7 @@ function importMap(textFile) {
     ls.save("currentBoardIndex",currentBoardIndex);
     if (!localAccount.isInLobby) loadBoardsScreen()
     else {
-        socket.emit("changeServerBoard",JSON.stringify(shortenBoard(board)));
+        socket.emit("changeServerBoard",pako.deflate(shortenBoard(board), { to: 'string' }));
     }
     try {
     } catch {
@@ -1990,7 +1990,7 @@ function selectAllPlayerBoardsPopUp(sendTo) {
     }
 
     let boardClicked = function(board,index) {
-        socket.emit("saveBoardToIndex",JSON.stringify(shortenBoard(currentBoard)),index,"changeServerBoard");
+        socket.emit("saveBoardToIndex",pako.deflate(shortenBoard(currentBoard), { to: 'string' }),index,"changeServerBoard");
     }
 
     for (let i = 0; i < localAccount.boardLimit; i++) {

@@ -136,7 +136,7 @@ io.on('connection', (socket) => {
     }) 
     socket.on("saveBoard",(board) => {
         if (board.accountID !== socket.id) return;
-        board = JSON.parse(pako.inflate(board, { to: 'string' }));
+        board = fixBoard(JSON.parse(pako.inflate(board, { to: 'string' })));
         //Check Board TO BE ADDED
 
         let account = onlineAccounts[socket.id];
@@ -211,7 +211,7 @@ io.on('connection', (socket) => {
         let account = onlineAccounts[socket.id];
 
         //Varify Board Here -To Be Added
-        board = fixBoard(JSON.parse(board));
+        board = fixBoard(JSON.parse(pako.inflate(board, { to: 'string' })));
 
         if (board.accountID !== socket.id) {
             board.accountID = socket.id;
@@ -534,7 +534,7 @@ io.on('connection', (socket) => {
 
 
         //Varify Board Here -To Be Added
-        board = fixBoard(JSON.parse(board));
+        board = fixBoard(JSON.parse(pako.inflate(board, { to: 'string' })));
         if (board.accountID !== socket.id) {
             board.accountID = socket.id;
             board.boardAuthors.push({
@@ -559,7 +559,7 @@ io.on('connection', (socket) => {
         if (!board) return;
 
         //Varify Board Here -To Be Added
-        board = JSON.parse(pako.inflate(board, { to: 'string' }));
+        board = fixBoard(JSON.parse(pako.inflate(board, { to: 'string' })));
         lobby.board = board;
         io.emit("updateLobbyPage", lobby.id, lobby.board,"board",lobby.hostID);
         updateLobbies();
