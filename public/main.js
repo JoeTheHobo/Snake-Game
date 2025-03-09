@@ -469,7 +469,6 @@ function getPlayerCanvas(holder,image,direction,filter,outline = false) {
     }
     if (outline) {
         outline = _color(outline).ogColor;
-        console.log(playerCanvas.width)
         const imageData = playerCtx.getImageData(0, 0, playerCanvas.width, playerCanvas.height);
         const data = imageData.data;// Convert hex to RGB
         const r = parseInt(outline.substring(1, 3), 16);

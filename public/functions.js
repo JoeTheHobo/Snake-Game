@@ -36,6 +36,9 @@ for (let i = 0; i < snakeSkins.length; i++) {
         imgOutline.id = `img_snakeSkin_${snakeSkins[i]}_${bodyParts[j]}_outline`;
     }
 }
+setTimeout(function() {
+    loadSnakeSkins();
+},1000);
 //Setting up colors
 
 function getColorFromTeam(color) {
