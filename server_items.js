@@ -259,7 +259,7 @@ items.push({
     baseImg: "items/Lamp",
     baseImgTags: [],
     type: "item",
-    showInEditor: true,
+    showInEditor: false,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
@@ -275,6 +275,7 @@ items.push({
         canvasFilter: {
             filter: "invert(100%)",
             duration: 5, //In Seconds
+            target: "@a",
         }
     },
 })
