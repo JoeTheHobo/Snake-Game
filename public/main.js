@@ -367,9 +367,11 @@ document.body.onkeydown = function(e) {
     }
     let controlDown = e.ctrlKey;
     let shiftDown = e.shiftKey;
+    let metaDown = e.metaKey;
     let preventDefault = true;
     console.log(e.key)
     if (controlDown && shiftDown && e.key === 'i') preventDefault = false;
+    if (metaDown) preventDefault = false;
     if (e.key == "F5") preventDefault = false;
     if (killSwitch) return;
     if (!isActiveGame) return;
