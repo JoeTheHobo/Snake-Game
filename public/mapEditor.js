@@ -866,7 +866,7 @@ function saveBoard() {
     currentBoard.tileDifferences = findTileDifferences(currentBoard.originalMap);
 
     if (currentBoard.accountID === localAccount.id)
-        socket.emit("saveBoard",currentBoard);
+        socket.emit("saveBoard",pako.deflate(JSON.stringify(currentBoard), { to: 'string' }));
 
     html_saveStatus.innerHTML = "Board Saved";
 }

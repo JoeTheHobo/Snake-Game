@@ -136,6 +136,7 @@ io.on('connection', (socket) => {
     }) 
     socket.on("saveBoard",(board) => {
         if (board.accountID !== socket.id) return;
+        board = JSON.parse(pako.inflate(board, { to: 'string' }));
         //Check Board TO BE ADDED
 
         let account = onlineAccounts[socket.id];
