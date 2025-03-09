@@ -1233,7 +1233,7 @@ function updateGameScene(player) {
             }
     
             holder.$(".game_cc_pi_item_img").src = getImageFromItem("item",item,"src");
-            if (item.whenEquiped.protect) {
+            if (item.whenEquiped?.protect) {
                 holder.$(".game_cc_pi_item_text").innerHTML = item.whenEquiped.protect;
             } else {
                 holder.$(".game_cc_pi_item_text").innerHTML = "";
