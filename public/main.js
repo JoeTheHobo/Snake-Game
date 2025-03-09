@@ -365,7 +365,10 @@ document.body.onkeydown = function(e) {
         if (showPerformance) $(".production").show("flex");
         else $(".production").hide();
     }
-    if (e.ctrlKey && e.shiftKey && e.key === 'i') {
+    let controlDown = e.ctrlKey;
+    let shiftDown = e.shiftKey;
+    console.log(shiftDown)
+    if (controlDown && shiftDown && e.key === 'i') {
         return;
     }
     if (killSwitch) return;
