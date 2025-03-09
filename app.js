@@ -948,11 +948,13 @@ io.on('connection', (socket) => {
         rerenderSnake(lobby,lobby.activePlayers);
     })
     socket.on("dropItem",() => {
+        console.log("ey")
         let account = onlineAccounts[socket.id];
         let lobby = lobbies[account.lobby];
         let player = account.player;
         if (!lobby || !player) return;
 
+        console.log("2")
         dropItem(lobby,player)
 
     })
