@@ -1534,8 +1534,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             }
         }
     }
-    if (collision.giveturbo) {
-        console.log("HERE NOW")
+    if (collision.giveTurbo) {
         player.turboActive = true;
         player.turboDuration = Number(collision.turboServer.duration);
         player.moveSpeed = Number(collision.turboServer.moveSpeed);
