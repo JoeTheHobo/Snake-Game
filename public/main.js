@@ -217,7 +217,7 @@ function server_renderPlayers() {
     
             if (obj.type == "head") {
                 let headObject = player.canvas.head;
-                if (_type(player.invinsibleBodyEffect).type == "number") headObject = player.canvas.head.colors[player.invinsibleBodyEffect];
+                if (_type(player.invinsibleBodyEffect).type == "number") headObject = snakeSkinCanvasObj[player.snakeSkin].head.colors[player.invinsibleBodyEffect];
                 drawRotated(headObject,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
                 
                 if (player.equiped.head) {
@@ -225,7 +225,7 @@ function server_renderPlayers() {
                 }
 
                 if (localAccount.renderTeamColors) {
-                    drawRotated(player.canvas.head.teamOutlines[player.team],player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
+                    drawRotated(snakeSkinCanvasObj[player.snakeSkin].head.teamOutlines[player.team],player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
                 }
             }
             if (obj.type == "body" || obj.type == "tail") {
@@ -281,30 +281,30 @@ function server_renderPlayers() {
     
                 if (obj.type == "tail") {
                     
-                    if (_type(player.invinsibleBodyEffect).type == "number") image = player.canvas.tail.colors[player.invinsibleBodyEffect];
+                    if (_type(player.invinsibleBodyEffect).type == "number") image = snakeSkinCanvasObj[player.snakeSkin].tail.colors[player.invinsibleBodyEffect];
                     else image = player.canvas.tail;
-                    imageTeams = player.canvas.tail.teamOutlines[player.team]
+                    imageTeams = snakeSkinCanvasObj[player.snakeSkin].tail.teamOutlines[player.team];
                     if (active.includes("right")) direction = "right"; 
                     if (active.includes("left")) direction = "left"; 
                     if (active.includes("bottom")) direction = "down"; 
                     if (active.includes("top")) direction = "up"; 
                 } else {
                     if (active.includes("left") && active.includes("right")) {
-                        if (_type(player.invinsibleBodyEffect).type == "number") image = player.canvas.body.colors[player.invinsibleBodyEffect];
+                        if (_type(player.invinsibleBodyEffect).type == "number") image = snakeSkinCanvasObj[player.snakeSkin].body.colors[player.invinsibleBodyEffect];
                         else image = player.canvas.body;
-                        imageTeams = player.canvas.body.teamOutlines[player.team];
+                        imageTeams = snakeSkinCanvasObj[player.snakeSkin].body.teamOutlines[player.team];
                         direction = "right";
                     }
                     if (active.includes("top") && active.includes("bottom")) {
-                        if (_type(player.invinsibleBodyEffect).type == "number") image = player.canvas.body.colors[player.invinsibleBodyEffect];
+                        if (_type(player.invinsibleBodyEffect).type == "number") image = snakeSkinCanvasObj[player.snakeSkin].body.colors[player.invinsibleBodyEffect];
                         else image = player.canvas.body;
-                        imageTeams = player.canvas.body.teamOutlines[player.team];
+                        imageTeams = snakeSkinCanvasObj[player.snakeSkin].body.teamOutlines[player.team];
                         direction = "up";
                     }
                     if (!image) {
-                        if (_type(player.invinsibleBodyEffect).type == "number") image = player.canvas.turn.colors[player.invinsibleBodyEffect];
+                        if (_type(player.invinsibleBodyEffect).type == "number") image = snakeSkinCanvasObj[player.snakeSkin].turn.colors[player.invinsibleBodyEffect];
                         else image = player.canvas.turn;
-                        imageTeams = player.canvas.turn.teamOutlines[player.team];
+                        imageTeams = snakeSkinCanvasObj[player.snakeSkin].turn.teamOutlines[player.team];
                         if (active.includes("top") && active.includes("right")) direction = "up";
                         if (active.includes("top") && active.includes("left")) direction = "left";
                         if (active.includes("right") && active.includes("bottom")) direction = "right";
@@ -368,18 +368,18 @@ document.body.onkeydown = function(e) {
     let controlDown = e.ctrlKey;
     let shiftDown = e.shiftKey;
     let metaDown = e.metaKey;
+    let keyDown = e.key.toLowerCase();
     let preventDefault = true;
-    console.log(e.key)
-    if (controlDown && shiftDown && e.key === 'i') preventDefault = false;
+    if (controlDown && shiftDown && keyDown === 'i') preventDefault = false;
     if (metaDown) preventDefault = false;
-    if (e.key == "F5") preventDefault = false;
+    if (keyDown == "f5") preventDefault = false;
     if (killSwitch) return;
     if (!isActiveGame) return;
     
 
     if (preventDefault) e.preventDefault;
 
-    if (e.key == "Escape" && gameType !== "server") {
+    if (keyDown == "escape" && gameType !== "server") {
         if (gamePaused) {
             $(".pauseGamePopup").hide();
             gamePaused = false;
@@ -393,7 +393,7 @@ document.body.onkeydown = function(e) {
     }
 
     if (cameraFollowPlayer && gameType !== "server") {
-        if (e.key == "m") {
+        if (keyDown == "m") {
             if ($(".firstPersonMap").style.display == "block") {
                 $(".firstPersonMap").hide();
             } else {
@@ -402,56 +402,7 @@ document.body.onkeydown = function(e) {
         }
     }
 
-    if (gameType !== "server") {
-        for (let i = 0; i < activePlayers.length; i++) {
-            let player = activePlayers[i];
-            if (player.isDead) continue;
-    
-            if (e.key == player.leftKey && player.moveQueue.length < 4) {
-                player.moveQueue.push("left");
-            }
-            if (e.key == player.rightKey && player.moveQueue.length < 4) {
-                player.moveQueue.push("right");
-            }
-            if (e.key == player.upKey && player.moveQueue.length < 4) {
-                player.moveQueue.push("up");
-            }
-            if (e.key == player.downKey && player.moveQueue.length < 4) {
-                player.moveQueue.push("down");
-            }
-            if (e.key == player.useItem1) {
-                if (currentGameMode.mode_usingItemType == "scroll") {
-                    player.selectingItem--;
-                    if (player.selectingItem < 0) player.selectingItem = currentGameMode.howManyItemsCanPlayersUse-1;
-                }
-                if (currentGameMode.mode_usingItemType == "direct") {
-                    player.selectingItem = 0;
-                    useItem(player);
-                }
-                updatePlayerCard(player);
-            }
-            if (e.key == player.useItem2) {
-                if (currentGameMode.mode_usingItemType == "scroll") {
-                    player.selectingItem++;
-                    if (player.selectingItem > currentGameMode.howManyItemsCanPlayersUse-1) player.selectingItem = 0;
-                }
-                if (currentGameMode.mode_usingItemType == "direct") {
-                    player.selectingItem = 1;
-                    useItem(player);
-                }
-                updatePlayerCard(player);
-            }
-            if (e.key == player.fireItem) {
-                if (currentGameMode.mode_usingItemType == "scroll") {
-                    if (player.items[player.selectingItem]) {
-                        useItem(player);
-                    }
-                }
-                updatePlayerCard(player);
-            }
-        }
-    }
-    if (gameType == "server" && !e.ctrlKey) {
+    if (gameType == "server" && !controlDown) {
         let activePlayer;
         for (let i = 0; i < activePlayers.length; i++) {
             if(activePlayers[i] == false) continue;
@@ -459,26 +410,26 @@ document.body.onkeydown = function(e) {
         }
         if (!activePlayer) return;
         if (activePlayer.isDead) return;
-        if (e.key == activePlayer.leftKey && activePlayer.moveQueue.length < 4) {
+        if (keyDown == activePlayer.leftKey.toLowerCase() && activePlayer.moveQueue.length < 4) {
             socket.emit("movePlayerKey","left");
         }
-        if (e.key == activePlayer.rightKey && activePlayer.moveQueue.length < 4) {
+        if (keyDown == activePlayer.rightKey.toLowerCase() && activePlayer.moveQueue.length < 4) {
             socket.emit("movePlayerKey","right");
         }
-        if (e.key == activePlayer.upKey && activePlayer.moveQueue.length < 4) {
+        if (keyDown == activePlayer.upKey.toLowerCase() && activePlayer.moveQueue.length < 4) {
             socket.emit("movePlayerKey","up");
         }
-        if (e.key == activePlayer.downKey && activePlayer.moveQueue.length < 4) {
+        if (keyDown == activePlayer.downKey.toLowerCase() && activePlayer.moveQueue.length < 4) {
             socket.emit("movePlayerKey","down");
         }
-        if (e.key == activePlayer.useItem1) {
+        if (keyDown == activePlayer.useItem1.toLowerCase()) {
             if (currentGameMode.mode_usingItemType == "scroll") {
                 socket.emit("changeItem",-1);
             }
             if (currentGameMode.mode_usingItemType == "direct") {
             }
         }
-        if (e.key == activePlayer.useItem2) {
+        if (keyDown == activePlayer.useItem2.toLowerCase()) {
             if (currentGameMode.mode_usingItemType == "scroll") {
                 socket.emit("changeItem",1);
             }
@@ -486,118 +437,121 @@ document.body.onkeydown = function(e) {
                 activePlayer.selectingItem = 1;
             }
         }
-        if (e.key == activePlayer.fireItem) {
+        if (keyDown == activePlayer.fireItem.toLowerCase()) {
             if (currentGameMode.mode_usingItemType == "scroll") {
                 if (activePlayer.items[activePlayer.selectingItem]) {
                     socket.emit("fireItem");
                 }
             }
         }
-        if (e.key == activePlayer.toggleTeamsKey) {
+        if (keyDown == activePlayer.toggleTeamsKey.toLowerCase()) {
             localAccount.renderTeamColors = localAccount.renderTeamColors ? false : true;
             socket.emit("rerenderAllSnakes");
         }
-        if (e.key == activePlayer.dropItem) {
+        if (keyDown == activePlayer.dropItem.toLowerCase()) {
             socket.emit("dropItem");
         }
     }
     
 }
+function getPlayerCanvas(image,direction,filter,outline = false) {
+    if (filter) filter = `hue-rotate(${filter}deg)`;
+    let playerCanvas = html_playerCanvasHolder.create("canvas");
+    let playerCtx = playerCanvas.getContext("2d");
+    playerCanvas.width = image.width;
+    playerCanvas.height = image.height;
+    if (!outline) playerCtx.filter = filter ? filter : getPlayerFilter(player);
+
+    if (direction) {
+        drawImage(image,direction,0,0,image.width,image.height,playerCanvas);
+    } else {
+        playerCtx.drawImage(image,0,0);
+    }
+    if (outline) {
+        outline = _color(outline).ogColor;
+
+        const imageData = playerCtx.getImageData(0, 0, playerCanvas.width, playerCanvas.height);
+        const data = imageData.data;// Convert hex to RGB
+        const r = parseInt(outline.substring(1, 3), 16);
+        const g = parseInt(outline.substring(3, 5), 16);
+        const b = parseInt(outline.substring(5, 7), 16);
+        for (let i = 0; i < data.length; i += 4) {
+            if (data[i + 3] > 0) { // Check if pixel is not transparent
+                data[i] = r;     // Red
+                data[i + 1] = g; // Green
+                data[i + 2] = b; // Blue
+            }
+        }
+        playerCtx.putImageData(imageData, 0, 0);
+    }
+    return playerCanvas;
+}
+for (let i = 0; i < snakeSkins.length; i++) {
+    let skin = snakeSkins[i];
+    snakeSkinCanvasObj[skin] = {};
 
 
+    let parts = ["body","tail","turn","head"];
+    let partsTag = ["img_snakeSkin_" + skin + "_body","img_snakeSkin_" + skin + "_tail","img_snakeSkin_" + skin + "_turn","img_snakeSkin_" + skin + "_head"];
+    let directions = ["left","right","up","down"];
+    let colors = [50,100,150,200,250,300,350];
+    for (let p = 0; p < parts.length; p++) {
+        snakeSkinCanvasObj[skin][parts[p]] = {};
+        snakeSkinCanvasObj[skin][parts[p]].colors = [];
+        for (let c = 0; c < colors.length; c++) {
+            snakeSkinCanvasObj[skin][parts[p]].colors.push({});
+            for (let d = 0; d < directions.length; d++) {
+                snakeSkinCanvasObj[skin][parts[p]].colors[c][directions[d]] = getPlayerCanvas($(partsTag[p]),directions[d],colors[c]);
+
+            }
+        }
+    }
+
+    let teams = [
+        "white","aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
+    ]
+    for (let p = 0; p < parts.length; p++) {
+        snakeSkinCanvasObj[skin][parts[p]].teamOutlines = {};
+        for (let c = 0; c < teams.length; c++) {
+            snakeSkinCanvasObj[skin][parts[p]].teamOutlines[teams[c]] = {};
+            for (let d = 0; d < directions.length; d++) {
+                snakeSkinCanvasObj[skin][parts[p]].teamOutlines[teams[c]][directions[d]] = getPlayerCanvas($(partsTag[p] + "_outline"),directions[d],false,teams[c]);
+            }
+        }
+    }
+}
 function setUpPlayerCanvas() {
     let html_playerCanvasHolder = $("playerCanvasHolder");
     html_playerCanvasHolder.innerHTML = "";
+
     for (let i = 0; i < activePlayers.length; i++) {
         if(activePlayers[i] == false) continue;
         let player = activePlayers[i];
 
-        function getCanvas(image,direction,filter,outline = false) {
-            if (filter) filter = `hue-rotate(${filter}deg)`;
-            let playerCanvas = html_playerCanvasHolder.create("canvas");
-            let playerCtx = playerCanvas.getContext("2d");
-            playerCanvas.width = image.width;
-            playerCanvas.height = image.height;
-            if (!outline) playerCtx.filter = filter ? filter : getPlayerFilter(player);
-
-            if (direction) {
-                drawImage(image,direction,0,0,image.width,image.height,playerCanvas);
-            } else {
-                playerCtx.drawImage(image,0,0);
-            }
-            if (outline) {
-                outline = _color(outline).ogColor;
-
-                const imageData = playerCtx.getImageData(0, 0, playerCanvas.width, playerCanvas.height);
-                const data = imageData.data;// Convert hex to RGB
-                const r = parseInt(outline.substring(1, 3), 16);
-                const g = parseInt(outline.substring(3, 5), 16);
-                const b = parseInt(outline.substring(5, 7), 16);
-                for (let i = 0; i < data.length; i += 4) {
-                    if (data[i + 3] > 0) { // Check if pixel is not transparent
-                        data[i] = r;     // Red
-                        data[i + 1] = g; // Green
-                        data[i + 2] = b; // Blue
-                    }
-                }
-                playerCtx.putImageData(imageData, 0, 0);
-            }
-            return playerCanvas;
-        }
-
         player.canvas = {
             body: {
-                left: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_body"),"left"),
-                right: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_body"),"right"),
-                up: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_body"),"up"),
-                down: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_body"),"down"),
+                left: getPlayerCanvas($("img_snakeSkin_" + player.snakeSkin + "_body"),"left"),
+                right: getPlayerCanvas($("img_snakeSkin_" + player.snakeSkin + "_body"),"right"),
+                up: getPlayerCanvas($("img_snakeSkin_" + player.snakeSkin + "_body"),"up"),
+                down: getPlayerCanvas($("img_snakeSkin_" + player.snakeSkin + "_body"),"down"),
             },
             tail: {
-                left: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_tail"),"left"),
-                right: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_tail"),"right"),
-                up: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_tail"),"up"),
-                down: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_tail"),"down"),
+                left: getPlayerCanvas($("img_snakeSkin_" + player.snakeSkin + "_tail"),"left"),
+                right: getPlayerCanvas($("img_snakeSkin_" + player.snakeSkin + "_tail"),"right"),
+                up: getPlayerCanvas($("img_snakeSkin_" + player.snakeSkin + "_tail"),"up"),
+                down: getPlayerCanvas($("img_snakeSkin_" + player.snakeSkin + "_tail"),"down"),
             },
             turn: {
-                left: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_turn"),"left"),
-                right: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_turn"),"right"),
-                up: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_turn"),"up"),
-                down: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_turn"),"down"),
+                left: getPlayerCanvas($("img_snakeSkin_" + player.snakeSkin + "_turn"),"left"),
+                right: getPlayerCanvas($("img_snakeSkin_" + player.snakeSkin + "_turn"),"right"),
+                up: getPlayerCanvas($("img_snakeSkin_" + player.snakeSkin + "_turn"),"up"),
+                down: getPlayerCanvas($("img_snakeSkin_" + player.snakeSkin + "_turn"),"down"),
             },
             head: {
-                left: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_head"),"left"),
-                right: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_head"),"right"),
-                up: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_head"),"up"),
-                down: getCanvas($("img_snakeSkin_" + player.snakeSkin + "_head"),"down"),
-            }
-        }
-
-        let parts = ["body","tail","turn","head"];
-        let partsTag = ["img_snakeSkin_" + player.snakeSkin + "_body","img_snakeSkin_" + player.snakeSkin + "_tail","img_snakeSkin_" + player.snakeSkin + "_turn","img_snakeSkin_" + player.snakeSkin + "_head"];
-        let directions = ["left","right","up","down"];
-        let colors = [50,100,150,200,250,300,350];
-        for (let p = 0; p < parts.length; p++) {
-            player.canvas[parts[p]].colors = [];
-            for (let c = 0; c < colors.length; c++) {
-                player.canvas[parts[p]].colors.push({});
-                for (let d = 0; d < directions.length; d++) {
-                    player.canvas[parts[p]].colors[c][directions[d]] = getCanvas($(partsTag[p]),directions[d],colors[c]);
-
-                }
-            }
-        }
-
-        let teams = [
-            "white","aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
-        ]
-        for (let p = 0; p < parts.length; p++) {
-            player.canvas[parts[p]].teamOutlines = {};
-            for (let c = 0; c < teams.length; c++) {
-                player.canvas[parts[p]].teamOutlines[teams[c]] = {};
-                for (let d = 0; d < directions.length; d++) {
-                    player.canvas[parts[p]].teamOutlines[teams[c]][directions[d]] = getCanvas($(partsTag[p] + "_outline"),directions[d],false,teams[c]);
-
-                }
+                left: getPlayerCanvas($("img_snakeSkin_" + player.snakeSkin + "_head"),"left"),
+                right: getPlayerCanvas($("img_snakeSkin_" + player.snakeSkin + "_head"),"right"),
+                up: getPlayerCanvas($("img_snakeSkin_" + player.snakeSkin + "_head"),"up"),
+                down: getPlayerCanvas($("img_snakeSkin_" + player.snakeSkin + "_head"),"down"),
             }
         }
 

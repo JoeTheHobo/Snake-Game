@@ -24,6 +24,7 @@ let gamePaused = false;
 let isActiveGame = false;
 let doColorRender = false;
 let snakeSkins = ["classic"];
+let snakeSkinCanvasObj = {};
 let bodyParts = ["body","tail","turn","head"];
 for (let i = 0; i < snakeSkins.length; i++) {
     for (let j = 0; j < bodyParts.length; j++) {
