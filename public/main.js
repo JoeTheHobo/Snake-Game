@@ -367,15 +367,15 @@ document.body.onkeydown = function(e) {
     }
     let controlDown = e.ctrlKey;
     let shiftDown = e.shiftKey;
-    console.log(shiftDown)
-    if (controlDown && shiftDown && e.key === 'i') {
-        return;
-    }
+    let preventDefault = true;
+    console.log(e.key)
+    if (controlDown && shiftDown && e.key === 'i') preventDefault = false;
+    if (e.key == "F5") preventDefault = false;
     if (killSwitch) return;
     if (!isActiveGame) return;
     
-    if (e.key !== "F5")
-        e.preventDefault();
+
+    if (preventDefault) e.preventDefault;
 
     if (e.key == "Escape" && gameType !== "server") {
         if (gamePaused) {
