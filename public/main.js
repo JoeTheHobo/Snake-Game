@@ -516,6 +516,7 @@ function loadSnakeSkins() {
             for (let c = 0; c < teams.length; c++) {
                 snakeSkinCanvasObj[skin][parts[p]].teamOutlines[teams[c]] = {};
                 for (let d = 0; d < directions.length; d++) {
+                    console.log($(partsTag[p] + "_outline"),partsTag[p] + "_outline");
                     snakeSkinCanvasObj[skin][parts[p]].teamOutlines[teams[c]][directions[d]] = getPlayerCanvas($("snakeSkinsHolder"),$(partsTag[p] + "_outline"),directions[d],false,teams[c]);
                 }
             }
