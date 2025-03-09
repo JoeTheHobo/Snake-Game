@@ -797,6 +797,7 @@ io.on('connection', (socket) => {
         lobby.gameTimeStart = Date.now();
         lobby.boardStatusCount = 0;
         lobby.playSounds = [];
+        lobby.canvasFilters = [];
         lobby.boardStatus = [];
         lobby.lobby_gameLoop_start = false;
 
@@ -814,6 +815,7 @@ io.on('connection', (socket) => {
             this.updateSnakeCells = [];
             this.updateCells = [];
             this.playSounds = [];
+            this.canvasFilters = [];
             
             //Check If Anyone Got The Crown
             let winningPlayer = false;
@@ -1536,8 +1538,8 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     }
     if (collision.giveTurbo) {
         player.turboActive = true;
-        player.turboDuration = Number(collision.turboServer.duration);
-        player.moveSpeed = Number(collision.turboServer.moveSpeed);
+        player.turboDuration = Number(collision.giveTurbo.duration);
+        player.moveSpeed = Number(collision.giveTurbo.moveSpeed);
     }
     if (collision.addStatus) {
         for (let i = 0; i < collision.addStatus.length; i++) {
@@ -1552,38 +1554,8 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     if (collision.winGame === true) {
         player.winGame = true;
     }
-    if (collision.canvasFilter?.active == true) {
-        ctx_players.filter = collision.canvasFilter.filter;
-        ctx_items.filter = collision.canvasFilter.filter;
-        for (let i = 0; i < currentBoard.map.length; i++) {
-            for (let j = 0; j < currentBoard.map[0].length; j++) {
-                let mapTile = currentBoard.map[i][j].tile;
-                if (mapTile == false) continue;
-                lobby.updateCells.push({
-                    x: j,
-                    y: i,
-                    item: mapTile,
-                })
-            }
-        }
-        doColorRender = true;
-        setTimeout(function() {
-            ctx_players.filter = "none";
-            ctx_items.filter = "none";
-
-            for (let i = 0; i < currentBoard.map.length; i++) {
-                for (let j = 0; j < currentBoard.map[0].length; j++) {
-                    let mapTile = currentBoard.map[i][j].tile;
-                    if (mapTile == false) continue;
-                    lobby.updateCells.push({
-                        x: j,
-                        y: i,
-                        item: mapTile,
-                    })
-                }
-            }
-            doColorRender = true;
-        },collision.canvasFilter.duration)
+    if (collision.canvasFilter) {
+        lobby.canvasFilters.push(collision.canvasFilter);
     }
     if (collision.playSound && item.playSounds && settings?.playAudio && lobby.playSounds) {
         lobby.playSounds.push("sounds/" + item.soundFolder + "/" + item.soundFolder + "_" + collision.playSound[0] + "_" + simple.rnd(collision.playSound[1]) + ".mp3");
@@ -1769,6 +1741,7 @@ function updateClientPositions(lobby) {
         p: lobby.playSounds,
         b: lobby.boardStatus,
         g: Date.now() - lobby_gameLoop_start,
+        f: lobby.canvasFilters,
     };
 
     // Compare with previous object

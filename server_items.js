@@ -273,9 +273,8 @@ items.push({
     onCollision: {
         deleteMe: true,
         canvasFilter: {
-            active: true,
             filter: "invert(100%)",
-            duration: 5000,
+            duration: 5, //In Seconds
         }
     },
 })

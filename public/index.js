@@ -219,6 +219,7 @@ socket.on("startingGame", (lobby) => {
         },
     }
     localAccount.boardStatus = oldBoardStatus;
+    localAccount.boardFilters = [];
 
     $(".closeWhenGameStarts").hide();
     setScene("game");
@@ -446,6 +447,31 @@ socket.on("updatePositions",(obj,lobbyID) => {
             audio.play();
         }
     }
+
+    if (obj.f) {
+        for (let i = 0; i < obj.f.length; i++) {
+            let key = rnd(99999);
+            localAccount.boardFilters.push({
+                filter: obj.f[i].filter,
+                key: key,
+            });
+
+            setTimeout(function() {
+                for (let i = 0; i < localAccount.boardFilters.length; i++) {
+                    if (localAccount.boardFilters[i].key === key) localAccount.boardFilters.splice(i,1);
+                }
+            },obj.f.duration*1000)
+        }
+    }
+    let filterString = "";
+    for (let i = 0; i < localAccount.boardFilters.length; i++) {
+        filterString += localAccount.boardFilters[i].filter + " ";
+    }
+    canvas_tiles.style.filter = filterString;
+    canvas_items.style.filter = filterString;
+    canvas_players.style.filter = filterString;
+    canvas_overhangs.style.filter = filterString;
+    canvas_top.style.filter = filterString;
     
 
     if (obj.b) updateBoardStatusTracker(obj.b);
