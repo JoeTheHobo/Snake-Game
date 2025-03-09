@@ -312,7 +312,6 @@ function server_renderPlayers() {
                     }
                 }
 
-                console.log(image,direction)
                 drawRotated(image,direction,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
                 if (localAccount.renderTeamColors) {
                     drawRotated(imageTeams,direction,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
