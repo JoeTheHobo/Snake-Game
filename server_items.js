@@ -77,8 +77,8 @@ items.push({
     pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
     onActivate: {
         giveTurbo: {
-            duration: 50,
-            moveSpeed: 2,
+            duration: 35,
+            moveSpeed: 1.5,
         },
     },
     onCollision: {
@@ -259,7 +259,7 @@ items.push({
     baseImg: "items/Lamp",
     baseImgTags: [],
     type: "item",
-    showInEditor: false,
+    showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
     gameModeMenu_selectedItem: false,
