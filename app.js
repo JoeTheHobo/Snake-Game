@@ -1535,12 +1535,9 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         }
     }
     if (collision.giveturbo) {
-        if (collision.turboServer.duration && simple.type(collision.turboServer.moveSpeed) == "number") {
-            console.log("TURBOO");
-            player.turboActive = true;
-            player.turboDuration = collision.turboServer.duration;
-            player.moveSpeed = collision.turboServer.moveSpeed;
-        }
+        player.turboActive = true;
+        player.turboDuration = Number(collision.turboServer.duration);
+        player.moveSpeed = Number(collision.turboServer.moveSpeed);
     }
     if (collision.addStatus) {
         for (let i = 0; i < collision.addStatus.length; i++) {
