@@ -93,6 +93,7 @@ function fixTileDifferencesMapEditor(map) {
         map[d.y][d.x].tile = pos;
     }
 }
+let resetMap;
 function openMapEditor(boardComingIn,isFromServer = false) {
     //if (isFromServer) $("me_playButton").hide();
     $("me_playButton").hide(); // Change Later
@@ -102,6 +103,7 @@ function openMapEditor(boardComingIn,isFromServer = false) {
     currentBoard.originalMap = forceAllCellsToBeTheirOwn(board.originalMap);
     oldMap = structuredClone(currentBoard.originalMap);
     copiedCells = [];
+    resetMap = structuredClone(currentBoard.originalMap);
     copyType = false;
     copyTypeNeedsToReset = true;
     history = [];
@@ -860,12 +862,12 @@ function tool_fill() {
 
     clearSelection();
 }
-function saveBoard() {
+function saveBoard(sendToServer = true) {
     let html_saveStatus = $("saveStatus");
     currentBoard.itemDifferences = findItemDifferences(currentBoard.originalMap);
     currentBoard.tileDifferences = findTileDifferences(currentBoard.originalMap);
 
-    if (currentBoard.accountID === localAccount.id)
+    if (currentBoard.accountID === localAccount.id && sendToServer)
         socket.emit("saveBoard",pako.deflate(JSON.stringify(currentBoard), { to: 'string' }));
 
     html_saveStatus.innerHTML = "Board Saved";
@@ -877,19 +879,19 @@ $("me_button").on("click",function() {
             {type: "title",text: "Save Board"},
             [
                 {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "blue",text:"Add To Lobby Boards",onClick: () => {
-                    saveBoard();
+                    saveBoard(false);
                     socket.emit("addBoardToLobbyBoards",JSON.stringify(shortenBoard(currentBoard)));
                     socket.emit("changeServerBoard",JSON.stringify(shortenBoard(currentBoard)));
                     setScene("lobby");
                 }},
                 {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Add To Your Boards",onClick: () => {
-                    saveBoard();
+                    saveBoard(false);
                     selectAllPlayerBoardsPopUp("lobby");
                 }},
             ],
             {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Discard Changes",onClick: () => {
-                currentBoard.originalMap = oldMap;
-                saveBoard();
+                currentBoard.originalMap = resetMap;
+                saveBoard(false);
                 setScene("lobby");
             }},
         ],{
