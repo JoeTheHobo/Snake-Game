@@ -69,6 +69,8 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     //Load All Item Images
     setUpItemCanvas();
     //Load All Tile Images
+    loadSnakeSkins();
+    
     for (let i = 0; i < tiles.length; i++) {
         if (!tiles[i].img) continue;
     

@@ -486,36 +486,38 @@ function getPlayerCanvas(holder,image,direction,filter,outline = false) {
     }
     return playerCanvas;
 }
-for (let i = 0; i < snakeSkins.length; i++) {
-    let skin = snakeSkins[i];
-    snakeSkinCanvasObj[skin] = {};
+function loadSnakeSkins() {
+    for (let i = 0; i < snakeSkins.length; i++) {
+        let skin = snakeSkins[i];
+        snakeSkinCanvasObj[skin] = {};
 
 
-    let parts = ["body","tail","turn","head"];
-    let partsTag = ["img_snakeSkin_" + skin + "_body","img_snakeSkin_" + skin + "_tail","img_snakeSkin_" + skin + "_turn","img_snakeSkin_" + skin + "_head"];
-    let directions = ["left","right","up","down"];
-    let colors = [50,100,150,200,250,300,350];
-    for (let p = 0; p < parts.length; p++) {
-        snakeSkinCanvasObj[skin][parts[p]] = {};
-        snakeSkinCanvasObj[skin][parts[p]].colors = [];
-        for (let c = 0; c < colors.length; c++) {
-            snakeSkinCanvasObj[skin][parts[p]].colors.push({});
-            for (let d = 0; d < directions.length; d++) {
-                snakeSkinCanvasObj[skin][parts[p]].colors[c][directions[d]] = getPlayerCanvas($("snakeSkinsHolder"),$(partsTag[p]),directions[d],colors[c]);
+        let parts = ["body","tail","turn","head"];
+        let partsTag = ["img_snakeSkin_" + skin + "_body","img_snakeSkin_" + skin + "_tail","img_snakeSkin_" + skin + "_turn","img_snakeSkin_" + skin + "_head"];
+        let directions = ["left","right","up","down"];
+        let colors = [50,100,150,200,250,300,350];
+        for (let p = 0; p < parts.length; p++) {
+            snakeSkinCanvasObj[skin][parts[p]] = {};
+            snakeSkinCanvasObj[skin][parts[p]].colors = [];
+            for (let c = 0; c < colors.length; c++) {
+                snakeSkinCanvasObj[skin][parts[p]].colors.push({});
+                for (let d = 0; d < directions.length; d++) {
+                    snakeSkinCanvasObj[skin][parts[p]].colors[c][directions[d]] = getPlayerCanvas($("snakeSkinsHolder"),$(partsTag[p]),directions[d],colors[c]);
 
+                }
             }
         }
-    }
 
-    let teams = [
-        "white","aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
-    ]
-    for (let p = 0; p < parts.length; p++) {
-        snakeSkinCanvasObj[skin][parts[p]].teamOutlines = {};
-        for (let c = 0; c < teams.length; c++) {
-            snakeSkinCanvasObj[skin][parts[p]].teamOutlines[teams[c]] = {};
-            for (let d = 0; d < directions.length; d++) {
-                snakeSkinCanvasObj[skin][parts[p]].teamOutlines[teams[c]][directions[d]] = getPlayerCanvas($("snakeSkinsHolder"),$(partsTag[p] + "_outline"),directions[d],false,teams[c]);
+        let teams = [
+            "white","aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
+        ]
+        for (let p = 0; p < parts.length; p++) {
+            snakeSkinCanvasObj[skin][parts[p]].teamOutlines = {};
+            for (let c = 0; c < teams.length; c++) {
+                snakeSkinCanvasObj[skin][parts[p]].teamOutlines[teams[c]] = {};
+                for (let d = 0; d < directions.length; d++) {
+                    snakeSkinCanvasObj[skin][parts[p]].teamOutlines[teams[c]][directions[d]] = getPlayerCanvas($("snakeSkinsHolder"),$(partsTag[p] + "_outline"),directions[d],false,teams[c]);
+                }
             }
         }
     }
