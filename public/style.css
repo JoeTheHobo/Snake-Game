@@ -47,18 +47,23 @@ z-index: 1;
 z-index: 401;
 }
 #render_tiles {
+  transition: filter .2s ease-in-out;
 z-index: 402;
 }
 #render_items {
+  transition: filter .2s ease-in-out;
 z-index: 403;
 }
 #render_players {
+  transition: filter .2s ease-in-out;
 z-index: 404;
 }
 #render_overhanges {
+  transition: filter .2s ease-in-out;
 z-index: 405;
 }
 #render_top {
+  transition: filter .2s ease-in-out;
 z-index: 406;
 }
 #gameTitle {

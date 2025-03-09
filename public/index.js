@@ -460,7 +460,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
                 for (let i = 0; i < localAccount.boardFilters.length; i++) {
                     if (localAccount.boardFilters[i].key === key) localAccount.boardFilters.splice(i,1);
                 }
-            },obj.f.duration*1000)
+            },obj.f[i].duration*1000)
         }
     }
     let filterString = "";
