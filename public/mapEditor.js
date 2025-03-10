@@ -1190,6 +1190,7 @@ function setTool(tool2) {
     if (tool == "spawn") {
         $(".subToolHolder").hide();
         $(".subTool_" + tool).show();
+        setSubTool(false)
     }
 
     $(".toolBarToolHolder").classRemove("toolIsSelected");
@@ -1200,6 +1201,7 @@ function setSubTool(tool2) {
     subTool = tool2;
 
     $(".subToolHolder").classRemove("toolIsSelected");
+    if (!subTool) return;
     $("subTool_" + subTool).$P().classAdd("toolIsSelected")
     setTimeout(function() {
         $("subTool_" + subTool).$P().classAdd("toolIsSelected")
