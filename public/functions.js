@@ -924,8 +924,8 @@ function getItemValueFromList(item,list) {
     let value = item;
     console.log(list)
     for (let i = 1; i < list.length; i++) {
-        value = value[list[i]];
         console.log(value)
+        value = value[list[i]];
     }
     return value;
 }
