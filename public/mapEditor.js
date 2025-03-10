@@ -377,8 +377,6 @@ function me_updateCell(ctx,x,y,opacity) {
     }
     if (cell.item) {
         itemCounts.push("item_" + cell.item.name);
-
-        console.log(1,cell.item)
         let image = getImageFromItem("item",cell.item,"canvas");
         ctx.drawImage(image,Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
 
@@ -481,6 +479,7 @@ $("me_canvas").on("mousemove",function(e) {
                 if (rightMouse || tool == "eraser") {
                     board.originalMap[y][x][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
                 } else if (selectedItem.canEdit) {
+                    console.log(59,selectedItem.content.onCollision)
                     board.originalMap[y][x][selectedItem.type] = structuredClone(selectedItem.cell);
                 }
                 $("saveStatus").innerHTML = "Board Is Not Saved";
@@ -976,7 +975,7 @@ function loadObjectMenu() {
             input.on("input",function() {
                 console.log(57,this.value)
                 console.log(58,selectedItem.content.onCollision)
-                setValue(isSelectingOneCell(),selectedItem.cell,this.path,this.value);
+                setValue(isSelectingOneCell(),selectedItem.cell,this.path,Number(this.value));
             })
         }
         if (type == "dropdown") {
@@ -1151,7 +1150,6 @@ function setValue(selectingOneCell,item,path,value,returnValue = false) {
     }
     
     if (ties) {
-        console.log(ties);
         for (let h = 0; h < ties.length; h++) {
             let setPath = ties[h][1].subset(1,"end").split(".");
             
