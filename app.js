@@ -686,6 +686,7 @@ io.on('connection', (socket) => {
         lobby.board.renderEmotesList = [];
         lobby.board.location_tunnels = [];
         lobby.board.location_status = [];
+        lobby.board.playerGrow_status = [];
         lobby.board.location_spawns = [];
         lobby.snakeMap = [];
         for (let i = 0; i < lobby.board.map.length; i++) {
@@ -807,7 +808,7 @@ io.on('connection', (socket) => {
 
         lobby.gameLoop = function() {
             lobby.lobby_gameLoop_start = Date.now();
-            server_movePlayers(this)
+            server_movePlayers(this,socket.id)
 
             updateClientPositions(this);
 
@@ -1298,6 +1299,13 @@ function getLocations(lobby) {
                                     name: cell.item.name,
                                 })
                             }
+                            if (cell.item.updateOn[h] == "playerGrows") {
+                                lobby.board.playerGrow_status.push({
+                                    x: j,
+                                    y: i,
+                                    name: cell.item.name,
+                                })
+                            }
                         }
                     }
                     if (cell.item.spawnPlayerHere == true) {
@@ -1456,8 +1464,9 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
 }
 function growPlayer(player,grow) {
     player.growTail += grow;
+    
 }
-function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: true}) {
+function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: true},socketID) {
     let returnItem = "empty";
     let currentBoard = lobby.board;
     let currentGameMode = lobby.gameMode;
@@ -1528,6 +1537,17 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     }
     if (collision.growPlayer > 0) {
         growPlayer(player,collision.growPlayer);
+        
+        if (player.accountID == socketID) {
+            for (let i = 0; i < lobby.board.playerGrow_status.length; i++) {
+                let status = lobby.board.playerGrow_status[i];
+                lobby.updateCells.push({
+                    x: status.x,
+                    y: status.y,
+                    item: status.item,
+                })
+            }
+        }
     }
     if (collision.spawn) {
         for (let i = 0; i < collision.spawn.length; i++) {
@@ -2007,7 +2027,7 @@ function getPlayersList(playerIds) {
     }
     return list;
 }
-function server_movePlayers(lobby) {
+function server_movePlayers(lobby,socketID) {
     activePlayers = lobby.inGamePlayers;
     let currentBoard = lobby.board;
     let currentGameMode = lobby.gameMode;
@@ -2113,7 +2133,7 @@ function server_movePlayers(lobby) {
 
         //Test Item Underplayer
         let mapItem = currentBoard.map[player.pos.y][player.pos.x].item;
-        if (mapItem) runItemFunction(lobby,player,mapItem,"onCollision");
+        if (mapItem) runItemFunction(lobby,player,mapItem,"onCollision",undefined,undefined,socketID);
 
         if (!player.isDead) {
 

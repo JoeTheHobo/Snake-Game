@@ -1048,8 +1048,9 @@ items.push({
     name: "Weighted_Preassure_Plate", //(string) Name Of Item
     id: 33,
     type: "item",
-    baseImg: "items/weightedPressurePlate",
-    baseImgTags: [],
+    baseImg: "items/item_weightedPlate_",
+    baseImgTags: [".onCollision.checkStatus.pass.addBoardStatus"],
+    renderImages: [["*colors"]],
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -1100,6 +1101,11 @@ items.push({
     },
 
     renderStatusPath: ["onCollision","checkStatus","check","snakeSize"], //Path to which status to render on top of item, leave blank if no render
+    renderStatusNumber: {
+        value: ".onCollision.checkStatus.check.snakeSize",
+        subtract: ["playerSnakeSize"],
+    },
+    updateOn: ["playerGrows"],
     renderStatusColor: "white", //Type To Render Color;
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })

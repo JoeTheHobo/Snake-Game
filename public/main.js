@@ -119,6 +119,9 @@ function renderCells() {
                 if (mapCell.renderStatusNumber.subtract[0] === "boardStatusCount") {
                     subtract += localAccount.boardStatus[getBaseImgFromTag(mapCell,mapCell.renderStatusNumber.subtract[1])].count;
                 }
+                if (mapCell.renderStatusNumber.subtract[0] === "playerSnakeSize") {
+                    subtract += localAccount.player.tailLength;
+                }
             }
 
             value -= subtract;
