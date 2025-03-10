@@ -1062,7 +1062,7 @@ function loadObjectMenu() {
             addSetting("Team Color","status",object.spawnPlayerTeam,["spawnPlayerTeam"]);
         }
         if (_type(object.onCollision?.checkStatus?.check?.snakeSize).type == "number") {
-            addSetting("Snake Size Required","number",object.onCollision?.checkStatus?.check?.snakeSize,["onCollision","checkStatus","check","snakeSize"]);
+            addSetting("Snake Size Required","number",object.onCollision.checkStatus.check.snakeSize,["onCollision","checkStatus","check","snakeSize"]);
         }
         
         addSetting("Visible","toggle",object.visible,["visible"]);
@@ -1134,6 +1134,7 @@ function loadStatusSelectionScreen() {
     }
 }
 function setValue(selectingOneCell,item,path,value,returnValue = false) {
+    console.log(path,value)
     let ties = [];
     if (returnValue == true) return setNestedValue(item, path, value,true);
     setNestedValue(item, path, value);
