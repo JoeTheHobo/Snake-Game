@@ -106,10 +106,9 @@ function renderCells() {
                     }
                 }
                 
-                
                 if (subtract > 0) value -= subtract;
                 if (equals !== false) if (value === equals) pass = true;
-                if (lessOrEqual !== false) if (value <= equals) pass = true;
+                if (lessOrEqual !== false) if (value <= lessOrEqual) pass = true;
             }
             if (pass) continue;
         }
@@ -143,18 +142,27 @@ function renderCells() {
             value -= subtract;
             if (value < 0) value = 0;
 
+            let doRender = true;
+            if (mapCell.renderStatusNumber.dontRenderIfValueEquals) {
+                if (mapCell.renderStatusNumber.dontRenderIfValueEquals +"" === value + "") {
+                    doRender = false;
+                }
+            }
 
-            ctx_items.font = "16px VT323";
-            ctx_items.strokeStyle = "black";
-            ctx_items.fillStyle = "white";
-            ctx_items.lineWidth = 4;
-
-            let textWidth = ctx_items.measureText(value).width;
-            xPos = (x*(gridSize)) + ((gridSize)/2) - (textWidth/2);
-            yPos = (y*(gridSize)) + ((gridSize)/2)+5;
-
-            ctx_items.strokeText(value,xPos,yPos);
-            ctx_items.fillText(value,xPos,yPos);
+            if (doRender) {
+                ctx_items.font = "16px VT323";
+                ctx_items.strokeStyle = "black";
+                ctx_items.fillStyle = "white";
+                ctx_items.lineWidth = 4;
+    
+                let textWidth = ctx_items.measureText(value).width;
+                xPos = (x*(gridSize)) + ((gridSize)/2) - (textWidth/2);
+                yPos = (y*(gridSize)) + ((gridSize)/2)+5;
+    
+                ctx_items.strokeText(value,xPos,yPos);
+                ctx_items.fillText(value,xPos,yPos);
+            }
+            
         }
     }
     updateCells = [];

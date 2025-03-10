@@ -1115,6 +1115,7 @@ items.push({
     renderStatusNumber: {
         value: ".onCollision.checkStatus.check.snakeSize",
         subtract: ["playerSnakeSize"],
+        dontRenderIfValueEquals: 0,
     },
     updateOn: ["playerGrows"],
     renderStatusColor: "white", //Type To Render Color;
