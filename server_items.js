@@ -1118,7 +1118,7 @@ items.push({
         dontRenderIfValueEquals: 0,
     },
     updateOn: ["playerGrows"],
-    renderStatusColor: "white", //Type To Render Color;
+    renderStatusColor: "red", //Type To Render Color;
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({

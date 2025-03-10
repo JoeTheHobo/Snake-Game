@@ -143,8 +143,7 @@ function renderCells() {
             if (value < 0) value = 0;
 
             let doRender = true;
-            if (mapCell.renderStatusNumber.dontRenderIfValueEquals) {
-                console.log(value,mapCell.renderStatusNumber.dontRenderIfValueEquals)
+            if (mapCell.renderStatusNumber.dontRenderIfValueEquals !== undefined) {
                 if (mapCell.renderStatusNumber.dontRenderIfValueEquals +"" == value + "") {
                     doRender = false;
                 }
