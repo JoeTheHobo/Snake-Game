@@ -973,8 +973,7 @@ function loadObjectMenu() {
             
             input.path = path;
             input.on("input",function() {
-                console.log(57,this.value)
-                console.log(58,selectedItem.content.onCollision)
+                console.log(57,this.value,path)
                 setValue(isSelectingOneCell(),selectedItem.cell,this.path,Number(this.value));
             })
         }
@@ -993,7 +992,6 @@ function loadObjectMenu() {
 
             select.path = path;
             select.onchange = function() {
-                console.log(this.value)
                 setValue(isSelectingOneCell(),selectedItem.cell,this.path,this.value);
             }
         }
@@ -1156,7 +1154,6 @@ function setValue(selectingOneCell,item,path,value,returnValue = false) {
             setValue(selectingOneCell,item,setPath,setValue(selectingOneCell,item,ties[h][0].subset(1,"end").split("."),false,true),"tie");
         }
     }
-    console.log(59,selectedItem.content.onCollision)
 }
 
 function setTool(tool2) {
