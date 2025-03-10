@@ -1147,7 +1147,6 @@ function setValue(selectingOneCell,item,path,value,returnValue = false) {
         );
     }
     
-    /*
     if (ties) {
         for (let h = 0; h < ties.length; h++) {
             let setPath = ties[h][1].subset(1,"end").split(".");
@@ -1155,7 +1154,6 @@ function setValue(selectingOneCell,item,path,value,returnValue = false) {
             setValue(selectingOneCell,item,setPath,setValue(selectingOneCell,item,ties[h][0].subset(1,"end").split("."),false,true),"tie");
         }
     }
-        */
 }
 
 function setTool(tool2) {
