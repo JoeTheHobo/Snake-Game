@@ -1187,6 +1187,10 @@ function setTool(tool2) {
         $(".subTool_" + tool).show();
         setSubTool("move");
     }
+    if (tool == "spawn") {
+        $(".subToolHolder").hide();
+        $(".subTool_" + tool).show();
+    }
 
     $(".toolBarToolHolder").classRemove("toolIsSelected");
     $("tool_" + tool).$P().classAdd("toolIsSelected")
