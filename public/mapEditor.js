@@ -1709,24 +1709,77 @@ function makeSpawnZoneListing(holder,zone,i) {
             zoneIndex: this.i,
         }
 
-        function addSettingSpawnHelper(title,affecting,value) {
-            return {};
+        function addSettingSpawnHelper(title,affecting,value,type,zoneType,desiredType) {
+            if (zoneType) {
+                if (zoneType !== desiredType) return {};
+            }
+
+            let row = [{type: "text",text: title,color: "white"}];
+
+            if (type == "checkbox") {
+                row.push({
+                    type: "checkbox", value: value,
+                })
+            }
+            if (type == "boardStatus") {
+                row.push({
+                    type: "custom", css: {
+                        width: "50px",
+                        height: "50px",
+                        background: getColorFromTeam(value),
+                        cursor: "url('./img/pointer.cur'), auto",
+                        borderRadius: "5px",
+                        border: "2px solid black",
+                        color: "black",
+                        display: "flex",
+                        fontSize: "20px",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    },
+                })
+            }
+            if (type == "number") {
+                row.push({
+                    type: "number", value: value,
+                })
+            }
+            if (type == "playerStatus") {
+                row.push({
+                    type: "custom", css: {
+                        width: "50px",
+                        height: "50px",
+                        background: getColorFromTeam(value),
+                        cursor: "url('./img/pointer.cur'), auto",
+                        borderRadius: "5px",
+                        border: "2px solid black",
+                        color: "black",
+                        display: "flex",
+                        fontSize: "20px",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    },
+                })
+            }
+
+            return row;
         }
 
         makePopUp([
             {type: "title",text: `Edit ${this.type} Zone ${zone.id}`, color: "white"},
-            [
-                addSettingSpawnHelper("Active","active",zone.active,"dropDown",[true,false]),
-            ],
-            [
-                addSettingSpawnHelper("Activate When Board Status","activateWhenBoardStatus",zone.activateWhenBoardStatus,"boardStatus"),
-                addSettingSpawnHelper("Deactivate When Board Status","deactivateWhenBoardStatus",zone.deactivateWhenBoardStatus,"boardStatus"),
-            ],
-            [
-                addSettingSpawnHelper("Activate When Board Status","activateWhenTimePassed",zone.activateWhenTimePassed,"number"),
-                addSettingSpawnHelper("Deactivate When Board Status","deactivateWhenTimePassed",zone.deactivateWhenTimePassed,"number"),
-            ],
+            addSettingSpawnHelper("Active:","active",zone.active,"checkbox"),
+            addSettingSpawnHelper("Activate When Board Status:","activateWhenBoardStatus",zone.activateWhenBoardStatus,"boardStatus"),
+            addSettingSpawnHelper("Deactivate When Board Status:","deactivateWhenBoardStatus",zone.deactivateWhenBoardStatus,"boardStatus"),
+            addSettingSpawnHelper("Activate when Time Passes?:",false,zone.activateWhenTimePassed !== false,"checkbox"),
+            addSettingSpawnHelper("Time To Activate (sec):","activateWhenTimePassed",zone.activateWhenTimePassed,"number"),
+            addSettingSpawnHelper("Deactivate when Time Passes?:",false,zone.activateWhenTimePassed !== false,"checkbox"),
+            addSettingSpawnHelper("Time To Deactivate (sec):","deactivateWhenTimePassed",zone.deactivateWhenTimePassed,"number"),
 
+            addSettingSpawnHelper("On Spawn Set Players Team: ","team",zone.team,"playerStatus",this.type,"player"),
+            addSettingSpawnHelper("Spawn Limited Players?:",false,zone.spawnCap !== false,"checkbox",this.type,"player"),
+            addSettingSpawnHelper("Spawn Cap:","spawnCap",zone.spawnCap,"number",this.type,"player"),
+            addSettingSpawnHelper("Respawn Here:","respawnHere",zone.respawnHere,"checkbox",this.type,"player"),
+
+            addSettingSpawnHelper("Allowed Item Spawning:","itemsThatCantSpawnHere",zone.itemsThatCantSpawnHere,"checkbox",this.type,"item"),
         ],{
             id: "editZone",
             exit: {

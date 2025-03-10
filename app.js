@@ -283,8 +283,8 @@ io.on('connection', (socket) => {
                         y: height-1,
                     },
                     team: "white",
-                    atStartSpawnCap: false,
-                    playersCanRespawnHere: true,
+                    spawnCap: false,
+                    respawnHere: true,
 
                     active: true,
                     activateWhenBoardStatus: {},
@@ -303,10 +303,6 @@ io.on('connection', (socket) => {
                         y: height-1,
                     },
                     itemsThatCantSpawnHere: [],
-                    randomItemPool: [],
-                    spawnRandomItem: false,
-                    randomItemInterval: 5,
-                    dontSpawnItemIfItemCount: 6,
 
                     active: true,
                     activateWhenBoardStatus: {},

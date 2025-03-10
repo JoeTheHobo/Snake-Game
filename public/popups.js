@@ -43,9 +43,14 @@ function makePopUp(objects,settings = {}) {
             else {
                 let div;
                 if (["number","input","checkbox"].includes(obj.type)) div = holder.create("input");
-                if (["title","button","text"].includes(obj.type)) div = holder.create("div");
+                if (["title","button","text","custom"].includes(obj.type)) div = holder.create("div");
                 if (obj.text) div.innerHTML = obj.text;
 
+                if (obj.type == "custom") {
+                    if (obj.css) {
+                        div.css(obj.css);
+                    }
+                }
                 if (obj.type == "title") {
                     div.css({
                         position: obj.position || "relative",
