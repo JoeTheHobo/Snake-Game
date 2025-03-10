@@ -1168,6 +1168,12 @@ function setTool(tool2) {
     }
     tool = tool2;
 
+    if ($(".me_objectHolder").style.display !== "flex") {
+        $(".me_objectHolder").show("flex");
+        $(".me_objectHolder2").hide();
+    }
+    
+
     if (tool == "draw" || tool == "eraser") {
         $(".subToolHolder").hide();
         $(".subTool_draw").show();
@@ -1189,8 +1195,11 @@ function setTool(tool2) {
     }
     if (tool == "spawn") {
         $(".subToolHolder").hide();
-        $(".subTool_" + tool).show();
-        setSubTool(false)
+        setSubTool(false);
+
+        $(".me_objectHolder").hide();
+        $(".me_objectHolder2").show("flex");
+
     }
 
     $(".toolBarToolHolder").classRemove("toolIsSelected");

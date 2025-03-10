@@ -372,9 +372,6 @@
                 <div class="toolBarToolHolder subToolHolder subTool_move" title="Shortcut: Mouse Wheel Down"><img src="img/tool_zoomout.png" id="subTool_zoomOut" onclick="runTool('zoomOut')" class="toolBarToolImg"></div>
                 <div class="toolBarToolHolder subToolHolder subTool_move" title="Shortcut: Mouse Wheel Up"><img src="img/tool_zoomin.png" id="subTool_zoomIn" onclick="runTool('zoomIn')" class="toolBarToolImg"></div>
 
-                <div class="toolBarToolHolder subToolHolder subTool_spawn"><img src="img/tool_addItemSpawn.png" id="subTool_addItemSpawn" onclick="runTool('addItemSpawn')" class="toolBarToolImg"></div>
-                <div class="toolBarToolHolder subToolHolder subTool_spawn"><img src="img/tool_addPlayerSpawn.png" id="subTool_addPlayerSpawn" onclick="runTool('addPlayerSpawn')" class="toolBarToolImg"></div>
-                <div class="toolBarToolHolder subToolHolder subTool_spawn"><img src="img/tool_delete.png" id="subTool_spawnDelete" onclick="runTool('spawnDelete')" class="toolBarToolImg"></div>
             </div>
             
             <div class="toolbar_extra">
@@ -404,11 +401,11 @@
                     </div>
                     <div class="me_ih_setting">
                         <div class="me_ih_settingName">Board Background</div>
-                        <div class="me_ih_button hover" id="me_background">Background Name</div>
+                        <div class="me_ih_button hover playButtonSounds" id="me_background">Background Name</div>
                     </div>
                     <div class="me_ih_setting">
                         <div class="me_ih_settingName">Game Mode</div>
-                        <div class="me_ih_button hover" id="me_gameMode">Game Mode Name</div>
+                        <div class="me_ih_button hover playButtonSounds" id="me_gameMode">Game Mode Name</div>
                     </div>
                     <div class="me_ih_setting">
                         <div class="me_ih_settingName">Recommended Game Mode</div>
@@ -422,6 +419,19 @@
                         <div class="me_ih_settingName">Max Players Allowed</div>
                         <input type="number" min="1" max="16" id="me_maxPlayers" class="me_ih_number">
                     </div>
+                </div>
+            </div>
+            
+            <div class="me_objectHolder2">
+                <div class="me_spawnZones_holder me_spawnZones_players_holder">
+                    <div class="me_sz_title">Player Zones</div>
+                    <div class="me_sz_addButton playButtonSounds hover">New Zone</div>
+                    <div class="me_sz_zoneList me_sz_playerZones"></div>
+                </div>
+                <div class="me_spawnZones_holder me_spawnZones_items_holder">
+                    <div class="me_sz_title">Item Zones</div>
+                    <div class="me_sz_addButton playButtonSounds hover">New Zone</div>
+                    <div class="me_sz_zoneList me_sz_itemZones"></div>
                 </div>
             </div>
         </div>
