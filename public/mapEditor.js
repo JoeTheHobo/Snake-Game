@@ -378,6 +378,7 @@ function me_updateCell(ctx,x,y,opacity) {
     if (cell.item) {
         itemCounts.push("item_" + cell.item.name);
 
+        console.log(1,cell.item)
         let image = getImageFromItem("item",cell.item,"canvas");
         ctx.drawImage(image,Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
 
