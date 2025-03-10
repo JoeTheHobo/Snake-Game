@@ -1685,16 +1685,18 @@ function loadBackgroundContent(parent) {
 }
 //HTML ON CLICK END
 function makeSpawnZoneListing(holder,zone) {
-    let color = "white";
-    if (zone.team) color = _color(zone.team);
+    let color = "#ffffff";
+    if (zone.team) color = _color(zone.team).ogColor;
 
-    let spawnZoneHolder = holder.create("div.spawnZoneHolder hover");
+    let spawnZoneHolder = holder.create("div");
+    spawnZoneHolder.className = "spawnZoneHolder hover";
     spawnZoneHolder.css({
-        background: color,
+        background: color + "dd",
         border: "2px solid " + _color(color).darken(10).ogColor,
     })
 
     let spawnZoneID = spawnZoneHolder.create("div.spawnZoneID");
+    spawnZoneID.className = "spawnZoneID hover";
     spawnZoneID.innerHTML = zone.id;
 
 }
