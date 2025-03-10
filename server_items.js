@@ -1086,7 +1086,7 @@ items.push({
                 playerHasItem: false,
             },
             pass: {
-                addBoardStatus: "red",
+                addBoardStatus: "blue",
             },
             fail: {
                 
@@ -1103,7 +1103,7 @@ items.push({
                 playerHasItem: false,
             },
             pass: {
-                removeBoardStatus: "red",
+                removeBoardStatus: "blue",
             },
             fail: {
                 

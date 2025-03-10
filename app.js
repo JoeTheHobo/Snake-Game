@@ -271,6 +271,50 @@ io.on('connection', (socket) => {
                 id: socket.id,
                 username: onlineAccounts[socket.id].username,
             }],
+            spawnZones: {
+                players: [{
+                    id: 0,
+                    pos1: {
+                        x: 0,
+                        y: 0,
+                    },
+                    pos2: {
+                        x: width-1,
+                        y: height-1,
+                    },
+                    team: "white",
+                    atStartSpawnCap: false,
+                    playersCanRespawnHere: true,
+
+                    active: true,
+                    activateWhenBoardStatus: [],
+                    deactivateWhenBoardStatus: [],
+                    activateWhenTimePassed: false, //Seconds
+                    deactivateWhenTimePassed: false, //Seconds
+                }],
+                items: [{
+                    id: 0,
+                    pos1: {
+                        x: 0,
+                        y: 0,
+                    },
+                    pos2: {
+                        x: width-1,
+                        y: height-1,
+                    },
+                    itemsThatCantSpawnHere: [],
+                    randomItemPool: [],
+                    spawnRandomItem: false,
+                    randomItemInterval: 5,
+                    dontSpawnItemIfItemCount: 6,
+
+                    active: true,
+                    activateWhenBoardStatus: [],
+                    deactivateWhenBoardStatus: [],
+                    activateWhenTimePassed: false, //Seconds
+                    deactivateWhenTimePassed: false, //Seconds
+                }],
+            },
         };
 
         decompressObject(account.boards,(err,decompressed) => {
