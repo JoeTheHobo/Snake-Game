@@ -287,8 +287,8 @@ io.on('connection', (socket) => {
                     playersCanRespawnHere: true,
 
                     active: true,
-                    activateWhenBoardStatus: [],
-                    deactivateWhenBoardStatus: [],
+                    activateWhenBoardStatus: {},
+                    deactivateWhenBoardStatus: {},
                     activateWhenTimePassed: false, //Seconds
                     deactivateWhenTimePassed: false, //Seconds
                 }],
@@ -309,8 +309,8 @@ io.on('connection', (socket) => {
                     dontSpawnItemIfItemCount: 6,
 
                     active: true,
-                    activateWhenBoardStatus: [],
-                    deactivateWhenBoardStatus: [],
+                    activateWhenBoardStatus: {},
+                    deactivateWhenBoardStatus: {},
                     activateWhenTimePassed: false, //Seconds
                     deactivateWhenTimePassed: false, //Seconds
                 }],

@@ -5,6 +5,7 @@ let selectedItem = {
     path: false,
     cell: structuredClone(getRealItem("pellet")),
 }
+let selectedZone;
 let board;
 let mouseDown = false;
 let rightMouse = false;
@@ -111,6 +112,7 @@ function openMapEditor(boardComingIn,isFromServer = false) {
     zoom = 1;
     showFullGrid = false;
     showGrid = false;
+    selectedZone = false;
     selectedItem = {
         type: "item",
         content: getRealItem("pellet"),
@@ -1684,29 +1686,63 @@ function loadBackgroundContent(parent) {
     }
 }
 //HTML ON CLICK END
-function makeSpawnZoneListing(holder,zone) {
+function makeSpawnZoneListing(holder,zone,i) {
     let color = "#ffffff";
     if (zone.team) color = _color(zone.team).ogColor;
 
     let spawnZoneHolder = holder.create("div");
-    spawnZoneHolder.className = "spawnZoneHolder hover";
+    spawnZoneHolder.className = "spawnZoneHolder playButtonSounds hover";
     spawnZoneHolder.css({
-        background: color + "dd",
-        border: "2px solid " + _color(color).darken(10).ogColor,
+        background: color + "cc",
+        border: "3px solid " + _color(color).darken(10).ogColor,
     })
 
     let spawnZoneID = spawnZoneHolder.create("div.spawnZoneID");
     spawnZoneID.className = "spawnZoneID hover";
     spawnZoneID.innerHTML = zone.id;
 
+    spawnZoneHolder.type = zone.team ? "player" : "item";
+    spawnZoneHolder.i = i;
+    spawnZoneHolder.on("click",function() {
+        selectedZone = {
+            type: this.type,
+            zoneIndex: this.i,
+        }
+
+        function addSettingSpawnHelper(title,affecting,value) {
+            return {};
+        }
+
+        makePopUp([
+            {type: "title",text: `Edit ${this.type} Zone ${zone.id}`, color: "white"},
+            [
+                addSettingSpawnHelper("Active","active",zone.active,"dropDown",[true,false]),
+            ],
+            [
+                addSettingSpawnHelper("Activate When Board Status","activateWhenBoardStatus",zone.activateWhenBoardStatus,"boardStatus"),
+                addSettingSpawnHelper("Deactivate When Board Status","deactivateWhenBoardStatus",zone.deactivateWhenBoardStatus,"boardStatus"),
+            ],
+            [
+                addSettingSpawnHelper("Activate When Board Status","activateWhenTimePassed",zone.activateWhenTimePassed,"number"),
+                addSettingSpawnHelper("Deactivate When Board Status","deactivateWhenTimePassed",zone.deactivateWhenTimePassed,"number"),
+            ],
+
+        ],{
+            id: "editZone",
+            exit: {
+                cursor: "url('./img/pointer.cur'), auto",
+            },
+        })
+    })
+
 }
 function loadSpawnZones() {
     $(".me_sz_playerZones").innerHTML = "";
     $(".me_sz_itemZones").innerHTML = "";
     for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
-        makeSpawnZoneListing($(".me_sz_playerZones"),currentBoard.spawnZones.players[i]);
+        makeSpawnZoneListing($(".me_sz_playerZones"),currentBoard.spawnZones.players[i],i);
     }
     for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
-        makeSpawnZoneListing($(".me_sz_itemZones"),currentBoard.spawnZones.items[i]);
+        makeSpawnZoneListing($(".me_sz_itemZones"),currentBoard.spawnZones.items[i],i);
     }
 }
