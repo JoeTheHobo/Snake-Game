@@ -940,7 +940,7 @@ function getImageFromItem(type,item,returnType) {
     } else {
         image = item.name;
     }
-
+    console.log(2,image)
     if (returnType == "canvas") image = getItemCanvas(image);
     if (returnType == "src") image = $(type + "_" + image).src;
     return image;
