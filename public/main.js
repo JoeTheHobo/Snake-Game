@@ -144,7 +144,8 @@ function renderCells() {
 
             let doRender = true;
             if (mapCell.renderStatusNumber.dontRenderIfValueEquals) {
-                if (mapCell.renderStatusNumber.dontRenderIfValueEquals +"" === value + "") {
+                console.log(value,mapCell.renderStatusNumber.dontRenderIfValueEquals)
+                if (mapCell.renderStatusNumber.dontRenderIfValueEquals +"" == value + "") {
                     doRender = false;
                 }
             }

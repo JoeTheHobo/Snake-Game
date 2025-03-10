@@ -479,7 +479,6 @@ $("me_canvas").on("mousemove",function(e) {
                 if (rightMouse || tool == "eraser") {
                     board.originalMap[y][x][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
                 } else if (selectedItem.canEdit) {
-                    console.log(59,selectedItem.content.onCollision)
                     board.originalMap[y][x][selectedItem.type] = structuredClone(selectedItem.cell);
                 }
                 $("saveStatus").innerHTML = "Board Is Not Saved";
@@ -973,7 +972,6 @@ function loadObjectMenu() {
             
             input.path = path;
             input.on("input",function() {
-                console.log(57,this.value,path)
                 setValue(isSelectingOneCell(),selectedItem.cell,this.path,Number(this.value));
             })
         }
@@ -1133,7 +1131,6 @@ function loadStatusSelectionScreen() {
     }
 }
 function setValue(selectingOneCell,item,path,value,returnValue = false) {
-    console.log(path,value)
     let ties = [];
     if (returnValue == true) return setNestedValue(item, path, value,true);
     setNestedValue(item, path, value);
