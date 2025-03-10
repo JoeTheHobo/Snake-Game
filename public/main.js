@@ -152,7 +152,7 @@ function renderCells() {
             if (doRender) {
                 ctx_items.font = "16px VT323";
                 ctx_items.strokeStyle = "black";
-                ctx_items.fillStyle = "white";
+                ctx_items.fillStyle = mapCell.renderStatusColor ?? "white";
                 ctx_items.lineWidth = 4;
     
                 let textWidth = ctx_items.measureText(value).width;
