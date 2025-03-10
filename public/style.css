@@ -3073,5 +3073,20 @@ height: 100%;
 }
 .me_sz_zoneList {
   width: 100%;
-  flex-grow: 1,
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.spawnZoneHolder {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: url('./img/pointer.cur'), auto;
+}
+.spawnZoneID {
+  color: black;
+  font-size: 30px;
 }

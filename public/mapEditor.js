@@ -1200,6 +1200,8 @@ function setTool(tool2) {
         $(".me_objectHolder").hide();
         $(".me_objectHolder2").show("flex");
 
+        loadSpawnZones();
+
     }
 
     $(".toolBarToolHolder").classRemove("toolIsSelected");
@@ -1682,3 +1684,27 @@ function loadBackgroundContent(parent) {
     }
 }
 //HTML ON CLICK END
+function makeSpawnZoneListing(holder,zone) {
+    let color = "white";
+    if (zone.team) color = _color(zone.team);
+
+    let spawnZoneHolder = holder.create("div.spawnZoneHolder hover");
+    spawnZoneHolder.css({
+        background: color,
+        border: "2px solid " + _color(color).darken(10).ogColor,
+    })
+
+    let spawnZoneID = spawnZoneHolder.create("div.spawnZoneID");
+    spawnZoneID.innerHTML = zone.id;
+
+}
+function loadSpawnZones() {
+    $(".me_sz_playerZones").innerHTML = "";
+    $(".me_sz_itemZones").innerHTML = "";
+    for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
+        makeSpawnZoneListing($(".me_sz_playerZones"),currentBoard.spawnZones.players[i]);
+    }
+    for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
+        makeSpawnZoneListing($(".me_sz_itemZones"),currentBoard.spawnZones.items[i]);
+    }
+}
