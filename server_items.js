@@ -1017,6 +1017,12 @@ items.push({
     gameModeMenu_selectedItem: false,
     specialSpawnWeight: 0,
     visible: true, //If show when playing
+    hideWhen: [
+        {
+            value: ".onCollision.checkStatus.check.snakeSize",
+            lessOrEqual: "@P.tailLength",
+        }
+    ],
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
@@ -1041,6 +1047,11 @@ items.push({
 
     renderStatusPath: ["onCollision","checkStatus","check","snakeSize"], //Path to which status to render on top of item, leave blank if no render
     renderStatusColor: "white", //Type To Render Color;
+    renderStatusNumber: {
+        value: ".onCollision.checkStatus.check.snakeSize",
+        subtract: ["playerSnakeSize"],
+    },
+    updateOn: ["playerGrows"],
     pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
 })
 

@@ -80,20 +80,36 @@ function renderCells() {
             for (let j = 0; j < mapCell.hideWhen.length; j++) {
                 let value = getBaseImgFromTag(mapCell,mapCell.hideWhen[j].value);
                 let subtract = 0;
-                let equals = mapCell.hideWhen[j].equals;
+                let equals = false;
+                let lessOrEqual = false;
+                if (mapCell.hideWhen[j].equals) equals = mapCell.hideWhen[j].equals;
+                if (mapCell.hideWhen[j].lessOrEqual) lessOrEqual = mapCell.hideWhen[j].lessOrEqual;
+
                 if (mapCell.hideWhen[j].subtract) {
                     if (mapCell.hideWhen[j].subtract[0] === "boardStatusCount") {
                         subtract += localAccount.boardStatus[getBaseImgFromTag(mapCell,mapCell.hideWhen[j].subtract[1])].count;
                     }
                 }
-                if (_type(mapCell.hideWhen[j].equals).type == "string") {
-                    if (mapCell.hideWhen[j].equals.subset(0,2) == "@P.") {
-                        equals = localAccount.player[mapCell.hideWhen[j].equals.subset(".\\after","end")];
+
+                if (equals !== false) {
+                    if (_type(mapCell.hideWhen[j].equals).type == "string") {
+                        if (mapCell.hideWhen[j].equals.subset(0,2) == "@P.") {
+                            equals = localAccount.player[mapCell.hideWhen[j].equals.subset(".\\after","end")];
+                        }
+                    }
+                }
+                if (lessOrEqual !== false) {
+                    if (_type(mapCell.hideWhen[j].lessOrEqual).type == "string") {
+                        if (mapCell.hideWhen[j].lessOrEqual.subset(0,2) == "@P.") {
+                            lessOrEqual = localAccount.player[mapCell.hideWhen[j].lessOrEqual.subset(".\\after","end")];
+                        }
                     }
                 }
                 
+                
                 if (subtract > 0) value -= subtract;
-                if (value === equals) pass = true;
+                if (equals !== false) if (value === equals) pass = true;
+                if (lessOrEqual !== false) if (value >= equals) pass = true;
             }
             if (pass) continue;
         }
