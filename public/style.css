@@ -678,17 +678,6 @@ max-width: 500px;
 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 padding: 2px;
 }
-.me_itemHolder {
-width: 50px;
-height: 50px;
-border: 3px solid black;
-cursor: url('./img/pointer.cur'), auto;
-display: inline-block;
-color: white;
-}
-.me_itemHolder:hover {
-border: 3px solid blue;
-}
 .me_goldBorder {
 border: 3px solid gold !important;
 }
@@ -3140,7 +3129,7 @@ margin-top: 15px;
   width: 100%;
   flex-direction: row;
   flex-wrap: wrap;
-
+  align-items: flex-start;
 }
 .me_ob_it_br_tags {
   width: 100%;
