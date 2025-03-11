@@ -95,10 +95,7 @@ function fixTileDifferencesMapEditor(map) {
     }
 }
 let resetMap;
-function openMapEditor(boardComingIn,isFromServer = false) {
-    //if (isFromServer) $("me_playButton").hide();
-    $("me_playButton").hide(); // Change Later
-
+function openMapEditor(boardComingIn) {
     currentBoard = boardComingIn;
     board = boardComingIn;
     currentBoard.originalMap = forceAllCellsToBeTheirOwn(board.originalMap);

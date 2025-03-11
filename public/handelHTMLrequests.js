@@ -65,10 +65,6 @@ $("button_playAgain").on("click",function() {
     startGame();
     $(".button_mapEditorHolder").hide();
 })
-$("me_playButton").on("click",function() {
-    startGame();
-    $(".button_mapEditorHolder").show();
-})
 $("button_mapEditor").on("click",function() {
     openMapEditor(currentBoard);
     isActiveGame = false;
