@@ -119,7 +119,7 @@ items.push({
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    tags: ["Barrier"],
+    tags: ["Barriers"],
 })
 items.push({
     name: "wall2",
@@ -146,7 +146,7 @@ items.push({
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    tags: ["Barrier"],
+    tags: ["Barriers"],
 })
 items.push({
     name: "bronzeShield", //(string) Name Of Item
