@@ -1120,12 +1120,6 @@ function setTool(tool2) {
     }
     tool = tool2;
 
-    if ($(".me_objectHolder").style.display !== "flex") {
-        $(".me_objectHolder").show("flex");
-        $(".me_objectHolder2").hide();
-    }
-    
-
     if (tool == "draw" || tool == "eraser") {
         $(".subToolHolder").hide();
         $(".subTool_draw").show();
