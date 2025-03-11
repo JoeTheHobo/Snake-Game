@@ -3135,10 +3135,12 @@ margin-top: 15px;
 }
 .me_ob_it_br_itemsList {
   display: flex;
-  flex-grow: 1;
+  height: 70%;
+  overflow-y: auto;
   width: 100%;
   flex-direction: row;
   flex-wrap: wrap;
+
 }
 .me_ob_it_br_tags {
   width: 100%;
