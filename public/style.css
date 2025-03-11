@@ -3152,6 +3152,8 @@ margin-top: 15px;
 }
 .me_obj_it_br_tagList {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .me_ob_sz_topRow {
@@ -3190,6 +3192,7 @@ margin-top: 15px;
   background: white;
   border: 2px solid black;
   cursor: url('./img/pointer.cur'), auto;
+  margin: 5px;
 }
 .me_itemImage {
   width: 100%;

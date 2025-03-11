@@ -1797,13 +1797,13 @@ function loadTagsList(allowedIds,itemList,tagList) {
                 this.classAdd("tagSelected");
                 tagList.push(this.innerHTML);
             }
-            updateItemList(itemList,tagList);
+            updateItemList(allowedIds,itemList,tagList);
         })
         
     }
 
 }
-function updateItemList(itemList,tagList) {
+function updateItemList(allowedIds,itemList,tagList) {
     let holder = $(".me_ob_it_br_itemsList");
     holder.innerHTML = "";
 
