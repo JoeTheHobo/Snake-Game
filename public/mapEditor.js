@@ -46,6 +46,7 @@ let xChange = 0;
 let yChange = 0;
 let showGrid = false;
 let showFullGrid = false;
+let selectedObjectTab;
 
 let oldMap = [];
 
@@ -137,8 +138,8 @@ function openMapEditor(boardComingIn) {
     //End Load Board Settings HTML
 
     setGridSize(.17);
-    me_loadDropdown($(".me_itemsContent"),items,"item_");
-    me_loadDropdown($(".me_tilesContent"),tiles,"tile_");
+
+    setObjectTab("Items");
 
     adjustCanvasSize(board.width,board.height,zoom);
     renderMapEditorCanvas(true);
@@ -160,54 +161,6 @@ function openMapEditor(boardComingIn) {
             saveBoard();
     },60000)
     addHistory();
-}
-function me_loadDropdown(holder,group,name) {
-    let pack = getPacks(group);
-    holder.innerHTML = "";
-
-    for (let j = 0; j < pack.length; j++) {
-        if (pack[j].name == "Hidden") continue;
-
-        let packHolder = holder.create("div");
-        packHolder.className = "me_packHolder";
-        let packTitle = packHolder.create("div");
-        packTitle.className = "me_packTitle";
-        packTitle.innerHTML = pack[j].name;
-
-        let itemsHolder = packHolder.create("div");
-        itemsHolder.className = "me_packItems";
-
-        for (let i = 0; i < pack[j].items.length; i++) {
-            let item = pack[j].items[i];
-            if (item.showInEditor == false) continue;
-            
-            let itemHolder = itemsHolder.create("div");
-            itemHolder.className = "me_itemHolder";
-            let itemImage = itemHolder.create("img");
-            itemImage.src = getImageFromItem(name.subset(0,"_\\before"),item,"src")
-            itemImage.css({
-                width: "100%",
-                height: "100%",
-            })
-    
-            itemHolder.type = name.subset(0,"_\\before");
-            itemHolder.content = structuredClone(item);
-            itemHolder.id = "me_" + name + item.name;
-            itemHolder.on("click",function() {
-                selectedItem = {
-                    type: this.type,
-                    content: structuredClone(this.content),
-                    canEdit: true,
-                    path: false,
-                    cell: structuredClone(this.content),
-                }
-                $(".me_itemHolder").classRemove("me_goldBorder");
-                this.classList.add("me_goldBorder");
-    
-                loadObjectMenu();
-            })
-        }
-    }
 }
 function renderTopCanvas() {
     me2_ctx.clearRect(0,0,me2_canvas.width,me2_canvas.height)
@@ -1795,4 +1748,15 @@ function loadSpawnZones() {
     for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
         makeSpawnZoneListing($(".me_sz_itemZones"),currentBoard.spawnZones.items[i],i);
     }
+}
+
+
+$(".me_ob_tab").on("click",function() {
+    setObjectTab(this.innerHTML);
+})
+function setObjectTab(type) {
+    selectedObjectTab = type;
+    $(".me_ob_column").hide();
+    if (type == "items" || type == "Tiles") $(".me_ob_itemsTiles").show("flex");
+    if (type == "Spawn Zones") $(".me_ob_spawnZones").show("flex");
 }
