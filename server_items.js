@@ -4,6 +4,7 @@ items.push({
     baseImg: "items/snakeFood",
     baseImgTags: [],
     type: "item",
+    tags: ["Food"],
     showInEditor: true,
     onStartSpawn: 3,
     gameModeMenu_selectedItem: false,
@@ -30,13 +31,13 @@ items.push({
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     id: 1,
-    pack: "Food",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "super_pellet",
     baseImg: "items/snakeSuper",
     baseImgTags: [],
     type: "item",
+    tags: ["Food"],
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -56,7 +57,6 @@ items.push({
     onDelete: { //Ran when item is destroyed
     },
     id: 2,
-    pack: "Food",//Which Item Pack Does This Group To (For Map Editor)
 })
 items.push({
     name: "turbo",
@@ -64,6 +64,7 @@ items.push({
     baseImg: "items/speedPowerUp",
     baseImgTags: [],
     type: "item",
+    tags: ["Power Up","Collectables"],
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -74,7 +75,6 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
     onActivate: {
         giveTurbo: {
             duration: 35,
@@ -119,7 +119,7 @@ items.push({
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Barrier"],
 })
 items.push({
     name: "wall2",
@@ -146,7 +146,7 @@ items.push({
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Barrier"],
 })
 items.push({
     name: "bronzeShield", //(string) Name Of Item
@@ -164,7 +164,6 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
     whenEquiped: {
         protect: 2, //How much it protects
         absorb: 0, //How much item Absorbs before breaking it'self
@@ -182,6 +181,7 @@ items.push({
             },
         },
     },
+    tags: ["Shields","Collectables"],
 })
 items.push({
     name: "silverShield",
@@ -199,7 +199,6 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
     whenEquiped: {
         protect: 3, //How much it protects
         absorb: 0, //How much item Absorbs before breaking it'self
@@ -217,6 +216,7 @@ items.push({
             },
         },
     },
+    tags: ["Shields","Collectables"],
 })
 items.push({
     name: "goldShield",
@@ -234,7 +234,6 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Power Ups",//Which Item Pack Does This Group To (For Map Editor)
     whenEquiped: {
         protect: 4, //How much it protects
         absorb: 0, //How much item Absorbs before breaking it'self
@@ -252,6 +251,7 @@ items.push({
             },
         },
     },
+    tags: ["Shields","Collectables"],
 })
 items.push({
     name: "lamp", //(string) Name Of Item
@@ -269,7 +269,6 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Hidden",//Which Item Pack Does This Group To (For Map Editor)
     onCollision: {
         deleteMe: true,
         canvasFilter: {
@@ -278,6 +277,7 @@ items.push({
             target: "@a",
         }
     },
+    tags: [],
 })
 items.push({
     name: "snakeHole", //(string) Name Of Item
@@ -298,7 +298,7 @@ items.push({
     spawnLimit: 1, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Tunnels"],
 })
 items.push({
     name: "snakeHole2", //(string) Name Of Item
@@ -320,7 +320,7 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Tunnels"],
 })
 items.push({
     name: "snakeHole3", //(string) Name Of Item
@@ -341,7 +341,7 @@ items.push({
     spawnLimit: 1, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Tunnels",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Tunnels"],
 })
 //Spawn v
 items.push({
@@ -361,10 +361,10 @@ items.push({
     spawnPlayerHere: true, //Spawn players on this tile
     spawnPlayerTeam: "white", //Tells which player to spawn here. "player" for all players
     renderStatusPath: ["spawnPlayerTeam"], //Path to which status to render on top of item, leave blank if no render
-    pack: "Mechanics",//Which Item Pack Does This Group To (For Map Editor)
     onSpawn: { //When item spawns run these
         deleteMe: true,
     },
+    tags: ["Mechanics"],
 })
 
 items.push({
@@ -384,7 +384,7 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Mechanics",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics"],
 })
 items.push({
     name: "blueKey", //(string) Name Of Item
@@ -418,7 +418,7 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics"],
 })
 items.push({
     name: "redKey", //(string) Name Of Item
@@ -452,7 +452,7 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tiledestructible: ["yes"], //Array Of Status that can destroy this item. Or simply put "yes" if you want it to always be destroyed on touch
     
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics"],
 })
 items.push({
     name: "greenKey", //(string) Name Of Item
@@ -485,7 +485,7 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics"],
 })
 items.push({
     name: "blueLock", //(string) Name Of Item
@@ -528,7 +528,7 @@ items.push({
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     playSounds: true, //If Item should be muted or not;
-    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics","Barriers"],
 })
 items.push({
     name: "redLock", //(string) Name Of Item
@@ -572,7 +572,7 @@ items.push({
 
     playSounds: true, //If Item should be muted or not;
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics","Barriers"],
 })
 items.push({
     name: "greenLock", //(string) Name Of Item
@@ -617,7 +617,7 @@ items.push({
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Locks",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics","Barriers"],
 })
 items.push({
     name: "stoneWall", //(string) Name Of Item
@@ -640,7 +640,7 @@ items.push({
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    pack: "Barriers",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Barriers"],
 })
 items.push({
     name: "switch", //(string) Name Of Item
@@ -669,7 +669,7 @@ items.push({
 
     renderStatusPath: ["onCollision","switchBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need 
     renderStatusColor: "white", //Type To Render Color;
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics"],
 })
 items.push({
     name: "button", //(string) Name Of Item
@@ -697,7 +697,7 @@ items.push({
 
     renderStatusPath: ["onCollision","removeBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
     renderStatusColor: "white", //Type To Render Color;
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics"],
 })
 items.push({
     name: "buttonAdd", //(string) Name Of Item
@@ -725,7 +725,7 @@ items.push({
 
     renderStatusPath: ["onCollision","addBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
     renderStatusColor: "white", //Type To Render Color;
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics"],
 })
 
 items.push({
@@ -750,7 +750,7 @@ items.push({
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
     boardDestructibleCountRequired: 1, //How many of these world status does it need
-    pack: "Mechanics",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics"],
 })
 
 items.push({
@@ -788,7 +788,7 @@ items.push({
 
     renderStatusPath: ["onCollision","setBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
     renderStatusColor: "white", //Type To Render Color;
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics"],
 })
 
 items.push({
@@ -824,7 +824,7 @@ items.push({
 
     renderStatusPath: ["onCollision","addBoardStatus"], //Path to which status to render on top of item, leave blank if no render
     renderStatusColor: "white", //Type To Render Color;
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics"],
 })
 items.push({
     name: "lockedCell", //(string) Name Of Item
@@ -872,7 +872,7 @@ items.push({
     },
 
     renderStatusPath: ["onCollision","checkStatus","check","playerTeamStatus"], //Path to which status to render on top of item, leave blank if no render
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics","Barriers"],
 })
 items.push({
     name: "boardLockedCell", //(string) Name Of Item
@@ -926,7 +926,7 @@ items.push({
         subtract: ["boardStatusCount",".onCollision.checkStatus.check.boardStatus.name"],
     },
     updateOn: ["boardStatus"],
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics","Barriers"],
 })
 
 items.push({
@@ -962,6 +962,7 @@ items.push({
             }
         },
     },
+    tags: ["Mechanics"],
 })
 items.push({
     name: "Yellow_lock", //(string) Name Of Item
@@ -1004,6 +1005,7 @@ items.push({
             }
         },
     },
+    tags: ["Mechanics","Barriers"],
 })
 items.push({
     name: "Snake_Size_Gate", //(string) Name Of Item
@@ -1052,7 +1054,7 @@ items.push({
         subtract: ["playerSnakeSize"],
     },
     updateOn: ["playerGrows"],
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics","Barriers"],
 })
 
 items.push({
@@ -1119,7 +1121,7 @@ items.push({
     },
     updateOn: ["playerGrows"],
     renderStatusColor: "red", //Type To Render Color;
-    pack: "Status Changers",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Mechanics"],
 })
 items.push({
     name: "deadSnake",
@@ -1146,7 +1148,7 @@ items.push({
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     id: 34,
-    pack: "Food",//Which Item Pack Does This Group To (For Map Editor)
+    tags: ["Food"],
 })
 
 module.exports = { items };
