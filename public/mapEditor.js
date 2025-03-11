@@ -1143,10 +1143,7 @@ function setTool(tool2) {
         $(".subToolHolder").hide();
         setSubTool(false);
 
-        $(".me_objectHolder").hide();
-        $(".me_objectHolder2").show("flex");
-
-        loadSpawnZones();
+        //
 
     }
 
