@@ -3124,12 +3124,11 @@ margin-top: 15px;
 }
 .me_ob_it_br_itemsList {
   display: flex;
-  height: 70%;
+  max-height: 70%;
   overflow-y: auto;
   width: 100%;
   flex-direction: row;
   flex-wrap: wrap;
-  align-items: flex-start;
 }
 .me_ob_it_br_tags {
   width: 100%;

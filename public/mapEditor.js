@@ -1802,6 +1802,7 @@ function loadTagsList(allowedIds,itemList,tagList) {
         
     }
 
+    updateItemList(allowedIds,itemList,tagList);
 }
 function updateItemList(allowedIds,itemList,tagList) {
     let holder = $(".me_ob_it_br_itemsList");
