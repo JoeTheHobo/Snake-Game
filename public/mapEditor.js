@@ -47,6 +47,7 @@ let yChange = 0;
 let showGrid = false;
 let showFullGrid = false;
 let selectedObjectTab;
+let selectedItemTags = [];
 
 let oldMap = [];
 
@@ -118,6 +119,7 @@ function openMapEditor(boardComingIn) {
         path: false,
         cell: structuredClone(getRealItem("pellet")),
     }
+    selectedItemTags = [];
     $(".redo_tool").style.opacity = "0.5";
     $(".undo_tool").style.opacity = "0.5";
     setScene("mapEditor");
@@ -1744,10 +1746,82 @@ function loadSpawnZones() {
 
 $(".me_ob_tab").on("click",function() {
     setObjectTab(this.innerHTML);
+    $(".me_ob_tab").classRemove("me_ob_tab_selected");
+    this.classAdd("me_ob_tab_selected");
 })
+
 function setObjectTab(type) {
     selectedObjectTab = type;
     $(".me_ob_column").hide();
-    if (type == "items" || type == "Tiles") $(".me_ob_itemsTiles").show("flex");
+    if (type == "Items" || type == "Tiles") $(".me_ob_itemsTiles").show("flex");
     if (type == "Spawn Zones") $(".me_ob_spawnZones").show("flex");
+
+    if (type == "Items") {
+        loadTagsList(localAccount.allowedItemIds,items,selectedItemTags);
+    }
+}
+function loadTagsList(allowedIds,itemList,tagList) {
+    let tags = [];
+    for (let i = 0; i < itemList.length; i++) {
+        let item = itemList[i];
+        if (!allowedIds.includes(item.id)) continue;
+        for (let j = 0; j < item.tags.length; j++) {
+            if (!tags.includes(item.tags[j])) tags.push(item.tags[j]);
+        }
+    }
+
+    let tagHolder = $(".me_obj_it_br_tagList");
+    tagHolder.innerHTML = "";
+
+    for (let i = 0; i < tags.length; i++) {
+        let div = tagHolder.create("div.tagHolder");
+        div.className = "tagHolder hover playButtonSounds";
+        div.innerHTML = tags[i];
+
+        if (tagList.includes(div.innerHTML)) {
+            div.classAdd("tagSelected");
+            div.selected = true;
+        } else {
+            div.selected = false;
+        }
+
+        div.on("click",function() {
+            if (this.selected) {
+                this.selected = false;
+                this.classRemove("tagSelected")
+                for (let i = 0; i < tagList.length; i++) {
+                    if (tagList[i] == this.innerHTML) tagList.splice(i,1);
+                }
+            } else {
+                this.selected = true;
+                this.classAdd("tagSelected");
+                tagList.push(this.innerHTML);
+            }
+            updateItemList(itemList,tagList);
+        })
+        
+    }
+
+}
+function updateItemList(itemList,tagList) {
+    let holder = $(".me_ob_it_br_itemsList");
+    holder.innerHTML = "";
+
+    for (let i = 0; i < itemList.length; i++) {
+        let item = itemList[i];
+        if (!allowedIds.includes(item.id)) continue;
+        let hasAllowedTag = false;
+        if (tagList.length == 0) hasAllowedTag = true;
+        for (let j = 0; j < item.tags.length; j++) {
+            if (tagList.includes(item.tags[j])) hasAllowedTag = true;
+        }
+        if (!hasAllowedTag) continue;
+
+        let div = holder.create("div");
+        div.className = "me_itemHolder hover";
+
+        let img = div.create("img");
+        img.className = "me_itemImage";
+        img.src = getImageFromItem("item",item,"src");
+    }
 }
