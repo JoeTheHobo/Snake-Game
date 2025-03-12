@@ -1831,6 +1831,13 @@ function updateItemList(allowedIds,itemList,tagList) {
             savedSelectingItem = item.id;
             $(".me_itemHolder").classRemove("me_itemHolder_selected");
             this.classAdd("me_itemHolder_selected");
+            selectedItem = {
+                type: item.type,
+                content: getRealItem(item.name),
+                canEdit: true,
+                path: false,
+                cell: structuredClone(getRealItem(item.name)),
+            }
         })
     }
 }

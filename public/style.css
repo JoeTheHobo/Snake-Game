@@ -3200,5 +3200,5 @@ margin-top: 15px;
 }
 .me_itemHolder_selected {
   background: lightblue;
-  border: blue;
+  border: 2px solid blue;
 }
