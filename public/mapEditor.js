@@ -1829,7 +1829,7 @@ function updateItemList(allowedIds,itemList,tagList) {
 
         let img = div.create("img");
         img.className = "me_itemImage";
-        img.src = getImageFromItem("item",item,"src");
+        img.src = getImageFromItem(item.type,item,"src");
 
         div.on("click",function() {
             savedSelectingItem = item.id;
