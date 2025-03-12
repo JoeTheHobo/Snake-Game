@@ -1857,14 +1857,18 @@ function updateItemList(allowedIds,itemList,tagList) {
             this.classAdd("me_itemHolder_selected");
             selectedItem = {
                 type: item.type,
-                content: getRealItem(item.name),
+                content: getById(item.type,item.id),
                 canEdit: true,
                 path: false,
-                cell: structuredClone(getRealItem(item.name)),
+                cell: structuredClone(getById(item.type,item.id)),
             }
             loadObjectMenu();
         })
     }
+}
+function getById(type,id) {
+    if (type == "item") return getItemById(id);
+    if (type == "tile") return getTileById(id);
 }
 function getItemById(id) {
     for (let i = 0;i < items.length; i++) {

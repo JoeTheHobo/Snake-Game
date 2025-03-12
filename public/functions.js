@@ -929,7 +929,6 @@ function getItemValueFromList(item,list) {
 }
 function getImageFromItem(type,item,returnType) {
     let image = item.name;
-    console.log(item)
     if (item.baseImgTags?.length > 0) image += "_";
     for (let i = 0; i < item.baseImgTags.length; i++) {
         image += getBaseImgFromTag(item,item.baseImgTags[i])
