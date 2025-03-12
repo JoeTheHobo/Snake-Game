@@ -48,6 +48,7 @@ let showGrid = false;
 let showFullGrid = false;
 let selectedObjectTab;
 let selectedItemTags = [];
+let selectedTileTags = [];
 let savedSelectingItem = 1;
 
 let oldMap = [];
@@ -1759,6 +1760,9 @@ function setObjectTab(type) {
 
     if (type == "Items") {
         loadTagsList(localAccount.allowedItemIds,items,selectedItemTags);
+    }
+    if (type == "Tiles") {
+        loadTagsList(localAccount.allowedTileIds,tiles,selectedTileTags);
     }
 }
 function loadTagsList(allowedIds,itemList,tagList) {
