@@ -614,14 +614,14 @@ font-size: 20px;
 }
 
 #me_button {
-padding: 5px;
-font-size: 20px;
+padding: 2px;
+font-size: 19 px;
 user-select: none;
 color: white;
 background: black;
 width: 30px;
-height: 22px;
-line-height: 22px;
+height: 21px;
+line-height: 21px;
 text-align: center;
 cursor: url('./img/pointer.cur'), auto;
 border-radius: 3px;
@@ -3207,4 +3207,5 @@ margin-top: 15px;
 .me_s_title {
   color: white;
   font-size: 20px;
+  margin-bottom: 2px;
 }
