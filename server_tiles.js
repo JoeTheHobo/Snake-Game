@@ -1,7 +1,8 @@
 let tiles = [];
 tiles.push({
     name: "grass",
-    img: "background.png",
+    baseImg: "tiles/background",
+    baseImgTags: [],
     changePlayerSpeed: 1, //Player Speed Times This Number
     type: "tile",
     canSpawn: true, //If Items can spawn on tile
@@ -10,7 +11,8 @@ tiles.push({
 })
 tiles.push({
     name: "sand",
-    img: "tilesand.png",
+    baseImg: "tiles/sand",
+    baseImgTags: [],
     type: "tile",
     changePlayerSpeed: 0.5, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
@@ -19,7 +21,8 @@ tiles.push({
 })
 tiles.push({
     name: "clear",
-    img: "clear.png",
+    baseImg: "clear",
+    baseImgTags: [],
     type: "tile",
     changePlayerSpeed: 1, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
@@ -28,7 +31,8 @@ tiles.push({
 })
 tiles.push({
     name: "pathway",
-    img: "path.png",
+    baseImg: "tiles/path",
+    baseImgTags: [],
     type: "tile",
     changePlayerSpeed: 1.5, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
@@ -37,7 +41,8 @@ tiles.push({
 })
 tiles.push({
     name: "planks",
-    img: "tileplanks.png",
+    baseImg: "tiles/tileplanks",
+    baseImgTags: [],
     type: "tile",
     changePlayerSpeed: 1, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
@@ -46,7 +51,8 @@ tiles.push({
 })
 tiles.push({
     name: "water",
-    img: "tilewater.png",
+    baseImg: "tiles/tilewater",
+    baseImgTags: [],
     type: "tile",
     changePlayerSpeed: 0.5, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
@@ -55,7 +61,8 @@ tiles.push({
 })
 tiles.push({
     name: "flower",
-    img: "flower.png",
+    baseImg: "tiles/flower",
+    baseImgTags: [],
     type: "tile",
     changePlayerSpeed: 1, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
@@ -74,7 +81,8 @@ tiles.push({
 
 tiles.push({
     name: "Piano",
-    img: "tile_piano.jpg",
+    baseImg: "tiles/tile_piano",
+    baseImgTags: [],
     type: "tile",
     changePlayerSpeed: 1, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
