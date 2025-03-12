@@ -777,21 +777,14 @@ align-items: center;
 z-index: 2;
 }
 .toolbar_tools {
-border-right: 1px solid white;
 display: flex;
 flex-direction: row;
 align-items: center;
-padding-right: 10px;
-margin-right: 10px;
 }
 .toolbar_extra {
-border-left: 1px solid white;
 display: flex;
 flex-direction: row;
 align-items: center;
-padding-right: 10px;
-margin-right: 10px;
-margin-left: 10px;
 }
 .toolbar_subtools {
 display: flex;
@@ -3207,6 +3200,9 @@ margin-top: 15px;
   display: flex;
   align-items: center;
   flex-direction: column;
+  border-right: 1px solid white;
+  padding-right: 10px;
+  margin-right: 10px;
 }
 .me_s_title {
   color: white;
