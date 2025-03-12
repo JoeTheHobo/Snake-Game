@@ -74,7 +74,7 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
 
     for (let i = 0; i < tiles.length; i++) {
         let img = $(".imageHolder").create("img");
-        img.src = "img/" + tiles[i].img + ".png";
+        img.src = "img/" + tiles[i].baseImg + ".png";
         img.id = "tile_" + tiles[i].name;
     }
     renderMapsInServersTab = true;
