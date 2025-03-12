@@ -928,16 +928,13 @@ function getItemValueFromList(item,list) {
     return value;
 }
 function getImageFromItem(type,item,returnType) {
-    let image;
-    if (item.baseImg) {
-        image = item.name;
-        if (item.baseImgTags?.length > 0) image += "_";
-        for (let i = 0; i < item.baseImgTags.length; i++) {
-            image += getBaseImgFromTag(item,item.baseImgTags[i])
-        }
-    } else {
-        image = item.name;
+    let image = item.name;
+    console.log(item)
+    if (item.baseImgTags?.length > 0) image += "_";
+    for (let i = 0; i < item.baseImgTags.length; i++) {
+        image += getBaseImgFromTag(item,item.baseImgTags[i])
     }
+    
     if (returnType == "canvas") image = getItemCanvas(image);
     if (returnType == "src") image = $(type + "_" + image).src;
     return image;
