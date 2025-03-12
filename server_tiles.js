@@ -71,7 +71,8 @@ tiles.push({
 })
 tiles.push({
     name: "Dirt",
-    img: "dirtTile.jpg",
+    baseImg: "tiles/path",
+    baseImgTags: [],
     type: "tile",
     changePlayerSpeed: 1, //Player Speed Times This Number
     canSpawn: true, //If Items can spawn on tile
