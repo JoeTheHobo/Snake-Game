@@ -159,7 +159,7 @@ function openMapEditor(boardComingIn) {
         cell: structuredClone(getItemById(savedSelectingItem)),
     }
     loadObjectMenu();
-    
+
     renderBackgroundCanvas();
 
     clearInterval(saveInterval);
@@ -892,10 +892,7 @@ function goBackHome(save) {
 }
 
 function loadObjectMenu() {
-    if (selectedItem.cell?.baseImg) {
-        $(".me_ih_image").src = getImageFromItem("item",selectedItem.cell,"src")
-    } else 
-        $(".me_ih_image").src = $(selectedItem.type +"_" + selectedItem.cell.name).src;
+    $(".me_ih_image").src = getImageFromItem(selectedItem.type,selectedItem.cell,"src")
     let holder = $(".me_ih_settings");
     holder.innerHTML = "";
     $(".me_ih_name").innerHTML = selectedItem.cell.name;

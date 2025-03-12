@@ -71,7 +71,7 @@ tiles.push({
 })
 tiles.push({
     name: "Dirt",
-    baseImg: "tiles/path",
+    baseImg: "tiles/dirtTile",
     baseImgTags: [],
     type: "tile",
     changePlayerSpeed: 1, //Player Speed Times This Number
