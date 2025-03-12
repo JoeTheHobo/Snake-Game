@@ -50,6 +50,7 @@ let selectedObjectTab;
 let selectedItemTags = [];
 let selectedTileTags = [];
 let savedSelectingItem = 1;
+let savedSelectingTile = 1;
 
 let oldMap = [];
 
@@ -114,13 +115,6 @@ function openMapEditor(boardComingIn) {
     showFullGrid = false;
     showGrid = false;
     selectedZone = false;
-    selectedItem = {
-        type: "item",
-        content: getRealItem("pellet"),
-        canEdit: true,
-        path: false,
-        cell: structuredClone(getRealItem("pellet")),
-    }
     selectedItemTags = [];
     $(".redo_tool").style.opacity = "0.5";
     $(".undo_tool").style.opacity = "0.5";
@@ -156,7 +150,16 @@ function openMapEditor(boardComingIn) {
     xChange = ($(".me_canvasHolder").offsetWidth - $(".edit_canvas")[0].offsetWidth)/2;
     yChange = ($(".me_canvasHolder").offsetHeight - $(".edit_canvas")[0].offsetHeight)/2;
     adjustCanvasPosition();
+    
+    selectedItem = {
+        type: "item",
+        content: getItemById(savedSelectingItem),
+        canEdit: true,
+        path: false,
+        cell: structuredClone(getItemById(savedSelectingItem)),
+    }
     loadObjectMenu();
+    
     renderBackgroundCanvas();
 
     clearInterval(saveInterval);
@@ -1760,9 +1763,25 @@ function setObjectTab(type) {
 
     if (type == "Items") {
         loadTagsList(localAccount.allowedItemIds,items,selectedItemTags);
+        selectedItem = {
+            type: "item",
+            content: getItemById(savedSelectingItem),
+            canEdit: true,
+            path: false,
+            cell: structuredClone(getItemById(savedSelectingItem)),
+        }
+        loadObjectMenu();
     }
     if (type == "Tiles") {
         loadTagsList(localAccount.allowedTileIds,tiles,selectedTileTags);
+        selectedItem = {
+            type: "tile",
+            content: getTileById(savedSelectingTile),
+            canEdit: true,
+            path: false,
+            cell: structuredClone(getTileById(savedSelectingTile)),
+        }
+        loadObjectMenu();
     }
 }
 function loadTagsList(allowedIds,itemList,tagList) {
@@ -1825,14 +1844,18 @@ function updateItemList(allowedIds,itemList,tagList) {
 
         let div = holder.create("div");
         div.className = "me_itemHolder hover";
-        if (savedSelectingItem === item.id) div.classAdd("me_itemHolder_selected")
+        if (savedSelectingItem === item.id && item.type == "item") div.classAdd("me_itemHolder_selected")
+        if (savedSelectingTile === item.id && item.type == "tile") div.classAdd("me_itemHolder_selected")
+        
 
         let img = div.create("img");
         img.className = "me_itemImage";
         img.src = getImageFromItem(item.type,item,"src");
 
         div.on("click",function() {
-            savedSelectingItem = item.id;
+            if (item.type == "item") savedSelectingItem = item.id;
+            if (item.type == "tile") savedSelectingTile = item.id;
+
             $(".me_itemHolder").classRemove("me_itemHolder_selected");
             this.classAdd("me_itemHolder_selected");
             selectedItem = {
@@ -1844,5 +1867,15 @@ function updateItemList(allowedIds,itemList,tagList) {
             }
             loadObjectMenu();
         })
+    }
+}
+function getItemById(id) {
+    for (let i = 0;i < items.length; i++) {
+        if (items[i].id == id) return items[i];
+    }
+}
+function getTileById(id) {
+    for (let i = 0;i < tiles.length; i++) {
+        if (tiles[i].id == id) return tiles[i];
     }
 }
