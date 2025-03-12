@@ -73,8 +73,6 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     //Load All Tile Images
 
     for (let i = 0; i < tiles.length; i++) {
-        if (!tiles[i].img) continue;
-    
         let img = $(".imageHolder").create("img");
         img.src = "img/" + tiles[i].img + ".png";
         img.id = "tile_" + tiles[i].name;
