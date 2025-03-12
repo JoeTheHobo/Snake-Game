@@ -768,9 +768,9 @@ margin: 5px;
 .me_toolbar {
 width: 100%;
 background: gray;
-height: 40px;
-min-height: 40px;
-max-height: 40px;
+height: 55px;
+min-height: 55px;
+max-height: 55px;
 display: flex;
 flex-direction: row;
 align-items: center;
