@@ -3202,3 +3202,13 @@ margin-top: 15px;
   background: lightblue;
   border: 2px solid blue;
 }
+
+.me_s_holder {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.me_s_title {
+  color: white;
+  font-size: 20px;
+}
