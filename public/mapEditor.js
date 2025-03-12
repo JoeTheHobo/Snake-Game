@@ -48,6 +48,7 @@ let showGrid = false;
 let showFullGrid = false;
 let selectedObjectTab;
 let selectedItemTags = [];
+let savedSelectingItem = 0;
 
 let oldMap = [];
 
@@ -1820,9 +1821,16 @@ function updateItemList(allowedIds,itemList,tagList) {
 
         let div = holder.create("div");
         div.className = "me_itemHolder hover";
+        if (savedSelectingItem === item.id) div.classAdd("me_itemHolder_selected")
 
         let img = div.create("img");
         img.className = "me_itemImage";
         img.src = getImageFromItem("item",item,"src");
+
+        div.on("click",function() {
+            savedSelectingItem = item.id;
+            $(".me_itemHolder").classRemove("me_itemHolder_selected");
+            this.classAdd("me_itemHolder_selected");
+        })
     }
 }
