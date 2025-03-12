@@ -48,7 +48,7 @@ let showGrid = false;
 let showFullGrid = false;
 let selectedObjectTab;
 let selectedItemTags = [];
-let savedSelectingItem = 0;
+let savedSelectingItem = 1;
 
 let oldMap = [];
 
@@ -1838,6 +1838,7 @@ function updateItemList(allowedIds,itemList,tagList) {
                 path: false,
                 cell: structuredClone(getRealItem(item.name)),
             }
+            loadObjectMenu();
         })
     }
 }
