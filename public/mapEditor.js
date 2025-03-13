@@ -1721,6 +1721,15 @@ function setObjectTab(type) {
     }
     if (type == "Spawn Zones") {
         runTool("showZones",true);
+        if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {
+            for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
+                makeSpawnZoneListing($(".me_sz_zoneList"),currentBoard.spawnZones.players[i],i);
+            }
+        } else {
+            for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
+                makeSpawnZoneListing($(".me_sz_zoneList"),currentBoard.spawnZones.items[i],i);
+            }
+        }
     }
 }
 function loadTagsList(allowedIds,itemList,tagList) {
