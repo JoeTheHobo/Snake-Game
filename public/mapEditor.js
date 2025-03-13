@@ -1297,7 +1297,7 @@ function runTool(type,desiredValue) {
         else $(".show_grid_tool2").classRemove("toolIsSelected");
     }
     if (type == "showZones") {
-        if (desiredValue) showingZones = desiredValue;
+        if (desiredValue !== undefined) showingZones = desiredValue;
         else {
             showingZones = showingZones == false ? true : false;
             showingZones_PlayerTurnedMeOn = showingZones;
