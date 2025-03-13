@@ -217,20 +217,28 @@ function renderTopCanvas() {
     }
 
     if (showingZones) {
-        function drawZone(x1,y1,x2,y2,color,opacity,zoneID) {
+        function drawZone(x1, y1, x2, y2, color, opacity, zoneID) {
             me2_ctx.globalAlpha = opacity;
             me2_ctx.fillStyle = color;
-            me2_ctx.strokeStile = _color(color).darken(20).ogColor;
-
-            let x = x1*gridSize*zoom;
-            let y = y1*gridSize*zoom;
-            let width = (x2*gridSize*zoom) - x;
-            let height = (y2*gridSize*zoom) - y;
-
-            me2_ctx.fillRect(x,y,width,height);
-            me2_ctx.strokeRect(x,y,width,height);
-
+            me2_ctx.strokeStyle = _color(color).darken(10).ogColor;
+        
+            let x = x1 * gridSize * zoom;
+            let y = y1 * gridSize * zoom;
+            let width = ((x2 + 1) * gridSize * zoom) - x;
+            let height = ((y2 + 1) * gridSize * zoom) - y;
+        
+            me2_ctx.fillRect(x, y, width, height);
+            me2_ctx.strokeRect(x, y, width, height);
+        
+            // Reset opacity for text
             me2_ctx.globalAlpha = 1;
+            me2_ctx.fillStyle = "black"; // Change as needed for contrast
+            me2_ctx.font = `${16 * zoom}px Arial`; // Adjust font size as needed
+            me2_ctx.textAlign = "center";
+            me2_ctx.textBaseline = "middle";
+        
+            // Draw the zoneID in the center
+            me2_ctx.fillText(zoneID, x + width / 2, y + height / 2);
         }
         for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
             let zone = currentBoard.spawnZones.players[i];
@@ -242,7 +250,7 @@ function renderTopCanvas() {
             let zone = currentBoard.spawnZones.items[i];
             let opacity = 0.5;
             if (selectedZone?.type == "item" && selectedZone?.zoneIndex === i) opacity = 0.75;
-            drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color(zone.team).ogColor,opacity,zone.id);
+            drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color("white").ogColor,opacity,zone.id);
         }
     }
 
@@ -1332,8 +1340,8 @@ function runTool(type,desiredValue) {
         else {
             showingZones = showingZones == false ? true : false;
             showingZones_PlayerTurnedMeOn = showingZones;
-            renderTopCanvas();
         }
+        renderTopCanvas();
         
         if (showingZones) $(".show_zones_tool").classAdd("toolIsSelected");
         else $(".show_zones_tool").classRemove("toolIsSelected");
