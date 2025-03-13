@@ -234,7 +234,7 @@ function renderTopCanvas() {
             drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zones.pos2.y,_color(zone.team).ogColor,0.5,zone.id);
         }
         for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
-            let zone = currentBoard.spawnZones.players[i];
+            let zone = currentBoard.spawnZones.items[i];
             let opacity = 0.5;
             if (selectedZone?.type == "item" && selectedZone?.zoneIndex === i) opacity = 0.75;
             drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zones.pos2.y,_color(zone.team).ogColor,opacity,zone.id);
