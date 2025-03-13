@@ -52,6 +52,7 @@ let selectedTileTags = [];
 let savedSelectingItem = 1;
 let savedSelectingTile = 1;
 let showingZones = false;
+let showingZones_PlayerTurnedMeOn = false;
 
 let oldMap = [];
 
@@ -118,6 +119,7 @@ function openMapEditor(boardComingIn) {
     selectedZone = false;
     selectedItemTags = [];
     showingZones = false;
+    showingZones_PlayerTurnedMeOn = false;
     $(".show_zones_tool").classRemove("toolIsSelected");
     $(".redo_tool").style.opacity = "0.5";
     $(".undo_tool").style.opacity = "0.5";
@@ -1298,6 +1300,7 @@ function runTool(type,desiredValue) {
         if (desiredValue) showingZones = desiredValue;
         else {
             showingZones = showingZones == false ? true : false;
+            showingZones_PlayerTurnedMeOn = showingZones;
             renderTopCanvas();
         }
         
@@ -1702,6 +1705,7 @@ function setObjectTab(type) {
             cell: structuredClone(getItemById(savedSelectingItem)),
         }
         loadObjectMenu();
+        if (!showingZones_PlayerTurnedMeOn) runTool("showZones",false);
     }
     if (type == "Tiles") {
         loadTagsList(localAccount.allowedTileIds,tiles,selectedTileTags);
@@ -1713,6 +1717,7 @@ function setObjectTab(type) {
             cell: structuredClone(getTileById(savedSelectingTile)),
         }
         loadObjectMenu();
+        if (!showingZones_PlayerTurnedMeOn) runTool("showZones",false);
     }
     if (type == "Spawn Zones") {
         runTool("showZones",true);
