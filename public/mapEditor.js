@@ -216,6 +216,32 @@ function renderTopCanvas() {
         }
     }
 
+    if (showingZones) {
+        function drawZone(x1,y1,x2,y2,color,opacity,zoneID) {
+            me2_ctx.globalAlpha = opacity;
+            me2_ctx.fillStyle = color;
+            me2_ctx.strokeStile = _color(color).darken(20).ogColor;
+
+            me2_ctx.fillRect(x1,y1,x2-x1,y2-y1);
+            me2_ctx.strokeRect(x1,y1,x2-x1,y2-y1);
+
+            me2_ctx.globalAlpha = 1;
+        }
+        for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
+            let zone = currentBoard.spawnZones.players[i];
+            let opacity = 0.5;
+            if (selectedZone?.type == "player" && selectedZone?.zoneIndex === i) opacity = 0.75;
+            drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zones.pos2.y,_color(zone.team).ogColor,0.5,zone.id);
+        }
+        for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
+            let zone = currentBoard.spawnZones.players[i];
+            let opacity = 0.5;
+            if (selectedZone?.type == "item" && selectedZone?.zoneIndex === i) opacity = 0.75;
+            drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zones.pos2.y,_color(zone.team).ogColor,opacity,zone.id);
+        }
+    }
+
+
     if (showGrid) {
         me2_ctx.lineWidth = 2;
 
@@ -1721,6 +1747,7 @@ function setObjectTab(type) {
     }
     if (type == "Spawn Zones") {
         runTool("showZones",true);
+        $(".me_sz_zoneList").innerHTML = "";
         if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {
             for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
                 makeSpawnZoneListing($(".me_sz_zoneList"),currentBoard.spawnZones.players[i],i);
