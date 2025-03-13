@@ -51,6 +51,7 @@ let selectedItemTags = [];
 let selectedTileTags = [];
 let savedSelectingItem = 1;
 let savedSelectingTile = 1;
+let showingZones = false;
 
 let oldMap = [];
 
@@ -116,6 +117,8 @@ function openMapEditor(boardComingIn) {
     showGrid = false;
     selectedZone = false;
     selectedItemTags = [];
+    showingZones = false;
+    $(".show_zones_tool").classRemove("toolIsSelected");
     $(".redo_tool").style.opacity = "0.5";
     $(".undo_tool").style.opacity = "0.5";
     setScene("mapEditor");
@@ -1143,13 +1146,6 @@ function setTool(tool2) {
         $(".subTool_" + tool).show();
         setSubTool("move");
     }
-    if (tool == "spawn") {
-        $(".subToolHolder").hide();
-        setSubTool(false);
-
-        //
-
-    }
 
     $(".toolBarToolHolder").classRemove("toolIsSelected");
     $("tool_" + tool).$P().classAdd("toolIsSelected")
@@ -1179,7 +1175,7 @@ function getArrayOfSelection() {
 
     return newBoard;
 }
-function runTool(type) {
+function runTool(type,desiredValue) {
     if (type == "reflectX") {
         let newBoard = flipHorizontally(getArrayOfSelection());
         let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
@@ -1297,6 +1293,16 @@ function runTool(type) {
 
         if (showFullGrid) $(".show_grid_tool2").classAdd("toolIsSelected");
         else $(".show_grid_tool2").classRemove("toolIsSelected");
+    }
+    if (type == "showZones") {
+        if (desiredValue) showingZones = desiredValue;
+        else {
+            showingZones = showingZones == false ? true : false;
+            renderTopCanvas();
+        }
+        
+        if (showingZones) $(".show_zones_tool").classAdd("toolIsSelected");
+        else $(".show_zones_tool").classRemove("toolIsSelected");
     }
 }
 function rotateArrayLeft(matrix) {
@@ -1707,6 +1713,9 @@ function setObjectTab(type) {
             cell: structuredClone(getTileById(savedSelectingTile)),
         }
         loadObjectMenu();
+    }
+    if (type == "Spawn Zones") {
+        runTool("showZones",true);
     }
 }
 function loadTagsList(allowedIds,itemList,tagList) {
