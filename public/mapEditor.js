@@ -222,8 +222,13 @@ function renderTopCanvas() {
             me2_ctx.fillStyle = color;
             me2_ctx.strokeStile = _color(color).darken(20).ogColor;
 
-            me2_ctx.fillRect(x1,y1,x2-x1,y2-y1);
-            me2_ctx.strokeRect(x1,y1,x2-x1,y2-y1);
+            let x = x1*gridSize*zoom;
+            let y = y1*gridSize*zoom;
+            let width = (x2*gridSize*zoom) - x;
+            let height = (y2*gridSize*zoom) - y;
+
+            me2_ctx.fillRect(x,y,width,height);
+            me2_ctx.strokeRect(x,y,width,height);
 
             me2_ctx.globalAlpha = 1;
         }
