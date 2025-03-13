@@ -3045,6 +3045,22 @@ height: 100%;
   color: black;
   font-size: 30px;
 }
+.me_zone_settings_holder {
+  width: 100%;
+  height: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.me_zone_settings_title {
+  font-size: 25px;
+}
+.me_zone_settings {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
 
 
 .me_ob_topRow {

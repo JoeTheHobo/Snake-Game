@@ -1630,7 +1630,6 @@ function loadBackgroundContent(parent) {
         })
     }
 }
-//HTML ON CLICK END
 function makeSpawnZoneListing(holder,zone,i) {
     let color = "#ffffff";
     if (zone.team) color = _color(zone.team).ogColor;
@@ -1653,96 +1652,8 @@ function makeSpawnZoneListing(holder,zone,i) {
             type: this.type,
             zoneIndex: this.i,
         }
-
-        function addSettingSpawnHelper(title,affecting,value,type,zoneType,desiredType) {
-            if (zoneType) {
-                if (zoneType !== desiredType) return {};
-            }
-
-            let row = [{type: "text",text: title,color: "white"}];
-
-            if (type == "checkbox") {
-                row.push({
-                    type: "checkbox", value: value,
-                })
-            }
-            if (type == "boardStatus") {
-                row.push({
-                    type: "custom", css: {
-                        width: "50px",
-                        height: "50px",
-                        background: getColorFromTeam(value),
-                        cursor: "url('./img/pointer.cur'), auto",
-                        borderRadius: "5px",
-                        border: "2px solid black",
-                        color: "black",
-                        display: "flex",
-                        fontSize: "20px",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    },
-                })
-            }
-            if (type == "number") {
-                row.push({
-                    type: "number", value: value,
-                })
-            }
-            if (type == "playerStatus") {
-                row.push({
-                    type: "custom", css: {
-                        width: "50px",
-                        height: "50px",
-                        background: getColorFromTeam(value),
-                        cursor: "url('./img/pointer.cur'), auto",
-                        borderRadius: "5px",
-                        border: "2px solid black",
-                        color: "black",
-                        display: "flex",
-                        fontSize: "20px",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    },
-                })
-            }
-
-            return row;
-        }
-
-        makePopUp([
-            {type: "title",text: `Edit ${this.type} Zone ${zone.id}`, color: "white"},
-            addSettingSpawnHelper("Active:","active",zone.active,"checkbox"),
-            addSettingSpawnHelper("Activate When Board Status:","activateWhenBoardStatus",zone.activateWhenBoardStatus,"boardStatus"),
-            addSettingSpawnHelper("Deactivate When Board Status:","deactivateWhenBoardStatus",zone.deactivateWhenBoardStatus,"boardStatus"),
-            addSettingSpawnHelper("Activate when Time Passes?:",false,zone.activateWhenTimePassed !== false,"checkbox"),
-            addSettingSpawnHelper("Time To Activate (sec):","activateWhenTimePassed",zone.activateWhenTimePassed,"number"),
-            addSettingSpawnHelper("Deactivate when Time Passes?:",false,zone.activateWhenTimePassed !== false,"checkbox"),
-            addSettingSpawnHelper("Time To Deactivate (sec):","deactivateWhenTimePassed",zone.deactivateWhenTimePassed,"number"),
-
-            addSettingSpawnHelper("On Spawn Set Players Team: ","team",zone.team,"playerStatus",this.type,"player"),
-            addSettingSpawnHelper("Spawn Limited Players?:",false,zone.spawnCap !== false,"checkbox",this.type,"player"),
-            addSettingSpawnHelper("Spawn Cap:","spawnCap",zone.spawnCap,"number",this.type,"player"),
-            addSettingSpawnHelper("Respawn Here:","respawnHere",zone.respawnHere,"checkbox",this.type,"player"),
-
-            addSettingSpawnHelper("Allowed Item Spawning:","itemsThatCantSpawnHere",zone.itemsThatCantSpawnHere,"checkbox",this.type,"item"),
-        ],{
-            id: "editZone",
-            exit: {
-                cursor: "url('./img/pointer.cur'), auto",
-            },
-        })
     })
 
-}
-function loadSpawnZones() {
-    $(".me_sz_playerZones").innerHTML = "";
-    $(".me_sz_itemZones").innerHTML = "";
-    for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
-        makeSpawnZoneListing($(".me_sz_playerZones"),currentBoard.spawnZones.players[i],i);
-    }
-    for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
-        makeSpawnZoneListing($(".me_sz_itemZones"),currentBoard.spawnZones.items[i],i);
-    }
 }
 
 
@@ -1750,6 +1661,23 @@ $(".me_ob_tab").on("click",function() {
     setObjectTab(this.innerHTML);
     $(".me_ob_tab").classRemove("me_ob_tab_selected");
     this.classAdd("me_ob_tab_selected");
+})
+$(".me_ob_sz_tr_tab").on("click",function() {
+    $(".me_ob_sz_tr_tab").classRemove("me_ob_sz_tr_tab_selected");
+    this.classAdd("me_ob_sz_tr_tab_selected");
+
+    $(".me_sz_zoneList").innerHTML = "";
+    if (this.innerHTML == "Player Zones") {
+        for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
+            makeSpawnZoneListing($(".me_sz_zoneList"),currentBoard.spawnZones.players[i],i);
+        }
+    }
+    if (this.innerHTML == "Item Zones") {
+        for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
+            makeSpawnZoneListing($(".me_sz_zoneList"),currentBoard.spawnZones.items[i],i);
+        }
+    }
+
 })
 
 function setObjectTab(type) {
