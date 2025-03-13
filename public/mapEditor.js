@@ -166,6 +166,7 @@ function openMapEditor(boardComingIn) {
     loadObjectMenu();
 
     renderBackgroundCanvas();
+    renderZoneCanvas();
 
     clearInterval(saveInterval);
     saveInterval = setInterval(function() {
@@ -173,6 +174,47 @@ function openMapEditor(boardComingIn) {
             saveBoard();
     },60000)
     addHistory();
+}
+function drawZone(x1, y1, x2, y2, color, opacity, zoneID) {
+    me_ctx_zones.globalAlpha = opacity;
+    me_ctx_zones.fillStyle = color;
+    me_ctx_zones.strokeStyle = _color(color).darken(10).ogColor;
+
+    let x = x1 * gridSize * zoom;
+    let y = y1 * gridSize * zoom;
+    let width = ((x2 + 1) * gridSize * zoom) - x;
+    let height = ((y2 + 1) * gridSize * zoom) - y;
+
+    me_ctx_zones.fillRect(x, y, width, height);
+    me_ctx_zones.strokeRect(x, y, width, height);
+
+    // Reset opacity for text
+    me_ctx_zones.globalAlpha = 1;
+    me_ctx_zones.fillStyle = "black"; // Change as needed for contrast
+    me_ctx_zones.font = `${16 * zoom}px Arial`; // Adjust font size as needed
+    me_ctx_zones.textAlign = "center";
+    me_ctx_zones.textBaseline = "middle";
+
+    // Draw the zoneID in the center
+    me_ctx_zones.fillText(zoneID, x + width / 2, y + height / 2);
+}
+function renderZoneCanvas() {
+    me_ctx_zones.clearRect(0,0,me_canvas_zones.width,me_canvas_zones.height);
+
+    if (!showingZones) return;
+
+    for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
+        let zone = currentBoard.spawnZones.players[i];
+        let opacity = 0.3;
+        if (selectedZone?.type == "player" && selectedZone?.zoneIndex === i) opacity = 0.5;
+        drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color(zone.team).ogColor,0.5,zone.id);
+    }
+    for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
+        let zone = currentBoard.spawnZones.items[i];
+        let opacity = 0.3;
+        if (selectedZone?.type == "item" && selectedZone?.zoneIndex === i) opacity = 0.5;
+        drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color("white").ogColor,opacity,zone.id);
+    }
 }
 function renderTopCanvas() {
     me2_ctx.clearRect(0,0,me2_canvas.width,me2_canvas.height)
@@ -216,43 +258,6 @@ function renderTopCanvas() {
         }
     }
 
-    if (showingZones) {
-        function drawZone(x1, y1, x2, y2, color, opacity, zoneID) {
-            me2_ctx.globalAlpha = opacity;
-            me2_ctx.fillStyle = color;
-            me2_ctx.strokeStyle = _color(color).darken(10).ogColor;
-        
-            let x = x1 * gridSize * zoom;
-            let y = y1 * gridSize * zoom;
-            let width = ((x2 + 1) * gridSize * zoom) - x;
-            let height = ((y2 + 1) * gridSize * zoom) - y;
-        
-            me2_ctx.fillRect(x, y, width, height);
-            me2_ctx.strokeRect(x, y, width, height);
-        
-            // Reset opacity for text
-            me2_ctx.globalAlpha = 1;
-            me2_ctx.fillStyle = "black"; // Change as needed for contrast
-            me2_ctx.font = `${16 * zoom}px Arial`; // Adjust font size as needed
-            me2_ctx.textAlign = "center";
-            me2_ctx.textBaseline = "middle";
-        
-            // Draw the zoneID in the center
-            me2_ctx.fillText(zoneID, x + width / 2, y + height / 2);
-        }
-        for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
-            let zone = currentBoard.spawnZones.players[i];
-            let opacity = 0.5;
-            if (selectedZone?.type == "player" && selectedZone?.zoneIndex === i) opacity = 0.75;
-            drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color(zone.team).ogColor,0.5,zone.id);
-        }
-        for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
-            let zone = currentBoard.spawnZones.items[i];
-            let opacity = 0.5;
-            if (selectedZone?.type == "item" && selectedZone?.zoneIndex === i) opacity = 0.75;
-            drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color("white").ogColor,opacity,zone.id);
-        }
-    }
 
 
     if (showGrid) {
@@ -497,7 +502,7 @@ $("me_canvas").on("mousemove",function(e) {
         }
     }
     
-    if (mouseDown !== "wheel") renderTopCanvas()
+    if (mouseDown !== "wheel") renderZoneCanvas()
 })
 $("me_canvas").on("mousedown",function(e) {
     var isRightMB;
@@ -706,6 +711,7 @@ function changeZoom(delta) {
     adjustCanvasSize(board.width,board.height,zoom);
     checkRenderThenRender();
     renderTopCanvas();
+    renderZoneCanvas();
 }
 $("me_canvas").on("mouseleave",function(e) {
     //mouseDown = false;
@@ -1341,7 +1347,7 @@ function runTool(type,desiredValue) {
             showingZones = showingZones == false ? true : false;
             showingZones_PlayerTurnedMeOn = showingZones;
         }
-        renderTopCanvas();
+        renderZoneCanvas();
         
         if (showingZones) $(".show_zones_tool").classAdd("toolIsSelected");
         else $(".show_zones_tool").classRemove("toolIsSelected");

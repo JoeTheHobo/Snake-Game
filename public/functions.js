@@ -112,6 +112,8 @@ let me2_canvas = $("me_canvas2");
 let me2_ctx = me2_canvas.getContext("2d");
 let me_canvas_background = $("me_canvas_background");
 let me_ctx_background = me_canvas_background.getContext("2d");
+let me_canvas_zones = $("me_canvas_zones");
+let me_ctx_zones = me_canvas_zones.getContext("2d");
 
 let canvas_firstPerson_tl = $(".firstPersonCanvas_tl");
 let ctx_firstPerson_tl = canvas_firstPerson_tl.getContext("2d");
