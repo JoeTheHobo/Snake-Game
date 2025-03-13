@@ -43,6 +43,9 @@ z-index: 3;
 pointer-events: none;
 z-index: 1;
 }
+#me_canvas_zones {
+  z-index: 4;
+}
 #render_background {
 z-index: 401;
 }
