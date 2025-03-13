@@ -134,7 +134,7 @@ let ctx_firstPerson_br = canvas_firstPerson_br.getContext("2d");
 let canvas_firstPerson_master = $(".firstPersonCanvas_master");
 let ctx_firstPerson_master = canvas_firstPerson_master.getContext("2d");
 
-let allCanvas = [canvas_background,canvas_tiles,canvas_items,canvas_players,canvas_overhangs,canvas_top,me_canvas,me2_canvas,canvas_firstPerson_tl,
+let allCanvas = [me_canvas_zones,canvas_background,canvas_tiles,canvas_items,canvas_players,canvas_overhangs,canvas_top,me_canvas,me2_canvas,canvas_firstPerson_tl,
     canvas_firstPerson_tm,canvas_firstPerson_tr,canvas_firstPerson_lm,canvas_firstPerson_rm,canvas_firstPerson_bl,canvas_firstPerson_bm,canvas_firstPerson_br,canvas_firstPerson_master,me_canvas_background
 ]
 
