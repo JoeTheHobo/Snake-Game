@@ -1919,6 +1919,10 @@ $(".me_ob_sz_tr_tab").on("click",function() { //Player Zones / Item Zones Tabs O
     $(".me_ob_sz_tr_tab").classRemove("me_ob_sz_tr_tab_selected");
     this.classAdd("me_ob_sz_tr_tab_selected");
 
+    generateZoneListings();
+
+})
+function generateZoneListings() {
     $(".me_sz_zoneList").innerHTML = "";
     if (this.innerHTML == "Player Zones") {
         selectedZone = {
@@ -1941,8 +1945,7 @@ $(".me_ob_sz_tr_tab").on("click",function() { //Player Zones / Item Zones Tabs O
         }
     }
     loadZoneOptions();
-
-})
+}
 
 function setObjectTab(type) {
     currentTab = type;
@@ -2181,6 +2184,7 @@ $(".mezs_teamColor").on("click",function() {
     showStatusMenu(["status"],function(status) {
         selectedZone.zone.team = status;
         loadZoneOptions();
+        generateZoneListings();
     });
 })
 function showStatusMenu(showing,func) {
