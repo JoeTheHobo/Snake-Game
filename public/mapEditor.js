@@ -2153,6 +2153,7 @@ $(".mezs_deactivate_whenTime").on("change",function() {
         currentZone.zone.deactivateWhenTimePassed = false;
     if (this.checked === true)
         currentZone.zone.deactivateWhenTimePassed = 5;
+    console.log(this.checked)
     loadZoneOptions();
 })
 $(".mezs_deactivateTime").on("input",function() {
