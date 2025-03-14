@@ -2316,6 +2316,7 @@ $(".me_sz_addButton").on("click",function() {
             zoneIndex: currentBoard.spawnZones.players.length-1,
             zone: currentBoard.spawnZones.players[currentBoard.spawnZones.players.length-1],
         }
+        generateZoneListings("Player Zones");
     }
     if (selectedZone.type == "item") {
         currentBoard.spawnZones.items.push({
@@ -2342,6 +2343,8 @@ $(".me_sz_addButton").on("click",function() {
             zoneIndex: currentBoard.spawnZones.items.length-1,
             zone: currentBoard.spawnZones.items[currentBoard.spawnZones.items.length-1],
         }
+        generateZoneListings("Item Zones");
     }
     loadZoneOptions();
+    renderZoneCanvas();
 })
