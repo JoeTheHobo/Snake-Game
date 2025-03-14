@@ -422,10 +422,11 @@ mousemovemethod = function (e) {
         yChange += mouseDirection.y;
         adjustCanvasPosition();
     }
-    if (selectedZone && showingZones) {
+    if (selectedZone && showingZones && !mouseDown) {
         let zone = selectedZone.zone;
-        if (mouseX < zone.pos2.x && mouseX > zone.pos1.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
+        if (mouseX < zone.pos2.x+1 && mouseX > zone.pos1.x-1 && mouseY < zone.pos2.y+1 && mouseY > zone.pos1.y-1) {
             $(".me_canvasHolder").classAdd("moveCursor");
+
         } else {
             $(".me_canvasHolder").classRemove("moveCursor");
         }
@@ -435,6 +436,25 @@ $(".me_canvasHolder").on('mousemove', mousemovemethod);
 $(".me_canvasHolder").on("click",function() {
     mouseDown = false;
     rightMouse = false;
+
+    
+    
+})
+
+$(".me_canvasHolder").on("mouseDown",function() {
+    mouseDown = true;
+    if (selectedZone && showingZones) {
+        if (mouseX < zone.pos2.x+1 && mouseX > zone.pos1.x-1 && mouseY < zone.pos2.y+1 && mouseY > zone.pos1.y-1) {
+            $(".me_canvasHolder").classAdd("grabCursor");
+            
+        }
+    }
+})
+$(".me_canvasHolder").on("mouseDown",function() {
+    mouseDown = false;
+    if (selectedZone && showingZones) {
+        $(".me_canvasHolder").classRemove("grabCursor");
+    }
 })
 function adjustMousePos(e) {
     let rect = me_canvas.getBoundingClientRect();
