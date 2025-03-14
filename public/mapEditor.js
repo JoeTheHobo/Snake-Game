@@ -448,15 +448,14 @@ $(".me_canvasHolder").on("click",function() {
 $(".me_canvasHolder").on("mouseDown",function() {
     mouseDown = true;
     if (selectedZone && showingZones) {
-        console.log(mouseDown)
+        let zone = selectedZone.zone;
         if (mouseX < zone.pos2.x+1 && mouseX > zone.pos1.x-1 && mouseY < zone.pos2.y+1 && mouseY > zone.pos1.y-1) {
-            console.log("ey")
             $(".me_canvasHolder").classAdd("grabCursor");
             
         }
     }
 })
-$(".me_canvasHolder").on("mouseDown",function() {
+$(".me_canvasHolder").on("mouseUp",function() {
     mouseDown = false;
     if (selectedZone && showingZones) {
         $(".me_canvasHolder").classRemove("grabCursor");
@@ -552,7 +551,7 @@ $("me_canvas").on("mousedown",function(e) {
     mouseDown = e.which == 2 ? "wheel" : true;
 
     
-    if (tool == "select" && mouseDown === true) {
+    if (tool == "select" && mouseDown === true && currentTab !== "Spawn Zones") {
         $(".subTool_select").hide();
         if (aligning) {
             selectedCells.end = {
@@ -576,7 +575,7 @@ $("me_canvas").on("mousedown",function(e) {
             }
         }
     }
-    if ((tool == "draw" || tool == "eraser") && mouseDown === true) {
+    if ((tool == "draw" || tool == "eraser") && mouseDown === true && currentTab !== "Spawn Zones") {
         alignPoint = {
             x: mouseX,
             y: mouseY,
@@ -603,7 +602,7 @@ $("me_canvas").on("mousedown",function(e) {
 })
 $("me_canvas").on("mouseup",function(e) {
 
-    if (mouseDown === true && (tool == "draw" || tool == "eraser")) {
+    if (mouseDown === true && (tool == "draw" || tool == "eraser") && currentTab !== "Spawn Zones") {
         if (subTool == "shape") {
             tool_fill();
             addHistory();
@@ -614,6 +613,7 @@ $("me_canvas").on("mouseup",function(e) {
             clearSelection();
         }
         if (subTool == "brush") {
+            console.log(currentTab)
             if (selectedItem && !aligning) {
                 if (rightMouse || tool == "eraser") {
                     board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
@@ -627,7 +627,7 @@ $("me_canvas").on("mouseup",function(e) {
         checkRenderThenRender();
     }
 
-    if (tool == "select" && mouseDown === true) {
+    if (tool == "select" && mouseDown === true && currentTab !== "Spawn Zones") {
         $(".subTool_select").show();
         if (copiedCells.length == 0) $(".pastingTool").hide();
         else $(".pastingTool").show();
@@ -647,7 +647,7 @@ $("me_canvas").on("mouseup",function(e) {
         }
            
     }
-    if (tool == "bucket" && mouseDown === true) {
+    if (tool == "bucket" && mouseDown === true && currentTab !== "Spawn Zones") {
         if (subTool == "bucket") {
             useBucketTool();
             addHistory();
