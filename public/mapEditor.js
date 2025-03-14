@@ -485,7 +485,7 @@ $("me_canvas").on("mousemove",function(e) {
 
     board.originalMap[mouseY][mouseX].mouseOver = true;
     
-    if ((tool == "draw" || tool == "eraser")) {
+    if ((tool == "draw" || tool == "eraser") && currentTab !== "Spawn Zones") {
         if (subTool == "shape" || subTool == "circle") {
             selectedCells.end = {
                 x: mouseX,
@@ -527,7 +527,7 @@ $("me_canvas").on("mousemove",function(e) {
         }
     }
     
-    if (tool == "select" && mouseDown === true) {
+    if (tool == "select" && mouseDown === true && currentTab !== "Spawn Zones") {
         selectedCells.end = {
             x: mouseX,
             y: mouseY,
