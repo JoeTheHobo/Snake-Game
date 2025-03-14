@@ -289,8 +289,8 @@ io.on('connection', (socket) => {
                     respawnHere: true,
 
                     active: true,
-                    activateWhenBoardStatus: {},
-                    deactivateWhenBoardStatus: {},
+                    activateWhenBoardStatus: false,
+                    deactivateWhenBoardStatus: false,
                     activateWhenTimePassed: false, //Seconds
                     deactivateWhenTimePassed: false, //Seconds
                 }],
@@ -307,8 +307,8 @@ io.on('connection', (socket) => {
                     itemsThatCantSpawnHere: [],
 
                     active: true,
-                    activateWhenBoardStatus: {},
-                    deactivateWhenBoardStatus: {},
+                    activateWhenBoardStatus: false,
+                    deactivateWhenBoardStatus: false,
                     activateWhenTimePassed: false, //Seconds
                     deactivateWhenTimePassed: false, //Seconds
                 }],

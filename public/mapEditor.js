@@ -1300,6 +1300,7 @@ function loadStatusSelectionScreen() {
         }
 
         contentHolder.className = className;
+        contentHolder.classAdd("statusOption_" + string)
         
         contentHolder.on("click",function() {
             if (currentTab !== "Spawn Zones") {
@@ -2129,6 +2130,28 @@ function loadZoneOptions() {
         $(".mezs_deactivateTime_row").hide();
     }
 
+    $(".mezs_activateOnBoardStatus").checked = zone.activateWhenBoardStatus !== false;
+    if ($(".mezs_activateOnBoardStatus").checked) {
+        $(".mezs_activateOnBoardStatus_row").show("flex");
+        zone.activateWhenBoardStatus = {
+            status: "red",
+            count: 1,
+        }
+
+    } else {
+        $(".mezs_activateOnBoardStatus_row").hide();
+    }
+    $(".mezs_deactivateOnBoardStatus").checked = zone.deactivateWhenBoardStatus !== false;
+    if ($(".mezs_deactivateOnBoardStatus").checked) {
+        $(".mezs_deactivateOnBoardStatus_row").show("flex");
+        zone.deactivateWhenBoardStatus = {
+            status: "red",
+            count: 1,
+        }
+    } else {
+        $(".mezs_deactivateOnBoardStatus_row").hide();
+    }
+
     if (selectedZone.type == "player") {
         $(".me_z_s_item").hide();
         $(".me_z_s_player").show("flex");
@@ -2212,9 +2235,8 @@ $(".mezs_activateBoardStatus").on("click",function() {
         border: "2px solid black", 
     })
 
-    if (selectedZone.zone.activateWhenBoardStatus.status) {
-
-    }
+    $(".popup_status_input").value = selectedZone.zone.activateWhenBoardStatus.count;
+    $(".statusOption_" + selectedZone.zone.activateWhenBoardStatus.status).style.border = "2px solid blue";
 })
 function showStatusMenu(showing,funcs) {
     //Showing can equal ["status","playerStatus"]
