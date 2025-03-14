@@ -2288,3 +2288,60 @@ function showStatusMenu(showing,funcs) {
 
     $(".statusSelectionScreen").show("flex");
 }
+$(".me_sz_addButton").on("click",function() {
+    if (selectedZone.type == "player") {
+        currentBoard.spawnZones.players.push({
+                id: currentBoard.spawnZones.players.length,
+                pos1: {
+                    x: Math.round(currentBoard.width/4),
+                    y: Math.round(currentBoard.height/4),
+                },
+                pos2: {
+                    x: Math.round(currentBoard.width/4) + Math.round(currentBoard.width/4),
+                    y: Math.round(currentBoard.height/4) + Math.round(currentBoard.height/4),
+                },
+                team: "white",
+                spawnCap: false,
+                respawnHere: true,
+
+                active: true,
+                activateWhenBoardStatus: false,
+                deactivateWhenBoardStatus: false,
+                activateWhenTimePassed: false, //Seconds
+                deactivateWhenTimePassed: false, //Seconds
+            })
+
+        selectedZone = {
+            type: "player",
+            zoneIndex: currentBoard.spawnZones.players.length-1,
+            zone: currentBoard.spawnZones.players[currentBoard.spawnZones.players.length-1],
+        }
+    }
+    if (selectedZone.type == "item") {
+        currentBoard.spawnZones.items.push({
+            id: currentBoard.spawnZones.items.length,
+            pos1: {
+                x: Math.round(currentBoard.width/4),
+                y: Math.round(currentBoard.height/4),
+            },
+            pos2: {
+                x: Math.round(currentBoard.width/4) + Math.round(currentBoard.width/4),
+                y: Math.round(currentBoard.height/4) + Math.round(currentBoard.height/4),
+            },
+            itemsThatCantSpawnHere: [],
+
+            active: true,
+            activateWhenBoardStatus: false,
+            deactivateWhenBoardStatus: false,
+            activateWhenTimePassed: false, //Seconds
+            deactivateWhenTimePassed: false, //Seconds
+        })
+
+        selectedZone = {
+            type: "item",
+            zoneIndex: currentBoard.spawnZones.items.length-1,
+            zone: currentBoard.spawnZones.items[currentBoard.spawnZones.items.length-1],
+        }
+    }
+    loadZoneOptions();
+})
