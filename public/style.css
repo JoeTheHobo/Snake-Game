@@ -3312,10 +3312,10 @@ align-items: flex-start; /* Align items to the top of the row */
 gap: 1px; /* Optional: Adjust spacing between items */
 }
 .statusSelectionHolder div:hover {
-border: 2px solid blue !important;
+  border: 2px solid blue !important;
 }
 .popup_status_input {
   width: 40px;
   height: 30px;
-  
+  outline: none;
 }

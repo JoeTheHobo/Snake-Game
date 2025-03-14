@@ -1309,7 +1309,7 @@ function loadStatusSelectionScreen() {
                 $(".statusSelectionScreen").hide();
             }
             if (currentTab == "Spawn Zones") {
-                $(".statusSelectionScreen").func(this.status);
+                $(".statusSelectionScreen").funcs.status(this.status,this);
             }
         })
     }
@@ -1319,6 +1319,12 @@ function loadStatusSelectionScreen() {
         createStatus(global_gameColors[i],"nonPlayer",holder);
     }
 }
+$(".status_button_finalize").on("click",function() {
+    $(".statusSelectionScreen").funcs.final();
+})
+$(".popup_status_number").on("change",function() {
+    $(".statusSelectionScreen").funcs.number(this.value);
+})
 function setValue(selectingOneCell,item,path,value,returnValue = false) {
     let ties = [];
     if (returnValue == true) return setNestedValue(item, path, value,true);
@@ -2178,29 +2184,42 @@ $(".mezs_respawning").on("change",function() {
     selectedZone.zone.respawnHere = this.checked;
 })
 $(".mezs_teamColor").on("click",function() {
-    showStatusMenu(["status"],function(status) {
+    showStatusMenu(["status"],{status: function(status) {
         selectedZone.zone.team = status;
         loadZoneOptions();
         generateZoneListings("Player Zones");
         $(".statusSelectionScreen").hide();
-    });
+    }});
 })
 $(".mezs_activateBoardStatus").on("click",function() {
-    showStatusMenu(["status","count","submit"],function(status) {
-        selectedZone.zone.team = status;
-        loadZoneOptions();
-        generateZoneListings("Player Zones");
-        $(".statusSelectionScreen").hide();
+    showStatusMenu(["status","count","submit"],{
+        status: function(status,element) {
+            $(".nonPlayer").style.border = "2px solid black";
+            element.style.border = "2px solid blue";
+            selectedZone.zone.activateWhenBoardStatus.status = status;
+        },
+        number: function(value) {
+            selectedZone.zone.activateWhenBoardStatus.count = value;
+        },
+        final: function() {
+            $(".statusSelectionScreen").hide();
+        }
+    },function() {
+        $(".nonPlayer").style.border = "2px solid black";
+
+        if (selectedZone.zone.activateWhenBoardStatus.status) {
+            
+        }
     });
 })
-function showStatusMenu(showing,func) {
+function showStatusMenu(showing,funcs) {
     //Showing can equal ["status","playerStatus"]
     $(".status_popup_option").hide();
     for (let i = 0; i < showing.length; i++) {
         $(".status_popup_" + showing[i]).show("flex");
     }
 
-    $(".statusSelectionScreen").func = func;
+    $(".statusSelectionScreen").funcs = funcs;
 
     $(".statusSelectionScreen").show("flex");
 }
