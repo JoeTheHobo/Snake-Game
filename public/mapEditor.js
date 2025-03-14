@@ -486,7 +486,9 @@ mousemovemethod = function (e) {
 
 
         if (zoneMouseMode && mouseDown) {
+            console.log(zoneMouseMode)
             if (zoneMouseMode == "resizeLeft") {
+                console.log("ey")
                 selectedZone.zone.pos1.x = mouseX;
             }
 
