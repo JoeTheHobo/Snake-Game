@@ -485,18 +485,17 @@ mousemovemethod = function (e) {
         }
 
 
-        console.log(zoneMouseMode, mouseDown)
-        if (zoneMouseMode && mouseDown) {
-            console.log(zoneMouseMode)
-            if (zoneMouseMode == "resizeLeft") {
-                console.log("ey")
-                selectedZone.zone.pos1.x = mouseX;
-            }
-
-
-            if (selectedZone.zone.pos1.x > selectedZone.zone.pos2.x) selectedZone.zone.pos1.x = selectedZone.zone.pos2.x;
-            renderZoneCanvas();
+        
+    }
+    if (selectedZone && showingZones && mouseDown && zoneMouseMode) {
+        if (zoneMouseMode == "resizeLeft") {
+            console.log("ey")
+            selectedZone.zone.pos1.x = mouseX;
         }
+
+
+        if (selectedZone.zone.pos1.x > selectedZone.zone.pos2.x) selectedZone.zone.pos1.x = selectedZone.zone.pos2.x;
+        renderZoneCanvas();
     }
 }
 $(".me_canvasHolder").on('mousemove', mousemovemethod);
