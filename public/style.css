@@ -3055,9 +3055,11 @@ height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-y: auto;
 }
 .me_zone_settings_title {
-  font-size: 25px;
+  font-size: 30px;
+  text-align: center;
 }
 .me_zone_settings {
   width: 100%;
@@ -3077,7 +3079,7 @@ height: 100%;
   font-size: 20px;
 }
 .me_zone_settings_option {
-
+  box-sizing: border-box;
 }
 .me_zone_setting_checkbox {
   width: 35px;
@@ -3091,11 +3093,11 @@ height: 100%;
   cursor: url('./img/pointer.cur'), auto;
   border-radius: 5px;
   border: 2px solid black;
-  box-sizing: border-box;
 }
 .me_zone_settings_number {
   width: 35px;
   height: 35px;
+  outline: none;
 }
 .me_zone_settings_button {
   width: max-content;
