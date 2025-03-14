@@ -521,10 +521,10 @@ mousemovemethod = function (e) {
             let xDif = mouseX - zoneMouseHelper.anchor.x;
             let yDif = mouseY - zoneMouseHelper.anchor.y;
 
-            selectedZone.zone.pos1.x = zoneMouseHelper.pos1.x - xDif;
-            selectedZone.zone.pos2.x = zoneMouseHelper.pos2.x - xDif;
-            selectedZone.zone.pos1.y = zoneMouseHelper.pos1.y - yDif;
-            selectedZone.zone.pos2.y = zoneMouseHelper.pos2.y - yDif;
+            selectedZone.zone.pos1.x = zoneMouseHelper.pos1.x + xDif;
+            selectedZone.zone.pos2.x = zoneMouseHelper.pos2.x + xDif;
+            selectedZone.zone.pos1.y = zoneMouseHelper.pos1.y + yDif;
+            selectedZone.zone.pos2.y = zoneMouseHelper.pos2.y + yDif;
         }
 
 
