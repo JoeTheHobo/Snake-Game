@@ -2311,10 +2311,11 @@ $(".me_sz_addButton").on("click",function() {
                 deactivateWhenTimePassed: false, //Seconds
             })
 
+        savedSelectingZonePlayer = currentBoard.spawnZones.players.length-1;
         selectedZone = {
             type: "player",
-            zoneIndex: currentBoard.spawnZones.players.length-1,
-            zone: currentBoard.spawnZones.players[currentBoard.spawnZones.players.length-1],
+            zoneIndex: savedSelectingZonePlayer,
+            zone: currentBoard.spawnZones.players[savedSelectingZonePlayer],
         }
         generateZoneListings("Player Zones");
     }
@@ -2338,10 +2339,11 @@ $(".me_sz_addButton").on("click",function() {
             deactivateWhenTimePassed: false, //Seconds
         })
 
+        savedSelectingZoneItem = currentBoard.spawnZones.items.length-1;
         selectedZone = {
             type: "item",
-            zoneIndex: currentBoard.spawnZones.items.length-1,
-            zone: currentBoard.spawnZones.items[currentBoard.spawnZones.items.length-1],
+            zoneIndex: savedSelectingZoneItem,
+            zone: currentBoard.spawnZones.items[savedSelectingZoneItem],
         }
         generateZoneListings("Item Zones");
     }
