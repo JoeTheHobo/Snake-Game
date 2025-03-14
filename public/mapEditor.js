@@ -435,6 +435,8 @@ mousemovemethod = function (e) {
         }
         let verticalResizeCursor = false;
         let horizontalResizeCursor = false;
+        let nsCursor = false;
+        let ewCursor = false;
         if (mouseX == zone.pos1.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
             horizontalResizeCursor = true;
         }
@@ -447,6 +449,18 @@ mousemovemethod = function (e) {
         if (mouseY == zone.pos2.y && mouseX < zone.pos2.x && mouseX > zone.pos1.x) {
             verticalResizeCursor = true;
         }
+        if (mouseX == zone.pos1.x && mouseY == zone.pos1.y) {
+            nsCursor = true;
+        }
+        if (mouseX == zone.pos1.x && mouseY == zone.pos2.y) {
+            ewCursor = true;
+        }
+        if (mouseX == zone.pos2.x && mouseY == zone.pos1.y) {
+            nsCursor = true;
+        }
+        if (mouseX == zone.pos2.x && mouseY == zone.pos2.y) {
+            ewCursor = true;
+        }
 
         if (verticalResizeCursor) {
             $(".me_canvasHolder").classAdd("verticalResizeCursor");
@@ -457,6 +471,16 @@ mousemovemethod = function (e) {
             $(".me_canvasHolder").classAdd("horizontalResizeCursor");
         } else {
             $(".me_canvasHolder").classRemove("horizontalResizeCursor");
+        }
+        if (ewCursor) {
+            $(".me_canvasHolder").classAdd("ewCursor");
+        } else {
+            $(".me_canvasHolder").classRemove("ewCursor");
+        }
+        if (nsCursor) {
+            $(".me_canvasHolder").classAdd("nsCursor");
+        } else {
+            $(".me_canvasHolder").classRemove("nsCursor");
         }
     }
 }

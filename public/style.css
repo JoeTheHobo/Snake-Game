@@ -3299,3 +3299,9 @@ margin-top: 15px;
 .horizontalResizeCursor {
   cursor: e-resize !important;
 }
+.nsCursor {
+  cursor: nw-resize !important;
+}
+.ewCursor {
+  cursor: ne-resize !important;
+}
