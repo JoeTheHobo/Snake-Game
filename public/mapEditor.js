@@ -413,6 +413,7 @@ var mouseDirection = {
 };
 var oldMouseX = 0;
 var oldMouseY = 0;
+let zoneMouseMode = false;
 mousemovemethod = function (e) {
     mouseDirection = {
         y: e.pageY - oldMouseY,
@@ -456,10 +457,10 @@ mousemovemethod = function (e) {
             ewCursor = true;
         }
         if (mouseX == zone.pos2.x && mouseY == zone.pos1.y) {
-            nsCursor = true;
+            ewCursor = true;
         }
         if (mouseX == zone.pos2.x && mouseY == zone.pos2.y) {
-            ewCursor = true;
+            nsCursor = true;
         }
 
         if (verticalResizeCursor) {
@@ -482,6 +483,17 @@ mousemovemethod = function (e) {
         } else {
             $(".me_canvasHolder").classRemove("nsCursor");
         }
+
+
+        if (zoneMouseMode && mouseDown) {
+            if (zoneMouseMode == "resizeLeft") {
+                selectedZone.zone.pos1.x = mouseX;
+            }
+
+
+            if (selectedZone.zone.pos1.x > selectedZone.zone.pos2.x) selectedZone.zone.pos1.x = selectedZone.zone.pos2.x;
+            renderZoneCanvas();
+        }
     }
 }
 $(".me_canvasHolder").on('mousemove', mousemovemethod);
@@ -498,8 +510,33 @@ $(".me_canvasHolder").on("mousedown",function() {
     if (selectedZone && showingZones) {
         let zone = selectedZone.zone;
         if (mouseX < zone.pos2.x && mouseX > zone.pos1.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
-            $(".me_canvasHolder").classAdd("grabCursor");
-            
+            $(".me_canvasHolder").classAdd("grabCursor");   
+            zoneMouseMode = "move";
+        }
+        
+        if (mouseX == zone.pos1.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
+            zoneMouseMode = "resizeLeft";
+        }
+        if (mouseX == zone.pos2.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
+            zoneMouseMode = "resizeRight";
+        }
+        if (mouseY == zone.pos1.y && mouseX < zone.pos2.x && mouseX > zone.pos1.x) {
+            zoneMouseMode = "resizeTop";
+        }
+        if (mouseY == zone.pos2.y && mouseX < zone.pos2.x && mouseX > zone.pos1.x) {
+            zoneMouseMode = "resizeBottom";
+        }
+        if (mouseX == zone.pos1.x && mouseY == zone.pos1.y) {
+            zoneMouseMode = "resizetl";
+        }
+        if (mouseX == zone.pos1.x && mouseY == zone.pos2.y) {
+            zoneMouseMode = "resizebl";
+        }
+        if (mouseX == zone.pos2.x && mouseY == zone.pos1.y) {
+            zoneMouseMode = "resizetr";
+        }
+        if (mouseX == zone.pos2.x && mouseY == zone.pos2.y) {
+            zoneMouseMode = "resizebr";
         }
     }
 })
