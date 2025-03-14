@@ -119,8 +119,7 @@ function openMapEditor(boardComingIn) {
     selectedZone = false;
     selectedItemTags = [];
     showingZones = false;
-    me_ctx_zones.globalAlpha = 0.8;
-    console.log(    me_ctx_zones.globalAlpha)
+    me_ctx_zones.globalAlpha = 0.4;
     showingZones_PlayerTurnedMeOn = false;
     $(".show_zones_tool").classRemove("toolIsSelected");
     $(".redo_tool").style.opacity = "0.5";
@@ -199,6 +198,7 @@ function drawZone(x1, y1, x2, y2, color, zoneID) {
     me_ctx_zones.fillText(zoneID, x + width / 2, y + height / 2);
 }
 function renderZoneCanvas() {
+    me_ctx_zones.globalAlpha = 0.3;
     me_ctx_zones.clearRect(0,0,me_canvas_zones.width,me_canvas_zones.height);
 
     if (!showingZones) return;
