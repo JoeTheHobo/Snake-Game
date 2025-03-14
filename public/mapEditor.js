@@ -1968,6 +1968,7 @@ function setObjectTab(type) {
             cell: structuredClone(getItemById(savedSelectingItem)),
         }
         loadObjectMenu();
+        $(".me_s_holder_tools").show("flex");
         if (!showingZones_PlayerTurnedMeOn) runTool("showZones",false);
     }
     if (type == "Tiles") {
@@ -1980,6 +1981,7 @@ function setObjectTab(type) {
             cell: structuredClone(getTileById(savedSelectingTile)),
         }
         loadObjectMenu();
+        $(".me_s_holder_tools").show("flex");
         if (!showingZones_PlayerTurnedMeOn) runTool("showZones",false);
     }
     if (type == "Spawn Zones") {
@@ -2008,6 +2010,7 @@ function setObjectTab(type) {
                 }
             }
         }
+        $(".me_s_holder_tools").hide();
         loadZoneOptions();
     }
 }
