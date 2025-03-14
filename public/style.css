@@ -3305,3 +3305,6 @@ margin-top: 15px;
 .ewCursor {
   cursor: ne-resize !important;
 }
+.me_popup_boardSettings {
+  display: none;
+}
