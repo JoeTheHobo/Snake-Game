@@ -1919,12 +1919,12 @@ $(".me_ob_sz_tr_tab").on("click",function() { //Player Zones / Item Zones Tabs O
     $(".me_ob_sz_tr_tab").classRemove("me_ob_sz_tr_tab_selected");
     this.classAdd("me_ob_sz_tr_tab_selected");
 
-    generateZoneListings();
+    generateZoneListings(this.innerHTML);
 
 })
-function generateZoneListings() {
+function generateZoneListings(zoneType) {
     $(".me_sz_zoneList").innerHTML = "";
-    if (this.innerHTML == "Player Zones") {
+    if (zoneType == "Player Zones") {
         selectedZone = {
             type: "player",
             zoneIndex: savedSelectingZonePlayer,
@@ -1934,7 +1934,7 @@ function generateZoneListings() {
             makeSpawnZoneListing($(".me_sz_zoneList"),currentBoard.spawnZones.players[i],i);
         }
     }
-    if (this.innerHTML == "Item Zones") {
+    if (zoneType == "Item Zones") {
         selectedZone = {
             type: "item",
             zoneIndex: savedSelectingZoneItem,
@@ -2184,7 +2184,7 @@ $(".mezs_teamColor").on("click",function() {
     showStatusMenu(["status"],function(status) {
         selectedZone.zone.team = status;
         loadZoneOptions();
-        generateZoneListings();
+        generateZoneListings("Player Zones");
     });
 })
 function showStatusMenu(showing,func) {
