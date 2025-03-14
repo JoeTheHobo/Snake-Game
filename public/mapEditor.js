@@ -518,13 +518,13 @@ mousemovemethod = function (e) {
             selectedZone.zone.pos2.y = mouseY;
         }
         if (zoneMouseMode == "move") {
-            let xDif = mouseX - zoneMouseHelper.x;
-            let yDif = mouseY - zoneMouseHelper.y;
+            let xDif = mouseX - zoneMouseHelper.anchor.x;
+            let yDif = mouseY - zoneMouseHelper.anchor.y;
 
-            selectedZone.zone.pos1.x += xDif;
-            selectedZone.zone.pos2.x += xDif;
-            selectedZone.zone.pos1.y += yDif;
-            selectedZone.zone.pos2.y += yDif;
+            selectedZone.zone.pos1.x = zoneMouseHelper.pos1.x - xDif;
+            selectedZone.zone.pos2.x = zoneMouseHelper.pos2.x - xDif;
+            selectedZone.zone.pos1.y = zoneMouseHelper.pos1.y - yDif;
+            selectedZone.zone.pos2.y = zoneMouseHelper.pos2.y - yDif;
         }
 
 
@@ -553,8 +553,12 @@ $(".me_canvasHolder").on("mousedown",function() {
             if (!zoneMouseMode) {
                 zoneMouseMode = "move";
                 zoneMouseHelper = {
-                    x: mouseX,
-                    y: mouseY,
+                    pos1: zone.pos1,
+                    pos2: zone.pos2,
+                    anchor: {
+                        x: mouseX,
+                        y: mouseY,
+                    }
                 }
             }
         }
