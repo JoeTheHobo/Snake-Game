@@ -53,6 +53,8 @@ let savedSelectingItem = 1;
 let savedSelectingTile = 1;
 let showingZones = false;
 let showingZones_PlayerTurnedMeOn = false;
+let savedSelectingZonePlayer = 1;
+let savedSelectingZoneItem = 1;
 
 let oldMap = [];
 
@@ -1697,17 +1699,25 @@ function makeSpawnZoneListing(holder,zone,i) {
     })
 
     let spawnZoneID = spawnZoneHolder.create("div.spawnZoneID");
-    spawnZoneID.className = "spawnZoneID hover";
+    spawnZoneID.className = "spawnZoneID";
+
     spawnZoneID.innerHTML = zone.id;
 
     spawnZoneHolder.type = zone.team ? "player" : "item";
+    if (spawnZoneHolder.type == "player") {
+        if (savedSelectingZonePlayer === i) spawnZoneHolder.classAdd("spawnZoneSelected")
+    }
     spawnZoneHolder.i = i;
     spawnZoneHolder.on("click",function() {
+        $(".spawnZoneHolder").classRemove("spawnZoneSelected");
+        this.classAdd("spawnZoneSelected");
         selectedZone = {
             type: this.type,
             zoneIndex: this.i,
             zone: zone,
         }
+        if (this.type == "item") savedSelectingZoneItem = this.i;
+        if (this.type == "player") savedSelectingZonePlayer = this.i;
         loadZoneOptions();
     })
 
@@ -1719,21 +1729,32 @@ $(".me_ob_tab").on("click",function() {
     $(".me_ob_tab").classRemove("me_ob_tab_selected");
     this.classAdd("me_ob_tab_selected");
 })
-$(".me_ob_sz_tr_tab").on("click",function() {
+$(".me_ob_sz_tr_tab").on("click",function() { //Player Zones / Item Zones Tabs On Click
     $(".me_ob_sz_tr_tab").classRemove("me_ob_sz_tr_tab_selected");
     this.classAdd("me_ob_sz_tr_tab_selected");
 
     $(".me_sz_zoneList").innerHTML = "";
     if (this.innerHTML == "Player Zones") {
+        selectedZone = {
+            type: "player",
+            zoneIndex: savedSelectingZonePlayer,
+            zone: currentBoard.spawnZones.players[savedSelectingZonePlayer],
+        }
         for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
             makeSpawnZoneListing($(".me_sz_zoneList"),currentBoard.spawnZones.players[i],i);
         }
     }
     if (this.innerHTML == "Item Zones") {
+        selectedZone = {
+            type: "item",
+            zoneIndex: savedSelectingZoneItem,
+            zone: currentBoard.spawnZones.items[savedSelectingZoneItem],
+        }
         for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
             makeSpawnZoneListing($(".me_sz_zoneList"),currentBoard.spawnZones.items[i],i);
         }
     }
+    loadZoneOptions();
 
 })
 

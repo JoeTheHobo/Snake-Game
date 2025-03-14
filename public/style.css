@@ -3056,6 +3056,7 @@ height: 100%;
   flex-direction: column;
   align-items: center;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .me_zone_settings_title2 {
   font-size: 30px;
@@ -3111,6 +3112,7 @@ height: 100%;
   color: black;
   font-size: 20px;
   line-height: 35px;
+  padding: 3px;
   
 }
 
@@ -3278,3 +3280,8 @@ margin-top: 15px;
   margin-bottom: 2px;
 }
 
+
+.spawnZoneSelected {
+  color: blue !important;
+  border: 3px solid blue !important;
+}
