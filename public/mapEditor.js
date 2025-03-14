@@ -2364,6 +2364,7 @@ $(".me_zone_delete").on("click",function() {
                         zoneIndex: savedSelectingZonePlayer,
                         zone: currentBoard.spawnZones.players[savedSelectingZonePlayer],
                     }
+                    generateZoneListings("Player Zones");
                 }
                 if (selectedZone.type == "item") {
                     if (currentBoard.spawnZones.items.length == 1) return;
@@ -2374,6 +2375,7 @@ $(".me_zone_delete").on("click",function() {
                         zoneIndex: savedSelectingZoneItem,
                         zone: currentBoard.spawnZones.items[savedSelectingZoneItem],
                     }
+                    generateZoneListings("Item Zones");
                 }
                 
                 loadZoneOptions();
