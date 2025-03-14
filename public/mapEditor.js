@@ -119,7 +119,7 @@ function openMapEditor(boardComingIn) {
     selectedZone = false;
     selectedItemTags = [];
     showingZones = false;
-    me_ctx_zones.globalAlpha = 0.2;
+    me_ctx_zones.globalAlpha = 0.8;
     showingZones_PlayerTurnedMeOn = false;
     $(".show_zones_tool").classRemove("toolIsSelected");
     $(".redo_tool").style.opacity = "0.5";
@@ -695,6 +695,8 @@ function adjustCanvasPosition() {
     $("me_canvas2").style.marginTop = yChange + "px";
     $("me_canvas_background").style.marginLeft = xChange + "px";
     $("me_canvas_background").style.marginTop = yChange + "px";
+    $("me_canvas_zones").style.marginLeft = xChange + "px";
+    $("me_canvas_zones").style.marginTop = yChange + "px";
 }
 function changeZoom(delta) {
     if (delta < 0) zoom += 0.1;
