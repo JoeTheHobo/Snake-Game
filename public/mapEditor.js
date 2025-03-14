@@ -520,6 +520,7 @@ mousemovemethod = function (e) {
         if (zoneMouseMode == "move") {
             let xDif = mouseX - zoneMouseHelper;
             let yDif = mouseX - zoneMouseHelper;
+            console.log(xDif,yDif)
 
             selectedZone.zone.pos1.x += xDif;
             selectedZone.zone.pos2.x += xDif;
