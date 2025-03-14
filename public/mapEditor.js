@@ -2251,6 +2251,30 @@ $(".mezs_activateBoardStatus").on("click",function() {
     $(".popup_status_input").value = selectedZone.zone.activateWhenBoardStatus.count;
     $(".statusOption_" + selectedZone.zone.activateWhenBoardStatus.status).style.border = "2px solid blue";
 })
+$(".mezs_deactivateBoardStatus").on("click",function() {
+    showStatusMenu(["status","count","submit"],{
+        status: function(status,element) {
+            $(".nonPlayer").css({
+                border: "2px solid black", 
+            })
+            element.style.border = "2px solid blue";
+            selectedZone.zone.deactivateWhenBoardStatus.status = status;
+        },
+        number: function(value) {
+            selectedZone.zone.deactivateWhenBoardStatus.count = value;
+        },
+        final: function() {
+            $(".statusSelectionScreen").hide();
+        }
+    });
+    
+    $(".nonPlayer").css({
+        border: "2px solid black", 
+    })
+
+    $(".popup_status_input").value = selectedZone.zone.deactivateWhenBoardStatus.count;
+    $(".statusOption_" + selectedZone.zone.deactivateWhenBoardStatus.status).style.border = "2px solid blue";
+})
 function showStatusMenu(showing,funcs) {
     //Showing can equal ["status","playerStatus"]
     $(".status_popup_option").hide();
