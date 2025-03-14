@@ -428,11 +428,35 @@ mousemovemethod = function (e) {
     }
     if (selectedZone && showingZones && !mouseDown) {
         let zone = selectedZone.zone;
-        if (mouseX < zone.pos2.x+1 && mouseX > zone.pos1.x-1 && mouseY < zone.pos2.y+1 && mouseY > zone.pos1.y-1) {
+        if (mouseX < zone.pos2.x && mouseX > zone.pos1.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
             $(".me_canvasHolder").classAdd("moveCursor");
-
         } else {
             $(".me_canvasHolder").classRemove("moveCursor");
+        }
+        let verticalResizeCursor = false;
+        let horizontalResizeCursor = false;
+        if (mouseX == zone.pos1.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
+            horizontalResizeCursor = true;
+        }
+        if (mouseX == zone.pos2.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
+            horizontalResizeCursor = true;
+        }
+        if (mouseY == zone.pos1.y && mouseX < zone.pos2.x && mouseX > zone.pos1.x) {
+            verticalResizeCursor = true;
+        }
+        if (mouseY == zone.pos2.y && mouseX < zone.pos2.x && mouseX > zone.pos1.x) {
+            verticalResizeCursor = true;
+        }
+
+        if (verticalResizeCursor) {
+            $(".me_canvasHolder").classAdd("verticalResizeCursor");
+        } else {
+            $(".me_canvasHolder").classRemove("verticalResizeCursor");
+        }
+        if (horizontalResizeCursor) {
+            $(".me_canvasHolder").classAdd("horizontalResizeCursor");
+        } else {
+            $(".me_canvasHolder").classRemove("horizontalResizeCursor");
         }
     }
 }
@@ -449,7 +473,7 @@ $(".me_canvasHolder").on("mousedown",function() {
     mouseDown = true;
     if (selectedZone && showingZones) {
         let zone = selectedZone.zone;
-        if (mouseX < zone.pos2.x+1 && mouseX > zone.pos1.x-1 && mouseY < zone.pos2.y+1 && mouseY > zone.pos1.y-1) {
+        if (mouseX < zone.pos2.x && mouseX > zone.pos1.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
             $(".me_canvasHolder").classAdd("grabCursor");
             
         }

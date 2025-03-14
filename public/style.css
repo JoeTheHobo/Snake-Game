@@ -3293,3 +3293,9 @@ margin-top: 15px;
 .grabCursor {
   cursor: grabbing !important;
 }
+.verticalResizeCursor {
+  cursor: n-resize !important;
+}
+.horizontalResizeCursor {
+  cursor: e-resize !important;
+}
