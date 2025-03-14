@@ -2103,17 +2103,17 @@ function loadZoneOptions() {
     $(".mezs_active").checked = zone.active;
     $(".mezs_activate_whenTime").checked = zone.activateWhenTimePassed !== false;
     if ($(".mezs_activate_whenTime").checked) {
-        $(".mezs_activateTime").show();
+        $(".mezs_activateTime_row").show();
         $(".mezs_activateTime").value = zone.activateWhenTimePassed;
     } else {
-        $(".mezs_activateTime").hide();
+        $(".mezs_activateTime_row").hide();
     }
     $(".mezs_deactivate_whenTime").checked = zone.deactivateWhenTimePassed !== false;
     if ($(".mezs_deactivate_whenTime").checked) {
-        $(".mezs_deactivateTime").show();
+        $(".mezs_deactivateTime_row").show();
         $(".mezs_deactivateTime").value = zone.deactivateWhenTimePassed;
     } else {
-        $(".mezs_deactivateTime").hide();
+        $(".mezs_deactivateTime_row").hide();
     }
 
     if (selectedZone.type == "player") {
@@ -2122,10 +2122,10 @@ function loadZoneOptions() {
         $(".mezs_teamColor").style.background = _color(zone.team).ogColor;
         $(".mezs_limitSpawning").checked = zone.spawnCap !== false;
         if ($(".mezs_limitSpawning").checked) {
-            $(".mezs_spawnCap").show();
+            $(".mezs_spawnCap_row").show();
             $(".mezs_spawnCap").value = zone.spawnCap;
         } else {
-            $(".mezs_spawnCap").hide();
+            $(".mezs_spawnCap_row").hide();
         }
         $(".mezs_respawning").checked = zone.respawnHere;
     } else {
