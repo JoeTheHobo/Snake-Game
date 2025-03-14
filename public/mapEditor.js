@@ -1306,14 +1306,11 @@ function loadStatusSelectionScreen() {
                 setValue(isSelectingOneCell(),selectedItem.cell,selectedItem.path,this.status);
                 checkRenderThenRender();
                 loadObjectMenu();
+                $(".statusSelectionScreen").hide();
             }
             if (currentTab == "Spawn Zones") {
                 $(".statusSelectionScreen").func(this.status);
             }
-            
-            
-            
-            $(".statusSelectionScreen").hide();
         })
     }
 
@@ -2185,6 +2182,15 @@ $(".mezs_teamColor").on("click",function() {
         selectedZone.zone.team = status;
         loadZoneOptions();
         generateZoneListings("Player Zones");
+        $(".statusSelectionScreen").hide();
+    });
+})
+$(".mezs_activateBoardStatus").on("click",function() {
+    showStatusMenu(["status","count","submit"],function(status) {
+        selectedZone.zone.team = status;
+        loadZoneOptions();
+        generateZoneListings("Player Zones");
+        $(".statusSelectionScreen").hide();
     });
 })
 function showStatusMenu(showing,func) {

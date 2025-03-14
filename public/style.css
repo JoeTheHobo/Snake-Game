@@ -909,18 +909,6 @@ background: rgb(19, 19, 19);
 box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 z-index: 3;
 }
-.statusSelectionHolder {
-width: 100%;
-height: auto; /* Allow dynamic height based on content */
-display: flex;
-flex-direction: row;
-flex-wrap: wrap;
-align-items: flex-start; /* Align items to the top of the row */
-gap: 1px; /* Optional: Adjust spacing between items */
-}
-.statusSelectionHolder div:hover {
-border: 2px solid blue !important;
-}
 
 .me_packHolder {
 user-select: none;
@@ -3313,4 +3301,21 @@ margin-top: 15px;
 }
 .me_popup_boardSettings {
   display: none;
+}
+.statusSelectionHolder {
+width: 100%;
+height: auto; /* Allow dynamic height based on content */
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+align-items: flex-start; /* Align items to the top of the row */
+gap: 1px; /* Optional: Adjust spacing between items */
+}
+.statusSelectionHolder div:hover {
+border: 2px solid blue !important;
+}
+.popup_status_input {
+  width: 40px;
+  height: 30px;
+  
 }
