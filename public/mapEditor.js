@@ -119,6 +119,7 @@ function openMapEditor(boardComingIn) {
     selectedZone = false;
     selectedItemTags = [];
     showingZones = false;
+    me_ctx_zones.globalAlpha = 0.2;
     showingZones_PlayerTurnedMeOn = false;
     $(".show_zones_tool").classRemove("toolIsSelected");
     $(".redo_tool").style.opacity = "0.5";
@@ -175,8 +176,7 @@ function openMapEditor(boardComingIn) {
     },60000)
     addHistory();
 }
-function drawZone(x1, y1, x2, y2, color, opacity, zoneID) {
-    me_ctx_zones.globalAlpha = opacity;
+function drawZone(x1, y1, x2, y2, color, zoneID) {
     me_ctx_zones.fillStyle = color;
     me_ctx_zones.strokeStyle = _color(color).darken(10).ogColor;
 
@@ -189,7 +189,6 @@ function drawZone(x1, y1, x2, y2, color, opacity, zoneID) {
     me_ctx_zones.strokeRect(x, y, width, height);
 
     // Reset opacity for text
-    me_ctx_zones.globalAlpha = 1;
     me_ctx_zones.fillStyle = "black"; // Change as needed for contrast
     me_ctx_zones.font = `${16 * zoom}px Arial`; // Adjust font size as needed
     me_ctx_zones.textAlign = "center";
@@ -205,15 +204,11 @@ function renderZoneCanvas() {
 
     for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
         let zone = currentBoard.spawnZones.players[i];
-        let opacity = 0.3;
-        if (selectedZone?.type == "player" && selectedZone?.zoneIndex === i) opacity = 0.5;
-        drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color(zone.team).ogColor,0.5,zone.id);
+        drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color(zone.team).ogColor,zone.id);
     }
     for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
         let zone = currentBoard.spawnZones.items[i];
-        let opacity = 0.3;
-        if (selectedZone?.type == "item" && selectedZone?.zoneIndex === i) opacity = 0.5;
-        drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color("white").ogColor,opacity,zone.id);
+        drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color("white").ogColor,zone.id);
     }
 }
 function renderTopCanvas() {
