@@ -2108,10 +2108,10 @@ function loadZoneOptions() {
     } else {
         $(".mezs_activateTime").hide();
     }
-    $(".mezs_deactivate_whenTime").checked = zone.activateWhenTimePassed !== false;
+    $(".mezs_deactivate_whenTime").checked = zone.deactivateWhenTimePassed !== false;
     if ($(".mezs_deactivate_whenTime").checked) {
         $(".mezs_deactivateTime").show();
-        $(".mezs_deactivateTime").value = zone.activateWhenTimePassed;
+        $(".mezs_deactivateTime").value = zone.deactivateWhenTimePassed;
     } else {
         $(".mezs_deactivateTime").hide();
     }
@@ -2133,12 +2133,40 @@ function loadZoneOptions() {
         $(".me_z_s_item").show("flex");
     }
 }
+$(".mezs_active").on("change",function() {
+    currentZone.zone.active = this.checked;
+})
 $(".mezs_activate_whenTime").on("change",function() {
+    if (this.checked === false)
+        currentZone.zone.activateWhenTimePassed = false;
+    if (this.checked === true)
+        currentZone.zone.activateWhenTimePassed = 5;
     loadZoneOptions();
+})
+$(".mezs_activateTime").on("input",function() {
+    value = Number(this.value);
+    if (this.value < 0) return;
+    currentZone.zone.activateWhenTimePassed = value;
 })
 $(".mezs_deactivate_whenTime").on("change",function() {
+    if (this.checked === false)
+        currentZone.zone.deactivateWhenTimePassed = false;
+    if (this.checked === true)
+        currentZone.zone.deactivateWhenTimePassed = 5;
     loadZoneOptions();
 })
+$(".mezs_deactivateTime").on("input",function() {
+    value = Number(this.value);
+    if (this.value < 0) return;
+    currentZone.zone.deactivateWhenTimePassed = value;
+})
 $(".mezs_limitSpawning").on("change",function() {
+    if (this.checked === false)
+        currentZone.zone.spawnCap = false;
+    if (this.checked === true)
+        currentZone.zone.spawnCap = 3;
     loadZoneOptions();
+})
+$(".mezs_respawning").on("change",function() {
+    currentZone.zone.respawnHere = this.checked;
 })
