@@ -3057,7 +3057,7 @@ height: 100%;
   align-items: center;
   overflow-y: auto;
 }
-.me_zone_settings_title {
+.me_zone_settings_title2 {
   font-size: 30px;
   text-align: center;
 }
@@ -3072,6 +3072,8 @@ height: 100%;
  flex-direction: row;
  align-items: center;
  padding: 5px;
+ justify-content: center;
+ width: 100%;
 }
 .me_zone_settings_title {
   width: 50%;
@@ -3107,6 +3109,7 @@ height: 100%;
   background: white;
   color: black;
   font-size: 20px;
+  line-height: 35px;
   
 }
 
