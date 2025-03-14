@@ -445,7 +445,7 @@ $(".me_canvasHolder").on("click",function() {
     
 })
 
-$(".me_canvasHolder").on("mouseDown",function() {
+$(".me_canvasHolder").on("mousedown",function() {
     mouseDown = true;
     if (selectedZone && showingZones) {
         let zone = selectedZone.zone;
@@ -455,7 +455,7 @@ $(".me_canvasHolder").on("mouseDown",function() {
         }
     }
 })
-$(".me_canvasHolder").on("mouseUp",function() {
+$(".me_canvasHolder").on("mouseup",function() {
     mouseDown = false;
     if (selectedZone && showingZones) {
         $(".me_canvasHolder").classRemove("grabCursor");
@@ -613,7 +613,6 @@ $("me_canvas").on("mouseup",function(e) {
             clearSelection();
         }
         if (subTool == "brush") {
-            console.log(currentTab)
             if (selectedItem && !aligning) {
                 if (rightMouse || tool == "eraser") {
                     board.originalMap[mouseY][mouseX][selectedItem.type] = selectedItem.type == "tile" ? getTile("clear") : false;
