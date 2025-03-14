@@ -128,6 +128,8 @@ function openMapEditor(boardComingIn) {
     $(".redo_tool").style.opacity = "0.5";
     $(".undo_tool").style.opacity = "0.5";
     setScene("mapEditor");
+    $(".me_s_holder_tools").show("flex");
+    $(".me_s_holder_subtool").show("flex");
 
 
     //Load Board Settings HTML
@@ -428,7 +430,7 @@ mousemovemethod = function (e) {
         yChange += mouseDirection.y;
         adjustCanvasPosition();
     }
-    if (selectedZone && showingZones && !mouseDown) {
+    if (currentTab == "Spawn Zones" && showingZones && !mouseDown) {
         let zone = selectedZone.zone;
         if (mouseX < zone.pos2.x && mouseX > zone.pos1.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
             $(".me_canvasHolder").classAdd("moveCursor");
@@ -488,7 +490,7 @@ mousemovemethod = function (e) {
 
         
     }
-    if (selectedZone && showingZones && mouseDown && zoneMouseMode) {
+    if (currentTab == "Spawn Zones" && showingZones && mouseDown && zoneMouseMode) {
         if (zoneMouseMode == "resizeLeft") {
             selectedZone.zone.pos1.x = mouseX;
         }
@@ -546,7 +548,7 @@ $(".me_canvasHolder").on("click",function() {
 
 $(".me_canvasHolder").on("mousedown",function() {
     mouseDown = true;
-    if (selectedZone && showingZones) {
+    if (currentTab == "Spawn Zones" && showingZones) {
         let zone = selectedZone.zone;
         if (mouseX < zone.pos2.x && mouseX > zone.pos1.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
             $(".me_canvasHolder").classAdd("grabCursor");  
@@ -597,12 +599,11 @@ $(".me_canvasHolder").on("mousedown",function() {
         }
         
     }
-    console.log(zoneMouseMode)
 })
 $(".me_canvasHolder").on("mouseup",function() {
     mouseDown = false;
     zoneMouseMode = false;
-    if (selectedZone && showingZones) {
+    if (currentTab == "Spawn Zones" && showingZones) {
         $(".me_canvasHolder").classRemove("grabCursor");
     }
 })
@@ -1969,6 +1970,7 @@ function setObjectTab(type) {
         }
         loadObjectMenu();
         $(".me_s_holder_tools").show("flex");
+        $(".me_s_holder_subtool").show("flex");
         if (!showingZones_PlayerTurnedMeOn) runTool("showZones",false);
     }
     if (type == "Tiles") {
@@ -1982,6 +1984,7 @@ function setObjectTab(type) {
         }
         loadObjectMenu();
         $(".me_s_holder_tools").show("flex");
+        $(".me_s_holder_subtool").show("flex");
         if (!showingZones_PlayerTurnedMeOn) runTool("showZones",false);
     }
     if (type == "Spawn Zones") {
@@ -2011,6 +2014,7 @@ function setObjectTab(type) {
             }
         }
         $(".me_s_holder_tools").hide();
+        $(".me_s_holder_subtool").hide();
         loadZoneOptions();
     }
 }
