@@ -420,6 +420,9 @@ mousemovemethod = function (e) {
         yChange += mouseDirection.y;
         adjustCanvasPosition();
     }
+    if (selectedZone && showingZones) {
+        
+    }
 }
 $(".me_canvasHolder").on('mousemove', mousemovemethod);
 $(".me_canvasHolder").on("click",function() {
@@ -1747,6 +1750,7 @@ function setObjectTab(type) {
             path: false,
             cell: structuredClone(getItemById(savedSelectingItem)),
         }
+        selectedZone = false;
         loadObjectMenu();
         if (!showingZones_PlayerTurnedMeOn) runTool("showZones",false);
     }
@@ -1760,9 +1764,11 @@ function setObjectTab(type) {
             cell: structuredClone(getTileById(savedSelectingTile)),
         }
         loadObjectMenu();
+        selectedZone = false;
         if (!showingZones_PlayerTurnedMeOn) runTool("showZones",false);
     }
     if (type == "Spawn Zones") {
+        selectedItem = false;
         runTool("showZones",true);
         $(".me_sz_zoneList").innerHTML = "";
         if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {

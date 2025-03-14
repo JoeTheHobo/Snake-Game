@@ -3065,6 +3065,48 @@ height: 100%;
   display: flex;
   flex-direction: column;
 }
+.me_zone_settings_row {
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+ padding: 5px;
+}
+.me_zone_settings_title {
+  width: 50%;
+  text-align: left;
+  font-size: 20px;
+}
+.me_zone_settings_option {
+
+}
+.me_zone_setting_checkbox {
+  width: 35px;
+  height: 35px;
+  border-radius: 5px;
+}
+.statusOptions {
+  width: 35px;
+  height: 35px;
+  background: red;
+  cursor: url('./img/pointer.cur'), auto;
+  border-radius: 5px;
+  border: 2px solid black;
+  box-sizing: border-box;
+}
+.me_zone_settings_number {
+  width: 35px;
+  height: 35px;
+}
+.me_zone_settings_button {
+  width: max-content;
+  height: 35px;
+  border-radius: 5px;
+  cursor: url('./img/pointer.cur'), auto;
+  background: white;
+  color: black;
+  font-size: 20px;
+  
+}
 
 
 .me_ob_topRow {
@@ -3229,3 +3271,4 @@ margin-top: 15px;
   font-size: 20px;
   margin-bottom: 2px;
 }
+
