@@ -2354,18 +2354,20 @@ $(".me_zone_delete").on("click",function() {
     makePopUp([
         {type: "title",text: "Delete Zone?"},
         [
-            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Delete",onClick: () => {
+            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red", width: "100px",text:"Delete",onClick: () => {
                 if (selectedZone.type == "player") {
+                    if (currentBoard.spawnZones.players.length == 1) return;
                     currentBoard.spawnZones.players.splice(savedSelectingZonePlayer,1);
                     savedSelectingZonePlayer = 0;
                     selectedZone = {
-                        type: "item",
+                        type: "player",
                         zoneIndex: savedSelectingZonePlayer,
                         zone: currentBoard.spawnZones.players[savedSelectingZonePlayer],
                     }
                 }
                 if (selectedZone.type == "item") {
-                    currentBoard.spawnZones.players.splice(savedSelectingZoneItem,1);
+                    if (currentBoard.spawnZones.items.length == 1) return;
+                    currentBoard.spawnZones.items.splice(savedSelectingZoneItem,1);
                     savedSelectingZoneItem = 0;
                     selectedZone = {
                         type: "item",
@@ -2377,7 +2379,7 @@ $(".me_zone_delete").on("click",function() {
                 loadZoneOptions();
                 renderZoneCanvas();
             }},
-            {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"No!"},
+            {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", width: "100px",background: "green",text:"No!"},
         ],
     ],{
         exit: {
