@@ -1300,7 +1300,7 @@ function loadStatusSelectionScreen() {
         }
 
         contentHolder.className = className;
-        contentHolder.classAdd("statusOption_" + string)
+        contentHolder.classAdd("statusOption_" + string[0])
         
         contentHolder.on("click",function() {
             if (currentTab !== "Spawn Zones") {
@@ -2133,21 +2133,12 @@ function loadZoneOptions() {
     $(".mezs_activateOnBoardStatus").checked = zone.activateWhenBoardStatus !== false;
     if ($(".mezs_activateOnBoardStatus").checked) {
         $(".mezs_activateOnBoardStatus_row").show("flex");
-        zone.activateWhenBoardStatus = {
-            status: "red",
-            count: 1,
-        }
-
     } else {
         $(".mezs_activateOnBoardStatus_row").hide();
     }
     $(".mezs_deactivateOnBoardStatus").checked = zone.deactivateWhenBoardStatus !== false;
     if ($(".mezs_deactivateOnBoardStatus").checked) {
         $(".mezs_deactivateOnBoardStatus_row").show("flex");
-        zone.deactivateWhenBoardStatus = {
-            status: "red",
-            count: 1,
-        }
     } else {
         $(".mezs_deactivateOnBoardStatus_row").hide();
     }
@@ -2177,6 +2168,28 @@ $(".mezs_activate_whenTime").on("change",function() {
         selectedZone.zone.activateWhenTimePassed = false;
     if (this.checked === true)
         selectedZone.zone.activateWhenTimePassed = 5;
+    loadZoneOptions();
+})
+$(".mezs_activateOnBoardStatus").on("change",function() {
+    if (this.checked === false)
+        selectedZone.zone.activateWhenBoardStatus = false;
+    if (this.checked === true) {
+        selectedZone.zone.activateWhenBoardStatus = {
+            status: "red",
+            count: 3,
+        };
+    }
+    loadZoneOptions();
+})
+$(".mezs_deactivateOnBoardStatus").on("change",function() {
+    if (this.checked === false)
+        selectedZone.zone.deactivateWhenBoardStatus = false;
+    if (this.checked === true) {
+        selectedZone.zone.deactivateWhenBoardStatus = {
+            status: "red",
+            count: 3,
+        };
+    }
     loadZoneOptions();
 })
 $(".mezs_activateTime").on("input",function() {
