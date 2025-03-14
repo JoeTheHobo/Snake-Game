@@ -2350,3 +2350,40 @@ $(".me_sz_addButton").on("click",function() {
     loadZoneOptions();
     renderZoneCanvas();
 })
+$(".me_zone_delete").on("click",function() {
+    makePopUp([
+        {type: "title",text: "Delete Zone?"},
+        [
+            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Delete",onClick: () => {
+                if (selectedZone.type == "player") {
+                    currentBoard.spawnZones.players.splice(savedSelectingZonePlayer,1);
+                    savedSelectingZonePlayer = 0;
+                    selectedZone = {
+                        type: "item",
+                        zoneIndex: savedSelectingZonePlayer,
+                        zone: currentBoard.spawnZones.players[savedSelectingZonePlayer],
+                    }
+                }
+                if (selectedZone.type == "item") {
+                    currentBoard.spawnZones.players.splice(savedSelectingZoneItem,1);
+                    savedSelectingZoneItem = 0;
+                    selectedZone = {
+                        type: "item",
+                        zoneIndex: savedSelectingZoneItem,
+                        zone: currentBoard.spawnZones.items[savedSelectingZoneItem],
+                    }
+                }
+                
+                loadZoneOptions();
+                renderZoneCanvas();
+            }},
+            {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"No!"},
+        ],
+    ],{
+        exit: {
+            cursor: "url('./img/pointer.cur'), auto",
+        },
+        id: "deleteZonePopUp",
+    
+    })
+})

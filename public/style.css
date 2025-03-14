@@ -556,7 +556,7 @@ justify-content: center;
   cursor: url('./img/pointer.cur'), auto;
 
 }
-.gameModes_deleteButton {
+.gameModes_deleteButton,.me_zone_delete {
 width: 60%;
 height: 50px;
 border-radius: 5px;
