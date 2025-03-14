@@ -53,8 +53,9 @@ let savedSelectingItem = 1;
 let savedSelectingTile = 1;
 let showingZones = false;
 let showingZones_PlayerTurnedMeOn = false;
-let savedSelectingZonePlayer = 1;
-let savedSelectingZoneItem = 1;
+let savedSelectingZonePlayer = 0;
+let savedSelectingZoneItem = 0;
+let currentTab = "Items";
 
 let oldMap = [];
 
@@ -128,6 +129,7 @@ function openMapEditor(boardComingIn) {
     $(".undo_tool").style.opacity = "0.5";
     setScene("mapEditor");
 
+
     //Load Board Settings HTML
     $("me_name").value = board.name;
     if (!board.background) board.background = backgrounds[0];
@@ -166,6 +168,8 @@ function openMapEditor(boardComingIn) {
         path: false,
         cell: structuredClone(getItemById(savedSelectingItem)),
     }
+    $(".me_ob_tab").classRemove("me_ob_tab_selected");
+    $(".me_ob_tab")[0].classAdd("me_ob_tab_selected");
     loadObjectMenu();
 
     renderBackgroundCanvas();
@@ -444,7 +448,9 @@ $(".me_canvasHolder").on("click",function() {
 $(".me_canvasHolder").on("mouseDown",function() {
     mouseDown = true;
     if (selectedZone && showingZones) {
+        console.log(mouseDown)
         if (mouseX < zone.pos2.x+1 && mouseX > zone.pos1.x-1 && mouseY < zone.pos2.y+1 && mouseY > zone.pos1.y-1) {
+            console.log("ey")
             $(".me_canvasHolder").classAdd("grabCursor");
             
         }
@@ -529,6 +535,7 @@ $("me_canvas").on("mousemove",function(e) {
     }
     
     if (mouseDown !== "wheel") renderZoneCanvas()
+    renderTopCanvas();
 })
 $("me_canvas").on("mousedown",function(e) {
     var isRightMB;
@@ -1787,6 +1794,7 @@ $(".me_ob_sz_tr_tab").on("click",function() { //Player Zones / Item Zones Tabs O
 })
 
 function setObjectTab(type) {
+    currentTab = type;
     selectedObjectTab = type;
     $(".me_ob_column").hide();
     if (type == "Items" || type == "Tiles") $(".me_ob_itemsTiles").show("flex");
