@@ -553,8 +553,14 @@ $(".me_canvasHolder").on("mousedown",function() {
             if (!zoneMouseMode) {
                 zoneMouseMode = "move";
                 zoneMouseHelper = {
-                    pos1: zone.pos1,
-                    pos2: zone.pos2,
+                    pos1: {
+                        x: zone.pos1.x,
+                        y: zone.pos1.y,
+                    },
+                    pos2: {  
+                        x: zone.pos2.x,
+                        y: zone.pos2.y,
+                    },
                     anchor: {
                         x: mouseX,
                         y: mouseY,
