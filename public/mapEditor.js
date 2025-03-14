@@ -1302,11 +1302,18 @@ function loadStatusSelectionScreen() {
         contentHolder.className = className;
         
         contentHolder.on("click",function() {
-            setValue(isSelectingOneCell(),selectedItem.cell,selectedItem.path,this.status);
+            if (currentTab !== "Spawn Zones") {
+                setValue(isSelectingOneCell(),selectedItem.cell,selectedItem.path,this.status);
+                checkRenderThenRender();
+                loadObjectMenu();
+            }
+            if (currentTab == "Spawn Zones") {
+                $(".statusSelectionScreen").func(this.status);
+            }
             
-            checkRenderThenRender();
+            
+            
             $(".statusSelectionScreen").hide();
-            loadObjectMenu();
         })
     }
 
@@ -2171,9 +2178,19 @@ $(".mezs_respawning").on("change",function() {
     selectedZone.zone.respawnHere = this.checked;
 })
 $(".mezs_teamColor").on("click",function() {
-    showStatusMenu();
+    showStatusMenu(["status"],function(status) {
+        selectedZone.zone.team = status;
+        loadZoneOptions();
+    });
 })
-function showStatusMenu() {
-    
+function showStatusMenu(showing,func) {
+    //Showing can equal ["status","playerStatus"]
+    $(".status_popup_option").hide();
+    for (let i = 0; i < showing.length; i++) {
+        $(".status_popup_" + showing[i]).show("flex");
+    }
+
+    $(".statusSelectionScreen").func = func;
+
     $(".statusSelectionScreen").show("flex");
 }

@@ -847,23 +847,29 @@ text-align: center;
 margin-bottom: 5px;
 }
 .statusSelectionScreen {
-position: absolute;
-left: 0;
-right: 0;
-top: 0;
-bottom: 0;
-margin: auto;
-display: none;
-flex-direction: column;
-width: 400px;
-height: max-content;
-align-items: center;
-padding: 5px;
-padding-bottom: 10px;
-border-radius: 5px;
-background: rgb(19, 19, 19);
-box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-z-index: 3;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  display: none;
+  flex-direction: column;
+  width: 400px;
+  height: max-content;
+  align-items: center;
+  padding: 5px;
+  padding-bottom: 10px;
+  border-radius: 5px;
+  background: rgb(19, 19, 19);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  z-index: 3;
+}
+.status_popup_option {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
 }
 .gameModeSelectionScreen {
 position: absolute;
