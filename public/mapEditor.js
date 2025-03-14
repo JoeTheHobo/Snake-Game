@@ -414,6 +414,7 @@ var mouseDirection = {
 var oldMouseX = 0;
 var oldMouseY = 0;
 let zoneMouseMode = false;
+let zoneMouseHelper = false;
 mousemovemethod = function (e) {
     mouseDirection = {
         y: e.pageY - oldMouseY,
@@ -489,12 +490,48 @@ mousemovemethod = function (e) {
     }
     if (selectedZone && showingZones && mouseDown && zoneMouseMode) {
         if (zoneMouseMode == "resizeLeft") {
-            console.log("ey")
             selectedZone.zone.pos1.x = mouseX;
+        }
+        if (zoneMouseMode == "resizeRight") {
+            selectedZone.zone.pos2.x = mouseX;
+        }
+        if (zoneMouseMode == "resizeTop") {
+            selectedZone.zone.pos1.y = mouseY;
+        }
+        if (zoneMouseMode == "resizeBottom") {
+            selectedZone.zone.pos2.y = mouseY;
+        }
+        if (zoneMouseMode == "resizetl") {
+            selectedZone.zone.pos1.x = mouseX;
+            selectedZone.zone.pos1.y = mouseY;
+        }
+        if (zoneMouseMode == "resizetr") {
+            selectedZone.zone.pos2.x = mouseX;
+            selectedZone.zone.pos1.y = mouseY;
+        }
+        if (zoneMouseMode == "resizebl") {
+            selectedZone.zone.pos1.x = mouseX;
+            selectedZone.zone.pos2.y = mouseY;
+        }
+        if (zoneMouseMode == "resizebr") {
+            selectedZone.zone.pos2.x = mouseX;
+            selectedZone.zone.pos2.y = mouseY;
+        }
+        if (zoneMouseMode == "move") {
+            let xDif = mouseX - zoneMouseHelper;
+            let yDif = mouseX - zoneMouseHelper;
+
+            selectedZone.zone.pos1.x += xDif;
+            selectedZone.zone.pos2.x += xDif;
+            selectedZone.zone.pos1.y += yDif;
+            selectedZone.zone.pos2.y += yDif;
         }
 
 
         if (selectedZone.zone.pos1.x > selectedZone.zone.pos2.x) selectedZone.zone.pos1.x = selectedZone.zone.pos2.x;
+        if (selectedZone.zone.pos2.x < selectedZone.zone.pos1.x) selectedZone.zone.pos2.x = selectedZone.zone.pos1.x;
+        if (selectedZone.zone.pos1.y > selectedZone.zone.pos2.y) selectedZone.zone.pos1.y = selectedZone.zone.pos2.y;
+        if (selectedZone.zone.pos2.y < selectedZone.zone.pos1.y) selectedZone.zone.pos2.y = selectedZone.zone.pos1.y;
         renderZoneCanvas();
     }
 }
@@ -513,7 +550,13 @@ $(".me_canvasHolder").on("mousedown",function() {
         let zone = selectedZone.zone;
         if (mouseX < zone.pos2.x && mouseX > zone.pos1.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
             $(".me_canvasHolder").classAdd("grabCursor");  
-            if (!zoneMouseMode) zoneMouseMode = "move";
+            if (!zoneMouseMode) {
+                zoneMouseMode = "move";
+                zoneMouseHelper = {
+                    x: mouseX,
+                    y: mouseY,
+                }
+            }
         }
         
         if (!zoneMouseMode) {
