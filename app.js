@@ -275,7 +275,7 @@ io.on('connection', (socket) => {
             }],
             spawnZones: {
                 players: [{
-                    id: 0,
+                    id: "Player Zone: #0000",
                     pos1: {
                         x: 0,
                         y: 0,
@@ -295,7 +295,7 @@ io.on('connection', (socket) => {
                     deactivateWhenTimePassed: false, //Seconds
                 }],
                 items: [{
-                    id: 0,
+                    id: "Item Zone: #0000",
                     pos1: {
                         x: 0,
                         y: 0,

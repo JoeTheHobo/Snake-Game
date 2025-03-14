@@ -2291,7 +2291,7 @@ function showStatusMenu(showing,funcs) {
 $(".me_sz_addButton").on("click",function() {
     if (selectedZone.type == "player") {
         currentBoard.spawnZones.players.push({
-                id: currentBoard.spawnZones.players.length,
+                id: "Player Zone #" + rnd(1000,9999),
                 pos1: {
                     x: Math.round(currentBoard.width/4),
                     y: Math.round(currentBoard.height/4),
@@ -2321,7 +2321,7 @@ $(".me_sz_addButton").on("click",function() {
     }
     if (selectedZone.type == "item") {
         currentBoard.spawnZones.items.push({
-            id: currentBoard.spawnZones.items.length,
+            id: "Item Zone #" + rnd(1000,9999),
             pos1: {
                 x: Math.round(currentBoard.width/4),
                 y: Math.round(currentBoard.height/4),

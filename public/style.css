@@ -3026,9 +3026,13 @@ height: 100%;
 }
 .me_sz_zoneList {
   width: 100%;
-  flex-grow: 1;
+  height: 50%;
+  max-height: 50%;
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
+
 }
 
 .spawnZoneHolder {
