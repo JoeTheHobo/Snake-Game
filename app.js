@@ -284,7 +284,7 @@ io.on('connection', (socket) => {
                         x: width-1,
                         y: height-1,
                     },
-                    team: "white",
+                    team: "red",
                     spawnCap: false,
                     respawnHere: true,
 

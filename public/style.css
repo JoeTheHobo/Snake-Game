@@ -3282,6 +3282,11 @@ margin-top: 15px;
 
 
 .spawnZoneSelected {
-  color: blue !important;
-  border: 3px solid blue !important;
+  border: 3px solid rgb(60, 60, 255) !important;
+}
+.spawnZoneSelected > .spawnZoneID {
+  color: rgb(60, 60, 255) !important;
+}
+.moveCursor {
+  cursor: grab;
 }

@@ -423,7 +423,12 @@ mousemovemethod = function (e) {
         adjustCanvasPosition();
     }
     if (selectedZone && showingZones) {
-
+        let zone = selectedZone.zone;
+        if (mouseX < zone.pos2.x && mouseX > zone.pos1.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
+            $(".me_canvasHolder").classAdd("moveCursor");
+        } else {
+            $(".me_canvasHolder").classRemove("moveCursor");
+        }
     }
 }
 $(".me_canvasHolder").on('mousemove', mousemovemethod);
@@ -1707,6 +1712,9 @@ function makeSpawnZoneListing(holder,zone,i) {
     if (spawnZoneHolder.type == "player") {
         if (savedSelectingZonePlayer === i) spawnZoneHolder.classAdd("spawnZoneSelected")
     }
+    if (spawnZoneHolder.type == "item") {
+        if (savedSelectingZoneItem === i) spawnZoneHolder.classAdd("spawnZoneSelected")
+    }
     spawnZoneHolder.i = i;
     spawnZoneHolder.on("click",function() {
         $(".spawnZoneHolder").classRemove("spawnZoneSelected");
@@ -1926,14 +1934,14 @@ function loadZoneOptions() {
         $(".mezs_activateTime").show();
         $(".mezs_activateTime").value = zone.activateWhenTimePassed;
     } else {
-        $(".mezs_activateTime").show();
+        $(".mezs_activateTime").hide();
     }
     $(".mezs_deactivate_whenTime").checked = zone.activateWhenTimePassed !== false;
     if ($(".mezs_deactivate_whenTime").checked) {
         $(".mezs_deactivateTime").show();
         $(".mezs_deactivateTime").value = zone.activateWhenTimePassed;
     } else {
-        $(".mezs_deactivateTime").show();
+        $(".mezs_deactivateTime").hide();
     }
 
     if (selectedZone.type == "player") {
@@ -1945,7 +1953,7 @@ function loadZoneOptions() {
             $(".mezs_spawnCap").show();
             $(".mezs_spawnCap").value = zone.spawnCap;
         } else {
-            $(".mezs_spawnCap").show();
+            $(".mezs_spawnCap").hide();
         }
         $(".mezs_respawning").checked = zone.respawnHere;
     } else {
