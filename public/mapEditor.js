@@ -514,7 +514,6 @@ $(".me_canvasHolder").on("mousedown",function() {
         let zone = selectedZone.zone;
         if (mouseX < zone.pos2.x && mouseX > zone.pos1.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
             $(".me_canvasHolder").classAdd("grabCursor");  
-            console.log(zoneMouseMode)
             if (!zoneMouseMode) zoneMouseMode = "move";
         }
         
@@ -546,6 +545,7 @@ $(".me_canvasHolder").on("mousedown",function() {
         }
         
     }
+    console.log(zoneMouseMode)
 })
 $(".me_canvasHolder").on("mouseup",function() {
     mouseDown = false;
