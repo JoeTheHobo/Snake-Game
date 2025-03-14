@@ -120,6 +120,7 @@ function openMapEditor(boardComingIn) {
     selectedItemTags = [];
     showingZones = false;
     me_ctx_zones.globalAlpha = 0.8;
+    console.log(    me_ctx_zones.globalAlpha)
     showingZones_PlayerTurnedMeOn = false;
     $(".show_zones_tool").classRemove("toolIsSelected");
     $(".redo_tool").style.opacity = "0.5";
