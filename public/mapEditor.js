@@ -1204,7 +1204,14 @@ function loadObjectMenu() {
             contentHolder.type = type;
             contentHolder.on("click",function() {
                 selectedItem.path = this.path;
-                $(".statusSelectionScreen").show("flex");
+                
+                showStatusMenu(["status"],{status: function(status) {
+                    setValue(isSelectingOneCell(),selectedItem.cell,selectedItem.path,status);
+                    checkRenderThenRender();
+                    loadObjectMenu();
+                    $(".statusSelectionScreen").hide();
+                    $(".statusSelectionScreen").hide();
+                }});
             })
         }
     }
@@ -1304,15 +1311,7 @@ function loadStatusSelectionScreen() {
         contentHolder.classAdd("statusOption_" + string[0])
         
         contentHolder.on("click",function() {
-            if (currentTab !== "Spawn Zones") {
-                setValue(isSelectingOneCell(),selectedItem.cell,selectedItem.path,this.status);
-                checkRenderThenRender();
-                loadObjectMenu();
-                $(".statusSelectionScreen").hide();
-            }
-            if (currentTab == "Spawn Zones") {
-                $(".statusSelectionScreen").funcs.status(this.status,this);
-            }
+            $(".statusSelectionScreen").funcs.status(this.status,this);
         })
     }
 
@@ -1969,6 +1968,11 @@ function setObjectTab(type) {
             cell: structuredClone(getItemById(savedSelectingItem)),
         }
         loadObjectMenu();
+        $(".me_canvasHolder").classRemove("verticalResizeCursor");
+        $(".me_canvasHolder").classRemove("horizontalResizeCursor");
+        $(".me_canvasHolder").classRemove("nsCursor");
+        $(".me_canvasHolder").classRemove("ewCursor");
+        $(".me_canvasHolder").classRemove("grabCursor");
         $(".me_s_holder_tools").show("flex");
         $(".me_s_holder_subtool").show("flex");
         if (!showingZones_PlayerTurnedMeOn) runTool("showZones",false);
@@ -1983,6 +1987,11 @@ function setObjectTab(type) {
             cell: structuredClone(getTileById(savedSelectingTile)),
         }
         loadObjectMenu();
+        $(".me_canvasHolder").classRemove("verticalResizeCursor");
+        $(".me_canvasHolder").classRemove("horizontalResizeCursor");
+        $(".me_canvasHolder").classRemove("nsCursor");
+        $(".me_canvasHolder").classRemove("ewCursor");
+        $(".me_canvasHolder").classRemove("grabCursor");
         $(".me_s_holder_tools").show("flex");
         $(".me_s_holder_subtool").show("flex");
         if (!showingZones_PlayerTurnedMeOn) runTool("showZones",false);
