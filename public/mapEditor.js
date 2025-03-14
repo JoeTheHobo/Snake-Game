@@ -421,7 +421,7 @@ mousemovemethod = function (e) {
         adjustCanvasPosition();
     }
     if (selectedZone && showingZones) {
-        
+
     }
 }
 $(".me_canvasHolder").on('mousemove', mousemovemethod);
@@ -1706,7 +1706,9 @@ function makeSpawnZoneListing(holder,zone,i) {
         selectedZone = {
             type: this.type,
             zoneIndex: this.i,
+            zone: zone,
         }
+        loadZoneOptions();
     })
 
 }
@@ -1750,7 +1752,6 @@ function setObjectTab(type) {
             path: false,
             cell: structuredClone(getItemById(savedSelectingItem)),
         }
-        selectedZone = false;
         loadObjectMenu();
         if (!showingZones_PlayerTurnedMeOn) runTool("showZones",false);
     }
@@ -1764,22 +1765,35 @@ function setObjectTab(type) {
             cell: structuredClone(getTileById(savedSelectingTile)),
         }
         loadObjectMenu();
-        selectedZone = false;
         if (!showingZones_PlayerTurnedMeOn) runTool("showZones",false);
     }
     if (type == "Spawn Zones") {
-        selectedItem = false;
         runTool("showZones",true);
         $(".me_sz_zoneList").innerHTML = "";
         if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {
             for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
                 makeSpawnZoneListing($(".me_sz_zoneList"),currentBoard.spawnZones.players[i],i);
             }
+            if (!selectedZone) {
+                selectedZone = {
+                    type: "player",
+                    zoneIndex: 0,
+                    zone: currentBoard.spawnZones.players[0],
+                }
+            }
         } else {
             for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
                 makeSpawnZoneListing($(".me_sz_zoneList"),currentBoard.spawnZones.items[i],i);
             }
+            if (!selectedZone) {
+                selectedZone = {
+                    type: "item",
+                    zoneIndex: 0,
+                    zone: currentBoard.spawnZones.items[0],
+                }
+            }
         }
+        loadZoneOptions();
     }
 }
 function loadTagsList(allowedIds,itemList,tagList) {
@@ -1881,3 +1895,49 @@ function getTileById(id) {
         if (tiles[i].id == id) return tiles[i];
     }
 }
+function loadZoneOptions() {
+    if (!selectedZone) return;
+    let zone = selectedZone.zone;
+
+    $(".mezs_active").checked = zone.active;
+    $(".mezs_activate_whenTime").checked = zone.activateWhenTimePassed !== false;
+    if ($(".mezs_activate_whenTime").checked) {
+        $(".mezs_activateTime").show();
+        $(".mezs_activateTime").value = zone.activateWhenTimePassed;
+    } else {
+        $(".mezs_activateTime").show();
+    }
+    $(".mezs_deactivate_whenTime").checked = zone.activateWhenTimePassed !== false;
+    if ($(".mezs_deactivate_whenTime").checked) {
+        $(".mezs_deactivateTime").show();
+        $(".mezs_deactivateTime").value = zone.activateWhenTimePassed;
+    } else {
+        $(".mezs_deactivateTime").show();
+    }
+
+    if (selectedZone.type == "player") {
+        $(".me_z_s_item").hide();
+        $(".me_z_s_player").show("flex");
+        $(".mezs_teamColor").style.background = _color(zone.team).ogColor;
+        $(".mezs_limitSpawning").checked = zone.spawnCap !== false;
+        if ($(".mezs_limitSpawning").checked) {
+            $(".mezs_spawnCap").show();
+            $(".mezs_spawnCap").value = zone.spawnCap;
+        } else {
+            $(".mezs_spawnCap").show();
+        }
+        $(".mezs_respawning").checked = zone.respawnHere;
+    } else {
+        $(".me_z_s_player").hide();
+        $(".me_z_s_item").show("flex");
+    }
+}
+$(".mezs_activate_whenTime").on("change",function() {
+    loadZoneOptions();
+})
+$(".mezs_deactivate_whenTime").on("change",function() {
+    loadZoneOptions();
+})
+$(".mezs_limitSpawning").on("change",function() {
+    loadZoneOptions();
+})

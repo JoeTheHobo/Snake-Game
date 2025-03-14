@@ -3076,9 +3076,10 @@ height: 100%;
  width: 100%;
 }
 .me_zone_settings_title {
-  width: 50%;
+  width: 70%;
   text-align: left;
   font-size: 20px;
+  margin-right: 1px;
 }
 .me_zone_settings_option {
   box-sizing: border-box;
