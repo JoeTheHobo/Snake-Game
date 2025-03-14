@@ -2194,7 +2194,9 @@ $(".mezs_teamColor").on("click",function() {
 $(".mezs_activateBoardStatus").on("click",function() {
     showStatusMenu(["status","count","submit"],{
         status: function(status,element) {
-            $(".nonPlayer").style.border = "2px solid black";
+            $(".nonPlayer").css({
+                border: "2px solid black", 
+            })
             element.style.border = "2px solid blue";
             selectedZone.zone.activateWhenBoardStatus.status = status;
         },
@@ -2204,13 +2206,15 @@ $(".mezs_activateBoardStatus").on("click",function() {
         final: function() {
             $(".statusSelectionScreen").hide();
         }
-    },function() {
-        $(".nonPlayer").style.border = "2px solid black";
-
-        if (selectedZone.zone.activateWhenBoardStatus.status) {
-            
-        }
     });
+    
+    $(".nonPlayer").css({
+        border: "2px solid black", 
+    })
+
+    if (selectedZone.zone.activateWhenBoardStatus.status) {
+
+    }
 })
 function showStatusMenu(showing,funcs) {
     //Showing can equal ["status","playerStatus"]
@@ -2218,6 +2222,8 @@ function showStatusMenu(showing,funcs) {
     for (let i = 0; i < showing.length; i++) {
         $(".status_popup_" + showing[i]).show("flex");
     }
+
+
 
     $(".statusSelectionScreen").funcs = funcs;
 
