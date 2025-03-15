@@ -1100,7 +1100,7 @@ $("me_button").on("click",function() {
         {type: "title",text: "Save Changes?"},
         [
             {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Discard Changes",onClick: () => {
-                setScene("newMenu");
+                setScene("Menu");
                 loadBoardsScreen();
             }},
             {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Save Changes",onClick: () => {
@@ -2178,6 +2178,11 @@ function loadZoneOptions() {
 }
 $(".mezs_active").on("change",function() {
     selectedZone.zone.active = this.checked;
+})
+$(".mezs_spawnCap").on("change",function() {
+    value = Number(this.value);
+    if (this.value < 0) return;
+    selectedZone.zone.spawnCap = value;
 })
 $(".mezs_activate_whenTime").on("change",function() {
     if (this.checked === false)
