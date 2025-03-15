@@ -1272,6 +1272,10 @@ function findEmptySpotInZone(zone,lobby) {
         if (counter > (map.length * map[0].length) ) {
             return false;
         }
+        if (x > lobby.board.map[0].length-1) continue;
+        if (x < 0) continue;
+        if (y < 0) continue;
+        if (y > lobby.board.map.length-1) continue;
         if (map[y][x].item !== false) continue;
 
         checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
