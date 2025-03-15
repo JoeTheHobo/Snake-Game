@@ -1154,153 +1154,146 @@ function fixTileDifferences(currentBoard,map) {
         map[d.y][d.x].tile = pos;
     }
 }
-function spawn(lobby,name,generateRandomItem = true,counting = false,playAudio = true) {
-    let currentBoard = lobby.board;
-    let activePlayers = lobby.inGamePlayers; 
-    let isPlayer = name.isPlayer;
-    let itemIndex = false;
+function spawn(lobby,thingToSpawn,gameStart = false) {
+    if (simple.type(thingToSpawn) == "string") spawnItem(lobby,thingToSpawn,gameStart)
+    if (thingToSpawn?.type == "player") spawnPlayer(lobby,thingToSpawn,gameStart);
+}
+function spawnItem(lobby,itemName,gameStart = false) {
+    let board = lobby.board;
+
+    //Find Item
     let item;
-    if (!isPlayer) {
-        for (let i = 0; i < lobby.items.length; i++) {
-            if (lobby.items[i].name == name) {
-                itemIndex = i;
-                item = lobby.items[i];
-            }
-        }
-        if (item.spawnCount == undefined) item.spawnCount = 1;
-        if (counting == false) {
-            for (let i = 0; i < item.spawnCount; i++) {
-                spawn(lobby,name,generateRandomItem,true,playAudio);
-            }
+    for (let i = 0; i < lobby.items.length; i++) {
+        if (lobby.items[i].name == itemName) item = lobby.items[i];
+    }
+    if (!item) {
+        console.log("Couldn't Find Item",537)
+        return;
+    }
+
+    //Check That Item Can Spawn
+    if (item.spawnLimit !== false && item.spawnLimit === 0) {
+        console.log("Item Spawned To Much");
+        return;
+    } 
+
+    //Spawn Item
+    for (let i = 0; i < item.spawnCount; i++) {
+        let spot = findEmptySpotInZones(lobby,board.spawnZones.items,board.map,"item",item);
+        if (!spot) {
+            console.log("No Available Spots")
             return;
         }
-        if (item.spawnLimit !== false) item.spawnLimit--;
+
+        runItemFunction(lobby,false,item,"onSpawn",{x:spot.x,y:spot.y},{playAudio: gameStart === false});
+        board.map[y][x].item = structuredClone(item);
+        board.map[y][x].item.pos = {
+            x: spot.x,
+            y: spot.y,
+        }
+        lobby.updateCells.push({
+            x: spot.x,
+            y: spot.y,
+            item: board.map[spot.y][spot.x].item,
+        })
+        if (item.tags.includes("Tunnels")) {
+            board.location_tunnels.push(
+                {
+                    x: spot.x,
+                    y: spot.y,
+                    name: item.name,
+                }
+            )
+        }
     }
+
+    if (item.spawnLimit !== false) item.spawnLimit--;
+}
+function spawnPlayer(lobby,player,gameStart = false) {
+    let board = lobby.board;
+
+    let spot = findEmptySpotInZones(lobby,board.spawnZones.players,board.map,"player",gameStart,player);
+    if (!spot) {
+        console.log("No Available Spots")
+        return;
+    }
+    
+    player.pos.x = spot.x;
+    player.pos.y = spot.y;
+    player.team = spot.team;
+    lobby.snakeMap[spot.y][spot.x].push({
+        index: player.index,
+        type: "head",
+        siblings: [],
+        x: spot.x,
+        y: spot.y,
+    });
+    lobby.updateSnakeCells.push(lobby.snakeMap[spot.y][spot.x]);
+}
+function findEmptySpotInZones(lobby,zones,type,extra,extra2) {
+    let shuffledZones = simple.shuffle(zones);
+
+    for (let i = 0; i < shuffledZones.length; i++) {
+        let z = shuffledZones[i];
+        if (!z.active) continue;
+
+        if (type == "item") if (z.itemsThatCantSpawnHere.includes(extra.id)) continue;
+        if (type == "player") {
+            let gameStart = extra;
+            let player = extra2;
+            if (!gameStart) {
+                if (player.team !== z.team) continue;
+                if (!z.respawnHere) continue;
+            }
+            if (gameStart) {
+                if (z.spawnCap !== false && z.spawnCap < 1) continue;
+            }
+        }
+
+        let spot = findEmptySpotInZone(z,lobby)
+
+        if (!spot) continue;
         
-    let counter = 0;
-    let foundSpot = false;
-    let x,y,team = "white";
-    let allSpawns = simple.shuffle(currentBoard.location_spawns);
-    while (foundSpot == false) {
-        if (isPlayer) {
-            findingSpawner: for (let k = 0; k < allSpawns.length; k++) {
-                let playerOnIt = false;
-                for (let i = 0; i < activePlayers.length; i++) {
-                    if (activePlayers[i] == false) continue;
-                    if (activePlayers[i].pos.x == allSpawns[k].x && activePlayers[i].pos.y == allSpawns[k].y) playerOnIt = true;
-                }
-                if (playerOnIt) continue;
+        return spot;
+    }
 
-                let playerTeam = name.team;
-                let spawnTeam = allSpawns[k].item.spawnPlayerTeam || "white";
+    return false;
+}
+function findEmptySpotInZone(zone,lobby) {
+    let map = lobby.board.map;
+    let activePlayers = lobby.inGamePlayers;
 
-                if (playerTeam !== "white" && spawnTeam !== playerTeam) continue;
-                
-                x = allSpawns[k].x;
-                y = allSpawns[k].y;
-                team = playerTeam !== "white" ? playerTeam : spawnTeam;
-                foundSpot = true;
-                break findingSpawner;
-            }
-        }
+    let x,y,foundSpot = false;
+    while (foundSpot === false) {
+        x = simple.rnd(zone.pos1.x,zone.pos2.x)-1;
+        y = simple.rnd(zone.pos1.y,zone.pos2.y)-1;
         
-        if (foundSpot === false) {
-            x = simple.rnd(currentBoard.map[0].length)-1;
-            y = simple.rnd(currentBoard.map.length)-1;
-            if (currentBoard.map[y][x].item == false && currentBoard.map[y][x].tile.canSpawn) {
-                foundSpot = true;
-                checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
-                    if (activePlayers[j] == false) continue;
-                    let distance = calculateDistance(currentBoard,activePlayers[j].pos.x,activePlayers[j].pos.y,x,y);
-                    if (distance < 5) {
-                        foundSpot = false;
-                        break checkingDistanceFromPlayersHead;
-                    }
-                    for (let p = 0; p < activePlayers[j].tail.length; p++) {
-                        if (activePlayers[j].tail[p].x == x && activePlayers[j].tail[p].y == y) {
-                            foundSpot = false;
-                            break checkingDistanceFromPlayersHead;
-                        }
-                    }
-                }
-            }
-            counter++;
-            if (counter > (currentBoard.map.length * currentBoard.map[0].length) ) {
-                foundSpot = "couldn't find any";
-            }
+        counter++;
+        if (counter > (map.length * map[0].length) ) {
+            return false;
         }
-    }
+        if (map[y][x].item !== false) continue;
 
-    if (foundSpot == "couldn't find any") {
-        findingAnySpot: for (let k = 0; k < currentBoard.map.length; k++) {
-            for (let j = 0; j < currentBoard.map[0].length; j++) {
-                if (currentBoard.map[k][j].item == false && currentBoard.map[k][j].tile.canSpawn) {
-                    let foundGoodSpot = true;
-                    checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
-                        if (activePlayers[j] == false) continue;
-                        let distance = calculateDistance(currentBoard,activePlayers[j].pos.x,activePlayers[j].pos.y,x,y);
-                        if (distance < 5) {
-                            foundGoodSpot = false;
-                            break checkingDistanceFromPlayersHead;
-                        }
-                        for (let p = 0; p < activePlayers[j].tail.length; p++) {
-                            if (activePlayers[j].tail[p].x == x && activePlayers[j].tail[p].y == y) {
-                                foundGoodSpot = false;
-                                break checkingDistanceFromPlayersHead;
-                            }
-                        }
-                    }
-                    if (foundGoodSpot) {{
-                        x = j;
-                        y = k;
-                        foundSpot = true;
-                        break findingAnySpot;
-                    }}
+        checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
+            if (activePlayers[j] == false) continue;
+            let distance = calculateDistance(lobby.board,activePlayers[j].pos.x,activePlayers[j].pos.y,x,y);
+            if (distance < 5) {
+                break checkingDistanceFromPlayersHead;
+            }
+            for (let p = 0; p < activePlayers[j].tail.length; p++) {
+                if (activePlayers[j].tail[p].x == x && activePlayers[j].tail[p].y == y) {
+                    break checkingDistanceFromPlayersHead;
                 }
             }
         }
-    }
 
-    if (foundSpot == true) {
-        if (isPlayer) {
-            name.pos.x = x;
-            name.pos.y = y;
-            name.team = team;
-            lobby.snakeMap[y][x].push({
-                index: name.index,
-                type: "head",
-                siblings: [],
-                x: x,
-                y: y,
-            });
-            lobby.updateSnakeCells.push(lobby.snakeMap[y][x]);
-        } else {
-            runItemFunction(lobby,name,lobby.items[itemIndex],"onSpawn",{x:x,y:y},{playAudio: playAudio});
-            currentBoard.map[y][x].item = structuredClone(lobby.items[itemIndex]);
-            currentBoard.map[y][x].item.pos = {
-                x: x,
-                y: y,
-            }
-            lobby.updateCells.push({
-                x: x,
-                y: y,
-                item: currentBoard.map[y][x].item,
-            })
-            if (item.pack == "Tunnels") {
-                currentBoard.location_tunnels.push(
-                    {
-                        x: x,
-                        y: y,
-                        name: item.name,
-                    }
-                )
-            }
-            if (generateRandomItem && item.onEat?.spawnRandomItem) specialItemManager(lobby);
+        return {
+            x: x,
+            y: y,
+            team: zone.team,
         }
-    } else {
-        console.log("No Available Spot To Spawn");
     }
-};
+}
 
 //Copied From Main.js
 function getLocations(lobby) {
@@ -1526,7 +1519,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         item.switchStatus = false;
     }
 
-    if (collision.switchBaseImgTag) {
+    if (collision.switchBaseImgTag && player) {
         item.baseImgTags[collision.switchBaseImgTag.index] = item.baseImgTags[collision.switchBaseImgTag.index] == collision.switchBaseImgTag.switch[0] ? collision.switchBaseImgTag.switch[1] : collision.switchBaseImgTag.switch[0];
         lobby.updateCells.push({
             x: player.pos.x,
@@ -1534,20 +1527,20 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             item: item,
         })
     }
-    if (collision.switchBoardStatus) {
+    if (collision.switchBoardStatus && player) {
         if (item.switchStatus === true) {
             addBoardStatus(lobby,collision.switchBoardStatus,player);
         } else {
             removeBoardStatus(lobby,collision.switchBoardStatus,player);
         }
     }
-    if (collision.addBoardStatus) {
+    if (collision.addBoardStatus && player) {
         addBoardStatus(lobby,collision.addBoardStatus,player);
     }
-    if (collision.removeBoardStatus) {
+    if (collision.removeBoardStatus && player) {
         removeBoardStatus(lobby,collision.removeBoardStatus,player);
     }
-    if (collision.setBoardStatus) {
+    if (collision.setBoardStatus && player) {
         let status = collision.setBoardStatus;
         if (collision.setBoardStatus == "*P") status = player.team;
         if (item.sendingBoardStatus === status) return;
@@ -1559,14 +1552,14 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         item.sendingBoardStatus = status;
         addBoardStatus(lobby,status,player);
     }
-    if (collision.equip) {
+    if (collision.equip && player) {
         let oldItem = structuredClone(player.equiped[collision.equip]);
         player.equiped[collision.equip] = structuredClone(item);
         if (oldItem) {
             returnItem = oldItem;
         }
     }
-    if (collision.setBaseImgTag) {
+    if (collision.setBaseImgTag && player) {
         let value = collision.setBaseImgTag.value;
         if (value == "*P") value = player.team;
         item.baseImgTags[collision.setBaseImgTag.index] = value;
@@ -1577,7 +1570,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             item: item,
         })
     }
-    if (collision.growPlayer > 0) {
+    if (collision.growPlayer > 0 && player) {
         growPlayer(player,collision.growPlayer);
         
         if (player.accountID == socketID) {
@@ -1598,22 +1591,22 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             }
         }
     }
-    if (collision.giveTurbo) {
+    if (collision.giveTurbo && player) {
         player.turboActive = true;
         player.turboDuration = Number(collision.giveTurbo.duration);
         player.moveSpeed = Number(collision.giveTurbo.moveSpeed);
     }
-    if (collision.addStatus) {
+    if (collision.addStatus && player) {
         for (let i = 0; i < collision.addStatus.length; i++) {
             addPlayerStatus(lobby,player,collision.addStatus[i])
         }
     }
-    if (collision.removeStatus) {
+    if (collision.removeStatus && player) {
         for (let i = 0; i < collision.removeStatus.length; i++) {
             removePlayerStatus(lobby,player,collision.removeStatus[i])
         }
     }
-    if (collision.winGame === true) {
+    if (collision.winGame === true && player) {
         player.winGame = true;
     }
     if (collision.canvasFilter) {
@@ -1622,13 +1615,13 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     if (collision.playSound && item.playSounds && settings?.playAudio && lobby.playSounds) {
         lobby.playSounds.push("sounds/" + item.soundFolder + "/" + item.soundFolder + "_" + collision.playSound[0] + "_" + simple.rnd(collision.playSound[1]) + ".mp3");
     }
-    if (collision.killPlayer) {
+    if (collision.killPlayer && player) {
         deletePlayer(lobby,player,false,false,true);
     }
     if (collision.spawnRandomItem) {
         specialItemManager(lobby);
     }
-    if (collision.deleteMe) {
+    if (collision.deleteMe && player) {
         if (item.type == "item") {
             currentBoard.map[player.pos.y][player.pos.x].item = false;
             lobby.updateCells.push({
@@ -1638,7 +1631,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             })
         }
     }
-    if (collision.pickUp) {
+    if (collision.pickUp && player) {
         for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
             if (player.items[k] == "empty") {
                 player.items[k] = structuredClone(item);
@@ -1654,10 +1647,10 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             }
         }
     }
-    if (collision.dealDamage) {
+    if (collision.dealDamage && player) {
         deletePlayer(lobby,player,false,collision.dealDamage);
     }
-    if (collision.removePlayerItem) {
+    if (collision.removePlayerItem && player) {
         for (let j = 0; j < collision.removePlayerItem.length; j++) {
             let count = collision.removePlayerItem[j].count;
             for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
@@ -1672,7 +1665,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         }
         
     }
-    if (collision.teleport) {
+    if (collision.teleport && player) {
         if (!player.justTeleported) {
             findingPortal: for (let z = 0; z < currentBoard.map.length; z++) {
                 for (let h = 0; h < currentBoard.map[z].length; h++) {
@@ -1691,7 +1684,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             player.justTeleported = false;
         }
     }
-    if (collision.checkStatus) {
+    if (collision.checkStatus && player) {
         let check = collision.checkStatus.check;
         let passedCheck = true;
         if (check.playerHasEmptySlot === true) {
@@ -2262,6 +2255,7 @@ function newPlayer(socketID,accountName,accountTag) {
         fireItem: "r",
         dropItem: "f",
         toggleTeamsKey: "Shift",
+        type: "player",
         name: simple.rnd(playerNames1) + simple.rnd(playerNames2),
         color: simple.rnd(360), //Hue
         color2: simple.rnd(300), //Saturation
