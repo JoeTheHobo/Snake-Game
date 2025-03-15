@@ -105,7 +105,7 @@ function renderCells() {
                         }
                     }
                 }
-                
+                console.log(value,equals)
                 if (subtract > 0) value -= subtract;
                 if (equals !== false) if (value === equals) pass = true;
                 if (lessOrEqual !== false) if (value <= lessOrEqual) pass = true;
