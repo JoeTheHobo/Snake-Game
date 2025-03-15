@@ -1440,7 +1440,7 @@ function checkBoardStatusOnZones(lobby) {
         if (zone.deactivateWhenBoardStatus !== false) {
             if (allStatus[zone.deactivateWhenBoardStatus.status] >= zone.deactivateWhenBoardStatus.count) {
                 zone.deactivateWhenBoardStatus = false;
-                zone.active = true;
+                zone.active = false;
             }
         }
     }
