@@ -848,10 +848,14 @@ io.on('connection', (socket) => {
         io.emit("startingGame", lobby,onlineAccounts[socket.id].player);
         
         updateClientPositions(lobby)
-
+        lobby.checkingSpawnTimers = true;
+        lobby.gameStartedAt = false;
         lobby.gameLoop = function() {
+            if (this.gameStartedAt === false) this.gameStartedAt = Date.now(); 
             lobby.lobby_gameLoop_start = Date.now();
             server_movePlayers(this,socket.id)
+
+            if (this.checkingSpawnTimers) checkSpawnStatusTimers(this);
 
             updateClientPositions(this);
 
@@ -1182,7 +1186,7 @@ function spawnItem(lobby,itemName,gameStart = false) {
     for (let i = 0; i < item.spawnCount; i++) {
         let spot = findEmptySpotInZones(lobby,lobby.spawnZones.items,"item",item);
         if (!spot) {
-            console.log("No Available Spots")
+            console.log("No Available Spots For Items")
             return;
         }
 
@@ -1211,11 +1215,12 @@ function spawnItem(lobby,itemName,gameStart = false) {
     if (item.spawnLimit !== false) item.spawnLimit--;
 }
 function spawnPlayer(lobby,player,gameStart = false) {
-    let board = lobby.board;
-
     let spot = findEmptySpotInZones(lobby,lobby.spawnZones.players,"player",gameStart,player);
     if (!spot) {
-        console.log("No Available Spots")
+        console.log("No Available Spots For Player")
+        setTimeout(function() {
+            spawnPlayer(lobby,player,gameStart)
+        },1000);
         return;
     }
     
@@ -1747,6 +1752,35 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function checkSpawnStatusTimers(lobby) {
+    let spawnList = lobby.spawnZones;
+    let timeSinceStart = (Date.now() - lobby.gameStartedAt)/1000;
+
+    let foundDelays = false;
+    for (let i = 0; i < spawnList.length; i++) {
+        let zone = spawnList[i];
+
+        if (zone.activateWhenTimePassed !== false) {
+            if (timeSinceStart > zone.activateWhenTimePassed) {
+                zone.activateWhenTimePassed = false;
+                zone.active = false;
+            } else {
+                foundDelays = true;
+            }
+        }
+        if (zone.deactivateWhenTimePassed !== false) {
+            if (timeSinceStart > zone.deactivateWhenTimePassed) {
+                zone.deactivateWhenTimePassed = false;
+                zone.active = false;
+            } else {
+                foundDelays = true;
+            }
+        }
+    }
+
+    if (!foundDelays) lobby.checkingSpawnTimers = false;
+
+}
 function rerenderSnake(lobby,player) {
     if (simple.type(player) == "array") {
         for (let i = 0; i < player.length; i++) {
