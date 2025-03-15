@@ -2420,7 +2420,7 @@ $(".closeBoardSettings").on("click",function() {
 })
 $(".mezs_itemSpawning").on("click",function() {
     loadItemSpawning();
-    $(".me_itemSpawning_popup").show();
+    $(".me_itemSpawning_popup").show("flex");
     
 })
 function loadItemSpawning() {
