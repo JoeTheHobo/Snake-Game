@@ -1272,8 +1272,8 @@ function findEmptySpotInZone(zone,lobby) {
 
     let x,y,foundSpot = false,counter = 0;
     findingSpot: while (foundSpot === false) {
-        x = simple.rnd(zone.pos1.x,zone.pos2.x)-1;
-        y = simple.rnd(zone.pos1.y,zone.pos2.y)-1;
+        x = simple.rnd(zone.pos1.x,zone.pos2.x);
+        y = simple.rnd(zone.pos1.y,zone.pos2.y);
         
         counter++;
         if (counter > (map.length * map[0].length) ) {
@@ -1761,9 +1761,11 @@ function checkSpawnStatusTimers(lobby) {
         let zone = spawnList[i];
 
         if (zone.activateWhenTimePassed !== false) {
+            console.log(1,timeSinceStart,zone.activateWhenTimePassed)
             if (timeSinceStart > zone.activateWhenTimePassed) {
+                console.log("HA")
                 zone.activateWhenTimePassed = false;
-                zone.active = false;
+                zone.active = true;
             } else {
                 foundDelays = true;
             }
