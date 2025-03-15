@@ -343,29 +343,6 @@ items.push({
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: ["Tunnels"],
 })
-//Spawn v
-items.push({
-    name: "spawn", //(string) Name Of Item
-    id: 13,
-    baseImg: "items/spawn",
-    baseImgTags: [],
-    type: "item",
-    showInEditor: true,
-    onStartSpawn: 0,
-    gameModeMenu_selectedItem: false,
-    specialSpawnWeight: 0,
-    playSounds: true, //If Item should be muted or not;
-    visible: false, //If show when playing
-    spawnCount: 1, //How Many To Spawn In When Spawning
-    spawnLimit: false, //How many times can spawn durring session
-    spawnPlayerHere: true, //Spawn players on this tile
-    spawnPlayerTeam: "white", //Tells which player to spawn here. "player" for all players
-    renderStatusPath: ["spawnPlayerTeam"], //Path to which status to render on top of item, leave blank if no render
-    onSpawn: { //When item spawns run these
-        deleteMe: true,
-    },
-    tags: ["Mechanics"],
-})
 
 items.push({
     name: "clear", //(string) Name Of Item

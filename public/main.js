@@ -106,7 +106,7 @@ function renderCells() {
                         }
                     }
                 }
-                
+
                 if (subtract > 0) value -= subtract;
                 if (equals !== false) if (value === equals) pass = true;
                 if (lessOrEqual !== false) if (value <= lessOrEqual) pass = true;
@@ -744,100 +744,6 @@ function startTimer() {
 
 let productionType;
 let production = {
-    //Local Player
-    gameLoop: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 100,
-        type: "dom",
-        showIF: "local",
-        dataType: "ms",
-    },
-    renderCells: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 100,
-        type: "dom",
-        showIF: "local",
-        dataType: "ms",
-    },
-    movePlayers: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 100,
-        type: "dom",
-        showIF: "local",
-        dataType: "ms",
-    },
-    setPlayerPos: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 100,
-        type: "sub",
-        showIF: "local",
-        dataType: "ms",
-    },
-    checkingPlayerCollision: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 100,
-        type: "sub",
-        showIF: "local",
-        dataType: "ms",
-    },
-    testingItems: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 100,
-        type: "sub",
-        showIF: "local",
-        dataType: "ms",
-    },
-    growingTail: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 100,
-        type: "sub",
-        showIF: "local",
-        dataType: "ms",
-    },
-    deleteSnakeCells: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 100,
-        type: "dom",
-        showIF: "local",
-        dataType: "ms",
-    },
-    renderPlayers: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 100,
-        type: "dom",
-        showIF: "local",
-        dataType: "ms",
-    },
-    renderTail: {
-        times: [],
-        average: 0,
-        timeStart: 0,
-        cap: 100,
-        type: "sub",
-        showIF: "local",
-        dataType: "ms",
-    },
-
-
-
     //Server Play
     ping: {
         times: [],
@@ -997,94 +903,6 @@ function updateProduction() {
         if (entry[1].dataType == "mb") $("production_" + entry[0]).innerHTML = ((entry[1].average/1000000).toFixed(2)) + "mb";
         if (entry[1].dataType == "count") $("production_" + entry[0]).innerHTML = (entry[1].value);
     }
-}
-function gameLoop() {
-    let timestamp = Date.now();
-    if (!isActiveGame) return;
-    deltaTime = (timestamp - lastTimestamp) / perfectFrameTime;
-    lastTimestamp = timestamp;
-
-    //First Person View
-    if (cameraFollowPlayer) {
-        updateCanvasPositionToPlayer(activePlayers[0]);
-        
-        const rect = $("render_background").getBoundingClientRect();
-        const canvasWidth = $("render_background").clientWidth;
-        const canvasHeight = $("render_background").clientHeight;
-        $(".firstPersonCanvas_tl").css({
-            left: (rect.left-canvasWidth) + "px",
-            top: (rect.top-canvasHeight) + "px",
-        })
-        $(".firstPersonCanvas_tm").css({
-            left: (rect.left) + "px",
-            top: (rect.top-canvasHeight) + "px",
-        })
-        $(".firstPersonCanvas_tr").css({
-            left: (rect.right) + "px",
-            top: (rect.top-canvasHeight) + "px",
-        })
-        $(".firstPersonCanvas_lm").css({
-            left: (rect.left-canvasWidth) + "px",
-            top: (rect.top) + "px",
-        })
-        $(".firstPersonCanvas_rm").css({
-            left: (rect.right) + "px",
-            top: (rect.top) + "px",
-        })
-        $(".firstPersonCanvas_bl").css({
-            left: (rect.left-canvasWidth) + "px",
-            top: (rect.bottom) + "px",
-        })
-        $(".firstPersonCanvas_bm").css({
-            left: (rect.left) + "px",
-            top: (rect.bottom) + "px",
-        })
-        $(".firstPersonCanvas_br").css({
-            left: (rect.right) + "px",
-            top: (rect.bottom) + "px",
-        })
-
-        ctx_firstPerson_master.clearRect(0,0,canvasWidth,canvasHeight)
-        ctx_firstPerson_master.drawImage($("render_background"),0,0)
-        ctx_firstPerson_master.drawImage($("render_tiles"),0,0)
-        ctx_firstPerson_master.drawImage($("render_items"),0,0)
-        ctx_firstPerson_master.drawImage($("render_players"),0,0)
-        ctx_firstPerson_master.drawImage($("render_overhangs"),0,0)
-
-        $(".firstPersonMap").getContext("2d").clearRect(0,0,$(".firstPersonMap").width,$(".firstPersonMap").height);
-        $(".firstPersonMap").getContext("2d").drawImage($(".firstPersonCanvas_master"),0,0,$(".firstPersonMap").width,$(".firstPersonMap").height);
-
-        let ctxs = [ctx_firstPerson_tl,ctx_firstPerson_tm,ctx_firstPerson_tr,ctx_firstPerson_lm,ctx_firstPerson_rm,ctx_firstPerson_bl,ctx_firstPerson_bm,ctx_firstPerson_br];
-        for (let i = 0; i < ctxs.length; i++) {
-            ctxs[i].clearRect(0,0,canvasWidth,canvasHeight);
-            ctxs[i].drawImage($(".firstPersonCanvas_master"),0,0)
-        }
-    }
-
-    production.gameLoop.timeStart = performance.now();
-
-    production.renderCells.timeStart = performance.now();
-    renderCells();
-    production.renderCells.times.push(performance.now() - production.renderCells.timeStart);
-
-    production.movePlayers.timeStart = performance.now();
-    //movePlayers();
-    production.movePlayers.times.push(performance.now() - production.movePlayers.timeStart);
-    
-    production.deleteSnakeCells.timeStart = performance.now();
-    deleteSnakeCells();
-    production.deleteSnakeCells.times.push(performance.now() - production.deleteSnakeCells.timeStart);
-
-    production.renderPlayers.timeStart = performance.now();
-    renderPlayers();
-    production.renderPlayers.times.push(performance.now() - production.renderPlayers.timeStart);
-
-    production.gameLoop.times.push(performance.now() - production.gameLoop.timeStart);
-
-    renderEmotes();
-
-    updateProduction();
-    if (!gameEnd && !gamePaused && !killSwitch) setTimeout(() => gameLoop(), Math.max(0, (1000/60) - (Date.now() - timestamp)));;//requestAnimationFrame(gameLoop);
 }
 function serverGameLoop() {
     deltaTime = 1;
