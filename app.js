@@ -1266,7 +1266,7 @@ function findEmptySpotInZone(zone,lobby) {
     let activePlayers = lobby.inGamePlayers;
 
     let x,y,foundSpot = false,counter = 0;
-    while (foundSpot === false) {
+    findingSpot: while (foundSpot === false) {
         x = simple.rnd(zone.pos1.x,zone.pos2.x)-1;
         y = simple.rnd(zone.pos1.y,zone.pos2.y)-1;
         
@@ -1280,15 +1280,15 @@ function findEmptySpotInZone(zone,lobby) {
         if (y > lobby.board.map.length-1) continue;
         if (map[y][x].item !== false) continue;
 
-        checkingDistanceFromPlayersHead: for (let j = 0; j < activePlayers.length; j++) {
+        for (let j = 0; j < activePlayers.length; j++) {
             if (activePlayers[j] == false) continue;
             let distance = calculateDistance(lobby.board,activePlayers[j].pos.x,activePlayers[j].pos.y,x,y);
             if (distance < 5) {
-                break checkingDistanceFromPlayersHead;
+                continue findingSpot;
             }
             for (let p = 0; p < activePlayers[j].tail.length; p++) {
                 if (activePlayers[j].tail[p].x == x && activePlayers[j].tail[p].y == y) {
-                    break checkingDistanceFromPlayersHead;
+                    continue findingSpot;
                 }
             }
         }
