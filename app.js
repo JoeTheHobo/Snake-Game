@@ -830,7 +830,7 @@ io.on('connection', (socket) => {
         for (let i = 0; i < lobby.items.length; i++) {
             let item = lobby.items[i];
             for (let j = 0; j < Number(item.onStartSpawn); j++) {
-                spawn(lobby,item.name,false);
+                spawn(lobby,item.name,true);
             }
         }
 
@@ -1242,6 +1242,7 @@ function findEmptySpotInZones(lobby,zones,type,extra,extra2) {
             let gameStart = extra;
             let player = extra2;
             if (!gameStart) {
+                console.log(player.team,z.team)
                 if (player.team !== z.team) continue;
                 if (!z.respawnHere) continue;
             }
