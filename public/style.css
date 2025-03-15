@@ -3308,7 +3308,7 @@ margin-top: 15px;
   flex-direction: column;
   align-items: center;
 
-  
+  color: white;
   position: absolute;
   left: 0;
   right: 0;
@@ -3339,4 +3339,15 @@ gap: 1px; /* Optional: Adjust spacing between items */
   width: 40px;
   height: 30px;
   outline: none;
+}
+.closeBoardSettings {
+  width: max-content;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: url('./img/pointer.cur'), auto;
+  background: rgb(12, 124, 12);
+  height: 30px;
+  line-height: 30px;
+  font-size: 20px;
+  color: black;
 }
