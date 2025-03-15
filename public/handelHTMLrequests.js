@@ -159,7 +159,7 @@ $(".cbp_cancel").on("click",function() {
 $(".cbp_tab").on("click",function() {
     let idStart = this.id.subset(0,"_\\before");
     if (idStart == "cgm") 
-        if (localAccount.isInLobby) {
+        if (!localAccount.isInMapEditor) {
             loadGameModesToPopup(this.id.subset("_\\after","end"),function(gameMode) {
                 socket.emit("changeServerGameMode",gameMode);
             })

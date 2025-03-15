@@ -505,6 +505,12 @@ function hideScenes() {
 function setScene(scene,lobby) {
     hideScenes();
     $("scene_" + scene).show("flex");
+    localAccount.isInMapEditor = false;
+    showingGameTips = false;
+    
+    if (scene == "mapEditor") {
+        localAccount.isInMapEditor = true;
+    }
     if (scene == "newMenu") {
         loadServersHTML();
         $(".account_name").innerHTML = localAccount.id; 
@@ -520,8 +526,6 @@ function setScene(scene,lobby) {
     if (scene == "lobby") {
         showingGameTips = true;
         showGameTips();
-    } else {
-        showingGameTips = false;
     }
 }
 
