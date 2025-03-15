@@ -1320,11 +1320,13 @@ function setValue(selectingOneCell,item,path,value,returnValue = false) {
     if (item.tie && returnValue !== "tie") ties = item.tie;
     
     if (selectingOneCell) {
-        setNestedValue(
-            currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type],
-            path,
-            value
-        );
+        if (currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type].id === item.id) {
+            setNestedValue(
+                currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type],
+                path,
+                value
+            );
+        }
     }
     
     if (ties) {
