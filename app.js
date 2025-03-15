@@ -1241,9 +1241,7 @@ function findEmptySpotInZones(lobby,zones,type,extra,extra2) {
         if (type == "player") {
             let gameStart = extra;
             let player = extra2;
-            console.log(gameStart)
             if (!gameStart) {
-                console.log(player.team,z.team)
                 if (player.team !== z.team) continue;
                 if (!z.respawnHere) continue;
             }
