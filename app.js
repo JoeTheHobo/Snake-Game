@@ -1179,7 +1179,7 @@ function spawnItem(lobby,itemName,gameStart = false) {
 
     //Spawn Item
     for (let i = 0; i < item.spawnCount; i++) {
-        let spot = findEmptySpotInZones(lobby,board.spawnZones.items,board.map,"item",item);
+        let spot = findEmptySpotInZones(lobby,board.spawnZones.items,"item",item);
         if (!spot) {
             console.log("No Available Spots")
             return;
@@ -1212,7 +1212,7 @@ function spawnItem(lobby,itemName,gameStart = false) {
 function spawnPlayer(lobby,player,gameStart = false) {
     let board = lobby.board;
 
-    let spot = findEmptySpotInZones(lobby,board.spawnZones.players,board.map,"player",gameStart,player);
+    let spot = findEmptySpotInZones(lobby,board.spawnZones.players,"player",gameStart,player);
     if (!spot) {
         console.log("No Available Spots")
         return;
@@ -1241,6 +1241,7 @@ function findEmptySpotInZones(lobby,zones,type,extra,extra2) {
         if (type == "player") {
             let gameStart = extra;
             let player = extra2;
+            console.log(gameStart)
             if (!gameStart) {
                 console.log(player.team,z.team)
                 if (player.team !== z.team) continue;
