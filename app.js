@@ -1759,6 +1759,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
                 let count = 0;
                 for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
                     let playerSlot = player.items[k];
+                    console.log(playerSlot,check.playerHasItem.name)
                     if (playerSlot == check.playerHasItem.name) count++;
                 }
                 if (count < check.playerHasItem.count) pass = false;
