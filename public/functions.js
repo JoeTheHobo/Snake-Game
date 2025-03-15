@@ -507,7 +507,7 @@ function setScene(scene,lobby) {
     $("scene_" + scene).show("flex");
     localAccount.isInMapEditor = false;
     showingGameTips = false;
-    
+
     if (scene == "mapEditor") {
         localAccount.isInMapEditor = true;
     }
@@ -1978,6 +1978,7 @@ function selectAllPlayerBoardsPopUp(sendTo) {
     $(".allPlayerBoardsPopup").show("flex");
 }
 function setNestedValue(obj, path, value, toReturn = false) {
+    console.log(obj,path)
     let usePath = structuredClone(path);
     let lastKey = usePath.pop(); // Remove and store the last key
     if (value === "_LAST_") {
