@@ -1413,6 +1413,9 @@ function getArrayOfSelection() {
     return newBoard;
 }
 function runTool(type,desiredValue) {
+    if (type == "boardSettings") {
+        $(".me_popup_boardSettings").show("flex");
+    }
     if (type == "reflectX") {
         let newBoard = flipHorizontally(getArrayOfSelection());
         let {upY,leftX,bottomY,rightX} = getDimensions(selectedCells.start,selectedCells.end);
