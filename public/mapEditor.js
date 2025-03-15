@@ -2429,7 +2429,7 @@ function loadItemSpawning() {
 
     for (let i = 0; i < items.length; i++) {
         let item = items[i];
-        if (!allowedIds.includes(item.id)) continue;
+        if (!localAccount.allowedItemIds.includes(item.id)) continue;
 
         let div = holder.create("div");
         div.className = "me_itemHolder2 hover";
@@ -2439,7 +2439,7 @@ function loadItemSpawning() {
         img.src = getImageFromItem(item.type,item,"src");
 
         div.on("click",function() {
-            
+
         })
     }
 }
