@@ -332,6 +332,7 @@ function renderMapEditorCanvas(renderEverything = false) {
         let count = itemCounts.reduce((acc, item) => (item === ("item_" + items[i].name) ? acc + 1 : acc), 0);
         if (count === (items[i].spawnLimit*items[i].spawnCount)) {
             if (selectedItem.cell.name === items[i].name && selectedItem.type == "item") selectedItem.canEdit = false;
+            console.log(items[i]);
             $("me_item_" + items[i].name).classAdd("me_fullSpawnLimit");
         }
     }
