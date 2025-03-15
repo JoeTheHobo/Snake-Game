@@ -824,7 +824,7 @@ io.on('connection', (socket) => {
 
         for (let i = 0; i < lobby.players.length; i++) {
             let player = onlineAccounts[lobby.players[i]].player;
-            spawn(lobby,player);
+            spawn(lobby,player,true);
         }
 
         for (let i = 0; i < lobby.items.length; i++) {
