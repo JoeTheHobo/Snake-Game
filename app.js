@@ -725,6 +725,7 @@ io.on('connection', (socket) => {
         lobby.updateCells = [];
         lobby.updateSnakeCells = [];
         lobby.updatePoints = [];
+        lobby.spawnZones = structuredClone(lobby.board.spawnZones);
         lobby.board.renderEmotesList = [];
         lobby.board.location_tunnels = [];
         lobby.board.location_status = [];
@@ -1179,7 +1180,7 @@ function spawnItem(lobby,itemName,gameStart = false) {
 
     //Spawn Item
     for (let i = 0; i < item.spawnCount; i++) {
-        let spot = findEmptySpotInZones(lobby,board.spawnZones.items,"item",item);
+        let spot = findEmptySpotInZones(lobby,lobby.spawnZones.items,"item",item);
         if (!spot) {
             console.log("No Available Spots")
             return;
@@ -1212,7 +1213,7 @@ function spawnItem(lobby,itemName,gameStart = false) {
 function spawnPlayer(lobby,player,gameStart = false) {
     let board = lobby.board;
 
-    let spot = findEmptySpotInZones(lobby,board.spawnZones.players,"player",gameStart,player);
+    let spot = findEmptySpotInZones(lobby,lobby.spawnZones.players,"player",gameStart,player);
     if (!spot) {
         console.log("No Available Spots")
         return;
@@ -1247,6 +1248,7 @@ function findEmptySpotInZones(lobby,zones,type,extra,extra2) {
             }
             if (gameStart) {
                 if (z.spawnCap !== false && z.spawnCap < 1) continue;
+                if (z.spawnCap !== false && z.spawnCap > 0) z.spawnCap--;
             }
         }
 
