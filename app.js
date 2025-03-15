@@ -1186,8 +1186,8 @@ function spawnItem(lobby,itemName,gameStart = false) {
         }
 
         runItemFunction(lobby,false,item,"onSpawn",{x:spot.x,y:spot.y},{playAudio: gameStart === false});
-        board.map[y][x].item = structuredClone(item);
-        board.map[y][x].item.pos = {
+        board.map[spot.y][spot.x].item = structuredClone(item);
+        board.map[spot.y][spot.x].item.pos = {
             x: spot.x,
             y: spot.y,
         }
