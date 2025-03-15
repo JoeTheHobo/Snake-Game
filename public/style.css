@@ -3327,7 +3327,7 @@ margin-top: 15px;
   background: #181818;
   border-radius: 5px;
   width: 40%;
-  height: 30%;
+  height: max-content;
   padding: 20px;
   z-index: 501;
 }
@@ -3379,4 +3379,8 @@ gap: 1px; /* Optional: Adjust spacing between items */
   line-height: 30px;
   font-size: 25px;
   color: white;
+  margin-top: auto;
+}
+.notAllowedItem {
+  filter: sepia(100%) hue-rotate(-50deg) saturate(300%);
 }

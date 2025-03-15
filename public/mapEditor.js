@@ -2438,8 +2438,22 @@ function loadItemSpawning() {
         img.className = "me_itemImage2";
         img.src = getImageFromItem(item.type,item,"src");
 
-        div.on("click",function() {
+        if (!selectedZone.zone.itemsThatCantSpawnHere.includes(item.id)) {
+            this.classRemove("notAllowedItem")
+        } else {
+            this.classAdd("notAllowedItem")
+        }
 
+        div.on("click",function() {
+            if (this.classList.contains("notAllowedItem")) {
+                this.classRemove("notAllowedItem")
+                for (let i = 0; i < selectedZone.zone.itemsThatCantSpawnHere.length; i++) {
+                    if (selectedZone.zone.itemsThatCantSpawnHere[i] === item.id) selectedZone.zone.itemsThatCantSpawnHere.splice(i,1);
+                }
+            } else {
+                this.classAdd("notAllowedItem")
+                selectedZone.zone.itemsThatCantSpawnHere.push(item.id);
+            }
         })
     }
 }
