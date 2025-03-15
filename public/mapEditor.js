@@ -2439,11 +2439,10 @@ function loadItemSpawning() {
         img.className = "me_itemImage2";
         img.src = getImageFromItem(item.type,item,"src");
 
-        console.log(selectedZone.zone.itemsThatCantSpawnHere,item.id);
         if (!selectedZone.zone.itemsThatCantSpawnHere.includes(item.id)) {
-            this.classRemove("notAllowedItem")
+            div.classRemove("notAllowedItem")
         } else {
-            this.classAdd("notAllowedItem")
+            div.classAdd("notAllowedItem")
         }
 
         div.on("click",function() {
