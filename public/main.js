@@ -83,8 +83,8 @@ function renderCells() {
                 let equals = false;
                 let lessOrEqual = false;
                 console.log();
-                if (_type(mapCell.hideWhen[j].equals).type == "number") equals = mapCell.hideWhen[j].equals;
-                if (_type(mapCell.hideWhen[j].lessOrEqual).type == "number") lessOrEqual = mapCell.hideWhen[j].lessOrEqual;
+                if (mapCell.hideWhen[j].equals !== undefined) equals = mapCell.hideWhen[j].equals;
+                if (mapCell.hideWhen[j].lessOrEqual !== undefined) lessOrEqual = mapCell.hideWhen[j].lessOrEqual;
 
                 if (mapCell.hideWhen[j].subtract) {
                     if (mapCell.hideWhen[j].subtract[0] === "boardStatusCount") {
