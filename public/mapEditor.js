@@ -2439,6 +2439,7 @@ function loadItemSpawning() {
         img.className = "me_itemImage2";
         img.src = getImageFromItem(item.type,item,"src");
 
+        console.log(selectedZone.zone.itemsThatCantSpawnHere,item.id);
         if (!selectedZone.zone.itemsThatCantSpawnHere.includes(item.id)) {
             this.classRemove("notAllowedItem")
         } else {
