@@ -1759,7 +1759,7 @@ function checkSpawnStatusTimers(lobby) {
     let foundDelays = false;
     for (let i = 0; i < spawnList.length; i++) {
         let zone = spawnList[i];
-
+        console.log(zone.activateWhenTimePassed);
         if (zone.activateWhenTimePassed !== false) {
             console.log(1,timeSinceStart,zone.activateWhenTimePassed)
             if (timeSinceStart > zone.activateWhenTimePassed) {
