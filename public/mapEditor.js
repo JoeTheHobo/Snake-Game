@@ -1322,7 +1322,7 @@ function setValue(selectingOneCell,item,path,value,returnValue = false) {
     if (selectingOneCell) {
         setNestedValue(
             currentBoard.originalMap[selectedCells.start.y][selectedCells.start.x][selectedItem.type],
-            selectedItem.path,
+            path,
             this.value
         );
     }
