@@ -1977,7 +1977,7 @@ function selectAllPlayerBoardsPopUp(sendTo) {
 
     $(".allPlayerBoardsPopup").show("flex");
 }
-function s(obj, path, value, toReturn = false) {
+function setNestedValue(obj, path, value, toReturn = false) {
     let usePath = structuredClone(path);
     let lastKey = usePath.pop(); // Remove and store the last key
     if (value === "_LAST_") {
