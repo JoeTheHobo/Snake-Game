@@ -82,8 +82,9 @@ function renderCells() {
                 let subtract = 0;
                 let equals = false;
                 let lessOrEqual = false;
-                if (mapCell.hideWhen[j].equals) equals = mapCell.hideWhen[j].equals;
-                if (mapCell.hideWhen[j].lessOrEqual) lessOrEqual = mapCell.hideWhen[j].lessOrEqual;
+                console.log();
+                if (_type(mapCell.hideWhen[j].equals).type == "number") equals = mapCell.hideWhen[j].equals;
+                if (_type(mapCell.hideWhen[j].lessOrEqual).type == "number") lessOrEqual = mapCell.hideWhen[j].lessOrEqual;
 
                 if (mapCell.hideWhen[j].subtract) {
                     if (mapCell.hideWhen[j].subtract[0] === "boardStatusCount") {
@@ -105,7 +106,7 @@ function renderCells() {
                         }
                     }
                 }
-                console.log(value,equals)
+                
                 if (subtract > 0) value -= subtract;
                 if (equals !== false) if (value === equals) pass = true;
                 if (lessOrEqual !== false) if (value <= lessOrEqual) pass = true;
