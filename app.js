@@ -1263,7 +1263,7 @@ function findEmptySpotInZone(zone,lobby) {
     let map = lobby.board.map;
     let activePlayers = lobby.inGamePlayers;
 
-    let x,y,foundSpot = false;
+    let x,y,foundSpot = false,counter = 0;
     while (foundSpot === false) {
         x = simple.rnd(zone.pos1.x,zone.pos2.x)-1;
         y = simple.rnd(zone.pos1.y,zone.pos2.y)-1;
