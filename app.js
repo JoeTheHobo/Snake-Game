@@ -1407,74 +1407,26 @@ function checkBoardStatusOnZones(lobby) {
     let statusList = lobby.boardStatus;
 
     let allStatus = {
-        aquamarine: {
-            count: 0,
-            location: false,
-        },
-        blue: {
-            count: 0,
-            location: false,
-        },
-        buff: {
-            count: 0,
-            location: false,
-        },
-        coral: {
-            count: 0,
-            location: false,
-        },
-        crimsonpurple: {
-            count: 0,
-            location: false,
-        },
-        gold: {
-            count: 0,
-            location: false,
-        },
-        green: {
-            count: 0,
-            location: false,
-        },
-        lemon: {
-            count: 0,
-            location: false,
-        },
-        lime: {
-            count: 0,
-            location: false,
-        },
-        magenta: {
-            count: 0,
-            location: false,
-        },
-        orange: {
-            count: 0,
-            location: false,
-        },
-        pink: {
-            count: 0,
-            location: false,
-        },
-        red: {
-            count: 0,
-            location: false,
-        },
-        skyblue: {
-            count: 0,
-            location: false,
-        },
-        slateblue: {
-            count: 0,
-            location: false,
-        },
-        venom: {
-            count: 0,
-            location: false,
-        },
+        aquamarine: 0,
+        blue: 0,
+        buff: 0,
+        coral: 0,
+        crimsonpurple: 0,
+        gold: 0,
+        green: 0,
+        lemon: 0,
+        lime: 0,
+        magenta: 0,
+        orange: 0,
+        pink: 0,
+        red: 0,
+        skyblue: 0,
+        slateblue: 0,
+        venom: 0,
     }
 
     for (let i = 0; i < statusList.length; i++) {
-        allStatus[statusList[i]].count++;
+        allStatus[statusList[i]]++;
     }
 
     for (let i = 0; i < spawnList.length; i++) {
