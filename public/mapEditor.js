@@ -2418,3 +2418,28 @@ $(".me_zone_delete").on("click",function() {
 $(".closeBoardSettings").on("click",function() {
     $(".me_popup_boardSettings").hide();
 })
+$(".mezs_itemSpawning").on("click",function() {
+    loadItemSpawning();
+    $(".me_itemSpawning_popup").show();
+    
+})
+function loadItemSpawning() {
+    let holder = $(".me_itemSpawning_list");
+    holder.innerHTML = "";
+
+    for (let i = 0; i < items.length; i++) {
+        let item = items[i];
+        if (!allowedIds.includes(item.id)) continue;
+
+        let div = holder.create("div");
+        div.className = "me_itemHolder2 hover";
+
+        let img = div.create("img");
+        img.className = "me_itemImage2";
+        img.src = getImageFromItem(item.type,item,"src");
+
+        div.on("click",function() {
+            
+        })
+    }
+}
