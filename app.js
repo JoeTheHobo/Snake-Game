@@ -1383,6 +1383,8 @@ function removeBoardStatus(lobby,status,player) {
             item: status.item,
         })
     }
+
+    checkBoardStatusOnZones(lobby);
 }
 function addBoardStatus(lobby,status,player) {
     if (status == "white") return;
@@ -1395,6 +1397,100 @@ function addBoardStatus(lobby,status,player) {
             y: status.y,
             item: status.item,
         })
+    }
+
+    checkBoardStatusOnZones(lobby);
+}
+function checkBoardStatusOnZones(lobby) {
+    let spawnList2 = lobby.spawnZones;
+    let spawnList = [...spawnList2.players,...spawnList2.items];
+    let statusList = lobby.boardStatus;
+
+    let allStatus = {
+        aquamarine: {
+            count: 0,
+            location: false,
+        },
+        blue: {
+            count: 0,
+            location: false,
+        },
+        buff: {
+            count: 0,
+            location: false,
+        },
+        coral: {
+            count: 0,
+            location: false,
+        },
+        crimsonpurple: {
+            count: 0,
+            location: false,
+        },
+        gold: {
+            count: 0,
+            location: false,
+        },
+        green: {
+            count: 0,
+            location: false,
+        },
+        lemon: {
+            count: 0,
+            location: false,
+        },
+        lime: {
+            count: 0,
+            location: false,
+        },
+        magenta: {
+            count: 0,
+            location: false,
+        },
+        orange: {
+            count: 0,
+            location: false,
+        },
+        pink: {
+            count: 0,
+            location: false,
+        },
+        red: {
+            count: 0,
+            location: false,
+        },
+        skyblue: {
+            count: 0,
+            location: false,
+        },
+        slateblue: {
+            count: 0,
+            location: false,
+        },
+        venom: {
+            count: 0,
+            location: false,
+        },
+    }
+
+    for (let i = 0; i < statusList.length; i++) {
+        allStatus[statusList[i]].count++;
+    }
+
+    for (let i = 0; i < spawnList.length; i++) {
+        let zone = spawnList[i];
+        if (zone.activateWhenBoardStatus !== false) {
+            if (allStatus[zone.activateWhenBoardStatus.status] >= zone.activateWhenBoardStatus.count) {
+                zone.activateWhenBoardStatus = false;
+                zone.active = true;
+            }
+        }
+        if (zone.deactivateWhenBoardStatus !== false) {
+            if (allStatus[zone.deactivateWhenBoardStatus.status] >= zone.deactivateWhenBoardStatus.count) {
+                zone.deactivateWhenBoardStatus = false;
+                zone.active = true;
+            }
+        }
     }
 }
 function dropItem(lobby,player) {
@@ -1761,9 +1857,7 @@ function checkSpawnStatusTimers(lobby) {
     for (let i = 0; i < spawnList.length; i++) {
         let zone = spawnList[i];
         if (zone.activateWhenTimePassed !== false) {
-            console.log(1,timeSinceStart,zone.activateWhenTimePassed)
             if (timeSinceStart > zone.activateWhenTimePassed) {
-                console.log("HA")
                 zone.activateWhenTimePassed = false;
                 zone.active = true;
             } else {
