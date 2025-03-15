@@ -1753,13 +1753,13 @@ function removePlayerStatus(lobby,player,itemName) {
 
 //From App.js
 function checkSpawnStatusTimers(lobby) {
-    let spawnList = lobby.spawnZones;
+    let spawnList2 = lobby.spawnZones;
+    let spawnList = [...spawnList2.players,...spawnList2.items];
     let timeSinceStart = (Date.now() - lobby.gameStartedAt)/1000;
 
     let foundDelays = false;
     for (let i = 0; i < spawnList.length; i++) {
         let zone = spawnList[i];
-        console.log(zone.activateWhenTimePassed);
         if (zone.activateWhenTimePassed !== false) {
             console.log(1,timeSinceStart,zone.activateWhenTimePassed)
             if (timeSinceStart > zone.activateWhenTimePassed) {
