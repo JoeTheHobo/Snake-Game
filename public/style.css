@@ -3382,6 +3382,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   font-size: 25px;
   color: white;
   margin-top: auto;
+  text-align: center;
 }
 .notAllowedItem {
   border: 2px solid red;

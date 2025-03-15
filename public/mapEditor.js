@@ -2417,6 +2417,7 @@ $(".me_zone_delete").on("click",function() {
 })
 $(".closeBoardSettings").on("click",function() {
     $(".me_popup_boardSettings").hide();
+    $(".me_itemSpawning_popup").hide();
 })
 $(".mezs_itemSpawning").on("click",function() {
     loadItemSpawning();
