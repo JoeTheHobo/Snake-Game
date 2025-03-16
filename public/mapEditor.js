@@ -1055,7 +1055,6 @@ $("me_button").on("click",function() {
             [
                 {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "blue",text:"Add To Lobby Boards",onClick: () => {
                     saveBoard(false);
-                    console.log(currentBoard.itemDifferences)
                     socket.emit("addBoardToLobbyBoards",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }));
                     socket.emit("changeServerBoard",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }));
                     setScene("lobby");
