@@ -1613,7 +1613,6 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
     if (type == "all" || type == "gameMode") logGameModeChanges($(".sc_gameModeChanges"),(type == "all" ? lobby.gameMode : lobby),false);
 
     if (type == "all" || type == "board") {
-        currentBoard = localAccount.lobbyBoard;
         requestAnimationFrame(() => {
             $(".sc_boards_canvas").width = $(".sc_canvas_holder").clientWidth;
             $(".sc_boards_canvas").height = $(".sc_canvas_holder").clientHeight; 

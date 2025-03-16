@@ -108,7 +108,8 @@ let resetMap;
 function openMapEditor(boardComingIn) {
     currentBoard = boardComingIn;
     board = boardComingIn;
-    currentBoard.originalMap = forceAllCellsToBeTheirOwn(board.originalMap);
+    console.log(3,currentBoard.itemDifferences)
+    currentBoard.originalMap = forceAllCellsToBeTheirOwn(currentBoard.originalMap);
     oldMap = structuredClone(currentBoard.originalMap);
     copiedCells = [];
     resetMap = structuredClone(currentBoard.originalMap);
@@ -133,14 +134,14 @@ function openMapEditor(boardComingIn) {
 
 
     //Load Board Settings HTML
-    $("me_name").value = board.name;
-    if (!board.background) board.background = backgrounds[0];
-    $("me_background").innerHTML = board.background;
-    if (!board.gameMode) board.gameMode = currentGameMode;
-    $("me_gameMode").innerHTML = board.gameMode.name;
-    $("me_minPlayers").value = board.minPlayers;
-    $("me_maxPlayers").value = board.maxPlayers;
-    $("me_recommendedGameMode").checked = board.recommendedGameMode;
+    $("me_name").value = currentBoard.name;
+    if (!currentBoard.background) currentBoard.background = backgrounds[0];
+    $("me_background").innerHTML = currentBoard.background;
+    if (!currentBoard.gameMode) currentBoard.gameMode = currentGameMode;
+    $("me_gameMode").innerHTML = currentBoard.gameMode.name;
+    $("me_minPlayers").value = currentBoard.minPlayers;
+    $("me_maxPlayers").value = currentBoard.maxPlayers;
+    $("me_recommendedGameMode").checked = currentBoard.recommendedGameMode;
 
     $(".gameModeSelectionScreen").hide();
     $(".backgroundSelectionScreen").hide();
@@ -151,7 +152,7 @@ function openMapEditor(boardComingIn) {
 
     setObjectTab("Items");
 
-    adjustCanvasSize(board.width,board.height,zoom);
+    adjustCanvasSize(currentBoard.width,currentBoard.height,zoom);
     renderMapEditorCanvas(true);
     fixItemDifferencesMapEditor(currentBoard.originalMap);
     fixTileDifferencesMapEditor(currentBoard.originalMap);
