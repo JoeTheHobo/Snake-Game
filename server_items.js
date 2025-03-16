@@ -654,7 +654,7 @@ items.push({
     type: "item",
     baseImg: "items/item_buttonSubtract_", //BaseImgTags Will add to this, to say which image to use
     baseImgTags: [".onCollision.removeBoardStatus"], 
-    renderImages: [["*colors"]], //All Variations it can be
+    renderImages: [["*colors2"]], //All Variations it can be
 
     showInEditor: true,
     onStartSpawn: 0,
@@ -682,7 +682,7 @@ items.push({
     type: "item",
     baseImg: "items/item_buttonAdd_", //BaseImgTags Will add to this, to say which image to use
     baseImgTags: [".onCollision.addBoardStatus"], 
-    renderImages: [["*colors"]], //All Variations it can be
+    renderImages: [["*colors2"]], //All Variations it can be
 
     showInEditor: true,
     onStartSpawn: 0,
@@ -774,7 +774,7 @@ items.push({
     type: "item",
     baseImg: "items/item_pressurePlate_",
     baseImgTags: [".onCollision.addBoardStatus"],
-    renderImages: [["*colors"]],
+    renderImages: [["*colors2"]],
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -857,7 +857,7 @@ items.push({
     type: "item",
     baseImg: "items/item_boardLocked_",
     baseImgTags: [".onCollision.checkStatus.check.boardStatus.name"],
-    renderImages: [["*colors"]],
+    renderImages: [["*colors2"]],
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;

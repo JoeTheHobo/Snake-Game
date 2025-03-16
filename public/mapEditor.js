@@ -1244,10 +1244,10 @@ function loadObjectMenu() {
             addSetting("Toggle Board Status","status",object.onCollision.switchBoardStatus,["onCollision","switchBoardStatus"]);
         }
         if (object.onCollision?.checkStatus?.pass?.addBoardStatus) {
-            addSetting("Add Board Status","status",object.onCollision?.checkStatus?.pass?.addBoardStatus,["onCollision","checkStatus","pass","addBoardStatus"]);
+            addSetting("Add Board Status","statusFull",object.onCollision?.checkStatus?.pass?.addBoardStatus,["onCollision","checkStatus","pass","addBoardStatus"]);
         }
         if (object.onCollision?.addBoardStatus) {
-            addSetting("Add Board Status","status",object.onCollision?.addBoardStatus,["onCollision","addBoardStatus"]);
+            addSetting("Add Board Status","statusFull",object.onCollision?.addBoardStatus,["onCollision","addBoardStatus"]);
         }
         if (object.onCollision?.setBoardStatus) {
             addSetting("Set Board Status","statusFull",object.onCollision.setBoardStatus,["onCollision","setBoardStatus"]);
