@@ -108,7 +108,7 @@ let resetMap;
 function openMapEditor(boardComingIn) {
     currentBoard = boardComingIn;
     board = boardComingIn;
-    console.log(3,currentBoard)
+    console.log(3,currentBoard.itemDifferences)
     currentBoard.originalMap = forceAllCellsToBeTheirOwn(currentBoard.originalMap);
     oldMap = structuredClone(currentBoard.originalMap);
     copiedCells = [];
