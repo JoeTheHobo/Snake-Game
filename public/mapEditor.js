@@ -1088,10 +1088,12 @@ $("me_button").on("click",function() {
         {type: "title",text: "Save Changes?"},
         [
             {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Discard Changes",onClick: () => {
+                saveBoard();
                 setScene("Menu");
                 loadBoardsScreen();
             }},
             {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Save Changes",onClick: () => {
+                saveBoard();
                 goBackHome();
             }},
         ],
