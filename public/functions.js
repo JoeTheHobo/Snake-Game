@@ -618,7 +618,6 @@ function saveBoards() {
 }
 function shortenBoard(oldBoard) {
     oldBoard.map = [];
-    structuredClone(oldBoard);
     let board = structuredClone(oldBoard);
 
     let _newMap = [];

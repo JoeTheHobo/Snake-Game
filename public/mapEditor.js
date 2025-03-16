@@ -1042,7 +1042,7 @@ function saveBoard(sendToServer = true) {
     currentBoard.itemDifferences = findItemDifferences(currentBoard.originalMap);
     currentBoard.tileDifferences = findTileDifferences(currentBoard.originalMap);
 
-    if (currentBoard.accountID === localAccount.id && sendToServer)
+    if (currentBoard.accountID === localAccount.id && sendToServer) //Save To Personal Boards
         socket.emit("saveBoard",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }));
 
     html_saveStatus.innerHTML = "Board Saved";
@@ -1055,6 +1055,7 @@ $("me_button").on("click",function() {
             [
                 {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "blue",text:"Add To Lobby Boards",onClick: () => {
                     saveBoard(false);
+                    console.log(currentBoard.itemDifferences)
                     socket.emit("addBoardToLobbyBoards",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }));
                     socket.emit("changeServerBoard",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }));
                     setScene("lobby");
