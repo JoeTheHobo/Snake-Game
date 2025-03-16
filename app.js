@@ -1762,6 +1762,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             let count = 0;
             let useStatus = check.boardStatus.name;
             if (useStatus == "white") useStatus = player.team;
+            console.log(useStatus);
             if (useStatus !== "white") {
                 for (let j = 0; j < lobby.boardStatus.length; j++) {
                     if (lobby.boardStatus[j] === useStatus) count++;
