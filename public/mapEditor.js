@@ -108,7 +108,7 @@ let resetMap;
 function openMapEditor(boardComingIn) {
     currentBoard = boardComingIn;
     board = boardComingIn;
-    console.log(3,currentBoard.itemDifferences)
+    console.log(101,currentBoard.itemDifferences)
     currentBoard.originalMap = forceAllCellsToBeTheirOwn(currentBoard.originalMap);
     oldMap = structuredClone(currentBoard.originalMap);
     copiedCells = [];
@@ -1094,6 +1094,7 @@ $("me_button").on("click",function() {
             {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Discard Changes",onClick: () => {
                 saveBoard();
                 setScene("Menu");
+                console.log(102,currentBoard.itemDifferences)
                 loadBoardsScreen();
             }},
             {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Save Changes",onClick: () => {
