@@ -1231,7 +1231,7 @@ function loadObjectMenu() {
         }
     } else {
         if (object.onCollision?.checkStatus?.check?.boardStatus) {
-            addSetting("Board Status Required","status",object.onCollision.checkStatus.check.boardStatus.name,["onCollision","checkStatus","check","boardStatus","name"]);
+            addSetting("Board Status Required","statusFull",object.onCollision.checkStatus.check.boardStatus.name,["onCollision","checkStatus","check","boardStatus","name"]);
         }
         if (object.onCollision?.checkStatus?.check?.boardStatus) {
             addSetting("Board Status Count","number",object.onCollision.checkStatus.check.boardStatus.count,["onCollision","checkStatus","check","boardStatus","count"]);
@@ -1253,10 +1253,7 @@ function loadObjectMenu() {
             addSetting("Set Board Status","statusFull",object.onCollision.setBoardStatus,["onCollision","setBoardStatus"]);
         }
         if (object.onCollision?.removeBoardStatus) {
-            addSetting("Remove Board Status","status",object.onCollision.removeBoardStatus,["onCollision","removeBoardStatus"]);
-        }
-        if (object.spawnPlayerTeam) {
-            addSetting("Team Color","status",object.spawnPlayerTeam,["spawnPlayerTeam"]);
+            addSetting("Remove Board Status","statusFull",object.onCollision.removeBoardStatus,["onCollision","removeBoardStatus"]);
         }
         if (_type(object.onCollision?.checkStatus?.check?.snakeSize).type == "number") {
             addSetting("Snake Size Required","number",object.onCollision.checkStatus.check.snakeSize,["onCollision","checkStatus","check","snakeSize"]);
