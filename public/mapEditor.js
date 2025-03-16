@@ -755,7 +755,7 @@ $("me_canvas").on("mouseup",function(e) {
     }
 
     if (tool == "select" && mouseDown === true && currentTab !== "Spawn Zones") {
-        $(".me_s_holder_subtool").show();
+        $(".me_s_holder_subtool").show("flex");
         $(".subToolHolder").hide();
         $(".subTool_select").show();
         if (copiedCells.length == 0) $(".pastingTool").hide();
@@ -1356,7 +1356,7 @@ function setTool(tool2) {
     tool = tool2;
 
     if (tool == "draw" || tool == "eraser") {
-        $(".me_s_holder_subtool").show();
+        $(".me_s_holder_subtool").show("flex");
         $(".subToolHolder").hide();
         $(".subTool_draw").show();
         setSubTool("brush");
@@ -1366,13 +1366,13 @@ function setTool(tool2) {
         $(".me_s_holder_subtool").hide();
     }
     if (tool == "bucket") {
-        $(".me_s_holder_subtool").show();
+        $(".me_s_holder_subtool").show("flex");
         $(".subToolHolder").hide();
         $(".subTool_bucket").show();
         setSubTool("bucket");
     }
     if (tool == "move") {
-        $(".me_s_holder_subtool").show();
+        $(".me_s_holder_subtool").show("flex");
         $(".subToolHolder").hide();
         $(".subTool_" + tool).show();
         setSubTool("move");
