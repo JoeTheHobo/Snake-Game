@@ -1356,6 +1356,7 @@ function getLocations(lobby) {
 }
 function removeBoardStatus(lobby,status,player) {
     if (status == "*P") status = player.team;
+    if (status == "white") return;
 
     checking: for (let i = 0; i < lobby.boardStatus.length; i++) {
         if (lobby.boardStatus[i] == status) {
@@ -1377,6 +1378,7 @@ function removeBoardStatus(lobby,status,player) {
 function addBoardStatus(lobby,status,player) {
     if (status == "white") return;
     if (status == "*P") status = player.team;
+    if (status == "white") return;
     lobby.boardStatus.push(status);
     for (let i = 0; i < lobby.board.location_status.length; i++) {
         let status = lobby.board.location_status[i];
