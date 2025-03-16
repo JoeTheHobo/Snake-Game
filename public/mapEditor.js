@@ -407,6 +407,7 @@ mousemovemethod = function (e) {
 
     oldMouseX = e.pageX;
     oldMouseY = e.pageY;
+    console.log(mouseDown)
     if ((tool == "move" && mouseDown === true) || mouseDown == "wheel") {
         xChange += mouseDirection.x;
         yChange += mouseDirection.y;
