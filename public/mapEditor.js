@@ -60,7 +60,6 @@ let currentTab = "Items";
 let oldMap = [];
 
 function fixItemDifferencesMapEditor(map) {
-    if (!currentBoard.itemDifferences) return;
     for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
         let e = currentBoard.itemDifferences[i];
         let d = {
@@ -71,11 +70,8 @@ function fixItemDifferencesMapEditor(map) {
         let pos = structuredClone(map[d.y][d.x].item);
         if (!pos) continue;
         for (let j = 0; j < d.differences.length; j++) {
-            let change = d.differences[j]; 
-            if (change.length == 3) {
-                pos[change[0]][change[1]] = change[2];
-            }
-            if (change.length == 2) pos[change[0]] = change[1];
+            let change = d.differences[j];
+            setNestedValue(pos,change,"_LAST_");
         }
         map[d.y][d.x].item = pos;
     }
@@ -1044,7 +1040,9 @@ function tool_fill() {
 }
 function saveBoard(sendToServer = true) {
     let html_saveStatus = $("saveStatus");
+    console.log(103.6,currentBoard.itemDifferences)
     currentBoard.itemDifferences = findItemDifferences(currentBoard.originalMap);
+    console.log(103.7,currentBoard.itemDifferences)
     currentBoard.tileDifferences = findTileDifferences(currentBoard.originalMap);
 
     if (currentBoard.accountID === localAccount.id && sendToServer) {
