@@ -131,7 +131,6 @@ function openMapEditor(boardComingIn) {
     setScene("mapEditor");
     $(".me_s_holder_tools").show("flex");
     $(".me_s_holder_subtool").show("flex");
-    console.log(4,currentBoard.itemDifferences)
 
 
     //Load Board Settings HTML
@@ -151,7 +150,6 @@ function openMapEditor(boardComingIn) {
 
     setGridSize(.17);
 
-    console.log(5,currentBoard.itemDifferences)
     setObjectTab("Items");
 
     adjustCanvasSize(currentBoard.width,currentBoard.height,zoom);
@@ -166,7 +164,6 @@ function openMapEditor(boardComingIn) {
     yChange = ($(".me_canvasHolder").offsetHeight - $(".edit_canvas")[0].offsetHeight)/2;
     adjustCanvasPosition();
     
-    console.log(6,currentBoard.itemDifferences)
     selectedItem = {
         type: "item",
         content: getItemById(savedSelectingItem),
