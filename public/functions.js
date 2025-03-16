@@ -930,6 +930,7 @@ function getItemValueFromList(item,list) {
     for (let i = 1; i < list.length; i++) {
         value = value[list[i]];
     }
+    if (value == "*P") value = "white";
     return value;
 }
 function getImageFromItem(type,item,returnType) {
