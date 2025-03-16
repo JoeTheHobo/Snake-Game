@@ -139,6 +139,7 @@ io.on('connection', (socket) => {
     socket.on("saveBoard",(board) => {
         board = fixBoard(JSON.parse(pako.inflate(board, { to: 'string' })));
         if (board.accountID !== socket.id) return;
+        console.log(124,board.itemDifferences)
         //Check Board TO BE ADDED
 
         let account = onlineAccounts[socket.id];
