@@ -84,7 +84,7 @@ function renderCells() {
                         let gbiftValue = getBaseImgFromTag(mapCell,mapCell.hideWhen[j].subtract[1]);
                         if (gbiftValue == "white") gbiftValue = localAccount.player.team;
                         if (gbiftValue !== "white") 
-                            subtract += localAccount.boardStatus[getBaseImgFromTag(mapCell,mapCell.hideWhen[j].subtract[1])].count;
+                            subtract += localAccount.boardStatus[gbiftValue].count;
                     }
                 }
 
