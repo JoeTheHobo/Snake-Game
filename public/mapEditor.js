@@ -159,6 +159,7 @@ function openMapEditor(boardComingIn) {
     fixTileDifferencesMapEditor(currentBoard.originalMap);
     console.log(104,currentBoard.itemDifferences)
     saveBoard(true);
+    console.log(104.5,currentBoard.itemDifferences)
     tool = false;
     setTool("draw");
 
