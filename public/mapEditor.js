@@ -104,7 +104,6 @@ let resetMap;
 function openMapEditor(boardComingIn) {
     currentBoard = boardComingIn;
     board = boardComingIn;
-    console.log(101,currentBoard.itemDifferences)
     currentBoard.originalMap = forceAllCellsToBeTheirOwn(currentBoard.originalMap);
     oldMap = structuredClone(currentBoard.originalMap);
     copiedCells = [];
@@ -121,7 +120,6 @@ function openMapEditor(boardComingIn) {
     showingZones = false;
     me_ctx_zones.globalAlpha = 0.4;
     showingZones_PlayerTurnedMeOn = false;
-    console.log(102,currentBoard.itemDifferences)
     $(".show_zones_tool").classRemove("toolIsSelected");
     $(".redo_tool").style.opacity = "0.5";
     $(".undo_tool").style.opacity = "0.5";
@@ -148,14 +146,11 @@ function openMapEditor(boardComingIn) {
     setGridSize(.17);
 
     setObjectTab("Items");
-    console.log(103,currentBoard.itemDifferences)
     adjustCanvasSize(currentBoard.width,currentBoard.height,zoom);
     renderMapEditorCanvas(true);
     fixItemDifferencesMapEditor(currentBoard.originalMap);
     fixTileDifferencesMapEditor(currentBoard.originalMap);
-    console.log(104,currentBoard.itemDifferences)
     saveBoard(true);
-    console.log(104.5,currentBoard.itemDifferences)
     tool = false;
     setTool("draw");
 
@@ -183,7 +178,6 @@ function openMapEditor(boardComingIn) {
             saveBoard();
     },60000)
     addHistory();
-    console.log(105,currentBoard.itemDifferences)
 }
 function drawZone(x1, y1, x2, y2, color, zoneID) {
     me_ctx_zones.fillStyle = color;
@@ -1040,14 +1034,11 @@ function tool_fill() {
 }
 function saveBoard(sendToServer = true) {
     let html_saveStatus = $("saveStatus");
-    console.log(103.6,currentBoard.itemDifferences)
     currentBoard.itemDifferences = findItemDifferences(currentBoard.originalMap);
-    console.log(103.7,currentBoard.itemDifferences)
     currentBoard.tileDifferences = findTileDifferences(currentBoard.originalMap);
 
     if (currentBoard.accountID === localAccount.id && sendToServer) {
         //Save To Personal Boards
-        console.log("ey",currentBoard.accountID)
         socket.emit("saveBoard",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }));
     }
         
@@ -1096,7 +1087,6 @@ $("me_button").on("click",function() {
             {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Discard Changes",onClick: () => {
                 saveBoard();
                 setScene("Menu");
-                console.log(102,currentBoard.itemDifferences)
                 loadBoardsScreen();
             }},
             {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Save Changes",onClick: () => {

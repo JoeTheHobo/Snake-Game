@@ -86,8 +86,6 @@ socket.on("sendingZippedBoard",(socketID,zippedBoard,boardName) => {
 socket.on("updatePlayersBoards",(socketID,boards,sentFrom,board) => {
     if (socketID !== localAccount.id) return;
     localAccount.boards = boards;
-
-    console.log(100,localAccount.boards[0].itemDifferences)
     
     currentBoardIndex = localAccount.boards.length-1;
     ls.save("currentBoardIndex",currentBoardIndex);
