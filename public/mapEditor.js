@@ -1208,11 +1208,11 @@ function loadObjectMenu() {
             contentHolder.type = type;
             let showingAllStatusOptions = ["status"];
             if (type == "statusFull") showingAllStatusOptions.push("playerStatus");
-            console.log(type,showingAllStatusOptions)
+            showingAllStatusOptions.push("submit");
             contentHolder.on("click",function() {
                 selectedItem.path = this.path;
                 
-                showStatusMenu(["status"],{status: function(status) {
+                showStatusMenu(showingAllStatusOptions,{status: function(status) {
                     setValue(isSelectingOneCell(),selectedItem.cell,selectedItem.path,status);
                     checkRenderThenRender();
                     loadObjectMenu();
