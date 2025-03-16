@@ -81,6 +81,7 @@ function renderCells() {
 
                 if (mapCell.hideWhen[j].subtract) {
                     if (mapCell.hideWhen[j].subtract[0] === "boardStatusCount") {
+                        console.log(getBaseImgFromTag(mapCell,mapCell.hideWhen[j].subtract[1]));
                         subtract += localAccount.boardStatus[getBaseImgFromTag(mapCell,mapCell.hideWhen[j].subtract[1])].count;
                     }
                 }
