@@ -2100,6 +2100,9 @@ function updateItemList(allowedIds,itemList,tagList) {
                 path: false,
                 cell: structuredClone(getById(item.type,item.id)),
             }
+            if (isSelectingOneCell()) {
+                clearSelection();
+            }
             loadObjectMenu();
         })
     }
