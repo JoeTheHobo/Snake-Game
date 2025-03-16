@@ -717,6 +717,7 @@ function loadBoardsScreen(index = false) {
             forceOpen: index,
             listContent: [{type: "title",text: ".name",tag: "name"},[adminControls,{type: "button",special: true, text:"Edit", onClick: (board,index) => {
                 currentBoardIndex = index;
+                console.log(1000,board.itemDifferences)
                 openMapEditor(board);
             }}]],
             top: addTop,
