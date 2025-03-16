@@ -1208,6 +1208,7 @@ function loadObjectMenu() {
             contentHolder.type = type;
             let showingAllStatusOptions = ["status"];
             if (type == "statusFull") showingAllStatusOptions.push("playerStatus");
+            console.log(type,showingAllStatusOptions)
             contentHolder.on("click",function() {
                 selectedItem.path = this.path;
                 
