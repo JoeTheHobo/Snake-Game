@@ -876,6 +876,8 @@ function changeZoom(delta) {
     checkRenderThenRender();
     renderTopCanvas();
     renderZoneCanvas();
+    renderMapEditorCanvas(true);
+    renderBackgroundCanvas();
 }
 $("me_canvas").on("mouseleave",function(e) {
     //mouseDown = false;
