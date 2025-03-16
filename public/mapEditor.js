@@ -1043,8 +1043,12 @@ function saveBoard(sendToServer = true) {
     currentBoard.itemDifferences = findItemDifferences(currentBoard.originalMap);
     currentBoard.tileDifferences = findTileDifferences(currentBoard.originalMap);
 
-    if (currentBoard.accountID === localAccount.id && sendToServer) //Save To Personal Boards
+    if (currentBoard.accountID === localAccount.id && sendToServer) {
+        //Save To Personal Boards
+        console.log("ey")
         socket.emit("saveBoard",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }));
+    }
+        
 
     html_saveStatus.innerHTML = "Board Saved";
 }
