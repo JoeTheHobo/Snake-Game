@@ -528,7 +528,7 @@ $(".me_canvasHolder").on("click",function() {
     
 })
 
-$(".me_canvasHolder").on("mousedown",function(e3) {
+$(".me_canvasHolder").on("mousedown",function(e) {
     mouseDown = e.which == 2 ? "wheel" : true;
     if (currentTab == "Spawn Zones" && showingZones) {
         let zone = selectedZone.zone;
