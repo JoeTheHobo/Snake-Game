@@ -835,9 +835,6 @@ $(".me_canvasHolder").on("wheel",function(e) {
     changeZoom(delta);
 
     moveCanvasToStayInPosition(e,mouseX,mouseY);
-    renderMapEditorCanvas(true);
-    renderBackgroundCanvas();
-    renderTopCanvas();
 });
 function moveCanvasToStayInPosition(e,originalX,originalY) {
     adjustMousePos(e);
