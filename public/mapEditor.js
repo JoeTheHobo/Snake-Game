@@ -680,7 +680,7 @@ $("me_canvas").on("mousedown",function(e) {
 
     
     if (tool == "select" && mouseDown === true && currentTab !== "Spawn Zones") {
-        $(".subTool_select").hide();
+        $(".me_s_holder_subtool").hide();
         if (aligning) {
             selectedCells.end = {
                 x: mouseX,
@@ -1969,8 +1969,10 @@ function setObjectTab(type) {
         $(".me_canvasHolder").classRemove("nsCursor");
         $(".me_canvasHolder").classRemove("ewCursor");
         $(".me_canvasHolder").classRemove("grabCursor");
+        $(".me_canvasHolder").classRemove("moveCursor");
         $(".me_s_holder_tools").show("flex");
-        $(".me_s_holder_subtool").show("flex");
+        if (tool !== "select" || selectedCells.selecting)
+            $(".me_s_holder_subtool").show("flex");
         if (!showingZones_PlayerTurnedMeOn) runTool("showZones",false);
     }
     if (type == "Tiles") {
@@ -1988,8 +1990,10 @@ function setObjectTab(type) {
         $(".me_canvasHolder").classRemove("nsCursor");
         $(".me_canvasHolder").classRemove("ewCursor");
         $(".me_canvasHolder").classRemove("grabCursor");
+        $(".me_canvasHolder").classRemove("moveCursor");
         $(".me_s_holder_tools").show("flex");
-        $(".me_s_holder_subtool").show("flex");
+        if (tool !== "select" || selectedCells.selecting)
+            $(".me_s_holder_subtool").show("flex");
         if (!showingZones_PlayerTurnedMeOn) runTool("showZones",false);
     }
     if (type == "Spawn Zones") {
