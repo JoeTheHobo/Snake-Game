@@ -1045,7 +1045,7 @@ function saveBoard(sendToServer = true) {
 
     if (currentBoard.accountID === localAccount.id && sendToServer) {
         //Save To Personal Boards
-        console.log("ey")
+        console.log("ey",currentBoard.accountID)
         socket.emit("saveBoard",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }));
     }
         

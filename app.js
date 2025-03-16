@@ -137,6 +137,7 @@ io.on('connection', (socket) => {
         delete onlineAccounts[socket.id];
     }) 
     socket.on("saveBoard",(board) => {
+        console.log(board.accountID)
         if (board.accountID !== socket.id) return;
         board = fixBoard(JSON.parse(pako.inflate(board, { to: 'string' })));
         console.log(124,board.itemDifferences)
