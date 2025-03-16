@@ -1760,10 +1760,15 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         }
         if (check.boardStatus) {
             let count = 0;
-            for (let j = 0; j < lobby.boardStatus.length; j++) {
-                if (lobby.boardStatus[j] === check.boardStatus.name) count++;
+            let useStatus = check.boardStatus.name;
+            if (useStatus == "white") useStatus = player.team;
+            if (useStatus !== "white") {
+                for (let j = 0; j < lobby.boardStatus.length; j++) {
+                    if (lobby.boardStatus[j] === useStatus) count++;
+                }
+                if (count < check.boardStatus.count) passedCheck = false;
             }
-            if (count < check.boardStatus.count) passedCheck = false;
+            
         }
         if (check.snakeSize) {
             if (player.tail.length + 1 < check.snakeSize) passedCheck = false;
