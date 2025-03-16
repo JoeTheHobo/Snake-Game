@@ -407,7 +407,6 @@ mousemovemethod = function (e) {
 
     oldMouseX = e.pageX;
     oldMouseY = e.pageY;
-    console.log(mouseDown)
     if ((tool == "move" && mouseDown === true) || mouseDown == "wheel") {
         xChange += mouseDirection.x;
         yChange += mouseDirection.y;
@@ -529,8 +528,8 @@ $(".me_canvasHolder").on("click",function() {
     
 })
 
-$(".me_canvasHolder").on("mousedown",function() {
-    mouseDown = true;
+$(".me_canvasHolder").on("mousedown",function(e3) {
+    mouseDown = e.which == 2 ? "wheel" : true;
     if (currentTab == "Spawn Zones" && showingZones) {
         let zone = selectedZone.zone;
         if (mouseX < zone.pos2.x && mouseX > zone.pos1.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
