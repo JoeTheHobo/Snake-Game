@@ -129,7 +129,10 @@ function renderCells() {
             let subtract = 0;
             if (mapCell.renderStatusNumber.subtract) {
                 if (mapCell.renderStatusNumber.subtract[0] === "boardStatusCount") {
-                    subtract += localAccount.boardStatus[getBaseImgFromTag(mapCell,mapCell.renderStatusNumber.subtract[1])].count;
+                    let gbiftValue = getBaseImgFromTag(mapCell,mapCell.renderStatusNumber.subtract[1]);
+                    if (gbiftValue == "white") gbiftValue = localAccount.player.team;
+                    if (gbiftValue !== "white") 
+                        subtract += localAccount.boardStatus[gbiftValue].count;
                 }
                 if (mapCell.renderStatusNumber.subtract[0] === "playerSnakeSize") {
                     subtract += localAccount.player.tailLength;
