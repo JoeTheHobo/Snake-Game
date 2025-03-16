@@ -1208,7 +1208,7 @@ function loadObjectMenu() {
             contentHolder.type = type;
             let showingAllStatusOptions = ["status"];
             if (type == "statusFull") showingAllStatusOptions.push("playerStatus");
-            showingAllStatusOptions.push("submit");
+            showingAllStatusOptions.push("close");
             contentHolder.on("click",function() {
                 selectedItem.path = this.path;
                 
@@ -2479,3 +2479,6 @@ function loadItemSpawning() {
         })
     }
 }
+$(".status_button_close").on("click",function() {
+    $(".statusSelectionScreen").hide();
+})
