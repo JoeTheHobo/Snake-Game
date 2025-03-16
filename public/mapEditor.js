@@ -1280,9 +1280,11 @@ function loadStatusSelectionScreen() {
     let holder2 = $(".statusHolderPlayers");
 
     function createStatus(string,className,holder) {
-
         let backgroundColor = "white";
-        if (className == "nonPlayer") backgroundColor = string[1];
+        if (className == "nonPlayer") {
+            backgroundColor = string[1];
+            if (string[0] == "white") return;
+        }
 
         let contentHolder = holder.create("div");
         contentHolder.css({
