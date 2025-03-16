@@ -387,6 +387,22 @@ function me_updateCell(ctx,x,y,opacity) {
             ctx.strokeText(cell.item.boardDestructibleCountRequired,xPos,yPos);
             ctx.fillText(cell.item.boardDestructibleCountRequired,xPos,yPos);
         }
+
+        if (cell.item.renderStatusNumber) {
+            let value = getBaseImgFromTag(cell.item,cell.item.renderStatusNumber.value);
+
+            ctx.font = "16px VT323";
+            ctx.strokeStyle = "black";
+            ctx.fillStyle = cell.item.renderStatusColor ?? "white";
+            ctx.lineWidth = 4;
+
+            let textWidth = ctx.measureText(value).width;
+            xPos = (x*(gridSize*zoom)) + ((gridSize*zoom)/2) - (textWidth/2);
+            yPos = (y*(gridSize*zoom)) + ((gridSize*zoom)/2)+5;
+
+            ctx.strokeText(value,xPos,yPos);
+            ctx.fillText(value,xPos,yPos);
+        }
     }
 
     ctx.globalAlpha = 1;

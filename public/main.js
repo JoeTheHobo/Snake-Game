@@ -35,13 +35,6 @@ function renderGame() {
                             name: cell.item.name,
                         })
                     }
-                    if (cell.item.spawnPlayerHere == true) {
-                        currentBoard.location_spawns.push({
-                            x: j,
-                            y: i,
-                            item: cell.item,
-                        })
-                    }
                 }
             }
         }
@@ -163,7 +156,6 @@ function renderCells() {
                 ctx_items.strokeText(value,xPos,yPos);
                 ctx_items.fillText(value,xPos,yPos);
             }
-            
         }
     }
     updateCells = [];
@@ -610,7 +602,6 @@ function startGame(solo = false) {
 
     currentBoard.location_tunnels = [];
     currentBoard.location_status = [];
-    currentBoard.location_spawns = [];
 
     try {
         currentBoard.map = structuredClone(currentBoard.originalMap);

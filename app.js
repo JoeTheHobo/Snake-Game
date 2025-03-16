@@ -732,7 +732,6 @@ io.on('connection', (socket) => {
         lobby.board.location_tunnels = [];
         lobby.board.location_status = [];
         lobby.board.playerGrow_status = [];
-        lobby.board.location_spawns = [];
         lobby.snakeMap = [];
         for (let i = 0; i < lobby.board.map.length; i++) {
             let toPush = [];
@@ -1135,12 +1134,6 @@ function fixItemDifferences(lobby,map) {
             setNestedValue(pos,change,"_LAST_");
         }
         map[d.y][d.x].item = pos;
-        
-        for (let i = 0; i < currentBoard.location_spawns.length; i++) {
-            if (d.y == currentBoard.location_spawns[i].y && currentBoard.location_spawns[i].x == d.x) {
-                lobby.board.location_spawns[i].item = map[d.y][d.x].item;
-            }
-        }
     }
 }
 function fixTileDifferences(currentBoard,map) {
@@ -1355,13 +1348,6 @@ function getLocations(lobby) {
                                 })
                             }
                         }
-                    }
-                    if (cell.item.spawnPlayerHere == true) {
-                        lobby.board.location_spawns.push({
-                            x: j,
-                            y: i,
-                            item: cell.item,
-                        })
                     }
                 }
             }
