@@ -1183,7 +1183,7 @@ function loadObjectMenu() {
                 setValue(isSelectingOneCell(),selectedItem.cell,this.path,this.value);
             }
         }
-        if (type == "status") {
+        if (type == "status" || type == "statusFull") {
             let contentHolder = settingHolder.create("div");
             contentHolder.css({
                 width: "50px",
@@ -1206,6 +1206,8 @@ function loadObjectMenu() {
 
             contentHolder.path = path;
             contentHolder.type = type;
+            let showingAllStatusOptions = ["status"];
+            if (type == "statusFull") showingAllStatusOptions.push("playerStatus");
             contentHolder.on("click",function() {
                 selectedItem.path = this.path;
                 
@@ -1247,7 +1249,7 @@ function loadObjectMenu() {
             addSetting("Add Board Status","status",object.onCollision?.addBoardStatus,["onCollision","addBoardStatus"]);
         }
         if (object.onCollision?.setBoardStatus) {
-            addSetting("Set Board Status","status",object.onCollision.setBoardStatus,["onCollision","setBoardStatus"]);
+            addSetting("Set Board Status","statusFull",object.onCollision.setBoardStatus,["onCollision","setBoardStatus"]);
         }
         if (object.onCollision?.removeBoardStatus) {
             addSetting("Remove Board Status","status",object.onCollision.removeBoardStatus,["onCollision","removeBoardStatus"]);
