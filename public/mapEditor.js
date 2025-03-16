@@ -125,6 +125,7 @@ function openMapEditor(boardComingIn) {
     showingZones = false;
     me_ctx_zones.globalAlpha = 0.4;
     showingZones_PlayerTurnedMeOn = false;
+    console.log(102,currentBoard.itemDifferences)
     $(".show_zones_tool").classRemove("toolIsSelected");
     $(".redo_tool").style.opacity = "0.5";
     $(".undo_tool").style.opacity = "0.5";
@@ -151,11 +152,12 @@ function openMapEditor(boardComingIn) {
     setGridSize(.17);
 
     setObjectTab("Items");
-
+    console.log(103,currentBoard.itemDifferences)
     adjustCanvasSize(currentBoard.width,currentBoard.height,zoom);
     renderMapEditorCanvas(true);
     fixItemDifferencesMapEditor(currentBoard.originalMap);
     fixTileDifferencesMapEditor(currentBoard.originalMap);
+    console.log(104,currentBoard.itemDifferences)
     saveBoard(true);
     tool = false;
     setTool("draw");
@@ -184,6 +186,7 @@ function openMapEditor(boardComingIn) {
             saveBoard();
     },60000)
     addHistory();
+    console.log(105,currentBoard.itemDifferences)
 }
 function drawZone(x1, y1, x2, y2, color, zoneID) {
     me_ctx_zones.fillStyle = color;
