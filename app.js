@@ -825,6 +825,7 @@ io.on('connection', (socket) => {
         getLocations(lobby);
         fixItemDifferences(lobby,lobby.board.map);
         fixTileDifferences(lobby,lobby.board,lobby.board.map);
+        updateAllCells(lobby);
 
 
         for (let i = 0; i < lobby.players.length; i++) {
@@ -1148,11 +1149,6 @@ function fixItemDifferences(lobby,map) {
             setNestedValue(pos,change,"_LAST_");
         }
         map[d.y][d.x].item = pos;
-        lobby.updateCells.push({
-            x: d.x,
-            y: d.y,
-            item: pos,
-        })
     }
 }
 function fixTileDifferences(currentBoard,map) {
@@ -1337,24 +1333,12 @@ function getLocations(lobby) {
                 lobby.timeEvents.push(cell.tile);
             }
 
-            lobby.updateTiles.push({
-                x: j,
-                y: i,
-                item: cell.tile,
-            })
-
             if (cell.item) {
                 cell.item = structuredClone(getItem(lobby,cell.item.name));
                 cell.item.pos = {
                     x: j,
                     y: i,
                 }
-
-                lobby.updateCells.push({
-                    x: j,
-                    y: i,
-                    item: cell.item,
-                })
                 if (cell.item.pack == "Tunnels") {
                     lobby.board.location_tunnels.push({
                         x: j,
@@ -1837,6 +1821,26 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function updateAllCells(lobby) {
+    let currentBoard = lobby.board;
+    for (let i = 0; i < currentBoard.map.length; i++) {
+        for (let j = 0; j < currentBoard.map[0].length; j++) {
+            let cell = currentBoard.map[i][j]; 
+            lobby.updateTiles.push({
+                x: j,
+                y: i,
+                item: cell.tile,
+            })
+            if (cell.item) {
+                lobby.updateCells.push({
+                    x: j,
+                    y: i,
+                    item: cell.item,
+                })
+            }
+        }
+    }
+}
 function startGameLoop(lobby) {
     lobby.gameStartedAt = Date.now(); 
 
