@@ -2,12 +2,12 @@ function renderCells(list,ctx) {
     for (let i = 0; i < list.length; i++) {
         let x = list[i].x;
         let y = list[i].y;
-
+        
         let mapCell = list[i].item;
-        console.log(mapCell);
-        if (mapCell.type !== "tile") ctx.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
+
+        if (mapCell?.type !== "tile" || mapCell == undefined) ctx.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
+        if (mapCell == undefined) continue;
         if (!mapCell.visible) continue;
-        if (mapCell == false) continue;
         if (mapCell.hideWhen) {
             let pass = false;
             for (let j = 0; j < mapCell.hideWhen.length; j++) {
