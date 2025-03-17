@@ -1,11 +1,18 @@
-function renderCells(list,ctx) {
+function renderCells(list,ctx,type) {
     for (let i = 0; i < list.length; i++) {
         let x = list[i].x;
         let y = list[i].y;
         
         let mapCell = list[i].item;
 
-        if (mapCell?.type !== "tile" || mapCell == undefined) ctx.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
+        if (type == "item") {
+            if (mapCell == undefined) {
+                mapCell = currentBoard.map[y][x].item;
+            }
+        }
+
+
+        if (type !== "tile" || mapCell == undefined) ctx.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
         if (mapCell == undefined) continue;
         if (!mapCell.visible) continue;
         if (mapCell.hideWhen) {
@@ -825,8 +832,8 @@ function updateProduction() {
 function serverGameLoop() {
     deltaTime = 1;
     if (!isActiveGame) return;
-    renderCells(updateTiles,ctx_tiles)
-    renderCells(updateCells,ctx_items);
+    renderCells(updateTiles,ctx_tiles,"tile")
+    renderCells(updateCells,ctx_items,"item");
     updateTiles = [];
     updateCells = [];
     //movePlayers();

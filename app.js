@@ -1352,14 +1352,14 @@ function getLocations(lobby) {
                             lobby.board.location_status.push({
                                 x: j,
                                 y: i,
-                                itme: cell.item,
+                                name: cell.item.name,
                             })
                         }
                         if (cell.item.updateOn[h] == "playerGrows") {
                             lobby.board.playerGrow_status.push({
                                 x: j,
                                 y: i,
-                                item: cell.item,
+                                name: cell.item.name,
                             })
                         }
                     }
@@ -1385,7 +1385,6 @@ function removeBoardStatus(lobby,status,player) {
         lobby.updateCells.push({
             x: status.x,
             y: status.y,
-            item: status.item,
         })
     }
 
@@ -1401,7 +1400,6 @@ function addBoardStatus(lobby,status,player) {
         lobby.updateCells.push({
             x: status.x,
             y: status.y,
-            item: status.item,
         })
     }
 
