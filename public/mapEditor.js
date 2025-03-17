@@ -367,6 +367,7 @@ function me_updateCell(ctx,x,y,opacity) {
 
     if (cell.tile) {
         itemCounts.push("tile_" + cell.tile.name);
+        console.log(cell.tile,getImageFromItem("tile",cell.tile,"src"));
         ctx.drawImage(getImageFromItem("tile",cell.tile,"canvas"),Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
     }
     if (cell.item) {
