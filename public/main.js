@@ -6,6 +6,7 @@ function renderCells(list,ctx) {
         let mapCell = list[i].item;
 
         if (mapCell?.type !== "tile" || mapCell == undefined) ctx.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
+        console.log(mapCell)
         if (mapCell == undefined) continue;
         if (!mapCell.visible) continue;
         if (mapCell.hideWhen) {
@@ -42,7 +43,6 @@ function renderCells(list,ctx) {
                     }
                 }
 
-                console.log(subtract,equals)
                 if (subtract > 0) value -= subtract;
                 if (equals !== false) if (value === equals) pass = true;
                 if (lessOrEqual !== false) if (value <= lessOrEqual) pass = true;
