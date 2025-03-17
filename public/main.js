@@ -107,6 +107,7 @@ function renderCells(list,ctx) {
             }
         }
     }
+    console.log(ctx,list)
     list = [];
 }
 function updateStatusCells() {
