@@ -6,7 +6,7 @@ function renderCells(list,ctx) {
         let mapCell = list[i].item;
 
         if (mapCell?.type !== "tile" || mapCell == undefined) ctx.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
-        console.log(mapCell)
+        console.log(mapCell,x,y)
         if (mapCell == undefined) continue;
         if (!mapCell.visible) continue;
         if (mapCell.hideWhen) {
