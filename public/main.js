@@ -3,14 +3,7 @@ function renderCells(list,ctx) {
         let x = list[i].x;
         let y = list[i].y;
 
-        let mapCell;
-        if (list[i].item || list[i].item === false) {
-            mapCell = list[i].item;
-        } else {
-            console.log("here????")
-            mapCell = currentBoard.map[y][x].item;
-        }
-        console.log(ctx);
+        let mapCell = list[i].item;
         ctx.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
         if (!mapCell.visible) continue;
         if (mapCell == false) continue;
@@ -67,7 +60,7 @@ function renderCells(list,ctx) {
             image = getItemCanvas(mapCell.name);
         }
 
-        ctx_items.drawImage(image,x*gridSize,y*gridSize,gridSize,gridSize);
+        ctx.drawImage(image,x*gridSize,y*gridSize,gridSize,gridSize);
 
         if (mapCell.renderStatusNumber) {
             let value = getBaseImgFromTag(mapCell,mapCell.renderStatusNumber.value);
