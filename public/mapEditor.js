@@ -367,9 +367,11 @@ function me_updateCell(ctx,x,y,opacity) {
 
     if (cell.tile) {
         itemCounts.push("tile_" + cell.tile.name);
-        //ctx.drawImage(getImageFromItem("tile",cell.tile,"canvas"),Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
+        console.log("AHH")
+        ctx.drawImage(getImageFromItem("tile",cell.tile,"canvas"),Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
     }
     if (cell.item) {
+        console.log("YUP")
         itemCounts.push("item_" + cell.item.name);
         let image = getImageFromItem("item",cell.item,"canvas");
         ctx.drawImage(image,Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
