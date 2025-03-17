@@ -50,6 +50,7 @@ function renderCells(list,ctx) {
         }
 
         let image;
+        if (mapCell.name == "flag") console.log(mapCell)
         if (mapCell.baseImg) {
             image = mapCell.name;
             if (mapCell.baseImgTags?.length > 0) image += "_";
