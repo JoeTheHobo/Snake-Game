@@ -10,6 +10,7 @@ function renderCells(list,ctx) {
             console.log("here????")
             mapCell = currentBoard.map[y][x].item;
         }
+        console.log(ctx);
         ctx.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
         if (!mapCell.visible) continue;
         if (mapCell == false) continue;
