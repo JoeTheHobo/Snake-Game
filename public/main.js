@@ -7,6 +7,7 @@ function renderCells(list,ctx) {
         if (list[i].item || list[i].item === false) {
             mapCell = list[i].item;
         } else {
+            console.log("here????")
             mapCell = currentBoard.map[y][x].item;
         }
         ctx.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
@@ -107,8 +108,6 @@ function renderCells(list,ctx) {
             }
         }
     }
-    console.log(ctx,list)
-    list = [];
 }
 function updateStatusCells() {
     for (let i = 0; i < currentBoard.location_status.length; i++) {
@@ -848,6 +847,8 @@ function serverGameLoop() {
     if (!isActiveGame) return;
     renderCells(updateTiles,ctx_tiles)
     renderCells(updateCells,ctx_items);
+    updateTiles = [];
+    updateCells = [];
     //movePlayers();
     //deleteSnakeCells();
     //renderPlayers();
