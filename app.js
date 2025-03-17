@@ -1335,6 +1335,7 @@ function getLocations(lobby) {
             lobby.updateTiles.push({
                 x: j,
                 y: i,
+                item: cell.tile,
             })
 
             if (cell.item) {
@@ -1344,35 +1345,33 @@ function getLocations(lobby) {
                     y: i,
                 }
 
-                if (cell.item.spawnLimit > 0 || cell.item.spawnLimit === false) {
-                    if (cell.item.spawnLimit !== false) cell.item.spawnLimit--; 
-                    lobby.updateCells.push({
+                lobby.updateCells.push({
+                    x: j,
+                    y: i,
+                    item: cell.item,
+                })
+                if (cell.item.pack == "Tunnels") {
+                    lobby.board.location_tunnels.push({
                         x: j,
                         y: i,
+                        name: cell.item.name,
                     })
-                    if (cell.item.pack == "Tunnels") {
-                        lobby.board.location_tunnels.push({
-                            x: j,
-                            y: i,
-                            name: cell.item.name,
-                        })
-                    }
-                    if (cell.item.updateOn) {
-                        for (let h = 0; h < cell.item.updateOn.length; h++) {
-                            if (cell.item.updateOn[h] == "boardStatus") {
-                                lobby.board.location_status.push({
-                                    x: j,
-                                    y: i,
-                                    name: cell.item.name,
-                                })
-                            }
-                            if (cell.item.updateOn[h] == "playerGrows") {
-                                lobby.board.playerGrow_status.push({
-                                    x: j,
-                                    y: i,
-                                    name: cell.item.name,
-                                })
-                            }
+                }
+                if (cell.item.updateOn) {
+                    for (let h = 0; h < cell.item.updateOn.length; h++) {
+                        if (cell.item.updateOn[h] == "boardStatus") {
+                            lobby.board.location_status.push({
+                                x: j,
+                                y: i,
+                                name: cell.item.name,
+                            })
+                        }
+                        if (cell.item.updateOn[h] == "playerGrows") {
+                            lobby.board.playerGrow_status.push({
+                                x: j,
+                                y: i,
+                                name: cell.item.name,
+                            })
                         }
                     }
                 }
