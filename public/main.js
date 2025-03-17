@@ -4,7 +4,8 @@ function renderCells(list,ctx) {
         let y = list[i].y;
 
         let mapCell = list[i].item;
-        if (list[i]?.item?.type !== "tile") ctx.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
+        console.log(mapCell);
+        if (mapCell.type !== "tile") ctx.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
         if (!mapCell.visible) continue;
         if (mapCell == false) continue;
         if (mapCell.hideWhen) {
