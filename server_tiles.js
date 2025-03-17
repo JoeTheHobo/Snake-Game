@@ -48,6 +48,7 @@ tiles.push({
     name: "water",
     baseImg: "tiles/tilewater",
     baseImgTags: ["1"],
+    renderImages: [["1","2"]],
     type: "tile",
     changePlayerSpeed: 0.5, //Player Speed Times This Number
     id: 6,

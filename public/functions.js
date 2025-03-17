@@ -233,12 +233,9 @@ function updateCanvasPositionToPlayer(player) {
 }
 //End Load All Item Images
 let itemCanvas = [];
-function setUpItemCanvas() {
-    let html_itemCanvasHolder = $("itemCanvasHolder");
-    html_itemCanvasHolder.innerHTML = "";
-
-    for (let i = 0; i < items.length; i++) {
-        let item = items[i];
+function setUpItemCanvas(list) {
+    for (let i = 0; i < list.length; i++) {
+        let item = list[i];
 
         function combineStrings(arrays, prefix = "", index = 0) {
             if (index === arrays.length) {
@@ -252,7 +249,7 @@ function setUpItemCanvas() {
         }
         
         function processCombination(combination) {
-            addItemCanvas(items[i],items[i].baseImg + combination + ".png",items[i].name + "_" + combination);
+            addItemCanvas(item,item.baseImg + combination + ".png",item.name + "_" + combination);
         }
         
         if (item.renderImages) {
@@ -292,16 +289,16 @@ function makeItemCanvas(image,filter = "",player) {
     return itemCanvas;
 }
 function addItemCanvas(item,itemImg,name,filter = "",player) {
-    if ($("item_" + name)) return;
+    if ($(item.type + "_" + name)) return;
 
     let img = $(".imageHolder").create("img");
     img.src = "img/" + itemImg;
-    img.id = "item_" + name;
+    img.id = item.type + "_" + name;
 
     img.onload = function() {
         let obj = {
             name: name,
-            canvas: makeItemCanvas($("item_" + name),filter,player),
+            canvas: makeItemCanvas($(item.type + "_" + name),filter,player),
         }
         itemCanvas.push(obj);
     }
