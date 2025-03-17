@@ -1841,7 +1841,6 @@ function startGameLoop(lobby) {
 
         for (let j = 0; j < object.timeEvents.length; j++) {
             let event = object.timeEvents[j];
-            console.log(event)
             if (!event.repeat) event.repeat = 1;
 
             function TimeEvent(event) {
