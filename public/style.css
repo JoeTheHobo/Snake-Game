@@ -907,7 +907,7 @@ padding: 5px;
 border-radius: 5px;
 background: rgb(19, 19, 19);
 box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-z-index: 3;
+z-index: 502;
 }
 
 .me_packHolder {

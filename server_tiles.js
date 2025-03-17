@@ -21,7 +21,7 @@ tiles.push({
 })
 tiles.push({
     name: "clear",
-    baseImg: "clear",
+    baseImg: "tiles/clear",
     baseImgTags: [],
     type: "tile",
     changePlayerSpeed: 1, //Player Speed Times This Number
