@@ -1148,6 +1148,11 @@ function fixItemDifferences(lobby,map) {
             setNestedValue(pos,change,"_LAST_");
         }
         map[d.y][d.x].item = pos;
+        lobby.updateCells.push({
+            x: d.x,
+            y: d.y,
+            item: pos,
+        })
     }
 }
 function fixTileDifferences(currentBoard,map) {
