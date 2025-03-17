@@ -55,9 +55,9 @@ function renderCells(list,ctx) {
             for (let i = 0; i < mapCell.baseImgTags.length; i++) {
                 image += getBaseImgFromTag(mapCell,mapCell.baseImgTags[i])
             }
-            image = getItemCanvas(image);
+            image = getItemCanvas(image,mapCell.type);
         } else {
-            image = getItemCanvas(mapCell.name);
+            image = getItemCanvas(mapCell.name,mapCell.type);
         }
 
         ctx.drawImage(image,x*gridSize,y*gridSize,gridSize,gridSize);
@@ -184,7 +184,7 @@ function server_renderPlayers() {
                 drawRotated(headObject,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
                 
                 if (player.equiped.head) {
-                    drawImage(getItemCanvas(player.equiped.head.name),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);
+                    drawImage(getItemCanvas(player.equiped.head.name,"item"),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);
                 }
 
                 if (localAccount.renderTeamColors) {

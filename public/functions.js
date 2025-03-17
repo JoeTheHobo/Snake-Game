@@ -299,15 +299,16 @@ function addItemCanvas(item,itemImg,name,filter = "",player) {
         let obj = {
             name: name,
             canvas: makeItemCanvas($(item.type + "_" + name),filter,player),
+            type: item.type,
         }
         itemCanvas.push(obj);
     }
 
 }
 
-function getItemCanvas(itemName) {
+function getItemCanvas(itemName,type) {
     for (let i = 0; i < itemCanvas.length; i++) {
-        if (itemCanvas[i].name === itemName) return itemCanvas[i].canvas;
+        if (itemCanvas[i].name === itemName && itemCanvas[i].type == type) return itemCanvas[i].canvas;
     }
 }
 for (let i = 0; i < global_gameColors.length; i++) {
@@ -937,7 +938,7 @@ function getImageFromItem(type,item,returnType) {
         image += getBaseImgFromTag(item,item.baseImgTags[i])
     }
     
-    if (returnType == "canvas") image = getItemCanvas(image);
+    if (returnType == "canvas") image = getItemCanvas(image,type);
     if (returnType == "src") image = $(type + "_" + image).src;
     return image;
 }
