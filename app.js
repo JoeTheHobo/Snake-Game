@@ -1837,11 +1837,11 @@ function startGameLoop(lobby) {
 
 
     for (let i = 0; i < lobby.timeEvents.length; i++) {
-        console.log("ey")
         let object = lobby.timeEvents[i];
 
         for (let j = 0; j < object.timeEvents.length; j++) {
             let event = object.timeEvents[j];
+            console.log(evenet)
             if (!event.repeat) event.repeat = 1;
 
             function TimeEvent(event) {
