@@ -1350,6 +1350,7 @@ function getLocations(lobby) {
                     y: i,
                     item: cell.item,
                 })
+                console.log("hmm")
                 if (cell.item.pack == "Tunnels") {
                     lobby.board.location_tunnels.push({
                         x: j,
