@@ -70,7 +70,7 @@ tiles.push({
     timeEvents: [{
         time: 5, //In Seconds
         repeat: true, //Repeat or finish this time event
-        event: ".events.animateBackground",
+        event: "animateBackground",
     }]
 })
 tiles.push({
