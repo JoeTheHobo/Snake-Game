@@ -47,11 +47,24 @@ tiles.push({
 tiles.push({
     name: "water",
     baseImg: "tiles/tilewater",
-    baseImgTags: [],
+    baseImgTags: ["1"],
     type: "tile",
     changePlayerSpeed: 0.5, //Player Speed Times This Number
     id: 6,
     tags: ["Slow Speed"],
+    events: {
+        animateBackground: {
+            switchBaseImgTag: { //Switch Between these images using Base Img
+                index: 0,
+                switch: ["1","2"],
+            },
+        }
+    },
+    timeEvents: [{
+        time: 5, //In Seconds
+        repeat: true, //Repeat or finish this time event
+        event: ".events.animateBackground",
+    }]
 })
 tiles.push({
     name: "flower",

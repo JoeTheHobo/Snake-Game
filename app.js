@@ -732,6 +732,7 @@ io.on('connection', (socket) => {
         lobby.board.location_tunnels = [];
         lobby.board.location_status = [];
         lobby.board.playerGrow_status = [];
+        lobby.timeEvents = [];
         lobby.snakeMap = [];
         for (let i = 0; i < lobby.board.map.length; i++) {
             let toPush = [];
@@ -745,6 +746,7 @@ io.on('connection', (socket) => {
         }
 
         lobby.items = structuredClone(items);
+        lobby.tiles = structuredClone(tiles);
         
         for (let i = 0; i < lobby.gameMode.itemAlterations.length; i++) {
             let alterationGroup = lobby.gameMode.itemAlterations[i];
@@ -852,7 +854,10 @@ io.on('connection', (socket) => {
         lobby.checkingSpawnTimers = true;
         lobby.gameStartedAt = false;
         lobby.gameLoop = function() {
-            if (this.gameStartedAt === false) this.gameStartedAt = Date.now(); 
+            if (this.gameStartedAt === false) {
+                startGameLoop(lobby);
+
+            }
             lobby.lobby_gameLoop_start = Date.now();
             server_movePlayers(this,socket.id)
 
@@ -1096,10 +1101,10 @@ function setNestedValue(obj, path, value, toReturn = false) {
         target[lastKey] = value; // Set the value if not in return mode
     }
 }
-function getTile(name) {
-    for (let i = 0; i < tiles.length; i++) {
-        if (tiles[i].name == name) {
-            return structuredClone(tiles[i]);
+function getTile(lobby,name) {
+    for (let i = 0; i < lobby.tiles.length; i++) {
+        if (lobby.tiles[i].name == name) {
+            return structuredClone(lobby.tiles[i]);
         }
     }
 }
@@ -1308,18 +1313,28 @@ function getLocations(lobby) {
         for (let j = 0; j < currentBoard.map[0].length; j++) {
             let cell = currentBoard.map[i][j]; 
 
-            if (cell.item === false) continue;
+            if (cell.tile) {
+                cell.tile = structuredClone(getTile(lobby,cell.tile.name));
+                cell.tile.pos = {
+                    x: j,
+                    y: i,
+                }
 
-            cell.item = structuredClone(getItem(lobby,cell.item.name));
-            if (cell.item == undefined) cell.item = false; //Prolly Will Need To Resolve Issue Later
-            if (cell.item !== false) {
+                if (cell.tile.timeEvents?.length > 0) {
+                    lobby.timeEvents.push(cell.tile);
+                }
+
+            }
+
+            if (cell.item) {
+                cell.item = structuredClone(getItem(lobby,cell.item.name));
                 cell.item.pos = {
                     x: j,
                     y: i,
                 }
 
                 if (cell.item.spawnLimit > 0 || cell.item.spawnLimit === false) {
-                    cell.item.spawnLimit--; 
+                    if (cell.item.spawnLimit !== false) cell.item.spawnLimit--; 
                     lobby.updateCells.push({
                         x: j,
                         y: i,
@@ -1351,6 +1366,8 @@ function getLocations(lobby) {
                     }
                 }
             }
+
+            
         }
     }
 }
@@ -1459,7 +1476,7 @@ function useItem(lobby,player) {
     let item = player.items[player.selectingItem];
     if (item == "empty") return;
 
-    let returnItem = runItemFunction(lobby,player,player.items[player.selectingItem],"onActivate");
+    let returnItem = runItemFunction(lobby,player,player.items[player.selectingItem],"onActivate",player.pos);
     player.items[player.selectingItem] = returnItem;
 }
 function specialItemManager(lobby) {
@@ -1568,11 +1585,11 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         item.switchStatus = false;
     }
 
-    if (collision.switchBaseImgTag && player) {
+    if (collision.switchBaseImgTag) {
         item.baseImgTags[collision.switchBaseImgTag.index] = item.baseImgTags[collision.switchBaseImgTag.index] == collision.switchBaseImgTag.switch[0] ? collision.switchBaseImgTag.switch[1] : collision.switchBaseImgTag.switch[0];
         lobby.updateCells.push({
-            x: player.pos.x,
-            y: player.pos.y,
+            x: itemPos.x,
+            y: itemPos.y,
             item: item,
         })
     }
@@ -1795,6 +1812,41 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function startGameLoop(lobby) {
+    lobby.gameStartedAt = Date.now(); 
+
+
+    for (let i = 0; i < lobby.timeEvents.length; i++) {
+        let object = lobby.timeEvents[i];
+
+        for (let j = 0; j < object.timeEvents.length; j++) {
+            let event = object.timeEvents[j];
+            if (!event.repeat) event.repeat = 1;
+
+            function TimeEvent(event) {
+                runItemFunction(lobby,false,object,object.events[event.event],object.pos);
+
+                setTimeout(function() {
+                    if (simple.type(event.repeat) == "number") {
+                        event.repeat--;
+                        if (event.repeat === -1) return;
+                    }
+                    TimeEvent(event)
+                },event.time*1000)
+            }
+
+            setTimeout(function() {
+                if (simple.type(event.repeat) == "number") {
+                    event.repeat--;
+                    if (event.repeat === -1) return;
+                }
+                TimeEvent(event)
+            },event.time*1000)
+        }
+
+    }
+
+}
 function checkSpawnStatusTimers(lobby) {
     let spawnList2 = lobby.spawnZones;
     let spawnList = [...spawnList2.players,...spawnList2.items];
@@ -2251,13 +2303,13 @@ function server_movePlayers(lobby,socketID) {
 
         //Test Item Underplayer
         let mapItem = currentBoard.map[player.pos.y][player.pos.x].item;
-        if (mapItem) runItemFunction(lobby,player,mapItem,"onCollision",undefined,undefined,socketID);
+        if (mapItem) runItemFunction(lobby,player,mapItem,"onCollision",{x: player.pos.x,y: player.pos.y},undefined,socketID);
 
         if (!player.isDead) {
 
             //Test Tile UnderPlayer
             let mapTile = currentBoard.map[player.pos.y][player.pos.x].tile;
-            if (mapTile.onOver) runItemFunction(lobby,player,mapTile,"onOver");
+            if (mapTile.onOver) runItemFunction(lobby,player,mapTile,"onOver",{x: player.pos.x,y: player.pos.y});
 
             //Growing/Moving Tail
             let playerX = playerOldPos.x;
@@ -2283,7 +2335,7 @@ function server_movePlayers(lobby,socketID) {
                 let tail = player.tail[player.tail.length-1];
                 if (currentBoard.map[tail.y][tail.x].item) {
                     let mapItem = currentBoard.map[tail.y][tail.x].item;
-                    if (mapItem.offCollision) runItemFunction(lobby,player,mapItem,"offCollision");
+                    if (mapItem.offCollision) runItemFunction(lobby,player,mapItem,"offCollision",{x: tail.x,y: tail.y});
                 }
                 
                 snakeMapRemove(lobby,player.index,tail.y,tail.x);
@@ -2292,7 +2344,7 @@ function server_movePlayers(lobby,socketID) {
                 snakeMapRemove(lobby,player.index,playerY,playerX);
                 if (currentBoard.map[playerY][playerX].item) {
                     let mapItem = currentBoard.map[playerY][playerX].item;
-                    if (mapItem.offCollision) runItemFunction(lobby,player,mapItem,"offCollision");
+                    if (mapItem.offCollision) runItemFunction(lobby,player,mapItem,"offCollision",{x: playerX,y:playerY});
                 }
             }
             if (player.tail.length > 0) {
