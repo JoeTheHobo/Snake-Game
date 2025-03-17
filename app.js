@@ -1472,7 +1472,7 @@ function dropItem(lobby,player) {
 function useItem(lobby,player) {
     let item = player.items[player.selectingItem];
     if (item == "empty") return;
-
+    if (!item.onActivate) return;
     let returnItem = runItemFunction(lobby,player,player.items[player.selectingItem],"onActivate",player.pos);
     player.items[player.selectingItem] = returnItem;
 }
