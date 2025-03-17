@@ -68,7 +68,7 @@ tiles.push({
         }
     },
     timeEvents: [{
-        time: 1, //In Seconds
+        time: 2, //In Seconds
         repeat: true, //Repeat or finish this time event
         event: "animateBackground",
     }]
