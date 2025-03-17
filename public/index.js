@@ -436,6 +436,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
     }
     if (obj.c) updateCells = updateCells.concat(obj.c);
     if (obj.t) updateTiles = updateTiles.concat(obj.t);
+    console.log(obj.t)
 
     if (obj.p) {
         for (let i = 0; i < obj.p.length; i++) {
