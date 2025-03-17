@@ -1101,6 +1101,13 @@ function setNestedValue(obj, path, value, toReturn = false) {
         target[lastKey] = value; // Set the value if not in return mode
     }
 }
+function getRealTile(name) {
+    for (let i = 0; i < tiles.length; i++) {
+        if (tiles[i].name == name) {
+            return structuredClone(tiles[i]);
+        }
+    }
+}
 function getTile(lobby,name) {
     for (let i = 0; i < lobby.tiles.length; i++) {
         if (lobby.tiles[i].name == name) {
@@ -1999,7 +2006,7 @@ function newMap(width,height) {
         let arr = [];
         for (let j = 0; j < width; j++) {
             arr.push({
-                tile: getTile("grass"),
+                tile: getRealTile("grass"),
                 item: false,
             })
         }
