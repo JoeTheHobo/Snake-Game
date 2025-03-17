@@ -735,7 +735,7 @@ items.push({
     id: 26,
     type: "item",
     baseImg: "items/item_flag_",
-    baseImgTags: [".onCollision.setBoardStatus"],
+    baseImgTags: ["white"],
     renderImages: [["*colors2"]],
     showInEditor: true,
     onStartSpawn: 0,
