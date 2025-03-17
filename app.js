@@ -1837,6 +1837,7 @@ function startGameLoop(lobby) {
 
 
     for (let i = 0; i < lobby.timeEvents.length; i++) {
+        console.log("ey")
         let object = lobby.timeEvents[i];
 
         for (let j = 0; j < object.timeEvents.length; j++) {
@@ -1851,6 +1852,7 @@ function startGameLoop(lobby) {
                         event.repeat--;
                         if (event.repeat === -1) return;
                     }
+                    if (lobby.gameEnd) return;
                     TimeEvent(event)
                 },event.time*1000)
             }
