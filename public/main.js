@@ -845,6 +845,7 @@ function updateProduction() {
 function serverGameLoop() {
     deltaTime = 1;
     if (!isActiveGame) return;
+    console.log(updateTiles)
     renderCells(updateTiles,ctx_tiles)
     renderCells(updateCells,ctx_items);
     //movePlayers();

@@ -1337,7 +1337,6 @@ function getLocations(lobby) {
                 y: i,
                 item: cell.tile,
             })
-            console.log("Yeah")
 
             if (cell.item) {
                 cell.item = structuredClone(getItem(lobby,cell.item.name));
