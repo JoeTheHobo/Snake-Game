@@ -1337,6 +1337,7 @@ function getLocations(lobby) {
                 y: i,
                 item: cell.tile,
             })
+            console.log("Yeah")
 
             if (cell.item) {
                 cell.item = structuredClone(getItem(lobby,cell.item.name));
@@ -1350,7 +1351,6 @@ function getLocations(lobby) {
                     y: i,
                     item: cell.item,
                 })
-                console.log("hmm")
                 if (cell.item.pack == "Tunnels") {
                     lobby.board.location_tunnels.push({
                         x: j,
