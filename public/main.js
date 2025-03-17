@@ -42,6 +42,7 @@ function renderCells(list,ctx) {
                     }
                 }
 
+                console.log(subtract,equals)
                 if (subtract > 0) value -= subtract;
                 if (equals !== false) if (value === equals) pass = true;
                 if (lessOrEqual !== false) if (value <= lessOrEqual) pass = true;
@@ -50,7 +51,6 @@ function renderCells(list,ctx) {
         }
 
         let image;
-        if (mapCell.name == "boardLockedCell") console.log(mapCell)
         if (mapCell.baseImg) {
             image = mapCell.name;
             if (mapCell.baseImgTags?.length > 0) image += "_";
@@ -104,21 +104,6 @@ function renderCells(list,ctx) {
             }
         }
     }
-}
-function updateStatusCells() {
-    for (let i = 0; i < currentBoard.location_status.length; i++) {
-        updateCells.push({
-            x: currentBoard.location_status[i].x,
-            y: currentBoard.location_status[i].y,
-        });
-    }
-}
-function deleteSnakeCells() {
-    for (let i = 0; i < updateSnakeCells.length; i++) {
-        //if (updateSnakeCells[i].player.isDead) continue;
-        ctx_players.clearRect(updateSnakeCells[i].x*gridSize,updateSnakeCells[i].y*gridSize,gridSize,gridSize);
-    }
-    updateSnakeCells = [];
 }
 function drawImage(image, direction, xPos, yPos, width, height,cnvs = canvas_players) {
     if (direction == false) direction = "up";
