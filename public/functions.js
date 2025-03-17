@@ -889,7 +889,7 @@ function drawBoardToCanvas(board,canvas,forceHeight) {
             let Ypos = (i * gs);
             
             if (cell.tile) {
-                ctx.drawImage($("tile_" + cell.tile.name),Xpos,Ypos,(gs),(gs));
+                ctx.drawImage(getImageFromItem("tile",cell.tile,"canvas"),Xpos,Ypos,(gs),(gs));
             }
             if (cell.item) {
                 let image = getImageFromItem("item",cell.item,"canvas");

@@ -50,7 +50,7 @@ function renderTiles() {
                 x: j,
                 y: i,
             }
-            ctx_tiles.drawImage($("tile_" + mapTile.name),j*gridSize,i*gridSize,gridSize,gridSize);      
+            ctx_tiles.drawImage(getImageFromItem("tile",mapTile,"canvas"),j*gridSize,i*gridSize,gridSize,gridSize);      
         }
     }
 }
