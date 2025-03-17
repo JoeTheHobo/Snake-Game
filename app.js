@@ -725,6 +725,7 @@ io.on('connection', (socket) => {
         lobby.specialItemHighChance = 6;
         lobby.board.isActiveGame = true; 
         lobby.updateCells = [];
+        lobby.updateTiles = [];
         lobby.updateSnakeCells = [];
         lobby.updatePoints = [];
         lobby.spawnZones = structuredClone(lobby.board.spawnZones);
@@ -868,6 +869,7 @@ io.on('connection', (socket) => {
             this.updatePositionTimeStamp = Date.now();
             this.updateSnakeCells = [];
             this.updateCells = [];
+            this.updateTiles = [];
             this.playSounds = [];
             this.canvasFilters = [];
             
@@ -1320,18 +1322,20 @@ function getLocations(lobby) {
         for (let j = 0; j < currentBoard.map[0].length; j++) {
             let cell = currentBoard.map[i][j]; 
 
-            if (cell.tile) {
-                cell.tile = structuredClone(getTile(lobby,cell.tile.name));
-                cell.tile.pos = {
-                    x: j,
-                    y: i,
-                }
-
-                if (cell.tile.timeEvents?.length > 0) {
-                    lobby.timeEvents.push(cell.tile);
-                }
-
+            cell.tile = structuredClone(getTile(lobby,cell.tile.name));
+            cell.tile.pos = {
+                x: j,
+                y: i,
             }
+
+            if (cell.tile.timeEvents?.length > 0) {
+                lobby.timeEvents.push(cell.tile);
+            }
+
+            lobby.updateTiles.push({
+                x: j,
+                y: i,
+            })
 
             if (cell.item) {
                 cell.item = structuredClone(getItem(lobby,cell.item.name));
@@ -1594,11 +1598,21 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
 
     if (collision.switchBaseImgTag) {
         item.baseImgTags[collision.switchBaseImgTag.index] = item.baseImgTags[collision.switchBaseImgTag.index] == collision.switchBaseImgTag.switch[0] ? collision.switchBaseImgTag.switch[1] : collision.switchBaseImgTag.switch[0];
-        lobby.updateCells.push({
-            x: itemPos.x,
-            y: itemPos.y,
-            item: item,
-        })
+        if (item.type == "item") {
+            lobby.updateCells.push({
+                x: itemPos.x,
+                y: itemPos.y,
+                item: item,
+            })
+        }
+        if (item.type == "tile") {
+            lobby.updateTiles.push({
+                x: itemPos.x,
+                y: itemPos.y,
+                item: item,
+            })
+        }
+        
     }
     if (collision.switchBoardStatus && player) {
         if (item.switchStatus === true) {
@@ -1935,6 +1949,7 @@ function updateClientPositions(lobby) {
         a: emitingActivePlayers,  
         s: lobby.updateSnakeCells,
         c: lobby.updateCells,
+        t: lobby.updateTiles,
         p: lobby.playSounds,
         b: lobby.boardStatus,
         g: Date.now() - lobby_gameLoop_start,

@@ -147,6 +147,7 @@ socket.on("startingGame", (lobby) => {
     currentBoard = lobby.board;
     updateSnakeCells = [];
     updateCells = [];
+    updateTiles = [];
     currentGameMode = lobby.gameMode;
     oldBoardStatus = {
         aquamarine: {
@@ -245,8 +246,8 @@ socket.on("startingGame", (lobby) => {
 
     setResolution(lobby.board.map[0].length,lobby.board.map.length);
     setUpPlayerCanvas();
-    renderGame();
-    renderCells();
+    ctx_items.clearRect(0,0,canvas_items.width,canvas_items.height);
+    ctx_tiles.clearRect(0,0,canvas_tiles.width,canvas_tiles.height);
     setGameScene(activePlayers);
     serverGameLoop();
     generatePreGamePlayerInfo(activePlayers);
@@ -434,6 +435,7 @@ socket.on("updatePositions",(obj,lobbyID) => {
         updateSnakeCells = updateSnakeCells.concat(obj.s);
     }
     if (obj.c) updateCells = updateCells.concat(obj.c);
+    if (obj.t) updateTiles = updateTiles.concat(obj.t);
 
     if (obj.p) {
         for (let i = 0; i < obj.p.length; i++) {

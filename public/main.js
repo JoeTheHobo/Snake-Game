@@ -1,71 +1,15 @@
-function renderGame() {
-    renderTiles();
-    ctx_items.clearRect(0,0,canvas_items.width,canvas_items.height);
-    for (let i = 0; i < currentBoard.map.length; i++) {
-        for (let j = 0; j < currentBoard.map[0].length; j++) {
-            let cell = currentBoard.map[i][j]; 
-
-            if (cell.item === false) continue;
-
-            cell.item = structuredClone(cell.item);
-            if (cell.item == undefined) cell.item = false; //Prolly Will Need To Resolve Issue Later
-            if (cell.item !== false) {
-                cell.item.pos = {
-                    x: j,
-                    y: i,
-                }
-
-                if (cell.item.spawnLimit > 0 || cell.item.spawnLimit === false) {
-                    cell.item.spawnLimit--; 
-                    updateCells.push({
-                        x: j,
-                        y: i,
-                    })
-                    if (cell.item.pack == "Tunnels") {
-                        currentBoard.location_tunnels.push({
-                            x: j,
-                            y: i,
-                            name: cell.item.name,
-                        })
-                    }
-                    if (cell.item.renderStatusPath.length > 0) {
-                        currentBoard.location_status.push({
-                            x: j,
-                            y: i,
-                            name: cell.item.name,
-                        })
-                    }
-                }
-            }
-        }
-    }
-}
-function renderTiles() {
-    ctx_tiles.clearRect(0,0,canvas_tiles.width,canvas_tiles.height);
-    for (let i = 0; i < currentBoard.map.length; i++) {
-        for (let j = 0; j < currentBoard.map[0].length; j++) {
-            currentBoard.map[i][j].tile = structuredClone(currentBoard.map[i][j].tile);
-            let mapTile = currentBoard.map[i][j].tile;
-            mapTile.pos = {
-                x: j,
-                y: i,
-            }
-            ctx_tiles.drawImage(getImageFromItem("tile",mapTile,"canvas"),j*gridSize,i*gridSize,gridSize,gridSize);      
-        }
-    }
-}
-function renderCells() {
-    for (let i = 0; i < updateCells.length; i++) {
-        let x = updateCells[i].x;
-        let y = updateCells[i].y;
+function renderCells(list,ctx) {
+    for (let i = 0; i < list.length; i++) {
+        let x = list[i].x;
+        let y = list[i].y;
 
         let mapCell;
-        if (updateCells[i].item || updateCells[i].item === false) {
-            mapCell = updateCells[i].item;
+        if (list[i].item || list[i].item === false) {
+            mapCell = list[i].item;
         } else {
             mapCell = currentBoard.map[y][x].item;
         }
-        ctx_items.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
+        ctx.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
         if (!mapCell.visible) continue;
         if (mapCell == false) continue;
         if (mapCell.hideWhen) {
@@ -75,7 +19,6 @@ function renderCells() {
                 let subtract = 0;
                 let equals = false;
                 let lessOrEqual = false;
-                console.log();
                 if (mapCell.hideWhen[j].equals !== undefined) equals = mapCell.hideWhen[j].equals;
                 if (mapCell.hideWhen[j].lessOrEqual !== undefined) lessOrEqual = mapCell.hideWhen[j].lessOrEqual;
 
@@ -150,21 +93,21 @@ function renderCells() {
             }
 
             if (doRender) {
-                ctx_items.font = "16px VT323";
-                ctx_items.strokeStyle = "black";
-                ctx_items.fillStyle = mapCell.renderStatusColor ?? "white";
-                ctx_items.lineWidth = 4;
+                ctx.font = "16px VT323";
+                ctx.strokeStyle = "black";
+                ctx.fillStyle = mapCell.renderStatusColor ?? "white";
+                ctx.lineWidth = 4;
     
-                let textWidth = ctx_items.measureText(value).width;
+                let textWidth = ctx.measureText(value).width;
                 xPos = (x*(gridSize)) + ((gridSize)/2) - (textWidth/2);
                 yPos = (y*(gridSize)) + ((gridSize)/2)+5;
     
-                ctx_items.strokeText(value,xPos,yPos);
-                ctx_items.fillText(value,xPos,yPos);
+                ctx.strokeText(value,xPos,yPos);
+                ctx.fillText(value,xPos,yPos);
             }
         }
     }
-    updateCells = [];
+    list = [];
 }
 function updateStatusCells() {
     for (let i = 0; i < currentBoard.location_status.length; i++) {
@@ -693,16 +636,14 @@ function startGame(solo = false) {
             x: false,
             y: false,
         }
-        //Draw Player's Card
         updatePlayerCard(player);
-        //Spawn Players
     }
 
     setUpPlayerCanvas();
     renderGame();
     fixItemDifferences(currentBoard.map);
     fixTileDifferences(currentBoard.map);
-    renderCells();
+    //renderCells();
     loadBoardStatus();
 
     for (let i = 0; i < activePlayers.length; i++) {
@@ -904,7 +845,8 @@ function updateProduction() {
 function serverGameLoop() {
     deltaTime = 1;
     if (!isActiveGame) return;
-    renderCells();
+    renderCells(updateTiles,ctx_tiles)
+    renderCells(updateCells,ctx_items);
     //movePlayers();
     //deleteSnakeCells();
     //renderPlayers();
