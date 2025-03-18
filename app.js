@@ -8,7 +8,7 @@ const express = require('express');
 const app = express();
 const pako = require('pako');
 const profanity = require("./profanity.js");
-
+const { Worker } = require("worker_threads");
 
 //socket.io setup
 const http = require('http');
@@ -867,89 +867,8 @@ io.on('connection', (socket) => {
         lobby.checkingSpawnTimers = true;
         lobby.gameStartedAt = false;
         lobby.gameLoop = function() {
-            if (this.gameStartedAt === false) {
-                startGameLoop(lobby);
-
-            }
-            lobby.lobby_gameLoop_start = Date.now();
-            server_movePlayers(this,socket.id)
-
-            if (this.checkingSpawnTimers) checkSpawnStatusTimers(this);
-
-            updateClientPositions(this);
-
-            this.updatePositionTimeStamp = Date.now();
-            this.updateSnakeCells = [];
-            this.updateCells = [];
-            this.updateTiles = [];
-            this.playSounds = [];
-            this.canvasFilters = [];
-            
-            //Check If Anyone Got The Crown
-            let winningPlayer = false;
-            for (let i = 0; i < this.inGamePlayers.length; i++) {
-                if (this.inGamePlayers[i].winGame) {
-                    winningPlayer = this.inGamePlayers[i];
-                    break;
-                }
-            }
-
-            if (!this.gameEnd && !winningPlayer) {
-                setTimeout(() => this.gameLoop(), 16);
-            } else {
-                this.isActiveGame = false;
-                this.isInGame = false;
-
-                //Kill Any Non Dead Snakes
-                for (let i = 0; i < this.inGamePlayers.length; i++) {
-                    if (!this.inGamePlayers[i].isDead) {
-                        deletePlayer(this,this.inGamePlayers[i],false,false,true);
-                    }
-                }
-
-                let longestTail = this.inGamePlayers[0].longestTail;
-                let timeSurvived = this.inGamePlayers[0].timeSurvived;
-                let mostKills = this.inGamePlayers[0].playerKills;
-                let longestTailPlayer = this.inGamePlayers[0];
-                let timeSurvivedPlayer = this.inGamePlayers[0];
-                let mostKillsPlayer = this.inGamePlayers[0];
-                for (let i = 1; i < this.inGamePlayers.length; i++) {
-                    if (this.inGamePlayers[i].longestTail > longestTail) {
-                        longestTail = this.inGamePlayers[i].longestTail;
-                        longestTailPlayer = this.inGamePlayers[i];
-                    }
-                    if (this.inGamePlayers[i].timeSurvived > timeSurvived) {
-                        timeSurvived = this.inGamePlayers[i].timeSurvived;
-                        timeSurvivedPlayer = this.inGamePlayers[i];
-                    }
-                    if (this.inGamePlayers[i].playerKills > mostKills) {
-                        mostKills = this.inGamePlayers[i].mostKills;
-                        mostKillsPlayer = this.inGamePlayers[i];
-                    }
-                }
-
-                let minutes = (timeSurvived-(timeSurvived%60))/60;
-                let seconds = timeSurvived%60;
-
-                if ((seconds + "").length == 1) seconds = "0" + seconds;
-
-
-                let obj = {
-                    lobby: this,
-                    longestTail: longestTail,
-                    timeSurvived: timeSurvived,
-                    longestTailPlayer: longestTailPlayer,
-                    timeSurvivedPlayer: timeSurvivedPlayer,
-                    mostKillsPlayer: mostKillsPlayer,
-                    minutes: minutes,
-                    seconds: seconds,
-                    winningPlayer: winningPlayer,
-                };
-                io.to(lobby.id).emit("endGame",obj)
-
-                
-                updateLobbies();
-                
+            if (!this.worker) {
+                this.worker = startGameThread(this);
             }
         }
 
@@ -1830,6 +1749,25 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function startGameThread(lobby) {
+    const worker = new Worker("./gameWorker.js");
+
+    // Send the lobby data to the worker
+    worker.postMessage(lobby);
+
+    // Listen for messages from the worker thread
+    worker.on("message", (message) => {
+        if (message.type === "end") {
+            console.log(`Game loop ended for lobby ${message.lobbyId}`);
+            worker.terminate();
+        } else if (message.type === "gameOver") {
+            io.to(message.data.lobbyId).emit("endGame", message.data);
+            updateLobbies();
+        }
+    });
+
+    return worker;
+}
 function updateAllCells(lobby) {
     let currentBoard = lobby.board;
     for (let i = 0; i < currentBoard.map.length; i++) {
