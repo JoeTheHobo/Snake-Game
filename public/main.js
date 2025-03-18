@@ -315,6 +315,7 @@ document.body.on("wheel",function(e) {
     updatePlayerCard(player);
 })
 document.body.onkeydown = function(e) {
+    console.log(e.key)
     if (e.ctrlKey && e.key === 'q') {
         showPerformance = showPerformance ? false : true;
         
