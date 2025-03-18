@@ -110,6 +110,13 @@ function renderCells(list,ctx,type) {
             }
         }
     }
+
+    if (type == "tile" && localAccount.firstRound) {
+        localAccount.firstRound = false;
+        
+        let color = _color(getAverageCanvasColor(canvas_tiles)).darken(10).ogColor;
+        document.body.style.background = color;
+    }
 }
 function drawImage(image, direction, xPos, yPos, width, height,cnvs = canvas_players) {
     if (direction == false) direction = "up";
@@ -839,14 +846,6 @@ function serverGameLoop() {
     //movePlayers();
     //deleteSnakeCells();
     //renderPlayers();
-    
-    if (localAccount.firstRound) {
-        localAccount.firstRound = false;
-        
-        let color = _color(getAverageCanvasColor(canvas_tiles)).darken(10).ogColor;
-        document.body.style.background = color;
-    }
-    
 
     if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 120);//requestAnimationFrame(gameLoop);
 }
