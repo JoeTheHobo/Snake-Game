@@ -872,6 +872,7 @@ io.on('connection', (socket) => {
         lobby.gameLoop = function() {
             const now = Date.now();
             const deltaTime = now - lobby.lastTime;
+            let winningPlayer = false;
 
             if (this.gameStartedAt === false) {
                 startGameLoop(lobby);
@@ -892,7 +893,6 @@ io.on('connection', (socket) => {
                 this.canvasFilters = [];
                 
                 //Check If Anyone Got The Crown
-                let winningPlayer = false;
                 for (let i = 0; i < this.inGamePlayers.length; i++) {
                     if (this.inGamePlayers[i].winGame) {
                         winningPlayer = this.inGamePlayers[i];
