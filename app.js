@@ -9,7 +9,7 @@ const app = express();
 const pako = require('pako');
 const profanity = require("./profanity.js");
 const { Worker } = require("worker_threads");
-
+const path = require("path");
 //socket.io setup
 const http = require('http');
 const server = http.createServer(app);
