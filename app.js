@@ -1750,12 +1750,10 @@ function removePlayerStatus(lobby,player,itemName) {
 
 //From App.js
 function startGameThread(lobby) {
-    const worker = new Worker("./gameWorker.js");
+    const worker = new Worker(path.resolve(__dirname, "gameWorker.js")); // Ensures the correct absolute path
 
-    // Send the lobby data to the worker
     worker.postMessage(lobby);
 
-    // Listen for messages from the worker thread
     worker.on("message", (message) => {
         if (message.type === "end") {
             console.log(`Game loop ended for lobby ${message.lobbyId}`);
