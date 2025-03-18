@@ -404,6 +404,8 @@ socket.on("updatePositions",(obj,lobbyID) => {
 
     obj = JSON.parse(pako.inflate(obj, { to: 'string' }));
 
+    console.log(obj)
+
     if (_type(obj.g).type == "number") production.lobby_gameLoop.times.push(obj.g);
 
     if (obj.a) {
