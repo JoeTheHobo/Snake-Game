@@ -111,6 +111,7 @@ function renderCells(list,ctx,type) {
         }
     }
 
+    console.log(1)
     if (type == "tile" && localAccount.firstRound) {
         localAccount.firstRound = false;
         
