@@ -51,6 +51,8 @@ retrieveAllPresetBoards(0);
 
 io.on('connection', (socket) => {
     console.log('a user connected');    
+    socket.join(socket.id);
+    socket.join("menuScreen");
     let username = simple.rnd(playerNames1) + simple.rnd(playerNames2);
     let tag = "#" + formatNumber(Object.keys(onlineAccounts).length);
     onlineAccounts[socket.id] = {
@@ -86,7 +88,7 @@ io.on('connection', (socket) => {
             let sendItems = pako.deflate(JSON.stringify(items), { to: 'string' });
             let sendTiles = pako.deflate(JSON.stringify(tiles), { to: 'string' });
 
-            io.emit('setPlayer', socket.id, onlineAccounts[socket.id],sendItems,basedGameMode,presetGameModes,presetBoards,backgrounds,sendTiles,decompressed);
+            io.to(socket.id).emit('setPlayer', socket.id, onlineAccounts[socket.id],sendItems,basedGameMode,presetGameModes,presetBoards,backgrounds,sendTiles,decompressed);
         })
     })
 
@@ -127,14 +129,14 @@ io.on('connection', (socket) => {
             
                 lobby.activePlayers = getPlayersList(lobby.players);
 
-                io.emit("updateLobbyPage", lobby.id, lobby);
+                io.to(lobby.id).emit("updateLobbyPage", lobby);
             }
 
             
             updateLobbies();
         }
         
-        io.emit("kickPlayer",socket.id,"Disconnected due to " + reason + " [Code: 002]");
+        io.to(socket.id).emit("kickPlayer","Disconnected due to " + reason + " [Code: 002]");
         delete onlineAccounts[socket.id];
     }) 
     socket.on("saveBoard",(board) => {
@@ -153,7 +155,7 @@ io.on('connection', (socket) => {
             for (let i = 0; i < account.boards.length; i++) {
                 if (account.boards[i].id === board.id) {
                     account.boards[i] = board;
-                    io.emit("updatePlayersBoards",socket.id,account.boards);
+                    io.to(socket.id).emit("updatePlayersBoards",account.boards);
                     compressObject(account.boards,(err,compressed) => {
                         if (err) {
                             console.log(5,err);
@@ -179,7 +181,7 @@ io.on('connection', (socket) => {
                 console.log(7,err);
                 return;
             }
-            io.emit("sendingZippedBoard",socket.id,compressed.toString("base64"),board.name)
+            io.to(socket.id).emit("sendingZippedBoard",compressed.toString("base64"),board.name)
         })
     });
     socket.on("deleteBoard",(boardID,sentFrom) => {
@@ -195,7 +197,7 @@ io.on('connection', (socket) => {
             for (let i = 0; i < account.boards.length; i++) {
                 if (account.boards[i].id === boardID) {
                     account.boards.splice(i,1);
-                    io.emit("updatePlayersBoards",socket.id,account.boards,sentFrom);
+                    io.to(socket.id).emit("updatePlayersBoards",account.boards,sentFrom);
                     compressObject(account.boards,(err,compressed) => {
                         if (err) {
                             console.log(9,err);
@@ -236,7 +238,7 @@ io.on('connection', (socket) => {
             if (index > account.boards.length-1) account.boards.push(board); 
             else account.boards[index] = board;
     
-            io.emit("updatePlayersBoards",socket.id,account.boards,sentFrom,board)
+            io.to(socket.id).emit("updatePlayersBoards",account.boards,sentFrom,board)
             compressObject(account.boards,(err,compressed) => {
                 if (err) {
                     console.log(11,err)
@@ -329,7 +331,7 @@ io.on('connection', (socket) => {
 
             account.boards.push(board);
     
-            io.emit("updatePlayersBoards",socket.id,account.boards,sentFrom)
+            io.to(socket.id).emit("updatePlayersBoards",account.boards,sentFrom)
             compressObject(account.boards,(err,compressed) => {
                 if (err) {
                     console.log(13,err)
@@ -352,7 +354,7 @@ io.on('connection', (socket) => {
         gameMode.accountID = socket.id;
         account.gameModes.push(gameMode);
 
-        io.emit("updateLocalGameModes",socket.id,account.gameModes,sentFrom);
+        io.to(socket.id).emit("updateLocalGameModes",account.gameModes,sentFrom);
 
     })
     socket.on("deleteGameMode",(gameModeID,sentFrom) => {
@@ -360,7 +362,7 @@ io.on('connection', (socket) => {
         for (let i = 0; i < account.gameModes.length; i++) {
             if (account.gameModes[i].id == gameModeID) {
                 account.gameModes.splice(i,1);
-                io.emit("updateLocalGameModes",socket.id,account.gameModes,sentFrom)
+                io.to(socket.id).emit("updateLocalGameModes",account.gameModes,sentFrom)
                 return;
             }
         }
@@ -372,7 +374,7 @@ io.on('connection', (socket) => {
                 if (checkGameMode(gameMode,socket.id) === true) {
                     account.gameModes[i] = gameMode;
                     account.gameModes[i].whenSnakesDie = account.gameModes[i].whenSnakesDie.toLowerCase(); 
-                    io.emit("updateLocalGameModes",account.gameModes)
+                    io.to(socket.id).emit("updateLocalGameModes",account.gameModes)
                 }
             }
         }
@@ -412,7 +414,8 @@ io.on('connection', (socket) => {
         lobbies[id].activePlayers = getPlayersList(lobbies[id].players);
 
         socket.join(id);
-        io.emit("setClientLobby",socket.id,lobbies[id])
+        socket.leave("menuScreen")
+        io.to(socket.id).emit("setClientLobby",lobbies[id])
         updateLobbies();
     })
     socket.on("quitServer",() => {
@@ -436,6 +439,7 @@ io.on('connection', (socket) => {
 
         onlineAccounts[socket.id].lobby = false;
         socket.leave(lobby.id);
+        socket.join("menuScreen");
 
         if (lobby.players.length == 0) {
             delete lobbies[lobby.id];
@@ -453,7 +457,7 @@ io.on('connection', (socket) => {
                 message: username + " Quit The Lobby",
             })
     
-            io.emit("updateLobbyPage", lobby.id, lobby);
+            io.to(lobby.id).emit("updateLobbyPage", lobby);
             updateLobbies();
         }
     })
@@ -470,11 +474,12 @@ io.on('connection', (socket) => {
 
 
         if (lobby.isInGame && !spectate) {
-            io.emit("askToSpectate",socket.id,lobbyID,code);
+            io.to(socket.id).emit("askToSpectate",lobbyID,code);
             return;
         }
         
         socket.join(lobby.id);
+        socket.leave("menuScreen");
         lobby.players.push(socket.id);
         lobby.chats.push({
             account: null,
@@ -485,8 +490,8 @@ io.on('connection', (socket) => {
         account.player.canSubmitBoards = false;
         lobby.activePlayers = getPlayersList(lobby.players);
         updateLobbies();
-        io.emit("updateLobbyPage", lobby.id, lobby.activePlayers, "players", lobby.hostID,lobby.players.length,lobby.playerMax);
-        io.emit("setClientLobby",socket.id,lobby);
+        io.to(lobby.id).emit("updateLobbyPage", lobby.activePlayers, "players", lobby.hostID,lobby.players.length,lobby.playerMax);
+        io.to(socket.id).emit("setClientLobby",lobby);
     })
     socket.on("refreshLobbies",() => {
         updateLobbies();
@@ -510,7 +515,7 @@ io.on('connection', (socket) => {
             color: onlineAccounts[socket.id].chatNameColor,
         })
 
-        io.emit("updateLobbyPage", lobby.id, lobby.chats,"chats");
+        io.to(lobby.id).emit("updateLobbyPage", lobby.chats,"chats");
     })
     socket.on("searchingHiddenServer",(value) => {
         for (const lobbyID in lobbies) {
@@ -535,7 +540,7 @@ io.on('connection', (socket) => {
         if (settings.code == "") settings.code = rnd(9999);
         lobby.code = settings.code + "";
 
-        io.emit("updateLobbyPage", lobby.id, {
+        io.to(lobby.id).emit("updateLobbyPage", {
             serverType: serverType,
             code: lobby.code,
         },"settings",lobby.hostID);
@@ -551,7 +556,7 @@ io.on('connection', (socket) => {
         if (!gameMode) return;
 
         lobby.gameMode = gameMode;
-        io.emit("updateLobbyPage", lobby.id, lobby.gameMode,"gameMode");
+        io.to(lobby.id).emit("updateLobbyPage", lobby.gameMode,"gameMode");
 
     })
     socket.on("editServerGameMode", (gamemode) => {
@@ -564,10 +569,10 @@ io.on('connection', (socket) => {
         if (!gameMode) return;
         if (checkGameMode(gameMode,socket.id) === true) {
             lobby.gameMode = gameMode;
-            io.emit("updateLobbyPage", lobby.id, lobby.gameMode,"gameMode");
+            io.to(lobby.id).emit("updateLobbyPage", lobby.gameMode,"gameMode");
         } else {
             onlineAccounts[socket.id].kickPlayer = true;
-            socket.emit("kickPlayer","Caught Hacking [Code: 956] " + checkGameMode(gameMode,socket.id));
+            io.to(socket.id).emit("kickPlayer","Caught Hacking [Code: 956] " + checkGameMode(gameMode,socket.id));
             return;
         }
 
@@ -597,7 +602,7 @@ io.on('connection', (socket) => {
         if (!lobby) return;
         if (lobby.hostID !== socket.id) return;
 
-        io.emit("settingLobbyBoards",lobby.lobbyBoards);
+        io.to(lobby.id).emit("settingLobbyBoards",lobby.lobbyBoards);
 
     })
     socket.on("changeServerBoard",(board) => {
@@ -609,7 +614,7 @@ io.on('connection', (socket) => {
         //Varify Board Here -To Be Added
         board = fixBoard(JSON.parse(pako.inflate(board, { to: 'string' })));
         lobby.board = board;
-        io.emit("updateLobbyPage", lobby.id, lobby.board,"board",lobby.hostID);
+        io.to(lobby.id).emit("updateLobbyPage", lobby.board,"board",lobby.hostID);
         updateLobbies();
     })
     socket.on("setCode",(code) => {
@@ -633,7 +638,7 @@ io.on('connection', (socket) => {
 
         lobby.activePlayers = getPlayersList(lobby.players);
         
-        io.emit("updateLobbyPage", lobby.id, lobby.activePlayers,"submissionStatus",lobby.hostID);
+        io.to(lobby.id).emit("updateLobbyPage", lobby.activePlayers,"submissionStatus",lobby.hostID);
     })
     socket.on("kickPlayerFromLobby",(player) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -658,10 +663,12 @@ io.on('connection', (socket) => {
             }
         }
         lobby.activePlayers = getPlayersList(lobby.players);
+        socket.leave(lobby.id);
+        socket.join("homeScreen")
 
         updateLobbies();
-        io.emit("setPlayerToHomeScreen",kickedPlayer.id);
-        io.emit("updateLobbyPage", lobby.id, lobby.activePlayers, "players",lobby.hostID,lobby.players.length,lobby.playerMax);
+        io.to(socket.id).emit("setPlayerToHomeScreen");
+        io.to(lobby.id).emit("updateLobbyPage", lobby.activePlayers, "players",lobby.hostID,lobby.players.length,lobby.playerMax);
     })
     socket.on("setLobbyHost",(player) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -681,7 +688,7 @@ io.on('connection', (socket) => {
             message: username + " Is The New Lobby Host",
         })
 
-        io.emit("updateLobbyPage", lobby.id, lobby);
+        io.to(lobby.id).emit("updateLobbyPage", lobby);
     })
     socket.on("endGame",() => {
         let account = onlineAccounts[socket.id];
@@ -702,7 +709,7 @@ io.on('connection', (socket) => {
         value = profanity.clean(value);
         lobby.lobbyName = value;
 
-        io.emit("updateLobbyPage", lobby.id, lobby.lobbyName, "lobbyName");
+        io.to(lobby.id).emit("updateLobbyPage", lobby.lobbyName, "lobbyName");
         updateLobbies();
     })
     socket.on("ping", (callback) => {
@@ -713,7 +720,7 @@ io.on('connection', (socket) => {
         if (!lobby) return;
         if (lobby.hostID !== socket.id) {
             onlineAccounts[socket.id].kickPlayer = true;
-            socket.emit("kickPlayer","Caught Hacking [Code: 001]");
+            io.to(socket.id).emit("kickPlayer","Caught Hacking [Code: 001]");
             return;
         }
         
@@ -854,7 +861,7 @@ io.on('connection', (socket) => {
         lobby.boardStatus = [];
         lobby.lobby_gameLoop_start = false;
 
-        io.emit("startingGame", lobby,onlineAccounts[socket.id].player);
+        io.to(lobby.id).emit("startingGame", lobby,onlineAccounts[socket.id].player);
         
         updateClientPositions(lobby)
         lobby.checkingSpawnTimers = true;
@@ -938,7 +945,7 @@ io.on('connection', (socket) => {
                     seconds: seconds,
                     winningPlayer: winningPlayer,
                 };
-                io.emit("endGame",obj,lobby.id)
+                io.to(lobby.id).emit("endGame",obj)
 
                 
                 updateLobbies();
@@ -951,7 +958,7 @@ io.on('connection', (socket) => {
         setTimeout(function() {
             if (lobby.gameStatus === "game" || lobby.waiting == false) return;
             lobby.waiting = false;
-            io.emit("preparingGame",lobby.id);
+            io.to(lobby.id).emit("preparingGame");
             setTimeout(function() {
                 lobby.gameStatus = "game";
                 lobby.gameLoop();
@@ -971,7 +978,7 @@ io.on('connection', (socket) => {
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
             if (lobby.inGamePlayers[i].accountID == socket.id) lobby.inGamePlayers[i].preGameStatus = "ready";
         }
-        io.emit("updatePreGamePlayerInfo",lobby.id,lobby.inGamePlayers)
+        io.to(lobby.id).emit("updatePreGamePlayerInfo",lobby.inGamePlayers)
 
         if (lobby.readyPlayers.length === lobby.inGamePlayers.length) {
             if (lobby.gameStatus == "game" || lobby.waiting == false) return;
@@ -1067,12 +1074,12 @@ io.on('connection', (socket) => {
                 onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].serverSnake);
                 lobby.activePlayers = getPlayersList(lobby.players);
 
-                io.emit("updateLobbyPage", lobby.id, lobby);
+                io.to(lobby.id).emit("updateLobbyPage", lobby);
                 
             }
         } else {
             onlineAccounts[socket.id].kickPlayer = true;
-            io.emit("kickPlayer",socket.id,"Hacked Players: " + checksOut + " [Code: 7834]");
+            io.to(socket.id).emit("kickPlayer","Hacked Players: " + checksOut + " [Code: 7834]");
         }
     })
     console.log(Object.keys(onlineAccounts).length);
@@ -1927,7 +1934,7 @@ function updateLobbies() {
             acc[lobby.id] = { ...lobby, code: "", gameLoop: "" };
             return acc;
         }, {});
-    io.emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
+    io.to("menuScreen").emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
 }
 setInterval(() => {
     io.emit("updateMemorry",process.memoryUsage());

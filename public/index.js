@@ -22,14 +22,12 @@ const localAccount = {
     lobbyBoards: [],
 };
 let gameType = "local";
-socket.on("kickPlayer",(playerID,message) => {
-    if (playerID !== localAccount.id) return;
+socket.on("kickPlayer",(message) => {
     killSwitch = true;
     alert(message);
 
 })
 socket.on("updateLocalGameModes",(accountID,gameModes,sentFrom) => {
-    if (localAccount.id !== accountID) return;
     localAccount.gameModes = gameModes;
 
     if (sentFrom == "loadGameModesScreen") {
@@ -40,7 +38,6 @@ socket.on("updateLocalGameModes",(accountID,gameModes,sentFrom) => {
     }
 })
 socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_presetGameModes,server_presetBoards,server_backgrounds,server_tiles,player_boards) =>{
-    if (localAccount.id !== false) return;
     localAccount.id = id;
     localAccount.isInGame = false;
     localAccount.lobbyID = false;
@@ -75,11 +72,9 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     renderMapsInServersTab = true;
 });
 socket.on("sendingZippedBoard",(socketID,zippedBoard,boardName) => {
-    if (socketID !== localAccount.id) return;
     downloadTextFile(boardName,zippedBoard);
 })
 socket.on("updatePlayersBoards",(socketID,boards,sentFrom,board) => {
-    if (socketID !== localAccount.id) return;
     localAccount.boards = boards;
     
     currentBoardIndex = localAccount.boards.length-1;
@@ -99,9 +94,7 @@ socket.on("updatePlayersBoards",(socketID,boards,sentFrom,board) => {
         setScene("lobby");
     }
 })
-socket.on("setClientLobby",(socketID,lobby) => {
-    if (socketID !== localAccount.id) return;
-
+socket.on("setClientLobby",(lobby) => {
     if (lobby.hostID == localAccount.id) localAccount.isHost = true;
     else localAccount.isHost = false;
 
@@ -110,14 +103,12 @@ socket.on("setClientLobby",(socketID,lobby) => {
     setScene("lobby");
     localAccount.isInLobby = true;
 })
-socket.on("updateLobbyPage",(lobbyID,lobby,type,extra,extra2,extra3) => {
-    if (localAccount.lobbyID !== lobbyID) return;
+socket.on("updateLobbyPage",(lobby,type,extra,extra2,extra3) => {
     updateLobbyPage(lobby,type,extra,extra2,extra3);
 })
 socket.on("updateLobbies", (backEndLobbies,onlineCount, lobbyCount,) =>{
     production.server_player_count.value = onlineCount;
     production.server_lobby_count.value = lobbyCount;
-    if (localAccount.isInLobby) return;
     if ($(".content_servers").style.display == "none") return;
 
 
@@ -130,7 +121,6 @@ socket.on("settingLobbyBoards",(boardsList) => {
 })
 socket.on("startingGame", (lobby) => {
     //lobby = JSON.parse(pako.inflate(lobby, { to: 'string' }));
-    if (localAccount.lobbyID !== lobby.id) return;
     localAccount.isInGame = true;
 
     let foundPlayer = false;
@@ -300,8 +290,6 @@ function generatePreGamePlayerInfo(players) {
     }
 }
 socket.on("updatePreGamePlayerInfo",(lobbyID,players) => {
-    if (localAccount.lobbyID !== lobbyID) return;
-
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
         if (player.accountID == localAccount.id) continue;
@@ -320,9 +308,8 @@ socket.on("updatePreGamePlayerInfo",(lobbyID,players) => {
         }
     }
 })
-socket.on("endGame",(obj,lobbyID) => {
+socket.on("endGame",(obj) => {
     obj = obj;
-    if (localAccount.lobbyID !== lobbyID) return;
     localAccount.isInGame = false;
     showEndScreen()
     
@@ -363,8 +350,7 @@ socket.on("endGame",(obj,lobbyID) => {
     }
 
 })
-socket.on("preparingGame",(lobbyID) => {
-    if (localAccount.lobbyID !== lobbyID) return;
+socket.on("preparingGame",() => {
     $(".gameInfoWaiting").hide();
     $(".gameInfoNumbers").show("flex");
     showNumber(3);
@@ -476,8 +462,7 @@ socket.on("updatePositions",(obj) => {
     server_renderPlayers();
     production.updatePositions_speed.times.push(performance.now() - production.updatePositions_speed.timeStart);
 });
-socket.on("askToSpectate",(accountID,lobbyID,code) => {
-    if (localAccount.id !== accountID) return;
+socket.on("askToSpectate",(lobbyID,code) => {
     makePopUp([
         {type: "title",text: "Lobby Is In A Round"},
         
@@ -493,8 +478,7 @@ socket.on("askToSpectate",(accountID,lobbyID,code) => {
 
     })
 })
-socket.on("setPlayerToHomeScreen",(accountID) => {
-    if (localAccount.id !== accountID) return;
+socket.on("setPlayerToHomeScreen",() => {
     setScene("newMenu");
     localAccount.isInLobby = false;
 })
