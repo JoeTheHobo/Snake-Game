@@ -499,10 +499,6 @@ function server_startGame(){
 function spawn(name,generateRandomItem = true,counting = false) {
     socket.emit("spawn",name,generateRandomItem = true,counting = false);
 };
-
-function getCurrentBoard() {
-
-}
 function server_movePlayers() {
     socket.emit("movePlayer");
 }
