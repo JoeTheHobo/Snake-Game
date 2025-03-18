@@ -1,4 +1,7 @@
 function renderCells(list,ctx,type) {
+    let doColorBackground = false;
+    if (type == "tile" && list.length > 0) doColorBackground = true;
+
     for (let i = 0; i < list.length; i++) {
         let x = list[i].x;
         let y = list[i].y;
@@ -111,8 +114,7 @@ function renderCells(list,ctx,type) {
         }
     }
 
-    console.log(1)
-    if (type == "tile" && localAccount.firstRound) {
+    if (doColorBackground && localAccount.firstRound) {
         localAccount.firstRound = false;
         
         let color = _color(getAverageCanvasColor(canvas_tiles)).darken(10).ogColor;

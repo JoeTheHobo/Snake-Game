@@ -97,7 +97,7 @@ io.on('connection', (socket) => {
         let username = onlineAccounts[socket.id].username;
         console.log("A user disconnected due to " + reason);
         if (onlineAccounts[socket.id].lobby) {
-            socket.leave(lobby.id)
+            socket.leave(onlineAccounts[socket.id].lobby.id)
             let lobby = lobbies[onlineAccounts[socket.id].lobby];
             if (lobby.isInGame) {
                 for (let i = 0; i < lobby.inGamePlayers.length; i++) {
