@@ -881,6 +881,7 @@ io.on('connection', (socket) => {
             lobby.lobby_gameLoop_start = Date.now();
 
             if (deltaTime >= TICK_RATE) {
+                lobby.lastTime = now;
                 server_movePlayers(this,socket.id)
                 if (this.checkingSpawnTimers) checkSpawnStatusTimers(this);
                 updateClientPositions(this);
