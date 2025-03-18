@@ -10,7 +10,11 @@ function renderCells(list,ctx,type) {
 
         if (mapCell == undefined) {
             if (type == "item") mapCell = currentBoard.map[y][x].item;
-            if (type == "tile") mapCell = currentBoard.map[y][x].tile;
+            if (type == "tile") {
+                console.log(mapCell)
+                mapCell = currentBoard.map[y][x].tile;
+                console.log(mapCell)
+            }
         }
 
 
