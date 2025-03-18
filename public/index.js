@@ -233,7 +233,7 @@ socket.on("startingGame", (lobby) => {
     isActiveGame = true;
     gameEnd = false;
     gameType = "server";
-    localAccount.firstRound = false;
+    localAccount.firstRound = true;
 
     setResolution(lobby.board.map[0].length,lobby.board.map.length);
     setUpPlayerCanvas();
@@ -287,7 +287,7 @@ function generatePreGamePlayerInfo(players) {
         
     }
 }
-socket.on("updatePreGamePlayerInfo",(lobbyID,players) => {
+socket.on("updatePreGamePlayerInfo",(players) => {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
         if (player.accountID == localAccount.id) continue;
@@ -460,12 +460,6 @@ socket.on("updatePositions",(obj) => {
     server_renderPlayers();
     production.updatePositions_speed.times.push(performance.now() - production.updatePositions_speed.timeStart);
 
-    if (!localAccount.firstRound) {
-        localAccount.firstRound = true;
-        
-        let color = _color(getAverageCanvasColor(canvas_tiles)).darken(10).ogColor;
-        document.body.style.background = color;
-    }
 });
 socket.on("askToSpectate",(lobbyID,code) => {
     makePopUp([

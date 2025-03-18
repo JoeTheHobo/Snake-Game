@@ -840,6 +840,13 @@ function serverGameLoop() {
     //deleteSnakeCells();
     //renderPlayers();
     
+    if (localAccount.firstRound) {
+        localAccount.firstRound = false;
+        
+        let color = _color(getAverageCanvasColor(canvas_tiles)).darken(10).ogColor;
+        document.body.style.background = color;
+    }
+    
 
     if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 120);//requestAnimationFrame(gameLoop);
 }
