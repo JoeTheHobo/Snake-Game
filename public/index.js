@@ -395,9 +395,8 @@ socket.on("updateMemorry",(obj) => {
     production.server_external.times = [obj.external];
     production.server_arrayBuffers.times = [obj.arrayBuffers];
 });
-socket.on("updatePositions",(obj,lobbyID) => {
+socket.on("updatePositions",(obj) => {
     production.updatePositions_speed.timeStart = performance.now();
-    if (localAccount.lobbyID !== lobbyID) return;
     if (!localAccount.isInGame) return; 
 
     production.updatePositions_recieveData.times.push(obj.byteLength);

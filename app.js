@@ -95,6 +95,7 @@ io.on('connection', (socket) => {
         let username = onlineAccounts[socket.id].username;
         console.log("A user disconnected due to " + reason);
         if (onlineAccounts[socket.id].lobby) {
+            socket.leave(lobby.id)
             let lobby = lobbies[onlineAccounts[socket.id].lobby];
             if (lobby.isInGame) {
                 for (let i = 0; i < lobby.inGamePlayers.length; i++) {
@@ -410,6 +411,7 @@ io.on('connection', (socket) => {
         onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].serverSnake);
         lobbies[id].activePlayers = getPlayersList(lobbies[id].players);
 
+        socket.join(id);
         io.emit("setClientLobby",socket.id,lobbies[id])
         updateLobbies();
     })
@@ -433,6 +435,7 @@ io.on('connection', (socket) => {
         }
 
         onlineAccounts[socket.id].lobby = false;
+        socket.leave(lobby.id);
 
         if (lobby.players.length == 0) {
             delete lobbies[lobby.id];
@@ -471,6 +474,7 @@ io.on('connection', (socket) => {
             return;
         }
         
+        socket.join(lobby.id);
         lobby.players.push(socket.id);
         lobby.chats.push({
             account: null,
@@ -1968,7 +1972,7 @@ function updateClientPositions(lobby) {
     let changes = pako.deflate(JSON.stringify(changedList), { to: 'string' });
 
     if (Object.keys(changes).length > 0) { // Only emit if there are changes
-        io.emit("updatePositions", changes, lobby.id);
+        io.to(lobby.id).emit("updatePositions", changes);
     }
 
     // Store the new state for next comparison

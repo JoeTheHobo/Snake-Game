@@ -916,26 +916,26 @@ function drawTunnelCanvas(canvas,pos) {
     ctx.drawImage($(".firstPersonCanvas_master"),x-extra,y-extra,extra*2,extra*2,0,0,200,200);
 }
 
-function getBaseImgFromTag(item,tag) {
+function getBaseImgFromTag(item,tag,mapEditor = false) {
     if (tag.charAt(0) == ".") {
-        return getItemValueFromList(item,tag.split("."));
+        return getItemValueFromList(item,tag.split("."),mapEditor);
     } else {
         return tag;
     }
 }
-function getItemValueFromList(item,list) {
+function getItemValueFromList(item,list,mapEditor = false) {
     let value = item;
     for (let i = 1; i < list.length; i++) {
         value = value[list[i]];
     }
-    if (value == "*P") value = localAccount.player.team;
+    if (value == "*P") value = mapEditor ? "white" : localAccount.player.team;
     return value;
 }
-function getImageFromItem(type,item,returnType) {
+function getImageFromItem(type,item,returnType,mapEditor = false) {
     let image = item.name;
     if (item.baseImgTags?.length > 0) image += "_";
     for (let i = 0; i < item.baseImgTags.length; i++) {
-        image += getBaseImgFromTag(item,item.baseImgTags[i])
+        image += getBaseImgFromTag(item,item.baseImgTags[i],mapEditor)
     }
     
     if (returnType == "canvas") image = getItemCanvas(image,type);
