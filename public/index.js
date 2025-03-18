@@ -71,10 +71,10 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     setUpItemCanvas(tiles);
     renderMapsInServersTab = true;
 });
-socket.on("sendingZippedBoard",(socketID,zippedBoard,boardName) => {
+socket.on("sendingZippedBoard",(zippedBoard,boardName) => {
     downloadTextFile(boardName,zippedBoard);
 })
-socket.on("updatePlayersBoards",(socketID,boards,sentFrom,board) => {
+socket.on("updatePlayersBoards",(boards,sentFrom,board) => {
     localAccount.boards = boards;
     
     currentBoardIndex = localAccount.boards.length-1;

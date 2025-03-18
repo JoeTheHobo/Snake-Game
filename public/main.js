@@ -8,10 +8,9 @@ function renderCells(list,ctx,type) {
         
         let mapCell = list[i].item;
 
-        if (type == "item") {
-            if (mapCell == undefined) {
-                mapCell = currentBoard.map[y][x].item;
-            }
+        if (mapCell == undefined) {
+            if (type == "item") mapCell = currentBoard.map[y][x].item;
+            if (type == "tile") mapCell = currentBoard.map[y][x].tile;
         }
 
 
