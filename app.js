@@ -27,8 +27,6 @@ app.get('/', (req, res) => {
 const lobbies = {};
 const onlineAccounts = {};
 
-const TICK_RATE = 1000 / 55; // 60 FPS
-
 let newPreset = [];
 function retrieveAllPresetBoards(index) {
     let buffer = base64ToArrayBuffer(presetBoards[index]);
@@ -868,42 +866,36 @@ io.on('connection', (socket) => {
         updateClientPositions(lobby)
         lobby.checkingSpawnTimers = true;
         lobby.gameStartedAt = false;
-        lobby.lastTime = Date.now();
         lobby.gameLoop = function() {
-            const now = Date.now();
-            const deltaTime = now - lobby.lastTime;
-            let winningPlayer = false;
-
             if (this.gameStartedAt === false) {
                 startGameLoop(lobby);
 
             }
             lobby.lobby_gameLoop_start = Date.now();
+            server_movePlayers(this,socket.id)
 
-            if (deltaTime >= TICK_RATE) {
-                lobby.lastTime = now;
-                server_movePlayers(this,socket.id)
-                if (this.checkingSpawnTimers) checkSpawnStatusTimers(this);
-                updateClientPositions(this);
-    
-                this.updatePositionTimeStamp = Date.now();
-                this.updateSnakeCells = [];
-                this.updateCells = [];
-                this.updateTiles = [];
-                this.playSounds = [];
-                this.canvasFilters = [];
-                
-                //Check If Anyone Got The Crown
-                for (let i = 0; i < this.inGamePlayers.length; i++) {
-                    if (this.inGamePlayers[i].winGame) {
-                        winningPlayer = this.inGamePlayers[i];
-                        break;
-                    }
+            if (this.checkingSpawnTimers) checkSpawnStatusTimers(this);
+
+            updateClientPositions(this);
+
+            this.updatePositionTimeStamp = Date.now();
+            this.updateSnakeCells = [];
+            this.updateCells = [];
+            this.updateTiles = [];
+            this.playSounds = [];
+            this.canvasFilters = [];
+            
+            //Check If Anyone Got The Crown
+            let winningPlayer = false;
+            for (let i = 0; i < this.inGamePlayers.length; i++) {
+                if (this.inGamePlayers[i].winGame) {
+                    winningPlayer = this.inGamePlayers[i];
+                    break;
                 }
             }
-            
+
             if (!this.gameEnd && !winningPlayer) {
-                setImmediate(this.gameLoop());
+                setTimeout(() => this.gameLoop(), 16);
             } else {
                 this.isActiveGame = false;
                 this.isInGame = false;

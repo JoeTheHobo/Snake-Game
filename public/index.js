@@ -233,6 +233,7 @@ socket.on("startingGame", (lobby) => {
     isActiveGame = true;
     gameEnd = false;
     gameType = "server";
+    localAccount.firstRound = false;
 
     setResolution(lobby.board.map[0].length,lobby.board.map.length);
     setUpPlayerCanvas();
@@ -241,9 +242,6 @@ socket.on("startingGame", (lobby) => {
     setGameScene(activePlayers);
     serverGameLoop();
     generatePreGamePlayerInfo(activePlayers);
-
-    let color = _color(getAverageCanvasColor(canvas_tiles)).darken(10).ogColor;
-    document.body.style.background = color;
     
     socket.emit("snakeIsReady");
 
@@ -461,6 +459,13 @@ socket.on("updatePositions",(obj) => {
     
     server_renderPlayers();
     production.updatePositions_speed.times.push(performance.now() - production.updatePositions_speed.timeStart);
+
+    if (!localAccount.firstRound) {
+        localAccount.firstRound = true;
+        
+        let color = _color(getAverageCanvasColor(canvas_tiles)).darken(10).ogColor;
+        document.body.style.background = color;
+    }
 });
 socket.on("askToSpectate",(lobbyID,code) => {
     makePopUp([
