@@ -1870,7 +1870,7 @@ function startGameLoop(lobby) {
     }
 
     for (let i = 0; i < lobby.inGamePlayers.length; i++) {
-        lobby.inGamePlayers.timeCameAlive = Date.now();
+        lobby.inGamePlayers[i].timeCameAlive = Date.now();
     }
 
 }
