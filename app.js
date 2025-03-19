@@ -1818,6 +1818,11 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function getItemById(lobby,id) {
+    for (let i = 0;i < lobby.items.length; i++) {
+        if (lobby.items[i].id == id) return lobby.items[i];
+    }
+}
 function updateAllCells(lobby) {
     let currentBoard = lobby.board;
     for (let i = 0; i < currentBoard.map.length; i++) {
@@ -2171,7 +2176,7 @@ function snakeMapRemoveAll(lobby,player,setFood) {
                     if (setFood && !currentBoard.map[i][j].item) {
                         let x = j;
                         let y = i;
-                        runItemFunction(lobby,false,lobby.items[33],"onSpawn",{x:x,y:y},{playAudio: false});
+                        runItemFunction(lobby,false,getItemById(lobby,34),"onSpawn",{x:x,y:y},{playAudio: false});
                         currentBoard.map[y][x].item = structuredClone(lobby.items[33]);
                         currentBoard.map[y][x].item.pos = {
                             x: x,
