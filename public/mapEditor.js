@@ -2520,6 +2520,7 @@ function pianoPopUp(value) {
     }
 }
 $(".closePianoPopUp").on("click",function() {
+    console.log("EYO")
     setValue(isSelectingOneCell(),selectedItem.cell,selectedItem.path,$(".whiteKeys").chosenValue);
     checkRenderThenRender();
     loadObjectMenu();
