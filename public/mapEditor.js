@@ -2476,8 +2476,10 @@ function pianoPopUp(value) {
 
     //Building White Keys
     for (let i = 0; i < 37; i++) {
-        let whiteKey = whiteKeysHolder.create("div.key_whiteKey");
+        let keysHolder = whiteKeysHolder.create("div.key_holder");
+        let whiteKey = keysHolder.create("div.key_whiteKey");
         whiteKey.id = "key_white";
+        whiteKey.classAdd("hover");
         let keyText = whiteKey.create("div.key_text");
         keyText.id = "key_white";
 
@@ -2490,8 +2492,9 @@ function pianoPopUp(value) {
 
         let blackKey;
         if (["c","d","f","g","a"].includes(key)) {
-            blackKey = whiteKey.create("div.key_blackKey");
+            blackKey = keysHolder.create("div.key_blackKey");
             blackKey.id = "key_black";
+            blackKey.classAdd("hover");
             let blackKeyText = blackKey.create("div.key_text2");
             blackKeyText.id = "key_black";
             blackKeyText.innerHTML = key + "#" + octive;
@@ -2499,33 +2502,7 @@ function pianoPopUp(value) {
             if (blackKeyText.innerHTML == value) blackKey.classAdd("key_selected");
             
         }
-
-
-        whiteKey.on("mouseover",function(e) {
-            if (e.target.id == "key_white") {
-                whiteKey.css({
-                    background: "rgb(216, 216, 216)",
-                })
-            }
-            if (e.target.id == "key_black") {
-                blackKey.css({
-                    background: "rgb(37, 37, 37)",
-                })
-                whiteKey.css({
-                    background: "white",
-                })
-            }
-        })
-        whiteKey.on("mouseleave",function() {
-            whiteKey.css({
-                background: "white",
-            })
-            if (blackKey) {
-                blackKey.css({
-                    background: "black",
-                })
-            }
-        })
+        
         whiteKey.on("click",function(e) {
             $(".key_chosen").classRemove("key_chosen");
             if (e.target.id == "key_white") {
