@@ -11,10 +11,11 @@ function renderCells(list,ctx,type) {
         if (mapCell == undefined) {
             if (type == "item") mapCell = currentBoard.map[y][x].item;
             if (type == "tile") {
-                console.log(mapCell)
                 mapCell = currentBoard.map[y][x].tile;
-                console.log(mapCell)
             }
+        }
+        if (list[i].changes) {
+            setNestedValue(mapCell,list[i].changes[0],list[i].changes[1]);
         }
 
 

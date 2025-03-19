@@ -1604,6 +1604,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             lobby.updateTiles.push({
                 x: itemPos.x,
                 y: itemPos.y,
+                changes: [["baseImgTags"],item.baseImgTags],
             })
         }
         
