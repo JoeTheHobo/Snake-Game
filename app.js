@@ -834,8 +834,8 @@ io.on('connection', (socket) => {
         
 
         getLocations(lobby);
-        fixBoardDifferences(lobby.board,lobby.board.itemDifferences,"item");
-        fixBoardDifferences(lobby.board,lobby.board.tileDifferences,"tile");
+        fixBoardDifferences(lobby.board.map,lobby.board.itemDifferences,"item");
+        fixBoardDifferences(lobby.board.map,lobby.board.tileDifferences,"tile");
         updateAllCells(lobby);
 
 
@@ -1140,7 +1140,7 @@ function calculateDistance(currentBoard,x1, y1, x2, y2, boardLength, boardHeight
     let dy = Math.min(Math.abs(y1 - y2), boardHeight - Math.abs(y1 - y2));
     return dx + dy;
 }
-function fixBoardDifferences(currentBoard,differences,type) {
+function fixBoardDifferences(map,differences,type) {
     for (let i = 0; i < differences.length; i++) {
         let e = differences[i];
         let d = {
