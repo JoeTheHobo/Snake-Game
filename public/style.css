@@ -3471,7 +3471,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
   box-sizing: border-box;
   border: 0.5px solid black;
   cursor: url('./img/pointer.cur'), auto;
-  position: relative;
   z-index: 2;
 }
 .key_blackKey:hover {
