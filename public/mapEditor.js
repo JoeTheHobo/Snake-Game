@@ -2476,19 +2476,56 @@ function pianoPopUp(value) {
     //Building White Keys
     for (let i = 0; i < 37; i++) {
         let whiteKey = whiteKeysHolder.create("div.key_whiteKey");
+        whiteKey.id = "key_white";
         let keyText = whiteKey.create("div.key_text");
+        keyText.id = "key_white";
 
         let key = keys[i % 7];
         let octive = Math.floor(i/7)+3;
 
         keyText.innerHTML = key + octive;
 
+        let blackKey;
         if (["c","d","f","g","a"].includes(key)) {
-            let blackKey = whiteKey.create("div.key_blackKey");
+            blackKey = whiteKey.create("div.key_blackKey");
+            blackKey.id = "key_black";
             let blackKeyText = blackKey.create("div.key_text2");
+            blackKeyText.id = "key_black";
             blackKeyText.innerHTML = key + "#" + octive;
             
         }
+
+
+        whiteKey.on("mouseOver",function(e) {
+            if (e.target.id == "key_white") {
+                whiteKey.css({
+                    background: "rgb(216, 216, 216)",
+                })
+            }
+            if (e.target.id == "key_black") {
+                blackKey.css({
+                    background: "rgb(37, 37, 37)",
+                })
+            }
+        })
+        whiteKey.on("mouseLeave",function() {
+            whiteKey.css({
+                background: "white",
+            })
+            if (blackKey) {
+                blackKey.css({
+                    background: "black",
+                })
+            }
+        })
+        whiteKey.on("click",function(e) {
+            if (e.target.id == "key_white") {
+                console.log(key + octive);
+            } else {
+                console.log(key + "#" + octive);
+            }
+
+        })
 
     }
 }

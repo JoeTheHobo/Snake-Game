@@ -3474,12 +3474,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
   z-index: 2;
   color: white;
 }
-.key_blackKey:hover {
-  background: rgb(37, 37, 37);
-}
-.key_whiteKey:hover {
-  background: rgb(216, 216, 216);
-}
 .key_text {
   font-size: 19px;
 }
