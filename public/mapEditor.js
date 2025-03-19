@@ -2504,14 +2504,27 @@ function pianoPopUp(value) {
             blackKey.on("click",function() {
                 $(".key_chosen").classRemove("key_chosen");
                 blackKey.classAdd("key_chosen");
-                
+                playNote("sounds/piano/piano_" + blackKeyText.innerHTML + "_1.mp3");
             })
         }
 
         whiteKey.on("click",function(e) {
             $(".key_chosen").classRemove("key_chosen");
             whiteKey.classAdd("key_chosen");
+            playNote("sounds/piano/piano_" + keyText.innerHTML + "_1.mp3");
         })
 
     }
+}
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+async function playNote(url) {
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+    const source = audioContext.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(audioContext.destination);
+    source.start();
 }
