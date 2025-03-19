@@ -1579,7 +1579,10 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
 
     let collision;
     if (simple.type(type) == "object") collision = type; 
-    else collision = item[type];
+    else {
+        if (item[type])
+            collision = item[type];
+    }
 
     if (!collision) return returnItem;
 
