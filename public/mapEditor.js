@@ -1188,7 +1188,10 @@ function loadObjectMenu() {
             contentHolder.innerHTML = extra;
             if (extra == false) contentHolder.innerHTML = value;
 
-            contentHolder.on("click",extra2);
+            contentHolder.on("click",function() {
+                selectedItem.path = path;
+                extra2()
+            });
         }
         if (type == "status" || type == "statusFull") {
             let contentHolder = settingHolder.create("div");
@@ -2516,6 +2519,11 @@ function pianoPopUp(value) {
 
     }
 }
+$(".closePianoPopUp").on("click",function() {
+    setValue(isSelectingOneCell(),selectedItem.cell,selectedItem.path,$(".whiteKeys").chosenValue);
+    checkRenderThenRender();
+    loadObjectMenu();
+})
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 async function playNote(url) {
