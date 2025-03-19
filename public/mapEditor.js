@@ -2519,10 +2519,6 @@ function pianoPopUp(value) {
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 async function playNote(url) {
-    var audio = new Audio(url);
-audio.play();
-
-return;
     const response = await fetch(url);
     const arrayBuffer = await response.arrayBuffer();
     const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
