@@ -1252,7 +1252,7 @@ function updateGameScene(player) {
     $("game_c2_kills").innerHTML = player.playerKills;
 
     let totalSeconds = Math.floor(player.timeAlive / 1000);
-    let minutes = Math.floor(totalSeconds / 1000).toString().padStart(2, '0');
+    let minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
     let seconds = (totalSeconds % 60).toString().padStart(2, '0');
 
     $("game_c2_minutes").innerHTML = minutes;
