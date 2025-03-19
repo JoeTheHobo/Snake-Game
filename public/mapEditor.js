@@ -2507,6 +2507,9 @@ function pianoPopUp(value) {
                 blackKey.css({
                     background: "rgb(37, 37, 37)",
                 })
+                whiteKey.css({
+                    background: "white",
+                })
             }
         })
         whiteKey.on("mouseleave",function() {
