@@ -3452,8 +3452,12 @@ gap: 1px; /* Optional: Adjust spacing between items */
   align-items: end;
   padding-bottom: 5px;
   box-sizing: border-box;
-  border: 1px solid black;
+  border: 0.5px solid black;
+  cursor: url('./img/pointer.cur'), auto;
 
+}
+.key_whiteKey:hover {
+  background: rgb(216, 216, 216);
 }
 .key_text {
   font-size: 20px;
