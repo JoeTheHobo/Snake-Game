@@ -424,9 +424,8 @@ socket.on("updatePositions",(obj) => {
     if (obj.p) {
         for (let i = 0; i < obj.p.length; i++) {
             let src = obj.p[i];
-            if (src == "sounds/mouse/mouse_spawn_1.mp3") continue;
-            var audio = new Audio(src);
-            audio.play();
+            console.log(src)
+            playAudio(src);
         }
     }
 

@@ -2507,7 +2507,7 @@ function pianoPopUp(value) {
             blackKey.on("click",function() {
                 $(".key_chosen").classRemove("key_chosen");
                 blackKey.classAdd("key_chosen");
-                playNote("./sounds/piano/piano_" + key + "b" + octive + "_1.mp3");
+                playAudio("./sounds/piano/piano_" + key + "b" + octive + "_1.mp3");
                 whiteKeysHolder.chosenValue = key + "b" + octive;
             })
         }
@@ -2515,7 +2515,7 @@ function pianoPopUp(value) {
         whiteKey.on("click",function(e) {
             $(".key_chosen").classRemove("key_chosen");
             whiteKey.classAdd("key_chosen");
-            playNote("./sounds/piano/piano_" + key + octive + "_1.mp3");
+            playAudio("./sounds/piano/piano_" + key + octive + "_1.mp3");
             whiteKeysHolder.chosenValue = key + octive;
         })
 
@@ -2526,15 +2526,3 @@ $(".closePianoPopUp").on("click",function() {
     checkRenderThenRender();
     loadObjectMenu();
 })
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-async function playNote(url) {
-    const response = await fetch(url);
-    const arrayBuffer = await response.arrayBuffer();
-    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-
-    const source = audioContext.createBufferSource();
-    source.buffer = audioBuffer;
-    source.connect(audioContext.destination);
-    source.start();
-}
