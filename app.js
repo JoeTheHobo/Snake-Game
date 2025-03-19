@@ -1544,7 +1544,7 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
             snakeMapRemoveAll(lobby,player);
         }
         if (currentGameMode.whenSnakesDie == "become food") {
-            snakeMapRemoveAll(lobby,player,true);
+            snakeMapRemoveAll(lobby,player,true,lobby.gameMode.setFoodRate);
         }
 
         //Delete Player
