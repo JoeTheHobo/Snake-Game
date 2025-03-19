@@ -2475,7 +2475,7 @@ function pianoPopUp(value) {
     let keys = ["A","B","C","D","E","F","G"];
 
     //Building White Keys
-    for (let i = 0; i < 37; i++) {
+    for (let i = 0; i < 89; i++) {
         let keysHolder = whiteKeysHolder.create("div.key_holder");
         let whiteKey = keysHolder.create("div.key_whiteKey");
         whiteKey.id = "key_white";
@@ -2484,7 +2484,7 @@ function pianoPopUp(value) {
         keyText.id = "key_white";
 
         let key = keys[i % 7];
-        let octive = Math.floor(i/7)+3;
+        let octive = Math.floor(i/7);
 
         keyText.innerHTML = key + octive;
 
