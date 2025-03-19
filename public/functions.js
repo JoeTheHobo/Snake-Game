@@ -1832,7 +1832,7 @@ function logGameModeChanges(holder,gameMode) {
 
     let alterations = [];
 
-    let loggingSelectKeys = ["howManyItemsCanPlayersUse","mode_usingItemType","mode_whenInventoryFullWhereDoItemsGo","whenSnakesDie","respawn","snakeCollision","teamCollision","respawnTimer","respawnGrowth","respawnProtection"];
+    let loggingSelectKeys = ["setFoodRate","howManyItemsCanPlayersUse","mode_usingItemType","mode_whenInventoryFullWhereDoItemsGo","whenSnakesDie","respawn","snakeCollision","teamCollision","respawnTimer","respawnGrowth","respawnProtection"];
 
     function formatString(input) {
         input = input.replaceAll("mode_","");

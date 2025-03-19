@@ -2094,7 +2094,7 @@ let basedGameMode = {
     respawnProtection: 3, //Seconds
     snakeCollision: true,
     teamCollision: true,
-    setFoodRate: 100,
+    setFoodRate: 50,
 }
 function respawnPlayer(lobby,player,growthPercentage) {
     let length = Math.round((growthPercentage/100) * player.tail.length);

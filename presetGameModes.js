@@ -12,7 +12,7 @@ presetGameModes.push({
     respawnProtection: 3, //Seconds
     snakeCollision: true,
     teamCollision: true,
-    setFoodRate: 100,
+    setFoodRate: 50,
 })
 presetGameModes.push({
     name: "Rocky",
@@ -35,7 +35,7 @@ presetGameModes.push({
     respawnProtection: 3, //Seconds
     snakeCollision: true,
     teamCollision: true,
-    setFoodRate: 100,
+    setFoodRate: 50,
 })
 
 module.exports = { presetGameModes };
