@@ -3483,3 +3483,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .key_text {
   font-size: 19px;
 }
+.key_text2 {
+  font-size: 14px;
+}
