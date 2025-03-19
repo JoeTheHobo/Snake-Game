@@ -3489,8 +3489,8 @@ gap: 1px; /* Optional: Adjust spacing between items */
   font-size: 14px;
 }
 .key_selected {
-  filter: sepia(20%) saturate(200%) hue-rotate(200deg) brightness(110%);
+  filter: sepia(20%) saturate(200%) hue-rotate(200deg) brightness(110%) !important;
 }
 .key_chosen {
-  filter: sepia(20%) saturate(200%) hue-rotate(90deg) brightness(110%);
+  filter: sepia(20%) saturate(200%) hue-rotate(90deg) brightness(110%) !important;
 }

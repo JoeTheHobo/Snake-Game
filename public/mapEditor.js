@@ -2501,18 +2501,16 @@ function pianoPopUp(value) {
 
             if (blackKeyText.innerHTML == value) blackKey.classAdd("key_selected");
             
+            blackKey.on("click",function() {
+                $(".key_chosen").classRemove("key_chosen");
+                blackKey.classAdd("key_chosen");
+                
+            })
         }
 
         whiteKey.on("click",function(e) {
             $(".key_chosen").classRemove("key_chosen");
-            if (e.target.id == "key_white") {
-                whiteKeysHolder.chosenValue = keyText.innerHTML;
-                whiteKey.classAdd("key_chosen");
-            } else {
-                whiteKeysHolder.chosenValue = keyText.blackKeyText;
-                blackKey.classAdd("key_chosen");
-            }
-
+            whiteKey.classAdd("key_chosen");
         })
 
     }
