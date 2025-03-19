@@ -1154,7 +1154,8 @@ function fixBoardDifferences(currentBoard,differences,type) {
             let change = d.differences[j];
             setNestedValue(pos,change,"_LAST_");
         }
-        (type == "item" ? map[d.y][d.x].item : map[d.y][d.x].tile) = pos;
+        if (type == "item") map[d.y][d.x].item = pos;
+        if (type == "tile") map[d.y][d.x].tile = pos;
     }
 }
 function spawn(lobby,thingToSpawn,gameStart = false) {
