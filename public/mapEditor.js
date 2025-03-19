@@ -2484,6 +2484,8 @@ function pianoPopUp(value) {
 
         if (["c","d","f","g","a"].includes(key)) {
             let blackKey = whiteKey.create("div.key_blackKey");
+            let blackKeyText = blackKey.create("div.key_text");
+            blackKeyText.innerHTML = key + "#" + octive;
             
         }
 
