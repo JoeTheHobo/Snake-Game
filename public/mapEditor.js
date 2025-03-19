@@ -2469,7 +2469,6 @@ $(".status_button_close").on("click",function() {
 function pianoPopUp(value) {
     $(".pianoSelectionPopUp").show("flex");
     let whiteKeysHolder = $(".whiteKeys");
-    let blackKeysHolder = $(".blackKeys");
 
     let keys = ["a","b","c","d","e","f","g"];
 
@@ -2482,6 +2481,11 @@ function pianoPopUp(value) {
         let octive = Math.floor(i/7)+3;
 
         keyText.innerHTML = key + octive;
+
+        if (["c","d","f","g","a"].includes(key)) {
+            let blackKey = whiteKey.create("div.key_blackKey");
+            
+        }
 
     }
 }

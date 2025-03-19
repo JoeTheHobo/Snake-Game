@@ -3455,7 +3455,27 @@ gap: 1px; /* Optional: Adjust spacing between items */
   box-sizing: border-box;
   border: 0.5px solid black;
   cursor: url('./img/pointer.cur'), auto;
+  position: relative;
 
+}
+.key_blackKey {
+  width: 12.5px;
+  height: 60px;
+  background: black;
+  position: absolute;
+  top: 0px;
+  left: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  padding-bottom: 5px;
+  box-sizing: border-box;
+  border: 0.5px solid black;
+  cursor: url('./img/pointer.cur'), auto;
+  position: relative;
+}
+.key_blackKey:hover {
+  background: rgb(24, 24, 24);
 }
 .key_whiteKey:hover {
   background: rgb(216, 216, 216);
