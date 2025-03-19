@@ -2479,7 +2479,7 @@ function pianoPopUp(value) {
         let keysHolder = whiteKeysHolder.create("div.key_holder");
         let whiteKey = keysHolder.create("div.key_whiteKey");
         whiteKey.id = "key_white";
-        whiteKey.classAdd("hover");
+        whiteKey.classAdd("hover2");
         let keyText = whiteKey.create("div.key_text");
         keyText.id = "key_white";
 
@@ -2494,7 +2494,7 @@ function pianoPopUp(value) {
         if (["c","d","f","g","a"].includes(key)) {
             blackKey = keysHolder.create("div.key_blackKey");
             blackKey.id = "key_black";
-            blackKey.classAdd("hover");
+            blackKey.classAdd("hover2");
             let blackKeyText = blackKey.create("div.key_text2");
             blackKeyText.id = "key_black";
             blackKeyText.innerHTML = key + "#" + octive;
@@ -2502,7 +2502,7 @@ function pianoPopUp(value) {
             if (blackKeyText.innerHTML == value) blackKey.classAdd("key_selected");
             
         }
-        
+
         whiteKey.on("click",function(e) {
             $(".key_chosen").classRemove("key_chosen");
             if (e.target.id == "key_white") {

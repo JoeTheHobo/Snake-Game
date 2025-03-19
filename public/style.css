@@ -3479,7 +3479,9 @@ gap: 1px; /* Optional: Adjust spacing between items */
   z-index: 2;
   color: white;
 }
-
+.hover2 {
+  backdrop-filter: invert(5%) brightness(95%);
+}
 .key_text {
   font-size: 19px;
 }
