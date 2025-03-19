@@ -3441,7 +3441,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .whiteKeys {
   display: flex;
   flex-direction: row;
-  align-items: center;
 }
 .key_whiteKey {
   width: 25px;
@@ -3459,7 +3458,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
 
 }
 .key_blackKey {
-  width: 12.5px;
+  width: 20px;
   height: 60px;
   background: black;
   position: absolute;
