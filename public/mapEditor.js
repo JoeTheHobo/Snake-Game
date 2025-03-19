@@ -1132,7 +1132,7 @@ function loadObjectMenu() {
     $(".me_ih_name").innerHTML = selectedItem.cell.name;
     $(".me_ih_type").innerHTML = selectedItem.type;
 
-    function addSetting(title,type,value,path,extra) {
+    function addSetting(title,type,value,path,extra,extra2) {
         let settingHolder = holder.create("div");
         settingHolder.className = "settingHolder";
         let html_title = settingHolder.create("div");
@@ -1146,9 +1146,6 @@ function loadObjectMenu() {
             toggle.on("change",function() {
                 setValue(isSelectingOneCell(),selectedItem.cell,this.path,this.checked);
             })
-        }
-        if (type == "piano") {
-            pianoPopUp(value);
         }
         if (type == "number") {
             let input = settingHolder.create("input");
@@ -1185,6 +1182,13 @@ function loadObjectMenu() {
             select.onchange = function() {
                 setValue(isSelectingOneCell(),selectedItem.cell,this.path,this.value);
             }
+        }
+        if (type == "button") {
+            let contentHolder = settingHolder.create("div#me_button");
+            contentHolder.innerHTML = extra;
+            if (extra == false) contentHolder.innerHTML = value;
+
+            contentHolder.on("click",extra2);
         }
         if (type == "status" || type == "statusFull") {
             let contentHolder = settingHolder.create("div");
@@ -1230,7 +1234,9 @@ function loadObjectMenu() {
     
     if (selectedItem.type == "tile") {
         if (object.onOver?.playSound) {
-            addSetting("Play Sound","piano",object.onOver?.playSound[0],["onOver","playSound",0]);
+            addSetting("Play Sound","button",object.onOver?.playSound[0],["onOver","playSound",0],false,function() {
+                pianoPopUp(value);
+            });
         }
     } else {
         if (object.onCollision?.checkStatus?.check?.boardStatus) {
