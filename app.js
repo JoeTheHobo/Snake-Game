@@ -834,8 +834,8 @@ io.on('connection', (socket) => {
         
 
         getLocations(lobby);
-        fixItemDifferences(lobby,lobby.board.map);
-        fixTileDifferences(lobby,lobby.board.map);
+        fixBoardDifferences(lobby.board,lobby.board.itemDifferences,"item");
+        fixBoardDifferences(lobby.board,lobby.board.tileDifferences,"tile");
         updateAllCells(lobby);
 
 
@@ -1140,41 +1140,21 @@ function calculateDistance(currentBoard,x1, y1, x2, y2, boardLength, boardHeight
     let dy = Math.min(Math.abs(y1 - y2), boardHeight - Math.abs(y1 - y2));
     return dx + dy;
 }
-function fixItemDifferences(lobby,map) {
-    let currentBoard = lobby.board;
-    if (!currentBoard.itemDifferences) return;
-    for (let i = 0; i < currentBoard.itemDifferences.length; i++) {
-        let e = currentBoard.itemDifferences[i];
+function fixBoardDifferences(currentBoard,differences,type) {
+    for (let i = 0; i < differences.length; i++) {
+        let e = differences[i];
         let d = {
             differences: e[0],
             x: e[1],
             y: e[2],
         }
-        let pos = structuredClone(map[d.y][d.x].item);
+        let pos = structuredClone(type == "item" ? map[d.y][d.x].item : map[d.y][d.x].tile);
         if (!pos) continue;
         for (let j = 0; j < d.differences.length; j++) {
             let change = d.differences[j];
             setNestedValue(pos,change,"_LAST_");
         }
-        map[d.y][d.x].item = pos;
-    }
-}
-function fixTileDifferences(currentBoard,map) {
-    if (!currentBoard.tileDifferences) return;
-    for (let i = 0; i < currentBoard.tileDifferences.length; i++) {
-        let e = currentBoard.tileDifferences[i];
-        let d = {
-            differences: e[0],
-            x: e[1],
-            y: e[2],
-        }
-        let pos = structuredClone((map[d.y][d.x].tile));
-        if (!pos) continue;
-        for (let j = 0; j < d.differences.length; j++) {
-            let change = d.differences[j];
-            setNestedValue(pos,change,"_LAST_");
-        }
-        map[d.y][d.x].tile = pos;
+        (type == "item" ? map[d.y][d.x].item : map[d.y][d.x].tile) = pos;
     }
 }
 function spawn(lobby,thingToSpawn,gameStart = false) {
