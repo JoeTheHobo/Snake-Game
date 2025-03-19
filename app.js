@@ -2177,7 +2177,7 @@ function snakeMapRemoveAll(lobby,player,setFood) {
                         let x = j;
                         let y = i;
                         runItemFunction(lobby,false,getItemById(lobby,34),"onSpawn",{x:x,y:y},{playAudio: false});
-                        currentBoard.map[y][x].item = structuredClone(lobby.items[33]);
+                        currentBoard.map[y][x].item = structuredClone(getItemById(lobby,34));
                         currentBoard.map[y][x].item.pos = {
                             x: x,
                             y: y,
