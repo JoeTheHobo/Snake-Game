@@ -2469,6 +2469,7 @@ $(".status_button_close").on("click",function() {
 function pianoPopUp(value) {
     $(".pianoSelectionPopUp").show("flex");
     let whiteKeysHolder = $(".whiteKeys");
+    whiteKeysHolder.innerHTML = "";
 
     let keys = ["a","b","c","d","e","f","g"];
 
