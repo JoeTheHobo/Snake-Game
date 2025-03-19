@@ -102,7 +102,7 @@ tiles.push({
     changePlayerSpeed: 1, //Player Speed Times This Number
     id: 9,
     onOver: {
-        playSound: ["a3",1,["a3","a-3","a4","a-4","a5","a-5","b3","b4","b5","c3","c-3","c4","c-4","c5","c-5","c6","d3","d-3","d4","d-4","d5","d-5","e3","e4","e5","f3","f-3","f4","f-4","f5","f-5","g3","g-3","g4","g-4","g5","g-5"]], //Write the name of sound, and how many different Files there are.
+        playSound: ["A3",1], //Write the name of sound, and how many different Files there are.
     },
     visible: true,
     soundFolder: "piano",
