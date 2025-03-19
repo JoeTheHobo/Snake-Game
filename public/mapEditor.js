@@ -2496,7 +2496,7 @@ function pianoPopUp(value) {
         }
 
 
-        whiteKey.on("mouseOver",function(e) {
+        whiteKey.on("mouseover",function(e) {
             if (e.target.id == "key_white") {
                 whiteKey.css({
                     background: "rgb(216, 216, 216)",
@@ -2508,7 +2508,7 @@ function pianoPopUp(value) {
                 })
             }
         })
-        whiteKey.on("mouseLeave",function() {
+        whiteKey.on("mouseleave",function() {
             whiteKey.css({
                 background: "white",
             })
