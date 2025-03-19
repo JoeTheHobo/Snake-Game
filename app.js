@@ -927,8 +927,9 @@ io.on('connection', (socket) => {
                     }
                 }
 
-                let minutes = Math.floor(timeSurvived / 60).toString().padStart(2, '0');
-                let seconds = (timeSurvived % 60).toString().padStart(2, '0');
+                let totalSeconds = Math.floor(timeSurvived / 1000);
+                let minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+                let seconds = (totalSeconds % 60).toString().padStart(2, '0');
 
                 let obj = {
                     lobby: this,
