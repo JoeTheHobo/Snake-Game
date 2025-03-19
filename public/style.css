@@ -3479,8 +3479,8 @@ gap: 1px; /* Optional: Adjust spacing between items */
   z-index: 2;
   color: white;
 }
-.hover2 {
-  filter: invert(5%) brightness(95%);
+.hover2:hover {
+  filter: invert(10%) brightness(95%);
 }
 .key_text {
   font-size: 19px;
