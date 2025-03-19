@@ -15,7 +15,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, { pingInterval: 25000, pingTimeout: 60000});
 
-const port = 3000;
+const port = 4000;
 
 app.use(express.static('public'));
 
