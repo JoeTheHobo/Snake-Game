@@ -1597,7 +1597,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             lobby.updateCells.push({
                 x: itemPos.x,
                 y: itemPos.y,
-                item: item,
+                changes: [["baseImgTags"],item.baseImgTags],
             })
         }
         if (item.type == "tile") {
@@ -1649,22 +1649,11 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         lobby.updateCells.push({
             x: player.pos.x,
             y: player.pos.y,
-            item: item,
+            changes: [["baseImgTags"],item.baseImgTags],
         })
     }
     if (collision.growPlayer > 0 && player) {
         growPlayer(player,collision.growPlayer);
-        
-        if (player.accountID == socketID) {
-            for (let i = 0; i < lobby.board.playerGrow_status.length; i++) {
-                let status = lobby.board.playerGrow_status[i];
-                lobby.updateCells.push({
-                    x: status.x,
-                    y: status.y,
-                    item: status.item,
-                })
-            }
-        }
     }
     if (collision.spawn) {
         for (let i = 0; i < collision.spawn.length; i++) {
@@ -2360,6 +2349,14 @@ function server_movePlayers(lobby,socketID) {
                     direction: player.moving,
                 });
                 player.growTail--;
+                for (let i = 0; i < lobby.board.playerGrow_status.length; i++) {
+                    let status = lobby.board.playerGrow_status[i];
+                    lobby.updateCells.push({
+                        x: status.x,
+                        y: status.y,
+                        //item: status.item, //Delete If You Notice Nothing Wrong In The Future
+                    })
+                }
                 if (player.tail.length > player.longestTail) player.longestTail = player.tail.length;
             } else if(player.tail.length > 0) {
                 player.tail.unshift({
