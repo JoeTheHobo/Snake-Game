@@ -1147,6 +1147,9 @@ function loadObjectMenu() {
                 setValue(isSelectingOneCell(),selectedItem.cell,this.path,this.checked);
             })
         }
+        if (type == "piano") {
+            pianoPopUp(value);
+        }
         if (type == "number") {
             let input = settingHolder.create("input");
             input.type = "number",
@@ -1227,7 +1230,7 @@ function loadObjectMenu() {
     
     if (selectedItem.type == "tile") {
         if (object.onOver?.playSound) {
-            addSetting("Play Sound","dropdown",object.onOver?.playSound[0],["onOver","playSound",0],object.onOver?.playSound[2]);
+            addSetting("Play Sound","piano",object.onOver?.playSound[0],["onOver","playSound",0]);
         }
     } else {
         if (object.onCollision?.checkStatus?.check?.boardStatus) {
@@ -2413,8 +2416,7 @@ $(".me_zone_delete").on("click",function() {
     })
 })
 $(".closeBoardSettings").on("click",function() {
-    $(".me_popup_boardSettings").hide();
-    $(".me_itemSpawning_popup").hide();
+    this.$P().hide();
 })
 $(".mezs_itemSpawning").on("click",function() {
     loadItemSpawning();
@@ -2458,3 +2460,20 @@ function loadItemSpawning() {
 $(".status_button_close").on("click",function() {
     $(".statusSelectionScreen").hide();
 })
+function pianoPopUp(value) {
+    $(".pianoSelectionPopUp").show("flex");
+    let whiteKeysHolder = $(".whiteKeys");
+    let blackKeysHolder = $(".blackKeys");
+
+    let octive = 3;
+    let key = "a";
+    let keys = ["a","b","c","d","e","f","g"];
+
+    //Building White Keys
+    for (let i = 0; i < 37; i++) {
+        let whiteKey = whiteKeysHolder.create("div.key_whiteKey");
+        let keyText = whiteKey.create("div.key_text");
+
+
+    }
+}
