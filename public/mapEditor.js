@@ -2504,14 +2504,14 @@ function pianoPopUp(value) {
             blackKey.on("click",function() {
                 $(".key_chosen").classRemove("key_chosen");
                 blackKey.classAdd("key_chosen");
-                playNote("sounds/piano/piano_" + key + "b" + octive + "_1.mp3");
+                playNote("./sounds/piano/piano_" + key + "b" + octive + "_1.mp3");
             })
         }
 
         whiteKey.on("click",function(e) {
             $(".key_chosen").classRemove("key_chosen");
             whiteKey.classAdd("key_chosen");
-            playNote("sounds/piano/piano_" + key + octive + "_1.mp3");
+            playNote("./sounds/piano/piano_" + key + octive + "_1.mp3");
         })
 
     }
