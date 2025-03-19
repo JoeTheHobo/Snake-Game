@@ -3488,10 +3488,17 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .key_text2 {
   font-size: 14px;
 }
-.key_selected {
-  filter: sepia(30%) saturate(400%) hue-rotate(220deg) brightness(120%) !important;
+.key_selected::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 255, 0.3); /* Adjust alpha for intensity */
+  pointer-events: none; /* Ensures clicks go through */
 }
-
-.key_chosen {
-  filter: sepia(30%) saturate(400%) hue-rotate(100deg) brightness(120%) !important;
+.key_chosen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 255, 0, 0.3); /* Green tint with transparency */
+  pointer-events: none; /* Ensures clicks go through */
 }
