@@ -1,5 +1,3 @@
-const profanity = require("../profanity");
-
 let selectedItem = {
     type: "item",
     content: getRealItem("pellet"),
