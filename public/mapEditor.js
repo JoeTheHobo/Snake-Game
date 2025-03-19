@@ -2508,7 +2508,7 @@ function pianoPopUp(value) {
                 })
             }
             if (e.target.id == "key_black") {
-                v.css({
+                blackKey.css({
                     background: "rgb(37, 37, 37)",
                 })
                 whiteKey.css({
