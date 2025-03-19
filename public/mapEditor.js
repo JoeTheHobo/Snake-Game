@@ -2508,6 +2508,7 @@ function pianoPopUp(value) {
                 $(".key_chosen").classRemove("key_chosen");
                 blackKey.classAdd("key_chosen");
                 playNote("./sounds/piano/piano_" + key + "b" + octive + "_1.mp3");
+                whiteKeysHolder.chosenValue = key + "b" + octive;
             })
         }
 
@@ -2515,6 +2516,7 @@ function pianoPopUp(value) {
             $(".key_chosen").classRemove("key_chosen");
             whiteKey.classAdd("key_chosen");
             playNote("./sounds/piano/piano_" + key + octive + "_1.mp3");
+            whiteKeysHolder.chosenValue = key + octive;
         })
 
     }
