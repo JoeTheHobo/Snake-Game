@@ -2471,7 +2471,6 @@ function pianoPopUp(value) {
     let whiteKeysHolder = $(".whiteKeys");
     let blackKeysHolder = $(".blackKeys");
 
-    let octive = 3;
     let keys = ["a","b","c","d","e","f","g"];
 
     //Building White Keys
@@ -2479,9 +2478,10 @@ function pianoPopUp(value) {
         let whiteKey = whiteKeysHolder.create("div.key_whiteKey");
         let keyText = whiteKey.create("div.key_text");
 
-        let key = keys[i % 7]
+        let key = keys[i % 7];
+        let octive = Math.floor(i/7)+3;
 
-        keyText.innerHTML = key;
+        keyText.innerHTML = key + octive;
 
     }
 }
