@@ -2472,7 +2472,7 @@ function pianoPopUp(value) {
     whiteKeysHolder.innerHTML = "";
     whiteKeysHolder.chosenValue = value;
 
-    let keys = ["a","b","c","d","e","f","g"];
+    let keys = ["A","B","C","D","E","F","G"];
 
     //Building White Keys
     for (let i = 0; i < 37; i++) {
@@ -2491,13 +2491,13 @@ function pianoPopUp(value) {
         if (keyText.innerHTML == value) whiteKey.classAdd("key_selected");
 
         let blackKey;
-        if (["c","d","f","g","a"].includes(key)) {
+        if (["A","B","D","E","G"].includes(key)) {
             blackKey = keysHolder.create("div.key_blackKey");
             blackKey.id = "key_black";
             blackKey.classAdd("hover2");
             let blackKeyText = blackKey.create("div.key_text2");
             blackKeyText.id = "key_black";
-            blackKeyText.innerHTML = key + "#" + octive;
+            blackKeyText.innerHTML = key + "b" + octive;
 
             if (blackKeyText.innerHTML == value) blackKey.classAdd("key_selected");
             

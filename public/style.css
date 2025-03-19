@@ -3468,7 +3468,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   background: black;
   position: absolute;
   top: 0px;
-  left: 60%;
+  left: -40%;
   display: flex;
   justify-content: center;
   align-items: end;
