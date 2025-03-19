@@ -1,3 +1,5 @@
+const profanity = require("../profanity");
+
 let selectedItem = {
     type: "item",
     content: getRealItem("pellet"),
@@ -1825,36 +1827,15 @@ $("me_name").on("click",function() {
 $("me_name").on("focusout",function() {
     if (this.value == "") this.value = this.storedValue;
 })
-$("me_name").on("input",function() {
-    let setValue = this.value;
-    if (this.value == "") setValue = "Untitled";
-    board.name = this.value;
-    $("saveStatus").innerHTML = "Board Is Not Saved";
-})
-$("me_minPlayers").on("change",function() {
-    let value = Number(Math.round(this.value));
-    if (value < 1 || value > 16) return;
-    if (value > board.maxPlayers) {
-        board.maxPlayers = value;
-        $("me_maxPlayers").value = this.value;
-    }
-    board.minPlayers = value;
-    $("saveStatus").innerHTML = "Board Is Not Saved";
-})
-$("me_maxPlayers").on("change",function() {
-    let value = Number(Math.round(this.value));
-    if (value < 1 || value > 16) return;
-    if (value < board.minPlayers) {
-        board.minPlayers = value;
-        $("me_minPlayers").value = this.value;
-    }
-    board.maxPlayers = value;
+$("me_name").on("change",function() {
+    this.value = profanity.clean(this.value);
+    if (this.value == "") return;
+    currentBoard.name = this.value;
     $("saveStatus").innerHTML = "Board Is Not Saved";
 })
 $("me_recommendedGameMode").on("change",function() {
-    board.recommendedGameMode = this.checked;
+    boacurrentBoardrd.recommendedGameMode = this.checked;
     $("saveStatus").innerHTML = "Board Is Not Saved";
-
 })
 $("me_background").on("click",function() {
     let holder = $(".backgroundSelectionScreen");
@@ -1880,7 +1861,7 @@ function loadBackgroundContent(parent) {
         holder.object = list[i];
         holder.index = i;
         holder.on("click",function() {
-            board.background = this.object;
+            currentBoard.background = this.object;
             parent.hide();
             $("me_background").innerHTML = this.object;
             $("saveStatus").innerHTML = "Board Is Not Saved";
