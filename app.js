@@ -2164,7 +2164,7 @@ function snakeMapSetType(lobby,index,y,x,type) {
     
 }
 
-function snakeMapRemoveAll(lobby,player,setFood) {
+function snakeMapRemoveAll(lobby,player,setFood,setFoodRate = 50) {
     let snakeMap = lobby.snakeMap;
     let currentBoard = lobby.board;
     for (let i = 0; i < snakeMap.length; i++) {
@@ -2173,7 +2173,7 @@ function snakeMapRemoveAll(lobby,player,setFood) {
                 if (snakeMap[i][j][k].index == player.index) {
                     snakeMap[i][j].splice(k,1);
                     lobby.updateSnakeCells.push(lobby.snakeMap[i][j]);
-                    if (setFood && !currentBoard.map[i][j].item) {
+                    if (setFood && !currentBoard.map[i][j].item && simple.rnd(100) < setFoodRate) {
                         let x = j;
                         let y = i;
                         runItemFunction(lobby,false,getItemById(lobby,34),"onSpawn",{x:x,y:y},{playAudio: false});
