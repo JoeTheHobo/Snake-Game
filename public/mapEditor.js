@@ -2497,6 +2497,7 @@ function pianoPopUp(value) {
 
 
         whiteKey.on("mouseover",function(e) {
+            console.log(e.target)
             if (e.target.id == "key_white") {
                 whiteKey.css({
                     background: "rgb(216, 216, 216)",
