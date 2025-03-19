@@ -2475,7 +2475,7 @@ function pianoPopUp(value) {
     let keys = ["C","D","E","F","G","A","B"];
 
     //Building White Keys
-    for (let i = 0; i < 89; i++) {
+    for (let i = 0; i < 40; i++) {
         let keysHolder = whiteKeysHolder.create("div.key_holder");
         let whiteKey = keysHolder.create("div.key_whiteKey");
         whiteKey.id = "key_white";
