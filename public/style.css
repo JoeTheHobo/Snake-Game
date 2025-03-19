@@ -3442,9 +3442,14 @@ gap: 1px; /* Optional: Adjust spacing between items */
   display: flex;
   flex-direction: row;
 }
-.key_whiteKey {
+.key_holder {
+  position: relative;
   width: 25px;
   height: 100px;
+}
+.key_whiteKey {
+  width: 100%;
+  height: 100%;
   background: white;
   color: "black";
   display: flex;
