@@ -1184,7 +1184,7 @@ function loadObjectMenu() {
             }
         }
         if (type == "button") {
-            let contentHolder = settingHolder.create("div#me_button");
+            let contentHolder = settingHolder.create("div#me_button2");
             contentHolder.innerHTML = extra;
             if (extra == false) contentHolder.innerHTML = value;
 
@@ -1235,7 +1235,7 @@ function loadObjectMenu() {
     if (selectedItem.type == "tile") {
         if (object.onOver?.playSound) {
             addSetting("Play Sound","button",object.onOver?.playSound[0],["onOver","playSound",0],false,function() {
-                pianoPopUp(value);
+                pianoPopUp(object.onOver?.playSound[0]);
             });
         }
     } else {
