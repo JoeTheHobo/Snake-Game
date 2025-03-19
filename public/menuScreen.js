@@ -1035,6 +1035,15 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
         if (!server) socket.emit("saveGamemode",gameMode);
         else socket.emit("editServerGameMode",gameMode);
     },["Vanish","Remain","Become Food"]);
+    addSetting("Become Food %","number",gameMode.setFoodRate,function(value) {
+        value = Number(value);
+        if (value < 0) value = 0;
+        if (value > 100) value = 100;
+
+        gameMode.setFoodRate = value;
+        if (!server) socket.emit("saveGamemode",gameMode);
+        else socket.emit("editServerGameMode",gameMode);
+    });
     addSetting("Respawn","dropdown",gameMode.respawn,function(value) {
         gameMode.respawn = value == "true" ? true : false;
         if (!server) socket.emit("saveGamemode",gameMode);

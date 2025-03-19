@@ -2078,6 +2078,7 @@ function checkGameMode(gameMode,accountID) {
     if (gameMode.respawnProtection < 0 || gameMode.respawnProtection > 15) return ["respawnProtection",gameMode.respawnProtection];
     gameMode.respawnTimer = Number(gameMode.respawnTimer);
     if (gameMode.respawnTimer < 0 || gameMode.respawnTimer > 60) return "respawnTimer";
+    if (gameMode.setFoodRate < 0 || gameMode.setFoodRate > 100) return ["setFoodRate",gameMode.setFoodRate];
 
     return true;
 }
@@ -2093,6 +2094,7 @@ let basedGameMode = {
     respawnProtection: 3, //Seconds
     snakeCollision: true,
     teamCollision: true,
+    setFoodRate: 100,
 }
 function respawnPlayer(lobby,player,growthPercentage) {
     let length = Math.round((growthPercentage/100) * player.tail.length);
@@ -2164,7 +2166,7 @@ function snakeMapSetType(lobby,index,y,x,type) {
     
 }
 
-function snakeMapRemoveAll(lobby,player,setFood,setFoodRate = 50) {
+function snakeMapRemoveAll(lobby,player,setFood,setFoodRate = 100) {
     let snakeMap = lobby.snakeMap;
     let currentBoard = lobby.board;
     for (let i = 0; i < snakeMap.length; i++) {
