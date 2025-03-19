@@ -835,7 +835,7 @@ io.on('connection', (socket) => {
 
         getLocations(lobby);
         fixItemDifferences(lobby,lobby.board.map);
-        fixTileDifferences(lobby,lobby.board,lobby.board.map);
+        fixTileDifferences(lobby,lobby.board.map);
         updateAllCells(lobby);
 
 
