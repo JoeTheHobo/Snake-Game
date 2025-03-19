@@ -403,6 +403,7 @@ socket.on("updatePositions",(obj) => {
                 local_player.tailLength = server_player.t;
                 local_player.playerKills = server_player.k;
                 local_player.invinsibleBodyEffect = server_player.ibe;
+                local_player.timeAlive = server_player.ta;
     
                 if (local_player.accountID === localAccount.id) {
                     localAccount.player  = local_player;

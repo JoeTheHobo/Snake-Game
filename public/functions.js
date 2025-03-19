@@ -1250,8 +1250,12 @@ function updateGameScene(player) {
     $("game_c2_points").innerHTML = 0;
     $("game_c2_length").innerHTML = player.tailLength;
     $("game_c2_kills").innerHTML = player.playerKills;
-    $("game_c2_minutes").innerHTML = "00";
-    $("game_c2_seconds").innerHTML = "00";
+
+    let minutes = Math.floor(player.timeAlive / 60).toString().padStart(2, '0');
+    let seconds = (player.timeAlive % 60).toString().padStart(2, '0');
+
+    $("game_c2_minutes").innerHTML = minutes;
+    $("game_c2_seconds").innerHTML = seconds;
     $(".game_c2_c1_tail").src = "img/backgrounds/clear.png";
     $(".game_c2_c1_head").src = "img/backgrounds/clear.png";
     $(".game_c2_c1_body").src = "img/backgrounds/clear.png";

@@ -800,7 +800,6 @@ io.on('connection', (socket) => {
             //_________________________________________
 
             player.longestTail = 0;
-            player.timeSurvived = 0;
             player.moving = "right";
             player.growTail = 0;
             player.tail = [];
@@ -827,7 +826,9 @@ io.on('connection', (socket) => {
             }
             player.team = "white";
             player.invinsibleBodyEffect = false;
-            //Spawn Players
+
+            player.timeAlive = [0];
+            player.timeCameAlive = false;
         }
 
         
@@ -906,7 +907,7 @@ io.on('connection', (socket) => {
                 }
 
                 let longestTail = this.inGamePlayers[0].longestTail;
-                let timeSurvived = this.inGamePlayers[0].timeSurvived;
+                let timeSurvived = Math.max(...this.inGamePlayers[0].timeAlive);
                 let mostKills = this.inGamePlayers[0].playerKills;
                 let longestTailPlayer = this.inGamePlayers[0];
                 let timeSurvivedPlayer = this.inGamePlayers[0];
@@ -916,8 +917,8 @@ io.on('connection', (socket) => {
                         longestTail = this.inGamePlayers[i].longestTail;
                         longestTailPlayer = this.inGamePlayers[i];
                     }
-                    if (this.inGamePlayers[i].timeSurvived > timeSurvived) {
-                        timeSurvived = this.inGamePlayers[i].timeSurvived;
+                    if (Math.max(...this.inGamePlayers[i].timeAlive) > timeSurvived) {
+                        timeSurvived = Math.max(this.inGamePlayers[i].timeAlive);
                         timeSurvivedPlayer = this.inGamePlayers[i];
                     }
                     if (this.inGamePlayers[i].playerKills > mostKills) {
@@ -926,11 +927,8 @@ io.on('connection', (socket) => {
                     }
                 }
 
-                let minutes = (timeSurvived-(timeSurvived%60))/60;
-                let seconds = timeSurvived%60;
-
-                if ((seconds + "").length == 1) seconds = "0" + seconds;
-
+                let minutes = Math.floor(timeSurvived / 60).toString().padStart(2, '0');
+                let seconds = (timeSurvived % 60).toString().padStart(2, '0');
 
                 let obj = {
                     lobby: this,
@@ -1553,7 +1551,6 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
         player.justDied = true;
 
         if (!currentGameMode.respawn) {
-            player.timeSurvived = Math.floor((Date.now() - lobby.gameTimeStart) / 1000);
             let playersDead = 0;
             for (let i = 0; i < activePlayers.length; i++) {
                 if (activePlayers[i].isDead) playersDead++;
@@ -1872,6 +1869,10 @@ function startGameLoop(lobby) {
 
     }
 
+    for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+        lobby.inGamePlayers.timeCameAlive = Date.now();
+    }
+
 }
 function checkSpawnStatusTimers(lobby) {
     let spawnList2 = lobby.spawnZones;
@@ -1939,6 +1940,7 @@ function updateClientPositions(lobby) {
         equiped,
         team,
         invinsibleBodyEffect,
+        timeAlive,
     }) => ({
         i: index,  
         s: selectingItem, 
@@ -1949,6 +1951,7 @@ function updateClientPositions(lobby) {
         e: equiped,
         te: team,
         ibe: invinsibleBodyEffect,
+        ta: timeAlive[timeAlive.length-1],
     }));
     let newObj = {
         a: emitingActivePlayers,  
@@ -2105,6 +2108,8 @@ function respawnPlayer(lobby,player,growthPercentage) {
     player.turboDuration = 0;
     player.turboActive = false;
     player.respawnProtected = true;
+    player.timeAlive.push(0);
+    player.timeCameAlive = Date.now();
     player.equiped = {
         head: false,
         body: false,
@@ -2232,6 +2237,9 @@ function server_movePlayers(lobby,socketID) {
         let player = activePlayers[i];
         
         if (player.isDead) continue;
+
+        player.timeAlive[player.timeAlive.length-1] = Date.now() - player.timeCameAlive;
+        
         if ((player.moveTik) < (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             player.moveTik++;
             continue;
@@ -2446,7 +2454,6 @@ function newPlayer(socketID,accountName,accountTag) {
         moveSpeed: 6,
         selectingItem: 0,
         longestTail: 0,
-        timeSurvived: 0,
         turboDuration: 0,
         turboActive: false,
         equiped: {
