@@ -2470,6 +2470,7 @@ function pianoPopUp(value) {
     $(".pianoSelectionPopUp").show("flex");
     let whiteKeysHolder = $(".whiteKeys");
     whiteKeysHolder.innerHTML = "";
+    whiteKeysHolder.chosenValue = value;
 
     let keys = ["a","b","c","d","e","f","g"];
 
@@ -2485,6 +2486,8 @@ function pianoPopUp(value) {
 
         keyText.innerHTML = key + octive;
 
+        if (keyText.innerHTML == value) whiteKey.classAdd("key_selected");
+
         let blackKey;
         if (["c","d","f","g","a"].includes(key)) {
             blackKey = whiteKey.create("div.key_blackKey");
@@ -2492,19 +2495,20 @@ function pianoPopUp(value) {
             let blackKeyText = blackKey.create("div.key_text2");
             blackKeyText.id = "key_black";
             blackKeyText.innerHTML = key + "#" + octive;
+
+            if (blackKeyText.innerHTML == value) blackKey.classAdd("key_selected");
             
         }
 
 
         whiteKey.on("mouseover",function(e) {
-            console.log(e.target)
             if (e.target.id == "key_white") {
                 whiteKey.css({
                     background: "rgb(216, 216, 216)",
                 })
             }
             if (e.target.id == "key_black") {
-                blackKey.css({
+                v.css({
                     background: "rgb(37, 37, 37)",
                 })
                 whiteKey.css({
@@ -2523,10 +2527,13 @@ function pianoPopUp(value) {
             }
         })
         whiteKey.on("click",function(e) {
+            $(".key_chosen").classRemove("key_chosen");
             if (e.target.id == "key_white") {
-                console.log(key + octive);
+                whiteKeysHolder.chosenValue = keyText.innerHTML;
+                whiteKey.classAdd("key_chosen");
             } else {
-                console.log(key + "#" + octive);
+                whiteKeysHolder.chosenValue = keyText.blackKeyText;
+                blackKey.classAdd("key_chosen");
             }
 
         })

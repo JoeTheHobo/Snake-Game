@@ -3480,3 +3480,9 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .key_text2 {
   font-size: 14px;
 }
+.key_selected {
+  filter: sepia(20%) saturate(200%) hue-rotate(200deg) brightness(110%);
+}
+.key_chosen {
+  filter: sepia(20%) saturate(200%) hue-rotate(90deg) brightness(110%);
+}
