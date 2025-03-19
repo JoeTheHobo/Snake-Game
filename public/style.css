@@ -3417,3 +3417,29 @@ gap: 1px; /* Optional: Adjust spacing between items */
   mix-blend-mode: multiply;
   pointer-events: none;
 }
+
+
+.pianoTiles {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.whiteKeys {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.key_whiteKey {
+  width: 50px;
+  height: 200px;
+  background: white;
+  color: "black";
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  padding-bottom: 5px;
+
+}
+.key_text {
+  font-size: 20px;
+}
