@@ -707,7 +707,7 @@ function loadBoardsScreen(index = false) {
     let adminControls = [];
     if (ls.get("admin",false)) {
         adminControls = {type: "button", text:"Export", onClick: (board) => {
-            socket.emit("getZippedBoard",board);
+            socket.emit("getZippedBoard",pako.deflate(JSON.stringify(shortenBoard(board)), { to: 'string' }));
         }}
     }
 

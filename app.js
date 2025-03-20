@@ -30,6 +30,7 @@ let newPreset = [];
 function retrieveAllPresetBoards(index) {
     let buffer = base64ToArrayBuffer(presetBoards[index]);
     decompressObject(buffer,(err,decompressed) => {
+        decompressed = fixBoard(decompressed);
         if (err) {
             console.log(1,err);
             return;
@@ -175,6 +176,7 @@ io.on('connection', (socket) => {
         })
     })
     socket.on("getZippedBoard",(board) => {
+        board = JSON.parse(pako.inflate(board, { to: 'string' }));
         compressObject(board,(err,compressed) => {
             if (err) {
                 console.log(7,err);

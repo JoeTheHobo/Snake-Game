@@ -485,7 +485,6 @@ function saveBoards() {
 
         newBoards = JSON.stringify(compressed);
     }
-    ls.save("boards",newBoards)
 }
 function shortenBoard(oldBoard) {
     oldBoard.map = [];
