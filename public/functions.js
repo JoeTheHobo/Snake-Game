@@ -237,7 +237,7 @@ function loadAllCanvas(list) {
     for (let i = 0; i < list.length; i++) {
         let item = list[i];
 
-        let url = `${item.type}s/${item.type}_${item.name}_`;
+        let url = `${item.type}_${item.name}_`;
 
         function combineStrings(arrays, prefix = "", index = 0) {
             if (index === arrays.length) {
@@ -250,9 +250,7 @@ function loadAllCanvas(list) {
             }
         }
         function processCombination(combination) {
-            console.log(combination);
-            return;
-            addItemCanvas(item,combination + ".png",item.name + "_" + combination);
+            addItemCanvas(item,combination);
         }
         function loopTags(item,url) {
             if (item.renderImages.length > 0) {
@@ -266,7 +264,7 @@ function loadAllCanvas(list) {
                 }
                 combineStrings(item.renderImages,url);
             } else {
-                addItemCanvas(item,url + ".png")
+                addItemCanvas(item,url)
             }
         }
         function loopSkins(item,url) {
@@ -298,17 +296,17 @@ function makeItemCanvas(image,filter = "",player) {
     }
     return itemCanvas;
 }
-function addItemCanvas(item,itemImg,name,filter = "",player) {
-    if ($(item.type + "_" + name)) return;
+function addItemCanvas(item,url,filter = "",player) {
+    if ($(url)) return;
 
     let img = $(".imageHolder").create("img");
-    img.src = "img/" + itemImg;
-    img.id = item.type + "_" + item.name + "_" + name;
+    img.src = item.type + "s/" + url + ".png";
+    img.id = url;
 
     img.onload = function() {
         let obj = {
-            name: name,
-            canvas: makeItemCanvas($(item.type + "_" + name),filter,player),
+            name: item.id,
+            canvas: makeItemCanvas($(url),filter,player),
             type: item.type,
         }
         itemCanvas.push(obj);
