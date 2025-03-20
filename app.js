@@ -1628,7 +1628,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         let value = collision.setBaseImgTag.value;
         if (value == "*P" && player) value = player.team;
         item.baseImgTags[collision.setBaseImgTag.index] = value;
-
+        
         if (item.type == "item") {
             lobby.updateCells.push({
                 x: itemPos.x,
@@ -2346,6 +2346,7 @@ function server_movePlayers(lobby,socketID) {
 
             //Test Tile UnderPlayer
             let mapTile = currentBoard.map[player.pos.y][player.pos.x].tile;
+            if (mapTile.id == 9) console.log(mapTile)
             if (mapTile.onCollision) runItemFunction(lobby,player,mapTile,"onCollision",{x: player.pos.x,y: player.pos.y});
 
             //Growing/Moving Tail
@@ -2391,10 +2392,7 @@ function server_movePlayers(lobby,socketID) {
                 if (currentBoard.map[playerY][playerX].item) {
                     let mapItem = currentBoard.map[playerY][playerX].item;
                     if (mapItem.offCollision) runItemFunction(lobby,player,mapItem,"offCollision",{x: playerX,y:playerY});
-                    if (mapTile.offCollision) {
-                        console.log("ey")
-                        runItemFunction(lobby,player,mapTile,"offCollision",{x: playerX,y:playerY});
-                    }
+                    if (mapTile.offCollision) runItemFunction(lobby,player,mapTile,"offCollision",{x: playerX,y:playerY});
                 }
             }
             if (player.tail.length > 0) {
