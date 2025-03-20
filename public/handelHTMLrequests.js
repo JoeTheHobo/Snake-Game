@@ -243,8 +243,12 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
             ]
         ],
     ],localAccount.serverSnake,false,localAccount.isInLobby);
-    generateAllowedSnakeColors($(".colorOptions"),function(filter) {
-        $(".snakeHeadYEE").style.filter = filter;
+    generateAllowedSnakeColors($(".colorOptions"),function(color) {
+        $(".snakeHeadYEE").style.filter = getPlayerFilter(color);
+        localAccount.serverSnake.hue = color.hue;
+        localAccount.serverSnake.saturation = color.saturation;
+        localAccount.serverSnake.brightness = color.brightness;
+        savePlayers();
     });
 })
 

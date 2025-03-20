@@ -1645,7 +1645,7 @@ $(".playButtonSounds").forEach(button => {
 });
 
 function getPlayerFilter(player) {
-    return `hue-rotate(${player.color}deg) saturate(${player.color2}%) brightness(${player.color3}%)`;
+    return `hue-rotate(${player.hue}deg) saturate(${player.saturation}%) brightness(${player.brightness}%)`;
 }
 
 // Client: Send ping every second
@@ -1746,15 +1746,10 @@ function generateAllowedSnakeColors(holder,func) {
         let color = localAccount.allowedSnakeColors[i];
         let div = holder.create("div");
         div.className = "colorOption"
-        let filter = getPlayerFilter({
-            color: color.hue,
-            color2: color.saturation,
-            color3: color.brightness,
-        });
-        div.style.filter = filter;
+        div.style.filter = getPlayerFilter(color);
 
         div.on("click",function() {
-            func(filter)
+            func(color)
         })
     }
 }

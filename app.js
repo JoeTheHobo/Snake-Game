@@ -2467,9 +2467,9 @@ function newPlayer(socketID,accountName,accountTag) {
         toggleTeamsKey: "Shift",
         type: "player",
         name: simple.rnd(playerNames1) + simple.rnd(playerNames2),
-        color: simple.rnd(360), //Hue
-        color2: simple.rnd(300), //Saturation
-        color3: simple.rnd(20,200), //Brightness
+        hue: simple.rnd(360), //Hue
+        saturation: simple.rnd(300), //Saturation
+        brightness: simple.rnd(20,200), //Brightness
         moving: false,
         growTail: 0,
         isDead: false,
