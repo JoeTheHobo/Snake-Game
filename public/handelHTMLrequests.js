@@ -248,7 +248,7 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
         localAccount.serverSnake.hue = color.hue;
         localAccount.serverSnake.saturation = color.saturation;
         localAccount.serverSnake.brightness = color.brightness;
-        savePlayers();
+        savePlayers(localAccount.isInLobby);
     });
 })
 
