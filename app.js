@@ -2526,7 +2526,6 @@ function decompressMap(map) {
 function getByID(id,type) {
     for (let i = 0; i < type.length; i++) {
         if (type[i].id === id) {
-            console.log(type[i])
             return type[i];
         }
     }
