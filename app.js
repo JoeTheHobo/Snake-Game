@@ -1243,7 +1243,6 @@ function findEmptySpotInZones(lobby,zones,type,extra,extra2) {
     for (let i = 0; i < shuffledZones.length; i++) {
         let z = shuffledZones[i];
         if (!z.active) continue;
-        console.log("WE MADE IT")
 
         if (type == "item") if (z.itemsThatCantSpawnHere.includes(extra.id)) continue;
         if (type == "player") {
