@@ -787,8 +787,13 @@ $("me_canvas").on("mouseup",function(e) {
                     path: false,
                     cell: structuredClone(currentBoard.originalMap[mouseY][mouseX][selectedItem.type]),
                 }
-                loadObjectMenu();
+            } else {
+                selectedItem = false;
             }
+            
+            savedSelectingItem = false;
+            savedSelectingTile = false;
+            setObjectTab(currentTab);
         }
            
     }
@@ -1126,6 +1131,20 @@ function goBackHome(save) {
 }
 
 function loadObjectMenu() {
+    if (selectedItem == false) {
+        $(".me_ih_image").hide();
+        $(".me_ih_settings").hide();
+        $(".me_ih_name").hide();
+        $(".me_ih_type").hide();
+        return;
+    } else {
+        $(".me_ih_image").show();
+        $(".me_ih_settings").show("flex");
+        $(".me_ih_name").show();
+        $(".me_ih_type").show();
+
+    }
+
     $(".me_ih_image").src = getImageFromItem(selectedItem.type,selectedItem.cell,"src")
     let holder = $(".me_ih_settings");
     holder.innerHTML = "";
@@ -1955,7 +1974,6 @@ function generateZoneListings(zoneType) {
     }
     loadZoneOptions();
 }
-
 function setObjectTab(type) {
     currentTab = type;
     selectedObjectTab = type;
@@ -1965,12 +1983,14 @@ function setObjectTab(type) {
 
     if (type == "Items") {
         loadTagsList(localAccount.allowedItemIds,items,selectedItemTags);
-        selectedItem = {
-            type: "item",
-            content: getItemById(savedSelectingItem),
-            canEdit: true,
-            path: false,
-            cell: structuredClone(getItemById(savedSelectingItem)),
+        if (savedSelectingItem) {
+            selectedItem = {
+                type: "item",
+                content: getItemById(savedSelectingItem),
+                canEdit: true,
+                path: false,
+                cell: structuredClone(getItemById(savedSelectingItem)),
+            }
         }
         loadObjectMenu();
         $(".me_canvasHolder").classRemove("verticalResizeCursor");
@@ -1986,12 +2006,14 @@ function setObjectTab(type) {
     }
     if (type == "Tiles") {
         loadTagsList(localAccount.allowedTileIds,tiles,selectedTileTags);
-        selectedItem = {
-            type: "tile",
-            content: getTileById(savedSelectingTile),
-            canEdit: true,
-            path: false,
-            cell: structuredClone(getTileById(savedSelectingTile)),
+        if (savedSelectingTile) {
+            selectedItem = {
+                type: "tile",
+                content: getTileById(savedSelectingTile),
+                canEdit: true,
+                path: false,
+                cell: structuredClone(getTileById(savedSelectingTile)),
+            }
         }
         loadObjectMenu();
         $(".me_canvasHolder").classRemove("verticalResizeCursor");
