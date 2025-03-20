@@ -39,7 +39,6 @@ function retrieveAllPresetBoards(index) {
             id: false,
             username: "Preset Board",
         }];
-        console.log(decompressed.spawnZones.players)
         decompressed.accountID = false;
         newPreset.push(decompressed);
         if (index == presetBoards.length-1) {
@@ -1240,6 +1239,7 @@ function spawnPlayer(lobby,player,gameStart = false) {
 }
 function findEmptySpotInZones(lobby,zones,type,extra,extra2) {
     let shuffledZones = simple.shuffle(zones);
+    console.log(zones)
 
     for (let i = 0; i < shuffledZones.length; i++) {
         let z = shuffledZones[i];
