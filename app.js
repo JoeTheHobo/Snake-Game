@@ -849,7 +849,7 @@ io.on('connection', (socket) => {
         for (let i = 0; i < lobby.items.length; i++) {
             let item = lobby.items[i];
             for (let j = 0; j < Number(item.onStartSpawn); j++) {
-                spawn(lobby,item.name,true);
+                spawn(lobby,item.id,true);
             }
         }
 
@@ -1164,13 +1164,13 @@ function spawn(lobby,thingToSpawn,gameStart = false) {
     if (simple.type(thingToSpawn) == "string") spawnItem(lobby,thingToSpawn,gameStart)
     if (thingToSpawn?.type == "player") spawnPlayer(lobby,thingToSpawn,gameStart);
 }
-function spawnItem(lobby,itemName,gameStart = false) {
+function spawnItem(lobby,itemID,gameStart = false) {
     let board = lobby.board;
 
     //Find Item
     let item;
     for (let i = 0; i < lobby.items.length; i++) {
-        if (lobby.items[i].name == itemName) item = lobby.items[i];
+        if (lobby.items[i].id == itemID) item = lobby.items[i];
     }
     if (!item) {
         console.log("Couldn't Find Item",537)
@@ -1488,7 +1488,7 @@ function specialItemManager(lobby) {
 
             cumulativeWeight += item.specialSpawnWeight;
             if (randomWeight < cumulativeWeight) {
-                spawn(lobby,item.name);
+                spawn(lobby,item.id);
                 break findingItem;
             }
         }
@@ -1642,7 +1642,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     if (collision.spawn) {
         for (let i = 0; i < collision.spawn.length; i++) {
             for (let j = 0; j < collision.spawn[i].count; j++) {
-                spawn(lobby,collision.spawn[i].name);
+                spawn(lobby,collision.spawn[i].id);
             }
         }
     }
