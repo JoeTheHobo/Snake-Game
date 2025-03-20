@@ -36,7 +36,7 @@ function generateGameTips() {
     for (let i = 0; i < items.length; i++) {
         if (items[i].showInEditor === false) continue;
         gameTips.push({
-            type : "items",
+            type: "items",
             name: items[i].displayName,
             tip: items[i].description,
         })
@@ -44,7 +44,7 @@ function generateGameTips() {
     for (let i = 0; i < tiles.length; i++) {
         if (tiles[i].showInEditor === false) continue;
         gameTips.push({
-            type : "tiles",
+            type: "tiles",
             name: tiles[i].displayName,
             tip: tiles[i].description,
         })
