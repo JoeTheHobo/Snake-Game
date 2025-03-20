@@ -849,7 +849,6 @@ io.on('connection', (socket) => {
         for (let i = 0; i < lobby.items.length; i++) {
             let item = lobby.items[i];
             for (let j = 0; j < Number(item.onStartSpawn); j++) {
-                console.log(item.id)
                 spawn(lobby,item.id,true);
             }
         }
@@ -1162,7 +1161,7 @@ function fixBoardDifferences(map,differences,type) {
     }
 }
 function spawn(lobby,thingToSpawn,gameStart = false) {
-    if (simple.type(thingToSpawn) == "string") spawnItem(lobby,thingToSpawn,gameStart)
+    if (simple.type(thingToSpawn) == "number") spawnItem(lobby,thingToSpawn,gameStart)
     if (thingToSpawn?.type == "player") spawnPlayer(lobby,thingToSpawn,gameStart);
 }
 function spawnItem(lobby,itemID,gameStart = false) {
