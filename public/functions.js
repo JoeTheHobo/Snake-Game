@@ -897,7 +897,6 @@ function drawBoardToCanvas(board,canvas,forceHeight) {
             let Xpos = (j * gs);
             let Ypos = (i * gs);
             
-            console.log(cell.tile,getImage(cell.tile,"canvas"))
             ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(gs),(gs));
 
             if (cell.item) {
@@ -947,6 +946,7 @@ function getImage(item,returnType,mapEditor = false) {
         url += getBaseImgFromTag(item,item.baseImgTags[i],mapEditor)
     }
     
+    console.log(url)
     if (returnType == "canvas") return getItemCanvas(url,type);
     if (returnType == "src") return $(url).src;
 }
