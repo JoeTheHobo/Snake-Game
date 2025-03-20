@@ -1986,6 +1986,7 @@ function setObjectTab(type) {
     if (type == "Items") {
         loadTagsList(localAccount.allowedItemIds,items,selectedItemTags);
         if (savedSelectingItem) {
+            console.log(savedSelectingItem)
             selectedItem = {
                 type: "item",
                 content: getItemById(savedSelectingItem),
