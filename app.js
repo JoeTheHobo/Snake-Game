@@ -1624,16 +1624,25 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             returnItem = oldItem;
         }
     }
-    if (collision.setBaseImgTag && player) {
+    if (collision.setBaseImgTag) {
         let value = collision.setBaseImgTag.value;
-        if (value == "*P") value = player.team;
+        if (value == "*P" && player) value = player.team;
         item.baseImgTags[collision.setBaseImgTag.index] = value;
-
-        lobby.updateCells.push({
-            x: player.pos.x,
-            y: player.pos.y,
-            changes: [["baseImgTags"],item.baseImgTags],
-        })
+        
+        if (item.type == "item") {
+            lobby.updateCells.push({
+                x: itemPos.x,
+                y: itemPos.y,
+                changes: [["baseImgTags"],item.baseImgTags],
+            })
+        }
+        if (item.type == "tile") {
+            lobby.updateTiles.push({
+                x: itemPos.x,
+                y: itemPos.y,
+                changes: [["baseImgTags"],item.baseImgTags],
+            })
+        }
     }
     if (collision.growPlayer > 0 && player) {
         growPlayer(player,collision.growPlayer);
