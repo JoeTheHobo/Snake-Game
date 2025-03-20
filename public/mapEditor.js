@@ -1136,15 +1136,17 @@ function loadObjectMenu() {
         $(".me_ih_settings").hide();
         $(".me_ih_name").hide();
         $(".me_ih_type").hide();
+        $(".me_ih_imageHolder").hide();
         return;
     } else {
+        $(".me_ih_imageHolder").show();
         $(".me_ih_image").show();
         $(".me_ih_settings").show("flex");
         $(".me_ih_name").show();
         $(".me_ih_type").show();
-
     }
 
+    console.log(selectedItem)
     $(".me_ih_image").src = getImageFromItem(selectedItem.type,selectedItem.cell,"src")
     let holder = $(".me_ih_settings");
     holder.innerHTML = "";
