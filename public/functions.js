@@ -300,7 +300,7 @@ function addItemCanvas(item,url,filter = "",player) {
     if ($(url)) return;
 
     let img = $(".imageHolder").create("img");
-    img.src = item.type + "s/" + url + ".png";
+    img.src = "img/" + item.type + "s/" + url + ".png";
     img.id = url;
 
     img.onload = function() {
