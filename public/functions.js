@@ -940,6 +940,7 @@ function getItemValueFromList(item,list,mapEditor = false) {
 }
 function getImage(item,returnType,mapEditor = false) {
     let type = item.type;
+    console.log(item.skin,item)
     let url = type + "_" + item.name + "_" + item.skin;
     if (item.baseImgTags?.length > 0) url += "_";
     for (let i = 0; i < item.baseImgTags.length; i++) {
