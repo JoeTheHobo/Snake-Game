@@ -849,6 +849,7 @@ io.on('connection', (socket) => {
         for (let i = 0; i < lobby.items.length; i++) {
             let item = lobby.items[i];
             for (let j = 0; j < Number(item.onStartSpawn); j++) {
+                console.log(item.id)
                 spawn(lobby,item.id,true);
             }
         }
