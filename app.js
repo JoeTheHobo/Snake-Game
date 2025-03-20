@@ -1270,7 +1270,7 @@ function findEmptySpotInZones(lobby,zones,type,extra,extra2) {
 }
 function findEmptySpotInZone(zone,lobby) {
     let map = lobby.board.map;
-    console.log(zone,map,55423)
+    console.log(zone,55423)
     let activePlayers = lobby.inGamePlayers;
 
     let x,y,foundSpot = false,counter = 0;
