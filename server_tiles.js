@@ -140,8 +140,18 @@ tiles.push({
     renderImages: [["unlit","lit"]],
     changePlayerSpeed: 1, //Player Speed Times This Number
     id: 9,
-    onOver: {
+    onCollision: {
+        setBaseImgTag: {
+            index: 0,
+            value: "lit",
+        }, //Change base image tag.
         playSound: ["A3",1], //Write the name of sound, and how many different Files there are.
+    },
+    offCollision: {
+        setBaseImgTag: {
+            index: 0,
+            value: "unlit",
+        }, //Change base image tag.
     },
     visible: true,
     soundFolder: "piano",

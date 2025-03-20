@@ -2337,7 +2337,7 @@ function server_movePlayers(lobby,socketID) {
 
             //Test Tile UnderPlayer
             let mapTile = currentBoard.map[player.pos.y][player.pos.x].tile;
-            if (mapTile.onOver) runItemFunction(lobby,player,mapTile,"onOver",{x: player.pos.x,y: player.pos.y});
+            if (mapTile.onCollision) runItemFunction(lobby,player,mapTile,"onCollision",{x: player.pos.x,y: player.pos.y});
 
             //Growing/Moving Tail
             let playerX = playerOldPos.x;
@@ -2372,6 +2372,7 @@ function server_movePlayers(lobby,socketID) {
                 if (currentBoard.map[tail.y][tail.x].item) {
                     let mapItem = currentBoard.map[tail.y][tail.x].item;
                     if (mapItem.offCollision) runItemFunction(lobby,player,mapItem,"offCollision",{x: tail.x,y: tail.y});
+                    if (mapTile.offCollision) runItemFunction(lobby,player,mapTile,"offCollision",{x: tail.x,y: tail.y});
                 }
                 
                 snakeMapRemove(lobby,player.index,tail.y,tail.x);
@@ -2381,6 +2382,7 @@ function server_movePlayers(lobby,socketID) {
                 if (currentBoard.map[playerY][playerX].item) {
                     let mapItem = currentBoard.map[playerY][playerX].item;
                     if (mapItem.offCollision) runItemFunction(lobby,player,mapItem,"offCollision",{x: playerX,y:playerY});
+                    if (mapTile.offCollision) runItemFunction(lobby,player,mapTile,"offCollision",{x: playerX,y:playerY});
                 }
             }
             if (player.tail.length > 0) {
