@@ -181,7 +181,7 @@ function server_renderPlayers() {
                 drawRotated(headObject,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
                 
                 if (player.equiped.head) {
-                    drawImage(getItemCanvas(player.equiped.head.name,"item"),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);
+                    drawImage(getImage(player.equiped.head.name,"canvas"),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);
                 }
 
                 if (localAccount.renderTeamColors) {
