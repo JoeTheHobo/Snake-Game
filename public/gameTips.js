@@ -16,7 +16,7 @@ function showGameTips() {
     imgSrc = getImage(obj,"src");
 
     $(".gameTip_img").src = imgSrc;
-    $(".gameTip_name").innerHTML = tip.name;
+    $(".gameTip_name").innerHTML = tip.displayName;
     $(".gameTip_tip").innerHTML = tip.tip;
     
     setTimeout(function() {
@@ -37,7 +37,8 @@ function generateGameTips() {
         if (items[i].showInEditor === false) continue;
         gameTips.push({
             type: "items",
-            name: items[i].displayName,
+            name: items[i].name,
+            displayName: items[i].displayName,
             tip: items[i].description,
         })
     }
@@ -45,7 +46,8 @@ function generateGameTips() {
         if (tiles[i].showInEditor === false) continue;
         gameTips.push({
             type: "tiles",
-            name: tiles[i].displayName,
+            name: tiles[i].name,
+            displayName: tiles[i].displayName,
             tip: tiles[i].description,
         })
     }
