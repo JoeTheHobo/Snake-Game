@@ -1746,14 +1746,15 @@ function generateAllowedSnakeColors(holder,func) {
         let color = localAccount.allowedSnakeColors[i];
         let div = holder.create("div");
         div.className = "colorOption"
-        div.style.filter = getPlayerFilter({
+        let filter = getPlayerFilter({
             color: color.hue,
             color2: color.saturation,
             color3: color.brightness,
         });
+        div.style.filter = filter;
 
         div.on("click",function() {
-            func();
+            func(filter)
         })
     }
 }

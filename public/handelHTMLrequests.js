@@ -207,7 +207,7 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
     generateHTMLContent($(".customizeSnakePopup"),[
         {type: "title",text: "Appearance"},
         [
-            [{type: "image", src: ".snakeSkinHead",filter: "player",tag:"image",width: "200px",height: "200px",background: "none",borderRadius: "5px",}],
+            [{type: "image", src: ".snakeSkinHead",class: "snakeHeadYEE",filter: "player",tag:"image",width: "200px",height: "200px",background: "none",borderRadius: "5px",}],
             {type: "div",class: "colorOptions"},
         ],
         {type: "title",text: "Key Binds"},
@@ -243,7 +243,9 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
             ]
         ],
     ],localAccount.serverSnake,false,localAccount.isInLobby);
-    generateAllowedSnakeColors($(".colorOptions"));
+    generateAllowedSnakeColors($(".colorOptions"),function(filter) {
+        $(".snakeHeadYEE").style.filter = filter;
+    });
 })
 
 $(".sc_addLobbyBoard").on("click",function() {
