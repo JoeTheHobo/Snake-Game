@@ -2391,12 +2391,8 @@ function server_movePlayers(lobby,socketID) {
                 if (currentBoard.map[playerY][playerX].item) {
                     let mapItem = currentBoard.map[playerY][playerX].item;
                     if (mapItem.offCollision) runItemFunction(lobby,player,mapItem,"offCollision",{x: playerX,y:playerY});
-                    if (mapTile.id == 9) console.log(mapTile.offCollision,mapTile)
-                    if (mapTile.offCollision) {
-                        console.log("YEYE")
-                        runItemFunction(lobby,player,mapTile,"offCollision",{x: playerX,y:playerY});
-                    } 
                 }
+                if (mapTile.offCollision) runItemFunction(lobby,player,mapTile,"offCollision",{x: playerX,y:playerY});
             }
             if (player.tail.length > 0) {
                 snakeMapSetType(lobby,player.index,player.tail[0].y,player.tail[0].x,"body");
