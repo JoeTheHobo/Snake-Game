@@ -1270,7 +1270,6 @@ function findEmptySpotInZones(lobby,zones,type,extra,extra2) {
 }
 function findEmptySpotInZone(zone,lobby) {
     let map = lobby.board.map;
-    console.log(zone,55423)
     let activePlayers = lobby.inGamePlayers;
 
     let x,y,foundSpot = false,counter = 0;
@@ -1286,9 +1285,7 @@ function findEmptySpotInZone(zone,lobby) {
         if (x < 0) continue;
         if (y < 0) continue;
         if (y > lobby.board.map.length-1) continue;
-        console.log(map[y][x].item)
         if (map[y][x].item !== false) continue;
-        console.log(6)
 
         for (let j = 0; j < activePlayers.length; j++) {
             if (activePlayers[j] == false) continue;
@@ -1302,7 +1299,6 @@ function findEmptySpotInZone(zone,lobby) {
                 }
             }
         }
-        console.log(x,y,zone.team,425234)
         return {
             x: x,
             y: y,
@@ -2519,7 +2515,7 @@ function decompressMap(map) {
             row.push({
                 mouseOver: false,
                 tile: getByID(_tiles[j],tiles),
-                item: getByID(_items[j],items),
+                item: _items[j] === 0 ? false : getByID(_items[j],items),
             })
         }
 
