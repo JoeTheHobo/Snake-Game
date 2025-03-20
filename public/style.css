@@ -3509,7 +3509,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 .colorOption {
@@ -3520,6 +3520,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   cursor: url('./img/pointer.cur'), auto;
   border: 2px solid black;
   margin: 2px;
+  transition: all .2s ease-in-out;
 }
 .colorOption:hover {
   border: 2px solid rgb(70, 167, 199);
