@@ -1239,11 +1239,11 @@ function spawnPlayer(lobby,player,gameStart = false) {
 }
 function findEmptySpotInZones(lobby,zones,type,extra,extra2) {
     let shuffledZones = simple.shuffle(zones);
-    console.log(zones)
 
     for (let i = 0; i < shuffledZones.length; i++) {
         let z = shuffledZones[i];
         if (!z.active) continue;
+        console.log("WE MADE IT")
 
         if (type == "item") if (z.itemsThatCantSpawnHere.includes(extra.id)) continue;
         if (type == "player") {
@@ -1270,6 +1270,7 @@ function findEmptySpotInZones(lobby,zones,type,extra,extra2) {
 }
 function findEmptySpotInZone(zone,lobby) {
     let map = lobby.board.map;
+    console.log(zone,map,55423)
     let activePlayers = lobby.inGamePlayers;
 
     let x,y,foundSpot = false,counter = 0;
