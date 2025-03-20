@@ -27,7 +27,7 @@ items.push({
         deleteMe: true,
         growPlayer: 1,
         spawn: [{
-            name: "pellet",
+            id: 1,
             count: 1,
         }],
         playSound: ["die",2], //Write the name of sound, and how many different Files there are.
