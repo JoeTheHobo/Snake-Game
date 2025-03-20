@@ -412,12 +412,11 @@ document.body.onkeydown = function(e) {
     
 }
 function getPlayerCanvas(holder,image,direction,filter,outline = false,player) {
-    if (filter) filter = `hue-rotate(${filter}deg)`;
     let playerCanvas = holder.create("canvas");
     let playerCtx = playerCanvas.getContext("2d");
     playerCanvas.width = image.width;
     playerCanvas.height = image.height;
-    if (!outline) playerCtx.filter = filter ? filter : getPlayerFilter(player);
+    if (!outline) playerCtx.filter = filter ? `hue-rotate(${filter}deg)` : getPlayerFilter(player);
 
     if (direction) {
         drawImage(image,direction,0,0,image.width,image.height,playerCanvas);
