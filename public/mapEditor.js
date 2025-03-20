@@ -1152,7 +1152,6 @@ function loadObjectMenu() {
         $(".me_ih_type").show();
     }
 
-    console.log(selectedItem)
     $(".me_ih_image").src = getImageFromItem(selectedItem.type,selectedItem.cell,"src")
     let holder = $(".me_ih_settings");
     holder.innerHTML = "";
@@ -1947,6 +1946,16 @@ function makeSpawnZoneListing(holder,zone,i) {
 
 
 $(".me_ob_tab").on("click",function() {
+    if (this.innerHTML == "Items" && !savedSelectingItem) {
+        savedSelectingItem = 0;
+        selectedItem = {
+            type: "item",
+            content: getItemById(0),
+            canEdit: true,
+            path: false,
+            cell: structuredClone(getItemById(0)),
+        }
+    }
     setObjectTab(this.innerHTML);
     $(".me_ob_tab").classRemove("me_ob_tab_selected");
     this.classAdd("me_ob_tab_selected");
