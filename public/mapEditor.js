@@ -1236,9 +1236,9 @@ function loadObjectMenu() {
     let object = selectedItem.cell;
     
     if (selectedItem.type == "tile") {
-        if (object.onOver?.playSound) {
-            addSetting("Play Sound","button",object.onOver?.playSound[0],["onOver","playSound",0],false,function() {
-                pianoPopUp(object.onOver?.playSound[0]);
+        if (object.onCollision?.playSound) {
+            addSetting("Play Sound","button",object.onCollision.playSound[0],["onCollision","playSound",0],false,function() {
+                pianoPopUp(object.onCollision.playSound[0]);
             });
         }
     } else {
