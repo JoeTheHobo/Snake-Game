@@ -3502,3 +3502,23 @@ gap: 1px; /* Optional: Adjust spacing between items */
   background: rgba(0, 255, 0, 0.3); /* Green tint with transparency */
   pointer-events: none; /* Ensures clicks go through */
 }
+.colorOptions {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.colorOption {
+  background: #064f0c;
+  border-radius: 50px;
+  width: 50px;
+  height: 50px;
+  cursor: url('./img/pointer.cur'), auto;
+  border: 2px solid black;
+  margin: 5px;
+}
+.colorOption:hover {
+  border: 2px solid rgb(70, 167, 199);
+}

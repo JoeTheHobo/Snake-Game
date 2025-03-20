@@ -57,20 +57,48 @@ io.on('connection', (socket) => {
     let tag = "#" + formatNumber(Object.keys(onlineAccounts).length);
     onlineAccounts[socket.id] = {
         id: socket.id,
-        players: [ ],
-        player: false,
-        serverSnake: newPlayer(socket.id,username,tag),
-        gameModes: [],
-        gameModeLimit: 10,
-        boardLimit: 10,
+
         playerLimit: 10,
+        players: [ ],
+        gameModeLimit: 10,
+        gameModes: [],
+        boardLimit: 10,
         boards: [],
+
+        player: false, //For Lobbies
+        serverSnake: newPlayer(socket.id,username,tag),
         lobby: false,
         username: username,
         tag: tag,
         chatNameColor: simple.rnd("color"),
+
         allowedItemIds: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50],
         allowedTileIds: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50],
+        allowedItemSkinPacks: ["basic"],
+        allowedSnakeColors: [{hue: 360, saturation: 300, brightness: 116},
+            {hue: 157, saturation: 234, brightness: 116},
+            {hue: 116, saturation: 211, brightness: 115},
+            {hue: 208, saturation: 203, brightness: 118},
+            {hue: 307, saturation: 160, brightness: 89},
+            {hue: 58, saturation: 192, brightness: 143},
+            {hue: 275, saturation: 62, brightness: 162},
+            {hue: 208, saturation: 62, brightness: 150},
+            {hue: 141, saturation: 62, brightness: 150},
+            {hue: 250, saturation: 234, brightness: 86},
+            {hue: 70, saturation: 0, brightness: 86},
+            {hue: 121, saturation: 180, brightness: 86},
+            {hue: 309, saturation: 300, brightness: 200},
+            {hue: 309, saturation: 58, brightness: 200},
+            {hue: 236, saturation: 106, brightness: 74},
+            {hue: 236, saturation: 210, brightness: 74},
+            {hue: 137, saturation: 210, brightness: 74},
+            {hue: 137, saturation: 53, brightness: 74},
+            {hue: 290, saturation: 130, brightness: 74},
+            {hue: 35, saturation: 119, brightness: 186},
+            {hue: 156, saturation: 119, brightness: 186},
+            {hue: 341, saturation: 119, brightness: 186},
+            {hue: 318, saturation: 300, brightness: 200},
+        ],
     }
     
     compressObject(onlineAccounts[socket.id].boards,(err,compressed) => {
@@ -1063,7 +1091,6 @@ io.on('connection', (socket) => {
         if (checksOut === true) {
             onlineAccounts[socket.id].players = players;
             onlineAccounts[socket.id].serverSnake = serverSnake;
-            console.log(onlineAccounts[socket.id].serverSnake.dropItem)
             if (updateLobby) {
                 let account = onlineAccounts[socket.id];
                 let lobby = lobbies[account.lobby];
@@ -1081,7 +1108,6 @@ io.on('connection', (socket) => {
             io.to(socket.id).emit("kickPlayer","Hacked Players: " + checksOut + " [Code: 7834]");
         }
     })
-    console.log(Object.keys(onlineAccounts).length);
 });
 
 

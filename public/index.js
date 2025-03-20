@@ -53,6 +53,7 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     localAccount.serverSnake = account.serverSnake;
     localAccount.allowedItemIds = account.allowedItemIds;
     localAccount.allowedTileIds = account.allowedTileIds;
+    localAccount.allowedSnakeColors = account.allowedSnakeColors;
 
     items = JSON.parse(pako.inflate(server_items, { to: 'string' }));
     tiles = JSON.parse(pako.inflate(server_tiles, { to: 'string' }));
@@ -71,7 +72,7 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     loadAllCanvas(tiles);
     //Make Game Tips
     generateGameTips();
-    
+
     renderMapsInServersTab = true;
 });
 socket.on("sendingZippedBoard",(zippedBoard,boardName) => {

@@ -1740,3 +1740,20 @@ async function playAudio(url) {
     source.connect(audioContext.destination);
     source.start();
 }
+function generateAllowedSnakeColors(holder,func) {
+    holder.innerHTML = "";
+    for (let i = 0; i < localAccount.allowedSnakeColors.length; i++) {
+        let color = localAccount.allowedSnakeColors[i];
+        let div = holder.create("div");
+        div.className = "colorOption"
+        div.style.filter = getPlayerFilter({
+            color: color.hue,
+            color2: color.saturation,
+            color3: color.brightness,
+        });
+
+        div.on("click",function() {
+            func();
+        })
+    }
+}

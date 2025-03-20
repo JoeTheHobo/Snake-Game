@@ -208,14 +208,7 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
         {type: "title",text: "Appearance"},
         [
             [{type: "image", src: ".snakeSkinHead",filter: "player",tag:"image",width: "200px",height: "200px",background: "none",borderRadius: "5px",}],
-            [
-                {type: "text",text: "Hue"},
-                {type: "slider", value: ".color",min: 0, max: 360,bind: {key: "color",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
-                {type: "text",text: "Saturation"},
-                {type: "slider", value: ".color2",min: 0, max: 300,bind: {key: "color2",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
-                {type: "text",text: "Brightness"},
-                {type: "slider", value: ".color3",min: 20, max: 200,bind: {key: "color3",type: "set",update: {externalKey: "image",key:"image",type: "filterPlayer"}}},
-            ],
+            {type: "div",class: "colorOptions"},
         ],
         {type: "title",text: "Key Binds"},
         {type: "close"},
@@ -250,6 +243,7 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
             ]
         ],
     ],localAccount.serverSnake,false,localAccount.isInLobby);
+    generateAllowedSnakeColors($(".colorOptions"));
 })
 
 $(".sc_addLobbyBoard").on("click",function() {
