@@ -1282,11 +1282,17 @@ function findEmptySpotInZone(zone,lobby) {
         if (counter > (map.length * map[0].length) ) {
             return false;
         }
+        console.log(1)
         if (x > lobby.board.map[0].length-1) continue;
+        console.log(2)
         if (x < 0) continue;
+        console.log(3)
         if (y < 0) continue;
+        console.log(4)
         if (y > lobby.board.map.length-1) continue;
+        console.log(5)
         if (map[y][x].item !== false) continue;
+        console.log(6)
 
         for (let j = 0; j < activePlayers.length; j++) {
             if (activePlayers[j] == false) continue;
