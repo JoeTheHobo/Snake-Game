@@ -305,7 +305,7 @@ function addItemCanvas(item,url,filter = "",player) {
 
     img.onload = function() {
         let obj = {
-            name: item.id,
+            url: url,
             canvas: makeItemCanvas($(url),filter,player),
             type: item.type,
         }
@@ -314,9 +314,9 @@ function addItemCanvas(item,url,filter = "",player) {
 
 }
 
-function getItemCanvas(itemName,type) {
+function getItemCanvas(url,type) {
     for (let i = 0; i < itemCanvas.length; i++) {
-        if (itemCanvas[i].name === itemName && itemCanvas[i].type == type) return itemCanvas[i].canvas;
+        if (itemCanvas[i].url === url && itemCanvas[i].type == type) return itemCanvas[i].canvas;
     }
 }
 for (let i = 0; i < global_gameColors.length; i++) {
