@@ -2521,7 +2521,6 @@ function decompressMap(map) {
     }
     return _newMap;
 }
-console.log(tiles);
 function getByID(id,type) {
     for (let i = 0; i < type.length; i++) {
         if (type[i].id === id) {

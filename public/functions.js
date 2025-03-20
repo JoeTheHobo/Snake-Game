@@ -644,6 +644,7 @@ function shortenBoard(oldBoard) {
 
     board.originalMap = shortenMap(board.originalMap)
 
+    console.log(board)
     return board;
 }
 function fixBoard(oldBoard) {
