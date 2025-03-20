@@ -63,17 +63,7 @@ function renderCells(list,ctx,type) {
             if (pass) continue;
         }
 
-        let image;
-        if (mapCell.baseImg) {
-            image = mapCell.name;
-            if (mapCell.baseImgTags?.length > 0) image += "_";
-            for (let i = 0; i < mapCell.baseImgTags.length; i++) {
-                image += getBaseImgFromTag(mapCell,mapCell.baseImgTags[i])
-            }
-            image = getImage(image,mapCell.type);
-        } else {
-            image = getImage(mapCell.name,mapCell.type);
-        }
+        let image = getImage(mapCell,"canvas");
 
         ctx.drawImage(image,x*gridSize,y*gridSize,gridSize,gridSize);
 
