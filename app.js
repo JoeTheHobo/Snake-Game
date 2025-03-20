@@ -39,6 +39,7 @@ function retrieveAllPresetBoards(index) {
             id: false,
             username: "Preset Board",
         }];
+        console.log(decompressed)
         decompressed.accountID = false;
         newPreset.push(decompressed);
         if (index == presetBoards.length-1) {
