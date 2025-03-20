@@ -947,7 +947,7 @@ function getImage(item,returnType,mapEditor = false) {
         url += getBaseImgFromTag(item,item.baseImgTags[i],mapEditor)
     }
     
-    if (returnType == "canvas") return getItemCanvas(image,type);
+    if (returnType == "canvas") return getItemCanvas(url,type);
     if (returnType == "src") return $(url).src;
 }
 
