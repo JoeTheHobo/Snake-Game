@@ -788,7 +788,13 @@ $("me_canvas").on("mouseup",function(e) {
                     cell: structuredClone(currentBoard.originalMap[mouseY][mouseX][selectedItem.type]),
                 }
             } else {
-                selectedItem = false;
+                selectedItem = {
+                    type: selectedItem.type,
+                    content: false,
+                    canEdit: false,
+                    path: false,
+                    cell: false,
+                }
             }
             
             savedSelectingItem = false;
@@ -1131,7 +1137,7 @@ function goBackHome(save) {
 }
 
 function loadObjectMenu() {
-    if (selectedItem == false) {
+    if (selectedItem.cell == false) {
         $(".me_ih_image").hide();
         $(".me_ih_settings").hide();
         $(".me_ih_name").hide();
@@ -1986,7 +1992,6 @@ function setObjectTab(type) {
     if (type == "Items") {
         loadTagsList(localAccount.allowedItemIds,items,selectedItemTags);
         if (savedSelectingItem) {
-            console.log(savedSelectingItem)
             selectedItem = {
                 type: "item",
                 content: getItemById(savedSelectingItem),
