@@ -27,6 +27,7 @@ const lobbies = {};
 const onlineAccounts = {};
 
 let newPreset = [];
+/*
 function retrieveAllPresetBoards(index) {
     let buffer = base64ToArrayBuffer(presetBoards[index]);
     decompressObject(buffer,(err,decompressed) => {
@@ -48,6 +49,7 @@ function retrieveAllPresetBoards(index) {
     
 }
 retrieveAllPresetBoards(0);
+*/
 
 io.on('connection', (socket) => {
     console.log('a user connected');    
