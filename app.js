@@ -2508,12 +2508,12 @@ function checkPlayer(player,socketID) {
     if (player.name == "") return "name-1";
     if (player.name.length > 20) return "name-2";
     
-    if (Number(player.color) < 0) return "color-1";
-    if (Number(player.color) > 360) return "color-2";
-    if (Number(player.color2) < 0) return "color2-1";
-    if (Number(player.color2) > 300) return "color2-2";
-    if (Number(player.color3) < 20) return "color3-1";
-    if (Number(player.color3) > 200) return "color3-2";
+    if (Number(player.hue) < 0) return "color-1";
+    if (Number(player.hue) > 360) return "color-2";
+    if (Number(player.saturation) < 0) return "saturation-1";
+    if (Number(player.saturation) > 300) return "saturation-2";
+    if (Number(player.brightness) < 20) return "brightness-1";
+    if (Number(player.brightness) > 200) return "brightness-2";
 
     if (player.accountID !== socketID) return "socketId-1" + player.accountID + "," + socketID;
 
