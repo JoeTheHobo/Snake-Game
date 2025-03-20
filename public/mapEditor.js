@@ -787,19 +787,8 @@ $("me_canvas").on("mouseup",function(e) {
                     path: false,
                     cell: structuredClone(currentBoard.originalMap[mouseY][mouseX][selectedItem.type]),
                 }
-            } else {
-                selectedItem = {
-                    type: selectedItem.type,
-                    content: false,
-                    canEdit: false,
-                    path: false,
-                    cell: false,
-                }
+                loadObjectMenu();
             }
-            
-            savedSelectingItem = false;
-            savedSelectingTile = false;
-            setObjectTab(currentTab);
         }
            
     }
@@ -1137,21 +1126,6 @@ function goBackHome(save) {
 }
 
 function loadObjectMenu() {
-    if (selectedItem.cell == false) {
-        $(".me_ih_image").hide();
-        $(".me_ih_settings").hide();
-        $(".me_ih_name").hide();
-        $(".me_ih_type").hide();
-        $(".me_ih_imageHolder").hide();
-        return;
-    } else {
-        $(".me_ih_imageHolder").show();
-        $(".me_ih_image").show();
-        $(".me_ih_settings").show("flex");
-        $(".me_ih_name").show();
-        $(".me_ih_type").show();
-    }
-
     $(".me_ih_image").src = getImageFromItem(selectedItem.type,selectedItem.cell,"src")
     let holder = $(".me_ih_settings");
     holder.innerHTML = "";
@@ -1946,16 +1920,6 @@ function makeSpawnZoneListing(holder,zone,i) {
 
 
 $(".me_ob_tab").on("click",function() {
-    if (this.innerHTML == "Items" && !savedSelectingItem) {
-        savedSelectingItem = 0;
-        selectedItem = {
-            type: "item",
-            content: getItemById(0),
-            canEdit: true,
-            path: false,
-            cell: structuredClone(getItemById(0)),
-        }
-    }
     setObjectTab(this.innerHTML);
     $(".me_ob_tab").classRemove("me_ob_tab_selected");
     this.classAdd("me_ob_tab_selected");
@@ -1991,6 +1955,7 @@ function generateZoneListings(zoneType) {
     }
     loadZoneOptions();
 }
+
 function setObjectTab(type) {
     currentTab = type;
     selectedObjectTab = type;
@@ -2000,14 +1965,12 @@ function setObjectTab(type) {
 
     if (type == "Items") {
         loadTagsList(localAccount.allowedItemIds,items,selectedItemTags);
-        if (savedSelectingItem) {
-            selectedItem = {
-                type: "item",
-                content: getItemById(savedSelectingItem),
-                canEdit: true,
-                path: false,
-                cell: structuredClone(getItemById(savedSelectingItem)),
-            }
+        selectedItem = {
+            type: "item",
+            content: getItemById(savedSelectingItem),
+            canEdit: true,
+            path: false,
+            cell: structuredClone(getItemById(savedSelectingItem)),
         }
         loadObjectMenu();
         $(".me_canvasHolder").classRemove("verticalResizeCursor");
@@ -2023,14 +1986,12 @@ function setObjectTab(type) {
     }
     if (type == "Tiles") {
         loadTagsList(localAccount.allowedTileIds,tiles,selectedTileTags);
-        if (savedSelectingTile) {
-            selectedItem = {
-                type: "tile",
-                content: getTileById(savedSelectingTile),
-                canEdit: true,
-                path: false,
-                cell: structuredClone(getTileById(savedSelectingTile)),
-            }
+        selectedItem = {
+            type: "tile",
+            content: getTileById(savedSelectingTile),
+            canEdit: true,
+            path: false,
+            cell: structuredClone(getTileById(savedSelectingTile)),
         }
         loadObjectMenu();
         $(".me_canvasHolder").classRemove("verticalResizeCursor");
