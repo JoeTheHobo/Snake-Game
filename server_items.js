@@ -709,7 +709,7 @@ items.push({
     skin: "basic",
     availableSkins: ["basic"],
     baseImgTags: [".onCollision.switchBoardStatus","_off"],
-    renderImages: [["*colors"],["_on","_off"]],
+    renderImages: [["*colors"],["on","off"]],
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -723,7 +723,7 @@ items.push({
     onCollision: { //When collisionType collides do these
         switchBaseImgTag: { //Switch Between these images using Base Img
             index: 1,
-            switch: ["_on","_off"],
+            switch: ["on","off"],
         },
         switchBoardStatus: "red", //Switch Between giving these status'
     },
@@ -869,7 +869,7 @@ items.push({
     id: 27,
     displayName: "Pressure Plate",
     description: "Set A Board Status While On The Plate",
-    name: "preassureplate", //(string) Name Of Item
+    name: "pressureplate", //(string) Name Of Item
     type: "item",
     skin: "basic",
     availableSkins: ["basic"],
