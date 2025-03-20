@@ -233,9 +233,11 @@ function updateCanvasPositionToPlayer(player) {
 }
 //End Load All Item Images
 let itemCanvas = [];
-function setUpItemCanvas(list) {
+function loadAllCanvas(list) {
     for (let i = 0; i < list.length; i++) {
         let item = list[i];
+
+        let url = `${item.type}s/${item.type}_${item.name}_`;
 
         function combineStrings(arrays, prefix = "", index = 0) {
             if (index === arrays.length) {
@@ -244,28 +246,36 @@ function setUpItemCanvas(list) {
             }
         
             for (let item of arrays[index]) {
-                combineStrings(arrays, prefix + item, index + 1);
+                combineStrings(arrays, prefix + "_" + item, index + 1);
             }
         }
-        
         function processCombination(combination) {
-            addItemCanvas(item,item.baseImg + combination + ".png",item.name + "_" + combination);
+            console.log(combination);
+            return;
+            addItemCanvas(item,combination + ".png",item.name + "_" + combination);
         }
-        
-        if (item.renderImages) {
-            for (let j = 0; j < item.renderImages.length; j++) {
-                if (item.renderImages[0] == "*colors") item.renderImages[0] = [
-                    "aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
-                ]
-                if (item.renderImages[0] == "*colors2") item.renderImages[0] = [
-                    "white","aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
-                ]
+        function loopTags(item,url) {
+            if (item.renderImages.length > 0) {
+                for (let j = 0; j < item.renderImages.length; j++) {
+                    if (item.renderImages[0] == "*colors") item.renderImages[0] = [
+                        "aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
+                    ]
+                    if (item.renderImages[0] == "*colors2") item.renderImages[0] = [
+                        "white","aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
+                    ]
+                }
+                combineStrings(item.renderImages,url);
+            } else {
+                addItemCanvas(item,url + ".png")
             }
-            combineStrings(item.renderImages);
-        } 
-        else {
-            addItemCanvas(item,item.baseImg + ".png",item.name)
         }
+        function loopSkins(item,url) {
+            for (let j = 0; j < item.availableSkins.length; j++) {
+                loopTags(item,url + item.availableSkins[j]);
+            }
+        }
+
+        loopSkins(item,url);
     }
 }
 function makeItemCanvas(image,filter = "",player) {
@@ -293,7 +303,7 @@ function addItemCanvas(item,itemImg,name,filter = "",player) {
 
     let img = $(".imageHolder").create("img");
     img.src = "img/" + itemImg;
-    img.id = item.type + "_" + name;
+    img.id = item.type + "_" + item.name + "_" + name;
 
     img.onload = function() {
         let obj = {
@@ -931,16 +941,16 @@ function getItemValueFromList(item,list,mapEditor = false) {
     if (value == "*P") value = mapEditor ? "white" : localAccount.player.team;
     return value;
 }
-function getImageFromItem(type,item,returnType,mapEditor = false) {
-    let image = item.name;
-    if (item.baseImgTags?.length > 0) image += "_";
+function getImage(item,returnType,mapEditor = false) {
+    let type = item.type;
+    let url = type + "_" + item.name + "_" + item.skin;
+    if (item.baseImgTags?.length > 0) url += "_";
     for (let i = 0; i < item.baseImgTags.length; i++) {
-        image += getBaseImgFromTag(item,item.baseImgTags[i],mapEditor)
+        url += getBaseImgFromTag(item,item.baseImgTags[i],mapEditor)
     }
     
-    if (returnType == "canvas") image = getItemCanvas(image,type);
-    if (returnType == "src") image = $(type + "_" + image).src;
-    return image;
+    if (returnType == "canvas") return getItemCanvas(image,type);
+    if (returnType == "src") return $(url).src;
 }
 
 let global_wallImage = new Image();

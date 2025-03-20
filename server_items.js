@@ -1,9 +1,14 @@
 let items = [];
 items.push({
-    name: "pellet",
-    baseImg: "items/snakeFood",
-    baseImgTags: [],
+    id: 1,
+    displayName: "Mouse",
+    description: "Eat Mice To Grow!",
     type: "item",
+    name: "snakefood",
+    skin: "basic",
+    availableSkins: ["basic"],
+    baseImgTags: [],
+    renderImages: [],
     tags: ["Food"],
     showInEditor: true,
     onStartSpawn: 3,
@@ -30,13 +35,17 @@ items.push({
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    id: 1,
 })
 items.push({
-    name: "super_pellet",
-    baseImg: "items/snakeSuper",
-    baseImgTags: [],
+    id: 2,
+    displayName: "Bunch Of Mice",
+    description: "Eat And Grow Very Large",
     type: "item",
+    name: "snakesuper",
+    skin: "basic",
+    availableSkins: ["basic"],
+    baseImgTags: [],
+    renderImages: [],
     tags: ["Food"],
     showInEditor: true,
     onStartSpawn: 0,
@@ -56,13 +65,17 @@ items.push({
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     onDelete: { //Ran when item is destroyed
     },
-    id: 2,
 })
 items.push({
-    name: "turbo",
     id: 3,
+    displayName: "Turbo",
+    description: "Pickup And Use To Go FAST!",
+    skin: "basic",
+    availableSkins: ["basic"],
+    name: "speedpowerup",
     baseImg: "items/speedPowerUp",
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     tags: ["Power Up","Collectables"],
     showInEditor: true,
@@ -93,10 +106,14 @@ items.push({
     },
 })
 items.push({
-    name: "wall",
     id: 4,
-    baseImg: "items/rock",
+    displayName: "Rock",
+    description: "Weak Rock, Can Be Broken",
+    name: "rock",
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -122,10 +139,14 @@ items.push({
     tags: ["Barriers"],
 })
 items.push({
-    name: "wall2",
     id: 5,
-    baseImg: "items/rock2",
+    displayName: "Strong Rock",
+    description: "Takes More To Destroy This Rock",
+    name: "rock2",
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -149,10 +170,14 @@ items.push({
     tags: ["Barriers"],
 })
 items.push({
-    name: "bronzeShield", //(string) Name Of Item
     id: 6,
-    baseImg: "items/bronzeShield",
+    displayName: "Bronze Shield",
+    description: "Equip To Protect Yourself (Weak)",
+    name: "bronzeshield", //(string) Name Of Item
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -184,10 +209,14 @@ items.push({
     tags: ["Shields","Collectables"],
 })
 items.push({
-    name: "silverShield",
     id: 7,
-    baseImg: "items/silverShield",
+    displayName: "Silver Shield",
+    description: "Equip To Protect Yourself (Medium)",
+    name: "silvershield",
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -219,10 +248,14 @@ items.push({
     tags: ["Shields","Collectables"],
 })
 items.push({
-    name: "goldShield",
     id: 8,
-    baseImg: "items/goldShield",
+    displayName: "Gold Shield",
+    description: "Equipt To Protect Yourself (Strong)",
+    name: "goldshield",
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -254,10 +287,14 @@ items.push({
     tags: ["Shields","Collectables"],
 })
 items.push({
-    name: "lamp", //(string) Name Of Item
     id: 9,
-    baseImg: "items/Lamp",
+    displayName: "Lamp",
+    description: "You shouldn't be reading this...",
+    name: "lamp", //(string) Name Of Item
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     showInEditor: false,
     onStartSpawn: 0,
@@ -280,10 +317,14 @@ items.push({
     tags: [],
 })
 items.push({
-    name: "snakeHole", //(string) Name Of Item
     id: 10,
-    baseImg: "items/snakeHole1",
+    displayName: "Snake Hole 1",
+    description: "Move Between These Holes",
+    name: "snakehole1", //(string) Name Of Item
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     onCollision: {
         teleport: 10,
@@ -301,10 +342,14 @@ items.push({
     tags: ["Tunnels"],
 })
 items.push({
-    name: "snakeHole2", //(string) Name Of Item
     id: 11,
-    baseImg: "items/snakeHole2",
+    displayName: "Snake Hole 2",
+    description: "Move Between These Holes",
+    name: "snakehole2", //(string) Name Of Item
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     onCollision: {
         teleport: 11,
@@ -323,10 +368,14 @@ items.push({
     tags: ["Tunnels"],
 })
 items.push({
-    name: "snakeHole3", //(string) Name Of Item
     id: 12,
-    baseImg: "items/snakeHole3",
+    displayName: "Snake Hole 3",
+    description: "Move Between These Holes",
+    name: "snakehole3", //(string) Name Of Item
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     onCollision: {
         teleport: 12,
@@ -345,10 +394,14 @@ items.push({
 })
 
 items.push({
-    name: "clear", //(string) Name Of Item
     id: 14,
-    baseImg: "items/noZone",
+    displayName: "No Spawn Zone",
+    description: "Makes Items Not Able To Spawn Here",
+    name: "nozone", //(string) Name Of Item
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -364,10 +417,14 @@ items.push({
     tags: ["Mechanics"],
 })
 items.push({
-    name: "blueKey", //(string) Name Of Item
     id: 15,
-    baseImg: "items/blueKey",
+    displayName: "Blue Key",
+    description: "Have In Inventory To Access Blue Lock",
+    name: "bluekey", //(string) Name Of Item
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     onCollision: {
         checkStatus: {
@@ -398,10 +455,14 @@ items.push({
     tags: ["Mechanics"],
 })
 items.push({
-    name: "redKey", //(string) Name Of Item
     id: 16,
-    baseImg: "items/redKey",
+    displayName: "Red Key",
+    description: "Have In Inventory To Access Red Lock",
+    name: "redkey", //(string) Name Of Item
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     onCollision: {
         checkStatus: {
@@ -432,10 +493,14 @@ items.push({
     tags: ["Mechanics"],
 })
 items.push({
-    name: "greenKey", //(string) Name Of Item
     id: 17,
-    baseImg: "items/greenKey",
+    displayName: "Green Key",
+    description: "Have In Inventory To Access Blue Lock",
+    name: "greenkey", //(string) Name Of Item
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     onCollision: {
         checkStatus: {
@@ -465,10 +530,14 @@ items.push({
     tags: ["Mechanics"],
 })
 items.push({
-    name: "blueLock", //(string) Name Of Item
     id: 18,
-    baseImg: "items/blueLock",
+    displayName: "Blue Lock",
+    description: "Requires Blue Key To Access",
+    name: "bluelock", //(string) Name Of Item
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -508,10 +577,14 @@ items.push({
     tags: ["Mechanics","Barriers"],
 })
 items.push({
-    name: "redLock", //(string) Name Of Item
     id: 19,
-    baseImg: "items/redLock",
+    displayName: "Red Lock",
+    description: "Requires Red Key To Access",
+    name: "redlock", //(string) Name Of Item
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -552,10 +625,14 @@ items.push({
     tags: ["Mechanics","Barriers"],
 })
 items.push({
-    name: "greenLock", //(string) Name Of Item
     id: 20,
-    baseImg: "items/greenLock",
+    displayName: "Green Lock",
+    description: "Requires Green Key To Access",
+    name: "greenlock", //(string) Name Of Item
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     cantUseIfStatus: [], //([itemName,itemName,...]) When player attempts to use item don't allow them if their status includes anything from this list.
     showInEditor: true,
@@ -597,10 +674,14 @@ items.push({
     tags: ["Mechanics","Barriers"],
 })
 items.push({
-    name: "stoneWall", //(string) Name Of Item
     id: 21,
-    baseImg: "items/stoneWall",
+    displayName: "Wall",
+    description: "Nothing Can Destroy This Wall",
+    name: "stonewall", //(string) Name Of Item
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -620,10 +701,13 @@ items.push({
     tags: ["Barriers"],
 })
 items.push({
-    name: "switch", //(string) Name Of Item
     id: 22,
+    displayName: "Switch",
+    description: "Turn Board Status Off And On",
+    name: "switch", //(string) Name Of Item
     type: "item",
-    baseImg: "items/item_switch_",
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [".onCollision.switchBoardStatus","_off"],
     renderImages: [["*colors"],["_on","_off"]],
     showInEditor: true,
@@ -649,10 +733,13 @@ items.push({
     tags: ["Mechanics"],
 })
 items.push({
-    name: "button", //(string) Name Of Item
     id: 23,
+    displayName: "Subtracting Button",
+    description: "Remove A Board Status",
+    name: "buttonsubtract", //(string) Name Of Item
     type: "item",
-    baseImg: "items/item_buttonSubtract_", //BaseImgTags Will add to this, to say which image to use
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [".onCollision.removeBoardStatus"], 
     renderImages: [["*colors2"]], //All Variations it can be
 
@@ -677,10 +764,13 @@ items.push({
     tags: ["Mechanics"],
 })
 items.push({
-    name: "buttonAdd", //(string) Name Of Item
     id: 24,
+    displayName: "Adding Button",
+    description: "Add A Board Status",
+    name: "buttonadd", //(string) Name Of Item
     type: "item",
-    baseImg: "items/item_buttonAdd_", //BaseImgTags Will add to this, to say which image to use
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [".onCollision.addBoardStatus"], 
     renderImages: [["*colors2"]], //All Variations it can be
 
@@ -706,11 +796,15 @@ items.push({
 })
 
 items.push({
-    name: "crown", //(string) Name Of Item
     id: 25,
+    displayName: "Crown",
+    description: "Touch To Win The Game!",
+    name: "crown", //(string) Name Of Item
     type: "item",
-    baseImg: "items/crown",
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -731,10 +825,13 @@ items.push({
 })
 
 items.push({
-    name: "flag", //(string) Name Of Item
     id: 26,
+    displayName: "Flag",
+    description: "Set A Board Status",
+    name: "flag", //(string) Name Of Item
     type: "item",
-    baseImg: "items/item_flag_",
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: ["white"],
     renderImages: [["*colors2"]],
     showInEditor: true,
@@ -769,10 +866,13 @@ items.push({
 })
 
 items.push({
-    name: "preassurePlate", //(string) Name Of Item
     id: 27,
+    displayName: "Pressure Plate",
+    description: "Set A Board Status While On The Plate",
+    name: "preassureplate", //(string) Name Of Item
     type: "item",
-    baseImg: "items/item_pressurePlate_",
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [".onCollision.addBoardStatus"],
     renderImages: [["*colors2"]],
     showInEditor: true,
@@ -804,10 +904,13 @@ items.push({
     tags: ["Mechanics"],
 })
 items.push({
-    name: "lockedCell", //(string) Name Of Item
     id: 28,
+    displayName: "Team Locked Wall",
+    description: "Requires Player Be On The Right Team To Access",
+    name: "playerlocked", //(string) Name Of Item
     type: "item",
-    baseImg: "items/item_playerLocked_",
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [".onCollision.checkStatus.check.playerTeamStatus"],
     renderImages: [["*colors"]],
     showInEditor: true,
@@ -852,10 +955,13 @@ items.push({
     tags: ["Mechanics","Barriers"],
 })
 items.push({
-    name: "boardLockedCell", //(string) Name Of Item
     id: 29,
+    displayName: "Board Locked Wall",
+    description: "Required Board To Have Unique Status",
+    name: "boardlocked", //(string) Name Of Item
     type: "item",
-    baseImg: "items/item_boardLocked_",
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [".onCollision.checkStatus.check.boardStatus.name"],
     renderImages: [["*colors2"]],
     showInEditor: true,
@@ -907,11 +1013,15 @@ items.push({
 })
 
 items.push({
-    name: "Yellow_Key", //(string) Name Of Item
     id: 30,
+    displayName: "Yellow Key",
+    description: "Have In Inventory To Access Yellow Lock",
+    name: "yellowkey", //(string) Name Of Item
     type: "item",
-    baseImg: "items/yellowKey",
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -942,11 +1052,15 @@ items.push({
     tags: ["Mechanics"],
 })
 items.push({
-    name: "Yellow_lock", //(string) Name Of Item
     id: 31,
+    displayName: "Yellow Lock",
+    description: "Requires Yellow Key To Access",
+    name: "yellowlock", //(string) Name Of Item
     type: "item",
-    baseImg: "items/yellowLock",
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     showInEditor: true,
     onStartSpawn: 0,
     gameModeMenu_selectedItem: false,
@@ -985,11 +1099,15 @@ items.push({
     tags: ["Mechanics","Barriers"],
 })
 items.push({
-    name: "Snake_Size_Gate", //(string) Name Of Item
     id: 32,
+    displayName: "Snake Size Gate",
+    description: "Snake Needs To Reach Certain Size To Access",
+    name: "snakesizegate", //(string) Name Of Item
     type: "item",
-    baseImg: "items/Snake_Size_Gate",
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     showInEditor: true,
     onStartSpawn: 0,
     playSounds: true, //If Item should be muted or not;
@@ -1035,10 +1153,13 @@ items.push({
 })
 
 items.push({
-    name: "Weighted_Preassure_Plate", //(string) Name Of Item
     id: 33,
+    displayName: "Snake Size Pressure Plate",
+    description: "Snake Needs To Be A Certain Size To Use Plate",
+    name: "weightedplate", //(string) Name Of Item
     type: "item",
-    baseImg: "items/item_weightedPlate_",
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [".onCollision.checkStatus.pass.addBoardStatus"],
     renderImages: [["*colors"]],
     showInEditor: true,
@@ -1101,9 +1222,14 @@ items.push({
     tags: ["Mechanics"],
 })
 items.push({
-    name: "deadSnake",
-    baseImg: "items/food",
+    id: 34,
+    displayName: "Dead Snake Cell",
+    description: "Remnants Of A Past Snake",
+    name: "deadsnake",
+    skin: "basic",
+    availableSkins: ["basic"],
     baseImgTags: [],
+    renderImages: [],
     type: "item",
     showInEditor: true,
     onStartSpawn: 0,
@@ -1124,7 +1250,6 @@ items.push({
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    id: 34,
     tags: ["Food"],
 })
 

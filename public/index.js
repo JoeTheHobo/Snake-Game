@@ -66,9 +66,9 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
 
     setScene("newMenu");
     //Load All Item Images
-    setUpItemCanvas(items);
+    loadAllCanvas(items);
     //Load All Tile Images
-    setUpItemCanvas(tiles);
+    loadAllCanvas(tiles);
     renderMapsInServersTab = true;
 });
 socket.on("sendingZippedBoard",(zippedBoard,boardName) => {
