@@ -301,8 +301,6 @@ document.body.on("click",function() {
     if (player.items[player.selectingItem]) {
         useItem(player);
     }
-
-    updatePlayerCard(player);
 })
 document.body.on("wheel",function(e) {
     if (!isActiveGame) return;
@@ -326,7 +324,6 @@ document.body.on("wheel",function(e) {
     if (player.selectingItem < 0) player.selectingItem = currentGameMode.howManyItemsCanPlayersUse-1;
     if (player.selectingItem > currentGameMode.howManyItemsCanPlayersUse-1) player.selectingItem = 0;
     
-    updatePlayerCard(player);
 })
 document.body.onkeydown = function(e) {
     if (e.ctrlKey && e.key === 'q') {
@@ -637,7 +634,6 @@ function startGame(solo = false) {
             x: false,
             y: false,
         }
-        updatePlayerCard(player);
     }
 
     setUpPlayerCanvas();

@@ -898,10 +898,10 @@ function drawBoardToCanvas(board,canvas,forceHeight) {
             let Ypos = (i * gs);
             
             if (cell.tile) {
-                ctx.drawImage(getImageFromItem("tile",cell.tile,"canvas"),Xpos,Ypos,(gs),(gs));
+                ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(gs),(gs));
             }
             if (cell.item) {
-                let image = getImageFromItem("item",cell.item,"canvas");
+                let image = getImage(cell.item,"canvas");
                 if (!image) continue;
                 ctx.drawImage(image,Xpos,Ypos,(gs),(gs));
             }
@@ -1208,17 +1208,17 @@ function updateGameFlags(player) {
     flag.$("pc_c1_length").innerHTML = player.tailLength;
     flag.$("pc_c1_kills").innerHTML = player.playerKills;
     if (player.equiped.head) {
-        flag.$("pc_c2_headImg").src = getImageFromItem("item",player.equiped.head,"src");
+        flag.$("pc_c2_headImg").src = getImage(player.equiped.head,"src");
     } else {
         flag.$("pc_c2_headImg").src = "img/backgrounds/clear.png";
     }
     if (player.equiped.body) {
-        flag.$("pc_c2_bodyImg").src = getImageFromItem("item",player.equiped.body,"src");
+        flag.$("pc_c2_bodyImg").src = getImage(player.equiped.body,"src");
     } else {
         flag.$("pc_c2_bodyImg").src = "img/backgrounds/clear.png";
     }
     if (player.equiped.tail) {
-        flag.$("pc_c2_tailImg").src = getImageFromItem("item",player.equiped.tail,"src");
+        flag.$("pc_c2_tailImg").src = getImage(player.equiped.tail,"src");
     } else {
         flag.$("pc_c2_tailImg").src = "img/backgrounds/clear.png";
     }
@@ -1243,7 +1243,7 @@ function updateGameScene(player) {
                 continue;
             }
     
-            holder.$(".game_cc_pi_item_img").src = getImageFromItem("item",item,"src");
+            holder.$(".game_cc_pi_item_img").src = getImage(item,"src");
             if (item.whenEquiped?.protect) {
                 holder.$(".game_cc_pi_item_text").innerHTML = item.whenEquiped.protect;
             } else {
@@ -1271,169 +1271,25 @@ function updateGameScene(player) {
 
     //updating player equiped
     if (player.equiped.head) {
-        $(".game_c2_c1_head").src = getImageFromItem("item",player.equiped.head,"src")
+        $(".game_c2_c1_head").src = getImage(player.equiped.head,"src")
         $(".game_c2_c1_text_head").innerHTML = player.equiped.head.whenEquiped.protect;
     } else {
         $(".game_c2_c1_head").src = "img/backgrounds/clear.png";
         $(".game_c2_c1_text_head").innerHTML = "";
     }
     if (player.equiped.body) {
-        $(".game_c2_c1_body").src = getImageFromItem("item",player.equiped.body,"src")
+        $(".game_c2_c1_body").src = getImage(player.equiped.body,"src")
         $(".game_c2_c1_text_body").innerHTML = player.equiped.head.whenEquiped.protect;
     } else {
         $(".game_c2_c1_body").src = "img/backgrounds/clear.png";
         $(".game_c2_c1_text_body").innerHTML = "";
     }
     if (player.equiped.tail) {
-        $(".game_c2_c1_tail").src = getImageFromItem("item",player.equiped.tail,"src")
+        $(".game_c2_c1_tail").src = getImage(player.equiped.tail,"src")
         $(".game_c2_c1_text_body").innerHTML = player.equiped.head.whenEquiped.protect;
     } else {
         $(".game_c2_c1_tail").src = "img/backgrounds/clear.png";
         $(".game_c2_c1_text_tail").innerHTML = "";
-    }
-}
-
-function generatePlayerCards(players) {
-    return;
-    let playerCardsHolder = $("playerCardsHolder");
-    playerCardsHolder.innerHTML = "";
-    for (let i = 0; i < players.length; i++) {
-        let player = players[i];
-        let playerCard = playerCardsHolder.create("div");
-        playerCard.id = "playercard_" + player.name +"_"+ player.id;
-        playerCard.className = "playercard_holder";
-
-        let cardDirection;
-        let isLeft;
-        if (i < 4) {
-            cardDirection = "left";
-            isLeft = true;
-        } else {
-            cardDirection = "right";
-            isLeft = false;
-        }
-        playerCard.direction = cardDirection;
-
-
-        if (isLeft) {
-            playerCard.style.left = 0;
-        } else {
-            playerCard.style.right = 0;
-        }
-        let cardWidth = ((window.innerWidth - canvas_background.width) / 2);
-        let cardHeight = ((cardWidth*2432)/5312);
-
-        let topPosition = i * (cardHeight + ((window.innerHeight-(cardHeight*4))/4));
-        playerCard.css({
-            top: topPosition + "px",
-            width: cardWidth + "px",
-            height: cardHeight + "px",
-        })
-
-        let backgroundImage = playerCard.create("img");
-        backgroundImage.className = "playercard_background";
-        backgroundImage.id = "playercard_teamImg";
-
-        let leftStats = playerCard.create("div");
-        leftStats.className = "playercard_leftStats";
-        leftStats.style.marginLeft = "14%";
-        leftStats.style.width = "35%";
-        leftStats.style.marginTop = 0.00734186746 + "%";
-        leftStats.style.height = "85%";
-
-        let playerName = leftStats.create("div");
-        playerName.innerHTML = player.name;
-        playerName.className = "playercard_text";
-
-        let leftStatsRow1 = leftStats.create("div");
-        leftStatsRow1.className = "playercard_left_row1";
-
-        let playerImgHolder = leftStatsRow1.create("div");
-        playerImgHolder.className = "playercard_playerImgHolder";
-        let playerImg = playerImgHolder.create("img");
-        playerImg.src = "img/snakeHead.png";
-        playerImg.style.filter = getPlayerFilter(player);
-        playerImg.className = "playercard_playerImg";
-        playerImg.id = "playercard_img";
-
-        let sizeCol = leftStatsRow1.create("div");
-        sizeCol.className = "playercard_left1_col_size";
-        let sizeTitle = sizeCol.create("div");
-        sizeTitle.innerHTML = "Size";
-        sizeTitle.className = "playercard_text";
-        let sizeText = sizeCol.create("div");
-        sizeText.className = "playercard_text";
-        sizeText.id = "playercard_size";
-        
-        if (currentGameMode.howManyItemsCanPlayersUse > 0) {
-            let inventoryTitle = leftStats.create("div");
-            inventoryTitle.innerHTML = "Inventory";
-            inventoryTitle.className = "playercard_text";
-
-            let inventoryHolder = leftStats.create("div");
-            inventoryHolder.className = "playercard_inventory";
-            
-            if (currentGameMode.howManyItemsCanPlayersUse > 5) {
-
-            }
-            let firstRow = inventoryHolder.create("div");
-            firstRow.className = "playercard_inventory_row";
-            let secondRow, lessThan, greaterThan;
-            if (currentGameMode.howManyItemsCanPlayersUse > 5) {
-                secondRow = inventoryHolder.create("div");
-                secondRow.className = "playercard_inventory_row";
-                lessThan = Math.ceil(currentGameMode.howManyItemsCanPlayersUse/2);
-                greaterThan = lessThan-1;
-            }
-            function addInventoryItem(parent,index) {
-                let holder = parent.create("div");
-                holder.id = "slot_" + index;
-                let className = "playercard_inventory_slot";
-                if (currentGameMode.mode_usingItemType) {
-                    if (player.selectingItem == index) className += " playercard_invetory_slot_selected";
-                }
-                holder.className = className;
-
-                let image = holder.create("img");
-                image.className = "playercard_inventory_image";
-            }
-            for (let i = 0; i < currentGameMode.howManyItemsCanPlayersUse; i++) {
-                if (currentGameMode.howManyItemsCanPlayersUse < 6) addInventoryItem(firstRow,i);
-                else {
-                    if (i < lessThan) addInventoryItem(firstRow,i);
-                    if (i > greaterThan) addInventoryItem(secondRow,i);
-                }
-            }
-        }
-        
-        updatePlayerCard(player);
-    }
-}
-function updatePlayerCard(player,whatToUpdate = "all") {
-    return;
-    if (!player) return;
-
-    let cardHolder = $("playercard_" + player.name +"_"+ player.id);
-
-    if (whatToUpdate == "all" || whatToUpdate == "team") cardHolder.$("playercard_teamImg").src = `img/status/playerCard_${player.team}_${cardHolder.direction}.png`;
-
-    if (whatToUpdate == "all" || whatToUpdate == "size") cardHolder.$("playercard_size").innerHTML = player.tailLength;
-    
-    if (whatToUpdate !== "all" && whatToUpdate !== "inventory") return;
-
-    cardHolder.$(".playercard_inventory_slot").classRemove("playercard_invetory_slot_selected");
-    cardHolder.$("slot_" + player.selectingItem).classAdd("playercard_invetory_slot_selected");
-
-    for (let i = 0; i < player.items.length; i++) {
-        let image = cardHolder.$("slot_" + i).$(".playercard_inventory_image");
-        if (player.items[i] == "empty") {
-            image.src = "img/backgrounds/clear.png";
-            continue;
-        }
-
-
-        let item = player.items[i];
-        image.src = getImageFromItem("item",item,"src");
     }
 }
 
@@ -1882,7 +1738,7 @@ function logGameModeChanges(holder,gameMode) {
             let altHolder = holder.create("div.gm_alt_holder");
             let itemHolder = altHolder.create("div.gm_alt_item_holder");
             let itemImage = itemHolder.create("img.gm_alt_item");
-            itemImage.src = getImageFromItem("item",realValue,"src");
+            itemImage.src = getImage(realValue,"src");
 
             let key = itemName + ": ";
             for (let k = 0; k < altList.length-1; k++) {

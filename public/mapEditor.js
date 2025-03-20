@@ -367,11 +367,11 @@ function me_updateCell(ctx,x,y,opacity) {
 
     if (cell.tile) {
         itemCounts.push("tile_" + cell.tile.name);
-        ctx.drawImage(getImageFromItem("tile",cell.tile,"canvas"),Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
+        ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
     }
     if (cell.item) {
         itemCounts.push("item_" + cell.item.name);
-        let image = getImageFromItem("item",cell.item,"canvas",true);
+        let image = getImage(cell.item,"canvas",true);
         ctx.drawImage(image,Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
 
         if (cell.item.boardDestructibleCountRequired > 1) {
@@ -1126,7 +1126,7 @@ function goBackHome(save) {
 }
 
 function loadObjectMenu() {
-    $(".me_ih_image").src = getImageFromItem(selectedItem.type,selectedItem.cell,"src")
+    $(".me_ih_image").src = getImage(selectedItem.cell,"src")
     let holder = $(".me_ih_settings");
     holder.innerHTML = "";
     $(".me_ih_name").innerHTML = selectedItem.cell.name;
@@ -2102,7 +2102,7 @@ function updateItemList(allowedIds,itemList,tagList) {
 
         let img = div.create("img");
         img.className = "me_itemImage";
-        img.src = getImageFromItem(item.type,item,"src");
+        img.src = getImage(item,"src");
 
         div.on("click",function() {
             if (item.type == "item") savedSelectingItem = item.id;
@@ -2445,7 +2445,7 @@ function loadItemSpawning() {
 
         let img = div.create("img");
         img.className = "me_itemImage2";
-        img.src = getImageFromItem(item.type,item,"src");
+        img.src = getImage(item,"src");
 
         if (!selectedZone.zone.itemsThatCantSpawnHere.includes(item.id)) {
             div.classRemove("notAllowedItem")
