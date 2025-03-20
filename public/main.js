@@ -70,9 +70,9 @@ function renderCells(list,ctx,type) {
             for (let i = 0; i < mapCell.baseImgTags.length; i++) {
                 image += getBaseImgFromTag(mapCell,mapCell.baseImgTags[i])
             }
-            image = getItemCanvas(image,mapCell.type);
+            image = getImage(image,mapCell.type);
         } else {
-            image = getItemCanvas(mapCell.name,mapCell.type);
+            image = getImage(mapCell.name,mapCell.type);
         }
 
         ctx.drawImage(image,x*gridSize,y*gridSize,gridSize,gridSize);
