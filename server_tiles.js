@@ -35,7 +35,7 @@ tiles.push({
     displayName: "Clear",
     description: "See Through The Ground",
     type: "tile",
-    name: "Clear",
+    name: "clear",
     skin: "basic",
     availableSkins: ["basic"],
     baseImgTags: [],
@@ -136,8 +136,8 @@ tiles.push({
     name: "piano",
     skin: "basic",
     availableSkins: ["basic","disco"],
-    baseImgTags: [],
-    renderImages: [],
+    baseImgTags: ["unlit"],
+    renderImages: [["unlit","lit"]],
     changePlayerSpeed: 1, //Player Speed Times This Number
     id: 9,
     onOver: {
