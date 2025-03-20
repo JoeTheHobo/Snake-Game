@@ -941,14 +941,12 @@ function getItemValueFromList(item,list,mapEditor = false) {
 }
 function getImage(item,returnType,mapEditor = false) {
     let type = item.type;
-    console.log(item.skin,item)
     let url = type + "_" + item.name + "_" + item.skin;
     if (item.baseImgTags?.length > 0) url += "_";
     for (let i = 0; i < item.baseImgTags.length; i++) {
         url += getBaseImgFromTag(item,item.baseImgTags[i],mapEditor)
     }
     
-    console.log(url)
     if (returnType == "canvas") return getItemCanvas(url,type);
     if (returnType == "src") return $(url).src;
 }
