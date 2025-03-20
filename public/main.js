@@ -484,7 +484,7 @@ function setUpPlayerCanvas() {
     for (let i = 0; i < activePlayers.length; i++) {
         if(activePlayers[i] == false) continue;
         let player = activePlayers[i];
-
+        console.log(player.hue,player.saturation,player.brightness)
         player.canvas = {
             body: {
                 left: getPlayerCanvas(html_playerCanvasHolder,$("img_snakeSkin_" + player.snakeSkin + "_body"),"left",false,false,player),

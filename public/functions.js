@@ -1645,7 +1645,6 @@ $(".playButtonSounds").forEach(button => {
 });
 
 function getPlayerFilter(player) {
-    console.log(player.hue,player.saturation,player.brightness);
     return `hue-rotate(${player.hue}deg) saturate(${player.saturation}%) brightness(${player.brightness}%)`;
 }
 
