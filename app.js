@@ -1300,7 +1300,7 @@ function findEmptySpotInZone(zone,lobby) {
                 }
             }
         }
-
+        console.log(x,y,zone.team,425234)
         return {
             x: x,
             y: y,
