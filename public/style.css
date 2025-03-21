@@ -3532,8 +3532,8 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .itemSkinImg {
   border-radius: 5px;
   border: 3px solid black;
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   background: white;
   transition: all .2s ease-in-out;
   cursor: url('./img/pointer.cur'), auto;

@@ -1142,6 +1142,7 @@ function loadObjectMenu() {
         img.on("click",function() {
             $(".itemSkinImg").classRemove("itemSkinImgSelected");
             this.classAdd("itemSkinImgSelected");
+            selectedItem.cell.skin = fakeItem.skin;
         })
     }
 
