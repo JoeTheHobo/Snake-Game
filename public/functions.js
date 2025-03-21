@@ -13,12 +13,6 @@ let activePlayerCount = [];
 let oldBoardStatus = [];
 //End Players
 
-let circleWalls = true;
-let specialItemLowChance = 1;
-let specialItemHighChance = 6;
-let specialItemActiveChance = 4;
-let specialItemIteration = 0;
-let totalSpecialItems = 1;
 let timer, gameEnd;
 let gamePaused = false;
 let isActiveGame = false;

@@ -170,7 +170,6 @@ function server_renderPlayers() {
     for (let i = 0; i < updateSnakeCells.length; i++) {
         let arr = updateSnakeCells[i];
         //Clear Cell
-        ctx_players.filter = "none";
         ctx_players.clearRect(arr[0].x*gridSize,arr[0].y*gridSize,gridSize,gridSize);
         for (let k = 1; k < arr.length; k++) {
             let obj = arr[k];
@@ -854,35 +853,3 @@ function serverGameLoop() {
 
     if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 120);//requestAnimationFrame(gameLoop);
 }
-function specialItemManager() {
-    if (gameType == "server") return;
-    if (specialItemIteration >= specialItemActiveChance) {
-        specialItemIteration = 0;
-        specialItemActiveChance = rnd(specialItemLowChance,specialItemHighChance);
-        // Calculate the total weight
-        let totalWeight = 0;
-        for (let i = 0; i < itemList.length; i++) {
-            if (itemList[i].spawnLimit < 1 && _type(itemList[i].spawnLimit).type == "number") continue;
-            totalWeight += itemList[i].specialSpawnWeight;
-        }
-
-        // Generate a random number between 0 and totalWeight
-        const randomWeight = Math.random() * totalWeight;
-
-        // Find the item corresponding to the random weight
-        let cumulativeWeight = 0;
-        findingItem: for (const item of itemList) {
-            if (item.spawnLimit < 1 && _type(item.spawnLimit).type == "number") continue;
-
-            cumulativeWeight += item.specialSpawnWeight;
-            if (randomWeight < cumulativeWeight) {
-                spawn(item.name);
-                break findingItem;
-            }
-        }
-
-    } else {
-        specialItemIteration ++;
-    }
-}
-
