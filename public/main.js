@@ -427,7 +427,6 @@ function getPlayerCanvas(holder,image,direction,filter,outline = false,player) {
         if (filter) {
             playerCtx.filter = `hue-rotate(${filter}deg)`;
         } else {
-            console.log("here",getPlayerFilter(player))
             playerCtx.filter = getPlayerFilter(player);
         }
     }
