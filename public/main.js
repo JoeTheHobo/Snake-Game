@@ -67,7 +67,10 @@ function renderCells(list,ctx,type) {
         let image = getImage(mapCell,"canvas");
 
         let filter = checkItemFilter(mapCell);
-        if (filter) ctx.filter = filter;
+        if (filter) {
+            console.log(filter)
+            ctx.filter = filter;
+        }
         ctx.drawImage(image,x*gridSize,y*gridSize,gridSize,gridSize);
         ctx.filter = "";
 
