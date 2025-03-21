@@ -3549,3 +3549,9 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .itemSkinImgSelected, .itemSkinImg:hover {
   border: 3px solid rgb(31, 109, 182);
 }
+
+
+.scene_tree {
+  width: 100%;
+  height: 100%;
+}

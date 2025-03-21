@@ -1805,6 +1805,9 @@ function setAllCanvasToRightSize() {
 }
 
 
-ctx_players.filter = "hue-rotate(309deg) saturate(300%) brightness(200%)";
-ctx_players.drawImage($("img_snakeSkin_classic_head"),0,0)
-ctx_players.filter = "none";
+function getById(id,type) {
+    let list = type == "item" ? items : tiles;
+    for (let i = 0; i < list.length; i++) {
+        if (list[i].id === id) return list[i];
+    }
+}
