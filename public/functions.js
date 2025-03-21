@@ -1788,7 +1788,7 @@ function checkItemFilter(item) {
     }
 }
 
-document.on("resize",function() {
+document.body.on("resize",function() {
     if (!localAccount.isInGame) return;
     setAllCanvasToRightSize();
 })
