@@ -1788,8 +1788,10 @@ function checkItemFilter(item) {
     }
 }
 
-document.body.on("resize",function() {
+window.on("resize",function() {
+    console.log("EYO")
     if (!localAccount.isInGame) return;
+    console.log("WOAH")
     setAllCanvasToRightSize();
 })
 function setAllCanvasToRightSize() {
