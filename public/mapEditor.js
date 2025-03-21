@@ -1128,7 +1128,7 @@ function goBackHome(save) {
 function loadObjectMenu() {
     let holder = $(".me_ih_settings");
     holder.innerHTML = "";
-    $(".me_ih_name").innerHTML = selectedItem.cell.name;
+    $(".me_ih_name").innerHTML = selectedItem.cell.displayName;
     $(".me_ih_type").innerHTML = selectedItem.type;
     $(".me_ih_description").innerHTML = selectedItem.cell.description;
     $(".me_ih_skins").innerHTML = "";
