@@ -1787,3 +1787,16 @@ function checkItemFilter(item) {
         return `hue-rotate(${keyMapping[src]}deg)`;
     }
 }
+
+document.on("resize",function() {
+    if (!localAccount.isInGame) return;
+    setAllCanvasToRightSize();
+})
+function setAllCanvasToRightSize() {
+    let width = $(".game_cc_game").clientWidth;
+    let canvasWidth = $(".game_canvas")[0].clientWidth;
+
+    $(".game_canvas").css({
+        transform: scale(0.5),
+    })
+}
