@@ -1797,7 +1797,7 @@ window.on("resize",function() {
 function setAllCanvasToRightSize() {
     let width = $(".game_cc_game").clientWidth;
     let canvasWidth = $(".game_canvas")[0].clientWidth;
-    let ratio = canvasWidth / width;
+    let ratio = width/canvasWidth;
 
     $(".game_canvas").css({
         transform: `scale(${ratio})`,
