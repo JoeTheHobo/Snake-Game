@@ -3197,10 +3197,18 @@ font-size: 30px;
 margin-top: 5px;
 user-select: none;
 }
-.me_ih_type {
+.me_ih_type,.me_ih_description,.me_ih_type2 {
 font-size: 20px;
 margin-top: 1px;
 user-select: none;
+}
+.me_ih_skins {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 .me_ih_settings {
 display: flex;
@@ -3524,4 +3532,10 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 .colorOption:hover {
   border: 2px solid rgb(70, 167, 199);
+}
+.itemSkinImg {
+  border-radius: 5px;
+  border: 2px solid black;
+  width: 30px;
+  height: 30px;
 }

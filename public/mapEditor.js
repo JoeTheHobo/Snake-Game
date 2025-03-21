@@ -1131,6 +1131,15 @@ function loadObjectMenu() {
     holder.innerHTML = "";
     $(".me_ih_name").innerHTML = selectedItem.cell.name;
     $(".me_ih_type").innerHTML = selectedItem.type;
+    $(".me_ih_description").innerHTML = selectedItem.cell.description;
+    $(".me_ih_skins").innerHTML = "";
+    let fakeItem = structuredClone(selectedItem.cell);
+    for (let i = 0; i < selectedItem.cell.availableSkins.length; i++) {
+        fakeItem.skin = selectedItem.cell.availableSkins[i];
+        let img = $(".me_ih_skins").create("img.itemSkinImg");
+        img.src = getImage(fakeItem,"src");
+
+    }
 
     function addSetting(title,type,value,path,extra,extra2) {
         let settingHolder = holder.create("div");
