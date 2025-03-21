@@ -1108,7 +1108,7 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
         imgHolder.on("click",function() {
             $(".spawn_holder").classRemove("spawn_itemSelected");
             this.holder.classAdd("spawn_itemSelected");
-            $("gameModes_item_selected_name").innerHTML = this.item.name;
+            $("gameModes_item_selected_name").innerHTML = this.item.displayName;
             gameMode_editItem(this.item,$(".gameModes_item_settings"),server,gameMode)
         })
     }
@@ -1143,6 +1143,7 @@ function setItemAlteration(gameMode,item,isServer) {
     }
     if (foundAlt === false && differences.length > 0) {
         gameMode.itemAlterations.push({
+            displayName: item.displayName,
             name: item.name,
             alterations: differences,
         })
