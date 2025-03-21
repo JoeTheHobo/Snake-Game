@@ -1799,6 +1799,6 @@ function setAllCanvasToRightSize() {
     let canvasWidth = $(".game_canvas")[0].clientWidth;
 
     $(".game_canvas").css({
-        transform: scale(0.5),
+        transform: "scale(0.5)",
     })
 }
