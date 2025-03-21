@@ -1766,12 +1766,12 @@ function generateAllowedSnakeColors(holder,func) {
             localAccount.serverSnake.saturation === color.saturation &&
             localAccount.serverSnake.brightness === color.brightness
         ) {
-            div.classAdd(".colorOptionSelected");
+            div.classAdd("colorOptionSelected");
         }
 
         div.on("click",function() {
-            $(".colorOption").classRemove(".colorOptionSelected");
-            this.classAdd(".colorOptionSelected");
+            $(".colorOption").classRemove("colorOptionSelected");
+            this.classAdd("colorOptionSelected");
             func(color)
         })
     }

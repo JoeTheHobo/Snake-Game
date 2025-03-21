@@ -3526,7 +3526,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   border: 2px solid rgb(70, 167, 199);
 }
 .colorOptionSelected {
-  border: 2px solid rgb(70, 199, 91);
+  border: 2px solid rgb(70, 167, 199);
 }
 .itemSkinImg {
   border-radius: 5px;
