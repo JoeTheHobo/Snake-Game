@@ -3539,7 +3539,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 .itemSkinImg {
   border-radius: 5px;
-  border: 2px solid black;
+  border: 3px solid black;
   width: 30px;
   height: 30px;
   background: white;
@@ -3548,5 +3548,5 @@ gap: 1px; /* Optional: Adjust spacing between items */
   user-select: none;
 }
 .itemSkinImg:hover {
-  border: rgb(31, 109, 182);
+  border: 3px solid rgb(31, 109, 182);
 }
