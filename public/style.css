@@ -1092,6 +1092,12 @@ transition: all .2s ease-in-out;
 }
 .playButtonSounds:hover {
 transform: scale(1.05);
+}
+.playButtonSounds_inactive {
+  transition: none !important;
+}
+.playButtonSounds_inactive:hover {
+  transition: none !important;
 
 }
 .servers_button_inactive { 
