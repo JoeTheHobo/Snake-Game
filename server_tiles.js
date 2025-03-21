@@ -140,12 +140,16 @@ tiles.push({
     renderImages: [["unlit","lit"]],
     changePlayerSpeed: 1, //Player Speed Times This Number
     id: 9,
+    filter: {
+        type: "piano",
+        src: ".onCollision.playSound[0]",
+    }, 
     onCollision: {
         setBaseImgTag: {
             index: 0,
             value: "lit",
         }, //Change base image tag.
-        playSound: ["A3",1], //Write the name of sound, and how many different Files there are.
+        playSound: ["A3",1],
     },
     offCollision: {
         setBaseImgTag: {

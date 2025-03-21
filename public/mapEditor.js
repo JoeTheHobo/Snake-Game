@@ -352,7 +352,7 @@ function me_updateCell(ctx,x,y,opacity) {
     if (opacity) cell[selectedItem.type] = selectedItem.cell;
     else opacity = 1;
 
-    ctx.globalAlpha = opacity;
+    if (ctx.globalAlpha !== opacity) ctx.globalAlpha = opacity;
 
     let Xpos = Math.round((gridSize*zoom)*x);
     let Ypos = Math.round((gridSize*zoom)*y);
@@ -367,7 +367,10 @@ function me_updateCell(ctx,x,y,opacity) {
 
     if (cell.tile) {
         itemCounts.push("tile_" + cell.tile.name);
+        let filter = checkItemFilter(cell.tile);
+        if (filter) ctx.filter = filter;
         ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
+        if (filter) ctx.filter = "";
     }
     if (cell.item) {
         itemCounts.push("item_" + cell.item.name);
@@ -405,7 +408,7 @@ function me_updateCell(ctx,x,y,opacity) {
         }
     }
 
-    ctx.globalAlpha = 1;
+    if (ctx.globalAlpha !== 1) ctx.globalAlpha = 1;
 }
 var mouseDirection = {
     y: 0,
@@ -2484,7 +2487,8 @@ $(".status_button_close").on("click",function() {
     $(".statusSelectionScreen").hide();
 })
 function pianoPopUp(value) {
-    $(".pianoSelectionPopUp").show("flex");
+    if (!value) allPianoKeys = [];
+    if (value) $(".pianoSelectionPopUp").show("flex");
     let whiteKeysHolder = $(".whiteKeys");
     whiteKeysHolder.innerHTML = "";
     whiteKeysHolder.chosenValue = value;
@@ -2504,6 +2508,7 @@ function pianoPopUp(value) {
         let octive = Math.floor(i/7)+1;
 
         keyText.innerHTML = key + octive;
+        if (!value) allPianoKeys.push(key + octive);
 
         if (keyText.innerHTML == value) whiteKey.classAdd("key_selected");
 
@@ -2515,6 +2520,7 @@ function pianoPopUp(value) {
             let blackKeyText = blackKey.create("div.key_text2");
             blackKeyText.id = "key_black";
             blackKeyText.innerHTML = key + "b" + octive;
+            if (!value) allPianoKeys.push(key + "b" + octive);
 
             if (blackKeyText.innerHTML == value) blackKey.classAdd("key_selected");
             
@@ -2540,3 +2546,17 @@ $(".closePianoPopUp").on("click",function() {
     checkRenderThenRender();
     loadObjectMenu();
 })
+
+//Generating Piano Keys
+pianoPopUp(false)
+function shuffleArray(arr) {  
+    return arr.map((v, i) => [v, Math.sin(i) * 10000 % 1])  
+              .sort((a, b) => a[1] - b[1])  
+              .map(v => v[0]);  
+}  
+
+function generateKeyMapping(keys) {  
+    let shuffled = shuffleArray(keys);  
+    return Object.fromEntries(shuffled.map((key, i) => [key, (360 / keys.length) * i]));  
+}  
+keyMapping = generateKeyMapping(allPianoKeys);  

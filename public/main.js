@@ -418,8 +418,6 @@ function getPlayerCanvas(holder,image,direction,filter,outline = false,player) {
     playerCanvas.height = image.height;
     if (!outline) playerCtx.filter = filter ? `hue-rotate(${filter}deg)` : getPlayerFilter(player);
 
-    console.log(playerCtx.filter);
-
     if (direction) {
         drawImage(image,direction,0,0,image.width,image.height,playerCanvas);
     } else {

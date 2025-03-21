@@ -786,7 +786,22 @@ function drawTunnelCanvas(canvas,pos) {
     let ctx = canvas.getContext("2d");
     ctx.drawImage($(".firstPersonCanvas_master"),x-extra,y-extra,extra*2,extra*2,0,0,200,200);
 }
+function getNestedValue(item, string) {
+    if (string.charAt(0) == ".") string = string.subset(1,"end");
 
+    let value = structuredClone(item); // Clone to avoid modifying the original object
+    let regex = /(\w+)|\[(\d+)\]/g; // Matches property names and array indices
+
+    let matches = [...string.matchAll(regex)]; // Extract all matches from the string
+
+    for (let match of matches) {
+        let key = match[1] !== undefined ? match[1] : match[2]; // Choose property name or array index
+        if (value === undefined) return undefined; // Prevent errors on missing properties
+        value = value[key];
+    }
+
+    return value;
+}
 function getBaseImgFromTag(item,tag,mapEditor = false) {
     if (tag.charAt(0) == ".") {
         return getItemValueFromList(item,tag.split("."),mapEditor);
@@ -1751,5 +1766,16 @@ function generateAllowedSnakeColors(holder,func) {
         div.on("click",function() {
             func(color)
         })
+    }
+}
+
+function checkItemFilter(item) {
+    if (!item.filter) return false;
+    let src;
+
+    if (item.filter.src) src = getNestedValue(item,item.filter.src);
+
+    if (item.filter.type == "piano") {
+        return keyMapping[src];
     }
 }

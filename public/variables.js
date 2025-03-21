@@ -8,6 +8,8 @@ let backgrounds;
 let tiles = [];
 let updateTiles;
 let renderMapsInServersTab = false;
+let allPianoKeys = [];
+let keyMapping;
 
 let global_gameColors = [
     ["white","#ffffff"],
