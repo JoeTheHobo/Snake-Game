@@ -248,6 +248,7 @@ socket.on("startingGame", (lobby) => {
     generatePreGamePlayerInfo(activePlayers);
     
     socket.emit("snakeIsReady");
+    setAllCanvasToRightSize();
 
 })
 function generatePreGamePlayerInfo(players) {
