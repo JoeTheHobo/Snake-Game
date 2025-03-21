@@ -432,12 +432,12 @@ function getPlayerCanvas(holder,image,direction,filter,outline = false,player) {
     }
 
     if (direction) {
-        playerCtx.drawImage(image,0,0);
-        //drawImage(image,direction,0,0,image.width,image.height,playerCanvas);
+        drawImage(image,direction,0,0,image.width,image.height,playerCanvas);
     } else {
         playerCtx.drawImage(image,0,0);
     }
     if (outline) {
+        /*
         outline = _color(outline).ogColor;
         const imageData = playerCtx.getImageData(0, 0, playerCanvas.width, playerCanvas.height);
         const data = imageData.data;// Convert hex to RGB
@@ -452,6 +452,7 @@ function getPlayerCanvas(holder,image,direction,filter,outline = false,player) {
             }
         }
         playerCtx.putImageData(imageData, 0, 0);
+        */
     }
     return playerCanvas;
 }
