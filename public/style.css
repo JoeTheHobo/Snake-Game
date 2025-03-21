@@ -3186,17 +3186,13 @@ font-size: 30px;
 margin-top: 5px;
 user-select: none;
 }
-.me_ih_type,.me_ih_description,.me_ih_type2 {
-font-size: 20px;
-margin-top: 1px;
-user-select: none;
-}
 .me_ih_description {
-  font-size: 18px !important;
+  margin-top: 1px;
+  font-size: 18px;
 }
 .me_ih_type2 {
   margin-top: 5px;
-  font-size: 25px !important;
+  font-size: 25px ;
 }
 .me_ih_skins {
   width: 100%;

@@ -1129,7 +1129,6 @@ function loadObjectMenu() {
     let holder = $(".me_ih_settings");
     holder.innerHTML = "";
     $(".me_ih_name").innerHTML = selectedItem.cell.displayName;
-    $(".me_ih_type").innerHTML = selectedItem.type;
     $(".me_ih_description").innerHTML = selectedItem.cell.description;
     $(".me_ih_skins").innerHTML = "";
     let fakeItem = structuredClone(selectedItem.cell);
@@ -1139,10 +1138,11 @@ function loadObjectMenu() {
         img.src = getImage(fakeItem,"src");
         if (fakeItem.skin === selectedItem.cell.skin) img.classAdd("itemSkinImgSelected")
 
+        img.skin = fakeItem.skin;
         img.on("click",function() {
             $(".itemSkinImg").classRemove("itemSkinImgSelected");
             this.classAdd("itemSkinImgSelected");
-            selectedItem.cell.skin = fakeItem.skin;
+            selectedItem.cell.skin = this.skin;
         })
     }
 
