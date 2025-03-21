@@ -1609,10 +1609,10 @@ function logGameModeChanges(holder,gameMode) {
         altOldValue.innerHTML = alt.oldValue;
     }
     for (let i = 0; i < gameMode.itemAlterations.length; i++) {
-        let itemName = gameMode.itemAlterations[i].name;
+        let itemName = gameMode.itemAlterations[i].displayName;
         for (let j = 0; j < gameMode.itemAlterations[i].alterations.length; j++) {
             let altList = gameMode.itemAlterations[i].alterations[j];
-            let realValue = getRealItem(itemName);
+            let realValue = getRealItem(gameMode.itemAlterations[i].name);
 
             let altHolder = holder.create("div.gm_alt_holder");
             let itemHolder = altHolder.create("div.gm_alt_item_holder");
