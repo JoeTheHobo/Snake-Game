@@ -18,8 +18,6 @@ function renderCells(list,ctx,type) {
             setNestedValue(mapCell,list[i].changes[0],list[i].changes[1]);
         }
 
-        let filter = checkItemFilter(mapCell);
-        if (filter) ctx.filter = filter;
 
         if (type !== "tile" || mapCell == undefined) ctx.clearRect(x*gridSize,y*gridSize,gridSize,gridSize);
         if (mapCell == undefined) continue;
@@ -65,6 +63,9 @@ function renderCells(list,ctx,type) {
             if (pass) continue;
         }
 
+        let filter = checkItemFilter(mapCell);
+        if (filter) ctx.filter = filter;
+        
         let image = getImage(mapCell,"canvas");
 
         ctx.drawImage(image,x*gridSize,y*gridSize,gridSize,gridSize);
