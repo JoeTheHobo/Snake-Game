@@ -64,15 +64,13 @@ function renderCells(list,ctx,type) {
         }
 
 
+        let filter = checkItemFilter(mapCell);
+        if (filter) ctx.filter = filter;
+
         let image = getImage(mapCell,"canvas");
 
-        let filter = checkItemFilter(mapCell);
-        if (filter) {
-            console.log(filter)
-            ctx.filter = filter;
-        }
         ctx.drawImage(image,x*gridSize,y*gridSize,gridSize,gridSize);
-        ctx.filter = "";
+        if (filter) ctx.filter = "none";
 
 
         if (mapCell.renderStatusNumber) {

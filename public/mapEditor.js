@@ -370,7 +370,7 @@ function me_updateCell(ctx,x,y,opacity) {
         let filter = checkItemFilter(cell.tile);
         if (filter) ctx.filter = filter;
         ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
-        if (filter) ctx.filter = "";
+        if (filter) ctx.filter = "none";
     }
     if (cell.item) {
         itemCounts.push("item_" + cell.item.name);
