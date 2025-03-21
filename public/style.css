@@ -3182,7 +3182,7 @@ height: 100%;
   align-items: center;
 }
 .me_ih_imageHolder {
-width: 50%;
+width: 25%;
 aspect-ratio : 1 / 1;
 background: white;
 border-radius: 5px;
@@ -3201,6 +3201,10 @@ user-select: none;
 font-size: 20px;
 margin-top: 1px;
 user-select: none;
+}
+.me_ih_type2 {
+  margin-top: 5px;
+  font-size: 25px !important;
 }
 .me_ih_skins {
   width: 100%;
@@ -3538,4 +3542,11 @@ gap: 1px; /* Optional: Adjust spacing between items */
   border: 2px solid black;
   width: 30px;
   height: 30px;
+  background: white;
+  transition: all .2s ease-in-out;
+  cursor: url('./img/pointer.cur'), auto;
+  user-select: none;
+}
+.itemSkinImg:hover {
+  border: rgb(31, 109, 182);
 }
