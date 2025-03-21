@@ -1095,9 +1095,11 @@ transform: scale(1.05);
 }
 .playButtonSounds_inactive {
   transition: none !important;
+  cursor: url('./img/cursor.cur'), auto;
 }
 .playButtonSounds_inactive:hover {
   transition: none !important;
+  cursor: url('./img/cursor.cur'), auto;
 
 }
 .servers_button_inactive { 
