@@ -1095,13 +1095,12 @@ transform: scale(1.05);
 }
 .playButtonSounds_inactive {
   transition: none !important;
-  background: rgb(80, 79, 79);
-  cursor: url('./img/cursor.cur'), auto;
+  background: rgb(80, 79, 79) !important;
+  cursor: url('./img/cursor.cur'), auto !important;
 }
 .playButtonSounds_inactive:hover {
   transition: none !important;
-  cursor: url('./img/cursor.cur'), auto;
-
+  cursor: url('./img/cursor.cur'), auto !important;
 }
 .servers_button_inactive { 
 opacity: 0.5;
