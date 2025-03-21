@@ -65,10 +65,11 @@ function renderCells(list,ctx,type) {
 
         let filter = checkItemFilter(mapCell);
         if (filter) ctx.filter = filter;
-        
-        let image = getImage(mapCell,"canvas");
 
+        let image = getImage(mapCell,"canvas");
         ctx.drawImage(image,x*gridSize,y*gridSize,gridSize,gridSize);
+        
+        if (filter) ctx.filter = "";
 
         if (mapCell.renderStatusNumber) {
             let value = getBaseImgFromTag(mapCell,mapCell.renderStatusNumber.value);
@@ -110,7 +111,6 @@ function renderCells(list,ctx,type) {
             }
         }
         
-        if (filter) ctx.filter = "";
     }
 
     if (doColorBackground && localAccount.firstRound) {
