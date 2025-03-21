@@ -100,6 +100,10 @@ io.on('connection', (socket) => {
             {hue: 318, saturation: 300, brightness: 200},
         ],
     }
+    let randomColor = simple.rnd(onlineAccounts[socket.id].allowedSnakeColors); 
+    onlineAccounts[socket.id].serverSnake.hue = randomColor.hue;
+    onlineAccounts[socket.id].serverSnake.saturation = randomColor.saturation;
+    onlineAccounts[socket.id].serverSnake.brightness = randomColor.brightness;
     
     compressObject(onlineAccounts[socket.id].boards,(err,compressed) => {
         if (err) {
@@ -2467,7 +2471,7 @@ function newPlayer(socketID,accountName,accountTag) {
         toggleTeamsKey: "Shift",
         type: "player",
         name: simple.rnd(playerNames1) + simple.rnd(playerNames2),
-        hue: simple.rnd(360), //Hue
+        hue: simple.rnd(360), //Hue[{hue: 360, saturation: 300, brightness: 116},
         saturation: simple.rnd(300), //Saturation
         brightness: simple.rnd(20,200), //Brightness
         moving: false,
