@@ -234,55 +234,47 @@ function updateCanvasPositionToPlayer(player) {
 //End Load All Item Images
 let itemCanvas = [];
 function loadAllCanvas(list) {
-    let index = 0;
+    for (let i = 0; i < list.length; i++) {
+        let item = list[i];
 
-    function processNextBatch(deadline) {
-        while (index < list.length && (deadline.timeRemaining() > 0 || deadline.didTimeout)) {
-            let item = list[index++];
-            let url = `${item.type}_${item.name}_`;
-            loopSkins(item, url);
-        }
+        let url = `${item.type}_${item.name}_`;
 
-        if (index < list.length) {
-            requestIdleCallback(processNextBatch);
-        }
-    }
-    function combineStrings(arrays, prefix = "", index = 0) {
-        if (index === arrays.length) {
-            processCombination(prefix); // Call the function with the combined string
-            return;
-        }
-    
-        for (let item of arrays[index]) {
-            combineStrings(arrays, prefix + "_" + item, index + 1);
-        }
-    }
-    function processCombination(combination) {
-        addItemCanvas(item,combination);
-    }
-    function loopTags(item, url) {
-        if (item.renderImages.length > 0) {
-            for (let j = 0; j < item.renderImages.length; j++) {
-                if (item.renderImages[0] == "*colors") item.renderImages[0] = [
-                    "aquamarine", "blue", "buff", "coral", "crimsonpurple", "gold", "green", "lemon", "lime", "magenta", "orange", "pink", "red", "skyblue", "slateblue", "venom",
-                ];
-                if (item.renderImages[0] == "*colors2") item.renderImages[0] = [
-                    "white", "aquamarine", "blue", "buff", "coral", "crimsonpurple", "gold", "green", "lemon", "lime", "magenta", "orange", "pink", "red", "skyblue", "slateblue", "venom",
-                ];
+        function combineStrings(arrays, prefix = "", index = 0) {
+            if (index === arrays.length) {
+                processCombination(prefix); // Call the function with the combined string
+                return;
             }
-            combineStrings(item.renderImages, url);
-        } else {
-            addItemCanvas(item, url);
+        
+            for (let item of arrays[index]) {
+                combineStrings(arrays, prefix + "_" + item, index + 1);
+            }
         }
-    }
-
-    function loopSkins(item, url) {
-        for (let j = 0; j < item.availableSkins.length; j++) {
-            loopTags(item, url + item.availableSkins[j]);
+        function processCombination(combination) {
+            addItemCanvas(item,combination);
         }
-    }
+        function loopTags(item,url) {
+            if (item.renderImages.length > 0) {
+                for (let j = 0; j < item.renderImages.length; j++) {
+                    if (item.renderImages[0] == "*colors") item.renderImages[0] = [
+                        "aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
+                    ]
+                    if (item.renderImages[0] == "*colors2") item.renderImages[0] = [
+                        "white","aquamarine","blue","buff","coral","crimsonpurple","gold","green","lemon","lime","magenta","orange","pink","red","skyblue","slateblue","venom",
+                    ]
+                }
+                combineStrings(item.renderImages,url);
+            } else {
+                addItemCanvas(item,url)
+            }
+        }
+        function loopSkins(item,url) {
+            for (let j = 0; j < item.availableSkins.length; j++) {
+                loopTags(item,url + item.availableSkins[j]);
+            }
+        }
 
-    requestIdleCallback(processNextBatch);
+        loopSkins(item,url);
+    }
 }
 function makeItemCanvas(image,filter = "",player) {
     let html_itemCanvasHolder = $("itemCanvasHolder");

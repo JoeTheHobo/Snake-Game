@@ -67,9 +67,13 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
 
     setScene("newMenu");
     //Load All Item Images
-    loadAllCanvas(items);
+    requestIdleCallback(function() {
+        loadAllCanvas(items);
+    })
     //Load All Tile Images
-    loadAllCanvas(tiles);
+    requestIdleCallback(function() {
+        loadAllCanvas(tiles);
+    })
     //Make Game Tips
     generateGameTips();
 
