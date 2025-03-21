@@ -247,7 +247,19 @@ function loadAllCanvas(list) {
             requestIdleCallback(processNextBatch);
         }
     }
-
+    function combineStrings(arrays, prefix = "", index = 0) {
+        if (index === arrays.length) {
+            processCombination(prefix); // Call the function with the combined string
+            return;
+        }
+    
+        for (let item of arrays[index]) {
+            combineStrings(arrays, prefix + "_" + item, index + 1);
+        }
+    }
+    function processCombination(combination) {
+        addItemCanvas(item,combination);
+    }
     function loopTags(item, url) {
         if (item.renderImages.length > 0) {
             for (let j = 0; j < item.renderImages.length; j++) {
