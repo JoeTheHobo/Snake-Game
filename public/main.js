@@ -183,7 +183,6 @@ function server_renderPlayers() {
             if (!player) break;
     
             if (obj.type == "head") {
-                console.log(1,ctx_players.filter);
                 let headObject = player.canvas.head;
                 if (_type(player.invinsibleBodyEffect).type == "number") headObject = snakeSkinCanvasObj[player.snakeSkin].head.colors[player.invinsibleBodyEffect];
                 drawRotated(headObject,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
