@@ -1762,8 +1762,16 @@ function generateAllowedSnakeColors(holder,func) {
         let div = holder.create("div");
         div.className = "colorOption"
         div.style.filter = getPlayerFilter(color);
+        if (localAccount.serverSnake.hue === color.hue &&
+            localAccount.serverSnake.saturation === color.saturation &&
+            localAccount.serverSnake.brightness === color.brightness
+        ) {
+            div.classAdd(".colorOptionSelected");
+        }
 
         div.on("click",function() {
+            $(".colorOption").classRemove(".colorOptionSelected");
+            this.classAdd(".colorOptionSelected");
             func(color)
         })
     }
