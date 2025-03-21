@@ -3181,17 +3181,6 @@ height: 100%;
   flex-direction: column;
   align-items: center;
 }
-.me_ih_imageHolder {
-width: 25%;
-aspect-ratio : 1 / 1;
-background: white;
-border-radius: 5px;
-margin-top: 15px;
-}
-.me_ih_image {
-height: 100%;
-width: 100%;
-}
 .me_ih_name {
 font-size: 30px;
 margin-top: 5px;
@@ -3201,6 +3190,9 @@ user-select: none;
 font-size: 20px;
 margin-top: 1px;
 user-select: none;
+}
+.me_ih_description {
+  font-size: 18px !important;
 }
 .me_ih_type2 {
   margin-top: 5px;
@@ -3547,6 +3539,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
   cursor: url('./img/pointer.cur'), auto;
   user-select: none;
 }
-.itemSkinImg:hover {
+.itemSkinImgSelected, .itemSkinImg:hover {
   border: 3px solid rgb(31, 109, 182);
 }

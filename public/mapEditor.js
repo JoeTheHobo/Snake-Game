@@ -1126,7 +1126,6 @@ function goBackHome(save) {
 }
 
 function loadObjectMenu() {
-    $(".me_ih_image").src = getImage(selectedItem.cell,"src")
     let holder = $(".me_ih_settings");
     holder.innerHTML = "";
     $(".me_ih_name").innerHTML = selectedItem.cell.name;
@@ -1138,7 +1137,12 @@ function loadObjectMenu() {
         fakeItem.skin = selectedItem.cell.availableSkins[i];
         let img = $(".me_ih_skins").create("img.itemSkinImg");
         img.src = getImage(fakeItem,"src");
+        if (fakeItem.skin === selectedItem.cell.skin) img.classAdd("itemSkinImgSelected")
 
+        img.on("click",function() {
+            $(".itemSkinImg").classRemove("itemSkinImgSelected");
+            this.classAdd("itemSkinImgSelected");
+        })
     }
 
     function addSetting(title,type,value,path,extra,extra2) {
