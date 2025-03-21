@@ -1789,9 +1789,7 @@ function checkItemFilter(item) {
 }
 
 window.on("resize",function() {
-    console.log("EYO")
     if (!localAccount.isInGame) return;
-    console.log("WOAH")
     setAllCanvasToRightSize();
 })
 function setAllCanvasToRightSize() {
@@ -1799,6 +1797,7 @@ function setAllCanvasToRightSize() {
     let canvasWidth = $(".game_canvas")[0].clientWidth;
     let ratio = width/canvasWidth;
 
+    return;
     $(".game_canvas").css({
         transform: `scale(${ratio})`,
     })

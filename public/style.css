@@ -2423,6 +2423,7 @@ flex-direction: column;
 .game_cc_game {
 width: 100%;
 height: 85%;
+position: relative;
 cursor: none;
 }
 .firstPersonCanvas {
