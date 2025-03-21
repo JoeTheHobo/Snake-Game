@@ -1810,3 +1810,8 @@ function setAllCanvasToRightSize() {
         transform: `scale(${ratio})`,
     })
 }
+
+
+ctx_players.filter = "hue-rotate(309deg) saturate(300%) brightness(200%)";
+ctx_players.drawImage($("img_snakeSkin_classic_head"),0,0)
+ctx_players.filter = "none";
