@@ -170,6 +170,7 @@ function server_renderPlayers() {
     for (let i = 0; i < updateSnakeCells.length; i++) {
         let arr = updateSnakeCells[i];
         //Clear Cell
+        ctx_players.filter = "none";
         ctx_players.clearRect(arr[0].x*gridSize,arr[0].y*gridSize,gridSize,gridSize);
         for (let k = 1; k < arr.length; k++) {
             let obj = arr[k];
@@ -437,7 +438,6 @@ function getPlayerCanvas(holder,image,direction,filter,outline = false,player) {
         playerCtx.drawImage(image,0,0);
     }
     if (outline) {
-        /*
         outline = _color(outline).ogColor;
         const imageData = playerCtx.getImageData(0, 0, playerCanvas.width, playerCanvas.height);
         const data = imageData.data;// Convert hex to RGB
@@ -452,7 +452,6 @@ function getPlayerCanvas(holder,image,direction,filter,outline = false,player) {
             }
         }
         playerCtx.putImageData(imageData, 0, 0);
-        */
     }
     return playerCanvas;
 }
