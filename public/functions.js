@@ -1776,6 +1776,6 @@ function checkItemFilter(item) {
     if (item.filter.src) src = getNestedValue(item,item.filter.src);
 
     if (item.filter.type == "piano") {
-        return keyMapping[src];
+        return `hue-rotate(${keyMapping[src]}deg)`;
     }
 }
