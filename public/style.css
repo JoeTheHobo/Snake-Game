@@ -3659,9 +3659,9 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 .techTree_reward_miniText {
   position: absolute;
-  right: 95%;
-  bottom: 95%;
+  right: 5px;
+  bottom: 5px;
   font-size: 20px;
-  color: white;
+  color: gold;
   z-index: 2;
 }
