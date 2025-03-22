@@ -158,7 +158,7 @@ function getRewardsDiv(point) {
             amountText.innerHTML = "x" + reward.count;
             insideDiv.on("click",function(){
                 $(".techTree_reward").classRemove("techTree_reward_selected");
-                this.classAdd("techTree_reward_selected");
+                this.$P().classAdd("techTree_reward_selected");
                 openInfoCard("coins",reward.count,this);
             })
 
