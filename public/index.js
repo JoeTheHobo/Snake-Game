@@ -76,7 +76,10 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     })
     //Make Game Tips
     generateGameTips();
-    loadTechTree(techTree_beta);
+    setTimeout(function() {
+        loadTechTree(techTree_beta);
+    },1000)
+    
 
     renderMapsInServersTab = true;
 });
