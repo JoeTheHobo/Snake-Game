@@ -3587,3 +3587,11 @@ gap: 1px; /* Optional: Adjust spacing between items */
   border-radius: 5px;
   color: white;
 }
+.techTree_reward_img {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.301);
+  border: 3px solid rgba(255, 255, 255, 0.801);
+  margin: 5px;
+}

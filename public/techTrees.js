@@ -32,6 +32,8 @@ function drawTree(point,comeFromPoint,direction) {
     x -= divWidth/2;
     y -= divHeight/2;
 
+    console.log(x,y)
+
     rewardsDiv.css({
         left: x + "px",
         top: y + "px",
@@ -74,7 +76,6 @@ function getRewardsDiv(point) {
         if (reward.type == "item" || reward.type == "tile") {
             rewardDiv.classAdd("techTree_reward_img");
             let item = _getById(reward.id,reward.type);
-            console.log(getImage(item,"src"));
             rewardDiv.src = getImage(item,"src");
         }
         if (reward.type == "coins") {
