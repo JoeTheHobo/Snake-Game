@@ -80,6 +80,8 @@ function drawLine(div1,div2) {
     const endX = div2Rect.left + div2Rect.width / 2;
     const endY = div2Rect.top + div2Rect.height / 2;
 
+    console.log(startX,startY,endX,endY)
+
     // Calculate the distance and angle for the line
     const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
     const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
