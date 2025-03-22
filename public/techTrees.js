@@ -163,24 +163,24 @@ function openInfoCard(type,thingToOpen,parent) {
         card.innerHTML = thingToOpen.description;
     }
 
-    setTimeout(function() {
-        let x,y;
-        let cardRect = card.getBoundingClientRect();
-        let parentRect = parent.getBoundingClientRect();
+    card.offsetHeight;
 
-        console.log(cardRect);
+    let x,y;
+    let cardRect = card.getBoundingClientRect();
+    let parentRect = parent.getBoundingClientRect();
 
-        y = parentRect.bottom + margin;
-        x = parentRect.left - (cardRect.width/2);
-    
-        card.style.left = x + "px";
-        card.style.top = y + "px";
-    
-        movingPoints[0].x = x;
-        movingPoints[0].y = y;
-    
-        card.show("flex");
-    },300)
+    console.log(cardRect);
+
+    y = parentRect.bottom + margin;
+    x = parentRect.left - (cardRect.width/2);
+
+    card.style.left = x + "px";
+    card.style.top = y + "px";
+
+    movingPoints[0].x = x;
+    movingPoints[0].y = y;
+
+    card.show("flex");
     
 }
 function generateStarBackground(canvas) {
