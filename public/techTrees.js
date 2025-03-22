@@ -170,6 +170,9 @@ function drawLine(parentDiv, childDiv,unlocked,price) {
             this.classAdd("techTree_reward_selected");
             openInfoCard("purchace",price,this);
         })
+
+        let pointCounterDiv = lineDiv.create("div.techTree_line_count")
+        pointCounterDiv.innerHTML = price;
     } else {
         lineDiv.classAdd("techTree_line_unlocked")
     }
