@@ -71,7 +71,7 @@ function drawTree(point,comeFromPoint,parentDiv) {
             // Recursive call for the next branch
             drawTree(point.branches[i], { x: newX, y: newY }, rewardsDiv);
         }
-    } else {
+    } else if (numBranches === 1) {
         // Single child directly below the parent (no spread)
         let newX = ogX;
         let newY = ogY - radius; // Single child directly below
