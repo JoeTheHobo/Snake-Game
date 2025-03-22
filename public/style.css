@@ -3577,7 +3577,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .techTree_reward_text {
   width: max-content;
   height: 30px;
-  padding: 5px;
+  padding: 10px;
   font-size: 1em;
   background: rgba(255, 255, 255, 0.301);
   border: 3px solid rgba(255, 255, 255, 0.801);
