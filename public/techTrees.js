@@ -238,22 +238,26 @@ function generateStarBackground(canvas) {
             }
         }
     }
-    document.body.on("click",function(e) {
-        if (global_scene !== "tree") return;
-        if (!e.target.classList.contains("techTree_reward")) {
-            $(".techTree_reward").classRemove("techTree_reward_selected")
-            $(".techTree_infoCard").hide();
-        }
-    })
+    let mouseDownTime = 0; // Store time of the mousedown event
+    const maxClickDuration = 300; // Maximum duration (in ms) for a click to be considered fast
+
     document.body.on("mousedown", (e) => {
         drag = true;
         startX = e.clientX;
         startY = e.clientY;
+        mouseDownTime = Date.now(); // Store the time when mouse is pressed down
     });
     document.body.on("mouseup", (e) => {
         if (global_scene !== "tree") return;
         drag = false;
 
+        const clickDuration = Date.now() - mouseDownTime; // Calculate the time between mousedown and mouseup
+        if (clickDuration <= maxClickDuration) {
+            if (!e.target.classList.contains("techTree_reward")) {
+                $(".techTree_reward").classRemove("techTree_reward_selected")
+                $(".techTree_infoCard").hide();
+            }
+        }
     });
     document.body.on("mousemove", (e) => {
         if (global_scene !== "tree") return;
