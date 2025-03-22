@@ -3,6 +3,7 @@ function loadTechTree(tree) {
     $("scene_tree").innerHTML = "";
     let canvas = $("scene_tree").create("canvas.techTree_background");
     let vignette = $("scene_tree").create("div.techTree_vignette");
+    let infoCard = $("scene_tree").create("div.techTree_infoCard")
     generateStarBackground(canvas);
 
     drawTree(tree,"start");
@@ -134,6 +135,11 @@ function getRewardsDiv(point) {
             rewardDiv.classAdd("techTree_reward_img");
             let item = _getById(reward.id,reward.type);
             rewardDiv.src = getImage(item,"src");
+            rewardDiv.on("click",function(){
+                $(".techTree_reward").classRemove("techTree_reward_selected");
+                this.classAdd("techTree_reward_selected");
+                openInfoCard("item",item,rewardDiv);
+            })
         }
         if (reward.type == "coins") {
             rewardDiv.classAdd("techTree_reward_img");
@@ -143,6 +149,39 @@ function getRewardsDiv(point) {
         }
     }
     return holder;
+}
+function openInfoCard(type,thingToOpen,parent) {
+    const margin = 10;
+    let card = $(".techTree_infoCard");
+    card.innerHTML = "";
+    card.css({
+        left: "",
+        top: "",
+        bottom: "",
+        right: "",
+    })
+    if (type == "item") {
+        card.innerHTML = thingToOpen.description;
+    }
+
+    let cardRect = card.getBoundingClientRect();
+    let parentRect = parent.getBoundingClientRect();
+
+    if (parentRect.top > window.innerHeight/2) {
+        card.style.bottom = parentRect.top - margin;
+    }
+    if (parentRect.bottom < window.innerHeight/2) {
+        card.style.top = parentRect.bottom + margin;
+    }
+    if (parentRect.left > window.innerWidth/2) {
+        card.style.right = parentRect.left - margin;
+    }
+    if (parentRect.right > window.innerWidth/2) {
+        card.style.left = parentRect.right + margin;
+    }
+
+
+    card.show("flex");
 }
 function generateStarBackground(canvas) {
     let ctx = canvas.getContext("2d");
