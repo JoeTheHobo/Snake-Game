@@ -820,6 +820,7 @@ function getItemValueFromList(item,list,mapEditor = false) {
     return value;
 }
 function getImage(item,returnType,mapEditor = false) {
+    console.log(item)
     let type = item.type;
     let url = type + "_" + item.name + "_" + item.skin;
     if (item.baseImgTags?.length > 0) url += "_";
