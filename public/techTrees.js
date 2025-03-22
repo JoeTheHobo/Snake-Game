@@ -9,14 +9,17 @@ function loadTechTree(tree) {
 
     setScene("tree");
 }
-function drawTree(point,comeFromDirection) {
+function drawTree(point,comeFromPoint,direction) {
     let rewardsDiv = getRewardsDiv(point);
 
     let x,y;
 
-    if (comeFromDirection === "start") {
+    if (comeFromPoint === "start") {
         x = 0;
         y = 0;
+    } else {
+        x = comeFromPoint.x;
+        y = comeFromPoint.y;
     }
 
 
@@ -24,8 +27,8 @@ function drawTree(point,comeFromDirection) {
     let windowHeight = window.innerHeight;
     x += windowWidth/2;
     y += windowHeight/2;
-    let divWidth = rewardsDiv.clientWidth;
-    let divHeight = rewardsDiv.clientHeight; 
+    let divWidth = rewardsDiv.getBoundingClientRect().width;
+    let divHeight = rewardsDiv.getBoundingClientRect().height; 
     x -= divWidth/2;
     y -= divHeight/2;
 
@@ -40,7 +43,17 @@ function drawTree(point,comeFromDirection) {
         y: y,
     })
 
+    // **Spread out the branches**
+    let numBranches = point.branches.length;
+    let radius = 150; // Distance from parent to child (adjustable)
+    
+    for (let i = 0; i < numBranches; i++) {
+        let angle = (i / numBranches) * (Math.PI * 2); // Spread evenly in a circle
+        let newX = x + Math.cos(angle) * radius;
+        let newY = y + Math.sin(angle) * radius;
 
+        drawTree(point.branches[i], { x: newX, y: newY });
+    }
 }
 function getRewardsDiv(point) {
     let rewards = point.rewards;
