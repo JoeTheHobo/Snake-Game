@@ -1,9 +1,10 @@
 let movingPoints = [];
 function loadTechTree(tree) {
-    $("scene_tree").innerHTML = "";
-    let canvas = $("scene_tree").create("canvas.techTree_background");
-    let vignette = $("scene_tree").create("div.techTree_vignette");
-    let infoCard = $("scene_tree").create("div.techTree_infoCard")
+    let scene = $("scene_tree"); 
+    scene.innerHTML = "";
+    let canvas = scene.create("canvas.techTree_background");
+    let vignette = scene.create("div.techTree_vignette");
+    let infoCard = scene.create("div.techTree_infoCard")
     infoCard.create("div.infocard_name");
     infoCard.create("div.infocard_title");
     infoCard.create("div.infocard_description")
@@ -12,6 +13,13 @@ function loadTechTree(tree) {
         x: 0,
         y: 0,
     })
+    let topLeftContent = scene.create("div.techTree_content");
+    let goBackHomeButton = topLeftContent.create("div.techTree_returnButton");
+    goBackHomeButton.innerHTML = "Return Home";
+    let battlePointsImg = topLeftContent.create("img.techTree_battlePointsImg");
+    battlePointsImg.src = "img/techTrees.battlePoints.png";
+    let battlePointsCounter = topLeftContent.create("div.techTree_battlePointsCounter");
+    battlePointsCounter.innerHTML = "x" + 5;
     generateStarBackground(canvas);
 
     drawTree(tree,"start");

@@ -3614,6 +3614,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   height: max-content;
   -webkit-text-stroke: 2px black;
   paint-order: stroke fill;
+  pointer-events: none;
 }
 .techTree_line_unlocked {
   background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%,rgba(255, 255, 255, 0) 15%, rgba(45, 226, 54, 0.801) 20%, rgba(45, 226, 54, 0.801) 80%,rgba(255, 255, 255, 0) 85%, rgba(255, 255, 255, 0) 100%) !important;
@@ -3703,4 +3704,38 @@ gap: 1px; /* Optional: Adjust spacing between items */
   z-index: 2;
   -webkit-text-stroke: 2px black;
   paint-order: stroke fill;
+}
+
+.techTree_content {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.techTree_returnButton {
+  width: max-content;
+  height: 35px;
+  line-height: 35px;
+  font-size: 30px;
+  cursor: url('./img/pointer.cur'), auto;
+  border-radius: 5px;
+  border: 3px solid rgba(255, 255, 255, 0.801);
+  color: rgba(255, 255, 255, 0.801);
+  transition: all .2s ease-in-out;
+}
+.techTree_returnButton:hover {
+  border: 3px solid rgba(45, 226, 54, 0.801);
+  color: rgba(45, 226, 54, 0.801);
+}
+.techTree_battlePointsImg {
+  height: 25px;
+  margin-left: 5px;
+
+}
+.techTree_battlePointsCounter {
+  color: purple;
+  margin-left: 5px;
+  font-size: 30px;
 }
