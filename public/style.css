@@ -3605,14 +3605,17 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .techTree_line_count {
   position: absolute;
   transform: rotate(90deg);
-  right: 50%;
-  top: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
   color: purple;
   font-size: 30px;
   z-index: 2;
   width: max-content;
   height: max-content;
-  -webkit-text-stroke: 2px black;
+  -webkit-text-stroke: 3px black;
   paint-order: stroke fill;
   pointer-events: none;
 }
@@ -3659,6 +3662,10 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .techTree_locked {
   border: 3px solid rgba(255, 255, 255, 0.801);
   filter: grayscale(100%);
+}
+.grayScale {
+  filter: grayscale(100%);
+
 }
 .textTree_rewards {
   position: absolute;

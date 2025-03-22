@@ -26,7 +26,7 @@ function loadTechTree(tree) {
 
     setScene("tree");
 }
-function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
+function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0,parentUnlocked) {
     let rewardsDiv = getRewardsDiv(point);
     setTimeout(function() {
         rewardsDiv.style.opacity = 1;
@@ -65,7 +65,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
         })
     
         if (comeFromPoint !== "start") requestAnimationFrame(function() {
-            drawLine(parentDiv,rewardsDiv,point.unlocked,point.cost);
+            drawLine(parentDiv,rewardsDiv,point.unlocked,point.cost,parentUnlocked);
         });
     
         
@@ -96,7 +96,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
                 let newX = ogX + edgeX + Math.cos(randomAngle) * radius;
                 let newY = ogY + edgeY + Math.sin(randomAngle) * radius;
     
-                drawTree(point.branches[i], { x: newX, y: newY }, rewardsDiv, randomAngle);
+                drawTree(point.branches[i], { x: newX, y: newY }, rewardsDiv, randomAngle,point.unlocked);
             }
         } else if (numBranches === 1) {
             let offset = (hashValue(0) % 2000) / 2000 * 2 - 1; 
@@ -105,7 +105,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
             let newX = ogX + Math.cos(randomAngle) * radius;
             let newY = ogY + Math.sin(randomAngle) * radius;
     
-            drawTree(point.branches[0], { x: newX, y: newY }, rewardsDiv, randomAngle);
+            drawTree(point.branches[0], { x: newX, y: newY }, rewardsDiv, randomAngle,point.unlocked);
         }
     },150)
 }
@@ -125,7 +125,7 @@ function hashValue(str) {
     }
     return hash;
 }
-function drawLine(parentDiv, childDiv,unlocked,price) {
+function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked) {
     // Get the position and size of the parent and child divs
     const parentRect = parentDiv.getBoundingClientRect();
     const childRect = childDiv.getBoundingClientRect();
@@ -165,18 +165,11 @@ function drawLine(parentDiv, childDiv,unlocked,price) {
     const lineDiv = $("scene_tree").create('div.techTree_line');
     if (!unlocked) {
         let lockedImgHolder = lineDiv.create("div.techTree_lineLocked") 
-        lockedImgHolder.classAdd("techTree_reward");
         let lockedImg = lockedImgHolder.create("img.techTree_lineLockedImg")
-        lockedImg.src = "img/menuIcons/lock.png";
+        if (!parentUnlocked) lockedImgHolder.classAdd("grayScale");
+        lockedImg.src = "img/techTrees/battlePoints.png";
         lockedImgHolder.on("click",function() {
-            if (this.classList.contains("techTree_reward_selected")) {
-                $(".techTree_reward").classRemove("techTree_reward_selected");
-                $(".techTree_infoCard").hide();
-                return;
-            }
-            $(".techTree_reward").classRemove("techTree_reward_selected");
-            this.classAdd("techTree_reward_selected");
-            openInfoCard("purchace",price,this);
+            
         })
 
         let pointCounterDiv = lineDiv.create("div.techTree_line_count")
@@ -360,7 +353,7 @@ function generateStarBackground(canvas) {
 
         const clickDuration = Date.now() - mouseDownTime; // Calculate the time between mousedown and mouseup
         if (clickDuration <= maxClickDuration) {
-            if (!e.target.classList.contains("techTree_reward") && !e.target.classList.contains("techTree_insideReward") && !e.target.classList.contains("techTree_lineLockedImg")) {
+            if (!e.target.classList.contains("techTree_reward") && !e.target.classList.contains("techTree_insideReward")) {
                 $(".techTree_reward").classRemove("techTree_reward_selected")
                 $(".techTree_infoCard").hide();
             }
