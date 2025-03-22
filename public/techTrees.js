@@ -9,7 +9,7 @@ function loadTechTree(tree) {
 
     setScene("tree");
 }
-function drawTree(point,comeFromPoint) {
+function drawTree(point,comeFromPoint,parentDiv) {
     let rewardsDiv = getRewardsDiv(point);
 
     let x,y;
@@ -45,9 +45,11 @@ function drawTree(point,comeFromPoint) {
         y: y,
     })
 
+    if (comeFromPoint !== "start") drawLine(rewardsDiv,parentDiv);
+
     // **Spread out the branches**
     let numBranches = point.branches.length;
-    let radius = 200; // Distance from parent to child (adjustable)
+    let radius = 225; // Distance from parent to child (adjustable)
     
     for (let i = 0; i < numBranches; i++) {
         let spreadAngle = Math.PI / 2; // Default: start downward (90 degrees)
@@ -62,8 +64,31 @@ function drawTree(point,comeFromPoint) {
             newY = ogY - radius; // Single child directly below
         }
     
-        drawTree(point.branches[i], { x: newX, y: newY });
+        drawTree(point.branches[i], { x: newX, y: newY },rewardsDiv);
     }
+}
+function drawLine(div1,div2) {
+    const line = $("scene_tree").create("div.techTree_line");
+
+    // Get the positions of the divs
+    const div1Rect = div1.getBoundingClientRect();
+    const div2Rect = div2.getBoundingClientRect();
+
+    // Calculate the start and end points of the line
+    const startX = div1Rect.left + div1Rect.width / 2;
+    const startY = div1Rect.top + div1Rect.height / 2;
+    const endX = div2Rect.left + div2Rect.width / 2;
+    const endY = div2Rect.top + div2Rect.height / 2;
+
+    // Calculate the distance and angle for the line
+    const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+    const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+
+    // Set the position and rotation of the line
+    line.style.width = distance + 'px';
+    line.style.transform = `rotate(${angle}deg)`;
+    line.style.left = startX - (distance / 2) + 'px';
+    line.style.top = startY - 1 + 'px';  // Adjust the y position to center the line
 }
 function getRewardsDiv(point) {
     let rewards = point.rewards;

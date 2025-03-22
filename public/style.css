@@ -3576,6 +3576,11 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .textTree_rewards {
   position: absolute;
 }
+.techTree_line {
+  position: absolute;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.801);
+}
 
 .techTree_reward_text {
   width: max-content;
