@@ -153,6 +153,11 @@ function getRewardsDiv(point) {
             rewardDiv.src = "img/techTrees/coins.png";
             let amountText = rewardDiv.create("div.techTree_reward_miniText");
             amountText.innerHTML = "x" + reward.count;
+            rewardDiv.on("click",function(){
+                $(".techTree_reward").classRemove("techTree_reward_selected");
+                this.classAdd("techTree_reward_selected");
+                openInfoCard("coins",reward.count,this);
+            })
         }
     }
     return holder;
@@ -161,8 +166,14 @@ function openInfoCard(type,thingToOpen,parent) {
     const margin = 10;
     let card = $(".techTree_infoCard");
     if (type == "item") {
-        card.$(".infocard_title").innerHTML = thingToOpen.type.charAt(0).toUpperCase() + thingToOpen.type.subset(1,"end");
+        card.$(".infocard_title").innerHTML = thingToOpen.type.toUpperCase();
+        card.$(".infocard_title").style == "blue";
         card.$(".infocard_description").innerHTML = thingToOpen.description;
+    }
+    if (type == "coins") {
+        card.$(".infocard_title").innerHTML = "COINS";
+        card.$(".infocard_title").style == "gold";
+        card.$(".infocard_description").innerHTML = "Use Coins To Buy Things In The Store!";
     }
 
     let x,y;
