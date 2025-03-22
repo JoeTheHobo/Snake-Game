@@ -3640,9 +3640,10 @@ gap: 1px; /* Optional: Adjust spacing between items */
   width: 100%;
 }
 .techTree_unlocked {
-
+  border: 3px solid rgba(45, 226, 54, 0.801);
 }
 .techTree_locked {
+  border: 3px solid rgba(255, 255, 255, 0.801);
   filter: grayscale(100%);
 }
 .textTree_rewards {
@@ -3658,7 +3659,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 .techTree_reward {
   transition: border .2s ease-in-out;
-  border: 3px solid rgba(255, 255, 255, 0.801);
   border-radius: 5px;
   position: relative;
   z-index: 1;
