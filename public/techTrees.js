@@ -97,6 +97,12 @@ function drawLine(parentDiv, childDiv) {
     lineDiv.style.left = `${parentCenterX - 1}px`; // Adjust the left position for the line
     lineDiv.style.transformOrigin = '0 50%'; // Set the line's rotation origin to the left side of the line
     lineDiv.style.transform = `rotate(${angle}rad)`; // Rotate the line by the calculated angle
+
+    movingPoints.push({
+        div: lineDiv,
+        x: parentCenterX - 1,
+        y: parentCenterY - 1,
+    })
 }
 function getRewardsDiv(point) {
     let rewards = point.rewards;
