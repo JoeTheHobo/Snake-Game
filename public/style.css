@@ -3583,7 +3583,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .textTree_rewards {
   position: absolute;
   cursor: url('./img/pointer.cur'), auto;
-  transition: border .2s ease-in-out;
+  transition: all .2s ease-in-out;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -3629,7 +3629,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   filter: grayscale(100%);
 }
 .techTree_reward_selected {
-  border: 3px solid rgba(56, 100, 223, 0.801) !important;
+  border: 3px solid rgba(63, 126, 199, 0.801) !important;
 
 }
 .techTree_reward {
