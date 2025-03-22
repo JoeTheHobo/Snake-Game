@@ -45,7 +45,9 @@ function drawTree(point,comeFromPoint,parentDiv) {
         y: y,
     })
 
-    if (comeFromPoint !== "start") drawLine(rewardsDiv,parentDiv);
+    if (comeFromPoint !== "start") requestAnimationFrame(function() {
+        drawLine(rewardsDiv,parentDiv);
+    });
 
     // **Spread out the branches**
     let numBranches = point.branches.length;
@@ -73,7 +75,6 @@ function drawLine(div1,div2) {
     // Get the positions of the divs
     const div1Rect = div1.getBoundingClientRect();
     const div2Rect = div2.getBoundingClientRect();
-    console.log(div1,div1Rect)
 
     // Calculate the start and end points of the line
     const startX = (div1Rect.left + div1Rect.width) / 2;
