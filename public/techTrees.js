@@ -9,7 +9,7 @@ function loadTechTree(tree) {
 
     setScene("tree");
 }
-function drawTree(point,comeFromPoint,parentDiv) {
+function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
     let rewardsDiv = getRewardsDiv(point);
 
     let x,y;
