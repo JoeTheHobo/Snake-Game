@@ -54,6 +54,7 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     localAccount.allowedItemIds = account.allowedItemIds;
     localAccount.allowedTileIds = account.allowedTileIds;
     localAccount.allowedSnakeColors = account.allowedSnakeColors;
+    localAccount.battlePassPoints = account.battlePassPoints;
 
     items = JSON.parse(pako.inflate(server_items, { to: 'string' }));
     tiles = JSON.parse(pako.inflate(server_tiles, { to: 'string' }));

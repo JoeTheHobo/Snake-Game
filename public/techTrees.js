@@ -19,7 +19,7 @@ function loadTechTree(tree) {
     let battlePointsImg = topLeftContent.create("img.techTree_battlePointsImg");
     battlePointsImg.src = "img/techTrees/battlePoints.png";
     let battlePointsCounter = topLeftContent.create("div.techTree_battlePointsCounter");
-    battlePointsCounter.innerHTML = "x" + 5;
+    battlePointsCounter.innerHTML = "x" + localAccount.battlePassPoints;
     generateStarBackground(canvas);
 
     drawTree(tree,"start");
