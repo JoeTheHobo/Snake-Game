@@ -3593,7 +3593,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   border: 2px solid rgba(255, 255, 255, 0.801);
   cursor: url('./img/pointer.cur'), auto;
   background: black;
-  filter: invert(100%);
+  filter: invert(1);
   left: 0;
   right: 0;
   bottom: 0;
