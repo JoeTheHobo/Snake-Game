@@ -3579,8 +3579,8 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .techTree_line {
   position: absolute;
   height: 2px;
-  background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 1) 100%);
-  /
+  background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0) 100%);
+
 }
 
 .techTree_reward_text {
