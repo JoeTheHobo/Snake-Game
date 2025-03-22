@@ -3563,3 +3563,13 @@ gap: 1px; /* Optional: Adjust spacing between items */
   position: absolute;
   z-index: -1;
 }
+.techTree_vignette {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* So it doesn't interfere with dragging */
+  background: radial-gradient(circle, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 100%);
+  z-index: 1000; /* Keep it above the canvas */
+}

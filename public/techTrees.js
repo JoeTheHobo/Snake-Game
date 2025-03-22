@@ -1,6 +1,7 @@
 function loadTechTree(tree) {
     $("scene_tree").innerHTML = "";
     let canvas = $("scene_tree").create("canvas.techTree_background");
+    let vignette = $("scene_tree").create("div.techTree_vignette");
 
     generateStarBackground(canvas);
 
