@@ -3628,13 +3628,12 @@ gap: 1px; /* Optional: Adjust spacing between items */
   align-items: center;
 }
 .techTree_reward_selected {
-  border-color: rgba(63, 126, 199, 0.801) !important;
-
+  border: 3px solid rgba(63, 126, 199, 0.801) !important;
 }
 .techTree_reward {
-  transition: border-color .2s ease-in-out;
-  border-color: rgba(255, 255, 255, 0.801);
-  border: 3px solid;
+  transition: border .2s ease-in-out;
+  border: 3px solid rgba(255, 255, 255, 0.801);
+  border-radius: 5px;
   position: relative;
   z-index: 1;
 }
@@ -3648,7 +3647,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
   padding: 10px;
   font-size: 2em;
   background: rgba(255, 255, 255, 0.301);
-  border-radius: 5px;
   color: white;
 }
 .techTree_reward_img {
