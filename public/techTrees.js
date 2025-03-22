@@ -176,7 +176,7 @@ let techTree_beta = {
             rewards: [
                 {
                     type: "item",
-                    id: 0,
+                    id: 20,
                 },
             ],
             branches: [],
