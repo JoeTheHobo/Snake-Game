@@ -47,7 +47,7 @@ function drawTree(point,comeFromPoint) {
 
     // **Spread out the branches**
     let numBranches = point.branches.length;
-    let radius = 175; // Distance from parent to child (adjustable)
+    let radius = 200; // Distance from parent to child (adjustable)
     
     for (let i = 0; i < numBranches; i++) {
         let spreadAngle = Math.PI / 2; // Default: start downward (90 degrees)
@@ -61,36 +61,9 @@ function drawTree(point,comeFromPoint) {
             newX = ogX;
             newY = ogY - radius; // Single child directly below
         }
-        
-        // 🔹 **Draw the line between (ogX, ogY) and (newX, newY)**
-        drawLine(ogX, ogY, newX, newY);
     
         drawTree(point.branches[i], { x: newX, y: newY });
     }
-}
-// **Function to draw lines between points**
-function drawLine(x1, y1, x2, y2) {
-    let svg = document.getElementById("tree-lines");
-    if (!svg) {
-        svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute("id", "tree-lines");
-        svg.style.position = "absolute";
-        svg.style.top = "0";
-        svg.style.left = "0";
-        svg.style.width = "100vw";
-        svg.style.height = "100vh";
-        svg.style.pointerEvents = "none"; // So it doesn't block clicks
-        document.body.appendChild(svg);
-    }
-
-    let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    line.setAttribute("x1", x1 + window.innerWidth / 2);
-    line.setAttribute("y1", y1 + window.innerHeight / 2);
-    line.setAttribute("x2", x2 + window.innerWidth / 2);
-    line.setAttribute("y2", y2 + window.innerHeight / 2);
-    line.setAttribute("stroke", "white");
-    line.setAttribute("stroke-width", "2");
-    svg.appendChild(line);
 }
 function getRewardsDiv(point) {
     let rewards = point.rewards;
