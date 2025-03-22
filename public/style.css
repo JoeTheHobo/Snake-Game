@@ -3605,9 +3605,9 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .techTree_line_count {
   position: absolute;
   transform: rotate(90deg);
-  right: 55%;
-  bottom: 0;
-  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 60%;
   margin: auto;
   color: purple;
   font-size: 30px;
