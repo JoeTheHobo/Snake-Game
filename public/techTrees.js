@@ -4,17 +4,40 @@ function loadTechTree(tree) {
     let vignette = $("scene_tree").create("div.techTree_vignette");
     generateStarBackground(canvas);
 
-    drawTree(tree);
+    drawTree(tree,"start");
 
     setScene("tree");
 }
-function drawTree(point) {
+function drawTree(point,comeFromDirection) {
     let rewardsDiv = getRewardsDiv(point);
+
+    let x,y;
+
+    if (comeFromDirection === "start") {
+        x = 0;
+        y = 0;
+    }
+
+
+    let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
+    x += windowWidth/2;
+    y += windowHeight/2;
+    let divWidth = rewardsDiv.clientWidth;
+    let divHeight = rewardsDiv.clientHeight; 
+    x -= divWidth/2;
+    y -= divHeight/2;
+
+    rewardsDiv.css({
+        left: x + "px",
+        top: y + "px",
+    })
+
 
 }
 function getRewardsDiv(point) {
     let rewards = point.rewards;
-    let holder = $("scene_tree").create("div");
+    let holder = $("scene_tree").create("div.textTree_rewards");
     for (let i = 0; i < rewards.length; i++) {
         let reward = rewards[i];
         let rewardDiv;

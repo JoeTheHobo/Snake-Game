@@ -3573,6 +3573,9 @@ gap: 1px; /* Optional: Adjust spacing between items */
   background: radial-gradient(circle, rgb(0 0 0 / 0%) 50%, rgb(62 40 44 / 50%) 100%);
   z-index: 1000; /* Keep it above the canvas */
 }
+.textTree_rewards {
+  position: absolute;
+}
 
 .techTree_reward_text {
   width: max-content;
