@@ -165,7 +165,7 @@ function openInfoCard(type,thingToOpen,parent) {
 
     requestAnimationFrame(function() {
         let x,y;
-        let cardRect = card.getBoundingClientRect();
+        let cardRect = $(".techTree_infoCard").getBoundingClientRect();
         let parentRect = parent.getBoundingClientRect();
 
         console.log(cardRect);
