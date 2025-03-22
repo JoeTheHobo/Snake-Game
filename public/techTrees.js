@@ -160,7 +160,7 @@ function openInfoCard(type,thingToOpen,parent) {
     let card = $(".techTree_infoCard");
     card.innerHTML = "";
     if (type == "item") {
-        card.innerHTML = `${thingToOpen.type.charAt(0).toUpperCase() + thingToOpen.type.subset(1,"end")}
+        card.innerHTML = `${thingToOpen.type.charAt(0).toUpperCase() + thingToOpen.type.subset(1,"end")}<br>
         ${thingToOpen.description}`;
     }
 
