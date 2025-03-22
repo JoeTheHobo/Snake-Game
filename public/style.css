@@ -3713,6 +3713,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   display: flex;
   flex-direction: row;
   align-items: center;
+  z-index: 1000;
 }
 .techTree_returnButton {
   width: max-content;

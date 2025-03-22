@@ -238,7 +238,7 @@ function getRewardsDiv(point) {
             rewardDiv.classAdd("techTree_reward_img");
             insideDiv.src = "img/techTrees/coins.png";
             let amountText = rewardDiv.create("div.techTree_reward_miniText");
-            amountText.innerHTML = "x" + reward.count;
+            amountText.innerHTML = "+" + reward.count;
             insideDiv.on("click",function(){
                 if (this.$P().classList.contains("techTree_reward_selected")) {
                     $(".techTree_reward").classRemove("techTree_reward_selected");
