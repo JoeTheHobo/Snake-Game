@@ -1,3 +1,4 @@
+let movingPoints = [];
 function loadTechTree(tree) {
     $("scene_tree").innerHTML = "";
     let canvas = $("scene_tree").create("canvas.techTree_background");
@@ -31,6 +32,12 @@ function drawTree(point,comeFromDirection) {
     rewardsDiv.css({
         left: x + "px",
         top: y + "px",
+    })
+
+    movingPoints.push({
+        div: rewardsDiv,
+        x: x,
+        y: y,
     })
 
 
@@ -76,6 +83,7 @@ function generateStarBackground(canvas) {
     const spaceSize = 25000; // Huge space
     const starCount = Math.floor((spaceSize*15000)/4000); // Number of stars
     const dragSpeed = 0.5;
+    const elementDragSpeed = 1;
     const stars = [];
 
     for (let i = 0; i < starCount; i++) {
@@ -123,6 +131,16 @@ function generateStarBackground(canvas) {
         if (drag) {
             offsetX -= (e.clientX - startX)*dragSpeed;
             offsetY -= (e.clientY - startY)*dragSpeed;
+
+            for (let i = 0; i < movingPoints.length; i++) {
+                movingPoints.x -= (e.clientX - startX)*elementDragSpeed;
+                movingPoints.y -= (e.clientY - startY)*elementDragSpeed;
+                movingPoints.div.css({
+                    top: movingPoints.y + "px",
+                    left: movingPoints.x + "px",
+                })
+            }
+
             startX = e.clientX;
             startY = e.clientY;
             drawStars();
