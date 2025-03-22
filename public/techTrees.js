@@ -52,8 +52,8 @@ function generateStarBackground(canvas) {
     canvas.width = viewWidth;
     canvas.height = viewHeight;
 
-    const spaceSize = 100000; // Huge space
-    const starCount = 10000; // Number of stars
+    const spaceSize = 4000; // Huge space
+    const starCount = Math.floor((spaceSize*10000)/4); // Number of stars
     const dragSpeed = 0.5;
     const stars = [];
 
