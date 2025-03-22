@@ -56,7 +56,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
     let radius = 225; // Distance from parent to child (adjustable)
 
     // Symmetry calculation for the angle spread
-    let spreadAngle = comeFromPoint === "start" ? Math.PI : Math.PI / 3; // Default: spread within a 120-degree arc
+    let spreadAngle = comeFromPoint === "start" ? Math.PI : 200 * (Math.PI / 180); // 200 degrees in radians
 
     if (numBranches > 1) {
         // Calculate the positions symmetrically
