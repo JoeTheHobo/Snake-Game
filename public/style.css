@@ -3556,9 +3556,9 @@ gap: 1px; /* Optional: Adjust spacing between items */
   height: 100%;
 }
 .techTree_background {
-  width: 400%;
+  width: 100vw;
   aspect-ratio: 16/9;
   transform: translateX(-50%) translateY(-50%);
   position: absolute;
-  z-index: -1;
+  z-index: 1;
 }
