@@ -1,7 +1,8 @@
 function loadTechTree(tree) {
     $("scene_tree").innerHTML = "";
-    let background = $("scene_tree").create("img.techTree_background");
-    background.src = tree.background;
+    let canvas = $("scene_tree").create("canvas.techTree_background");
+
+    generateStarBackground(canvas);
 
 
     drawTree(tree);
@@ -43,13 +44,55 @@ function getRewardsDiv(point) {
     }
     return holder;
 }
+function generateStarBackground(canvas) {
+    let ctx = canvas.getContext("2d");
+    
+    const viewWidth = window.innerWidth;
+    const viewHeight = window.innerHeight;
+    canvas.width = viewWidth;
+    canvas.height = viewHeight;
+
+    const spaceSize = 4000; // Huge space
+    const starCount = 10000; // Number of stars
+    const stars = [];
+
+    for (let i = 0; i < starCount; i++) {
+        stars.push({
+            x: Math.random() * spaceSize,
+            y: Math.random() * spaceSize,
+            size: Math.random() * 2,
+            brightness: Math.random() * 255,
+        });
+    }
+
+    let offsetX = 0, offsetY = 0;
+    let drag = false, startX, startY;
+
+    function drawStars() {
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, viewWidth, viewHeight);
+
+        ctx.fillStyle = "white";
+        for (let star of stars) {
+            const x = star.x - offsetX;
+            const y = star.y - offsetY;
+            if (x >= 0 && x < viewWidth && y >= 0 && y < viewHeight) {
+            ctx.fillStyle = `rgb(${star.brightness}, ${star.brightness}, ${star.brightness})`;
+            ctx.beginPath();
+            ctx.arc(x, y, star.size, 0, Math.PI * 2);
+            ctx.fill();
+            }
+        }
+    }
+
+    drawStars();
+}
 
 let techTree_beta = {
     rewards: [{
         type: "text",
         text: "Beta",
     }],
-    background: "img/techTrees/backgroundStarts.jpeg",
     unlocked: false,
     branches: [
         {
