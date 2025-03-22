@@ -69,29 +69,35 @@ function drawTree(point,comeFromPoint,parentDiv) {
         drawTree(point.branches[i], { x: newX, y: newY },rewardsDiv);
     }
 }
-function drawLine(div1,div2) {
+function drawLine(div1, div2) {
     const line = $("scene_tree").create("div.techTree_line");
 
     // Get the positions of the divs
     const div1Rect = div1.getBoundingClientRect();
     const div2Rect = div2.getBoundingClientRect();
 
-    // Calculate the start and end points of the line
+    // Calculate the start and end points of the line, leaving a 10px margin from the divs
     const startX = div1Rect.left + div1Rect.width / 2;
     const startY = div1Rect.top + div1Rect.height / 2;
     const endX = div2Rect.left + div2Rect.width / 2;
     const endY = div2Rect.top + div2Rect.height / 2;
 
+    // Adjust positions to add a 10px margin
+    const margin = 10;
+    const adjustedStartX = startX + (div1Rect.width / 2 > margin ? margin : 0);
+    const adjustedStartY = startY + (div1Rect.height / 2 > margin ? margin : 0);
+    const adjustedEndX = endX - (div2Rect.width / 2 > margin ? margin : 0);
+    const adjustedEndY = endY - (div2Rect.height / 2 > margin ? margin : 0);
 
-    // Calculate the distance and angle for the line
-    const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
-    const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+    // Calculate the new distance and angle for the line
+    const distance = Math.sqrt(Math.pow(adjustedEndX - adjustedStartX, 2) + Math.pow(adjustedEndY - adjustedStartY, 2));
+    const angle = Math.atan2(adjustedEndY - adjustedStartY, adjustedEndX - adjustedStartX) * 180 / Math.PI;
 
     // Set the position and rotation of the line
     line.style.width = distance + 'px';
     line.style.transform = `rotate(${angle}deg)`;
-    line.style.left = startX - (distance / 2) + 'px';
-    line.style.top = startY - 1 + 'px';  // Adjust the y position to center the line
+    line.style.left = adjustedStartX - (distance / 2) + 'px';
+    line.style.top = adjustedStartY - 1 + 'px';  // Adjust the y position to center the line
 }
 function getRewardsDiv(point) {
     let rewards = point.rewards;
