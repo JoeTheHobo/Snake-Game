@@ -178,14 +178,6 @@ let techTree_beta = {
                     type: "item",
                     id: 0,
                 },
-                {
-                    type: "coins",
-                    count: 5,
-                },
-                {
-                    type: "",
-                    count: 5,
-                },
             ],
             branches: [],
         }
