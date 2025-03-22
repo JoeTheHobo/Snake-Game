@@ -155,6 +155,8 @@ function drawLine(parentDiv, childDiv) {
 
     // Create a new line div
     const lineDiv = $("scene_tree").create('div.techTree_line');
+    let lockedImg = lineDiv.create("img.techTree_locked") 
+    lockedImg.src = "img/menuIcons/lock.png";
 
     // Style the line div
     lineDiv.style.width = `${adjustedDistance}px`; // Set the width of the line to the adjusted distance
