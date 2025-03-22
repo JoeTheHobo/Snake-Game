@@ -50,6 +50,7 @@ function drawTree(point,comeFromPoint,parentDiv) {
     });
 
     
+    
     // **Spread out the branches**
     let numBranches = point.branches.length;
     let radius = 225; // Distance from parent to child (adjustable)
@@ -63,19 +64,19 @@ function drawTree(point,comeFromPoint,parentDiv) {
         let startAngle = -spreadAngle / 2; // Start from the leftmost branch
 
         for (let i = 0; i < numBranches; i++) {
-            // Adjust the angle based on the index, ensuring opposite branches
-            let angle = startAngle + i * angleStep;
+            // Adjust the angle based on the parent angle and branch index
+            let angle = startAngle + i * angleStep + parentAngle;
             let newX = ogX + Math.cos(angle) * radius;
             let newY = ogY + Math.sin(angle) * radius;
 
-            // Recursive call for the next branch
-            drawTree(point.branches[i], { x: newX, y: newY }, rewardsDiv);
+            // Recursive call for the next branch, passing the current angle
+            drawTree(point.branches[i], { x: newX, y: newY }, rewardsDiv, angle);
         }
-    } else if (numBranches === 1) {
+    } else if (numBranches == 1) {
         // Single child directly below the parent (no spread)
         let newX = ogX;
         let newY = ogY - radius; // Single child directly below
-        drawTree(point.branches[0], { x: newX, y: newY }, rewardsDiv);
+        drawTree(point.branches[0], { x: newX, y: newY }, rewardsDiv, parentAngle);
     }
 }
 function drawLine(parentDiv, childDiv) {
