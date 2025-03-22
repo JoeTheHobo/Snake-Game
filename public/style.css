@@ -3593,7 +3593,8 @@ gap: 1px; /* Optional: Adjust spacing between items */
   height: max-content;
   width: max-content;
   display: none;
-  font-size: 20px;
+  font-size: 23px;
+  color: white;
 }
 .techTree_unlocked {
 

@@ -4,6 +4,11 @@ function loadTechTree(tree) {
     let canvas = $("scene_tree").create("canvas.techTree_background");
     let vignette = $("scene_tree").create("div.techTree_vignette");
     let infoCard = $("scene_tree").create("div.techTree_infoCard")
+    movingPoints.push({
+        div: infoCard,
+        x: 0,
+        y: 0,
+    })
     generateStarBackground(canvas);
 
     drawTree(tree,"start");
@@ -138,7 +143,7 @@ function getRewardsDiv(point) {
             rewardDiv.on("click",function(){
                 $(".techTree_reward").classRemove("techTree_reward_selected");
                 this.classAdd("techTree_reward_selected");
-                openInfoCard("item",item,rewardDiv);
+                openInfoCard("item",item,this);
             })
         }
         if (reward.type == "coins") {
