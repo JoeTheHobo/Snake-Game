@@ -3716,13 +3716,15 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 .techTree_returnButton {
   width: max-content;
+  padding-left: 5px;
+  padding-right: 5px;
   height: 35px;
   line-height: 35px;
   font-size: 30px;
   cursor: url('./img/pointer.cur'), auto;
   border-radius: 5px;
-  border: 3px solid rgba(255, 255, 255, 0.801);
-  color: rgba(255, 255, 255, 0.801);
+  border: 3px solid rgba(255, 255, 255, 0.959);
+  color: rgba(255, 255, 255, 0.959);
   transition: all .2s ease-in-out;
 }
 .techTree_returnButton:hover {

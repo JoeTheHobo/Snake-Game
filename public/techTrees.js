@@ -17,7 +17,7 @@ function loadTechTree(tree) {
     let goBackHomeButton = topLeftContent.create("div.techTree_returnButton");
     goBackHomeButton.innerHTML = "Return Home";
     let battlePointsImg = topLeftContent.create("img.techTree_battlePointsImg");
-    battlePointsImg.src = "img/techTrees.battlePoints.png";
+    battlePointsImg.src = "img/techTrees/battlePoints.png";
     let battlePointsCounter = topLeftContent.create("div.techTree_battlePointsCounter");
     battlePointsCounter.innerHTML = "x" + 5;
     generateStarBackground(canvas);
