@@ -227,10 +227,10 @@ let techTree_beta = {
         type: "text",
         text: "Beta",
     }],
-    unlocked: false,
+    unlocked: true,
     branches: [
         {
-            unlocked: false,
+            unlocked: true,
             cost: 2,
             rewards: [
                 {
@@ -243,7 +243,7 @@ let techTree_beta = {
                 },
             ],
             branches: [{
-                unlocked: false,
+                unlocked: true,
                 cost: 2,
                 rewards: [
                     {

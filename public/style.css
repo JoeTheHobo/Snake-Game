@@ -3582,6 +3582,12 @@ gap: 1px; /* Optional: Adjust spacing between items */
   background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%,rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0.801) 25%, rgba(255, 255, 255, 0.801) 75%,rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 0) 100%);
 
 }
+.techTree_unlocked {
+
+}
+.techTree_locked {
+  filter: grayscale(100%);
+}
 
 .techTree_reward_text {
   width: max-content;
