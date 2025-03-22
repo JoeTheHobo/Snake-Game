@@ -40,6 +40,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
     y += windowHeight/2;
     let divWidth = rewardsDiv.getBoundingClientRect().width;
     let divHeight = rewardsDiv.getBoundingClientRect().height; 
+    console.log(123,divWidth)
     x -= divWidth/2;
     y -= divHeight/2;
 
