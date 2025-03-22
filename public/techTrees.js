@@ -77,10 +77,10 @@ function drawLine(div1,div2) {
     const div2Rect = div2.getBoundingClientRect();
 
     // Calculate the start and end points of the line
-    const startX = (div1Rect.left + div1Rect.width) / 2;
-    const startY = (div1Rect.top + div1Rect.height) / 2;
-    const endX = (div2Rect.left + div2Rect.width) / 2;
-    const endY = (div2Rect.top + div2Rect.height) / 2;
+    const startX = div1Rect.left + div1Rect.width / 2;
+    const startY = div1Rect.top + div1Rect.height / 2;
+    const endX = div2Rect.left + div2Rect.width / 2;
+    const endY = div2Rect.top + div2Rect.height / 2;
 
 
     // Calculate the distance and angle for the line
