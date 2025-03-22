@@ -73,7 +73,7 @@ function getRewardsDiv(point) {
     for (let i = 0; i < rewards.length; i++) {
         let reward = rewards[i];
         let rewardDiv;
-        if (["item","tile"].includes(reward.type)) rewardDiv = holder.create("img.techTree_reward");
+        if (["item","tile","coins"].includes(reward.type)) rewardDiv = holder.create("img.techTree_reward");
         if (["text"].includes(reward.type)) rewardDiv = holder.create("div.techTree_reward");
 
         if (point.unlocked) rewardDiv.classAdd("techTree_unlocked");
