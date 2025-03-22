@@ -66,7 +66,7 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     backgrounds = server_backgrounds;
 
     //setScene("newMenu");
-    
+    loadTechTree(techTree_beta);
     //Load All Item Images
     requestIdleCallback(function() {
         loadAllCanvas(items);

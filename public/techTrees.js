@@ -184,4 +184,3 @@ let techTree_beta = {
     ]
 }
 
-loadTechTree(techTree_beta);
