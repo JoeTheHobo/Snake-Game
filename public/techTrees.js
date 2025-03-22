@@ -97,6 +97,8 @@ function drawLine(div1, div2) {
         pointB.y = div2Rect.top - margin;
     }
 
+    console.log(pointA,pointB)
+
     // Calculate the new distance and angle for the line
     const distance = Math.sqrt(Math.pow(pointB.x - pointA.x, 2) + Math.pow(pointB.y - pointA.y, 2));
     const angle = Math.atan2(pointB.y - pointA.y, pointB.x - pointA.x) * 180 / Math.PI;
