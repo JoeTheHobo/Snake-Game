@@ -80,6 +80,7 @@ function drawLine(div1, div2) {
     let pointA = {x: 0, y: 0},
         pointB = {x: 0, y: 0};
 
+        console.log(div1Rect.left,div2Rect.left);
     if (div1Rect.left > div2Rect.left) {
         pointA.x = div2Rect.right + margin;
         pointB.x = div1Rect.left - margin;
