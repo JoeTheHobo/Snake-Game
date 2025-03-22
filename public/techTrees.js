@@ -136,10 +136,8 @@ function generateStarBackground(canvas) {
                 movingPoints[i].x -= (e.clientX - startX)*elementDragSpeed;
                 movingPoints[i].y -= (e.clientY - startY)*elementDragSpeed;
                 console.log(movingPoints[i].div,movingPoints[i].y,movingPoints[i].x);
-                movingPoints[i].div.css({
-                    top: movingPoints.y + "px",
-                    left: movingPoints.x + "px",
-                })
+                movingPoints[i].div.style.left = movingPoints.x + "px";
+                movingPoints[i].div.style.top = movingPoints.y + "px";
             }
 
             startX = e.clientX;
