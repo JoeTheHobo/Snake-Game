@@ -88,7 +88,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
                 let newX = ogX + edgeX + Math.cos(randomAngle) * radius;
                 let newY = ogY + edgeY + Math.sin(randomAngle) * radius;
     
-                drawTree(point.branches[i], { x: newX, y: newY }, parentDiv, randomAngle);
+                drawTree(point.branches[i], { x: newX, y: newY }, rewardsDiv, randomAngle);
             }
         } else if (numBranches === 1) {
             let offset = (hashValue(0) % 2000) / 2000 * 2 - 1; 
@@ -97,7 +97,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
             let newX = ogX + Math.cos(randomAngle) * radius;
             let newY = ogY + Math.sin(randomAngle) * radius;
     
-            drawTree(point.branches[0], { x: newX, y: newY }, parentDiv, randomAngle);
+            drawTree(point.branches[0], { x: newX, y: newY }, rewardsDiv, randomAngle);
         }
     },150)
 }
