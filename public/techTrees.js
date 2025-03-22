@@ -68,33 +68,45 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
     
         // Symmetry calculation for the angle spread
         let spreadAngle = comeFromPoint === "start" ? Math.PI : 170 * (Math.PI / 180); // 200 degrees in radians
-    
+        let randomOffset = Math.PI / 18; // ±10-degree variation (adjustable)
+
         if (numBranches > 1) {
-            // Calculate the positions symmetrically
             let angleStep = spreadAngle / (numBranches - 1);
-            let startAngle = -spreadAngle / 2; // Start from the leftmost branch
+            let startAngle = -spreadAngle / 2; 
     
-            // Adjust the branch origin point based on the direction of the branch
             for (let i = 0; i < numBranches; i++) {
-                let angle = startAngle + i * angleStep + parentAngle;
+                let baseAngle = startAngle + i * angleStep + parentAngle;
+                
+                // Generate a deterministic "random" offset using the branch ID
+                let offset = (hashValue(point.id + i) % 2000) / 2000 * 2 - 1; // Value between -1 and 1
+                let randomAngle = baseAngle + offset * randomOffset; 
     
-                // Find the edge of the div to shoot from
-                let edgeX = Math.cos(angle) * (divWidth / 2);
-                let edgeY = Math.sin(angle) * (divHeight / 2);
-                console.log(edgeX)
+                // Adjust starting edge point
+                let edgeX = Math.cos(randomAngle) * (divWidth / 2);
+                let edgeY = Math.sin(randomAngle) * (divHeight / 2);
     
-                let newX = ogX + edgeX + Math.cos(angle) * radius;
-                let newY = ogY + edgeY + Math.sin(angle) * radius;
+                let newX = ogX + edgeX + Math.cos(randomAngle) * radius;
+                let newY = ogY + edgeY + Math.sin(randomAngle) * radius;
     
-                drawTree(point.branches[i], { x: newX, y: newY }, rewardsDiv, angle);
+                drawTree(point.branches[i], { x: newX, y: newY }, parentDiv, randomAngle);
             }
-        } else if (numBranches == 1) {
-            // Single child directly below the parent (no spread)
-            let newX = ogX;
-            let newY = ogY - radius; // Single child directly below
-            drawTree(point.branches[0], { x: newX, y: newY }, rewardsDiv, parentAngle);
+        } else if (numBranches === 1) {
+            let offset = (hashValue(point.id) % 2000) / 2000 * 2 - 1; 
+            let randomAngle = parentAngle + offset * randomOffset; 
+    
+            let newX = ogX + Math.cos(randomAngle) * radius;
+            let newY = ogY + Math.sin(randomAngle) * radius;
+    
+            drawTree(point.branches[0], { x: newX, y: newY }, parentDiv, randomAngle);
         }
     },150)
+}
+function hashValue(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = (hash * 31 + str.charCodeAt(i)) % 10000; // Simple deterministic hash
+    }
+    return hash;
 }
 function drawLine(parentDiv, childDiv) {
     // Get the position and size of the parent and child divs
