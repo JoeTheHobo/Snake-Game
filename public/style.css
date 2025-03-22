@@ -3570,6 +3570,15 @@ gap: 1px; /* Optional: Adjust spacing between items */
   width: 100vw;
   height: 100vh;
   pointer-events: none; /* So it doesn't interfere with dragging */
-  background: radial-gradient(circle, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 100%);
+  background: radial-gradient(circle, rgb(0 0 0 / 0%) 50%, rgb(62 40 44 / 50%) 100%);
   z-index: 1000; /* Keep it above the canvas */
+}
+
+.techTree_reward_text {
+  width: max-content;
+  height: 40px;
+  font-size: 25px;
+  background: rgba(255, 255, 255, 0.301);
+  border: 5px solid rgba(255, 255, 255, 0.801);
+  border-radius: 5px;
 }
