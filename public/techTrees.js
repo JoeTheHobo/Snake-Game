@@ -163,13 +163,11 @@ function openInfoCard(type,thingToOpen,parent) {
         card.innerHTML = thingToOpen.description;
     }
 
-    let cardRect = card.getBoundingClientRect();
-    let parentRect = parent.getBoundingClientRect();
-
-    let x,y;
-
     requestAnimationFrame(function() {
-        console.log(parentRect.left,cardRect.width);
+        let x,y;
+        let cardRect = card.getBoundingClientRect();
+        let parentRect = parent.getBoundingClientRect();
+
         y = parentRect.bottom + margin;
         x = parentRect.left - (cardRect.width/2);
     
