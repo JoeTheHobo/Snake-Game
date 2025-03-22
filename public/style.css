@@ -3623,9 +3623,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .textTree_rewards {
   position: absolute;
   cursor: url('./img/pointer.cur'), auto;
-  transition: border-color .2s ease-in-out;
-  border: 3px solid;
-  border-color: rgba(255, 255, 255, 0.801);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -3635,6 +3632,9 @@ gap: 1px; /* Optional: Adjust spacing between items */
 
 }
 .techTree_reward {
+  transition: border-color .2s ease-in-out;
+  border-color: rgba(255, 255, 255, 0.801);
+  border: 3px solid;
   position: relative;
   z-index: 1;
 }
