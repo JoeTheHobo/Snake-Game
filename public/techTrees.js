@@ -16,6 +16,9 @@ function loadTechTree(tree) {
     let topLeftContent = scene.create("div.techTree_content");
     let goBackHomeButton = topLeftContent.create("div.techTree_returnButton");
     goBackHomeButton.innerHTML = "Return Home";
+    goBackHomeButton.on("click",function() {
+        setScene("newMenu")
+    })
     let battlePointsImg = topLeftContent.create("img.techTree_battlePointsImg");
     battlePointsImg.src = "img/techTrees/battlePoints.png";
     let battlePointsCounter = topLeftContent.create("div.techTree_battlePointsCounter");
@@ -173,10 +176,8 @@ function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked) {
             
         })
 
-        /*
         let pointCounterDiv = lineDiv.create("div.techTree_line_count")
         pointCounterDiv.innerHTML = "x" + price;
-        */
     } else {
         lineDiv.classAdd("techTree_line_unlocked")
     }
