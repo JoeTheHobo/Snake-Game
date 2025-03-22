@@ -327,7 +327,7 @@ function generateStarBackground(canvas) {
         }
     }
     let mouseDownTime = 0; // Store time of the mousedown event
-    const maxClickDuration = 300; // Maximum duration (in ms) for a click to be considered fast
+    const maxClickDuration = 250; // Maximum duration (in ms) for a click to be considered fast
 
     document.on('mouseout', function(e) {
         if (global_scene !== "tree") return;
