@@ -1809,6 +1809,7 @@ function setAllCanvasToRightSize() {
 
 function getById(id,type) {
     let list = type == "item" ? items : tiles;
+    console.log(list)
     for (let i = 0; i < list.length; i++) {
         if (list[i].id === id) return list[i];
     }
