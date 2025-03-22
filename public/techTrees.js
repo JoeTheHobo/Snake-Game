@@ -49,24 +49,33 @@ function drawTree(point,comeFromPoint,parentDiv) {
         drawLine(parentDiv,rewardsDiv);
     });
 
+    
     // **Spread out the branches**
     let numBranches = point.branches.length;
     let radius = 225; // Distance from parent to child (adjustable)
-    
-    for (let i = 0; i < numBranches; i++) {
-        let spreadAngle = Math.PI / 2; // Default: start downward (90 degrees)
-    
-        if (numBranches > 1) {
-            spreadAngle = Math.PI / 3; // Spread within a 120-degree arc
-            let angle = ((i / (numBranches - 1)) - 0.5) * spreadAngle;
-            newX = ogX + Math.cos(angle) * radius;
-            newY = ogY + Math.sin(angle) * radius;
-        } else {
-            newX = ogX;
-            newY = ogY - radius; // Single child directly below
+
+    // Symmetry calculation for the angle spread
+    let spreadAngle = Math.PI / 3; // Default: spread within a 120-degree arc
+
+    if (numBranches > 1) {
+        // Calculate the positions symmetrically
+        let angleStep = spreadAngle / (numBranches - 1);
+        let startAngle = -spreadAngle / 2; // Start from the leftmost branch
+
+        for (let i = 0; i < numBranches; i++) {
+            // Adjust the angle based on the index, ensuring opposite branches
+            let angle = startAngle + i * angleStep;
+            let newX = ogX + Math.cos(angle) * radius;
+            let newY = ogY + Math.sin(angle) * radius;
+
+            // Recursive call for the next branch
+            drawTree(point.branches[i], { x: newX, y: newY }, rewardsDiv);
         }
-    
-        drawTree(point.branches[i], { x: newX, y: newY },rewardsDiv);
+    } else {
+        // Single child directly below the parent (no spread)
+        let newX = ogX;
+        let newY = ogY - radius; // Single child directly below
+        drawTree(point.branches[0], { x: newX, y: newY }, rewardsDiv);
     }
 }
 function drawLine(parentDiv, childDiv) {
