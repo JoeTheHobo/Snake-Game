@@ -168,14 +168,14 @@ function openInfoCard(type,thingToOpen,parent) {
     let card = $(".techTree_infoCard");
     if (type == "item") {
         card.$(".infocard_name").innerHTML = thingToOpen.displayName;
-        card.$(".infocard_name").style.color == "blue";
+        card.$(".infocard_name").style.color = "blue";
         card.$(".infocard_title").show();
         card.$(".infocard_title").innerHTML = thingToOpen.type.toUpperCase();
         card.$(".infocard_description").innerHTML = thingToOpen.description;
     }
     if (type == "coins") {
         card.$(".infocard_name").innerHTML = "Coins";
-        card.$(".infocard_name").style.color == "gold";
+        card.$(".infocard_name").style.color = "gold";
         card.$(".infocard_title").hide();
         card.$(".infocard_description").innerHTML = "Use Coins To Buy Things In The Store!";
     }
@@ -184,7 +184,7 @@ function openInfoCard(type,thingToOpen,parent) {
     let parentRect = parent.getBoundingClientRect();
 
     y = parentRect.bottom + margin;
-    x = parentRect.left - (275/2);
+    x = parentRect.left - (275/2) + (parentRect.width/2);
 
     card.style.left = x + "px";
     card.style.top = y + "px";
