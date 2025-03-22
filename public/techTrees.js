@@ -65,7 +65,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
     let radius = 225; // Distance from parent to child (adjustable)
 
     // Symmetry calculation for the angle spread
-    let spreadAngle = comeFromPoint === "start" ? Math.PI : 180 * (Math.PI / 180); // 200 degrees in radians
+    let spreadAngle = comeFromPoint === "start" ? Math.PI : 170 * (Math.PI / 180); // 200 degrees in radians
 
     if (numBranches > 1) {
         // Calculate the positions symmetrically
@@ -79,6 +79,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
             // Find the edge of the div to shoot from
             let edgeX = Math.cos(angle) * (divWidth / 2);
             let edgeY = Math.sin(angle) * (divHeight / 2);
+            console.log(edgeX)
 
             let newX = ogX + edgeX + Math.cos(angle) * radius;
             let newY = ogY + edgeY + Math.sin(angle) * radius;
