@@ -69,46 +69,34 @@ function drawTree(point,comeFromPoint,parentDiv) {
         drawTree(point.branches[i], { x: newX, y: newY },rewardsDiv);
     }
 }
-function drawLine(div1, div2) {
-    const line = $("scene_tree").create("div.techTree_line");
-    const margin = 10;
-
-    // Get the positions of the divs
-    const div1Rect = div1.getBoundingClientRect();
-    const div2Rect = div2.getBoundingClientRect();
-
-    let pointA = {x: 0, y: 0},
-        pointB = {x: 0, y: 0};
-
-        console.log(div1Rect.left,div2Rect.left);
-    if (div1Rect.left > div2Rect.left) {
-        pointA.x = div2Rect.right + margin;
-        pointB.x = div1Rect.left - margin;
-    }
-    if (div1Rect.left < div2Rect.left) {
-        pointA.x = div1Rect.right + margin;
-        pointB.x = div2Rect.left - margin;
-    }
-    if (div1Rect.top > div2Rect.top) {
-        pointA.y = div2Rect.bottom + margin;
-        pointB.y = div1Rect.top - margin;
-    }
-    if (div1Rect.top < div2Rect.top) {
-        pointA.y = div1Rect.bottom + margin;
-        pointB.y = div2Rect.top - margin;
-    }
-
-    console.log(pointA,pointB)
-
-    // Calculate the new distance and angle for the line
-    const distance = Math.sqrt(Math.pow(pointB.x - pointA.x, 2) + Math.pow(pointB.y - pointA.y, 2));
-    const angle = Math.atan2(pointB.y - pointA.y, pointB.x - pointA.x) * 180 / Math.PI;
-
-    // Set the position and rotation of the line
-    line.style.width = distance + 'px';
-    line.style.transform = `rotate(${angle}deg)`;
-    line.style.left = pointA.x + 'px';
-    line.style.top = pointA.y + 'px';
+function drawLine(parentDiv, childDiv) {
+    // Get the position and size of the parent and child divs
+    const parentRect = parentDiv.getBoundingClientRect();
+    const childRect = childDiv.getBoundingClientRect();
+  
+    // Calculate the center points of the parent and child divs
+    const parentCenterX = parentRect.left + parentRect.width / 2;
+    const parentCenterY = parentRect.top + parentRect.height / 2;
+    const childCenterX = childRect.left + childRect.width / 2;
+    const childCenterY = childRect.top + childRect.height / 2;
+  
+    // Calculate the distance between the centers
+    const deltaX = childCenterX - parentCenterX;
+    const deltaY = childCenterY - parentCenterY;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+  
+    // Calculate the angle in radians
+    const angle = Math.atan2(deltaY, deltaX);
+  
+    // Create a new line div
+    const lineDiv = $("scene_tree").create('div.techTree_line');
+  
+    // Style the line div
+    lineDiv.style.width = `${distance}px`; // Set the width of the line to the calculated distance
+    lineDiv.style.top = `${parentCenterY - 1}px`; // Adjust the top position for the line
+    lineDiv.style.left = `${parentCenterX - 1}px`; // Adjust the left position for the line
+    lineDiv.style.transformOrigin = '0 50%'; // Set the line's rotation origin to the left side of the line
+    lineDiv.style.transform = `rotate(${angle}rad)`; // Rotate the line by the calculated angle
 }
 function getRewardsDiv(point) {
     let rewards = point.rewards;
