@@ -84,17 +84,16 @@ function generateStarBackground(canvas) {
             }
         }
     }
-
-    canvas.on("mousedown", (e) => {
-        console.log("hmm")
+    document.body.on("mousedown", (e) => {
+        if (global_scene !== "tree") return;
         drag = true;
         startX = e.clientX;
         startY = e.clientY;
     });
       
-    canvas.on("mousemove", (e) => {
+    document.body.on("mousemove", (e) => {
+        if (global_scene !== "tree") return;
         if (drag) {
-            console.log("Eyo")
             offsetX -= e.clientX - startX;
             offsetY -= e.clientY - startY;
             startX = e.clientX;
@@ -102,9 +101,9 @@ function generateStarBackground(canvas) {
             drawStars();
         }
     });
-
     drawStars();
 }
+
 
 let techTree_beta = {
     rewards: [{

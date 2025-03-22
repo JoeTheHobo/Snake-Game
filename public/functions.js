@@ -377,6 +377,7 @@ function hideScenes() {
 function setScene(scene,lobby) {
     hideScenes();
     $("scene_" + scene).show("flex");
+    global_scene = scene;
     localAccount.isInMapEditor = false;
     showingGameTips = false;
 
