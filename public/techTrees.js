@@ -12,7 +12,7 @@ function loadTechTree(tree) {
 function drawTree(point,comeFromPoint,direction) {
     let rewardsDiv = getRewardsDiv(point);
 
-    let x,y;
+    let x,y,ogX,ogY;
 
     if (comeFromPoint === "start") {
         x = 0;
@@ -21,6 +21,8 @@ function drawTree(point,comeFromPoint,direction) {
         x = comeFromPoint.x;
         y = comeFromPoint.y;
     }
+    ogX = x;
+    ogY = y;
 
 
     let windowWidth = window.innerWidth;
@@ -55,11 +57,11 @@ function drawTree(point,comeFromPoint,direction) {
         if (numBranches > 1) {
             spreadAngle = Math.PI / 3; // Spread within a 120-degree arc
             let angle = ((i / (numBranches - 1)) - 0.5) * spreadAngle;
-            newX = x + Math.cos(angle) * radius;
-            newY = y + Math.sin(angle) * radius;
+            newX = ogX + Math.cos(angle) * radius;
+            newY = ogY + Math.sin(angle) * radius;
         } else {
-            newX = x;
-            newY = y + radius; // Single child directly below
+            newX = ogX;
+            newY = ogY + radius; // Single child directly below
         }
     
         drawTree(point.branches[i], { x: newX, y: newY });
