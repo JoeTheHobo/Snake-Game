@@ -4,6 +4,11 @@ function loadTechTree(tree) {
     let canvas = $("scene_tree").create("canvas.techTree_background");
     let vignette = $("scene_tree").create("div.techTree_vignette");
     let infoCard = $("scene_tree").create("div.techTree_infoCard")
+    movingPoints.push({
+        div: infoCard,
+        x: 0,
+        y: 0,
+    })
     generateStarBackground(canvas);
 
     drawTree(tree,"start");
@@ -154,34 +159,20 @@ function openInfoCard(type,thingToOpen,parent) {
     const margin = 10;
     let card = $(".techTree_infoCard");
     card.innerHTML = "";
-    card.css({
-        left: "",
-        top: "",
-        bottom: "",
-        right: "",
-    })
     if (type == "item") {
         card.innerHTML = thingToOpen.description;
     }
 
-    console.log(parent)
-
     let cardRect = card.getBoundingClientRect();
     let parentRect = parent.getBoundingClientRect();
 
-    if (parentRect.top > window.innerHeight/2) {
-        card.style.bottom = (parentRect.top - margin) + "px";
-    }
-    if (parentRect.bottom < window.innerHeight/2) {
-        card.style.top = (parentRect.bottom + margin) + "px";
-    }
-    if (parentRect.left > window.innerWidth/2) {
-        card.style.right = (parentRect.left - margin) + "px";
-    }
-    if (parentRect.right > window.innerWidth/2) {
-        card.style.left = (parentRect.right + margin) + "px";
-    }
+    let x,y;
 
+    y = parentRect.bottom + margin;
+    x = parentRect.left - (cardRect.width/2);
+
+    movingPoints[0].x = x;
+    movingPoints[0].y = y;
 
     card.show("flex");
 }
