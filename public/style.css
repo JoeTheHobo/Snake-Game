@@ -3634,6 +3634,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 .techTree_reward {
   position: relative;
+  z-index: 1;
 }
 .techTree_insideReward {
   width: 100%;
@@ -3659,8 +3660,8 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 .techTree_reward_miniText {
   position: absolute;
-  right: 5px;
-  bottom: 5px;
+  right: 0px;
+  bottom: 0px;
   font-size: 20px;
   color: gold;
   z-index: 2;
