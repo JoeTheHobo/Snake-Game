@@ -114,22 +114,39 @@ function drawLine(parentDiv, childDiv) {
   
     // Calculate the angle in radians
     const angle = Math.atan2(deltaY, deltaX);
-  
+
+    // Calculate the edge offsets based on div sizes
+    const parentEdgeX = Math.cos(angle) * (parentRect.width / 2);
+    const parentEdgeY = Math.sin(angle) * (parentRect.height / 2);
+    const childEdgeX = Math.cos(angle) * (childRect.width / 2);
+    const childEdgeY = Math.sin(angle) * (childRect.height / 2);
+
+    // Adjust start and end positions to connect at the edges
+    const startX = parentCenterX + parentEdgeX;
+    const startY = parentCenterY + parentEdgeY;
+    const endX = childCenterX - childEdgeX;
+    const endY = childCenterY - childEdgeY;
+
+    // Recalculate the new distance between the adjusted points
+    const adjustedDeltaX = endX - startX;
+    const adjustedDeltaY = endY - startY;
+    const adjustedDistance = Math.sqrt(adjustedDeltaX * adjustedDeltaX + adjustedDeltaY * adjustedDeltaY);
+
     // Create a new line div
     const lineDiv = $("scene_tree").create('div.techTree_line');
-  
+
     // Style the line div
-    lineDiv.style.width = `${distance}px`; // Set the width of the line to the calculated distance
-    lineDiv.style.top = `${parentCenterY - 1}px`; // Adjust the top position for the line
-    lineDiv.style.left = `${parentCenterX - 1}px`; // Adjust the left position for the line
+    lineDiv.style.width = `${adjustedDistance}px`; // Set the width of the line to the adjusted distance
+    lineDiv.style.top = `${startY}px`; // Adjust the top position for the line
+    lineDiv.style.left = `${startX}px`; // Adjust the left position for the line
     lineDiv.style.transformOrigin = '0 50%'; // Set the line's rotation origin to the left side of the line
     lineDiv.style.transform = `rotate(${angle}rad)`; // Rotate the line by the calculated angle
 
     movingPoints.push({
         div: lineDiv,
-        x: parentCenterX - 1,
-        y: parentCenterY - 1,
-    })
+        x: startX,
+        y: startY,
+    });
 }
 function getRewardsDiv(point) {
     let rewards = point.rewards;
