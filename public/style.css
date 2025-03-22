@@ -3578,9 +3578,9 @@ gap: 1px; /* Optional: Adjust spacing between items */
   width: max-content;
   height: 30px;
   padding: 5px;
-  font-size: 20px;
+  font-size: 1em;
   background: rgba(255, 255, 255, 0.301);
-  border: 2em solid rgba(255, 255, 255, 0.801);
+  border: 3px solid rgba(255, 255, 255, 0.801);
   border-radius: 5px;
   color: white;
   line-height: 30px;
