@@ -168,14 +168,14 @@ function openInfoCard(type,thingToOpen,parent) {
     let card = $(".techTree_infoCard");
     if (type == "item") {
         card.$(".infocard_name").innerHTML = thingToOpen.displayName;
-        card.$(".infocard_name").style == "blue";
+        card.$(".infocard_name").style.color == "blue";
         card.$(".infocard_title").show();
         card.$(".infocard_title").innerHTML = thingToOpen.type.toUpperCase();
         card.$(".infocard_description").innerHTML = thingToOpen.description;
     }
     if (type == "coins") {
-        card.$(".infocard_name").innerHTML = "COINS";
-        card.$(".infocard_name").style == "gold";
+        card.$(".infocard_name").innerHTML = "Coins";
+        card.$(".infocard_name").style.color == "gold";
         card.$(".infocard_title").hide();
         card.$(".infocard_description").innerHTML = "Use Coins To Buy Things In The Store!";
     }
