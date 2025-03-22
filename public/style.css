@@ -3598,8 +3598,12 @@ gap: 1px; /* Optional: Adjust spacing between items */
   color: white;
   border-radius: 5px;
 }
-.infocard_title {
+.infocard_name {
   font-size: 26px;
+
+}
+.infocard_title {
+  font-size: 15px;
 
 }
 .infocard_description {

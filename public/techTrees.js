@@ -4,6 +4,7 @@ function loadTechTree(tree) {
     let canvas = $("scene_tree").create("canvas.techTree_background");
     let vignette = $("scene_tree").create("div.techTree_vignette");
     let infoCard = $("scene_tree").create("div.techTree_infoCard")
+    infoCard.create("div.infocard_name");
     infoCard.create("div.infocard_title");
     infoCard.create("div.infocard_description")
     movingPoints.push({
@@ -166,13 +167,16 @@ function openInfoCard(type,thingToOpen,parent) {
     const margin = 10;
     let card = $(".techTree_infoCard");
     if (type == "item") {
+        card.$(".infocard_name").innerHTML = thingToOpen.displayName;
+        card.$(".infocard_name").style == "blue";
+        card.$(".infocard_title").show();
         card.$(".infocard_title").innerHTML = thingToOpen.type.toUpperCase();
-        card.$(".infocard_title").style == "blue";
         card.$(".infocard_description").innerHTML = thingToOpen.description;
     }
     if (type == "coins") {
-        card.$(".infocard_title").innerHTML = "COINS";
-        card.$(".infocard_title").style == "gold";
+        card.$(".infocard_name").innerHTML = "COINS";
+        card.$(".infocard_name").style == "gold";
+        card.$(".infocard_title").hide();
         card.$(".infocard_description").innerHTML = "Use Coins To Buy Things In The Store!";
     }
 
