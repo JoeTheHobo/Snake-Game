@@ -172,8 +172,10 @@ function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked) {
             
         })
 
+        /*
         let pointCounterDiv = lineDiv.create("div.techTree_line_count")
         pointCounterDiv.innerHTML = "x" + price;
+        */
     } else {
         lineDiv.classAdd("techTree_line_unlocked")
     }
@@ -404,7 +406,7 @@ let techTree_beta = {
                 },
             ],
             branches: [{
-                unlocked: true,
+                unlocked: false,
                 cost: 2,
                 rewards: [
                     {
