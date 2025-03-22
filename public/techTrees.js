@@ -4,6 +4,8 @@ function loadTechTree(tree) {
     let canvas = $("scene_tree").create("canvas.techTree_background");
     let vignette = $("scene_tree").create("div.techTree_vignette");
     let infoCard = $("scene_tree").create("div.techTree_infoCard")
+    infoCard.create("div.infocard_title");
+    infoCard.create("div.infocard_description")
     movingPoints.push({
         div: infoCard,
         x: 0,
@@ -158,13 +160,11 @@ function getRewardsDiv(point) {
 function openInfoCard(type,thingToOpen,parent) {
     const margin = 10;
     let card = $(".techTree_infoCard");
-    card.innerHTML = "";
     if (type == "item") {
-        card.innerHTML = `${thingToOpen.type.charAt(0).toUpperCase() + thingToOpen.type.subset(1,"end")}<br>
-        ${thingToOpen.description}`;
+        card.$(".infocard_title").innerHTML = thingToOpen.type.charAt(0).toUpperCase() + thingToOpen.type.subset(1,"end");
+        card.$(".infocard_description").innerHTML = thingToOpen.description;
     }
 
-    card.offsetHeight;
 
     let x,y;
     let cardRect = card.getBoundingClientRect();

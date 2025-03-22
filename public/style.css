@@ -3591,13 +3591,23 @@ gap: 1px; /* Optional: Adjust spacing between items */
   border: 4px solid rgba(255, 255, 255, 0.904);
   padding: 10px;
   height: max-content;
-  width: max-content;
+  width: 275px;
   display: none;
   flex-direction: column;
   align-items: center;
-  font-size: 23px;
   color: white;
   border-radius: 5px;
+}
+.infocard_title {
+  font-size: 26px;
+
+}
+.infocard_description {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  font-size: 23px;
 }
 .techTree_unlocked {
 
