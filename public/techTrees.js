@@ -327,7 +327,7 @@ function generateStarBackground(canvas) {
         }
     }
     let mouseDownTime = 0; // Store time of the mousedown event
-    const maxClickDuration = 250; // Maximum duration (in ms) for a click to be considered fast
+    const maxClickDuration = 200; // Maximum duration (in ms) for a click to be considered fast
 
     document.on('mouseout', function(e) {
         if (global_scene !== "tree") return;
@@ -350,7 +350,6 @@ function generateStarBackground(canvas) {
         const clickDuration = Date.now() - mouseDownTime; // Calculate the time between mousedown and mouseup
         if (clickDuration <= maxClickDuration) {
             if (!e.target.classList.contains("techTree_reward") && !e.target.classList.contains("techTree_insideReward") && !e.target.classList.contains("techTree_lineLockedImg")) {
-                console.log(e.target)
                 $(".techTree_reward").classRemove("techTree_reward_selected")
                 $(".techTree_infoCard").hide();
             }
