@@ -3580,14 +3580,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
   background: radial-gradient(circle, rgb(0 0 0 / 0%) 50%, rgb(62 40 44 / 50%) 100%);
   z-index: 1000; /* Keep it above the canvas */
 }
-.textTree_rewards {
-  position: absolute;
-  cursor: url('./img/pointer.cur'), auto;
-  transition: all .2s ease-in-out;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
 .techTree_line {
   position: absolute;
   height: 2px;
@@ -3628,6 +3620,13 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .techTree_locked {
   filter: grayscale(100%);
 }
+.textTree_rewards {
+  position: absolute;
+  cursor: url('./img/pointer.cur'), auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 .techTree_reward_selected {
   border: 3px solid rgba(63, 126, 199, 0.801) !important;
 
@@ -3635,6 +3634,8 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .techTree_reward {
   position: relative;
   z-index: 1;
+  transition: border .2s ease-in-out;
+  box-sizing: border-box;
 }
 .techTree_insideReward {
   width: 100%;
