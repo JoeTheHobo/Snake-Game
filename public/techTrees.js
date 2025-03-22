@@ -163,7 +163,7 @@ function openInfoCard(type,thingToOpen,parent) {
         card.innerHTML = thingToOpen.description;
     }
 
-    requestAnimationFrame(function() {
+    setTimeout(function() {
         let x,y;
         let cardRect = $(".techTree_infoCard").getBoundingClientRect();
         let parentRect = parent.getBoundingClientRect();
@@ -180,7 +180,7 @@ function openInfoCard(type,thingToOpen,parent) {
         movingPoints[0].y = y;
     
         card.show("flex");
-    })
+    },100)
     
 }
 function generateStarBackground(canvas) {
