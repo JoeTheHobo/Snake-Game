@@ -171,6 +171,9 @@ function openInfoCard(type,thingToOpen,parent) {
     y = parentRect.bottom + margin;
     x = parentRect.left - (cardRect.width/2);
 
+    card.style.left = x + "px";
+    card.style.top = y + "px";
+
     movingPoints[0].x = x;
     movingPoints[0].y = y;
 
@@ -219,12 +222,14 @@ function generateStarBackground(canvas) {
             }
         }
     }
-    document.body.on("mousedown", (e) => {
+    document.body.on("click",function(e) {
         if (global_scene !== "tree") return;
         if (!e.target.classList.contains("textTree_rewards")) {
             $(".textTree_rewards").classRemove("techTree_reward_selected")
             $(".techTree_infoCard").hide();
         }
+    })
+    document.body.on("mousedown", (e) => {
         drag = true;
         startX = e.clientX;
         startY = e.clientY;
