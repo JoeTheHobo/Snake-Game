@@ -69,7 +69,7 @@ function drawTree(point,comeFromPoint,parentDiv) {
         drawTree(point.branches[i], { x: newX, y: newY },rewardsDiv);
     }
 }
-function drawLine(parentDiv, childDiv, margin = 100) {
+function drawLine(parentDiv, childDiv) {
     // Get the position and size of the parent and child divs
     const parentRect = parentDiv.getBoundingClientRect();
     const childRect = childDiv.getBoundingClientRect();
@@ -93,8 +93,8 @@ function drawLine(parentDiv, childDiv, margin = 100) {
   
     // Style the line div
     lineDiv.style.width = `${distance}px`; // Set the width of the line to the calculated distance
-    lineDiv.style.top = `${parentCenterY - 1 - Math.sin(angle) * margin}px`; // Adjust the top position for the line with margin
-    lineDiv.style.left = `${parentCenterX - 1 - Math.cos(angle) * margin}px`; // Adjust the left position for the line with margin
+    lineDiv.style.top = `${parentCenterY - 1}px`; // Adjust the top position for the line
+    lineDiv.style.left = `${parentCenterX - 1}px`; // Adjust the left position for the line
     lineDiv.style.transformOrigin = '0 50%'; // Set the line's rotation origin to the left side of the line
     lineDiv.style.transform = `rotate(${angle}rad)`; // Rotate the line by the calculated angle
 }
