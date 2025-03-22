@@ -3708,8 +3708,8 @@ gap: 1px; /* Optional: Adjust spacing between items */
 
 .techTree_content {
   position: fixed;
-  left: 0;
-  top: 0;
+  left: 15px;
+  top: 15px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -3723,21 +3723,21 @@ gap: 1px; /* Optional: Adjust spacing between items */
   font-size: 30px;
   cursor: url('./img/pointer.cur'), auto;
   border-radius: 5px;
-  border: 3px solid rgba(255, 255, 255, 0.959);
-  color: rgba(255, 255, 255, 0.959);
+  border: 3px solid rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
   transition: all .2s ease-in-out;
 }
 .techTree_returnButton:hover {
-  border: 3px solid rgba(45, 226, 54, 0.801);
-  color: rgba(45, 226, 54, 0.801);
+  border: 3px solid rgb(45, 226, 54);
+  color: rgb(45, 226, 54);
 }
 .techTree_battlePointsImg {
-  height: 25px;
+  height: 35px;
   margin-left: 5px;
 
 }
 .techTree_battlePointsCounter {
   color: purple;
   margin-left: 5px;
-  font-size: 30px;
+  font-size: 35px;
 }
