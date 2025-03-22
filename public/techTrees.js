@@ -9,10 +9,10 @@ function loadTechTree(tree) {
 
     setScene("tree");
 }
-function drawTree(point,comeFromPoint,direction) {
+function drawTree(point,comeFromPoint) {
     let rewardsDiv = getRewardsDiv(point);
 
-    let x,y,ogX,ogY;
+    let x,y;
 
     if (comeFromPoint === "start") {
         x = 0;
@@ -21,8 +21,8 @@ function drawTree(point,comeFromPoint,direction) {
         x = comeFromPoint.x;
         y = comeFromPoint.y;
     }
-    ogX = x;
-    ogY = y;
+    const ogX = x;
+    const ogY = y;
 
 
     let windowWidth = window.innerWidth;
@@ -33,8 +33,6 @@ function drawTree(point,comeFromPoint,direction) {
     let divHeight = rewardsDiv.getBoundingClientRect().height; 
     x -= divWidth/2;
     y -= divHeight/2;
-
-    console.log(x,y)
 
     rewardsDiv.css({
         left: x + "px",
@@ -63,9 +61,36 @@ function drawTree(point,comeFromPoint,direction) {
             newX = ogX;
             newY = ogY - radius; // Single child directly below
         }
+        
+        // 🔹 **Draw the line between (ogX, ogY) and (newX, newY)**
+        drawLine(ogX, ogY, newX, newY);
     
         drawTree(point.branches[i], { x: newX, y: newY });
     }
+}
+// **Function to draw lines between points**
+function drawLine(x1, y1, x2, y2) {
+    let svg = document.getElementById("tree-lines");
+    if (!svg) {
+        svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("id", "tree-lines");
+        svg.style.position = "absolute";
+        svg.style.top = "0";
+        svg.style.left = "0";
+        svg.style.width = "100vw";
+        svg.style.height = "100vh";
+        svg.style.pointerEvents = "none"; // So it doesn't block clicks
+        document.body.appendChild(svg);
+    }
+
+    let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", x1 + window.innerWidth / 2);
+    line.setAttribute("y1", y1 + window.innerHeight / 2);
+    line.setAttribute("x2", x2 + window.innerWidth / 2);
+    line.setAttribute("y2", y2 + window.innerHeight / 2);
+    line.setAttribute("stroke", "white");
+    line.setAttribute("stroke-width", "2");
+    svg.appendChild(line);
 }
 function getRewardsDiv(point) {
     let rewards = point.rewards;
