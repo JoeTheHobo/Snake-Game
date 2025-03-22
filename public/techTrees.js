@@ -4,11 +4,6 @@ function loadTechTree(tree) {
     let canvas = $("scene_tree").create("canvas.techTree_background");
     let vignette = $("scene_tree").create("div.techTree_vignette");
     let infoCard = $("scene_tree").create("div.techTree_infoCard")
-    movingPoints.push({
-        div: infoCard,
-        x: 0,
-        y: 0,
-    })
     generateStarBackground(canvas);
 
     drawTree(tree,"start");
@@ -233,6 +228,7 @@ function generateStarBackground(canvas) {
     }
     document.body.on("mousedown", (e) => {
         if (global_scene !== "tree") return;
+        $(".techTree_infoCard").hide();
         drag = true;
         startX = e.clientX;
         startY = e.clientY;
@@ -292,7 +288,7 @@ let techTree_beta = {
                 rewards: [
                     {
                         type: "item",
-                        id: 20,
+                        id: 14,
                     },
                     {
                         type: "coins",
@@ -305,7 +301,7 @@ let techTree_beta = {
                     rewards: [
                         {
                             type: "item",
-                            id: 20,
+                            id: 21,
                         },
                         {
                             type: "coins",
@@ -333,7 +329,7 @@ let techTree_beta = {
                     rewards: [
                         {
                             type: "item",
-                            id: 20,
+                            id: 2,
                         },
                         {
                             type: "coins",
@@ -350,7 +346,7 @@ let techTree_beta = {
             rewards: [
                 {
                     type: "item",
-                    id: 20,
+                    id: 7,
                 },
                 {
                     type: "coins",
