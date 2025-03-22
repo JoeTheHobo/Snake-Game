@@ -54,6 +54,7 @@ function generateStarBackground(canvas) {
 
     const spaceSize = 4000; // Huge space
     const starCount = 10000; // Number of stars
+    const dragSpeed = 0.5;
     const stars = [];
 
     for (let i = 0; i < starCount; i++) {
@@ -90,12 +91,16 @@ function generateStarBackground(canvas) {
         startX = e.clientX;
         startY = e.clientY;
     });
-      
+    document.body.on("mousedown", (e) => {
+        if (global_scene !== "tree") return;
+        drag = false;
+
+    });
     document.body.on("mousemove", (e) => {
         if (global_scene !== "tree") return;
         if (drag) {
-            offsetX -= e.clientX - startX;
-            offsetY -= e.clientY - startY;
+            offsetX -= (e.clientX - startX)*dragSpeed;
+            offsetY -= (e.clientY - startY)*dragSpeed;
             startX = e.clientX;
             startY = e.clientY;
             drawStars();
