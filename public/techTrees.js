@@ -57,7 +57,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
         })
     
         if (comeFromPoint !== "start") requestAnimationFrame(function() {
-            drawLine(parentDiv,rewardsDiv);
+            drawLine(parentDiv,rewardsDiv,point.unlocked);
         });
     
         
@@ -117,7 +117,7 @@ function hashValue(str) {
     }
     return hash;
 }
-function drawLine(parentDiv, childDiv) {
+function drawLine(parentDiv, childDiv,unlocked) {
     // Get the position and size of the parent and child divs
     const parentRect = parentDiv.getBoundingClientRect();
     const childRect = childDiv.getBoundingClientRect();
@@ -155,9 +155,14 @@ function drawLine(parentDiv, childDiv) {
 
     // Create a new line div
     const lineDiv = $("scene_tree").create('div.techTree_line');
-    let lockedImgHolder = lineDiv.create("div.techTree_lineLocked") 
-    let lockedImg = lockedImgHolder.create("img.techTree_lineLockedImg")
-    lockedImg.src = "img/menuIcons/lock.png";
+    if (!unlocked) {
+        let lockedImgHolder = lineDiv.create("div.techTree_lineLocked") 
+        let lockedImg = lockedImgHolder.create("img.techTree_lineLockedImg")
+        lockedImg.src = "img/menuIcons/lock.png";
+    } else {
+        lineDiv.classAdd("techTree_line_unlocked")
+    }
+    
 
     // Style the line div
     lineDiv.style.width = `${adjustedDistance}px`; // Set the width of the line to the adjusted distance
