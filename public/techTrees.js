@@ -1,6 +1,7 @@
 function loadTechTree(tree) {
     $("scene_tree").innerHTML = "";
-    $("scene_tree").create("img.techTree_background");
+    let background = $("scene_tree").create("img.techTree_background");
+    background.src = tree.background;
 
 
     drawTree(tree);
