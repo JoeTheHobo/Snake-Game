@@ -826,7 +826,7 @@ function getImage(item,returnType,mapEditor = false) {
     for (let i = 0; i < item.baseImgTags.length; i++) {
         url += getBaseImgFromTag(item,item.baseImgTags[i],mapEditor)
     }
-    
+    console.log(url)
     if (returnType == "canvas") return getItemCanvas(url,type);
     if (returnType == "src") return $(url).src;
 }
