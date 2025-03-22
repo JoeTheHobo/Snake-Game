@@ -1,5 +1,7 @@
 function loadTechTree(tree) {
     $("scene_tree").innerHTML = "";
+    $("scene_tree").create("img.techTree_background");
+
 
     drawTree(tree);
     
@@ -46,6 +48,7 @@ let techTree_beta = {
         type: "text",
         text: "Beta",
     }],
+    background: "img/techTrees/backgroundStarts.jpeg",
     unlocked: false,
     branches: [
         {
