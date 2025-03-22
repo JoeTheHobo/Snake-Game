@@ -155,7 +155,8 @@ function drawLine(parentDiv, childDiv) {
 
     // Create a new line div
     const lineDiv = $("scene_tree").create('div.techTree_line');
-    let lockedImg = lineDiv.create("img.techTree_lineLocked") 
+    let lockedImgHolder = lineDiv.create("img.techTree_lineLocked") 
+    let lockedImg = lockedImgHolder.create("img.techTree_lineLockedImg")
     lockedImg.src = "img/menuIcons/lock.png";
 
     // Style the line div
