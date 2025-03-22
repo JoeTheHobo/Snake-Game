@@ -164,6 +164,8 @@ function openInfoCard(type,thingToOpen,parent) {
         card.innerHTML = thingToOpen.description;
     }
 
+    console.log(parent)
+
     let cardRect = card.getBoundingClientRect();
     let parentRect = parent.getBoundingClientRect();
 
@@ -228,7 +230,7 @@ function generateStarBackground(canvas) {
     }
     document.body.on("mousedown", (e) => {
         if (global_scene !== "tree") return;
-        $(".techTree_infoCard").hide();
+        if (!e.target.classList.contains("textTree_rewards")) $(".techTree_infoCard").hide();
         drag = true;
         startX = e.clientX;
         startY = e.clientY;
