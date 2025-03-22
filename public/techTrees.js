@@ -323,6 +323,14 @@ let techTree_beta = {
                         id: 14,
                     },
                     {
+                        type: "item",
+                        id: 9,
+                    },
+                    {
+                        type: "item",
+                        id: 30,
+                    },
+                    {
                         type: "coins",
                         count: 5,
                     },
