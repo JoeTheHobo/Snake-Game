@@ -168,17 +168,19 @@ function openInfoCard(type,thingToOpen,parent) {
 
     let x,y;
 
-    console.log(parentRect.left,cardRect.width);
-    y = parentRect.bottom + margin;
-    x = parentRect.left - (cardRect.width/2);
-
-    card.style.left = x + "px";
-    card.style.top = y + "px";
-
-    movingPoints[0].x = x;
-    movingPoints[0].y = y;
-
-    card.show("flex");
+    requestAnimationFrame(function() {
+        y = parentRect.bottom + margin;
+        x = parentRect.left - (cardRect.width/2);
+    
+        card.style.left = x + "px";
+        card.style.top = y + "px";
+    
+        movingPoints[0].x = x;
+        movingPoints[0].y = y;
+    
+        card.show("flex");
+    })
+    
 }
 function generateStarBackground(canvas) {
     let ctx = canvas.getContext("2d");
