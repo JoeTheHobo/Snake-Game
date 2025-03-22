@@ -820,7 +820,6 @@ function getItemValueFromList(item,list,mapEditor = false) {
     return value;
 }
 function getImage(item,returnType,mapEditor = false) {
-    console.log(item)
     let type = item.type;
     let url = type + "_" + item.name + "_" + item.skin;
     if (item.baseImgTags?.length > 0) url += "_";
@@ -1809,7 +1808,6 @@ function setAllCanvasToRightSize() {
 
 function _getById(id,type) {
     let list = type == "item" ? items : tiles;
-    console.log(list)
     for (let i = 0; i < list.length; i++) {
         if (list[i].id === id) return list[i];
     }

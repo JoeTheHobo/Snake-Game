@@ -74,7 +74,7 @@ function getRewardsDiv(point) {
         if (reward.type == "item" || reward.type == "tile") {
             rewardDiv.classAdd("techTree_reward_img");
             let item = _getById(reward.id,reward.type);
-            console.log(item);
+            console.log(getImage(item,"src"));
             rewardDiv.src = getImage(item,"src");
         }
         if (reward.type == "coins") {
