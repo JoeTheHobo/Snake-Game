@@ -3629,6 +3629,10 @@ gap: 1px; /* Optional: Adjust spacing between items */
   border: 3px solid rgba(56, 100, 223, 0.801) !important;
 
 }
+.techTree_insideReward {
+  width: 100%;
+  height: 100%;
+}
 .techTree_reward_text {
   width: max-content;
   height: max-content;

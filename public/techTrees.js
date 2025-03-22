@@ -128,22 +128,24 @@ function getRewardsDiv(point) {
     let holder = $("scene_tree").create("div.textTree_rewards");
     for (let i = 0; i < rewards.length; i++) {
         let reward = rewards[i];
-        let rewardDiv;
-        if (["item","tile","coins"].includes(reward.type)) rewardDiv = holder.create("img.techTree_reward");
-        if (["text"].includes(reward.type)) rewardDiv = holder.create("div.techTree_reward");
+        let rewardDiv = holder.create("div.techTree_reward");
+        let insideDiv;
+
+        if (["item","tile","coins"].includes(reward.type)) insideDiv = holder.create("img.techTree_insideReward");
+        if (["text"].includes(reward.type)) insideDiv = holder.create("div.techTree_insideReward");
 
         if (point.unlocked) rewardDiv.classAdd("techTree_unlocked");
         else rewardDiv.classAdd("techTree_locked");
 
         if (reward.type == "text") {
             rewardDiv.classAdd("techTree_reward_text");
-            rewardDiv.innerHTML = reward.text;
+            insideDiv.innerHTML = reward.text;
         }
         if (reward.type == "item" || reward.type == "tile") {
             rewardDiv.classAdd("techTree_reward_img");
             let item = _getById(reward.id,reward.type);
-            rewardDiv.src = getImage(item,"src");
-            rewardDiv.on("click",function(){
+            insideDiv.src = getImage(item,"src");
+            insideDiv.on("click",function(){
                 $(".techTree_reward").classRemove("techTree_reward_selected");
                 this.classAdd("techTree_reward_selected");
                 openInfoCard("item",item,this);
@@ -151,10 +153,10 @@ function getRewardsDiv(point) {
         }
         if (reward.type == "coins") {
             rewardDiv.classAdd("techTree_reward_img");
-            rewardDiv.src = "img/techTrees/coins.png";
+            insideDiv.src = "img/techTrees/coins.png";
             let amountText = rewardDiv.create("div.techTree_reward_miniText");
             amountText.innerHTML = "x" + reward.count;
-            rewardDiv.on("click",function(){
+            insideDiv.on("click",function(){
                 $(".techTree_reward").classRemove("techTree_reward_selected");
                 this.classAdd("techTree_reward_selected");
                 openInfoCard("coins",reward.count,this);
