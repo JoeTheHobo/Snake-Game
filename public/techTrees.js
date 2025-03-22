@@ -78,7 +78,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
                 let baseAngle = startAngle + i * angleStep + parentAngle;
                 
                 // Generate a deterministic "random" offset using the branch ID
-                let offset = (hashValue() % 2000) / 2000 * 2 - 1; // Value between -1 and 1
+                let offset = (hashValue(i) % 2000) / 2000 * 2 - 1; // Value between -1 and 1
                 let randomAngle = baseAngle + offset * randomOffset; 
     
                 // Adjust starting edge point
@@ -91,7 +91,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
                 drawTree(point.branches[i], { x: newX, y: newY }, parentDiv, randomAngle);
             }
         } else if (numBranches === 1) {
-            let offset = (hashValue() % 2000) / 2000 * 2 - 1; 
+            let offset = (hashValue(0) % 2000) / 2000 * 2 - 1; 
             let randomAngle = parentAngle + offset * randomOffset; 
     
             let newX = ogX + Math.cos(randomAngle) * radius;
@@ -101,8 +101,16 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
         }
     },150)
 }
+let techTree_strings = [];
+for (let i = 0; i < 500; i++) {
+    let string = "";
+    for (let j = 0; j < ((i*i)%i+i); j++) {
+        string += "a";
+    }
+    techTree_strings.push(string);
+}
 function hashValue(str) {
-    str = rnd("color");
+    str = techTree_strings[str];
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
         hash = (hash * 31 + str.charCodeAt(i)) % 10000; // Simple deterministic hash
