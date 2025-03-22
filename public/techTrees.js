@@ -77,7 +77,8 @@ function drawLine(div1, div2) {
     const div1Rect = div1.getBoundingClientRect();
     const div2Rect = div2.getBoundingClientRect();
 
-    let pointA, pointB;
+    let pointA = {x: 0, y: 0},
+        pointB = {x: 0, y: 0};
 
     if (div1Rect.left > div2Rect.left) {
         pointA.x = div2Rect.right + margin;
