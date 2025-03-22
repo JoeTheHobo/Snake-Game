@@ -350,6 +350,7 @@ function generateStarBackground(canvas) {
         const clickDuration = Date.now() - mouseDownTime; // Calculate the time between mousedown and mouseup
         if (clickDuration <= maxClickDuration) {
             if (!e.target.classList.contains("techTree_reward")) {
+                console.log(e.target)
                 $(".techTree_reward").classRemove("techTree_reward_selected")
                 $(".techTree_infoCard").hide();
             }
