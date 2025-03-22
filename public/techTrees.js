@@ -20,79 +20,80 @@ function loadTechTree(tree) {
 }
 function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
     let rewardsDiv = getRewardsDiv(point);
+    setTimeout(function() {
+        let x,y;
 
-    let x,y;
-
-    if (comeFromPoint === "start") {
-        x = 0;
-        y = 0;
-    } else {
-        x = comeFromPoint.x;
-        y = comeFromPoint.y;
-    }
-    const ogX = x;
-    const ogY = y;
-
-
-    let windowWidth = window.innerWidth;
-    let windowHeight = window.innerHeight;
-    x += windowWidth/2;
-    y += windowHeight/2;
-    let divWidth = rewardsDiv.getBoundingClientRect().width;
-    let divHeight = rewardsDiv.getBoundingClientRect().height; 
-    console.log(123,divWidth)
-    x -= divWidth/2;
-    y -= divHeight/2;
-
-    rewardsDiv.css({
-        left: x + "px",
-        top: y + "px",
-    })
-
-    movingPoints.push({
-        div: rewardsDiv,
-        x: x,
-        y: y,
-    })
-
-    if (comeFromPoint !== "start") requestAnimationFrame(function() {
-        drawLine(parentDiv,rewardsDiv);
-    });
-
-    
-    
-    // **Spread out the branches**
-    let numBranches = point.branches.length;
-    let radius = 225; // Distance from parent to child (adjustable)
-
-    // Symmetry calculation for the angle spread
-    let spreadAngle = comeFromPoint === "start" ? Math.PI : 170 * (Math.PI / 180); // 200 degrees in radians
-
-    if (numBranches > 1) {
-        // Calculate the positions symmetrically
-        let angleStep = spreadAngle / (numBranches - 1);
-        let startAngle = -spreadAngle / 2; // Start from the leftmost branch
-
-        // Adjust the branch origin point based on the direction of the branch
-        for (let i = 0; i < numBranches; i++) {
-            let angle = startAngle + i * angleStep + parentAngle;
-
-            // Find the edge of the div to shoot from
-            let edgeX = Math.cos(angle) * (divWidth / 2);
-            let edgeY = Math.sin(angle) * (divHeight / 2);
-            console.log(edgeX)
-
-            let newX = ogX + edgeX + Math.cos(angle) * radius;
-            let newY = ogY + edgeY + Math.sin(angle) * radius;
-
-            drawTree(point.branches[i], { x: newX, y: newY }, rewardsDiv, angle);
+        if (comeFromPoint === "start") {
+            x = 0;
+            y = 0;
+        } else {
+            x = comeFromPoint.x;
+            y = comeFromPoint.y;
         }
-    } else if (numBranches == 1) {
-        // Single child directly below the parent (no spread)
-        let newX = ogX;
-        let newY = ogY - radius; // Single child directly below
-        drawTree(point.branches[0], { x: newX, y: newY }, rewardsDiv, parentAngle);
-    }
+        const ogX = x;
+        const ogY = y;
+    
+    
+        let windowWidth = window.innerWidth;
+        let windowHeight = window.innerHeight;
+        x += windowWidth/2;
+        y += windowHeight/2;
+        let divWidth = rewardsDiv.getBoundingClientRect().width;
+        let divHeight = rewardsDiv.getBoundingClientRect().height;
+        console.log(divWidth)
+        x -= divWidth/2;
+        y -= divHeight/2;
+    
+        rewardsDiv.css({
+            left: x + "px",
+            top: y + "px",
+        })
+    
+        movingPoints.push({
+            div: rewardsDiv,
+            x: x,
+            y: y,
+        })
+    
+        if (comeFromPoint !== "start") requestAnimationFrame(function() {
+            drawLine(parentDiv,rewardsDiv);
+        });
+    
+        
+        
+        // **Spread out the branches**
+        let numBranches = point.branches.length;
+        let radius = 225; // Distance from parent to child (adjustable)
+    
+        // Symmetry calculation for the angle spread
+        let spreadAngle = comeFromPoint === "start" ? Math.PI : 170 * (Math.PI / 180); // 200 degrees in radians
+    
+        if (numBranches > 1) {
+            // Calculate the positions symmetrically
+            let angleStep = spreadAngle / (numBranches - 1);
+            let startAngle = -spreadAngle / 2; // Start from the leftmost branch
+    
+            // Adjust the branch origin point based on the direction of the branch
+            for (let i = 0; i < numBranches; i++) {
+                let angle = startAngle + i * angleStep + parentAngle;
+    
+                // Find the edge of the div to shoot from
+                let edgeX = Math.cos(angle) * (divWidth / 2);
+                let edgeY = Math.sin(angle) * (divHeight / 2);
+                console.log(edgeX)
+    
+                let newX = ogX + edgeX + Math.cos(angle) * radius;
+                let newY = ogY + edgeY + Math.sin(angle) * radius;
+    
+                drawTree(point.branches[i], { x: newX, y: newY }, rewardsDiv, angle);
+            }
+        } else if (numBranches == 1) {
+            // Single child directly below the parent (no spread)
+            let newX = ogX;
+            let newY = ogY - radius; // Single child directly below
+            drawTree(point.branches[0], { x: newX, y: newY }, rewardsDiv, parentAngle);
+        }
+    },150)
 }
 function drawLine(parentDiv, childDiv) {
     // Get the position and size of the parent and child divs
