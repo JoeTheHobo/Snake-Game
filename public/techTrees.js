@@ -85,6 +85,22 @@ function generateStarBackground(canvas) {
         }
     }
 
+    canvas.addEventListener("mousedown", (e) => {
+        drag = true;
+        startX = e.clientX;
+        startY = e.clientY;
+    });
+      
+    canvas.addEventListener("mousemove", (e) => {
+        if (drag) {
+            offsetX -= e.clientX - startX;
+            offsetY -= e.clientY - startY;
+            startX = e.clientX;
+            startY = e.clientY;
+            drawStars();
+        }
+    });
+
     drawStars();
 }
 
