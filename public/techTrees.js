@@ -50,10 +50,18 @@ function drawTree(point,comeFromPoint,direction) {
     let radius = 150; // Distance from parent to child (adjustable)
     
     for (let i = 0; i < numBranches; i++) {
-        let angle = (i / numBranches) * (Math.PI * 2); // Spread evenly in a circle
-        let newX = x + Math.cos(angle) * radius;
-        let newY = y + Math.sin(angle) * radius;
-
+        let spreadAngle = Math.PI / 2; // Default: start downward (90 degrees)
+    
+        if (numBranches > 1) {
+            spreadAngle = Math.PI / 3; // Spread within a 120-degree arc
+            let angle = ((i / (numBranches - 1)) - 0.5) * spreadAngle;
+            newX = x + Math.cos(angle) * radius;
+            newY = y + Math.sin(angle) * radius;
+        } else {
+            newX = x;
+            newY = y + radius; // Single child directly below
+        }
+    
         drawTree(point.branches[i], { x: newX, y: newY });
     }
 }
