@@ -165,7 +165,6 @@ function openInfoCard(type,thingToOpen,parent) {
         card.$(".infocard_description").innerHTML = thingToOpen.description;
     }
 
-
     let x,y;
     let cardRect = card.getBoundingClientRect();
     let parentRect = parent.getBoundingClientRect();

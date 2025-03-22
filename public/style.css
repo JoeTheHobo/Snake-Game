@@ -3603,10 +3603,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
 
 }
 .infocard_description {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  width: 100%;
   font-size: 23px;
 }
 .techTree_unlocked {
