@@ -91,7 +91,7 @@ function generateStarBackground(canvas) {
         startX = e.clientX;
         startY = e.clientY;
     });
-    document.body.on("mousedown", (e) => {
+    document.body.on("mouseup", (e) => {
         if (global_scene !== "tree") return;
         drag = false;
 
