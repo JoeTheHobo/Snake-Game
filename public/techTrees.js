@@ -168,6 +168,8 @@ function openInfoCard(type,thingToOpen,parent) {
         let cardRect = card.getBoundingClientRect();
         let parentRect = parent.getBoundingClientRect();
 
+        console.log(cardRect);
+
         y = parentRect.bottom + margin;
         x = parentRect.left - (cardRect.width/2);
     
