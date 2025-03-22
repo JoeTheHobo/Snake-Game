@@ -21,6 +21,7 @@ function loadTechTree(tree) {
 function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
     let rewardsDiv = getRewardsDiv(point);
     setTimeout(function() {
+        rewardsDiv.style.opacity = 1;
         let x,y;
 
         if (comeFromPoint === "start") {
@@ -133,6 +134,7 @@ function drawLine(parentDiv, childDiv) {
 function getRewardsDiv(point) {
     let rewards = point.rewards;
     let holder = $("scene_tree").create("div.textTree_rewards");
+    holder.style.opacity = 0;
     for (let i = 0; i < rewards.length; i++) {
         let reward = rewards[i];
         let rewardDiv = holder.create("div.techTree_reward");
