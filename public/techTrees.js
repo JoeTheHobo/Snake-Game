@@ -167,6 +167,7 @@ function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked) {
         let lockedImgHolder = lineDiv.create("div.techTree_lineLocked") 
         let lockedImg = lockedImgHolder.create("img.techTree_lineLockedImg")
         if (!parentUnlocked) lockedImgHolder.classAdd("grayScale");
+        else lockedImgHolder.classAdd("noInvert");
         lockedImg.src = "img/techTrees/battlePoints.png";
         lockedImgHolder.on("click",function() {
             

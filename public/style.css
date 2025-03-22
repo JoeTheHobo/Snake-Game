@@ -3665,7 +3665,9 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 .grayScale {
   filter: grayscale(100%);
-
+}
+.noInvert {
+  filter: none !important;
 }
 .textTree_rewards {
   position: absolute;
