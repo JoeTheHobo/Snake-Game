@@ -131,6 +131,7 @@ function getRewardsDiv(point) {
         let rewardDiv;
         if (["item","tile","coins"].includes(reward.type)) rewardDiv = holder.create("img.techTree_reward");
         if (["text"].includes(reward.type)) rewardDiv = holder.create("div.techTree_reward");
+        holder.setAttribute('draggable', false);
 
         if (point.unlocked) rewardDiv.classAdd("techTree_unlocked");
         else rewardDiv.classAdd("techTree_locked");
