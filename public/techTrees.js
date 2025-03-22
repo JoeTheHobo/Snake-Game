@@ -69,7 +69,7 @@ function drawTree(point,comeFromPoint,parentDiv) {
         drawTree(point.branches[i], { x: newX, y: newY },rewardsDiv);
     }
 }
-function drawLine(parentDiv, childDiv, margin = 10) {
+function drawLine(parentDiv, childDiv, margin = 100) {
     // Get the position and size of the parent and child divs
     const parentRect = parentDiv.getBoundingClientRect();
     const childRect = childDiv.getBoundingClientRect();
