@@ -172,7 +172,7 @@ function drawLine(parentDiv, childDiv,unlocked,price) {
         })
 
         let pointCounterDiv = lineDiv.create("div.techTree_line_count")
-        pointCounterDiv.innerHTML = price;
+        pointCounterDiv.innerHTML = "x" + price;
     } else {
         lineDiv.classAdd("techTree_line_unlocked")
     }
