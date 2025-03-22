@@ -170,16 +170,16 @@ function openInfoCard(type,thingToOpen,parent) {
     let parentRect = parent.getBoundingClientRect();
 
     if (parentRect.top > window.innerHeight/2) {
-        card.style.bottom = parentRect.top - margin;
+        card.style.bottom = (parentRect.top - margin) + "px";
     }
     if (parentRect.bottom < window.innerHeight/2) {
-        card.style.top = parentRect.bottom + margin;
+        card.style.top = (parentRect.bottom + margin) + "px";
     }
     if (parentRect.left > window.innerWidth/2) {
-        card.style.right = parentRect.left - margin;
+        card.style.right = (parentRect.left - margin) + "px";
     }
     if (parentRect.right > window.innerWidth/2) {
-        card.style.left = parentRect.right + margin;
+        card.style.left = (parentRect.right + margin) + "px";
     }
 
 
@@ -230,7 +230,10 @@ function generateStarBackground(canvas) {
     }
     document.body.on("mousedown", (e) => {
         if (global_scene !== "tree") return;
-        if (!e.target.classList.contains("textTree_rewards")) $(".techTree_infoCard").hide();
+        if (!e.target.classList.contains("textTree_rewards")) {
+            $(".textTree_rewards").classRemove("techTree_reward_selected")
+            $(".techTree_infoCard").hide();
+        }
         drag = true;
         startX = e.clientX;
         startY = e.clientY;
