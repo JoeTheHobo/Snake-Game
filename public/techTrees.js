@@ -177,13 +177,10 @@ function openInfoCard(type,thingToOpen,parent) {
     }
 
     let x,y;
-    let cardRect = card.getBoundingClientRect();
     let parentRect = parent.getBoundingClientRect();
 
-    console.log(cardRect);
-
     y = parentRect.bottom + margin;
-    x = parentRect.left - (cardRect.width/2);
+    x = parentRect.left - (275/2);
 
     card.style.left = x + "px";
     card.style.top = y + "px";
