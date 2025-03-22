@@ -66,7 +66,8 @@ function generateStarBackground(canvas) {
         });
     }
 
-    let offsetX = 0, offsetY = 0;
+    let offsetX = (spaceSize - viewWidth) / 2;
+    let offsetY = (spaceSize - viewHeight) / 2;
     let drag = false, startX, startY;
 
     function drawStars() {
