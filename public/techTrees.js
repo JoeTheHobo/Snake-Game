@@ -57,7 +57,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0) {
         })
     
         if (comeFromPoint !== "start") requestAnimationFrame(function() {
-            drawLine(parentDiv,rewardsDiv,point.unlocked);
+            drawLine(parentDiv,rewardsDiv,point.unlocked,point.cost);
         });
     
         
@@ -117,7 +117,7 @@ function hashValue(str) {
     }
     return hash;
 }
-function drawLine(parentDiv, childDiv,unlocked) {
+function drawLine(parentDiv, childDiv,unlocked,price) {
     // Get the position and size of the parent and child divs
     const parentRect = parentDiv.getBoundingClientRect();
     const childRect = childDiv.getBoundingClientRect();
@@ -157,8 +157,14 @@ function drawLine(parentDiv, childDiv,unlocked) {
     const lineDiv = $("scene_tree").create('div.techTree_line');
     if (!unlocked) {
         let lockedImgHolder = lineDiv.create("div.techTree_lineLocked") 
+        lockedImgHolder.classAdd("techTree_reward");
         let lockedImg = lockedImgHolder.create("img.techTree_lineLockedImg")
         lockedImg.src = "img/menuIcons/lock.png";
+        lockedImgHolder.on("click",function() {
+            $(".techTree_reward").classRemove("techTree_reward_selected");
+            this.classAdd("techTree_reward_selected");
+            openInfoCard("purchace",price,this);
+        })
     } else {
         lineDiv.classAdd("techTree_line_unlocked")
     }
@@ -184,6 +190,7 @@ function getRewardsDiv(point) {
     for (let i = 0; i < rewards.length; i++) {
         let reward = rewards[i];
         let rewardDiv = holder.create("div.techTree_reward");
+        rewardDiv.classAdd("hover");
         let insideDiv;
 
         if (["item","tile","coins"].includes(reward.type)) insideDiv = rewardDiv.create("img.techTree_insideReward");
@@ -234,8 +241,15 @@ function openInfoCard(type,thingToOpen,parent) {
     if (type == "coins") {
         card.$(".infocard_name").innerHTML = "Coins";
         card.$(".infocard_name").style.color = "gold";
-        card.$(".infocard_title").hide();
+        card.$(".infocard_title").show();
+        card.$(".infocard_title").innerHTML = "x" + thingToOpen;
         card.$(".infocard_description").innerHTML = "Use Coins To Buy Things In The Store!";
+    }
+    if (type == "purchace") {
+        card.$(".infocard_name").innerHTML = "Battle Points";
+        card.$(".infocard_name").style.color = "purple";
+        card.$(".infocard_title").hide();
+        card.$(".infocard_description").innerHTML = thingToOpen;
     }
 
     let x,y;
