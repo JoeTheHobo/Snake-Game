@@ -49,7 +49,7 @@ function drawTree(point,comeFromPoint,direction) {
 
     // **Spread out the branches**
     let numBranches = point.branches.length;
-    let radius = 150; // Distance from parent to child (adjustable)
+    let radius = 175; // Distance from parent to child (adjustable)
     
     for (let i = 0; i < numBranches; i++) {
         let spreadAngle = Math.PI / 2; // Default: start downward (90 degrees)
@@ -61,7 +61,7 @@ function drawTree(point,comeFromPoint,direction) {
             newY = ogY + Math.sin(angle) * radius;
         } else {
             newX = ogX;
-            newY = ogY + radius; // Single child directly below
+            newY = ogY - radius; // Single child directly below
         }
     
         drawTree(point.branches[i], { x: newX, y: newY });
@@ -189,6 +189,10 @@ let techTree_beta = {
                 {
                     type: "item",
                     id: 20,
+                },
+                {
+                    type: "coins",
+                    count: 5,
                 },
             ],
             branches: [],
