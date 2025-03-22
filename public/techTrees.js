@@ -232,6 +232,49 @@ let techTree_beta = {
                     count: 5,
                 },
             ],
+            branches: [{
+                unlocked: false,
+                cost: 2,
+                rewards: [
+                    {
+                        type: "item",
+                        id: 20,
+                    },
+                    {
+                        type: "coins",
+                        count: 5,
+                    },
+                ],
+                branches: [{
+                    unlocked: false,
+                    cost: 2,
+                    rewards: [
+                        {
+                            type: "item",
+                            id: 20,
+                        },
+                        {
+                            type: "coins",
+                            count: 5,
+                        },
+                    ],
+                    branches: [],
+                }],
+            }],
+        },
+        {
+            unlocked: false,
+            cost: 2,
+            rewards: [
+                {
+                    type: "item",
+                    id: 20,
+                },
+                {
+                    type: "coins",
+                    count: 5,
+                },
+            ],
             branches: [],
         }
     ]
