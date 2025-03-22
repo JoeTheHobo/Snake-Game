@@ -169,6 +169,7 @@ function openInfoCard(type,thingToOpen,parent) {
     let x,y;
 
     requestAnimationFrame(function() {
+        console.log(parentRect.left,cardRect.width);
         y = parentRect.bottom + margin;
         x = parentRect.left - (cardRect.width/2);
     
