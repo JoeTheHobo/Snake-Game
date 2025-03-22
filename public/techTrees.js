@@ -224,9 +224,8 @@ function generateStarBackground(canvas) {
     }
     document.body.on("click",function(e) {
         if (global_scene !== "tree") return;
-        console.log(e.target)
-        if (!e.target.classList.contains("textTree_reward")) {
-            $(".textTree_reward").classRemove("techTree_reward_selected")
+        if (!e.target.classList.contains("techTree_reward")) {
+            $(".techTree_reward").classRemove("techTree_reward_selected")
             $(".techTree_infoCard").hide();
         }
     })
