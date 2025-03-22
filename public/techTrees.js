@@ -161,6 +161,11 @@ function drawLine(parentDiv, childDiv,unlocked,price) {
         let lockedImg = lockedImgHolder.create("img.techTree_lineLockedImg")
         lockedImg.src = "img/menuIcons/lock.png";
         lockedImgHolder.on("click",function() {
+            if (this.classList.contains("techTree_reward_selected")) {
+                $(".techTree_reward").classRemove("techTree_reward_selected");
+                $(".techTree_infoCard").hide();
+                return;
+            }
             $(".techTree_reward").classRemove("techTree_reward_selected");
             this.classAdd("techTree_reward_selected");
             openInfoCard("purchace",price,this);
@@ -208,6 +213,11 @@ function getRewardsDiv(point) {
             let item = _getById(reward.id,reward.type);
             insideDiv.src = getImage(item,"src");
             insideDiv.on("click",function(){
+                if (this.$P().classList.contains("techTree_reward_selected")) {
+                    $(".techTree_reward").classRemove("techTree_reward_selected");
+                    $(".techTree_infoCard").hide();
+                    return;
+                }
                 $(".techTree_reward").classRemove("techTree_reward_selected");
                 this.$P().classAdd("techTree_reward_selected");
                 openInfoCard("item",item,this);
@@ -219,6 +229,11 @@ function getRewardsDiv(point) {
             let amountText = rewardDiv.create("div.techTree_reward_miniText");
             amountText.innerHTML = "x" + reward.count;
             insideDiv.on("click",function(){
+                if (this.$P().classList.contains("techTree_reward_selected")) {
+                    $(".techTree_reward").classRemove("techTree_reward_selected");
+                    $(".techTree_infoCard").hide();
+                    return;
+                }
                 $(".techTree_reward").classRemove("techTree_reward_selected");
                 this.$P().classAdd("techTree_reward_selected");
                 openInfoCard("coins",reward.count,this);
@@ -248,7 +263,8 @@ function openInfoCard(type,thingToOpen,parent) {
     if (type == "purchace") {
         card.$(".infocard_name").innerHTML = "Battle Points";
         card.$(".infocard_name").style.color = "purple";
-        card.$(".infocard_title").hide();
+        card.$(".infocard_title").show();
+        card.$(".infocard_title").innerHTML = "Cost";
         card.$(".infocard_description").innerHTML = thingToOpen;
     }
 
