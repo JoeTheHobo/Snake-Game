@@ -46,7 +46,7 @@ function drawTree(point,comeFromPoint,parentDiv) {
     })
 
     if (comeFromPoint !== "start") requestAnimationFrame(function() {
-        drawLine(rewardsDiv,parentDiv);
+        drawLine(parentDiv,rewardsDiv);
     });
 
     // **Spread out the branches**
