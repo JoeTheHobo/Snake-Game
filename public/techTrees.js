@@ -338,6 +338,8 @@ function getRewardsDiv(point) {
             rewardDiv.classAdd("techTree_reward_img");
             let item = structuredClone(_getById(reward.id,"tile"));
             item.skin = rewardDiv.skin;
+            console.log(item);
+            console.log(getImage(item,"src"));
             insideDiv.src = getImage(item,"src");
             insideDiv.on("click",function(){
                 if (this.$P().classList.contains("techTree_reward_selected")) {
