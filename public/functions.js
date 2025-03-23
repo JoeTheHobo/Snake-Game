@@ -402,7 +402,7 @@ function setScene(scene,lobby) {
         showGameTips();
     }
     if (scene === "tree") {
-        playMenuMusic("sounds/Tech Tree/menuTheme.mp3");
+        playMenuMusic("sounds/Tech Tree/menuTheme.mp3",50);
     } else {
         stopMenuMusic();
     }
@@ -1834,31 +1834,33 @@ function loadAllBattlePasses() {
         })
     }
 }
-function playMenuMusic(url) {
-    // If the same music is already playing, do nothing
-    if (currentAudio && currentAudio.src.includes(url)) return;
+function playMenuMusic(url, volume = 100) {
+    let targetVolume = volume / 100; // Convert to 0-1 range
+
+    // If the same music is already playing at the same volume, do nothing
+    if (currentAudio && currentAudio.src.includes(url) && currentAudio.volume === targetVolume) return;
 
     // Fade out existing music if playing
     if (currentAudio) {
         fadeOut(currentAudio, 1000, () => {
             currentAudio.pause();
             currentAudio = null;
-            startNewMusic(url);
+            startNewMusic(url, targetVolume);
         });
     } else {
-        startNewMusic(url);
+        startNewMusic(url, targetVolume);
     }
 }
-
-function startNewMusic(url) {
+function startNewMusic(url, targetVolume) {
     currentAudio = new Audio(url);
     currentAudio.loop = true;
     currentAudio.volume = 0; // Start at 0 volume
     currentAudio.play();
 
-    // Fade in new music
-    fadeIn(currentAudio, 1000);
+    // Fade in new music to the desired volume
+    fadeIn(currentAudio, 1000, targetVolume);
 }
+
 function stopMenuMusic() {
     if (currentAudio) {
         fadeOut(currentAudio, 1000, () => {
@@ -1867,33 +1869,31 @@ function stopMenuMusic() {
         });
     }
 }
-function fadeIn(audio, duration) {
+function fadeIn(audio, duration, targetVolume = 1) {
     let volume = 0;
-    let step = 0.01;
-    let interval = duration / (1 / step);
+    let step = targetVolume / (duration / 50); // Adjust step based on target volume
 
     let fade = setInterval(() => {
-        if (volume < 1) {
-            volume += step;
-            audio.volume = Math.min(volume, 1);
+        if (volume < targetVolume) {
+            volume = Math.min(volume + step, targetVolume);
+            audio.volume = volume;
         } else {
             clearInterval(fade);
         }
-    }, interval);
+    }, 50);
 }
 
 function fadeOut(audio, duration, callback) {
     let volume = audio.volume;
-    let step = 0.01;
-    let interval = duration / (volume / step);
+    let step = volume / (duration / 50); // Gradual decrease
 
     let fade = setInterval(() => {
         if (volume > 0) {
-            volume -= step;
-            audio.volume = Math.max(volume, 0);
+            volume = Math.max(volume - step, 0);
+            audio.volume = volume;
         } else {
             clearInterval(fade);
-            callback(); // Call the callback when fade-out is complete
+            callback();
         }
-    }, interval);
+    }, 50);
 }
