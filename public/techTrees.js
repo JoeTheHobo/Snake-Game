@@ -100,6 +100,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0,parentUnlocked)
             rewardsDiv.$(".techTree_reward").classRemove("techTree_locked");
             rewardsDiv.$(".techTree_reward").classAdd("techTree_unlocked");
             rewardsDiv.locked = false;
+            return;
             for (let i = 0; i < rewardsDiv.lines.length; i++) {
                 rewardsDiv.lines.$(".techTree_line_count").show();
                 rewardsDiv.lines.$(".techTree_lineLocked").show("flex");
@@ -163,7 +164,7 @@ function hashValue(str) {
     }
     return hash;
 }
-function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked,nodeID) {
+function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked) {
     // Get the position and size of the parent and child divs
     const parentRect = parentDiv.getBoundingClientRect();
     const childRect = childDiv.getBoundingClientRect();
