@@ -373,7 +373,7 @@ function setScene(scene,lobby) {
     }
     if (scene == "newMenu") {
         loadServersHTML();
-        $(".account_name").innerHTML = localAccount.id; 
+        $(".account_name").innerHTML = localAccount.username + "#" + localAccount.tag; 
         $(".sc_bb_snakeImg").css({
             filter: getPlayerFilter(localAccount.serverSnake),
         });
