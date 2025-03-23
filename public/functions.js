@@ -1860,6 +1860,7 @@ function startNewMusic(url, targetVolume) {
     currentAudio.play();
 
     // Fade in new music to the desired volume
+    console.log(targetVolume,global_musicVolume,targetVolume*(global_musicVolume/100));
     fadeIn(currentAudio, 1000, targetVolume*(global_musicVolume/100));
 }
 
@@ -1874,7 +1875,6 @@ function stopMenuMusic() {
 function fadeIn(audio, duration, targetVolume = 1) {
     let volume = 0;
     let step = targetVolume / (duration / 50); // Adjust step based on target volume
-    console.log(targetVolume)
 
     let fade = setInterval(() => {
         if (volume < targetVolume) {
