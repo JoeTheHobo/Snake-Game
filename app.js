@@ -9,6 +9,10 @@ const app = express();
 const pako = require('pako');
 const profanity = require("./profanity.js");
 
+const allBattlePasses = {};
+const {battlePass_beta} = require("./Tech Trees/techTree_beta.js");
+allBattlePasses[battlePass_beta.name] = battlePass_beta;
+
 //socket.io setup
 const http = require('http');
 const server = http.createServer(app);
@@ -75,7 +79,10 @@ io.on('connection', (socket) => {
         coins: 0,
         battlePassPoints: 20,
         questsAccepted: [],
-        battlePasses: [],
+        battlePasses: [{
+            name: "beta",
+            unlocked: [],
+        }],
 
 
         allowedItemIds: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50],
@@ -106,6 +113,10 @@ io.on('connection', (socket) => {
             {hue: 318, saturation: 300, brightness: 200},
         ],
     }
+    let accessedBattlePasses = {};
+    for (let i = 0; i < onlineAccounts[socket.id].battlePasses.length; i++) {
+        accessedBattlePasses[onlineAccounts[socket.id].battlePasses[i]] = allBattlePasses[onlineAccounts[socket.id].battlePasses[i]];
+    }
     let randomColor = simple.rnd(onlineAccounts[socket.id].allowedSnakeColors); 
     onlineAccounts[socket.id].serverSnake.hue = randomColor.hue;
     onlineAccounts[socket.id].serverSnake.saturation = randomColor.saturation;
@@ -126,7 +137,7 @@ io.on('connection', (socket) => {
             let sendItems = pako.deflate(JSON.stringify(items), { to: 'string' });
             let sendTiles = pako.deflate(JSON.stringify(tiles), { to: 'string' });
 
-            io.to(socket.id).emit('setPlayer', socket.id, onlineAccounts[socket.id],sendItems,basedGameMode,presetGameModes,presetBoards,backgrounds,sendTiles,decompressed);
+            io.to(socket.id).emit('setPlayer', socket.id, onlineAccounts[socket.id],sendItems,basedGameMode,presetGameModes,presetBoards,backgrounds,sendTiles,decompressed,accessedBattlePasses);
         })
     })
 

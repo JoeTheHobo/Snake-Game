@@ -37,7 +37,7 @@ socket.on("updateLocalGameModes",(accountID,gameModes,sentFrom) => {
         loadGameModesScreen();
     }
 })
-socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_presetGameModes,server_presetBoards,server_backgrounds,server_tiles,player_boards) =>{
+socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_presetGameModes,server_presetBoards,server_backgrounds,server_tiles,player_boards,server_accessedBattlePasses) =>{
     localAccount.id = id;
     localAccount.isInGame = false;
     localAccount.lobbyID = false;
@@ -55,7 +55,9 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     localAccount.allowedTileIds = account.allowedTileIds;
     localAccount.allowedSnakeColors = account.allowedSnakeColors;
     localAccount.battlePassPoints = account.battlePassPoints;
-
+    localAccount.battlePasses = account.battlePasses;
+    accessedBattlePasses = server_accessedBattlePasses;
+    
     items = JSON.parse(pako.inflate(server_items, { to: 'string' }));
     tiles = JSON.parse(pako.inflate(server_tiles, { to: 'string' }));
     basedGameMode = server_basedGameMode;
@@ -66,7 +68,7 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
 
     backgrounds = server_backgrounds;
 
-    //setScene("newMenu");
+    setScene("newMenu");
     //Load All Item Images
     requestIdleCallback(function() {
         loadAllCanvas(items);
@@ -77,9 +79,6 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     })
     //Make Game Tips
     generateGameTips();
-    setTimeout(function() {
-        loadTechTree(techTree_beta);
-    },1000)
     
 
     renderMapsInServersTab = true;

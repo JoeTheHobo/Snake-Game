@@ -11,6 +11,7 @@ let renderMapsInServersTab = false;
 let allPianoKeys = [];
 let keyMapping;
 let global_scene;
+let accessedBattlePasses;
 
 let global_gameColors = [
     ["white","#ffffff"],

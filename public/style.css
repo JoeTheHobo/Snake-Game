@@ -3753,3 +3753,60 @@ gap: 1px; /* Optional: Adjust spacing between items */
   margin-left: 5px;
   font-size: 35px;
 }
+
+
+.newMenu_battlePassContent {
+  position: fixed;
+  right: 15px;
+  top: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+}
+.newMenu_bpc_leftRight {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.newMenu_statHolder {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.statHolderGold {
+  border: 3px solid gold;
+}
+.statHolderPurple {
+  border: 3px solid purple;
+
+}
+.newMenu_statImg {
+  width: 80%;
+  height: 80%;
+}
+.newMenu_statText {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  font-size: 2em;
+  -webkit-text-stroke: 3px black;
+  paint-order: stroke fill;
+}
+.newMenu_statPurple {
+  color: purple;
+}
+.newMenu_statGold {
+  color: gold;
+}
+.techTreesHolder {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
