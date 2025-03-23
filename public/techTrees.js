@@ -405,6 +405,8 @@ function openInfoCard(type,thingToOpen,parent,extra) {
         card.$(".infocard_description").innerHTML = "Customize Your Snake!";
     }
 
+    playAudio("sounds/Tech Tree/infocard.mp3");
+
     let x,y;
     let parentRect = parent.getBoundingClientRect();
 
