@@ -3796,7 +3796,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   height: max-content;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: -3%;
   margin: auto;
   font-size: 2em;
   -webkit-text-stroke: 3px black;
