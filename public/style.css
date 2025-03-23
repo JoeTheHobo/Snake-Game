@@ -3905,7 +3905,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
   width: 160px;
   border-radius: 5px;
   background: rgb(240, 240, 240);
-  justify-content: center;
   position: relative;
   margin: 5px;
 }
@@ -3944,6 +3943,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
 
 }
 .square {
+  justify-content: center;
   height: 160px;
 }
 .pointerCursor {
