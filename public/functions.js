@@ -1906,7 +1906,7 @@ function adjustVolume(audioElement, type, adj = 1) {
 
   function loginLoad(type) {
     $(".loginRegisterDiv").hide();
-    $(type + "Div").show("flex");
+    $("." + type + "Div").show("flex");
 
     if (type == "login") {
         $(".lrd_warning").hide();
