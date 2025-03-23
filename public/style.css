@@ -963,7 +963,7 @@ font-size: 30px;
 
 
 
-#scene_newMenu, #scene_lobby {
+#scene_newMenu, #scene_lobby, #scene_login {
 justify-content: flex-start !important;
 }
 .menu_background {
@@ -1055,9 +1055,10 @@ margin-right: 10px;
 font-size: 20px;
 }
 .signinLink {
-font-size: 17px;
-color: rgb(65, 147, 255);
-font-family: Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  color: rgb(65, 147, 255);
+  font-family: Arial, Helvetica, sans-serif;
+  text-decoration: underline;
 }
 
 

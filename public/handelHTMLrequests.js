@@ -326,3 +326,6 @@ function adjustVolumeSliders() {
 
     updateAllVolumes();
 }
+$(".signinLink").on("click",function() {
+    setScene("login")
+})
