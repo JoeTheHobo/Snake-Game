@@ -8,12 +8,16 @@ function loadServersHTML() {
     $("servers_tab").classAdd("menu_tab_selected");
     let holder = $(".servers_servers_holder");
     holder.innerHTML = "";
+    let foundSelectedServer;
     for (let server in frontEndLobbies) {
         server = frontEndLobbies[server];
         if (!server.id) continue;
         let server_holder = holder.create("div");
         server_holder.classAdd("server_holder");
-        if (server.id == serverSelected.id) server_holder.classAdd("serverSelected");
+        if (server.id == serverSelected.id) {
+            server_holder.classAdd("serverSelected");
+            foundSelectedServer = false;
+        } 
 
         let boardCanvas = server_holder.create("canvas");
         boardCanvas.className = "server_canvas";
@@ -70,8 +74,13 @@ function loadServersHTML() {
             $(".server_holder").classRemove("serverSelected");
             this.classAdd("serverSelected");
             serverSelected = this.server;
-            $("joinServer").classRemove("servers_button_inactive");
+            $("joinServer").classRemove("playButtonSounds_inactive");
         })
+    }
+    if (!foundSelectedServer) {
+        serverSelected = false;
+        $("joinServer").classAdd("playButtonSounds_inactive");
+
     }
 }
 
@@ -643,98 +652,6 @@ function loadCustomizeSnakeScreen(index = false) {
         ]
     )
 }
-
-function loadBoardsScreen(index = false) {
-    $(".menu_tab").classRemove("menu_tab_selected");
-    $(".menu_content").hide();
-    $(".content_boards").show("flex");
-    $("boards_tab").classAdd("menu_tab_selected");
-
-    let addTop = [];
-    if (localAccount.boards.length !== localAccount.boardLimit) {
-        addTop = [{type: "button",text: "New Board",onClick: function() {
-            makePopUp([
-                {type: "title",text: "New Board"},
-                [
-                    {type: "text", text: "Name"},
-                    {type: "input", id:"name", maxLength: "30", placeholder: "Untitled", width: "200px"},
-                ],
-                /*
-                [
-                    {type: "text", text: "Width"},
-                    {type: "number", id:"width", value: "50", min: 5, max: 70, width: "50px"},
-                    {type: "text", text: "Height"},
-                    {type: "number", id:"height", value: "30", min: 5, max: 70, width: "50px"},
-                ],
-                */
-                {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "green",text:"Create",onClick: (ids) => {
-                    const {name,width,height} = ids;
-                    let boardName = name.value == "" ? "Untitled" : name.value;
-                    socket.emit("createNewBoard",boardName,50,30,"openMapEditor");
-                    
-                }},
-            ],{
-                exit: {
-                    cursor: "url('./img/pointer.cur'), auto",
-                },
-                id: "newBoard",
-    
-            })
-        }}/*,{type: "button",text: "Import",onClick: () => {
-
-            // Create an input element of type file
-            const input = document.createElement('input');
-            input.type = 'file';
-
-            // When the user selects a file
-            input.addEventListener('change', (event) => {
-                const file = event.target.files[0]; // Get the first selected file
-                if (file) {
-                    readFileContent(file); // Read the content of the file
-
-                } else {
-                alert('No file selected!');
-                }
-            });
-
-            // Programmatically click the input to open the file dialog
-            input.click();
-
-            
-
-        }}*/]
-    }
-
-    let adminControls = [];
-    if (ls.get("admin",false)) {
-        adminControls = {type: "button", text:"Export", onClick: (board) => {
-            socket.emit("getZippedBoard",pako.deflate(JSON.stringify(shortenBoard(board)), { to: 'string' }));
-        }}
-    }
-
-    generateHTMLScreen($(".content_boards"),
-        {
-            list: localAccount.boards,
-            forceOpen: index,
-            listContent: [{type: "title",text: ".name",tag: "name"},[adminControls,{type: "button",special: true, text:"Edit", onClick: (board,index) => {
-                currentBoardIndex = index;
-                console.log(1000,board.itemDifferences)
-                openMapEditor(board);
-            }}]],
-            top: addTop,
-        },
-        [
-            {type: "canvas", width: "90%", height: "square",display: function(board,canvas) {
-                drawBoardToCanvas(board.originalMap,canvas)
-            }},
-            {type: "title",special: "delete", text: "Danger Zone"},
-            {type: "delete", special: "delete", delete: localAccount.boards,deleteLoad: "loadBoardsScreen"}
-        ]
-    )
-}
-
-
-
 
 
 function loadLocalScreen() {
@@ -1360,6 +1277,19 @@ function loadBoardMenu() {
                 })
             })
         }
+        
+        if (type == "newBoard") {
+            
+            let container = holder.create("div.bm_boardContainer");
+            container.classAdd("hover");
+            container.classAdd("square");
+            container.classAdd("pointerCursor");
+            let img = container.create("img.bm_shopImg");
+            img.src = "img/menuIcons/shopingcart.png";
+            container.on("click",function() {
+
+            })
+        }
     }
 
     let listHolder = $(".cb_boardList");
@@ -1369,8 +1299,9 @@ function loadBoardMenu() {
     }
 
     if (localAccount.boards.length < localAccount.boardLimit) {
-        console.log("ey")
         makeBoard(listHolder,false,"newBoard")
+    } else {
+        makeBoard(listHolder,false,"buyBoard")
     }
 
 

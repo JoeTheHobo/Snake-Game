@@ -77,7 +77,7 @@ $(".menu_tab").on("click",function() {
     if (value == "servers") {
         serverSelected = false;
         $(".server_holder").className = "server_holder";
-        $("joinServer").classAdd("servers_button_inactive");
+        $("joinServer").classAdd("playButtonSounds_inactive");
     }
 })
 $("hostServer").on("click",function() {
@@ -297,7 +297,7 @@ $(".vc_slider").on("input",function() {
 
     if (this.id === "volumeSliderMusic") global_musicVolume = value;
     else global_sfxVolume = value;
-    
+
     adjustVolumeSliders();
 })
 $(".vc_img").on("click",function() {
