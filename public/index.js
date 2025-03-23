@@ -27,7 +27,7 @@ socket.on("kickPlayer",(message) => {
     alert(message);
 
 })
-socket.on("updateLocalGameModes",(accountID,gameModes,sentFrom) => {
+socket.on("updateLocalGameModes",(gameModes,sentFrom) => {
     localAccount.gameModes = gameModes;
 
     if (sentFrom == "loadGameModesScreen") {
