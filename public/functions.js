@@ -401,6 +401,11 @@ function setScene(scene,lobby) {
         showingGameTips = true;
         showGameTips();
     }
+    if (scene === "tree") {
+        playMenuMusic("sounds/Tech Tree/menuTheme.mp3");
+    } else {
+        stopMenuMusic();
+    }
 }
 
 
@@ -1828,4 +1833,67 @@ function loadAllBattlePasses() {
             loadTechTree(battlePass);
         })
     }
+}
+function playMenuMusic(url) {
+    // If the same music is already playing, do nothing
+    if (currentAudio && currentAudio.src.includes(url)) return;
+
+    // Fade out existing music if playing
+    if (currentAudio) {
+        fadeOut(currentAudio, 1000, () => {
+            currentAudio.pause();
+            currentAudio = null;
+            startNewMusic(url);
+        });
+    } else {
+        startNewMusic(url);
+    }
+}
+
+function startNewMusic(url) {
+    currentAudio = new Audio(url);
+    currentAudio.loop = true;
+    currentAudio.volume = 0; // Start at 0 volume
+    currentAudio.play();
+
+    // Fade in new music
+    fadeIn(currentAudio, 1000);
+}
+function stopMenuMusic() {
+    if (currentAudio) {
+        fadeOut(currentAudio, 1000, () => {
+            currentAudio.pause();
+            currentAudio = null;
+        });
+    }
+}
+function fadeIn(audio, duration) {
+    let volume = 0;
+    let step = 0.01;
+    let interval = duration / (1 / step);
+
+    let fade = setInterval(() => {
+        if (volume < 1) {
+            volume += step;
+            audio.volume = Math.min(volume, 1);
+        } else {
+            clearInterval(fade);
+        }
+    }, interval);
+}
+
+function fadeOut(audio, duration, callback) {
+    let volume = audio.volume;
+    let step = 0.01;
+    let interval = duration / (volume / step);
+
+    let fade = setInterval(() => {
+        if (volume > 0) {
+            volume -= step;
+            audio.volume = Math.max(volume, 0);
+        } else {
+            clearInterval(fade);
+            callback(); // Call the callback when fade-out is complete
+        }
+    }, interval);
 }

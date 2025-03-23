@@ -12,6 +12,7 @@ let allPianoKeys = [];
 let keyMapping;
 let global_scene;
 let accessedBattlePasses;
+let currentAudio = null;
 
 let global_gameColors = [
     ["white","#ffffff"],
