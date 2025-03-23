@@ -11,6 +11,7 @@ const profanity = require("./profanity.js");
 
 const allBattlePasses = {};
 const battlePass_beta = require("./Tech Trees/techTree_beta.js");
+console.log(battlePass_beta);
 allBattlePasses[battlePass_beta.name] = battlePass_beta;
 
 //socket.io setup
@@ -116,7 +117,6 @@ io.on('connection', (socket) => {
     
     let accessedBattlePasses = {};
     for (let i = 0; i < onlineAccounts[socket.id].battlePasses.length; i++) {
-        console.log(allBattlePasses,onlineAccounts[socket.id].battlePasses[i].name)
         accessedBattlePasses[onlineAccounts[socket.id].battlePasses[i].name] = allBattlePasses[onlineAccounts[socket.id].battlePasses[i].name];
     }
     let randomColor = simple.rnd(onlineAccounts[socket.id].allowedSnakeColors); 
