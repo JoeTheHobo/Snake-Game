@@ -114,6 +114,7 @@ io.on('connection', (socket) => {
         ],
     }
     let accessedBattlePasses = {};
+    console.log(onlineAccounts[socket.id].battlePasses);
     for (let i = 0; i < onlineAccounts[socket.id].battlePasses.length; i++) {
         console.log(onlineAccounts[socket.id].battlePasses[i]);
         accessedBattlePasses[onlineAccounts[socket.id].battlePasses[i].name] = allBattlePasses[onlineAccounts[socket.id].battlePasses[i]];
