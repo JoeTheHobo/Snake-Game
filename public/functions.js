@@ -1659,9 +1659,7 @@ const hoverSound = new Audio("sounds/menuSounds/buttonHover.mp3");
 const clickSound = new Audio("sounds/menuSounds/buttonClick.mp3");
 function playSound(sound) {
     sound.currentTime = 0; // Reset audio to start
-    console.log(global_sfxVolume,sound,sound.volume)
     adjustVolume(sound,"sfx");
-    console.log(global_sfxVolume,sound,sound.volume)
     sound.play();
 }
 $(".playButtonSounds").forEach(button => {
@@ -1876,6 +1874,7 @@ function stopMenuMusic() {
 function fadeIn(audio, duration, targetVolume = 1) {
     let volume = 0;
     let step = targetVolume / (duration / 50); // Adjust step based on target volume
+    console.log(targetVolume)
 
     let fade = setInterval(() => {
         if (volume < targetVolume) {
