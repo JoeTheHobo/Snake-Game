@@ -1922,6 +1922,9 @@ function adjustVolume(audioElement, type, adj = 1) {
         $(".lrd_signup_password_img_1").src = "img/menuIcons/passwordHidden.png";
         $(".lrd_signup_password_img_2").src = "img/menuIcons/passwordHidden.png";
     }
+    if (type == "forgotPassword") {
+
+    }
   }
   $(".lrd_inputImg").on("click",function() {
     let inputHTML = this.$P().$P().$(".lrd_input_password"); 
@@ -1949,6 +1952,9 @@ function adjustVolume(audioElement, type, adj = 1) {
 
 
     //Send To Server
+  })
+  $(".lrd_signin_forgotPassword").on("click",function() {
+    loginLoad("forgotPassword");
   })
   $(".lrd_GoToSignIN").on("click",function() {
     loginLoad("login")
@@ -1982,3 +1988,17 @@ function adjustVolume(audioElement, type, adj = 1) {
     //Send To Server
     
   })
+  $(".lrd_forgot_password_submit").on("click",function() {
+    let warning = false;
+    let emailField = $(".lrd_forgot_password_email");
+    
+    if (emailField == "") warning = "Email Requied";
+
+    if (warning) {
+        $(".lrd_warning_forgot_password").show();
+        $(".lrd_warning_forgot_password").innerHTML = warning;
+        return;
+    }
+
+    //Send To Server
+})
