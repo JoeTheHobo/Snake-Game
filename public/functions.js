@@ -390,6 +390,7 @@ function setScene(scene,lobby) {
         $(".sc_bb_snakeImg").css({
             filter: getPlayerFilter(localAccount.serverSnake),
         });
+        $(".newMenu_statPoints").innerHTML = localAccount.battlePassPoints;
     }
     if (scene == "waiting"){
         if (localAccount.id != lobby.host){
