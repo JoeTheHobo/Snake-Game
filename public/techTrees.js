@@ -1,7 +1,6 @@
 let movingPoints = [];
 function loadTechTree(tree) {
     let scene = $("scene_tree"); 
-    console.log(tree)
     scene.innerHTML = "";
     let canvas = scene.create("canvas.techTree_background");
     let vignette = scene.create("div.techTree_vignette");
