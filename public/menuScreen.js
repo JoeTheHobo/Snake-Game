@@ -1280,6 +1280,8 @@ function loadBoardMenu() {
             let container = holder.create("div.bm_boardContainer");
             let boardPortion = container.create("canvas.bm_boardCanvas");
             let settingPortion = container.create("div.bm_boardSettings")
+            let boardName = container.create("div.bm_boardName");
+            boardName.innerHTML = content.name;
 
             drawBoardToCanvas(content.originalMap,boardPortion);
 
