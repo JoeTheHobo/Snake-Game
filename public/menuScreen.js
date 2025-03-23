@@ -922,8 +922,9 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
     }
     if (htmlName) {
         addSetting("Game Mode Name","input",gameMode.name,function(value,input) {
+            value = profanity.clean(value);
             if (value === "") value = "Untitled";
-            if (value.length > 15) return;
+            if (value.length > 32) return;
             if (_type(value).type !== "string") return;
 
             gameMode.name = value;
