@@ -54,6 +54,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0,parentUnlocked)
     let rewardsDiv = getRewardsDiv(point);
     if (laUnlocked.includes(point.id) || comeFromPoint == "start") rewardsDiv.locked = false;
     else rewardsDiv.locked = true;
+    rewardsDiv.lines = [];
     setTimeout(function() {
         rewardsDiv.style.opacity = 1;
         let x,y;
@@ -99,6 +100,11 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0,parentUnlocked)
             rewardsDiv.$(".techTree_reward").classRemove("techTree_locked");
             rewardsDiv.$(".techTree_reward").classAdd("techTree_unlocked");
             rewardsDiv.locked = false;
+            for (let i = 0; i < rewardsDiv.lines.length; i++) {
+                rewardsDiv.lines.$(".techTree_line_count").show();
+                rewardsDiv.lines.$(".techTree_lineLocked").show("flex");
+
+            }
         }
         
         
@@ -219,10 +225,16 @@ function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked,nodeID) {
             },75)
         })
 
+        if (!parentUnlocked) {
+            lockedImgHolder.hide();
+            pointCounterDiv.hide();
+        }
+
     } else {
         lineDiv.classAdd("techTree_line_unlocked")
     }
     
+    childDiv.lines.push(lineDiv);
 
     // Style the line div
     lineDiv.style.width = `${adjustedDistance}px`; // Set the width of the line to the adjusted distance
