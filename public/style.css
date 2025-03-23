@@ -1027,6 +1027,9 @@ font-size: 20px;
 cursor: url('./img/pointer.cur'), auto;
 transition: all .1s ease;
 user-select: none;
+display: flex;
+flex-direction: row;
+align-items: center;
 }
 .tabImage {
   height: 80%;
