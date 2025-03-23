@@ -1990,7 +1990,7 @@ function adjustVolume(audioElement, type, adj = 1) {
   })
   $(".lrd_forgot_password_submit").on("click",function() {
     let warning = false;
-    let emailField = $(".lrd_forgot_password_email");
+    let emailField = $(".lrd_forgot_password_email").value;
     
     if (emailField == "") warning = "Email Requied";
 
