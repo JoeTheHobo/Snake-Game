@@ -1925,3 +1925,19 @@ function adjustVolume(audioElement, type, adj = 1) {
         this.src = "img/menuIcons/passwordHidden.png";
     }
   })
+  $(".lrd_loginButton").on("click",function() {
+    let warning = false;
+    let emailValue = $(".lrd_emailInput").input;
+    let passwordValue = $(".lrd_input_password").value;
+
+    if (emailValue == "") warning = "Email Field Is Empty";
+    if (passwordValue == "") warning = "Password Field Is Empty";
+
+    if (warning) {
+        $(".lrd_warning").show();
+        $(".lrd_warning").innerHTML = warning;
+        return;
+    }
+
+    //Send To Server
+  })
