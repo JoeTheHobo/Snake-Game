@@ -141,6 +141,7 @@ io.on('connection', (socket) => {
             let sendItems = pako.deflate(JSON.stringify(items), { to: 'string' });
             let sendTiles = pako.deflate(JSON.stringify(tiles), { to: 'string' });
 
+            console.log("hello?2")
             io.to(socket.id).emit('setPlayer', socket.id, onlineAccounts[socket.id],sendItems,basedGameMode,presetGameModes,presetBoards,backgrounds,sendTiles,decompressed,accessedBattlePasses);
         })
     })
