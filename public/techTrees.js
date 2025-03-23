@@ -369,7 +369,7 @@ function getRewardsDiv(point) {
     }
     return holder;
 }
-function openInfoCard(type,thingToOpen,parent) {
+function openInfoCard(type,thingToOpen,parent,extra) {
     const margin = 10;
     let card = $(".techTree_infoCard");
     if (type == "item") {
@@ -391,7 +391,7 @@ function openInfoCard(type,thingToOpen,parent) {
         card.$(".infocard_description").innerHTML = "You can build another board!";
     }
     if (type == "tileSkin") {
-        card.$(".infocard_name").innerHTML = thingToOpen.displayName + " " + rewardDiv.skin + " Skin";
+        card.$(".infocard_name").innerHTML = thingToOpen.displayName + " " + extra + " Skin";
         card.$(".infocard_name").style.color = _color("neongreen").ogColor;
         card.$(".infocard_title").innerHTML = "TILE";
         card.$(".infocard_description").innerHTML = "Get A New Skin For Your Tile!";
@@ -399,7 +399,7 @@ function openInfoCard(type,thingToOpen,parent) {
     if (type == "snakeColor") {
         card.$(".infocard_name").innerHTML = "Snake Color";
         card.$(".infocard_name").style.color = "white";
-        card.$(".infocard_title").innerHTML = "TILE";
+        card.$(".infocard_title").innerHTML = "";
         card.$(".infocard_description").innerHTML = "Customize Your Snake!";
     }
 
