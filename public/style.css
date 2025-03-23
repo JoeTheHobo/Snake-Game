@@ -3821,3 +3821,22 @@ gap: 1px; /* Optional: Adjust spacing between items */
   width: 100% !important;
   height: 100% !important;
 }
+
+.volumeControlsMenu {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  z-index: 500;
+}
+.volumeControls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.vc_img {
+  width: 50px;
+  height: 50px;
+}
+.vc_slider {
+
+}
