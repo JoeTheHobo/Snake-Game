@@ -3828,6 +3828,11 @@ gap: 1px; /* Optional: Adjust spacing between items */
   bottom: 10px;
   z-index: 500;
 }
+.volumeControlsGame {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+}
 .volumeControls {
   display: flex;
   flex-direction: row;

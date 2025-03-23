@@ -209,7 +209,13 @@
         <div class="game_topRow">
             <div class="servers_button playButtonSounds" id="quitGameButton">Quit Game</div>
             <div class="servers_button playButtonSounds hostOnly" id="endGameButton">End Game</div>
-            <div class="boardStatusHolder"></div>
+            
+            <div class="volumeControls volumeControlsGame">
+                <img class="vc_img playButtonSounds" id="volumeImgMusic" src="img/menuIcons/volumeMusic.png" alt="">
+                <input class="vc_slider" id="volumeSliderMusic" type="range" value="100" min="0" max="100">
+                <img class="vc_img playButtonSounds" id="volumeImgVolume" src="img/menuIcons/volume.png" alt="">
+                <input class="vc_slider" id="volumeSliderVolume" type="range" value="100" min="0" max="100">
+            </div>
         </div>
         <div class="game_bottomRow">
             <img class="game_flagPole" src="img/gameUI/flagPole.png" alt="">
