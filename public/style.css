@@ -4054,3 +4054,15 @@ gap: 1px; /* Optional: Adjust spacing between items */
   color: black;
   font-size: 25px;
 }
+.lrd_rowTogether {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.lrd_checkbox {
+  outline: none;
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+}
