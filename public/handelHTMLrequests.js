@@ -294,57 +294,36 @@ $(".serverSettings").on("click",function() {
 })
 $(".vc_slider").on("input",function() {
     let value = Number(this.value);
-    let sliderHTML = this.id === "volumeSliderMusic" ? $("volumeImgMusic") : $("volumeImgVolume");
-    let sliderOffSrc = this.id === "volumeSliderMusic" ? "img/menuIcons/volumeMusicOff.png" : "img/menuIcons/volumeOff.png";
-    let sliderOnSrc = this.id === "volumeSliderMusic" ? "img/menuIcons/volumeMusic.png" : "img/menuIcons/volume.png";
-
-    if (value == 0) {
-        sliderHTML.src = sliderOffSrc;
-    } else {
-        sliderHTML.src = sliderOnSrc;
-    }
-
     if (this.id === "volumeSliderMusic") {
         global_musicVolume = value;
     } else {
         global_sfxVolume = value;
     }
-    updateAllVolumes();
+    adjustVolumeSliders();
 })
 $(".vc_img").on("click",function() {
-    let sliderHTML = this.id === "volumeImgMusic" ? $("volumeSliderMusic") : $("volumeSliderVolume");
-    let sliderOffSrc = this.id === "volumeImgMusic" ? "img/menuIcons/volumeMusicOff.png" : "img/menuIcons/volumeOff.png";
-    let sliderOnSrc = this.id === "volumeImgMusic" ? "img/menuIcons/volumeMusic.png" : "img/menuIcons/volume.png";
+    let type = this.id == "volumeImgMusic" ? "music" : "sfx";
 
-    if (Number(sliderHTML.value) === 0) {
-        this.src = sliderOnSrc;
-        sliderHTML.value = 100;
+    if (type === "music") {
+        if (global_musicVolume > 0) global_musicVolume = 0;
+        else global_musicVolume = 100;
     } else {
-        this.src = sliderOffSrc;
-        sliderHTML.value = 0;
+        if (global_sfxVolume > 0) global_sfxVolume = 0;
+        else global_sfxVolume = 100;
     }
-
-    if (this.id === "volumeImgMusic") {
-        global_musicVolume = Number(sliderHTML.value);
-    } else {
-        global_sfxVolume = Number(sliderHTML.value);
-    }
-    updateAllVolumes();
+    adjustVolumeSliders();
 })
 function adjustVolumeSliders() {
-    $("volumeSliderMusic").value = global_musicVolume;
-    $("volumeSliderVolume").value = global_sfxVolume;
+    $("volumeSliderMusic").forEach(el => el.value = global_musicVolume);
+    $("volumeSliderVolume").forEach(el => el.value = global_sfxVolume);
 
-    if (global_musicVolume === 0) {
-        $("volumeImgMusic").src = "img/menuIcons/volumeMusicOff.png";
-    } else {
-        $("volumeImgMusic").src = "img/menuIcons/volumeMusic.png";
-    }
+    $("volumeImgMusic").forEach(el => {
+        el.src = global_musicVolume === 0 ? "img/menuIcons/volumeMusicOff.png" : "img/menuIcons/volumeMusic.png";
+    });
 
-    if (global_sfxVolume === 0) {
-        $("volumeImgVolume").src = "img/menuIcons/volumeOff.png";
-    } else {
-        $("volumeImgVolume").src = "img/menuIcons/volume.png";
-    }
+    $("volumeImgVolume").forEach(el => {
+        el.src = global_sfxVolume === 0 ? "img/menuIcons/volumeOff.png" : "img/menuIcons/volume.png";
+    });
+
     updateAllVolumes();
 }
