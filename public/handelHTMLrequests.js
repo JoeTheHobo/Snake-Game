@@ -292,7 +292,7 @@ $(".sc_tb_lobbyName").on("click",function() {
 $(".serverSettings").on("click",function() {
     loadServerCreation(true,localAccount.lobby);  
 })
-$(".vc_slider").on("change",function() {
+$(".vc_slider").on("input",function() {
     let value = Number(this.value);
     let sliderHTML = this.id === "volumeSliderMusic" ? $(".volumeImgMusic") : $(".volumeImgVolume");
     let sliderOffSrc = this.id === "volumeSliderMusic" ? "img/menuIcons/volumeMusicOff.png" : "img/menuIcons/volumeOff.png";
