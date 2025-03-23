@@ -3792,6 +3792,8 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 .newMenu_statText {
   position: absolute;
+  width: max-content;
+  height: max-content;
   left: 0;
   right: 0;
   top: 0;
