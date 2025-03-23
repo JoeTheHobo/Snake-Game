@@ -1,4 +1,4 @@
-let movingPoints = [];
+let movingPoints;
 let stars;
 let techTree_ctx;
 let viewWidth, 
@@ -29,11 +29,11 @@ function loadTechTree(tree) {
     infoCard.create("div.infocard_name");
     infoCard.create("div.infocard_title");
     infoCard.create("div.infocard_description")
-    movingPoints.push({
+    movingPoints = [{
         div: infoCard,
         x: 0,
         y: 0,
-    })
+    }];
     let topLeftContent = scene.create("div.techTree_content");
     let goBackHomeButton = topLeftContent.create("div.techTree_returnButton");
     goBackHomeButton.innerHTML = "Return Home";
