@@ -3808,4 +3808,5 @@ gap: 1px; /* Optional: Adjust spacing between items */
   display: flex;
   align-items: center;
   flex-direction: column;
+  justify-content: right;
 }
