@@ -336,13 +336,6 @@ function openInfoCard(type,thingToOpen,parent) {
         card.$(".infocard_title").innerHTML = "x" + thingToOpen;
         card.$(".infocard_description").innerHTML = "Use Coins To Buy Things In The Store!";
     }
-    if (type == "purchace") {
-        card.$(".infocard_name").innerHTML = "Battle Points";
-        card.$(".infocard_name").style.color = "purple";
-        card.$(".infocard_title").show();
-        card.$(".infocard_title").innerHTML = "Cost";
-        card.$(".infocard_description").innerHTML = thingToOpen;
-    }
 
     let x,y;
     let parentRect = parent.getBoundingClientRect();
@@ -438,6 +431,7 @@ document.body.on("mousemove", (e) => {
         offsetX -= (e.clientX - startX)*dragSpeed;
         offsetY -= (e.clientY - startY)*dragSpeed;
 
+        console.log(startX);
         for (let i = 0; i < movingPoints.length; i++) {
             movingPoints[i].x += (e.clientX - startX)*elementDragSpeed;
             movingPoints[i].y += (e.clientY - startY)*elementDragSpeed;
