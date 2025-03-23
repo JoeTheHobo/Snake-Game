@@ -94,11 +94,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0,parentUnlocked)
         });
     
         rewardsDiv.activate = function() {
-            for (let i = 0; i < localAccount.battlePasses.length; i++) {
-                if (localAccount.battlePasses[i].name === activePass.name) {
-                    localAccount.battlePasses[i].unlocked.push(nodeID);
-                }
-            }
+            laUnlocked.push(point.id);
 
             rewardsDiv.$(".techTree_reward").classRemove("techTree_locked");
             rewardsDiv.$(".techTree_reward").classAdd("techTree_unlocked");
