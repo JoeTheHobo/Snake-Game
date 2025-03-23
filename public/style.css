@@ -4069,6 +4069,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
 
 
   .checkbox-wrapper-33 {
+    margin-left: 10px;
     --s-xsmall: 0.625em;
     --s-small: 1.2em;
     --border-width: 1px;
