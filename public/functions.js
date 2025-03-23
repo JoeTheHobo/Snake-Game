@@ -448,7 +448,7 @@ function importMap(textFile) {
 
     saveBoards();
     ls.save("currentBoardIndex",currentBoardIndex);
-    if (!localAccount.isInLobby) loadBoardsScreen()
+    if (!localAccount.isInLobby) loadBoardMenu()
     else {
         socket.emit("changeServerBoard",pako.deflate(JSON.stringify(shortenBoard(board)), { to: 'string' }));
     }

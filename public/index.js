@@ -106,7 +106,7 @@ socket.on("updatePlayersBoards",(boards,sentFrom,board) => {
         openMapEditor(localAccount.boards[currentBoardIndex]);
     }
     if (sentFrom == "loadBoardsScreen") {
-        loadBoardsScreen();
+        loadBoardMenu();
     }
     if (sentFrom == "loadCustomizeSnakeScreen") {
         loadCustomizeSnakeScreen();

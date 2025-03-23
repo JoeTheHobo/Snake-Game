@@ -13,6 +13,8 @@ let keyMapping;
 let global_scene;
 let accessedBattlePasses;
 let currentAudio = null;
+let version = "Alpha 0.0.1";
+$(".versionNumber").innerHTML = version;
 
 let global_musicVolume = 100;
 let global_sfxVolume = 100;

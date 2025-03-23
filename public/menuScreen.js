@@ -1267,3 +1267,11 @@ function gameMode_editItem(item,html_holder,server,gameMode) {
         });
     }
 }
+function loadBoardMenu() {
+    $(".menu_tab").classRemove("menu_tab_selected");
+    $(".menu_content").hide();
+    $(".content_boards").show("flex");
+    $("boards_tab").classAdd("menu_tab_selected");
+
+    let holder = $(".content_boards");
+}

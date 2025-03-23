@@ -1107,7 +1107,7 @@ $("me_button").on("click",function() {
             {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Discard Changes",onClick: () => {
                 saveBoard();
                 setScene("Menu");
-                loadBoardsScreen();
+                loadBoardMenu();
             }},
             {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Save Changes",onClick: () => {
                 saveBoard();
@@ -1125,7 +1125,7 @@ $("me_button").on("click",function() {
 function goBackHome(save) {
     if (save) saveBoard();
     setScene("newMenu");
-    loadBoardsScreen();
+    loadBoardMenu();
 }
 
 function loadObjectMenu() {
