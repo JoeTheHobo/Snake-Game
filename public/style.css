@@ -3906,6 +3906,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   border-radius: 5px;
   background: rgb(240, 240, 240);
   justify-content: center;
+  min-height: 120px;
 }
 .bm_boardCanvas {
   width: 100%;

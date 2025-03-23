@@ -1358,6 +1358,7 @@ function loadBoardMenu() {
     }
 
     if (localAccount.boards.length < localAccount.boardLimit) {
+        console.log("ey")
         makeBoard(listHolder,false,"newBoard")
     }
 
