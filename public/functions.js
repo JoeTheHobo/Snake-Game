@@ -148,19 +148,6 @@ function adjustCanvasSize(gridx,gridy,zoom = 1) {
 
     //Fix Board Status Position
     let offset = $(".game_canvas")[0].getBoundingClientRect();
-    if (cameraFollowPlayer) {
-        $(".boardStatusHolder").css({
-            top: "5px",
-            left: "5px",
-            width: "100%",
-        })
-    } else {
-        $(".boardStatusHolder").css({
-            top: offset.bottom + "px",
-            left: offset.left + "px",
-            width: width,
-        })
-    }
     
 }
 function updateCanvasPositionToPlayer(player) {
