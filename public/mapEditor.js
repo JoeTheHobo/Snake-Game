@@ -1097,33 +1097,10 @@ $("me_button").on("click",function() {
         return;
     }
 
-    if ($("saveStatus").innerHTML == "Board Saved") {
-        goBackHome();
-        return;
-    }
-    makePopUp([
-        {type: "title",text: "Save Changes?"},
-        [
-            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red",text:"Discard Changes",onClick: () => {
-                saveBoard();
-                setScene("Menu");
-                loadBoardMenu();
-            }},
-            {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", background: "green",text:"Save Changes",onClick: () => {
-                saveBoard();
-                goBackHome();
-            }},
-        ],
-    ],{
-        exit: {
-            cursor: "url('./img/pointer.cur'), auto",
-        },
-        id: "savePopUp",
-    
-    })
+    goBackHome(true);
 })
 function goBackHome(save) {
-    if (save) saveBoard();
+    if (save) saveBoard(true);
     setScene("newMenu");
     loadBoardMenu();
 }
