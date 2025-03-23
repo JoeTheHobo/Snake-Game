@@ -4103,9 +4103,10 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 .lrd_closeForm {
   position: absolute;
-  left: 5px;
-  top: 5px;
+  left: 10px;
+  top: 10px;
   font-size: 20px;
+  font-weight: bold;
 }
 
 
