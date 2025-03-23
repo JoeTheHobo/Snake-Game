@@ -1104,7 +1104,7 @@ function goBackHome(save) {
     setTimeout(function() {
         setScene("newMenu");
         loadBoardMenu();
-    },100)
+    },200)
     
 }
 
