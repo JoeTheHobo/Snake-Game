@@ -301,7 +301,7 @@ $(".vc_slider").on("input",function() {
     if (value == 0) {
         sliderHTML.src = sliderOffSrc;
     } else {
-        if (sliderHTML.src !== sliderOnSrc) sliderHTML.src = sliderOnSrc;
+        sliderHTML.src = sliderOnSrc;
     }
 
     if (this.id === "volumeSliderMusic") {
