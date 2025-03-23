@@ -298,11 +298,24 @@ $(".vc_slider").on("input",function() {
     let sliderOffSrc = this.id === "volumeSliderMusic" ? "img/menuIcons/volumeMusicOff.png" : "img/menuIcons/volumeOff.png";
     let sliderOnSrc = this.id === "volumeSliderMusic" ? "img/menuIcons/volumeMusic.png" : "img/menuIcons/volume.png";
 
-    console.log(value)
     if (value == 0) {
         console.log(sliderHTML,sliderOffSrc);
         sliderHTML.src = sliderOffSrc;
     } else {
         if (sliderHTML.src !== sliderOnSrc) sliderHTML.src = sliderOnSrc;
     }
+})
+$(".vc_img").on("click",function() {
+    let sliderHTML = this.id === "volumeImgMusic" ? $("volumeSliderMusic") : $("volumeSliderVolume");
+    let sliderOffSrc = this.id === "volumeImgMusic" ? "img/menuIcons/volumeMusicOff.png" : "img/menuIcons/volumeOff.png";
+    let sliderOnSrc = this.id === "volumeImgMusic" ? "img/menuIcons/volumeMusic.png" : "img/menuIcons/volume.png";
+
+    if (this.src === sliderOffSrc) {
+        this.src = sliderOnSrc;
+        sliderHTML.value = 100;
+    } else {
+        this.src = sliderOffSrc;
+        sliderHTML.value = 0;
+    }
+
 })
