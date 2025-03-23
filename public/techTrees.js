@@ -1,4 +1,6 @@
 let movingPoints = [];
+let stars;
+let techTree_ctx;
 function loadTechTree(tree) {
     let scene = $("scene_tree"); 
     scene.innerHTML = "";
@@ -292,8 +294,9 @@ function openInfoCard(type,thingToOpen,parent) {
     
 }
 function generateStarBackground(canvas) {
-    let ctx = canvas.getContext("2d");
     
+    techTree_ctx = canvas.getContext("2d");
+
     const viewWidth = window.innerWidth;
     const viewHeight = window.innerHeight;
     canvas.width = viewWidth;
@@ -303,7 +306,7 @@ function generateStarBackground(canvas) {
     const starCount = Math.floor((spaceSize*15000)/4000); // Number of stars
     const dragSpeed = 0.5;
     const elementDragSpeed = 0.8;
-    const stars = [];
+    stars = [];
 
     for (let i = 0; i < starCount; i++) {
         stars.push({
@@ -314,75 +317,76 @@ function generateStarBackground(canvas) {
         });
     }
 
-    let offsetX = (spaceSize - viewWidth) / 2;
-    let offsetY = (spaceSize - viewHeight) / 2;
-    let drag = false, startX, startY;
-
-    function drawStars() {
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, viewWidth, viewHeight);
-
-        ctx.fillStyle = "white";
-        for (let star of stars) {
-            const x = star.x - offsetX;
-            const y = star.y - offsetY;
-            if (x >= 0 && x < viewWidth && y >= 0 && y < viewHeight) {
-            ctx.fillStyle = `rgb(${star.brightness}, ${star.brightness}, ${star.brightness})`;
-            ctx.beginPath();
-            ctx.arc(x, y, star.size, 0, Math.PI * 2);
-            ctx.fill();
-            }
-        }
-    }
-    let mouseDownTime = 0; // Store time of the mousedown event
-    const maxClickDuration = 200; // Maximum duration (in ms) for a click to be considered fast
-
-    document.on('mouseout', function(e) {
-        if (global_scene !== "tree") return;
-        // Check if the mouse has moved off the screen
-        if (e.clientY <= 0 || e.clientY >= window.innerHeight || e.clientX <= 0 || e.clientX >= window.innerWidth) {
-          drag = false;
-        }
-      });
-    document.body.on("mousedown", (e) => {
-        if (global_scene !== "tree") return;
-        drag = true;
-        startX = e.clientX;
-        startY = e.clientY;
-        mouseDownTime = Date.now(); // Store the time when mouse is pressed down
-    });
-    document.body.on("mouseup", (e) => {
-        if (global_scene !== "tree") return;
-        drag = false;
-
-        const clickDuration = Date.now() - mouseDownTime; // Calculate the time between mousedown and mouseup
-        if (clickDuration <= maxClickDuration) {
-            if (!e.target.classList.contains("techTree_reward") && !e.target.classList.contains("techTree_insideReward")) {
-                $(".techTree_reward").classRemove("techTree_reward_selected")
-                $(".techTree_infoCard").hide();
-            }
-        }
-    });
-    document.body.on("mousemove", (e) => {
-        if (global_scene !== "tree") return;
-        if (drag) {
-            offsetX -= (e.clientX - startX)*dragSpeed;
-            offsetY -= (e.clientY - startY)*dragSpeed;
-
-            for (let i = 0; i < movingPoints.length; i++) {
-                movingPoints[i].x += (e.clientX - startX)*elementDragSpeed;
-                movingPoints[i].y += (e.clientY - startY)*elementDragSpeed;
-                movingPoints[i].div.css({
-                    top: movingPoints[i].y + "px",
-                    left: movingPoints[i].x + "px",
-                })
-            }
-
-            startX = e.clientX;
-            startY = e.clientY;
-            drawStars();
-        }
-    });
     drawStars();
 }
 
+
+let offsetX = (spaceSize - viewWidth) / 2;
+let offsetY = (spaceSize - viewHeight) / 2;
+let drag = false, startX, startY;
+
+function drawStars() {
+    techTree_ctx.fillStyle = "black";
+    techTree_ctx.fillRect(0, 0, viewWidth, viewHeight);
+
+    techTree_ctx.fillStyle = "white";
+    for (let star of stars) {
+        const x = star.x - offsetX;
+        const y = star.y - offsetY;
+        if (x >= 0 && x < viewWidth && y >= 0 && y < viewHeight) {
+        techTree_ctx.fillStyle = `rgb(${star.brightness}, ${star.brightness}, ${star.brightness})`;
+        techTree_ctx.beginPath();
+        techTree_ctx.arc(x, y, star.size, 0, Math.PI * 2);
+        techTree_ctx.fill();
+        }
+    }
+}
+let mouseDownTime = 0; // Store time of the mousedown event
+const maxClickDuration = 200; // Maximum duration (in ms) for a click to be considered fast
+
+document.on('mouseout', function(e) {
+    if (global_scene !== "tree") return;
+    // Check if the mouse has moved off the screen
+    if (e.clientY <= 0 || e.clientY >= window.innerHeight || e.clientX <= 0 || e.clientX >= window.innerWidth) {
+      drag = false;
+    }
+  });
+document.body.on("mousedown", (e) => {
+    if (global_scene !== "tree") return;
+    drag = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    mouseDownTime = Date.now(); // Store the time when mouse is pressed down
+});
+document.body.on("mouseup", (e) => {
+    if (global_scene !== "tree") return;
+    drag = false;
+
+    const clickDuration = Date.now() - mouseDownTime; // Calculate the time between mousedown and mouseup
+    if (clickDuration <= maxClickDuration) {
+        if (!e.target.classList.contains("techTree_reward") && !e.target.classList.contains("techTree_insideReward")) {
+            $(".techTree_reward").classRemove("techTree_reward_selected")
+            $(".techTree_infoCard").hide();
+        }
+    }
+});
+document.body.on("mousemove", (e) => {
+    if (global_scene !== "tree") return;
+    if (drag) {
+        offsetX -= (e.clientX - startX)*dragSpeed;
+        offsetY -= (e.clientY - startY)*dragSpeed;
+
+        for (let i = 0; i < movingPoints.length; i++) {
+            movingPoints[i].x += (e.clientX - startX)*elementDragSpeed;
+            movingPoints[i].y += (e.clientY - startY)*elementDragSpeed;
+            movingPoints[i].div.css({
+                top: movingPoints[i].y + "px",
+                left: movingPoints[i].x + "px",
+            })
+        }
+
+        startX = e.clientX;
+        startY = e.clientY;
+        drawStars();
+    }
+});
