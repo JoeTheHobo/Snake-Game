@@ -52,7 +52,7 @@ function loadTechTree(tree) {
 }
 function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0,parentUnlocked) {
     let rewardsDiv = getRewardsDiv(point);
-    if (!laUnlocked.includes(point.id)) rewardsDiv.locked = false;
+    if (laUnlocked.includes(point.id)) rewardsDiv.locked = false;
     else rewardsDiv.locked = true;
     setTimeout(function() {
         rewardsDiv.style.opacity = 1;
