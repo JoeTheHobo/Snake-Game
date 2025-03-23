@@ -402,7 +402,7 @@ function setScene(scene,lobby) {
         showGameTips();
     }
     if (scene === "tree") {
-        playMenuMusic("sounds/Tech Tree/menuTheme.mp3",50);
+        playMenuMusic("sounds/Tech Tree/menuTheme.mp3",25);
     } else {
         stopMenuMusic();
     }
