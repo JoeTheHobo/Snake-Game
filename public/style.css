@@ -3904,6 +3904,8 @@ gap: 1px; /* Optional: Adjust spacing between items */
   align-items: center;
   width: 120px;
   border-radius: 5px;
+  background: rgb(240, 240, 240);
+  justify-content: center;
 }
 .bm_boardCanvas {
   width: 100%;
@@ -3933,4 +3935,15 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .bm_settingImg {
   width: 80%;
   height: 80%;
+}
+.bm_plus {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: max-content;
+  height: max-content;
+  font-size: 25px;
 }

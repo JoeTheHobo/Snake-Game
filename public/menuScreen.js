@@ -1273,6 +1273,8 @@ function loadBoardMenu() {
     $(".content_boards").show("flex");
     $("boards_tab").classAdd("menu_tab_selected");
 
+    $(".cb_tr_text_boardCount").innerHMTL =  localAccount.boards.length + "/" + localAccount.boardLimit;
+
     function makeBoard(holder,content,type,index) {
         if (type == "board") {
             let container = holder.create("div.bm_boardContainer");
@@ -1312,11 +1314,51 @@ function loadBoardMenu() {
                 });
             }
         }
+        
+        if (type == "newBoard") {
+            let container = holder.create("div.bm_boardContainer");
+            container.classAdd("hover");
+            let plus = container.create("div.bm_plus");
+            plus.innerHTML = "+";
+            container.on("click",function() {
+                makePopUp([
+                    {type: "title",text: "New Board"},
+                    [
+                        {type: "text", text: "Name"},
+                        {type: "input", id:"name", maxLength: "30", placeholder: "Untitled", width: "200px"},
+                    ],
+                    /*
+                    [
+                        {type: "text", text: "Width"},
+                        {type: "number", id:"width", value: "50", min: 5, max: 70, width: "50px"},
+                        {type: "text", text: "Height"},
+                        {type: "number", id:"height", value: "30", min: 5, max: 70, width: "50px"},
+                    ],
+                    */
+                    {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "green",text:"Create",onClick: (ids) => {
+                        const {name,width,height} = ids;
+                        let boardName = name.value == "" ? "Untitled" : name.value;
+                        socket.emit("createNewBoard",boardName,50,30,"openMapEditor");
+                        
+                    }},
+                ],{
+                    exit: {
+                        cursor: "url('./img/pointer.cur'), auto",
+                    },
+                    id: "newBoard",
+        
+                })
+            })
+        }
     }
 
     let listHolder = $(".cb_boardList");
     for (let i = 0; i < localAccount.boards.length; i++) {
         makeBoard(listHolder,localAccount.boards[i],"board",i)
+    }
+
+    if (localAccount.boards.length < localAccount.boardLimit) {
+        makeBoard(listHolder,false,"newBoard")
     }
 
 
