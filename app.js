@@ -81,7 +81,7 @@ io.on('connection', (socket) => {
         questsAccepted: [],
         battlePasses: [{
             name: "beta",
-            unlocked: [],
+            unlocked: [-1],
         }],
 
 

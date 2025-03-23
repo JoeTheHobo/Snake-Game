@@ -6,6 +6,7 @@ let techTree_beta = {
         text: "Beta",
     }],
     img: "beta",
+    id: -1,
     branches: [
         {
             id: 0,
