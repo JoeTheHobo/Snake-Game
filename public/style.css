@@ -3896,6 +3896,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
+  padding: 10px;
   
 }
 .bm_boardContainer {
@@ -3933,6 +3934,9 @@ gap: 1px; /* Optional: Adjust spacing between items */
   background: rgb(168, 168, 168);
 
 }
+.pointerCursor {
+  cursor: url('./img/pointer.cur'), auto;
+}
 .bm_settingImg {
   width: 80%;
   height: 80%;
@@ -3947,4 +3951,5 @@ gap: 1px; /* Optional: Adjust spacing between items */
   width: max-content;
   height: max-content;
   font-size: 25px;
+  color: black;
 }
