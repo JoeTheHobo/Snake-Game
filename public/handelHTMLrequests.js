@@ -324,7 +324,7 @@ $(".vc_img").on("click",function() {
         sliderHTML.value = 0;
     }
 
-    if (this.id === "volumeSliderMusic") {
+    if (this.id === "volumeImgMusic") {
         console.log(sliderHTML);
         global_musicVolume = Number(sliderHTML.value);
     } else {
