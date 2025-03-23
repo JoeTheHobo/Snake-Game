@@ -3801,11 +3801,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
   font-size: 2em;
   -webkit-text-stroke: 3px black;
   paint-order: stroke fill;
-}
-.newMenu_statPurple {
-  color: white;
-}
-.newMenu_statGold {
   color: white;
 }
 .techTreesHolder {

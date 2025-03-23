@@ -56,8 +56,12 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     localAccount.allowedSnakeColors = account.allowedSnakeColors;
     localAccount.battlePassPoints = account.battlePassPoints;
     localAccount.battlePasses = account.battlePasses;
+    localAccount.coins = account.coins;
     accessedBattlePasses = server_accessedBattlePasses;
-    
+
+
+    $(".newMenu_statPoints").innerHTML = localAccount.battlePassPoints;
+    $(".newMenu_statGold").innerHTML = localAccount.coins;
     items = JSON.parse(pako.inflate(server_items, { to: 'string' }));
     tiles = JSON.parse(pako.inflate(server_tiles, { to: 'string' }));
     basedGameMode = server_basedGameMode;
