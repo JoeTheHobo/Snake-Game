@@ -1932,6 +1932,8 @@ function adjustVolume(audioElement, type, adj = 1) {
 
     if (emailValue == "") warning = "Email Field Is Empty";
     if (passwordValue == "") warning = "Password Field Is Empty";
+    
+    console.log(emailValue,passwordValue,warning)
 
     if (warning) {
         $(".lrd_warning").show();
