@@ -1860,7 +1860,7 @@ function startNewMusic(url, targetVolume) {
     currentAudio.play();
 
     // Fade in new music to the desired volume
-    fadeIn(currentAudio, 1000, targetVolume);
+    fadeIn(currentAudio, 1000, targetVolume*(global_musicVolume/100));
 }
 
 function stopMenuMusic() {
