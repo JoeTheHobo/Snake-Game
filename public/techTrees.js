@@ -334,7 +334,7 @@ function getRewardsDiv(point) {
                 openInfoCard("boardSlot",reward.count,this);
             })
         }
-        if (rewardDiv.type == "tileSkin") {
+        if (reward.type == "tileSkin") {
             rewardDiv.classAdd("techTree_reward_img");
             let item = structuredClone(_getById(reward.id,"tile"));
             item.skin = rewardDiv.skin;
@@ -352,7 +352,7 @@ function getRewardsDiv(point) {
                 openInfoCard("tileSkin",item,this,rewardDiv.skin);
             })
         }
-        if (rewardDiv.type == "snakeColor") {
+        if (reward.type == "snakeColor") {
             rewardDiv.classAdd("techTree_reward_img");
             insideDiv.src = "img/snakeSkins/classic/snake_classic_head.png";
             insideDiv.style.filter = getPlayerFilter(rewardDiv.color);
