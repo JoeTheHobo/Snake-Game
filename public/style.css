@@ -3813,3 +3813,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .flexEnd {
   align-self: flex-end;
 }
+.wholeImage {
+  width: 100% !important;
+  height: 100% !important;
+}

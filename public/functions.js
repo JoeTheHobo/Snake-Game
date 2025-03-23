@@ -1820,7 +1820,7 @@ function loadAllBattlePasses() {
         let passHolder = holder.create("div.newMenu_statHolder");
         passHolder.classAdd("flexEnd")
         passHolder.classAdd("statHolderPurple");
-        let passImg = passHolder.create("img.newMenu_statImg");
+        let passImg = passHolder.create("img.wholeImage");
         passImg.src = "img/techTrees/techTree_" + laBattlePass.name + ".png";
 
         passHolder.on("click",function() {
