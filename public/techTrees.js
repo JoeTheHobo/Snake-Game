@@ -268,7 +268,7 @@ function getRewardsDiv(point) {
         if (["item","tile","coins"].includes(reward.type)) insideDiv = rewardDiv.create("img.techTree_insideReward");
         if (["text"].includes(reward.type)) insideDiv = rewardDiv.create("div.techTree_insideReward");
 
-        if (laUnlocked.includes(point.id)) rewardDiv.classAdd("techTree_unlocked");
+        if (laUnlocked.includes(point.id) || point.name) rewardDiv.classAdd("techTree_unlocked");
         else rewardDiv.classAdd("techTree_locked");
 
         if (reward.type == "text") {
