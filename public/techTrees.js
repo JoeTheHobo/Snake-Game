@@ -208,7 +208,7 @@ function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked,nodeID) {
             
             setTimeout(function() {
                 childDiv.activate();
-            },200)
+            },150)
         })
 
     } else {
