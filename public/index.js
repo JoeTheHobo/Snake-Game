@@ -57,7 +57,6 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     localAccount.battlePassPoints = account.battlePassPoints;
     localAccount.battlePasses = account.battlePasses;
     localAccount.coins = account.coins;
-    console.log(server_accessedBattlePasses)
     accessedBattlePasses = server_accessedBattlePasses;
 
 

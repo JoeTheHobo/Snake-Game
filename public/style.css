@@ -3605,7 +3605,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 .techTree_lineLocked:hover {
   border: 2px solid rgba(150, 150, 150, 0.801);
-
 }
 .techTree_line_count {
   position: absolute;

@@ -6,8 +6,10 @@ let viewWidth,
 const dragSpeed = 0.5;
 const elementDragSpeed = 0.8;
 const spaceSize = 25000; // Huge space
+let activePass;
 
 function loadTechTree(tree) {
+    activePass = tree;
     let scene = $("scene_tree"); 
     scene.innerHTML = "";
     let canvas = scene.create("canvas.techTree_background");
@@ -60,7 +62,6 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0,parentUnlocked)
         y += windowHeight/2;
         let divWidth = rewardsDiv.getBoundingClientRect().width;
         let divHeight = rewardsDiv.getBoundingClientRect().height;
-        console.log(divWidth)
         x -= divWidth/2;
         y -= divHeight/2;
     
@@ -76,9 +77,13 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0,parentUnlocked)
         })
     
         if (comeFromPoint !== "start") requestAnimationFrame(function() {
-            drawLine(parentDiv,rewardsDiv,point.unlocked,point.cost,parentUnlocked);
+            drawLine(parentDiv,rewardsDiv,point.unlocked,point.cost,parentUnlocked,point.id);
         });
     
+        rewardsDiv.activate = function() {
+            rewardsDiv.$(".techTree_insideReward").classRemove("techTree_locked");
+            rewardsDiv.$(".techTree_insideReward").classAdd("techTree_unlocked");
+        }
         
         
         // **Spread out the branches**
@@ -136,7 +141,7 @@ function hashValue(str) {
     }
     return hash;
 }
-function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked) {
+function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked,nodeID) {
     // Get the position and size of the parent and child divs
     const parentRect = parentDiv.getBoundingClientRect();
     const childRect = childDiv.getBoundingClientRect();
@@ -180,12 +185,29 @@ function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked) {
         if (!parentUnlocked) lockedImg.classAdd("grayScale");
         else lockedImg.classAdd("noInvert");
         lockedImg.src = "img/techTrees/battlePoints.png";
-        lockedImgHolder.on("click",function() {
-            
-        })
-
         let pointCounterDiv = lineDiv.create("div.techTree_line_count")
         pointCounterDiv.innerHTML = "x" + price;
+        lockedImgHolder.on("click",function() {
+            if (localAccount.battlePassPoints > points) {
+                lineDiv.classAdd("techTree_line_unlocked");
+                this.hide();
+                pointCounterDiv.hide();
+
+                localAccount.battlePassPoints -= points;
+                for (let i = 0; i < localAccount.battlePasses.length; i++) {
+                    if (localAccount.battlePasses[i].name === activePass.name) {
+                        localAccount.battlePasses[i].unlocked.push(nodeID);
+                    }
+                }
+                $(".techTree_battlePointsCounter").innerHTML = "x" + localAccount.battlePassPoints; 
+                removePoints(price);
+                setTimeout(function() {
+                    childDiv.activate();
+                },200)
+                unlockPass(nodeID);
+            }
+        })
+
     } else {
         lineDiv.classAdd("techTree_line_unlocked")
     }
@@ -322,7 +344,6 @@ function generateStarBackground(canvas) {
 
     drawStars();
 }
-
 
 let offsetX = (spaceSize - viewWidth) / 2;
 let offsetY = (spaceSize - viewHeight) / 2;
