@@ -116,7 +116,7 @@ io.on('connection', (socket) => {
     
     let accessedBattlePasses = {};
     for (let i = 0; i < onlineAccounts[socket.id].battlePasses.length; i++) {
-        accessedBattlePasses[onlineAccounts[socket.id].battlePasses[i].name] = allBattlePasses[onlineAccounts[socket.id].battlePasses[i]];
+        accessedBattlePasses[onlineAccounts[socket.id].battlePasses[i].name] = allBattlePasses[onlineAccounts[socket.id].battlePasses[i].name];
     }
     let randomColor = simple.rnd(onlineAccounts[socket.id].allowedSnakeColors); 
     onlineAccounts[socket.id].serverSnake.hue = randomColor.hue;
