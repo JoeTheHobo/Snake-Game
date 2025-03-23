@@ -116,6 +116,7 @@ io.on('connection', (socket) => {
     
     let accessedBattlePasses = {};
     for (let i = 0; i < onlineAccounts[socket.id].battlePasses.length; i++) {
+        console.log(allBattlePasses,onlineAccounts[socket.id].battlePasses[i].name)
         accessedBattlePasses[onlineAccounts[socket.id].battlePasses[i].name] = allBattlePasses[onlineAccounts[socket.id].battlePasses[i].name];
     }
     let randomColor = simple.rnd(onlineAccounts[socket.id].allowedSnakeColors); 
@@ -138,7 +139,6 @@ io.on('connection', (socket) => {
             let sendItems = pako.deflate(JSON.stringify(items), { to: 'string' });
             let sendTiles = pako.deflate(JSON.stringify(tiles), { to: 'string' });
 
-            console.log(accessedBattlePasses)
             io.to(socket.id).emit('setPlayer', socket.id, onlineAccounts[socket.id],sendItems,basedGameMode,presetGameModes,presetBoards,backgrounds,sendTiles,decompressed,accessedBattlePasses);
         })
     })
