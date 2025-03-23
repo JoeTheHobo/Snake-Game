@@ -337,8 +337,7 @@ function getRewardsDiv(point) {
         if (reward.type == "tileSkin") {
             rewardDiv.classAdd("techTree_reward_img");
             let item = structuredClone(_getById(reward.id,"tile"));
-            item.skin = rewardDiv.skin;
-            console.log(item);
+            item.skin = reward.skin;
             console.log(getImage(item,"src"));
             insideDiv.src = getImage(item,"src");
             insideDiv.on("click",function(){
@@ -349,13 +348,13 @@ function getRewardsDiv(point) {
                 }
                 $(".techTree_reward").classRemove("techTree_reward_selected");
                 this.$P().classAdd("techTree_reward_selected");
-                openInfoCard("tileSkin",item,this,rewardDiv.skin);
+                openInfoCard("tileSkin",item,this,reward.skin);
             })
         }
         if (reward.type == "snakeColor") {
             rewardDiv.classAdd("techTree_reward_img");
             insideDiv.src = "img/snakeSkins/classic/snake_classic_head.png";
-            insideDiv.style.filter = getPlayerFilter(rewardDiv.color);
+            insideDiv.style.filter = getPlayerFilter(reward.color);
             insideDiv.on("click",function(){
                 if (this.$P().classList.contains("techTree_reward_selected")) {
                     $(".techTree_reward").classRemove("techTree_reward_selected");
@@ -364,13 +363,13 @@ function getRewardsDiv(point) {
                 }
                 $(".techTree_reward").classRemove("techTree_reward_selected");
                 this.$P().classAdd("techTree_reward_selected");
-                openInfoCard("snakeColor",item,this,rewardDiv.skin);
+                openInfoCard("snakeColor",false,this);
             })
         }
     }
     return holder;
 }
-function openInfoCard(type,thingToOpen,parent,extra) {
+function openInfoCard(type,thingToOpen,parent) {
     const margin = 10;
     let card = $(".techTree_infoCard");
     if (type == "item") {
