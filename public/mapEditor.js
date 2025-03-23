@@ -1052,12 +1052,12 @@ function tool_fill() {
 
     clearSelection();
 }
-function saveBoard(sendToServer = true) {
+function saveBoard() {
     let html_saveStatus = $("saveStatus");
     currentBoard.itemDifferences = findItemDifferences(currentBoard.originalMap);
     currentBoard.tileDifferences = findTileDifferences(currentBoard.originalMap);
 
-    if (currentBoard.accountID === localAccount.id && sendToServer) {
+    if (currentBoard.accountID === localAccount.id) {
         //Save To Personal Boards
         socket.emit("saveBoard",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }));
     }
@@ -1101,10 +1101,8 @@ $("me_button").on("click",function() {
 })
 function goBackHome(save) {
     if (save) saveBoard(true);
-    setTimeout(function() {
-        setScene("newMenu");
-        loadBoardMenu();
-    },200)
+    setScene("newMenu");
+    loadBoardMenu();
     
 }
 
@@ -1838,7 +1836,7 @@ $("me_name").on("change",function() {
     this.value = profanity.clean(this.value);
     if (this.value == "") return;
     currentBoard.name = this.value;
-    $("saveStatus").innerHTML = "Board Is Not Saved";
+    saveBoard();
 })
 $("me_recommendedGameMode").on("change",function() {
     boacurrentBoardrd.recommendedGameMode = this.checked;
