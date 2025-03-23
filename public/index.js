@@ -59,6 +59,10 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     localAccount.coins = account.coins;
     accessedBattlePasses = server_accessedBattlePasses;
 
+    global_musicVolume = account.musicVolume;
+    global_sfxVolume = account.sfxVolume;
+    adjustVolumeSliders();
+
 
     $(".newMenu_statPoints").innerHTML = localAccount.battlePassPoints;
     $(".newMenu_statGold").innerHTML = localAccount.coins;

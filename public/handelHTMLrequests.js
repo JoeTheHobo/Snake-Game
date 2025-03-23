@@ -297,18 +297,21 @@ $(".vc_slider").on("input",function() {
     let sliderHTML = this.id === "volumeSliderMusic" ? $("volumeImgMusic") : $("volumeImgVolume");
     let sliderOffSrc = this.id === "volumeSliderMusic" ? "img/menuIcons/volumeMusicOff.png" : "img/menuIcons/volumeOff.png";
     let sliderOnSrc = this.id === "volumeSliderMusic" ? "img/menuIcons/volumeMusic.png" : "img/menuIcons/volume.png";
+    let effectingVar = this.id === "volumeSliderMusic" ? global_musicVolume : global_sfxVolume;
 
     if (value == 0) {
-        console.log(sliderHTML,sliderOffSrc);
         sliderHTML.src = sliderOffSrc;
     } else {
         if (sliderHTML.src !== sliderOnSrc) sliderHTML.src = sliderOnSrc;
     }
+
+    effectingVar = value;
 })
 $(".vc_img").on("click",function() {
     let sliderHTML = this.id === "volumeImgMusic" ? $("volumeSliderMusic") : $("volumeSliderVolume");
     let sliderOffSrc = this.id === "volumeImgMusic" ? "img/menuIcons/volumeMusicOff.png" : "img/menuIcons/volumeOff.png";
-    let sliderOnSrc = this.id === "volumeImgMusic" ? "img/menuIcons/volumeMusic.png" : "img/menuIcons/volume.png";
+    let sliderOnSrc = this.id === "volumeImgMusic" ? "img/menuIcons/volumeMusic.png" : "img/menuIcons/volumeOff.png";
+    let effectingVar = this.id === "volumeSliderMusic" ? global_musicVolume : global_sfxVolume;
 
     if (Number(sliderHTML.value) === 0) {
         this.src = sliderOnSrc;
@@ -318,4 +321,22 @@ $(".vc_img").on("click",function() {
         sliderHTML.value = 0;
     }
 
+    effectingVar = Number(sliderHTML.value);
+
 })
+function adjustVolumeSliders() {
+    $("volumeSliderMusic").value = global_musicVolume;
+    $("volumeSliderVolume").value = global_sfxVolume;
+
+    if (global_musicVolume === 0) {
+        $("volumeImgMusic").src = "img/menuIcons/volumeMusicOff.png";
+    } else {
+        $("volumeImgMusic").src = "img/menuIcons/volumeMusic.png";
+    }
+
+    if (global_sfxVolume === 0) {
+        $("volumeImgVolume").src = "img/menuIcons/volumeOff.png";
+    } else {
+        $("volumeImgVolume").src = "img/menuIcons/volumeOff.png";
+    }
+}

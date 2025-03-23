@@ -14,6 +14,9 @@ let global_scene;
 let accessedBattlePasses;
 let currentAudio = null;
 
+let global_musicVolume = 100;
+let global_sfxVolume = 100;
+
 let global_gameColors = [
     ["white","#ffffff"],
     ["aquamarine","#61f3cc"],
