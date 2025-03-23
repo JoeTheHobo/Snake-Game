@@ -1,6 +1,6 @@
 
 let techTree_beta = {
-    passName: "beta",
+    name: "beta",
     rewards: [{
         type: "text",
         text: "Beta",

@@ -10,9 +10,9 @@ const pako = require('pako');
 const profanity = require("./profanity.js");
 
 const allBattlePasses = {};
-const pass = require("./Tech Trees/techTree_beta.js");
-console.log(pass.techTree_beta);
-//allBattlePasses[battlePass_beta.passName] = battlePass_beta;
+const pass_beta = require("./Tech Trees/techTree_beta.js");
+console.log(pass_beta.techTree_beta.name);
+allBattlePasses[pass_beta.battlePass_beta.name] = pass_beta.techTree_beta;
 
 //socket.io setup
 const http = require('http');
