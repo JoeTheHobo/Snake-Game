@@ -310,8 +310,7 @@ $(".vc_img").on("click",function() {
     let sliderOffSrc = this.id === "volumeImgMusic" ? "img/menuIcons/volumeMusicOff.png" : "img/menuIcons/volumeOff.png";
     let sliderOnSrc = this.id === "volumeImgMusic" ? "img/menuIcons/volumeMusic.png" : "img/menuIcons/volume.png";
 
-    console.log(this.src)
-    if (this.src === sliderOffSrc) {
+    if (Number(sliderHTML.value) === 0) {
         this.src = sliderOnSrc;
         sliderHTML.value = 100;
     } else {
