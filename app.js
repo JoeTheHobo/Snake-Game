@@ -113,6 +113,7 @@ io.on('connection', (socket) => {
             {hue: 318, saturation: 300, brightness: 200},
         ],
     }
+    
     let accessedBattlePasses = {};
     console.log(onlineAccounts[socket.id].battlePasses);
     for (let i = 0; i < onlineAccounts[socket.id].battlePasses.length; i++) {
@@ -124,6 +125,7 @@ io.on('connection', (socket) => {
     onlineAccounts[socket.id].serverSnake.saturation = randomColor.saturation;
     onlineAccounts[socket.id].serverSnake.brightness = randomColor.brightness;
     
+    console.log("hello?")
     compressObject(onlineAccounts[socket.id].boards,(err,compressed) => {
         if (err) {
             console.log(2,err)
