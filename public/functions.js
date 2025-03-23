@@ -1860,7 +1860,6 @@ function startNewMusic(url, targetVolume) {
     currentAudio.play();
 
     // Fade in new music to the desired volume
-    console.log(targetVolume,global_musicVolume,targetVolume*(global_musicVolume/100));
     fadeIn(currentAudio, 1000, targetVolume*(global_musicVolume/100));
 }
 
