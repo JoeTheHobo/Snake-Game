@@ -1908,12 +1908,18 @@ function adjustVolume(audioElement, type, adj = 1) {
     $(".loginRegisterDiv").hide();
     $("." + type + "Div").show("flex");
 
+    $(".lrd_warning").hide();
+    $(".lrd_input").value = "";
     if (type == "login") {
-        $(".lrd_warning").hide();
-        $(".lrd_input").value = "";
         $(".lrd_loginPassword").type == "password";
-        $(".lrd_inputImg").src = "img/menuIcons/passwordHidden.png";
+        $(".lrd_passwordImg").src = "img/menuIcons/passwordHidden.png";
         $(".lrd_staySignedIn").checked = false;
+    }
+    if (type == "signup") {
+        $(".lrd_signUpPassword1").type == "password";
+        $(".lrd_signUpPassword2").type == "password";
+        $(".lrd_signup_password_img_1").src = "img/menuIcons/passwordHidden.png";
+        $(".lrd_signup_password_img_2").src = "img/menuIcons/passwordHidden.png";
     }
   }
   $(".lrd_inputImg").on("click",function() {
@@ -1931,21 +1937,47 @@ function adjustVolume(audioElement, type, adj = 1) {
     let emailValue = $(".lrd_emailInput").value;
     let passwordValue = $(".lrd_loginPassword").value;
 
-    if (emailValue == "") warning = "Email Field Is Empty";
-    if (passwordValue == "") warning = "Password Field Is Empty";
+    if (emailValue == "") warning = "Email Requied";
+    if (passwordValue == "") warning = "Password Required";
 
     if (warning) {
-        $(".lrd_warning").show();
-        $(".lrd_warning").innerHTML = warning;
+        $(".lrd_warning_signin").show();
+        $(".lrd_warning_signin").innerHTML = warning;
         return;
     }
 
 
     //Send To Server
   })
+  $(".lrd_GoToSignIN").on("click",function() {
+    loginLoad("login")
+  })
   $(".lrd_closeForm").on("click",function() {
     setScene("newMenu");
   }) 
   $(".lrd_signupButton").on("click",function() {
     loginLoad("signup")
+  })
+  $(".lrd_submitButton").on("click",function() {
+    let warning = false;
+    let emailField = $(".lrd_signup_email").value;
+    let usernameField = $(".lrd_signup_username").value;
+    let password1Field = $(".lrd_signUpPassword1").value;
+    let password2Field = $(".lrd_signUpPassword2").value;
+
+    if (emailField == "") warning = "Email Requied";
+    if (usernameField == "") warning = "Username Requied";
+    if (password1Field == "" || password2Field == "") warning = "Password Requied";
+    if (usernameField.length > 32) warning = "Username Is To Long";
+    if (password1Field.length > 100 || password2Field.length > 100) warning = "Password Is Too Long";
+    if (password1Field !== password2Field) warning = "Passwords Don't Match";
+
+    if (warning) {
+        $(".lrd_warning_signup").show();
+        $(".lrd_warning_signup").innerHTML = warning;
+        return;
+    }
+
+    //Send To Server
+    
   })

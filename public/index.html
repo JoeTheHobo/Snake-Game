@@ -110,36 +110,37 @@
         <div class="signupDiv loginRegisterDiv">
             <div class="lrd_closeForm hover pointerCursor">X</div>
             <div class="lrd_title">Signup</div>
-            <input class="lrd_input" type="text" placeholder="Email">
-            <input class="lrd_input" type="text" placeholder="Username">
+            <div class="lrd_warning lrd_warning_signup">Incorect Password</div>
+            <input class="lrd_input lrd_signup_email" type="text" placeholder="Email">
+            <input class="lrd_input lrd_signup_username" max="32"  type="text" placeholder="Username">
             <div class="lrd_inputImageHolder">
-                <input class="lrd_input_password" type="password" placeholder="Password">
+                <input class="lrd_input_password lrd_signUpPassword1" max="100" type="password" placeholder="Password">
                 <div class="lrd_inputImage pointerCursor">
-                    <img class="lrd_inputImg" src="img/menuIcons/passwordHidden.png" alt="">
+                    <img class="lrd_inputImg lrd_signup_password_img_1" src="img/menuIcons/passwordHidden.png" alt="">
                 </div>
             </div>
             <div class="lrd_inputImageHolder">
-                <input class="lrd_input_password" type="password" placeholder="Password">
+                <input class="lrd_input_password lrd_signUpPassword2" max="100" type="password" placeholder="Password">
                 <div class="lrd_inputImage pointerCursor">
-                    <img class="lrd_inputImg" src="img/menuIcons/passwordHidden.png" alt="">
+                    <img class="lrd_inputImg lrd_signup_password_img_2" src="img/menuIcons/passwordHidden.png" alt="">
                 </div>
             </div>
             
             <div class="lrd_row">
-                <div class="lrd_text lrd_purple pointerCursor hover">Already Have An Account? Sign In</div>
+                <div class="lrd_text lrd_GoToSignIN lrd_purple pointerCursor hover">Already Have An Account? Sign In</div>
             </div>
-            <div class="lrd_button hover">Submit</div>
+            <div class="lrd_button lrd_submitButton hover">Submit</div>
 
         </div>
         <div class="loginDiv loginRegisterDiv">
             <div class="lrd_closeForm hover pointerCursor">X</div>
             <div class="lrd_title">Sign In</div>
-            <div class="lrd_warning">Incorect Password</div>
+            <div class="lrd_warning lrd_warning_signin"></div>
             <input class="lrd_input lrd_emailInput" type="text" placeholder="Email">
             <div class="lrd_inputImageHolder">
                 <input class="lrd_input_password lrd_loginPassword" type="password" placeholder="Password">
                 <div class="lrd_inputImage pointerCursor">
-                    <img class="lrd_inputImg" src="img/menuIcons/passwordHidden.png" alt="">
+                    <img class="lrd_inputImg lrd_passwordImg" src="img/menuIcons/passwordHidden.png" alt="">
                 </div>
             </div>
             
