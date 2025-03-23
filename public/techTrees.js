@@ -220,6 +220,8 @@ function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked) {
 
             removePoints(price);
             localAccount.battlePassPoints -= price;
+
+            playAudio("sounds/Tech Tree/purchace.mp3");
             
             setTimeout(function() {
                 childDiv.activate();
