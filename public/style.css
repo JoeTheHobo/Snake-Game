@@ -3829,9 +3829,8 @@ gap: 1px; /* Optional: Adjust spacing between items */
   z-index: 500;
 }
 .volumeControlsGame {
-  position: fixed;
-  right: 10px;
-  top: 10px;
+  float: right;
+  margin-right: 10px;
 }
 .volumeControls {
   display: flex;
