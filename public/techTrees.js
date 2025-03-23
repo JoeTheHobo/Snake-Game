@@ -8,6 +8,7 @@ let viewWidth,
     drag = false,
     startX,
     startY;
+let laUnlocked;
 const dragSpeed = 0.5;
 const elementDragSpeed = 0.8;
 const spaceSize = 25000; // Huge space
@@ -15,6 +16,11 @@ let activePass;
 
 function loadTechTree(tree) {
     activePass = tree;
+    for (let i = 0; i < localAccount.battlePasses.length; i++) {
+        if (localAccount.battlePasses[i].name === activePass.name) {
+            laUnlocked = localAccount.battlePasses[i].unlocked;
+        }
+    }
     let scene = $("scene_tree"); 
     scene.innerHTML = "";
     let canvas = scene.create("canvas.techTree_background");
@@ -46,7 +52,7 @@ function loadTechTree(tree) {
 }
 function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0,parentUnlocked) {
     let rewardsDiv = getRewardsDiv(point);
-    if (point.unlocked) rewardsDiv.locked = false;
+    if (!laUnlocked.includes(point.id)) rewardsDiv.locked = false;
     else rewardsDiv.locked = true;
     setTimeout(function() {
         rewardsDiv.style.opacity = 1;
@@ -84,10 +90,16 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0,parentUnlocked)
         })
     
         if (comeFromPoint !== "start") requestAnimationFrame(function() {
-            drawLine(parentDiv,rewardsDiv,point.unlocked,point.cost,parentUnlocked,point.id);
+            drawLine(parentDiv,rewardsDiv,laUnlocked.includes(point.id),point.cost,parentUnlocked,point.id);
         });
     
         rewardsDiv.activate = function() {
+            for (let i = 0; i < localAccount.battlePasses.length; i++) {
+                if (localAccount.battlePasses[i].name === activePass.name) {
+                    localAccount.battlePasses[i].unlocked.push(nodeID);
+                }
+            }
+
             rewardsDiv.$(".techTree_reward").classRemove("techTree_locked");
             rewardsDiv.$(".techTree_reward").classAdd("techTree_unlocked");
             rewardsDiv.locked = false;
@@ -120,7 +132,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0,parentUnlocked)
                 let newX = ogX + edgeX + Math.cos(randomAngle) * radius;
                 let newY = ogY + edgeY + Math.sin(randomAngle) * radius;
     
-                drawTree(point.branches[i], { x: newX, y: newY }, rewardsDiv, randomAngle,point.unlocked);
+                drawTree(point.branches[i], { x: newX, y: newY }, rewardsDiv, randomAngle,laUnlocked.includes(point.id));
             }
         } else if (numBranches === 1) {
             let offset = (hashValue(0) % 2000) / 2000 * 2 - 1; 
@@ -129,7 +141,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0,parentUnlocked)
             let newX = ogX + Math.cos(randomAngle) * radius;
             let newY = ogY + Math.sin(randomAngle) * radius;
     
-            drawTree(point.branches[0], { x: newX, y: newY }, rewardsDiv, randomAngle,point.unlocked);
+            drawTree(point.branches[0], { x: newX, y: newY }, rewardsDiv, randomAngle,laUnlocked.includes(point.id));
         }
     },150)
 }
@@ -205,11 +217,6 @@ function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked,nodeID) {
 
             removePoints(price);
             localAccount.battlePassPoints -= price;
-            for (let i = 0; i < localAccount.battlePasses.length; i++) {
-                if (localAccount.battlePasses[i].name === activePass.name) {
-                    localAccount.battlePasses[i].unlocked.push(nodeID);
-                }
-            }
             
             setTimeout(function() {
                 childDiv.activate();
@@ -261,7 +268,7 @@ function getRewardsDiv(point) {
         if (["item","tile","coins"].includes(reward.type)) insideDiv = rewardDiv.create("img.techTree_insideReward");
         if (["text"].includes(reward.type)) insideDiv = rewardDiv.create("div.techTree_insideReward");
 
-        if (point.unlocked) rewardDiv.classAdd("techTree_unlocked");
+        if (laUnlocked.includes(point.id)) rewardDiv.classAdd("techTree_unlocked");
         else rewardDiv.classAdd("techTree_locked");
 
         if (reward.type == "text") {

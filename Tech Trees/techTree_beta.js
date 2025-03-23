@@ -6,11 +6,9 @@ let techTree_beta = {
         text: "Beta",
     }],
     img: "beta",
-    unlocked: true,
     branches: [
         {
             id: 0,
-            unlocked: false,
             cost: 2,
             rewards: [
                 {
@@ -24,7 +22,6 @@ let techTree_beta = {
             ],
             branches: [{
                 id: 1,
-                unlocked: false,
                 cost: 2,
                 rewards: [
                     {
@@ -46,7 +43,6 @@ let techTree_beta = {
                 ],
                 branches: [{
                     id: 2,
-                    unlocked: false,
                     cost: 2,
                     rewards: [
                         {
@@ -61,7 +57,6 @@ let techTree_beta = {
                     branches: [],
                 },{
                     id: 3,
-                    unlocked: false,
                     cost: 2,
                     rewards: [
                         {
@@ -76,7 +71,6 @@ let techTree_beta = {
                     branches: [],
                 },{
                     id: 4,
-                    unlocked: false,
                     cost: 2,
                     rewards: [
                         {
@@ -94,7 +88,6 @@ let techTree_beta = {
         },
         {
             id: 5,
-            unlocked: false,
             cost: 2,
             rewards: [
                 {
