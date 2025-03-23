@@ -1,5 +1,5 @@
 
-let techTree_beta = {
+let techTree_beta = [ {
     passName: "beta",
     rewards: [{
         type: "text",
@@ -109,7 +109,7 @@ let techTree_beta = {
             branches: [],
         }
     ]
-}
+}]
 
 
 module.exports = { techTree_beta };
