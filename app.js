@@ -1727,7 +1727,12 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         lobby.canvasFilters.push(collision.canvasFilter);
     }
     if (collision.playSound && item.playSounds && settings?.playAudio && lobby.playSounds) {
-        lobby.playSounds.push("sounds/" + item.soundFolder + "/" + item.soundFolder + "_" + collision.playSound[0] + "_" + simple.rnd(collision.playSound[1]) + ".mp3");
+        let type = "sfx";
+        if (collision.playSound[2]) type = collision.playSound[2];
+        lobby.playSounds.push({
+            src: "sounds/" + item.soundFolder + "/" + item.soundFolder + "_" + collision.playSound[0] + "_" + simple.rnd(collision.playSound[1]) + ".mp3",
+            type: type,
+        });
     }
     if (collision.killPlayer && player) {
         deletePlayer(lobby,player,false,false,true);

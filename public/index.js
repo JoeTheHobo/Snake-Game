@@ -446,8 +446,8 @@ socket.on("updatePositions",(obj) => {
 
     if (obj.p) {
         for (let i = 0; i < obj.p.length; i++) {
-            let src = obj.p[i];
-            playAudio(src,"sfx");
+            let soundObject = obj.p[i];
+            playAudio(soundObject.src,soundObject.type);
         }
     }
 

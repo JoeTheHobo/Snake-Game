@@ -149,7 +149,7 @@ tiles.push({
             index: 0,
             value: "lit",
         }, //Change base image tag.
-        playSound: ["A3",1],
+        playSound: ["A3",1,"music"],
     },
     offCollision: {
         setBaseImgTag: {
