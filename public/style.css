@@ -3891,3 +3891,46 @@ gap: 1px; /* Optional: Adjust spacing between items */
   margin-left: 5px;
   color: white;
 }
+.cb_boardList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  
+}
+.bm_boardContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 120px;
+  border-radius: 5px;
+}
+.bm_boardCanvas {
+  width: 100%;
+  aspect-ratio: 30/40;
+  cursor: url('./img/pointer.cur'), auto;
+}
+.bm_boardSettings {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: rgb(139, 139, 139);
+  height: 35px;
+}
+.bm_settingDiv {
+  height: 80%;
+  aspect-ratio: 1/1;
+  border-radius: 5px;
+  background: rgb(121, 121, 121);
+  transition: all .2s ease-in-out;
+  cursor: url('./img/pointer.cur'), auto;
+}
+.bm_settingDiv:hover {
+  background: rgb(168, 168, 168);
+
+}
+.bm_settingImg {
+  width: 80%;
+  height: 80%;
+}

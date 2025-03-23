@@ -1273,5 +1273,51 @@ function loadBoardMenu() {
     $(".content_boards").show("flex");
     $("boards_tab").classAdd("menu_tab_selected");
 
-    let holder = $(".content_boards");
+    function makeBoard(holder,content,type,index) {
+        if (type == "board") {
+            let container = holder.create("div.bm_boardContainer");
+            let boardPortion = container.create("canvas.bm_boardCanvas");
+            let settingPortion = container.create("div.bm_boardSettings")
+
+            drawBoardToCanvas(content.originalMap,boardPortion);
+
+            function addSetting(src,func) {
+                let imgHolder = settingPortion.create("div.bm_settingDiv");
+                let img = imgHolder.create("img.bm_settingImg");
+                img.src = src;
+                imgHolder.on("click",func);
+            }
+            addSetting("img/menuIcons/edit.png",function() {
+                currentBoardIndex = index;
+                currentBoard = localAccount.boards[index];
+                openMapEditor(currentBoard);
+            });
+            addSetting("img/menuIcons/delete.png",function() {
+                makePopUp([
+                    {type: "text",text: "Delete " + localAccount.boards[index].name},
+                    {type: "title",text: "Are You Sure?"},
+                    [
+                        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
+                        {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Delete",onClick: (ids,param) => {
+                            socket.emit("deleteBoard",localAccount.boards[index].id,"loadBoardsScreen");
+                        }},
+                    ],
+                ],{
+                    id: "deletePopUp",
+                })
+            });
+            if (ls.get("admin") == true) {
+                addSetting("img/menuIcons/download.png",function() {
+                    socket.emit("getZippedBoard",pako.deflate(JSON.stringify(shortenBoard(localAccount.boards[index])), { to: 'string' }));
+                });
+            }
+        }
+    }
+
+    let listHolder = $(".cb_boardList");
+    for (let i = 0; i < localAccount.boards.length; i++) {
+        makeBoard(listHolder,localAccount.boards[i],"board",i)
+    }
+
+
 }
