@@ -1318,6 +1318,7 @@ function loadBoardMenu() {
         if (type == "newBoard") {
             let container = holder.create("div.bm_boardContainer");
             container.classAdd("hover");
+            container.classAdd("square");
             container.classAdd("pointerCursor");
             let plus = container.create("div.bm_plus");
             plus.innerHTML = "+";
