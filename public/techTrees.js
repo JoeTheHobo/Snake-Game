@@ -5,6 +5,7 @@ let viewWidth,
     viewHeight;
 const dragSpeed = 0.5;
 const elementDragSpeed = 0.8;
+const spaceSize = 25000; // Huge space
 
 function loadTechTree(tree) {
     let scene = $("scene_tree"); 
@@ -307,7 +308,6 @@ function generateStarBackground(canvas) {
     canvas.width = viewWidth;
     canvas.height = viewHeight;
 
-    const spaceSize = 25000; // Huge space
     const starCount = Math.floor((spaceSize*15000)/4000); // Number of stars
     stars = [];
 
