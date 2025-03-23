@@ -298,7 +298,9 @@ $(".vc_slider").on("change",function() {
     let sliderOffSrc = this.id === "volumeSliderMusic" ? "img/menuIcons/volumeMusicOff.png" : "img/menuIcons/volumeOff.png";
     let sliderOnSrc = this.id === "volumeSliderMusic" ? "img/menuIcons/volumeMusic.png" : "img/menuIcons/volume.png";
 
+    console.log(value)
     if (value == 0) {
+        console.log(sliderHTML,sliderOffSrc);
         sliderHTML.src = sliderOffSrc;
     } else {
         if (sliderHTML.src !== sliderOnSrc) sliderHTML.src = sliderOnSrc;
