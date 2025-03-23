@@ -41,6 +41,8 @@ function loadTechTree(tree) {
 }
 function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0,parentUnlocked) {
     let rewardsDiv = getRewardsDiv(point);
+    if (point.unlocked) rewardsDiv.locked = false;
+    else rewardsDiv.locked = true;
     setTimeout(function() {
         rewardsDiv.style.opacity = 1;
         let x,y;
@@ -83,6 +85,7 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0,parentUnlocked)
         rewardsDiv.activate = function() {
             rewardsDiv.$(".techTree_insideReward").classRemove("techTree_locked");
             rewardsDiv.$(".techTree_insideReward").classAdd("techTree_unlocked");
+            rewardsDiv.locked = false;
         }
         
         
@@ -188,24 +191,25 @@ function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked,nodeID) {
         let pointCounterDiv = lineDiv.create("div.techTree_line_count")
         pointCounterDiv.innerHTML = "x" + price;
         lockedImgHolder.on("click",function() {
-            if (localAccount.battlePassPoints > price) {
-                lineDiv.classAdd("techTree_line_unlocked");
-                this.hide();
-                pointCounterDiv.hide();
+            if (parentDiv.locked == true) return;
+            if (localAccount.battlePassPoints < price) return;
 
-                localAccount.battlePassPoints -= price;
-                for (let i = 0; i < localAccount.battlePasses.length; i++) {
-                    if (localAccount.battlePasses[i].name === activePass.name) {
-                        localAccount.battlePasses[i].unlocked.push(nodeID);
-                    }
+            lineDiv.classAdd("techTree_line_unlocked");
+            this.hide();
+            pointCounterDiv.hide();
+
+            removePoints(price);
+            localAccount.battlePassPoints -= price;
+            for (let i = 0; i < localAccount.battlePasses.length; i++) {
+                if (localAccount.battlePasses[i].name === activePass.name) {
+                    localAccount.battlePasses[i].unlocked.push(nodeID);
                 }
-                $(".techTree_battlePointsCounter").innerHTML = "x" + localAccount.battlePassPoints; 
-                removePoints(price);
-                setTimeout(function() {
-                    childDiv.activate();
-                },200)
-                unlockPass(nodeID);
             }
+            
+            setTimeout(function() {
+                childDiv.activate();
+            },200)
+            unlockPass(nodeID);
         })
 
     } else {
@@ -225,6 +229,20 @@ function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked,nodeID) {
         x: startX,
         y: startY,
     });
+}
+function removePoints(count) {
+    let ogPoints = Number($(".techTree_battlePointsCounter").innerHTML.subset(1,"end"));
+    ogPoints--;
+    $(".techTree_battlePointsCounter").innerHTML = "x" + ogPoints;
+    count--;
+    
+    if (count > 0) {
+        setTimeout(function() {
+            removePoints(count);
+        },100);
+    } else {
+        $(".techTree_battlePointsCounter").innerHTML = "x" + localAccount.battlePassPoints;
+    }
 }
 function getRewardsDiv(point) {
     let rewards = point.rewards;
