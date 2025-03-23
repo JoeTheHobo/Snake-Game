@@ -1,6 +1,11 @@
 let movingPoints = [];
 let stars;
 let techTree_ctx;
+let viewWidth, 
+    viewHeight;
+const dragSpeed = 0.5;
+const elementDragSpeed = 0.8;
+
 function loadTechTree(tree) {
     let scene = $("scene_tree"); 
     scene.innerHTML = "";
@@ -297,15 +302,13 @@ function generateStarBackground(canvas) {
     
     techTree_ctx = canvas.getContext("2d");
 
-    const viewWidth = window.innerWidth;
-    const viewHeight = window.innerHeight;
+    viewWidth = window.innerWidth;
+    viewHeight = window.innerHeight;
     canvas.width = viewWidth;
     canvas.height = viewHeight;
 
     const spaceSize = 25000; // Huge space
     const starCount = Math.floor((spaceSize*15000)/4000); // Number of stars
-    const dragSpeed = 0.5;
-    const elementDragSpeed = 0.8;
     stars = [];
 
     for (let i = 0; i < starCount; i++) {
