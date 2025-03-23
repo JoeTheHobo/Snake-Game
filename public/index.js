@@ -85,6 +85,8 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     generateGameTips();
     
 
+    loadAllBattlePasses();
+
     renderMapsInServersTab = true;
 });
 socket.on("sendingZippedBoard",(zippedBoard,boardName) => {

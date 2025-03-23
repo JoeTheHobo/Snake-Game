@@ -1811,3 +1811,19 @@ function _getById(id,type) {
         if (list[i].id === id) return list[i];
     }
 }
+function loadAllBattlePasses() {
+    let holder = $(".techTreesHolder");
+    holder.innerHTML = "";
+    for (let i = 0; i < localAccount.battlePasses.length; i++) {
+        let laBattlePass = localAccount.battlePasses[i];
+        let battlePass = accessedBattlePasses[laBattlePass.name];
+        let passHolder = holder.create("div.newMenu_statHolder");
+        passHolder.classAdd("statHolderPurple");
+        let passImg = passHolder.create("div.newMenu_statImg");
+        passImg.src = "img/techTrees/techTree_" + laBattlePass.name;
+
+        passHolder.on("click",function() {
+            loadTechTree(battlePass);
+        })
+    }
+}

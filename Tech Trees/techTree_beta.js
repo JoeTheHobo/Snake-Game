@@ -5,6 +5,7 @@ let techTree_beta = {
         type: "text",
         text: "Beta",
     }],
+    img: "beta",
     unlocked: true,
     branches: [
         {
