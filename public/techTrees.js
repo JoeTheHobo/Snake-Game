@@ -221,7 +221,7 @@ function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked) {
             removePoints(price);
             localAccount.battlePassPoints -= price;
 
-            playAudio("sounds/Tech Tree/purchace.mp3");
+            playAudio("sounds/Tech Tree/purchace.mp3","sfx");
             
             setTimeout(function() {
                 childDiv.activate();
@@ -405,7 +405,7 @@ function openInfoCard(type,thingToOpen,parent,extra) {
         card.$(".infocard_description").innerHTML = "Customize Your Snake!";
     }
 
-    playAudio("sounds/Tech Tree/infocard.mp3");
+    playAudio("sounds/Tech Tree/infocard.mp3","sfx");
 
     let x,y;
     let parentRect = parent.getBoundingClientRect();

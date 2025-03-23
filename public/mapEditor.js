@@ -2527,7 +2527,7 @@ function pianoPopUp(value) {
             blackKey.on("click",function() {
                 $(".key_chosen").classRemove("key_chosen");
                 blackKey.classAdd("key_chosen");
-                playAudio("./sounds/piano/piano_" + key + "b" + octive + "_1.mp3");
+                playAudio("./sounds/piano/piano_" + key + "b" + octive + "_1.mp3","sfx");
                 whiteKeysHolder.chosenValue = key + "b" + octive;
             })
         }
@@ -2535,7 +2535,7 @@ function pianoPopUp(value) {
         whiteKey.on("click",function(e) {
             $(".key_chosen").classRemove("key_chosen");
             whiteKey.classAdd("key_chosen");
-            playAudio("./sounds/piano/piano_" + key + octive + "_1.mp3");
+            playAudio("./sounds/piano/piano_" + key + octive + "_1.mp3","sfx");
             whiteKeysHolder.chosenValue = key + octive;
         })
 

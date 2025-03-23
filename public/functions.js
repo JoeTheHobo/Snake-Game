@@ -1753,15 +1753,22 @@ function setNestedValue(obj, path, value, toReturn = false) {
 }
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-async function playAudio(url) {
+async function playAudio(url, type = "sfx") {
     const response = await fetch(url);
     const arrayBuffer = await response.arrayBuffer();
     const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
     const source = audioContext.createBufferSource();
     source.buffer = audioBuffer;
-    source.connect(audioContext.destination);
-    adjustVolume(source,"sfx");
+
+    // Create GainNode for volume control
+    const gainNode = audioContext.createGain();
+    gainNode.gain.value = (type === "music" ? global_musicVolume : global_sfxVolume) / 100;
+
+    // Connect the source → gainNode → destination
+    source.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
     source.start();
 }
 function generateAllowedSnakeColors(holder,func) {
