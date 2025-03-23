@@ -1818,6 +1818,7 @@ function loadAllBattlePasses() {
         let laBattlePass = localAccount.battlePasses[i];
         let battlePass = accessedBattlePasses[laBattlePass.name];
         let passHolder = holder.create("div.newMenu_statHolder");
+        passHolder.classAdd("flexEnd")
         passHolder.classAdd("statHolderPurple");
         let passImg = passHolder.create("img.newMenu_statImg");
         passImg.src = "img/techTrees/techTree_" + laBattlePass.name + ".png";
