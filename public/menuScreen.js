@@ -879,7 +879,7 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
         })
     }
     
-    function addSetting(title,type,value,func,list) {
+    function addSetting(title,type,value,func,list,change = "input") {
         let holder = $(".settingsHolder").create("div");
         holder.className = "settingHolder";
         let settingsTitle = holder.create("div");
@@ -915,13 +915,13 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
                 })
             }
         }
-        settingsInput.on("input",function() {
+        settingsInput.on(change,function() {
             func(this.value,this);
         })
         
     }
     if (htmlName) {
-        addSetting("Game Mode Name","change",gameMode.name,function(value,input) {
+        addSetting("Game Mode Name","input",gameMode.name,function(value,input) {
             value = profanity.clean(value);
             if (value === "") value = "Untitled";
             if (value.length > 32) return;
@@ -931,7 +931,7 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
             htmlName.innerHTML = value;
             input.value = value;
             socket.emit("saveGamemode",gameMode);
-        });
+        },false,"change");
     }
     addSetting("Inventory Slots","number",gameMode.howManyItemsCanPlayersUse,function(value,input) {
         if (value < 0) input.value = 0;
