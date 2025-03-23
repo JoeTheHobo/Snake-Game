@@ -58,7 +58,7 @@ io.on('connection', (socket) => {
     socket.join(socket.id);
     socket.join("menuScreen");
     let username = simple.rnd(playerNames1) + simple.rnd(playerNames2);
-    let tag = "#" + formatNumber(Object.keys(onlineAccounts).length);
+    let tag = formatNumber(Object.keys(onlineAccounts).length);
     onlineAccounts[socket.id] = {
         id: socket.id,
 
