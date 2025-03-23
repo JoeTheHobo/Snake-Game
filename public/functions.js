@@ -1944,3 +1944,6 @@ function adjustVolume(audioElement, type, adj = 1) {
   $(".lrd_closeForm").on("click",function() {
     setScene("newMenu");
   }) 
+  $(".lrd_signupButton").on("click",function() {
+    loginLoad("signup")
+  })
