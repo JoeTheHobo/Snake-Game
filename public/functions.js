@@ -1940,9 +1940,6 @@ function adjustVolume(audioElement, type, adj = 1) {
         return;
     }
 
-    $(".lrd_goToLogin").on("click",function() {
-        loginLoad("login");
-    })
 
     //Send To Server
   })
