@@ -3975,5 +3975,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
   color: white;
   -webkit-text-stroke: 3px black;
   paint-order: stroke fill;
-  
+  pointer-events: none;
+
 }

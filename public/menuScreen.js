@@ -1273,7 +1273,7 @@ function loadBoardMenu() {
     $(".content_boards").show("flex");
     $("boards_tab").classAdd("menu_tab_selected");
 
-    $(".cb_tr_text_boardCount").innerHMTL =  localAccount.boards.length + "/" + localAccount.boardLimit;
+    $(".cb_tr_text_boardCount").innerHTML =  localAccount.boards.length + "/" + localAccount.boardLimit;
 
     function makeBoard(holder,content,type,index) {
         if (type == "board") {
@@ -1284,6 +1284,12 @@ function loadBoardMenu() {
             boardName.innerHTML = content.name;
 
             drawBoardToCanvas(content.originalMap,boardPortion);
+
+            boardPortion.on("click",function() {
+                currentBoardIndex = index;
+                currentBoard = localAccount.boards[index];
+                openMapEditor(currentBoard);
+            })
 
             function addSetting(src,func) {
                 let imgHolder = settingPortion.create("div.bm_settingDiv");
