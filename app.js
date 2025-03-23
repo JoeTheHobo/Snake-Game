@@ -11,8 +11,8 @@ const profanity = require("./profanity.js");
 
 const allBattlePasses = {};
 const battlePass_beta = require("./Tech Trees/techTree_beta.js");
-console.log(battlePass_beta.name);
-allBattlePasses[battlePass_beta.name] = battlePass_beta;
+console.log(battlePass_beta.passName,battlePass_beta);
+allBattlePasses[battlePass_beta.passName] = battlePass_beta;
 
 //socket.io setup
 const http = require('http');
