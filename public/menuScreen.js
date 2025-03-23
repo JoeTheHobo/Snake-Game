@@ -1355,6 +1355,7 @@ function loadBoardMenu() {
     }
 
     let listHolder = $(".cb_boardList");
+    listHolder.innerHTML = "";
     for (let i = 0; i < localAccount.boards.length; i++) {
         makeBoard(listHolder,localAccount.boards[i],"board",i)
     }

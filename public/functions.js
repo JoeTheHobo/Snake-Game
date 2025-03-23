@@ -725,43 +725,36 @@ function forceAllCellsToBeTheirOwn(map) {
 
 
 
-function drawBoardToCanvas(board,canvas,forceHeight) {
+function drawBoardToCanvas(board,canvas) {
     let ctx = canvas.getContext("2d");
-    let gs;
+    let grid_size;
 
     if (board.length > board[0].length) {
-        gs = Math.round(canvas.height / board.length);
-
+        grid_size = Math.round(canvas.getBoundingClientRect().height / board.length);
     } else {
-        gs = Math.round(canvas.width / board[0].length);
-
+        grid_size = Math.round(canvas.getBoundingClientRect().width / board[0].length);
     } 
-    if (forceHeight) gs = Math.round(canvas.height / board.length);
 
-    let width = Math.round(board[0].length * gs);
-    let height = Math.round(board.length * gs);
+    let width = Math.round(board[0].length * grid_size);
+    let height = Math.round(board.length * grid_size);
 
     canvas.height = height;
     canvas.width = width;
-    canvas.css({
-        width: width + "px",
-        height: height + "px",
-    })
 
 
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
             let cell = board[i][j];
 
-            let Xpos = (j * gs);
-            let Ypos = (i * gs);
+            let Xpos = (j * grid_size);
+            let Ypos = (i * grid_size);
             
-            ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(gs),(gs));
+            ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(grid_size),(grid_size));
 
             if (cell.item) {
                 let image = getImage(cell.item,"canvas");
                 if (!image) continue;
-                ctx.drawImage(image,Xpos,Ypos,(gs),(gs));
+                ctx.drawImage(image,Xpos,Ypos,(grid_size),(grid_size));
             }
 
         }
