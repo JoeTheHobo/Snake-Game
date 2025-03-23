@@ -101,9 +101,10 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0,parentUnlocked)
             rewardsDiv.$(".techTree_reward").classAdd("techTree_unlocked");
             rewardsDiv.locked = false;
             for (let i = 0; i < rewardsDiv.lines.length; i++) {
-                rewardsDiv.lines.$(".techTree_line_count").show();
-                rewardsDiv.lines.$(".techTree_lineLocked").show("flex");
-
+                rewardsDiv.lines[i].$(".techTree_line_count").show();
+                rewardsDiv.lines[i].$(".techTree_lineLocked").show("flex");
+                rewardsDiv.lines[i].$(".techTree_lineLockedImg").classRemove("grayScale");
+                rewardsDiv.lines[i].$(".techTree_lineLockedImg").classAdd("noInvert");
             }
         }
         
