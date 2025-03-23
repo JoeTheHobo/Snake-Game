@@ -1910,6 +1910,7 @@ function adjustVolume(audioElement, type, adj = 1) {
 
     $(".lrd_warning").hide();
     $(".lrd_input").value = "";
+    $(".lrd_input_password").value = "";
     if (type == "login") {
         $(".lrd_loginPassword").type == "password";
         $(".lrd_passwordImg").src = "img/menuIcons/passwordHidden.png";
