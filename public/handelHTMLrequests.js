@@ -294,7 +294,7 @@ $(".serverSettings").on("click",function() {
 })
 $(".vc_slider").on("input",function() {
     let value = Number(this.value);
-    let sliderHTML = this.id === "volumeSliderMusic" ? $(".volumeImgMusic") : $(".volumeImgVolume");
+    let sliderHTML = this.id === "volumeSliderMusic" ? $("volumeImgMusic") : $("volumeImgVolume");
     let sliderOffSrc = this.id === "volumeSliderMusic" ? "img/menuIcons/volumeMusicOff.png" : "img/menuIcons/volumeOff.png";
     let sliderOnSrc = this.id === "volumeSliderMusic" ? "img/menuIcons/volumeMusic.png" : "img/menuIcons/volume.png";
 
