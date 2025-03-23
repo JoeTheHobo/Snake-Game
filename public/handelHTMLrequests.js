@@ -306,6 +306,7 @@ $(".vc_slider").on("input",function() {
     }
 
     effectingVar = value;
+    updateAllVolumes();
 })
 $(".vc_img").on("click",function() {
     let sliderHTML = this.id === "volumeImgMusic" ? $("volumeSliderMusic") : $("volumeSliderVolume");
@@ -322,7 +323,7 @@ $(".vc_img").on("click",function() {
     }
 
     effectingVar = Number(sliderHTML.value);
-
+    updateAllVolumes();
 })
 function adjustVolumeSliders() {
     $("volumeSliderMusic").value = global_musicVolume;

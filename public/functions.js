@@ -1659,6 +1659,7 @@ const hoverSound = new Audio("sounds/menuSounds/buttonHover.mp3");
 const clickSound = new Audio("sounds/menuSounds/buttonClick.mp3");
 function playSound(sound) {
     sound.currentTime = 0; // Reset audio to start
+    adjustVolume(sound,"sfx");
     sound.play();
 }
 $(".playButtonSounds").forEach(button => {
@@ -1760,6 +1761,7 @@ async function playAudio(url) {
     const source = audioContext.createBufferSource();
     source.buffer = audioBuffer;
     source.connect(audioContext.destination);
+    adjustVolume(source,"sfx");
     source.start();
 }
 function generateAllowedSnakeColors(holder,func) {
@@ -1897,3 +1899,20 @@ function fadeOut(audio, duration, callback) {
         }
     }, 50);
 }
+function adjustVolume(audioElement, type, adj = 1) {
+    if (type === "music") {
+      audioElement.volume = adj*(global_musicVolume / 100); // Convert to 0-1 range
+    } else if (type === "sfx") {
+      audioElement.volume = adj*(global_sfxVolume / 100);
+    }
+  }
+
+  function updateAllVolumes() {
+    document.querySelectorAll("audio").forEach(audio => {
+      if (audio.dataset.type === "music") {
+        audio.volume = global_musicVolume / 100;
+      } else if (audio.dataset.type === "sfx") {
+        audio.volume = global_sfxVolume / 100;
+      }
+    });
+  }
