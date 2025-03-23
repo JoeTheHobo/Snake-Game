@@ -2,7 +2,10 @@ let movingPoints = [];
 let stars;
 let techTree_ctx;
 let viewWidth, 
-    viewHeight;
+    viewHeight,
+    offsetX,
+    offsetY,
+    drag;
 const dragSpeed = 0.5;
 const elementDragSpeed = 0.8;
 const spaceSize = 25000; // Huge space
@@ -347,6 +350,10 @@ function generateStarBackground(canvas) {
     canvas.width = viewWidth;
     canvas.height = viewHeight;
 
+    offsetX = (spaceSize - viewWidth) / 2;
+    offsetY = (spaceSize - viewHeight) / 2;
+    drag = false, startX, startY;
+
     const starCount = Math.floor((spaceSize*15000)/4000); // Number of stars
     stars = [];
 
@@ -362,9 +369,6 @@ function generateStarBackground(canvas) {
     drawStars();
 }
 
-let offsetX = (spaceSize - viewWidth) / 2;
-let offsetY = (spaceSize - viewHeight) / 2;
-let drag = false, startX, startY;
 
 function drawStars() {
     techTree_ctx.fillStyle = "black";
