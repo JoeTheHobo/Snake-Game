@@ -225,7 +225,7 @@ function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked,nodeID) {
             },75)
         })
 
-        if (!parentUnlocked) {
+        if (parentUnlocked) {
             lockedImgHolder.hide();
             pointCounterDiv.hide();
         }
