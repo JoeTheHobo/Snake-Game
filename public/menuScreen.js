@@ -1308,3 +1308,7 @@ function loadBoardMenu() {
 
 
 }
+
+function loadShopMenu() {
+    
+}
