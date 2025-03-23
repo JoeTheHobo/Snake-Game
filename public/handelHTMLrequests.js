@@ -325,9 +325,9 @@ $(".vc_img").on("click",function() {
     }
 
     if (this.id === "volumeSliderMusic") {
-        global_musicVolume = value;
+        global_musicVolume = sliderHTML.value;
     } else {
-        global_sfxVolume = value;
+        global_sfxVolume = sliderHTML.value;
     }
     updateAllVolumes();
 })
