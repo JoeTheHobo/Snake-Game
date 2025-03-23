@@ -3803,10 +3803,10 @@ gap: 1px; /* Optional: Adjust spacing between items */
   paint-order: stroke fill;
 }
 .newMenu_statPurple {
-  color: purple;
+  color: white;
 }
 .newMenu_statGold {
-  color: gold;
+  color: white;
 }
 .techTreesHolder {
   display: flex;
