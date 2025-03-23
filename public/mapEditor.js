@@ -1101,8 +1101,11 @@ $("me_button").on("click",function() {
 })
 function goBackHome(save) {
     if (save) saveBoard(true);
-    setScene("newMenu");
-    loadBoardMenu();
+    setTimeout(function() {
+        setScene("newMenu");
+        loadBoardMenu();
+    },100)
+    
 }
 
 function loadObjectMenu() {
