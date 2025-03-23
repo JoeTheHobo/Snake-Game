@@ -188,12 +188,12 @@ function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked,nodeID) {
         let pointCounterDiv = lineDiv.create("div.techTree_line_count")
         pointCounterDiv.innerHTML = "x" + price;
         lockedImgHolder.on("click",function() {
-            if (localAccount.battlePassPoints > points) {
+            if (localAccount.battlePassPoints > price) {
                 lineDiv.classAdd("techTree_line_unlocked");
                 this.hide();
                 pointCounterDiv.hide();
 
-                localAccount.battlePassPoints -= points;
+                localAccount.battlePassPoints -= price;
                 for (let i = 0; i < localAccount.battlePasses.length; i++) {
                     if (localAccount.battlePasses[i].name === activePass.name) {
                         localAccount.battlePasses[i].unlocked.push(nodeID);
