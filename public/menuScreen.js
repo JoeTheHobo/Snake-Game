@@ -1278,7 +1278,7 @@ function loadBoardMenu() {
             })
         }
         
-        if (type == "newBoard") {
+        if (type == "buyBoard") {
             
             let container = holder.create("div.bm_boardContainer");
             container.classAdd("hover");

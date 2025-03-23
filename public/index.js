@@ -331,6 +331,7 @@ socket.on("updatePreGamePlayerInfo",(players) => {
 })
 socket.on("endGame",(obj) => {
     obj = obj;
+    if (!localAccount.isInGame) return;
     localAccount.isInGame = false;
     showEndScreen()
     

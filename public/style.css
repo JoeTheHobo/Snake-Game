@@ -3980,3 +3980,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   pointer-events: none;
 
 }
+.bm_shopImg {
+  width: 60%;
+  aspect-ratio: 1/1;
+}
