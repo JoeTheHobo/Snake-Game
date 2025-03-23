@@ -328,4 +328,5 @@ function adjustVolumeSliders() {
 }
 $(".signinLink").on("click",function() {
     setScene("login")
+    loginLoad("login");
 })

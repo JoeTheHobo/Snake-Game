@@ -1903,3 +1903,25 @@ function adjustVolume(audioElement, type, adj = 1) {
       }
     });
   }
+
+  function loginLoad(type) {
+    $(".loginRegisterDiv").hide();
+    $(type + "Div").show("flex");
+
+    if (type == "login") {
+        $(".lrd_warning").hide();
+        $(".lrd_input").value = "";
+        $(".lrd_input_password").type == "password";
+        $(".lrd_inputImg").src = "img/menuIcons/passwordHidden.png";
+        $(".lrd_staySignedIn").checked = false;
+    }
+  }
+  $(".lrd_inputImg").on("click",function() {
+    if ($(".lrd_input_password").type === "password") {
+        $(".lrd_input_password").type = "input";
+        this.src = "img/menuIcons/passwordVisible.png";
+    } else {
+        $(".lrd_input_password").type = "password";
+        this.src = "img/menuIcons/passwordHidden.png";
+    }
+  })
