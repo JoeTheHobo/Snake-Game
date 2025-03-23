@@ -1933,8 +1933,6 @@ function adjustVolume(audioElement, type, adj = 1) {
     if (emailValue == "") warning = "Email Field Is Empty";
     if (passwordValue == "") warning = "Password Field Is Empty";
 
-    console.log(emailValue,passwordValue,warning)
-
     if (warning) {
         $(".lrd_warning").show();
         $(".lrd_warning").innerHTML = warning;
@@ -1943,3 +1941,6 @@ function adjustVolume(audioElement, type, adj = 1) {
 
     //Send To Server
   })
+  $(".lrd_closeForm").on("click",function() {
+    setScene("newMenu");
+  }) 

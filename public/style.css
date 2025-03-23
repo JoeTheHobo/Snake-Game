@@ -4100,6 +4100,12 @@ gap: 1px; /* Optional: Adjust spacing between items */
   height: 20px;
   margin-left: 10px;
 }
+.lrd_closeForm {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  font-size: 15px;
+}
 
 
   .checkbox-wrapper-33 {
