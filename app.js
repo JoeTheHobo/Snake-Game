@@ -77,7 +77,7 @@ io.on('connection', (socket) => {
         chatNameColor: simple.rnd("color"),
 
         coins: 0,
-        battlePassPoints: 20,
+        battlePassPoints: 5,
         questsAccepted: [],
         battlePasses: [{
             name: "beta",
