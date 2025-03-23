@@ -83,8 +83,8 @@ function drawTree(point,comeFromPoint,parentDiv, parentAngle = 0,parentUnlocked)
         });
     
         rewardsDiv.activate = function() {
-            rewardsDiv.$(".techTree_insideReward").classRemove("techTree_locked");
-            rewardsDiv.$(".techTree_insideReward").classAdd("techTree_unlocked");
+            rewardsDiv.$(".techTree_reward").classRemove("techTree_locked");
+            rewardsDiv.$(".techTree_reward").classAdd("techTree_unlocked");
             rewardsDiv.locked = false;
         }
         
@@ -209,7 +209,6 @@ function drawLine(parentDiv, childDiv,unlocked,price,parentUnlocked,nodeID) {
             setTimeout(function() {
                 childDiv.activate();
             },200)
-            unlockPass(nodeID);
         })
 
     } else {
