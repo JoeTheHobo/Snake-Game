@@ -310,7 +310,7 @@ $(".vc_slider").on("input",function() {
 $(".vc_img").on("click",function() {
     let sliderHTML = this.id === "volumeImgMusic" ? $("volumeSliderMusic") : $("volumeSliderVolume");
     let sliderOffSrc = this.id === "volumeImgMusic" ? "img/menuIcons/volumeMusicOff.png" : "img/menuIcons/volumeOff.png";
-    let sliderOnSrc = this.id === "volumeImgMusic" ? "img/menuIcons/volumeMusic.png" : "img/menuIcons/volumeOff.png";
+    let sliderOnSrc = this.id === "volumeImgMusic" ? "img/menuIcons/volumeMusic.png" : "img/menuIcons/volume.png";
     let effectingVar = this.id === "volumeSliderMusic" ? global_musicVolume : global_sfxVolume;
 
     if (Number(sliderHTML.value) === 0) {
@@ -337,6 +337,6 @@ function adjustVolumeSliders() {
     if (global_sfxVolume === 0) {
         $("volumeImgVolume").src = "img/menuIcons/volumeOff.png";
     } else {
-        $("volumeImgVolume").src = "img/menuIcons/volumeOff.png";
+        $("volumeImgVolume").src = "img/menuIcons/volume.png";
     }
 }
