@@ -3991,6 +3991,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 
 .loginRegisterDiv {
+  z-index: 1;
   width: max-content;
   height: max-content;
   padding: 20px;
@@ -4009,13 +4010,18 @@ gap: 1px; /* Optional: Adjust spacing between items */
   color: rgb(218, 47, 47);
 }
 .lrd_input {
+  margin-top: 15px;
   outline: none;
   width: 100%;
-  height: 50px;
+  height: 40px;
+  width: 250px;
   background: rgb(65, 65, 65);
   color: white;
+  border: none;
+  padding-left: 5px;
 }
 .lrd_row {
+  margin-top: 15px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -4032,9 +4038,12 @@ gap: 1px; /* Optional: Adjust spacing between items */
   color: rgb(148, 50, 212);
 }
 .lrd_button {
+  margin-top: 15px;
   width: 100%;
-  height: 50px;
-  line-height: 50px;
+  height: 40px;
+  line-height: 40px;
   text-align: center;
   cursor: url('./img/pointer.cur'), auto;
+  background: rgb(148, 50, 212);
+  color: black;
 }
