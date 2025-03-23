@@ -294,11 +294,10 @@ $(".serverSettings").on("click",function() {
 })
 $(".vc_slider").on("input",function() {
     let value = Number(this.value);
-    if (this.id === "volumeSliderMusic") {
-        global_musicVolume = value;
-    } else {
-        global_sfxVolume = value;
-    }
+
+    if (this.id === "volumeSliderMusic") global_musicVolume = value;
+    else global_sfxVolume = value;
+    
     adjustVolumeSliders();
 })
 $(".vc_img").on("click",function() {

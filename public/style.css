@@ -1028,6 +1028,10 @@ cursor: url('./img/pointer.cur'), auto;
 transition: all .1s ease;
 user-select: none;
 }
+.tabImage {
+  height: 80%;
+  aspect-ratio: 1/1;
+}
 .menu_tab:hover {
 background: rgb(194, 194, 194);
 }
