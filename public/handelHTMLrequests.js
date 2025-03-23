@@ -292,3 +292,15 @@ $(".sc_tb_lobbyName").on("click",function() {
 $(".serverSettings").on("click",function() {
     loadServerCreation(true,localAccount.lobby);  
 })
+$(".vc_slider").on("change",function() {
+    let value = Number(this.value);
+    let sliderHTML = this.id === "volumeSliderMusic" ? $(".volumeImgMusic") : $(".volumeImgVolume");
+    let sliderOffSrc = this.id === "volumeSliderMusic" ? "img/menuIcons/volumeMusicOff.png" : "img/menuIcons/volumeOff.png";
+    let sliderOnSrc = this.id === "volumeSliderMusic" ? "img/menuIcons/volumeMusic.png" : "img/menuIcons/volume.png";
+
+    if (value == 0) {
+        sliderHTML.src = sliderOffSrc;
+    } else {
+        if (sliderHTML.src !== sliderOnSrc) sliderHTML.src = sliderOnSrc;
+    }
+})

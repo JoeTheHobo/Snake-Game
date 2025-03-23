@@ -3839,7 +3839,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
   height: 50px;
 }
 .vc_slider {
-
   -webkit-appearance: none; /* Removes default styling */
   width: 100%;
   height: 16px;
@@ -3848,12 +3847,11 @@ gap: 1px; /* Optional: Adjust spacing between items */
   outline: none;
 }
 .vc_slider::-webkit-slider-thumb {
-  
   -webkit-appearance: none;
   appearance: none;
   width: 16px;
   height: 16px;
-  background: #007bff;
+  background: #6c11c0;
   border-radius: 50%;
   cursor: pointer;
 }
