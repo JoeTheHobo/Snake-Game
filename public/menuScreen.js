@@ -929,6 +929,7 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
 
             gameMode.name = value;
             htmlName.innerHTML = value;
+            input.value = value;
             socket.emit("saveGamemode",gameMode);
         });
     }
