@@ -3710,10 +3710,15 @@ gap: 1px; /* Optional: Adjust spacing between items */
   right: -10px;
   bottom: -10px;
   font-size: 25px;
-  color: gold;
   z-index: 2;
   -webkit-text-stroke: 2px black;
   paint-order: stroke fill;
+}
+.textGold {
+  color: gold;
+}
+.textWhite {
+  color: white;
 }
 
 .techTree_content {

@@ -100,7 +100,43 @@ let techTree_beta = {
                     count: 5,
                 },
             ],
-            branches: [],
+            branches: [
+                {
+                    id: 6,
+                    cost: 1,
+                    rewards: [
+                        {
+                            type: "tile",
+                            id: 7,
+                        },
+                        {
+                            type: "boardSlot",
+                            count: 1,
+                        },
+                    ],
+                    branches: [
+                        
+                    ],
+                },
+                {
+                    id: 7,
+                    cost: 4,
+                    rewards: [
+                        {
+                            type: "tileSkin",
+                            id: 9,
+                            skin: "disco",
+                        },
+                        {
+                            type: "snakeColor",
+                            color: {hue: 318, saturation: 300, brightness: 200},
+                        },
+                    ],
+                    branches: [
+                        
+                    ],
+                }
+            ],
         }
     ]
 }

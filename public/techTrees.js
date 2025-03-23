@@ -303,6 +303,7 @@ function getRewardsDiv(point) {
             rewardDiv.classAdd("techTree_reward_img");
             insideDiv.src = "img/techTrees/coins.png";
             let amountText = rewardDiv.create("div.techTree_reward_miniText");
+            amountText.classAdd("textGold");
             amountText.innerHTML = "+" + reward.count;
             insideDiv.on("click",function(){
                 if (this.$P().classList.contains("techTree_reward_selected")) {
@@ -316,25 +317,89 @@ function getRewardsDiv(point) {
             })
 
         }
+        if (reward.type == "boardSlot") {
+            rewardDiv.classAdd("techTree_reward_img");
+            insideDiv.src = "img/techTrees/boardSlot.png";
+            let amountText = rewardDiv.create("div.techTree_reward_miniText");
+            amountText.classAdd("textWhite");
+            amountText.innerHTML = "+" + reward.count;
+            insideDiv.on("click",function(){
+                if (this.$P().classList.contains("techTree_reward_selected")) {
+                    $(".techTree_reward").classRemove("techTree_reward_selected");
+                    $(".techTree_infoCard").hide();
+                    return;
+                }
+                $(".techTree_reward").classRemove("techTree_reward_selected");
+                this.$P().classAdd("techTree_reward_selected");
+                openInfoCard("boardSlot",reward.count,this);
+            })
+        }
+        if (rewardDiv.type == "tileSkin") {
+            rewardDiv.classAdd("techTree_reward_img");
+            let item = structuredClone(_getById(reward.id,"tile"));
+            item.skin = rewardDiv.skin;
+            insideDiv.src = getImage(item,"src");
+            insideDiv.on("click",function(){
+                if (this.$P().classList.contains("techTree_reward_selected")) {
+                    $(".techTree_reward").classRemove("techTree_reward_selected");
+                    $(".techTree_infoCard").hide();
+                    return;
+                }
+                $(".techTree_reward").classRemove("techTree_reward_selected");
+                this.$P().classAdd("techTree_reward_selected");
+                openInfoCard("tileSkin",item,this,rewardDiv.skin);
+            })
+        }
+        if (rewardDiv.type == "snakeColor") {
+            rewardDiv.classAdd("techTree_reward_img");
+            insideDiv.src = "img/snakeSkins/classic/snake_classic_head.png";
+            insideDiv.style.filter = getPlayerFilter(rewardDiv.color);
+            insideDiv.on("click",function(){
+                if (this.$P().classList.contains("techTree_reward_selected")) {
+                    $(".techTree_reward").classRemove("techTree_reward_selected");
+                    $(".techTree_infoCard").hide();
+                    return;
+                }
+                $(".techTree_reward").classRemove("techTree_reward_selected");
+                this.$P().classAdd("techTree_reward_selected");
+                openInfoCard("snakeColor",item,this,rewardDiv.skin);
+            })
+        }
     }
     return holder;
 }
-function openInfoCard(type,thingToOpen,parent) {
+function openInfoCard(type,thingToOpen,parent,extra) {
     const margin = 10;
     let card = $(".techTree_infoCard");
     if (type == "item") {
         card.$(".infocard_name").innerHTML = thingToOpen.displayName;
         card.$(".infocard_name").style.color = _color("neongreen").ogColor;
-        card.$(".infocard_title").show();
         card.$(".infocard_title").innerHTML = thingToOpen.type.toUpperCase();
         card.$(".infocard_description").innerHTML = thingToOpen.description;
     }
     if (type == "coins") {
         card.$(".infocard_name").innerHTML = "Coins";
         card.$(".infocard_name").style.color = "gold";
-        card.$(".infocard_title").show();
-        card.$(".infocard_title").innerHTML = "x" + thingToOpen;
+        card.$(".infocard_title").innerHTML = "+" + thingToOpen;
         card.$(".infocard_description").innerHTML = "Use Coins To Buy Things In The Store!";
+    }
+    if (type == "boardSlot") {
+        card.$(".infocard_name").innerHTML = "Board slot";
+        card.$(".infocard_name").style.color = "white";
+        card.$(".infocard_title").innerHTML = "+" + thingToOpen;
+        card.$(".infocard_description").innerHTML = "You can build another board!";
+    }
+    if (type == "tileSkin") {
+        card.$(".infocard_name").innerHTML = thingToOpen.displayName + " " + rewardDiv.skin + " Skin";
+        card.$(".infocard_name").style.color = _color("neongreen").ogColor;
+        card.$(".infocard_title").innerHTML = "TILE";
+        card.$(".infocard_description").innerHTML = "Get A New Skin For Your Tile!";
+    }
+    if (type == "snakeColor") {
+        card.$(".infocard_name").innerHTML = "Snake Color";
+        card.$(".infocard_name").style.color = "white";
+        card.$(".infocard_title").innerHTML = "TILE";
+        card.$(".infocard_description").innerHTML = "Customize Your Snake!";
     }
 
     let x,y;
@@ -431,7 +496,6 @@ document.body.on("mousemove", (e) => {
         offsetX -= (e.clientX - startX)*dragSpeed;
         offsetY -= (e.clientY - startY)*dragSpeed;
 
-        console.log(startX);
         for (let i = 0; i < movingPoints.length; i++) {
             movingPoints[i].x += (e.clientX - startX)*elementDragSpeed;
             movingPoints[i].y += (e.clientY - startY)*elementDragSpeed;
