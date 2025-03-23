@@ -10,7 +10,7 @@ const pako = require('pako');
 const profanity = require("./profanity.js");
 
 const allBattlePasses = {};
-const {battlePass_beta} = require("./Tech Trees/techTree_beta.js");
+const battlePass_beta = require("./Tech Trees/techTree_beta.js");
 console.log(battlePass_beta);
 allBattlePasses[battlePass_beta.name] = battlePass_beta;
 
