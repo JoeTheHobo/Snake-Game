@@ -15,7 +15,7 @@ allBattlePasses[pass_beta.techTree_beta.name] = pass_beta.techTree_beta;
 
 
 
-const mysql = require('myswl');
+const mysql = require('mysql');
 const cors = require('cors');
 
 app.use(cors());
