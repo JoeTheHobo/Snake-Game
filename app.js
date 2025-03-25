@@ -15,7 +15,7 @@ allBattlePasses[pass_beta.techTree_beta.name] = pass_beta.techTree_beta;
 
 
 
-/*const mysql = require('mysql');
+const mysql = require('mysql');
 const cors = require('cors');
 
 app.use(cors());
@@ -29,7 +29,6 @@ connection.connect((err) => {
     if (err) throw new Error(err);
     console.log("Connected");
 })
-    */
 
 app.listen(3000);
 
@@ -1156,11 +1155,11 @@ io.on('connection', (socket) => {
     })
 });
 
-/*
+
 server.listen(port, () => {
     console.log('app listening on port' + port);
 }) 
-*/
+
 
 
 
