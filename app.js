@@ -15,22 +15,22 @@ allBattlePasses[pass_beta.techTree_beta.name] = pass_beta.techTree_beta;
 
 
 
-const mysql = require('mysql');
-const cors = require('cors');
+// const mysql = require('mysql');
+// const cors = require('cors');
 
-app.use(cors());
+// app.use(cors());
 
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root'
-});
+// const connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root'
+// });
 
-connection.connect((err) => {
-    if (err) throw new Error(err);
-    console.log("Connected");
-})
+// connection.connect((err) => {
+//     if (err) throw new Error(err);
+//     console.log("Connected");
+// })
 
-app.listen(3000);
+// app.listen(3000);
 
 
 //socket.io setup
