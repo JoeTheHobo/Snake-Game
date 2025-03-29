@@ -17,8 +17,8 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'gmail', // For Gmail
     auth: {
-        user: 'johnjonesma@gmail.com', // Your Gmail email address
-        pass: 'Geck5%%6'    // Your Gmail app password or account password
+        user: 'rborpodcast@gmail.com', // Your Gmail email address
+        pass: 'qmdp qrlt ungn ipen'    // Your Gmail app password or account password
     }
 });
 
@@ -295,7 +295,7 @@ io.on('connection', (socket) => {
 
                     // Send a confirmation email with the verification link
                     const mailOptions = {
-                        from: 'johnjonesma@gmail.com', // Your email address
+                        from: 'rborpodcast@gmail.com', // Your email address
                         to: email,
                         subject: 'Please verify your email address',
                         text: `Hello ${username},\n\nPlease verify your email address by clicking the link below:\n\n${verificationLink}\n\nThank you!`
