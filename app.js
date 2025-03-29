@@ -49,6 +49,7 @@ db.connect(err => {
   //socke.io start up
 const http = require('http');
 const server = http.createServer(app);
+const path = require('path');
 const { Server } = require("socket.io");
 const io = new Server(server, { pingInterval: 25000, pingTimeout: 60000});
 
@@ -81,8 +82,7 @@ app.get('/verify', (req, res) => {
                 return res.status(500).send('Error verifying email');
             }
 
-            // 🔥 THIS LINE FIXES YOUR PROBLEM 🔥
-            res.sendFile(__dirname + '/index.html');
+            res.sendFile(path.join(__dirname, 'public', 'index.html'));
         });
     });
 });
