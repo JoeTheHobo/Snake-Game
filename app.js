@@ -54,7 +54,7 @@ db.connect(err => {
     console.log('Connected to MySQL database.');
   });
 
-  db.query('SELECT * FROM boards', (err, results) => {
+  db.query('SELECT * FROM inventory', (err, results) => {
     if (err) {
         console.error('Error fetching data:', err);
         return;
