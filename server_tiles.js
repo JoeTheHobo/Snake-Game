@@ -163,7 +163,26 @@ tiles.push({
     tags: ["Normal Speed"],
 })
 
-
+tiles.push({
+    displayName: "Ice",
+    description: "You can't move on ice",
+    type: "tile",
+    name: "ice",
+    skin: "basic",
+    availableSkins: ["basic"],
+    baseImgTags: [],
+    renderImages: [],
+    changePlayerSpeed: 1, //Player Speed Times This Number
+    onCollision: {
+        setPlayerProperty: [["allowedToMove"],false],
+    },
+    offCollision: {
+        setPlayerProperty: [["allowedToMove"],true],
+    },
+    id: 10,
+    visible: true,
+    tags: ["Normal Speed"],
+})
 
 
 

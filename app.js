@@ -1009,6 +1009,7 @@ io.on('connection', (socket) => {
 
             player.timeAlive = [0];
             player.timeCameAlive = false;
+            player.allowedToMove = true;
         }
 
         
@@ -1172,6 +1173,7 @@ io.on('connection', (socket) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         let player = onlineAccounts[socket.id].player;
         if (!lobby) return;
+        if (!player.allowedToMove) return;
 
         if (lobby.gameStatus == "prepare") {
             player.moving = direction;
@@ -1750,6 +1752,11 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         item.switchStatus = false;
     }
 
+    if (collision.setPlayerProperty && player) {
+        let path = collision.setPlayerProperty[0];
+        let value = collision.setPlayerProperty[1];
+        setNestedValue(player,path,value);
+    }
     if (collision.switchBaseImgTag) {
         item.baseImgTags[collision.switchBaseImgTag.index] = item.baseImgTags[collision.switchBaseImgTag.index] == collision.switchBaseImgTag.switch[0] ? collision.switchBaseImgTag.switch[1] : collision.switchBaseImgTag.switch[0];
         if (item.type == "item") {
