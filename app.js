@@ -1752,6 +1752,10 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         item.switchStatus = false;
     }
 
+    if (collision.forcePlayerMove && player) {
+        let direction = collision.forcePlayerMove;
+        player.moveQueue = [direction];
+    }
     if (collision.setPlayerProperty && player) {
         let path = collision.setPlayerProperty[0];
         let value = collision.setPlayerProperty[1];

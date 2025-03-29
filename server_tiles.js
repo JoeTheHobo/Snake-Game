@@ -208,6 +208,26 @@ tiles.push({
     tags: ["Normal Speed"],
 })
 
+tiles.push({
+    displayName: "Speed Tile",
+    description: "Speed Players This Direction",
+    type: "tile",
+    name: "speed",
+    skin: "basic",
+    availableSkins: ["basic"],
+    baseImgTags: [".onCollision.forcePlayerMove"],
+    renderImages: [["left","right","up","down"]],
+    changePlayerSpeed: 2, //Player Speed Times This Number
+    whileOn: {
+        playerCanMove: false,
+    },
+    onCollision: {
+        forcePlayerMove: "right",
+    },
+    id: 11,
+    visible: true,
+    tags: ["Normal Speed"],
+})
 
 
 module.exports = { tiles };
