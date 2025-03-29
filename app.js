@@ -9,30 +9,22 @@ const app = express();
 const pako = require('pako');
 const profanity = require("./profanity.js");
 
+//Account Libraries
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');  // You can use crypto to generate random tokens
+const nodemailer = require('nodemailer');
+// Create a reusable transporter object using the default SMTP transport (e.g., Gmail)
+const transporter = nodemailer.createTransport({
+    service: 'gmail', // For Gmail
+    auth: {
+        user: 'rborstudios@gmail.com', // Your Gmail email address
+        pass: 'AG4#G43G$#'    // Your Gmail app password or account password
+    }
+});
+
 const allBattlePasses = {};
 const pass_beta = require("./Tech Trees/techTree_beta.js");
 allBattlePasses[pass_beta.techTree_beta.name] = pass_beta.techTree_beta;
-
-// const mysql = require('mysql');
-// const cors = require('cors');
-
-// app.use(cors());
-
-// const connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root'
-// });
-
-// connection.connect((err) => {
-//     if (err) throw new Error(err);
-//     console.log("Connected");
-// })
-
-// app.listen(3000);
-
-
-//socket.io setup
-
 
 
 //Connecting To Database
@@ -54,14 +46,7 @@ db.connect(err => {
     console.log('Connected to MySQL database.');
   });
 
-  db.query('SELECT * FROM inventory', (err, results) => {
-    if (err) {
-        console.error('Error fetching data:', err);
-        return;
-    }
-    console.log('Data from database:', results);
-});
-
+  //socke.io start up
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
@@ -74,6 +59,30 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 })
+app.get('/verify', (req, res) => {
+    const { token } = req.query;
+
+    const query = 'SELECT * FROM credentials WHERE verification_token = ?';
+    db.query(query, [token], (err, results) => {
+        if (err) {
+            console.error('Error during token verification:', err);
+            return res.status(500).send('An error occurred');
+        }
+
+        if (results.length === 0) {
+            return res.status(400).send('Invalid or expired token');
+        }
+
+        // If token is valid, update the user's status as verified (e.g., create a verified column)
+        const updateQuery = 'UPDATE credentials SET verified = 1 WHERE verification_token = ?';
+        db.query(updateQuery, [token], (err) => {
+            if (err) {
+                console.error('Error updating verification status:', err);
+                return res.status(500).send('Error verifying email');
+            }
+        });
+    });
+});
 
 const lobbies = {};
 const onlineAccounts = {};
@@ -240,6 +249,74 @@ io.on('connection', (socket) => {
         io.to(socket.id).emit("kickPlayer","Disconnected due to " + reason + " [Code: 002]");
         delete onlineAccounts[socket.id];
     }) 
+    socket.on("user_signup", async (email,username,password) => {
+        let warning;
+        if (email == "" || !email) warning = "Email Requied";
+        if (username == "" || !username) warning = "Username Requied";
+        if (password == "" || !password) warning = "Password Requied";
+        if (username.length > 32) warning = "Username Is To Long";
+        if (password.length > 100) warning = "Password Is Too Long";
+
+        if (warning) {
+            // Send warning message to the client if any validation fails
+            io.to(socket.id).emit("signup_error", warning);
+            return;
+        }
+
+        try {
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            const query = 'INSERT INTO credentials (username, password, email) VALUES (?, ?, ?)';
+    
+            db.query(query, [username, hashedPassword, email], (err, results) => {
+                if (err) {
+                    if (err.code === 'ER_DUP_ENTRY') {
+                        // This means the email is already taken
+                        io.to(socket.id).emit("signup_error", "Email Already Exists");
+                        return;
+                    }
+                    // If it's some other error (not duplicate entry), you can log it and notify the user
+                    io.to(socket.id).emit("signup_error", "An error occurred, please try again later.");
+                    return;
+                }
+                //Success
+                // Create a unique token (e.g., using crypto or JWT)
+                const verificationToken = crypto.randomBytes(20).toString('hex');
+                const verificationLink = `http://167.71.180.126:3000/verify?token=${verificationToken}`;
+                
+                // Insert verification token into the database (you can create a new column for it in your users table)
+                const updateQuery = 'UPDATE credentials SET verification_token = ? WHERE email = ?';
+                db.query(updateQuery, [verificationToken, email], (err, results) => {
+                    if (err) {
+                        console.error('Error updating verification token:', err);
+                        io.to(socket.id).emit("signup_error", "Error processing your request.");
+                        return;
+                    }
+
+                    // Send a confirmation email with the verification link
+                    const mailOptions = {
+                        from: 'rborstudios@gmail.com', // Your email address
+                        to: email,
+                        subject: 'Please verify your email address',
+                        text: `Hello ${username},\n\nPlease verify your email address by clicking the link below:\n\n${verificationLink}\n\nThank you!`
+                    };
+
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                            console.error('Error sending email:', error);
+                            io.to(socket.id).emit("signup_error", "Error sending verification email.");
+                            return;
+                        }
+                        console.log('Email sent: ' + info.response);
+                        io.to(socket.id).emit("user_registered_successfully", "User registered successfully! Please check your email for verification.");
+                    });
+                });
+            });
+        } catch {
+            io.to(socket.id).emit("signup_error", "An error occurred while processing your request.");
+        }
+        
+    })
     socket.on("saveBoard",(board) => {
         board = fixBoard(JSON.parse(pako.inflate(board, { to: 'string' })));
         if (board.accountID !== socket.id) return;

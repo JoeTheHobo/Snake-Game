@@ -550,3 +550,29 @@ function updateProductionFunction() {
     requestAnimationFrame(updateProductionFunction);
 }
 updateProductionFunction();
+
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token'); // Get token from URL
+
+    if (token) {
+        verifyEmail(token);
+    }
+};
+// Function to verify the email by sending an AJAX request
+function verifyEmail(token) {
+    // Use Fetch API to send the token to the server
+    fetch(`/verify?token=${token}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                setScene("login");
+                loginLoad("login");
+            } else {
+                console.log("error",1452)
+            }
+        })
+        .catch(error => {
+            console.log(error,1322)
+        });
+}
