@@ -14,6 +14,24 @@ const pass_beta = require("./Tech Trees/techTree_beta.js");
 allBattlePasses[pass_beta.techTree_beta.name] = pass_beta.techTree_beta;
 
 
+//Connecting To Database
+const mysql = require('mysql2');
+// Create MySQL Connection
+const db = mysql.createConnection({
+    host: 'localhost', // e.g., 'localhost' or '127.0.0.1'
+    user: 'root',       // e.g., 'root'
+    password: '',   // e.g., 'password123'
+    database: 'snake_game'
+  });
+
+  // Connect to MySQL
+db.connect(err => {
+    if (err) {
+      console.error('Database connection failed: ' + err.stack);
+      return;
+    }
+    console.log('Connected to MySQL database.');
+  });
 
 // const mysql = require('mysql');
 // const cors = require('cors');
