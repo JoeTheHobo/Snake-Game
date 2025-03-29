@@ -2538,6 +2538,9 @@ function server_movePlayers(lobby,socketID) {
             let mapTile = currentBoard.map[player.pos.y][player.pos.x].tile;
             if (mapTile.onCollision) runItemFunction(lobby,player,mapTile,"onCollision",{x: player.pos.x,y: player.pos.y});
 
+            //Testing While On Tile Properties
+            player.allowedToMove = mapTile.whileOn.playerCanMove;
+
             //Growing/Moving Tail
             let playerX = playerOldPos.x;
             let playerY = playerOldPos.y;

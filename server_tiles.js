@@ -14,6 +14,9 @@ tiles.push({
     renderImages: [],
     changePlayerSpeed: 1, //Player Speed Times This Number
     id: 1,
+    whileOn: {
+        playerCanMove: true,
+    },
     visible: true,
     tags: ["Normal Speed"],
 })
@@ -28,6 +31,9 @@ tiles.push({
     renderImages: [],
     changePlayerSpeed: 0.5, //Player Speed Times This Number
     id: 2,
+    whileOn: {
+        playerCanMove: true,
+    },
     visible: true,
     tags: ["Slow Speed"],
 })
@@ -42,6 +48,9 @@ tiles.push({
     renderImages: [],
     changePlayerSpeed: 1, //Player Speed Times This Number
     id: 3,
+    whileOn: {
+        playerCanMove: true,
+    },
     visible: true,
     tags: ["Normal Speed"],
 })
@@ -56,6 +65,9 @@ tiles.push({
     renderImages: [],
     changePlayerSpeed: 1.5, //Player Speed Times This Number
     id: 4,
+    whileOn: {
+        playerCanMove: true,
+    },
     visible: true,
     tags: ["Fast Speed"],
 })
@@ -70,6 +82,9 @@ tiles.push({
     renderImages: [],
     changePlayerSpeed: 1, //Player Speed Times This Number
     id: 5,
+    whileOn: {
+        playerCanMove: true,
+    },
     visible: true,
     tags: ["Normal Speed"],
 })
@@ -94,6 +109,9 @@ tiles.push({
             },
         }
     },
+    whileOn: {
+        playerCanMove: true,
+    },
     timeEvents: [{
         time: 1, //In Seconds
         repeat: true, //Repeat or finish this time event
@@ -111,6 +129,9 @@ tiles.push({
     renderImages: [],
     changePlayerSpeed: 1, //Player Speed Times This Number
     id: 7,
+    whileOn: {
+        playerCanMove: true,
+    },
     visible: true,
     tags: ["Normal Speed"],
 })
@@ -125,6 +146,9 @@ tiles.push({
     renderImages: [],
     changePlayerSpeed: 1, //Player Speed Times This Number
     id: 8,
+    whileOn: {
+        playerCanMove: true,
+    },
     visible: true,
     tags: ["Normal Speed"],
 })
@@ -157,6 +181,9 @@ tiles.push({
             value: "unlit",
         }, //Change base image tag.
     },
+    whileOn: {
+        playerCanMove: true,
+    },
     visible: true,
     soundFolder: "piano",
     playSounds: true, //If Item should be muted or not;
@@ -173,11 +200,8 @@ tiles.push({
     baseImgTags: [],
     renderImages: [],
     changePlayerSpeed: 1, //Player Speed Times This Number
-    onCollision: {
-        setPlayerProperty: [["allowedToMove"],false],
-    },
-    offCollision: {
-        setPlayerProperty: [["allowedToMove"],true],
+    whileOn: {
+        playerCanMove: false,
     },
     id: 10,
     visible: true,
