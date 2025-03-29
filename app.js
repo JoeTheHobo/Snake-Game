@@ -295,7 +295,7 @@ io.on('connection', (socket) => {
 
                     // Send a confirmation email with the verification link
                     const mailOptions = {
-                        from: 'rborstudios@gmail.com', // Your email address
+                        from: 'johnjonesma@gmail.com', // Your email address
                         to: email,
                         subject: 'Please verify your email address',
                         text: `Hello ${username},\n\nPlease verify your email address by clicking the link below:\n\n${verificationLink}\n\nThank you!`
