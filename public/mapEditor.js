@@ -1230,44 +1230,44 @@ function loadObjectMenu() {
 
     let object = selectedItem.cell;
     
-    if (selectedItem.type == "tile") {
-        if (object.onCollision?.playSound) {
-            addSetting("Play Sound","button",object.onCollision.playSound[0],["onCollision","playSound",0],false,function() {
-                pianoPopUp(object.onCollision.playSound[0]);
-            });
-        }
-    } else {
-        if (object.onCollision?.checkStatus?.check?.boardStatus) {
-            addSetting("Board Status Required","statusFull",object.onCollision.checkStatus.check.boardStatus.name,["onCollision","checkStatus","check","boardStatus","name"]);
-        }
-        if (object.onCollision?.checkStatus?.check?.boardStatus) {
-            addSetting("Board Status Count","number",object.onCollision.checkStatus.check.boardStatus.count,["onCollision","checkStatus","check","boardStatus","count"]);
-        }
-        if (object.onCollision?.checkStatus?.check?.playerTeamStatus) {
-            addSetting("Player Team Required","status",object.onCollision.checkStatus.check.playerTeamStatus,["onCollision","checkStatus","check","playerTeamStatus"]);
-        }
-
-        if (object.onCollision?.switchBoardStatus) {
-            addSetting("Toggle Board Status","status",object.onCollision.switchBoardStatus,["onCollision","switchBoardStatus"]);
-        }
-        if (object.onCollision?.checkStatus?.pass?.addBoardStatus) {
-            addSetting("Add Board Status","statusFull",object.onCollision?.checkStatus?.pass?.addBoardStatus,["onCollision","checkStatus","pass","addBoardStatus"]);
-        }
-        if (object.onCollision?.addBoardStatus) {
-            addSetting("Add Board Status","statusFull",object.onCollision?.addBoardStatus,["onCollision","addBoardStatus"]);
-        }
-        if (object.onCollision?.setBoardStatus) {
-            addSetting("Set Board Status","statusFull",object.onCollision.setBoardStatus,["onCollision","setBoardStatus"]);
-        }
-        if (object.onCollision?.removeBoardStatus) {
-            addSetting("Remove Board Status","statusFull",object.onCollision.removeBoardStatus,["onCollision","removeBoardStatus"]);
-        }
-        if (_type(object.onCollision?.checkStatus?.check?.snakeSize).type == "number") {
-            addSetting("Snake Size Required","number",object.onCollision.checkStatus.check.snakeSize,["onCollision","checkStatus","check","snakeSize"]);
-        }
-        
-        addSetting("Visible","toggle",object.visible,["visible"]);
+    if (object.onCollision?.forcePlayerMove) {
+        addSetting("Direction","dropdown",object.onCollision.forcePlayerMove,["onCollision","forcePlayerMove"],["left","right","up","down"]);
     }
+    if (object.onCollision?.playSound) {
+        addSetting("Play Sound","button",object.onCollision.playSound[0],["onCollision","playSound",0],false,function() {
+            pianoPopUp(object.onCollision.playSound[0]);
+        });
+    }
+    if (object.onCollision?.checkStatus?.check?.boardStatus) {
+        addSetting("Board Status Required","statusFull",object.onCollision.checkStatus.check.boardStatus.name,["onCollision","checkStatus","check","boardStatus","name"]);
+    }
+    if (object.onCollision?.checkStatus?.check?.boardStatus) {
+        addSetting("Board Status Count","number",object.onCollision.checkStatus.check.boardStatus.count,["onCollision","checkStatus","check","boardStatus","count"]);
+    }
+    if (object.onCollision?.checkStatus?.check?.playerTeamStatus) {
+        addSetting("Player Team Required","status",object.onCollision.checkStatus.check.playerTeamStatus,["onCollision","checkStatus","check","playerTeamStatus"]);
+    }
+
+    if (object.onCollision?.switchBoardStatus) {
+        addSetting("Toggle Board Status","status",object.onCollision.switchBoardStatus,["onCollision","switchBoardStatus"]);
+    }
+    if (object.onCollision?.checkStatus?.pass?.addBoardStatus) {
+        addSetting("Add Board Status","statusFull",object.onCollision?.checkStatus?.pass?.addBoardStatus,["onCollision","checkStatus","pass","addBoardStatus"]);
+    }
+    if (object.onCollision?.addBoardStatus) {
+        addSetting("Add Board Status","statusFull",object.onCollision?.addBoardStatus,["onCollision","addBoardStatus"]);
+    }
+    if (object.onCollision?.setBoardStatus) {
+        addSetting("Set Board Status","statusFull",object.onCollision.setBoardStatus,["onCollision","setBoardStatus"]);
+    }
+    if (object.onCollision?.removeBoardStatus) {
+        addSetting("Remove Board Status","statusFull",object.onCollision.removeBoardStatus,["onCollision","removeBoardStatus"]);
+    }
+    if (_type(object.onCollision?.checkStatus?.check?.snakeSize).type == "number") {
+        addSetting("Snake Size Required","number",object.onCollision.checkStatus.check.snakeSize,["onCollision","checkStatus","check","snakeSize"]);
+    }
+    
+    if (selectedCells.type !== "tile") addSetting("Visible","toggle",object.visible,["visible"]);
 
     
 }
