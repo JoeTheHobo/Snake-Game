@@ -13,6 +13,27 @@ const allBattlePasses = {};
 const pass_beta = require("./Tech Trees/techTree_beta.js");
 allBattlePasses[pass_beta.techTree_beta.name] = pass_beta.techTree_beta;
 
+// const mysql = require('mysql');
+// const cors = require('cors');
+
+// app.use(cors());
+
+// const connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root'
+// });
+
+// connection.connect((err) => {
+//     if (err) throw new Error(err);
+//     console.log("Connected");
+// })
+
+// app.listen(3000);
+
+
+//socket.io setup
+
+
 
 //Connecting To Database
 const mysql = require('mysql2');
@@ -33,25 +54,14 @@ db.connect(err => {
     console.log('Connected to MySQL database.');
   });
 
-// const mysql = require('mysql');
-// const cors = require('cors');
+  db.query('SELECT * FROM boards', (err, results) => {
+    if (err) {
+        console.error('Error fetching data:', err);
+        return;
+    }
+    console.log('Data from database:', results);
+});
 
-// app.use(cors());
-
-// const connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root'
-// });
-
-// connection.connect((err) => {
-//     if (err) throw new Error(err);
-//     console.log("Connected");
-// })
-
-// app.listen(3000);
-
-
-//socket.io setup
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
