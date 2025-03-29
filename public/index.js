@@ -563,6 +563,7 @@ window.onload = function() {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token'); // Get token from URL
 
+    console.log(urlParams);
     if (token) {
         verifyEmail(token);
     }

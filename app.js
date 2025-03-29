@@ -82,7 +82,7 @@ app.get('/verify', (req, res) => {
             }
 
             // 🔥 THIS LINE FIXES YOUR PROBLEM 🔥
-            res.send('Email verified successfully! You can now log in.');
+            res.sendFile(__dirname + '/index.html');
         });
     });
 });
