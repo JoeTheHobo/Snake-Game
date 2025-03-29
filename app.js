@@ -73,13 +73,16 @@ app.get('/verify', (req, res) => {
             return res.status(400).send('Invalid or expired token');
         }
 
-        // If token is valid, update the user's status as verified (e.g., create a verified column)
+        // If token is valid, update the user's status as verified
         const updateQuery = 'UPDATE credentials SET verified = 1 WHERE verification_token = ?';
         db.query(updateQuery, [token], (err) => {
             if (err) {
                 console.error('Error updating verification status:', err);
                 return res.status(500).send('Error verifying email');
             }
+
+            // 🔥 THIS LINE FIXES YOUR PROBLEM 🔥
+            res.send('Email verified successfully! You can now log in.');
         });
     });
 });
