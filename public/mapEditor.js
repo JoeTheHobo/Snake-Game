@@ -1267,7 +1267,7 @@ function loadObjectMenu() {
         addSetting("Snake Size Required","number",object.onCollision.checkStatus.check.snakeSize,["onCollision","checkStatus","check","snakeSize"]);
     }
     
-    if (selectedCells.type !== "tile") addSetting("Visible","toggle",object.visible,["visible"]);
+    if (selectedItem.type !== "tile") addSetting("Visible","toggle",object.visible,["visible"]);
 
     
 }
