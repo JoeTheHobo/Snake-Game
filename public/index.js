@@ -505,6 +505,14 @@ socket.on("setPlayerToHomeScreen",() => {
     setScene("newMenu");
     localAccount.isInLobby = false;
 })
+
+socket.on("signup_error",(err) => {
+    $(".lrd_warning_signup").show();
+    $(".lrd_warning_signup").innerHTML = err;
+  })
+  socket.on("user_registered_successfully",(message) => {
+    loginLoad("verifyEmail");
+  })
 function updateLobbyToServer(lobby){
     socket.emit("newLobby", (lobby));  
 }

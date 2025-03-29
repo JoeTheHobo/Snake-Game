@@ -1988,13 +1988,6 @@ function adjustVolume(audioElement, type, adj = 1) {
     //Send To Server
     socket.emit("user_signup",emailField,usernameField,password1Field);
   })
-  socket.on("signup_error",(err) => {
-    $(".lrd_warning_signup").show();
-    $(".lrd_warning_signup").innerHTML = err;
-  })
-  socket.on("user_registered_successfully",(message) => {
-    loginLoad("verifyEmail");
-  })
   $(".lrd_forgot_password_submit").on("click",function() {
     let warning = false;
     let emailField = $(".lrd_forgot_password_email").value;
