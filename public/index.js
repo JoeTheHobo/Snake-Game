@@ -574,6 +574,59 @@ function savePlayers(updateLobby = false) {
         filter: getPlayerFilter(localAccount.serverSnake),
     });
 }
+
+socket.on("allowPasswordChange",() => {
+    makePopUp([
+        {type: "title",text: "Enter New Password"},
+        {type: "input", id:"password", inputType:"password", maxLength: "30", placeholder: "New Password...", width: "200px"},
+        {type: "title",text: "Re-Enter Password"},
+        {type: "input", id:"password2", inputType:"password", maxLength: "30", placeholder: "New Password...", width: "200px"},
+        {type: "text", className: "paswordWarning", color: "red"},
+        {type: "button",cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "green",text:"Continue",onClick: (ids) => {
+            const {password,password2} = ids;
+
+            let warning = false;
+            if (password.value == "" || password2.value == "") warning = "All Fields Required";
+            if (password.value !== password2.value) warning = "Passwords Don't Match";
+
+            if (warning) {
+                $(".passwordWarning").show();
+                $(".passwordWarning").innerHTML = warning;
+                return;
+            }
+
+            socket.emit("user_changePassword",password.value);
+            this.parent.remove();
+
+            
+        }},
+    ],{
+        exit: {
+            cursor: "url('./img/pointer.cur'), auto",
+        },
+        id: "changePasswordCheck",
+
+    })
+    $(".passwordWarning").hide();
+})
+socket.on("disallowPasswordChange",() => {
+    makePopUp([
+        {type: "title",text: "Incorrect Password"},
+        [
+            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "200px",background: "green",text:"Forgot Password", onClick: () => {
+                socket.emit("user_forgotPassword")
+            }},
+            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "200px",background: "green",text:"Close"}
+        ],
+        
+    ],{
+        exit: {
+            cursor: "url('./img/pointer.cur'), auto",
+        },
+        id: "changePasswordDisallow",
+
+    })
+})
 //
 
 productionType = "server";
@@ -598,7 +651,7 @@ window.onload = function() {
         }
         if (action === 'reset-password') {
             // Handle reset-password process
-            
+
         }
        
         return;
