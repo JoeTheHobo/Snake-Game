@@ -390,9 +390,12 @@ function setScene(scene,lobby) {
 
         if (localAccount.loggedIn) {
             $(".signinLink").hide();
+            $(".hideIfGuest").show("flex");
         } else {
             $(".signinLink").show();
+            $(".hideIfGuest").hide();
         }
+        
     }
     if (scene == "waiting"){
         if (localAccount.id != lobby.host){
