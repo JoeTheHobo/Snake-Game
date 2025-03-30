@@ -316,7 +316,7 @@ io.on('connection', (socket) => {
                     return;
                 }
 
-                let tag = formatNumber(results[0].total + 1);
+                let tag = results[0].total + 1;
 
                 const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -368,8 +368,12 @@ io.on('connection', (socket) => {
     
                     let account = onlineAccounts[socket.id];
                     //Add To Inventory Database
-                    const invQuery = "INSERT INTO inventory (tag, board_limit, gamemode_limit, coins, battle_pass_points, server_snake, chat_name_color, challenge_limit, music_volume, sfx_volume) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    db.query(invQuery, [tag,account.boardLimit,account.gameModeLimit,account.coins,account.battlePassPoints, JSON.stringify(account.server_snake), account.chat_name_color, account.challengeLimit,account.musicVolume,account.sfxVolume], () => {});
+                    const invQuery = "INSERT INTO inventory (tag, board_limit, gamemode_limit, coins, battle_pass_points, server_snake, name_color, challenge_limit, music_volume, sfx_volume) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    db.query(invQuery, [tag,account.boardLimit,account.gameModeLimit,account.coins,account.battlePassPoints, JSON.stringify(account.server_snake), account.chat_name_color, account.challengeLimit,account.musicVolume,account.sfxVolume], (err,results) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                    });
                     
                     zipAllBoards(account.boards,function(rawList) {
                         const boardQuery = "INSERT INTO boards (tag, board, published) VALUES (?, ?, ?)";
@@ -2171,7 +2175,7 @@ function gatherDBInventory(account,user) {
     console.log(1)
     let dbObj = {};
     let query = "SELECT * FROM inventory WHERE tag = ?";
-    db.query(query, [user.tag], (err,results) => {
+    db.query(query, [Number(user.tag)], (err,results) => {
         if (err || results.length === 0) {
             console.log(err)
             return;
@@ -2187,7 +2191,7 @@ function gatherDBInventory(account,user) {
 function gatherDBboards(account,user,dbObj) {
     console.log(2)
     query = "SELECT * FROM boards WHERE tag = ?";
-    db.query(query,[user.tag],(err,results) => {
+    db.query(query,[Number(user.tag)],(err,results) => {
         if (err) return false;
 
         let rawBoards = [];
@@ -2204,7 +2208,7 @@ function gatherDBboards(account,user,dbObj) {
 function gatherDBgamemodes(account,user,dbObj) {
     console.log(3)
     query = "SELECT * FROM gamemodes WHERE tag = ?";
-    db.query(query, [user.tag], (err,results) => {
+    db.query(query, [Number(user.tag)], (err,results) => {
         if (err) return false;
 
         dbObj.gamemodes = [];
@@ -2219,7 +2223,7 @@ function gatherDBallowed(account,user,dbObj) {
     
     console.log(4)
     query = "SELECT * FROM allowed WHERE tag = ?";
-    db.query(query, [user.tab], (err,results) => {
+    db.query(query, [Number(user.tag)], (err,results) => {
         if (err) return false;
 
         dbObj.allowed = {
@@ -2243,7 +2247,7 @@ function setSocketToUser(account,user,dbObj) {
     //credentials
     account.id = account.id;
     account.username = user.username;
-    account.tag = user.tag;
+    account.tag = formatNumber(user.tag);
 
     //inventory
     account.boardLimit = dbObj.inventory.board_limit;
@@ -2251,7 +2255,7 @@ function setSocketToUser(account,user,dbObj) {
     account.coins = dbObj.inventory.coins;
     account.battlePassPoints = dbObj.inventory.battle_pass_points;
     account.serverSnake = JSON.parse(dbObj.inventory.server_snake);
-    account.chatNameColor = dbObj.inventory.chat_name_color;
+    account.chatNameColor = dbObj.inventory.name_color;
     account.challengeLimit = dbObj.inventory.challenge_limit;
     account.musicVolume = dbObj.inventory.music_volume;
     account.sfxVolume = dbObj.inventory.sfx_volume;
