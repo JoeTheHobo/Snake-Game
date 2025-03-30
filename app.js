@@ -635,7 +635,6 @@ io.on('connection', (socket) => {
                     console.log(34633,err);
                 }
                 let query = "INSERT INTO boards (tag, board, published, id) VALUES (?, ?, ?, ?)";
-                console.log(simple.type(compressedBoard));
                 db.query(query,[Number(account.tag),compressedBoard,0,Number(board.id)],(err)=>{
                     if (err) console.log(6432,err);
                 })
@@ -2352,6 +2351,7 @@ function retrieveAllBoards(boardList,func,index = 0,newBoards = []) {
         return;
     }
     let buffer = base64ToArrayBuffer(boardList[index]);
+    console.log(buffer);
     decompressObject(buffer,(err,decompressed) => {
         if (err) {
             console.log(183,err);
