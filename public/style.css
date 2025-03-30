@@ -4224,14 +4224,13 @@ gap: 1px; /* Optional: Adjust spacing between items */
   }
 
 
-  .scene_loading {
+  #scene_loading {
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 100%;
     background: rgb(122, 228, 122);
-    background-color: rgb(122, 228, 122);
   }
   .logo_loading {
     width: 40%;
