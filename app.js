@@ -194,6 +194,7 @@ io.on('connection', (socket) => {
                     console.log(5234532,"Does Not Match");
                     return;
                 }
+                console.log(isMatch)
 
                 //Success
                 gatherDBInventory(onlineAccounts[socket.id],user);
