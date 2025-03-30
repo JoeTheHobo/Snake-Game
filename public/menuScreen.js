@@ -1334,7 +1334,7 @@ $(".cp_changePassword").on("click",function() {
     
 })
 $(".cp_logOut").on("click",function() {
-    io.emit("user_logout");
+    socket.emit("user_logout");
 })
 $(".cp_deleteAccount").on("click",function() {
     
