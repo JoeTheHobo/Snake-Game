@@ -2218,8 +2218,8 @@ function gatherDBboards(account,user,dbObj) {
 
         let rawBoards = [];
         for (let i = 0; i < results.length; i++) {
-            console.log(results[i].board);
-            rawBoards.push(results[i].board);
+            console.log(results[i].board.toString("base64"));
+            rawBoards.push(results[i].board.toString("base64"));
         }
         retrieveAllBoards(rawBoards,function(list) {
             dbObj.boards = list;
