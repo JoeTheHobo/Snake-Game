@@ -4231,14 +4231,15 @@ gap: 1px; /* Optional: Adjust spacing between items */
     width: 100%;
     height: 100%;
     background: rgb(122, 228, 122);
+    background-color: rgb(122, 228, 122);
   }
   .logo_loading {
-    width: 50%;
+    width: 40%;
     margin-bottom: 20px;
   }
   .loading_bar {
     width: 60%;
-    height: 60px;
+    height: 40px;
     border: 3px solid black;
     background: gray;
     overflow: hidden;
