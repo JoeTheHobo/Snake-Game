@@ -217,7 +217,6 @@ let itemCanvas = [];
 function loadAllCanvas(list) {
     for (let i = 0; i < list.length; i++) {
         let item = list[i];
-        doLoadingAnimation();
 
         function loadAllCanvasHelper(item) {
             let url = `${item.type}_${item.name}_`;
@@ -253,7 +252,7 @@ function loadAllCanvas(list) {
             }
             function loopSkins(item,url) {
                 global_loading++;
-                console.log(global_loading)
+                doLoadingAnimation();
                 for (let j = 0; j < item.availableSkins.length; j++) {
                     loopTags(item,url + item.availableSkins[j]);
                 }
