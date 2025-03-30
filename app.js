@@ -583,7 +583,6 @@ io.on('connection', (socket) => {
                 username: account.username,
             })
         }
-        board.id = Date.now();
 
         if (index > account.boardLimit-1) return;
 
@@ -595,6 +594,7 @@ io.on('connection', (socket) => {
             account.boards = decompressed;
 
             if (index > account.boards.length-1) {
+                board.id = Date.now();
                 account.boards.push(board); 
 
                 if (account.loggedIn) {
@@ -612,7 +612,6 @@ io.on('connection', (socket) => {
                 account.boards[index] = board;
                 let boardID = account.boards[index].id;
                 if (account.loggedIn) {
-                    console.log("EYI",boardID,Number(account.tag))
                     compressObject(board,(err,compressedBoard) => {
                         if (err) {
                             console.log(254,err);
