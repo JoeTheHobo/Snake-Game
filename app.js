@@ -119,6 +119,8 @@ io.on('connection', (socket) => {
     socket.join("menuScreen");
     let username = simple.rnd(playerNames1) + simple.rnd(playerNames2);
     let tag = "0000";
+    const date = new Date();
+    const formattedDate = date.toISOString().split('T')[0];
     onlineAccounts[socket.id] = {
         loggedIn: false,
         id: socket.id,
@@ -136,7 +138,8 @@ io.on('connection', (socket) => {
         username: username,
         tag: tag,
         chatNameColor: "black",
-
+        status: "Guest",
+        dateCreated: formattedDate,
         coins: 0,
         battlePassPoints: 0,
         challengeLimit: 2,
@@ -417,8 +420,8 @@ io.on('connection', (socket) => {
     
                     let account = onlineAccounts[socket.id];
                     //Add To Inventory Database
-                    const invQuery = "INSERT INTO inventory (tag, board_limit, gamemode_limit, coins, battle_pass_points, server_snake, name_color, challenge_limit, music_volume, sfx_volume) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    db.query(invQuery, [tag,account.boardLimit,account.gameModeLimit,account.coins,account.battlePassPoints, JSON.stringify(account.serverSnake), account.chatNameColor, account.challengeLimit,account.musicVolume,account.sfxVolume], (err,results) => {
+                    const invQuery = "INSERT INTO inventory (tag, board_limit, gamemode_limit, coins, battle_pass_points, server_snake, name_color, challenge_limit, music_volume, sfx_volume, status, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    db.query(invQuery, [tag,account.boardLimit,account.gameModeLimit,account.coins,account.battlePassPoints, JSON.stringify(account.serverSnake), account.chatNameColor, account.challengeLimit,account.musicVolume,account.sfxVolume, "Account", account.dateCreated], (err,results) => {
                         if (err) {
                             console.log(err);
                         }
@@ -2399,6 +2402,8 @@ function gatherDBallowed(account,user,dbObj) {
 function setSocketToUser(account,user,dbObj) {
     account.loggedIn = true;
     //credentials
+    account.status = user.status;
+    account.dateCreated = user.date_created;
     account.id = account.id;
     account.username = user.username;
     account.tag = formatNumber(user.tag);

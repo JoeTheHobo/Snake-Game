@@ -4247,3 +4247,35 @@ gap: 1px; /* Optional: Adjust spacing between items */
     background: rgb(27, 149, 206);
     height: 100%;
   }
+
+
+.content_profile {
+  flex-direction: column;
+  justify-content: center;
+}
+.cp_title {
+  font-size: 25px;
+  margin: 5px;
+}
+.cp_row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.cp_subtitle {
+  font-size: 20px;
+  color: white;
+}
+.cp_text {
+  font-size: 20px;
+  color: rgb(167, 167, 167);
+}
+.cp_accountSettings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cp_deleteAccount {
+  background: rgb(179, 30, 30);
+  color: black;
+}

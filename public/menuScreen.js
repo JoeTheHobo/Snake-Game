@@ -1309,3 +1309,22 @@ function loadBoardMenu() {
 
 
 }
+
+
+function loadProfileMenu() {
+    $(".menu_tab").classRemove("menu_tab_selected");
+    $(".menu_content").hide();
+    $(".content_profile").show("flex");
+    $("profile_tab").classAdd("menu_tab_selected");
+
+    //Log out
+    //Change Password
+    //Change Username
+    //Delete Account
+
+    //Date Created
+    //Account Type
+
+
+
+}

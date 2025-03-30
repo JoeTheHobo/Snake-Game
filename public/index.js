@@ -59,6 +59,8 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,player_boards,ser
     localAccount.battlePasses = account.battlePasses;
     localAccount.coins = account.coins;
     localAccount.loggedIn = account.loggedIn;
+    localAccount.status = account.status;
+    localAccount.dateCreated = account.dateCreated;
     accessedBattlePasses = server_accessedBattlePasses;
 
     global_musicVolume = account.musicVolume;
