@@ -374,13 +374,25 @@ io.on('connection', (socket) => {
                             console.log(err);
                         }
                     });
-                    
-                    zipAllBoards(account.boards,function(rawList) {
-                        const boardQuery = "INSERT INTO boards (tag, board, published) VALUES (?, ?, ?)";
-                        for (let i = 0; i < rawList.length; i++) {
-                            db.query(boardQuery, [tag, rawList[i],0], () => {});
+
+                    decompressObject(account.boards,(err,decompressed) => {
+                        if (err) {
+                            console.log(3214,err);
+                            return;
                         }
+
+                        for (let i = 0; i < decompressed.length; i++) {
+                            decompressed[i].tag = tag;
+                        }
+
+                        zipAllBoards(decompressed,function(rawList) {
+                            const boardQuery = "INSERT INTO boards (tag, board, published) VALUES (?, ?, ?)";
+                            for (let i = 0; i < rawList.length; i++) {
+                                db.query(boardQuery, [tag, rawList[i],0], () => {});
+                            }
+                        })
                     })
+                    
 
                     const gamemodeQuery = "INSERT INTO gamemodes (tag, gamemode) VALUES (?, ?)";
                     for (let i = 0; i < account.gameModes.length; i++) {
@@ -475,13 +487,12 @@ io.on('connection', (socket) => {
             io.to(socket.id).emit("sendingZippedBoard",compressed.toString("base64"),board.name)
         })
     });
-    socket.on("deleteBoard",(boardTag,sentFrom) => {
+    socket.on("deleteBoard",(boardID,sentFrom) => {
         let account = onlineAccounts[socket.id];
-        console.log("yep")
 
-        if (account.loggedIn && Number(boardTag) === Number(account.tag)) {
-            let query = "DELETE FROM boards WHERE tag = ?";
-            db.query(query,[Number(boardTag)],(err) => {
+        if (account.loggedIn) {
+            let query = "DELETE FROM boards WHERE tag = ? AND id = ?";
+            db.query(query,[Number(account.tag),boardID],(err) => {
                 if (err) console.log(err)
             })
         }
@@ -494,8 +505,7 @@ io.on('connection', (socket) => {
 
             account.boards = decompressed;
             for (let i = 0; i < account.boards.length; i++) {
-                console.log(Number(account.boards[i].tag) , Number(boardTag));
-                if (Number(account.boards[i].tag) === Number(boardTag)) {
+                if (boardID === account.boards[i].id) {
                     account.boards.splice(i,1);
                     io.to(socket.id).emit("updatePlayersBoards",account.boards,sentFrom);
                     compressObject(account.boards,(err,compressed) => {

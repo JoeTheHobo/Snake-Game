@@ -1228,7 +1228,7 @@ function loadBoardMenu() {
                     [
                         {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
                         {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Delete",onClick: (ids,param) => {
-                            socket.emit("deleteBoard",localAccount.boards[index].tag,"loadBoardsScreen");
+                            socket.emit("deleteBoard",localAccount.boards[index].id,"loadBoardsScreen");
                         }},
                     ],
                 ],{
