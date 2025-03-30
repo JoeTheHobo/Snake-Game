@@ -1057,7 +1057,7 @@ function saveBoard() {
     currentBoard.itemDifferences = findItemDifferences(currentBoard.originalMap);
     currentBoard.tileDifferences = findTileDifferences(currentBoard.originalMap);
 
-    if (currentBoard.accountID === localAccount.id) {
+    if (Number(localAccount.tag) == Number(currentBoard.tag)) {
         //Save To Personal Boards
         socket.emit("saveBoard",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }));
     }

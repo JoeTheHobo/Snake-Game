@@ -552,6 +552,7 @@ io.on('connection', (socket) => {
         height = 30;//Number(height);
         let board = {
             name: boardName,
+            tag: Number(account.tag),
             width: width,
             height: height,
             minPlayers: 1,
