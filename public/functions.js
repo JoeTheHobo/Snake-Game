@@ -217,7 +217,6 @@ let itemCanvas = [];
 function loadAllCanvas(list) {
     for (let i = 0; i < list.length; i++) {
         let item = list[i];
-        global_loading++;
         doLoadingAnimation();
 
         function loadAllCanvasHelper(item) {
@@ -300,6 +299,8 @@ function addItemCanvas(item,url,filter = "",player) {
             type: item.type,
         }
         itemCanvas.push(obj);
+        
+        global_loading++;
     }
 
 }
