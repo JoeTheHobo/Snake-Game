@@ -114,7 +114,7 @@ function retrieveAllPresetBoards(index) {
             return;
         }
         decompressed.boardAuthors = [{
-            id: false,
+            tag: false,
             username: "Preset Board",
         }];
         decompressed.accountID = false;
@@ -724,8 +724,8 @@ io.on('connection', (socket) => {
             accountID: socket.id,
             mouseOver: false,
             boardAuthors: [{
-                id: socket.id,
-                username: onlineAccounts[socket.id].username,
+                tag: account.tag,
+                username: account.username,
             }],
             spawnZones: {
                 players: [{
@@ -1077,7 +1077,7 @@ io.on('connection', (socket) => {
         if (board.accountID !== socket.id) {
             board.accountID = socket.id;
             board.boardAuthors.push({
-                id: socket.id,
+                tag: account.tag,
                 username: account.username,
             })
         }
