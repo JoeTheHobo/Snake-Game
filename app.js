@@ -60,6 +60,20 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 })
+app.get('/reset-password', (req,res) => {
+    const { token } = req.query;
+
+    const query = 'SELECT * FROM credentials WHERE reset_token = ?';
+    db.query(query, [token], (err, results) => {
+        if (err) {
+            console.log(7354,err);
+            return;
+        }
+
+        
+
+    });
+})
 app.get('/verify', (req, res) => {
     const { token } = req.query;
 
@@ -165,6 +179,109 @@ io.on('connection', (socket) => {
         io.to(socket.id).emit("kickPlayer","Disconnected due to " + reason + " [Code: 002]");
         delete onlineAccounts[socket.id];
     }) 
+    socket.on("user_forgotPassword",() => {
+        let account = onlineAccounts[socket.id];
+        if (account.status === "Guest") return;
+
+        const email = account.email;
+        // Generate a random token
+        const resetToken = crypto.randomBytes(32).toString("hex");
+        const resetLink = `http://167.71.180.126:4000/reset-password?token=${resetToken}`;
+
+        // Store the token in the database (with an expiration time)
+        const query = "UPDATE credentials SET reset_token = ?, reset_expiry = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE email = ?";
+        db.query(query, [resetToken, email], (err, results) => {
+            if (err) {
+                io.to(socket.id).emit("popup","Failed To Send Email");
+                return;
+            }
+
+            // Email content
+            let mailOptions = {
+                from: "rborpodcastgmail.com",
+                to: email,
+                subject: "Password Reset Request",
+                html: `
+                    <h2>Password Reset</h2>
+                    <a href="${resetLink}">Click Here To Reset Password</a>
+                    <p>This link will expire in 1 hour.</p>
+                `
+            };
+            // Send email
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    io.to(socket.id).emit("popup","Failed To Send Email");
+                    return;
+                }
+
+                io.to(socket.id).emit("popup","Password Reset Sent To Email");
+            });
+        }
+
+    })
+    socket.on("user_changePassword",async (password) => {
+        let account = onlineAccounts[socket.id];
+        if (account.status === "Guest") return;
+        if (!account.canChangePassword) return;
+
+        const email = account.email;
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const query = "UPDATE credentials SET password = ? WHERE tag = ?";
+        db.query(query, [hashedPassword,account.tag],(err,results) => {
+            if (err) {
+                console.log(67423,err);
+                io.to(socket.id).emit("popup","Couldn't Change Password (System Error, try Again)")
+                return;
+            }
+
+            io.to(socket.id).emit("popup","Password Changed")
+        })
+    })
+    socket.on("user_changePasswordCheck",(password) => {
+        let account = onlineAccounts[socket.id];
+        if (account.status == "Guest") return;
+
+        const email = account.email;
+
+        const query = "SELECT * FROM credentials WHERE email = ?";
+        db.query(query,[email],(err,results) => {
+            if (err) {
+                console.log(7635,err);
+                return;
+            }
+
+            // If no user found
+            if (results.length === 0) {
+                console.log(52394,"No User Found");
+                return;
+            }
+            
+            const user = results[0];
+
+            
+            // If passwords are hashed, use bcrypt to compare
+            bcrypt.compare(password, user.password, (err, isMatch) => {
+                if (err) {
+                    console.error(436,"Bcrypt error:", err);
+                    return;
+                }
+
+                if (!isMatch) {
+                    account.canChangePassword = false;
+                    io.to(socket.id).emit("disallowPasswordChange");
+                    return;
+                }
+
+                //Success
+                account.canChangePassword = true;
+                io.to(socket.id).emit("allowPasswordChange");
+
+            });
+
+        })
+
+    })
     socket.on("signInUsingToken",(token,email) => {
         const query = "SELECT * FROM credentials WHERE email = ?";
         db.query(query,[email],(err,results) => {
@@ -194,10 +311,8 @@ io.on('connection', (socket) => {
                 }
 
                 if (!isMatch) {
-                    console.log(5234532,"Does Not Match");
                     return;
                 }
-                console.log(isMatch)
 
                 //Success
                 gatherDBInventory(onlineAccounts[socket.id],user);
@@ -2289,6 +2404,7 @@ function setGuestAccount(socketID,full = false) {
         gameModes: [],
         boardLimit: 10,
         boards: [],
+        canChangePassword: false,
 
         player: false, //For Lobbies
         serverSnake: newPlayer(socketID,username,tag),
@@ -2302,6 +2418,7 @@ function setGuestAccount(socketID,full = false) {
         battlePassPoints: 0,
         challengeLimit: 2,
         questsAccepted: [],
+        email: false,
         battlePasses: [{
             name: "beta",
             unlocked: [-1],
@@ -2418,12 +2535,14 @@ function gatherDBallowed(account,user,dbObj) {
 }
 function setSocketToUser(account,user,dbObj) {
     account.loggedIn = true;
+    account.canChangePassword = false;
     //credentials
     account.status = user.status;
     account.dateCreated = user.date_created;
     account.id = account.id;
     account.username = user.username;
     account.tag = formatNumber(user.tag);
+    account.email = user.email;
 
     //inventory
     account.boardLimit = dbObj.inventory.board_limit;

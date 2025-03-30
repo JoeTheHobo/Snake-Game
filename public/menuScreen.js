@@ -1321,7 +1321,7 @@ function loadProfileMenu() {
     const html_dateCreated = $(".cp_dateCreated");
 
     html_accountType.innerHTML = localAccount.status;
-    html_dateCreated.innerHTML = localAccount.dateCreated;
+    html_dateCreated.innerHTML = localAccount.dateCreated.subset(0,9);
 
     if (localAccount.status == "Guest") $(".cp_accountSettings").hide();
     else $(".cp_accountSettings").show("flex");
@@ -1331,11 +1331,88 @@ $(".cp_changeUsername").on("click",function() {
 
 })
 $(".cp_changePassword").on("click",function() {
-    
+    makePopUp([
+        {type: "title",text: "Enter Current Password"},
+        {type: "input", id:"password",inputType:"password", maxLength: "30", placeholder: "Old Password...", width: "200px"},
+        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "green",text:"Continue",onClick: (ids) => {
+            const {password} = ids;
+            socket.emit("user_changePasswordCheck",password.value);
+            
+        }},
+    ],{
+        exit: {
+            cursor: "url('./img/pointer.cur'), auto",
+        },
+        id: "changePasswordCheck",
+
+    })
 })
 $(".cp_logOut").on("click",function() {
     socket.emit("user_logout");
 })
 $(".cp_deleteAccount").on("click",function() {
-    
+    makePopUp([
+        {type: "text",text: "Delete Account"},
+        {type: "title",text: "Are You Sure?"},
+        [
+            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
+            {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Delete",onClick: (ids,param) => {
+                
+            }},
+        ],
+    ],{
+        id: "deleteAccountPopUp",
+    })
+})
+socket.on("allowPasswordChange",() => {
+    makePopUp([
+        {type: "title",text: "Enter New Password"},
+        {type: "input", id:"password", inputType:"password", maxLength: "30", placeholder: "New Password...", width: "200px"},
+        {type: "title",text: "Re-Enter Password"},
+        {type: "input", id:"password2", inputType:"password", maxLength: "30", placeholder: "New Password...", width: "200px"},
+        {type: "text", className: "paswordWarning", color: "red"},
+        {type: "button",cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "green",text:"Continue",onClick: (ids) => {
+            const {password,password2} = ids;
+
+            let warning = false;
+            if (password.value == "" || password2.value == "") warning = "All Fields Required";
+            if (password.value !== password2.value) warning = "Passwords Don't Match";
+
+            if (warning) {
+                $(".passwordWarning").show();
+                $(".passwordWarning").innerHTML = warning;
+                return;
+            }
+
+            socket.emit("user_changePassword",password.value);
+            this.parent.remove();
+
+            
+        }},
+    ],{
+        exit: {
+            cursor: "url('./img/pointer.cur'), auto",
+        },
+        id: "changePasswordCheck",
+
+    })
+    $(".passwordWarning").hide();
+})
+socket.on("disallowPasswordChange",() => {
+    makePopUp([
+        {type: "title",text: "Incorrect Password"},
+        [
+            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "200px",background: "green",text:"Forgot Password", onClick: () => {
+                socket.emit("user_forgotPassword")
+            }},
+            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "200px",background: "green",text:"Close"}
+        ],
+        
+    ],{
+        exit: {
+            cursor: "url('./img/pointer.cur'), auto",
+        },
+        id: "changePasswordDisallow",
+
+    })
 })

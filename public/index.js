@@ -552,6 +552,15 @@ function server_movePlayers() {
 function getAndLoadNewPlayer() {
     socket.emit("createNewPlayer");
 }
+socket.on("popup",(text) => {
+    makePopUp([
+        {type: "title",text: text},
+        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "200px",background: "green",text:"Close"}
+    ],{
+        id: "serverPopup",
+
+    })
+})
 socket.on("setScene",(scene) => {
     setScene(scene);
 })
@@ -579,10 +588,19 @@ updateProductionFunction();
 window.onload = function() {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token'); // Get token from URL
+    const action = urlParams.get('action'); // Get the action type (verify or reset-password)
 
     if (token) {
-        setScene("login");
-        loginLoad("login");
+        if (action === 'verify') {
+            // Handle verification process
+            setScene("verify");
+            loginLoad("verify");
+        }
+        if (action === 'reset-password') {
+            // Handle reset-password process
+            
+        }
+       
         return;
     }
 

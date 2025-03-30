@@ -166,6 +166,7 @@ function makePopUp(objects,settings = {}) {
                 
                 if (obj.type == "input") {
                     
+                    if (obj.inputType) div.type = obj.inputType;
                     if (obj.value) div.value = obj.value;
                     if (obj.placeholder) div.placeholder = obj.placeholder;
                     if (obj.maxLength) div.maxLength = obj.maxLength;
