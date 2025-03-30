@@ -118,7 +118,7 @@ io.on('connection', (socket) => {
     socket.join(socket.id);
     socket.join("menuScreen");
     let username = simple.rnd(playerNames1) + simple.rnd(playerNames2);
-    let tag = formatNumber(Object.keys(onlineAccounts).length);
+    let tag = "0000";
     onlineAccounts[socket.id] = {
         loggedIn: false,
         id: socket.id,
@@ -477,10 +477,10 @@ io.on('connection', (socket) => {
     })
     socket.on("saveBoard",(board) => {
         board = fixBoard(JSON.parse(pako.inflate(board, { to: 'string' })));
-        if (board.accountID !== socket.id) return;
         //Check Board TO BE ADDED
 
         let account = onlineAccounts[socket.id];
+        if (board.tag !== account.tag) return;
         if (account.loggedIn && Number(board.tag) == Number(account.tag)) {
             compressObject(board,(err,compressedBoard) => {
                 if (err) {
@@ -576,15 +576,28 @@ io.on('connection', (socket) => {
         //Varify Board Here -To Be Added
         board = fixBoard(JSON.parse(pako.inflate(board, { to: 'string' })));
 
-        if (board.accountID !== socket.id) {
-            board.accountID = socket.id;
+        if (Number(board.tag) !== Number(account.tag)) {
+            board.tag = Number(account.tag);
             board.boardAuthors.push({
-                id: socket.id,
+                tag: account.tag,
                 username: account.username,
             })
         }
+        board.id = Date.now();
 
         if (index > account.boardLimit-1) return;
+
+        if (account.loggedIn) {
+            compressObject(board,(err,compressedBoard) => {
+                if (err) {
+                    console.log(24,err);
+                }
+                let query = "INSERT INTO boards (tag, board, published, id) VALUES (?, ?, ?, ?)";
+                db.query(query,[Number(account.tag),compressedBoard,0,Number(board.id)],(err)=>{
+                    if (err) console.log(6432,err);
+                })
+            })
+        }
 
         decompressObject(account.boards,(err,decompressed) => {
             if (err) {
