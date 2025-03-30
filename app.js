@@ -741,7 +741,7 @@ io.on('connection', (socket) => {
                 io.to(socket.id).emit("updateLocalGameModes",account.gameModes,sentFrom)
 
                 if (account.loggedIn) {
-                    let query = "DELETE FROM boards WHERE tag = ? AND id = ?";
+                    let query = "DELETE FROM gamemodes WHERE tag = ? AND id = ?";
                     db.query(query,[Number(account.tag),gameModeID],(err) => {
                         if (err) console.log(7653,err);
                     })
