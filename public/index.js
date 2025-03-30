@@ -590,8 +590,8 @@ socket.on("allowPasswordChange",() => {
             if (password.value !== password2.value) warning = "Passwords Don't Match";
 
             if (warning) {
-                $(".passwordWarning").show();
-                $(".passwordWarning").innerHTML = warning;
+                $(".paswordWarning").show();
+                $(".paswordWarning").innerHTML = warning;
                 return;
             }
 
@@ -607,7 +607,7 @@ socket.on("allowPasswordChange",() => {
         id: "changePasswordCheck",
 
     })
-    $(".passwordWarning").hide();
+    $(".paswordWarning").hide();
 })
 socket.on("disallowPasswordChange",() => {
     makePopUp([

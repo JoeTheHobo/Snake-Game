@@ -327,8 +327,7 @@ io.on('connection', (socket) => {
 
         let query = "UPDATE credentials SET sign_in_token = ? WHERE tag = ?";
         db.query(query,[null, onlineAccounts[socket.id].tag],(err) => {if (err) console.log(7543,err);});
-        setGuestAccount(socket.id);
-        io.to(socket.id).emit("setScene","newMenu");
+        setGuestAccount(socket.id,false,true);
     })
     socket.on("user_login", (email,password,staySignedIn = false) =>{
         if (onlineAccounts[socket.id].status !== "Guest") return;
@@ -2390,7 +2389,7 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
-function setGuestAccount(socketID,full = false) {
+function setGuestAccount(socketID,full = false,sendHome = false) {
     let username = simple.rnd(playerNames1) + simple.rnd(playerNames2);
     let tag = simple.rnd(1000,9999) + "";
     const date = new Date();
@@ -2467,6 +2466,8 @@ function setGuestAccount(socketID,full = false) {
             let sendTiles = full ? pako.deflate(JSON.stringify(tiles), { to: 'string' }) : undefined;
 
             io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,decompressedBoards,sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? presetBoards : undefined,full ? backgrounds : undefined,sendTiles);
+            if (sendHome) 
+                io.to(socket.id).emit("setScene","newMenu");
         })
     })
 }
