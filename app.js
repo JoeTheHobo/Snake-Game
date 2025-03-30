@@ -2426,6 +2426,7 @@ function setSocketToUser(account,user,dbObj) {
             updateLobbies();
 
             io.to(account.id).emit('setPlayer', account.id, account,accessedBattlePasses,decompressedBoards);
+            io.to(account.id).emit("setScene","newMenu");
         })
     })
 

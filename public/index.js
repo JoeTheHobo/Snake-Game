@@ -550,6 +550,9 @@ function server_movePlayers() {
 function getAndLoadNewPlayer() {
     socket.emit("createNewPlayer");
 }
+socket.on("setScene",(scene) => {
+    setScene(scene);
+})
 socket.on("playersBeenMade",(players) => {
     localAccount.players = players;
     loadCustomizeSnakeScreen(players.length-1);
@@ -584,6 +587,7 @@ window.onload = function() {
     let signInToken = ls.get("signInToken",false);
     let signInEmail = ls.get("signInEmail",false);
     if (signInToken && signInEmail) {
+        console.log("ey")
         socket.emit("signInUsingToken",signInToken,signInEmail);
     }
 };
