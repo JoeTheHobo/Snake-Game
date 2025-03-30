@@ -478,6 +478,13 @@ io.on('connection', (socket) => {
     socket.on("deleteBoard",(boardTag,sentFrom) => {
         let account = onlineAccounts[socket.id];
 
+        if (account.loggedIn && Number(boardTag) === Number(account.tag)) {
+            let query = "DELETE FROM boards WHERE tag = ?";
+            db.query(query,[Number(boardTag)],(err) => {
+                if (err) console.log(err)
+            })
+        }
+
         decompressObject(account.boards,(err,decompressed) => {
             if (err) {
                 console.log(8,err);
@@ -486,7 +493,7 @@ io.on('connection', (socket) => {
 
             account.boards = decompressed;
             for (let i = 0; i < account.boards.length; i++) {
-                if (account.boards[i].tag === boardTag) {
+                if (Number(account.boards[i].tag) === Number(boardTag)) {
                     account.boards.splice(i,1);
                     io.to(socket.id).emit("updatePlayersBoards",account.boards,sentFrom);
                     compressObject(account.boards,(err,compressed) => {
@@ -501,12 +508,6 @@ io.on('connection', (socket) => {
             }
         })
 
-        if (account.loggedIn && Number(boardTag) === Number(account.tag)) {
-            let query = "DELETE FROM boards WHERE tag = ?";
-            db.query(query,[Number(boardTag)],(err) => {
-                if (err) console.log(err)
-            })
-        }
 
     })
     
