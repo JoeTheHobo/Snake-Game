@@ -217,6 +217,8 @@ let itemCanvas = [];
 function loadAllCanvas(list) {
     for (let i = 0; i < list.length; i++) {
         let item = list[i];
+        global_loading++;
+        doLoadingAnimation();
 
         function loadAllCanvasHelper(item) {
             let url = `${item.type}_${item.name}_`;
@@ -368,6 +370,10 @@ function setScene(scene,lobby) {
     localAccount.isInMapEditor = false;
     showingGameTips = false;
 
+    if (scene == "loading") {
+        global_loading = 0;
+
+    }
     if (scene == "mapEditor") {
         localAccount.isInMapEditor = true;
     }
@@ -2015,3 +2021,10 @@ function adjustVolume(audioElement, type, adj = 1) {
 
     //Send To Server
 })
+function doLoadingAnimation() {
+    let width = $(".loading_bar").getBoundingClientRect().width;
+    let barWidth = (global_loading * width) / global_loading_total;
+
+    $(".loading_percentage").style.width = barWidth + "px";
+
+}

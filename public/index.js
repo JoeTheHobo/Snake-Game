@@ -38,6 +38,7 @@ socket.on("updateLocalGameModes",(gameModes,sentFrom) => {
     }
 })
 socket.on("setPlayer", (id,account,server_accessedBattlePasses,player_boards,server_items,server_basedGameMode,server_presetGameModes,server_presetBoards,server_backgrounds,server_tiles) =>{
+    setScene("loading");
     localAccount.id = id;
     localAccount.isInGame = false;
     localAccount.lobbyID = false;
@@ -78,8 +79,10 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,player_boards,ser
 
     if (server_backgrounds) backgrounds = server_backgrounds;
 
-    setScene("newMenu");
     if (server_items) {
+        global_loading_total = items.length;
+        global_loading_total += tiles.length;
+
         //Load All Item Images
         requestIdleCallback(function() {
             loadAllCanvas(items);
@@ -96,6 +99,7 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,player_boards,ser
     loadAllBattlePasses();
 
     renderMapsInServersTab = true;
+    setScene("newMenu");
 });
 socket.on("sendingZippedBoard",(zippedBoard,boardName) => {
     downloadTextFile(boardName,zippedBoard);

@@ -18,6 +18,7 @@ $(".versionNumber").innerHTML = version;
 
 let global_musicVolume = 100;
 let global_sfxVolume = 100;
+let global_loading = 0;
 
 let global_gameColors = [
     ["white","#ffffff"],
