@@ -4258,6 +4258,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .cp_title {
   font-size: 35px;
   margin: 5px;
+  text-decoration: underline;
 }
 .cp_row {
   display: flex;
@@ -4271,7 +4272,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 .cp_text {
   font-size: 20px;
-  color: rgb(167, 167, 167);
+  color: rgb(212, 212, 212);
 }
 .cp_accountSettings {
   display: flex;
@@ -4281,4 +4282,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .cp_deleteAccount {
   background: rgb(179, 30, 30) !important;
   color: black;
+}
+.colorBlack {
+  color: black !important;
 }
