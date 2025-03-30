@@ -208,6 +208,7 @@ io.on('connection', (socket) => {
         let query = "UPDATE credentials SET sign_in_token = ? WHERE tag = ?";
         db.query(query,[null, onlineAccounts[socket.id].tag],(err) => {if (err) console.log(7543,err);});
         setGuestAccount(socket.id);
+        io.to(socketID).emit("setScene","newMenu");
     })
     socket.on("user_login", (email,password,staySignedIn = false) =>{
         if (onlineAccounts[socket.id].status !== "Guest") return;
@@ -2344,7 +2345,6 @@ function setGuestAccount(socketID,full = false) {
             let sendTiles = full ? pako.deflate(JSON.stringify(tiles), { to: 'string' }) : undefined;
 
             io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,decompressedBoards,sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? presetBoards : undefined,full ? backgrounds : undefined,sendTiles);
-            io.to(socketID).emit("setScene","newMenu");
         })
     })
 }
