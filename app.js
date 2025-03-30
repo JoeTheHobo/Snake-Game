@@ -634,7 +634,7 @@ io.on('connection', (socket) => {
                 if (err) {
                     console.log(34633,err);
                 }
-                let query = "INSERT INTO boards (tag, board, published, id) VALUES [?, ?, ?, ?]";
+                let query = "INSERT INTO boards (tag, board, published, id) VALUES (?, ?, ?, ?)";
                 console.log(simple.type(compressedBoard));
                 db.query(query,[Number(account.tag),compressedBoard,0,Number(board.id)],(err)=>{
                     if (err) console.log(6432,err);
