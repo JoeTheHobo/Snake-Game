@@ -596,7 +596,7 @@ socket.on("allowPasswordChange",() => {
             }
 
             socket.emit("user_changePassword",password.value);
-            this.parent.remove();
+            password.$P().remove();
 
             
         }},

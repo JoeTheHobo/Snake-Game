@@ -237,6 +237,7 @@ io.on('connection', (socket) => {
 
             io.to(socket.id).emit("popup","Password Changed")
         })
+        account.canChangePassword = false;
     })
     socket.on("user_changePasswordCheck",(password) => {
         let account = onlineAccounts[socket.id];
