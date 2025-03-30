@@ -587,9 +587,12 @@ window.onload = function() {
     let signInToken = ls.get("signInToken",false);
     let signInEmail = ls.get("signInEmail",false);
     if (signInToken && signInEmail) {
-        console.log("ey")
         socket.emit("signInUsingToken",signInToken,signInEmail);
+    } else {
+        setScene("newMenu");
     }
+    
+    
 };
 
 setScene("loading");
