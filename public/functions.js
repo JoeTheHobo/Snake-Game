@@ -250,9 +250,9 @@ function loadAllCanvas(list) {
                     addItemCanvas(item,url)
                 }
                 
-                global_loading++;
             }
             function loopSkins(item,url) {
+                global_loading++;
                 for (let j = 0; j < item.availableSkins.length; j++) {
                     loopTags(item,url + item.availableSkins[j]);
                 }
