@@ -2226,6 +2226,7 @@ function removePlayerStatus(lobby,player,itemName) {
 
 //From App.js
 function gatherDBInventory(account,user) {
+    console.log(1)
     let dbObj = {};
     let query = "SELECT * FROM inventory WHERE tag = ?";
     db.query(query, [Number(user.tag)], (err,results) => {
@@ -2242,6 +2243,7 @@ function gatherDBInventory(account,user) {
     })
 }
 function gatherDBboards(account,user,dbObj) {
+    console.log(2)
     query = "SELECT * FROM boards WHERE tag = ?";
     db.query(query,[Number(user.tag)],(err,results) => {
         if (err) return false;
@@ -2258,6 +2260,7 @@ function gatherDBboards(account,user,dbObj) {
     })
 }
 function gatherDBgamemodes(account,user,dbObj) {
+    console.log(3)
     query = "SELECT * FROM gamemodes WHERE tag = ?";
     db.query(query, [Number(user.tag)], (err,results) => {
         if (err) return false;
@@ -2271,7 +2274,7 @@ function gatherDBgamemodes(account,user,dbObj) {
     })
 }
 function gatherDBallowed(account,user,dbObj) {
-    
+    console.log(4)
     query = "SELECT * FROM allowed WHERE tag = ?";
     db.query(query, [Number(user.tag)], (err,results) => {
         if (err) return false;
@@ -2291,7 +2294,7 @@ function gatherDBallowed(account,user,dbObj) {
     })
 }
 function setSocketToUser(account,user,dbObj) {
-    
+    console.log(5)
     account.loggedIn = true;
     //credentials
     account.id = account.id;
