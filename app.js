@@ -587,18 +587,6 @@ io.on('connection', (socket) => {
 
         if (index > account.boardLimit-1) return;
 
-        if (account.loggedIn) {
-            compressObject(board,(err,compressedBoard) => {
-                if (err) {
-                    console.log(24,err);
-                }
-                let query = "INSERT INTO boards (tag, board, published, id) VALUES (?, ?, ?, ?)";
-                db.query(query,[Number(account.tag),compressedBoard,0,Number(board.id)],(err)=>{
-                    if (err) console.log(6432,err);
-                })
-            })
-        }
-
         decompressObject(account.boards,(err,decompressed) => {
             if (err) {
                 console.log(10,err)
@@ -606,8 +594,35 @@ io.on('connection', (socket) => {
             }
             account.boards = decompressed;
 
-            if (index > account.boards.length-1) account.boards.push(board); 
-            else account.boards[index] = board;
+            if (index > account.boards.length-1) {
+                account.boards.push(board); 
+
+                if (account.loggedIn) {
+                    compressObject(board,(err,compressedBoard) => {
+                        if (err) {
+                            console.log(224,err);
+                        }
+                        let query = "INSERT INTO boards (tag, board, published, id) VALUES (?, ?, ?, ?)";
+                        db.query(query,[Number(account.tag),compressedBoard,0,Number(board.id)],(err)=>{
+                            if (err) console.log(6432,err);
+                        })
+                    })
+                }
+            } else {
+                account.boards[index] = board;
+                let boardID = account.boards[index].id;
+                if (account.loggedIn) {
+                    compressObject(board,(err,compressedBoard) => {
+                        if (err) {
+                            console.log(254,err);
+                        }
+                        let query = "UPDATE boards SET board = ? WHERE id = ? AND tag = ?";
+                        db.query(query,[compressedBoard,Number(board.id),Number(account.tag)],(err)=>{
+                            if (err) console.log(6432,err);
+                        })
+                    })
+                }
+            } 
     
             io.to(socket.id).emit("updatePlayersBoards",account.boards,sentFrom,board)
             compressObject(account.boards,(err,compressed) => {
