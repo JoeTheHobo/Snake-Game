@@ -70,7 +70,7 @@ app.get('/reset-password', (req,res) => {
             return;
         }
 
-        
+
 
     });
 })
@@ -216,7 +216,7 @@ io.on('connection', (socket) => {
 
                 io.to(socket.id).emit("popup","Password Reset Sent To Email");
             });
-        }
+        });
 
     })
     socket.on("user_changePassword",async (password) => {
