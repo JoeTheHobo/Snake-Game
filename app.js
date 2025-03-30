@@ -617,7 +617,7 @@ io.on('connection', (socket) => {
                             console.log(254,err);
                         }
                         let query = "UPDATE boards SET board = ? WHERE id = ? AND tag = ?";
-                        db.query(query,[compressedBoard,Number(board.id),Number(account.tag)],(err)=>{
+                        db.query(query,[compressedBoard,boardID,Number(account.tag)],(err)=>{
                             if (err) console.log(6432,err);
                         })
                     })
