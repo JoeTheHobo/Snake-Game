@@ -4252,9 +4252,11 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .content_profile {
   flex-direction: column;
   justify-content: center;
+  color: white;
+  align-items: center;
 }
 .cp_title {
-  font-size: 25px;
+  font-size: 35px;
   margin: 5px;
 }
 .cp_row {
@@ -4265,6 +4267,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
 .cp_subtitle {
   font-size: 20px;
   color: white;
+  margin-right: 5px;
 }
 .cp_text {
   font-size: 20px;
@@ -4276,6 +4279,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
   align-items: center;
 }
 .cp_deleteAccount {
-  background: rgb(179, 30, 30);
+  background: rgb(179, 30, 30) !important;
   color: black;
 }
