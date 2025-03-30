@@ -455,7 +455,7 @@ io.on('connection', (socket) => {
                     console.log(2342134,err);
                 }
                 let query = "UPDATE boards SET board = ? WHERE id = ? AND tag = ?";
-                db.query(query,[compressedBoard.toString(),board.id,Number(account.tag)],(err)=>{
+                db.query(query,[compressedBoard.toString(),Number(board.id),Number(account.tag)],(err)=>{
                     if (err) console.log(74534,err);
                 })
             })
@@ -635,7 +635,7 @@ io.on('connection', (socket) => {
                     console.log(34633,err);
                 }
                 let query = "INSERT INTO boards (tag, board, published, id) VALUES [?, ?, ?, ?]";
-                db.query(query,[Number(account.tag),compressedBoard.toString(),0,board.id],(err)=>{
+                db.query(query,[Number(account.tag),compressedBoard.toString(),0,Number(board.id)],(err)=>{
                     if (err) console.log(6432,err);
                 })
             })
