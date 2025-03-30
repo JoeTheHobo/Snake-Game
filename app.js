@@ -2285,7 +2285,7 @@ function setSocketToUser(account,user,dbObj) {
         accessedBattlePasses[account.battlePasses[i].name] = allBattlePasses[account.battlePasses[i].name];
     }
 
-    socket.to(account.id).emit('setPlayer', account.id, account,accessedBattlePasses);
+    io.to(account.id).emit('setPlayer', account.id, account,accessedBattlePasses);
 
 }
 
