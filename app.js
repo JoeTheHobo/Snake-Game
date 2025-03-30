@@ -138,7 +138,7 @@ io.on('connection', (socket) => {
         chatNameColor: "black",
 
         coins: 0,
-        battlePassPoints: 20,
+        battlePassPoints: 0,
         challengeLimit: 2,
         questsAccepted: [],
         battlePasses: [{
@@ -368,8 +368,9 @@ io.on('connection', (socket) => {
     
                     let account = onlineAccounts[socket.id];
                     //Add To Inventory Database
+                    console.log(pako.deflate(JSON.stringify(account.server_snake), { to: 'string' }));
                     const invQuery = "INSERT INTO inventory (tag, board_limit, gamemode_limit, coins, battle_pass_points, server_snake, name_color, challenge_limit, music_volume, sfx_volume) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    db.query(invQuery, [tag,account.boardLimit,account.gameModeLimit,account.coins,account.battlePassPoints, JSON.stringify(account.server_snake), account.chat_name_color, account.challengeLimit,account.musicVolume,account.sfxVolume], (err,results) => {
+                    db.query(invQuery, [tag,account.boardLimit,account.gameModeLimit,account.coins,account.battlePassPoints, pako.deflate(JSON.stringify(account.server_snake), { to: 'string' }), account.chatNameColor, account.challengeLimit,account.musicVolume,account.sfxVolume], (err,results) => {
                         if (err) {
                             console.log(err);
                         }
@@ -2311,6 +2312,10 @@ function zipAllBoards(boardList,func,index = 0,list = []) {
     })
 }
 function retrieveAllBoards(boardList,func,index = 0,newBoards = []) {
+    if (!boardList[index]) {
+        func(newBoards);
+        return;
+    }
     let buffer = base64ToArrayBuffer(boardList[index]);
     decompressObject(buffer,(err,decompressed) => {
         if (err) {
