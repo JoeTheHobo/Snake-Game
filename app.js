@@ -2172,7 +2172,10 @@ function gatherDBInventory(account,user) {
     let dbObj = {};
     let query = "SELECT * FROM inventory WHERE tag = ?";
     db.query(query, [user.tag], (err,results) => {
-        if (err || results.length === 0) return false;
+        if (err || results.length === 0) {
+            console.log(err)
+            return;
+        }
 
         dbObj.inventory = results;
 
