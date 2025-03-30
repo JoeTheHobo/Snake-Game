@@ -594,6 +594,7 @@ io.on('connection', (socket) => {
             account.boards = decompressed;
 
             if (index > account.boards.length-1) {
+                if (account.boards.length + 1 >= account.boardLimit) return;
                 board.id = Date.now();
                 account.boards.push(board); 
 
@@ -604,7 +605,7 @@ io.on('connection', (socket) => {
                         }
                         let query = "INSERT INTO boards (tag, board, published, id) VALUES (?, ?, ?, ?)";
                         db.query(query,[Number(account.tag),compressedBoard,0,Number(board.id)],(err)=>{
-                            if (err) console.log(6432,err);
+                            if (err) console.log(64432,err);
                         })
                     })
                 }
@@ -616,9 +617,10 @@ io.on('connection', (socket) => {
                         if (err) {
                             console.log(254,err);
                         }
+                        console.log("querying")
                         let query = "UPDATE boards SET board = ? WHERE id = ? AND tag = ?";
                         db.query(query,[compressedBoard,boardID,Number(account.tag)],(err)=>{
-                            if (err) console.log(6432,err);
+                            if (err) console.log(64312,err);
                         })
                     })
                 }
