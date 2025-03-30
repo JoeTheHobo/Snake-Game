@@ -477,6 +477,7 @@ io.on('connection', (socket) => {
     });
     socket.on("deleteBoard",(boardTag,sentFrom) => {
         let account = onlineAccounts[socket.id];
+        console.log("yep")
 
         if (account.loggedIn && Number(boardTag) === Number(account.tag)) {
             let query = "DELETE FROM boards WHERE tag = ?";
@@ -493,6 +494,7 @@ io.on('connection', (socket) => {
 
             account.boards = decompressed;
             for (let i = 0; i < account.boards.length; i++) {
+                console.log(Number(account.boards[i].tag) , Number(boardTag));
                 if (Number(account.boards[i].tag) === Number(boardTag)) {
                     account.boards.splice(i,1);
                     io.to(socket.id).emit("updatePlayersBoards",account.boards,sentFrom);
