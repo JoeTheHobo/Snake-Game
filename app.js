@@ -450,13 +450,15 @@ io.on('connection', (socket) => {
             })
         })
         if (account.loggedIn) {
+            console.log("IM LOGGED IN");
             compressObject(board,(err,compressedBoard) => {
                 if (err) {
                     console.log(2342134,err);
                 }
                 let query = "UPDATE boards SET board = ? WHERE id = ? AND tag = ?";
-                db.query(query,[compressedBoard,Number(board.id),Number(account.tag)],(err)=>{
+                db.query(query,[compressedBoard,Number(board.id),Number(account.tag)],(err,results)=>{
                     if (err) console.log(74534,err);
+                    console.log(results);
                 })
             })
         }
@@ -2218,7 +2220,6 @@ function gatherDBboards(account,user,dbObj) {
 
         let rawBoards = [];
         for (let i = 0; i < results.length; i++) {
-            console.log(results[i].board.toString("base64"));
             rawBoards.push(results[i].board.toString("base64"));
         }
         retrieveAllBoards(rawBoards,function(list) {
