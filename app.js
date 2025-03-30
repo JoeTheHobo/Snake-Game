@@ -421,8 +421,7 @@ io.on('connection', (socket) => {
 
         let account = onlineAccounts[socket.id];
         console.log(account.loggedIn);
-        if (account.loggedIn) {
-            console.log("IM LOGGED IN");
+        if (account.loggedIn && Number(board.tag) == Number(account.tag)) {
             compressObject(board,(err,compressedBoard) => {
                 if (err) {
                     console.log(2342134,err);
