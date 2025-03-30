@@ -420,6 +420,19 @@ io.on('connection', (socket) => {
         //Check Board TO BE ADDED
 
         let account = onlineAccounts[socket.id];
+        if (account.loggedIn) {
+            console.log("IM LOGGED IN");
+            compressObject(board,(err,compressedBoard) => {
+                if (err) {
+                    console.log(2342134,err);
+                }
+                let query = "UPDATE boards SET board = ? WHERE id = ? AND tag = ?";
+                db.query(query,[compressedBoard,Number(board.id),Number(account.tag)],(err,results)=>{
+                    if (err) console.log(74534,err);
+                    console.log(results);
+                })
+            })
+        }
         decompressObject(account.boards,(err,decompressed) => {
             if (err) {
                 console.log(4,err);
@@ -449,19 +462,7 @@ io.on('connection', (socket) => {
                 account.boards = compressed;
             })
         })
-        if (account.loggedIn) {
-            console.log("IM LOGGED IN");
-            compressObject(board,(err,compressedBoard) => {
-                if (err) {
-                    console.log(2342134,err);
-                }
-                let query = "UPDATE boards SET board = ? WHERE id = ? AND tag = ?";
-                db.query(query,[compressedBoard,Number(board.id),Number(account.tag)],(err,results)=>{
-                    if (err) console.log(74534,err);
-                    console.log(results);
-                })
-            })
-        }
+        
         
     })
     socket.on("getZippedBoard",(board) => {
