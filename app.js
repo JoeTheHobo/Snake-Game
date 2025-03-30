@@ -612,6 +612,7 @@ io.on('connection', (socket) => {
                 account.boards[index] = board;
                 let boardID = account.boards[index].id;
                 if (account.loggedIn) {
+                    console.log("EYI",boardID,Number(account.tag))
                     compressObject(board,(err,compressedBoard) => {
                         if (err) {
                             console.log(254,err);
