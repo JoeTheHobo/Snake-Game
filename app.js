@@ -420,6 +420,7 @@ io.on('connection', (socket) => {
         //Check Board TO BE ADDED
 
         let account = onlineAccounts[socket.id];
+        console.log(account.loggedIn);
         if (account.loggedIn) {
             console.log("IM LOGGED IN");
             compressObject(board,(err,compressedBoard) => {
