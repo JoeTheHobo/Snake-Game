@@ -2274,7 +2274,7 @@ function setGuestAccount(socketID,full = false) {
     let tag = simple.rnd(1000,9999) + "";
     const date = new Date();
     const formattedDate = date.toISOString().split('T')[0];
-    onlineAccounts[socket.id] = {
+    onlineAccounts[socketID] = {
         loggedIn: false,
         id: socketID,
 
@@ -2311,7 +2311,7 @@ function setGuestAccount(socketID,full = false) {
         allowedItemSkinPacks: [0],
         allowedSnakeColors: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
     }
-    let account = onlineAccounts[socket.id];
+    let account = onlineAccounts[socketID];
 
     let sendSnakeColors = [];
     for (let i = 0; i < account.allowedSnakeColors.length; i++) {
