@@ -99,7 +99,6 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,player_boards,ser
     loadAllBattlePasses();
 
     renderMapsInServersTab = true;
-    setScene("newMenu");
 });
 socket.on("sendingZippedBoard",(zippedBoard,boardName) => {
     downloadTextFile(boardName,zippedBoard);
