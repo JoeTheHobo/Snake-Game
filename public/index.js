@@ -38,7 +38,6 @@ socket.on("updateLocalGameModes",(gameModes,sentFrom) => {
     }
 })
 socket.on("setPlayer", (id,account,server_accessedBattlePasses,player_boards,server_items,server_basedGameMode,server_presetGameModes,server_presetBoards,server_backgrounds,server_tiles) =>{
-    setScene("loading");
     localAccount.id = id;
     localAccount.isInGame = false;
     localAccount.lobbyID = false;
@@ -587,3 +586,5 @@ window.onload = function() {
         socket.emit("signInUsingToken",signInToken,signInEmail);
     }
 };
+
+setScene("loading");
