@@ -116,7 +116,7 @@ retrieveAllPresetBoards(0);
 io.on('connection', (socket) => { 
     socket.join(socket.id);
     socket.join("menuScreen");
-    setGuestAccount(onlineAccounts[socket.id],socket.id,true);
+    setGuestAccount(socket.id,true);
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
@@ -207,7 +207,7 @@ io.on('connection', (socket) => {
 
         let query = "UPDATE credentials SET sign_in_token = ? WHERE tag = ?";
         db.query(query,[null, onlineAccounts[socket.id].tag],(err) => {if (err) console.log(7543,err);});
-        setGuestAccount(onlineAccounts[socket.id]);
+        setGuestAccount(socket.id);
     })
     socket.on("user_login", (email,password,staySignedIn = false) =>{
         if (onlineAccounts[socket.id].status !== "Guest") return;
@@ -2269,12 +2269,12 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
-function setGuestAccount(account,socketID,full = false) {
+function setGuestAccount(socketID,full = false) {
     let username = simple.rnd(playerNames1) + simple.rnd(playerNames2);
     let tag = simple.rnd(1000,9999) + "";
     const date = new Date();
     const formattedDate = date.toISOString().split('T')[0];
-    account = {
+    onlineAccounts[socket.id] = {
         loggedIn: false,
         id: socketID,
 
@@ -2311,6 +2311,7 @@ function setGuestAccount(account,socketID,full = false) {
         allowedItemSkinPacks: [0],
         allowedSnakeColors: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
     }
+    let account = onlineAccounts[socket.id];
 
     let sendSnakeColors = [];
     for (let i = 0; i < account.allowedSnakeColors.length; i++) {
