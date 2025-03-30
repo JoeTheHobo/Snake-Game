@@ -4281,8 +4281,19 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 .cp_deleteAccount {
   background: rgb(179, 30, 30) !important;
-  color: black;
 }
-.colorBlack {
-  color: black !important;
+.cp_button {
+  min-width: 190px;
+  width: max-content;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 5px;
+  user-select: none;
+  cursor: url('./img/pointer.cur'), auto !important;
+  height: 44px;
+  text-align: center;
+  line-height: 44px;
+  background: #D9D9D9;
+  font-size: 30px;
+  color: black;
 }
