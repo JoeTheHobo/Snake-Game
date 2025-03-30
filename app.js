@@ -2296,6 +2296,7 @@ function setSocketToUser(account,user,dbObj) {
     account.coins = dbObj.inventory.coins;
     account.battlePassPoints = dbObj.inventory.battle_pass_points;
     account.serverSnake = JSON.parse(dbObj.inventory.server_snake);
+    account.serverSnake.accountID = account.id;
     account.chatNameColor = dbObj.inventory.name_color;
     account.challengeLimit = dbObj.inventory.challenge_limit;
     account.musicVolume = dbObj.inventory.music_volume;
