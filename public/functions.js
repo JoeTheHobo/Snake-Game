@@ -2027,6 +2027,7 @@ function doLoadingAnimation() {
 
     $(".loading_percentage").style.width = barWidth + "px";
 
+    console.log(global_loading,global_loading_total);
     if (global_loading == global_loading_total) {
         setScene("newMenu");
     }
