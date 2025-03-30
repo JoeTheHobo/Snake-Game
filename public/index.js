@@ -508,7 +508,9 @@ socket.on("setPlayerToHomeScreen",() => {
     setScene("newMenu");
     localAccount.isInLobby = false;
 })
-
+socket.on("lsSave",(name,save) => {
+    ls.save(name,save);
+})
 socket.on("login_error",(err) => {
     $(".lrd_warning_signin").show();
     $(".lrd_warning_signin").innerHTML = err;

@@ -237,7 +237,7 @@ io.on('connection', (socket) => {
         io.to(socket.id).emit("kickPlayer","Disconnected due to " + reason + " [Code: 002]");
         delete onlineAccounts[socket.id];
     }) 
-    socket.on("user_login", (email,password) =>{
+    socket.on("user_login", (email,password,staySignedIn = false) =>{
         let warning;
         if (email == "") warning = "Email Requied";
         if (password == "") warning = "Password Required";
@@ -271,7 +271,7 @@ io.on('connection', (socket) => {
             }
 
             // If passwords are hashed, use bcrypt to compare
-            bcrypt.compare(password, user.password, (err, isMatch) => {
+            bcrypt.compare(password, user.password, async (err, isMatch) => {
                 if (err) {
                     console.error("Bcrypt error:", err);
                     io.to(socket.id).emit("login_error", "Server error, please try again.");
@@ -285,6 +285,17 @@ io.on('connection', (socket) => {
 
                 // SUCCESS: Send login success response
                 gatherDBInventory(onlineAccounts[socket.id],user);
+
+                if (staySignedIn) {
+                    let code = generateRandomString(10);
+                    const hashedCode = await bcrypt.hash(code, 10);
+                    io.to(socket.id).emit("lsSave","signInToken",code);
+
+                    let query = "UPDATE credentials SET sign_in_token = ? WHERE email = ?";
+                    db.query(query,[hashedCode,email],(err) => {
+                        if (err) console.log(125, err);
+                    })
+                }
             });
         });
     })
@@ -2226,7 +2237,6 @@ function removePlayerStatus(lobby,player,itemName) {
 
 //From App.js
 function gatherDBInventory(account,user) {
-    console.log(1)
     let dbObj = {};
     let query = "SELECT * FROM inventory WHERE tag = ?";
     db.query(query, [Number(user.tag)], (err,results) => {
@@ -2243,7 +2253,6 @@ function gatherDBInventory(account,user) {
     })
 }
 function gatherDBboards(account,user,dbObj) {
-    console.log(2)
     query = "SELECT * FROM boards WHERE tag = ?";
     db.query(query,[Number(user.tag)],(err,results) => {
         if (err) return false;
@@ -2260,7 +2269,6 @@ function gatherDBboards(account,user,dbObj) {
     })
 }
 function gatherDBgamemodes(account,user,dbObj) {
-    console.log(3)
     query = "SELECT * FROM gamemodes WHERE tag = ?";
     db.query(query, [Number(user.tag)], (err,results) => {
         if (err) return false;
@@ -2274,7 +2282,6 @@ function gatherDBgamemodes(account,user,dbObj) {
     })
 }
 function gatherDBallowed(account,user,dbObj) {
-    console.log(4)
     query = "SELECT * FROM allowed WHERE tag = ?";
     db.query(query, [Number(user.tag)], (err,results) => {
         if (err) return false;
@@ -2294,7 +2301,6 @@ function gatherDBallowed(account,user,dbObj) {
     })
 }
 function setSocketToUser(account,user,dbObj) {
-    console.log(5)
     account.loggedIn = true;
     //credentials
     account.id = account.id;
@@ -2364,6 +2370,14 @@ function setSocketToUser(account,user,dbObj) {
 
 }
 
+function generateRandomString(length = 10) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
 
 function zipAllBoards(boardList,func,index = 0,list = []) {
     compressObject(boardList[index],(err,compressed) => {

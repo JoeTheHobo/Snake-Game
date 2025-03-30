@@ -1945,6 +1945,7 @@ function adjustVolume(audioElement, type, adj = 1) {
     let warning = false;
     let emailValue = $(".lrd_emailInput").value;
     let passwordValue = $(".lrd_loginPassword").value;
+    let staySignedIn = $(".lrd_staySignedInBox").checked;
 
     if (emailValue == "") warning = "Email Requied";
     if (passwordValue == "") warning = "Password Required";
@@ -1955,7 +1956,7 @@ function adjustVolume(audioElement, type, adj = 1) {
         return;
     }
 
-    socket.emit("user_login",emailValue,passwordValue);
+    socket.emit("user_login",emailValue,passwordValue,staySignedIn);
     //Send To Server
   }
   $(".lrd_loginButton").on("click",function() {
