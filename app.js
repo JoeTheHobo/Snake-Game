@@ -2172,7 +2172,6 @@ function removePlayerStatus(lobby,player,itemName) {
 
 //From App.js
 function gatherDBInventory(account,user) {
-    console.log(1)
     let dbObj = {};
     let query = "SELECT * FROM inventory WHERE tag = ?";
     db.query(query, [Number(user.tag)], (err,results) => {
@@ -2189,7 +2188,6 @@ function gatherDBInventory(account,user) {
     })
 }
 function gatherDBboards(account,user,dbObj) {
-    console.log(2)
     query = "SELECT * FROM boards WHERE tag = ?";
     db.query(query,[Number(user.tag)],(err,results) => {
         if (err) return false;
@@ -2206,7 +2204,6 @@ function gatherDBboards(account,user,dbObj) {
     })
 }
 function gatherDBgamemodes(account,user,dbObj) {
-    console.log(3)
     query = "SELECT * FROM gamemodes WHERE tag = ?";
     db.query(query, [Number(user.tag)], (err,results) => {
         if (err) return false;
@@ -2221,7 +2218,6 @@ function gatherDBgamemodes(account,user,dbObj) {
 }
 function gatherDBallowed(account,user,dbObj) {
     
-    console.log(4)
     query = "SELECT * FROM allowed WHERE tag = ?";
     db.query(query, [Number(user.tag)], (err,results) => {
         if (err) return false;
@@ -2242,7 +2238,6 @@ function gatherDBallowed(account,user,dbObj) {
 }
 function setSocketToUser(account,user,dbObj) {
     
-    console.log(5)
     account.loggedIn = true;
     //credentials
     account.id = account.id;
@@ -2254,7 +2249,6 @@ function setSocketToUser(account,user,dbObj) {
     account.gameModeLimit = dbObj.inventory.gamemode_limit;
     account.coins = dbObj.inventory.coins;
     account.battlePassPoints = dbObj.inventory.battle_pass_points;
-    console.log(dbObj.inventory);
     account.serverSnake = JSON.parse(dbObj.inventory.server_snake);
     account.chatNameColor = dbObj.inventory.name_color;
     account.challengeLimit = dbObj.inventory.challenge_limit;
@@ -2291,9 +2285,8 @@ function setSocketToUser(account,user,dbObj) {
         accessedBattlePasses[account.battlePasses[i].name] = allBattlePasses[account.battlePasses[i].name];
     }
 
-    io.to(socket.id).emit('setPlayer', account.id, account,accessedBattlePasses);
+    socket.to(account.id).emit('setPlayer', account.id, account,accessedBattlePasses);
 
-    socket.to(account.id).emit("changedAccount");
 }
 
 
