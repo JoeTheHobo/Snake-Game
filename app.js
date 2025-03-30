@@ -208,7 +208,7 @@ io.on('connection', (socket) => {
         let query = "UPDATE credentials SET sign_in_token = ? WHERE tag = ?";
         db.query(query,[null, onlineAccounts[socket.id].tag],(err) => {if (err) console.log(7543,err);});
         setGuestAccount(socket.id);
-        io.to(socketID).emit("setScene","newMenu");
+        io.to(socket.id).emit("setScene","newMenu");
     })
     socket.on("user_login", (email,password,staySignedIn = false) =>{
         if (onlineAccounts[socket.id].status !== "Guest") return;
