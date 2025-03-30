@@ -177,7 +177,7 @@ io.on('connection', (socket) => {
             return;
         }
         onlineAccounts[socket.id].boards = compressed;
-        decompressObject(onlineAccounts[socket.id].boards,(err,decompressed) => {
+        decompressObject(onlineAccounts[socket.id].boards,(err,decompressedBoards) => {
             if (err) {
                 console.log(3,err);
                 return;
@@ -186,7 +186,7 @@ io.on('connection', (socket) => {
             let sendItems = pako.deflate(JSON.stringify(items), { to: 'string' });
             let sendTiles = pako.deflate(JSON.stringify(tiles), { to: 'string' });
 
-            io.to(socket.id).emit('setPlayer', socket.id, onlineAccounts[socket.id],accessedBattlePasses,sendItems,basedGameMode,presetGameModes,presetBoards,backgrounds,sendTiles,decompressed);
+            io.to(socket.id).emit('setPlayer', socket.id, onlineAccounts[socket.id],accessedBattlePasses,decompressedBoards,sendItems,basedGameMode,presetGameModes,presetBoards,backgrounds,sendTiles);
         })
     })
 
@@ -2285,7 +2285,24 @@ function setSocketToUser(account,user,dbObj) {
         accessedBattlePasses[account.battlePasses[i].name] = allBattlePasses[account.battlePasses[i].name];
     }
 
-    io.to(account.id).emit('setPlayer', account.id, account,accessedBattlePasses);
+    compressObject(account.boards,(err,compressed) => {
+        if (err) {
+            console.log(25463,err)
+            return;
+        }
+        account.boards = compressed;
+        decompressObject(account.boards,(err,decompressedBoards) => {
+            if (err) {
+                console.log(35234,err);
+                return;
+            }
+            updateLobbies();
+
+            io.to(account.id).emit('setPlayer', account.id, account,accessedBattlePasses,decompressedBoards);
+        })
+    })
+
+    
 
 }
 

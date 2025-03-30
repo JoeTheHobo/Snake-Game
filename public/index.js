@@ -37,7 +37,7 @@ socket.on("updateLocalGameModes",(gameModes,sentFrom) => {
         loadGameModesScreen();
     }
 })
-socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,server_basedGameMode,server_presetGameModes,server_presetBoards,server_backgrounds,server_tiles,player_boards) =>{
+socket.on("setPlayer", (id,account,server_accessedBattlePasses,player_boards,server_items,server_basedGameMode,server_presetGameModes,server_presetBoards,server_backgrounds,server_tiles) =>{
     localAccount.id = id;
     localAccount.isInGame = false;
     localAccount.lobbyID = false;
