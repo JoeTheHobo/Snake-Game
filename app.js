@@ -2467,7 +2467,7 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
 
             io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,decompressedBoards,sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? presetBoards : undefined,full ? backgrounds : undefined,sendTiles);
             if (sendHome) 
-                io.to(socket.id).emit("setScene","newMenu");
+                io.to(socketID).emit("setScene","newMenu");
         })
     })
 }
