@@ -2181,7 +2181,7 @@ function gatherDBInventory(account,user) {
             return;
         }
 
-        dbObj.inventory = results;
+        dbObj.inventory = results[0];
 
         gatherDBboards(account,user,dbObj);
 
