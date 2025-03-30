@@ -7,7 +7,6 @@ const profanity = {
         return replaceAllBadWords(text,badMods,allowMods);
     },
     check: (text,badMods = ["sexualWords", "slurs", "swear_hard","swear_soft"],allowMods = []) => {
-        console.log(replaceAllBadWords(text,badMods,allowMods),text,replaceAllBadWords(text,badMods,allowMods)===text);
         if (replaceAllBadWords(text,badMods,allowMods) === text) return false;
         else return true;
     }

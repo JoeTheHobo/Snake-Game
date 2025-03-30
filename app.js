@@ -2762,7 +2762,7 @@ function checkGameMode(gameMode,accountID) {
     if (simple.type(gameMode.name) !== "string") return ["name1",gameMode.name];
     if (gameMode.name == "") return ["name2",gameMode.name];
     if (gameMode.name.length > 32) return ["name3",gameMode.name];
-    if (!profanity.check(gameMode.name)) return ["name4",gameMode.name,profanity.clean(gameMode.name)];
+    if (profanity.check(gameMode.name)) return ["name4",gameMode.name,profanity.clean(gameMode.name)];
     if (gameMode.howManyItemsCanPlayersUse < 0 || gameMode.howManyItemsCanPlayersUse > 10) return "howManyItemsCanPlayersUse";
     if (!["scroll","direct"].includes(gameMode.mode_usingItemType)) return "mode_usingItemType";
     if (!["vanish","remain","become food"].includes(gameMode.whenSnakesDie)) return "whenSnakesDie";
