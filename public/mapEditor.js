@@ -1233,7 +1233,7 @@ function loadObjectMenu() {
     if (object.onCollision?.forcePlayerMove) {
         addSetting("Direction","dropdown",object.onCollision.forcePlayerMove,["onCollision","forcePlayerMove"],["left","right","up","down"]);
     }
-    if (object.onCollision?.playSound) {
+    if (object.onCollision?.playSound && selectedItem.type == "tile") {
         addSetting("Play Sound","button",object.onCollision.playSound[0],["onCollision","playSound",0],false,function() {
             pianoPopUp(object.onCollision.playSound[0]);
         });

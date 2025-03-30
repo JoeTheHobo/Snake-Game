@@ -1398,6 +1398,14 @@ io.on('connection', (socket) => {
                 io.to(lobby.id).emit("updateLobbyPage", lobby);
                 
             }
+
+            if (onlineAccounts[socket.id].loggedIn) {
+                onlineAccounts[socket.id].serverSnake.tag = Number(onlineAccounts[socket.id].tag);
+                let query = "UPDATE inventory SET server_snake = ? WHERE tag = ?";
+                db.query(query,[JSON.stringify(onlineAccounts[socket.id].serverSnake),Number(onlineAccounts[socket.id].tag)],(err) => {
+                    if (err) console.log(err);
+                })
+            }
         } else {
             onlineAccounts[socket.id].kickPlayer = true;
             io.to(socket.id).emit("kickPlayer","Hacked Players: " + checksOut + " [Code: 7834]");
