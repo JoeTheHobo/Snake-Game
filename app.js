@@ -368,9 +368,8 @@ io.on('connection', (socket) => {
     
                     let account = onlineAccounts[socket.id];
                     //Add To Inventory Database
-                    console.log(pako.deflate(JSON.stringify(account.server_snake), { to: 'string' }));
                     const invQuery = "INSERT INTO inventory (tag, board_limit, gamemode_limit, coins, battle_pass_points, server_snake, name_color, challenge_limit, music_volume, sfx_volume) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    db.query(invQuery, [tag,account.boardLimit,account.gameModeLimit,account.coins,account.battlePassPoints, pako.deflate(JSON.stringify(account.server_snake), { to: 'string' }), account.chatNameColor, account.challengeLimit,account.musicVolume,account.sfxVolume], (err,results) => {
+                    db.query(invQuery, [tag,account.boardLimit,account.gameModeLimit,account.coins,account.battlePassPoints, JSON.stringify(account.server_snake), account.chatNameColor, account.challengeLimit,account.musicVolume,account.sfxVolume], (err,results) => {
                         if (err) {
                             console.log(err);
                         }

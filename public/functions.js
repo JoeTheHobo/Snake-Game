@@ -1942,7 +1942,7 @@ function adjustVolume(audioElement, type, adj = 1) {
         this.src = "img/menuIcons/passwordHidden.png";
     }
   })
-  $(".lrd_loginButton").on("click",function() {
+  function loginFunction() {
     let warning = false;
     let emailValue = $(".lrd_emailInput").value;
     let passwordValue = $(".lrd_loginPassword").value;
@@ -1958,6 +1958,9 @@ function adjustVolume(audioElement, type, adj = 1) {
 
     socket.emit("user_login",emailValue,passwordValue);
     //Send To Server
+  }
+  $(".lrd_loginButton").on("click",function() {
+    loginFunction();
   })
   $(".lrd_signin_forgotPassword").on("click",function() {
     loginLoad("forgotPassword");
@@ -1971,7 +1974,8 @@ function adjustVolume(audioElement, type, adj = 1) {
   $(".lrd_signupButton").on("click",function() {
     loginLoad("signup")
   })
-  $(".lrd_submitButton").on("click",function() {
+  function signupFunction() {
+    
     let warning = false;
     let emailField = $(".lrd_signup_email").value;
     let usernameField = $(".lrd_signup_username").value;
@@ -1993,6 +1997,9 @@ function adjustVolume(audioElement, type, adj = 1) {
 
     //Send To Server
     socket.emit("user_signup",emailField,usernameField,password1Field);
+  }
+  $(".lrd_submitButton").on("click",function() {
+    signupFunction();
   })
   $(".lrd_forgot_password_submit").on("click",function() {
     let warning = false;

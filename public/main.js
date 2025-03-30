@@ -323,6 +323,14 @@ document.body.on("wheel",function(e) {
     
 })
 document.body.onkeydown = function(e) {
+    if (e.key == "Enter") {
+        if (document.activeElement.classList.contains('goLogin')) {
+            loginFunction();
+        }
+        if (document.activeElement.classList.contains('goSignup')) {
+            signupFunction();
+        }
+    }
     if (e.ctrlKey && e.key === 'q') {
         showPerformance = showPerformance ? false : true;
         
