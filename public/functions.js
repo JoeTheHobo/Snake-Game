@@ -249,6 +249,8 @@ function loadAllCanvas(list) {
                 } else {
                     addItemCanvas(item,url)
                 }
+                
+                global_loading++;
             }
             function loopSkins(item,url) {
                 for (let j = 0; j < item.availableSkins.length; j++) {
@@ -299,8 +301,6 @@ function addItemCanvas(item,url,filter = "",player) {
             type: item.type,
         }
         itemCanvas.push(obj);
-        
-        global_loading++;
     }
 
 }
