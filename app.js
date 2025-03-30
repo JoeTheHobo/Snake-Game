@@ -438,15 +438,6 @@ io.on('connection', (socket) => {
                         }
                         account.boards = compressed;
                     })
-                    compressObject(board,(err,compressedBoard) => {
-                        if (err) {
-                            console.log(2342134,err);
-                        }
-                        let query = "UPDATE boards SET board = ? WHERE id = ? AND tag = ?";
-                        db.query(query,[compressedBoard,board.id,account.tag],(err)=>{
-                            if (err) console.log(74534,err);
-                        })
-                    })
                     return;
                 }
             }
@@ -458,6 +449,18 @@ io.on('connection', (socket) => {
                 account.boards = compressed;
             })
         })
+        if (account.loggedIn) {
+            compressObject(board,(err,compressedBoard) => {
+                if (err) {
+                    console.log(2342134,err);
+                }
+                let query = "UPDATE boards SET board = ? WHERE id = ? AND tag = ?";
+                db.query(query,[compressedBoard,board.id,account.tag],(err)=>{
+                    if (err) console.log(74534,err);
+                })
+            })
+        }
+        
     })
     socket.on("getZippedBoard",(board) => {
         board = JSON.parse(pako.inflate(board, { to: 'string' }));
@@ -626,15 +629,17 @@ io.on('connection', (socket) => {
             });
         })
         
-        compressObject(board,(err,compressedBoard) => {
-            if (err) {
-                console.log(34633,err);
-            }
-            let query = "insert into boards (tag, board, published, id)";
-            db.query(query,[account.tag,compressedBoard,0,board.id],(err)=>{
-                if (err) console.log(6432,err);
+        if (account.loggedIn) {
+            compressObject(board,(err,compressedBoard) => {
+                if (err) {
+                    console.log(34633,err);
+                }
+                let query = "insert into boards (tag, board, published, id)";
+                db.query(query,[account.tag,compressedBoard,0,board.id],(err)=>{
+                    if (err) console.log(6432,err);
+                })
             })
-        })
+        }
 
         
     })
