@@ -81,6 +81,7 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,player_boards,ser
     if (server_items) {
         global_loading_total = items.length;
         global_loading_total += tiles.length;
+        global_loading_total *= 4;
 
         //Load All Item Images
         requestIdleCallback(function() {

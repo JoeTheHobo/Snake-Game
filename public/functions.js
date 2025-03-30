@@ -232,7 +232,6 @@ function loadAllCanvas(list) {
                 }
             }
             function processCombination(combination) {
-                global_loading_total++;
                 addItemCanvas(item,combination);
             }
             function loopTags(item,url) {
