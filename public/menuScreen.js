@@ -1317,14 +1317,25 @@ function loadProfileMenu() {
     $(".content_profile").show("flex");
     $("profile_tab").classAdd("menu_tab_selected");
 
-    //Log out
-    //Change Password
-    //Change Username
-    //Delete Account
+    const html_accountType = $(".cp_accountType");
+    const html_dateCreated = $(".cp_dateCreated");
 
-    //Date Created
-    //Account Type
+    html_accountType.innerHTML = localAccount.status;
+    html_dateCreated.innerHTML = localAccount.dateCreated;
 
-
+    if (localAccount.status == "Guest") $(".cp_accountSettings").hide();
+    else $(".cp_accountSettings").show("flex");
 
 }
+$(".cp_changeUsername").on("click",function() {
+
+})
+$(".cp_changePassword").on("click",function() {
+    
+})
+$(".cp_logOut").on("click",function() {
+    io.emit("user_logout");
+})
+$(".cp_deleteAccount").on("click",function() {
+    
+})

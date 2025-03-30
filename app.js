@@ -113,85 +113,10 @@ function retrieveAllPresetBoards(index) {
 }
 retrieveAllPresetBoards(0);
 
-io.on('connection', (socket) => {
-    console.log('a user connected');    
+io.on('connection', (socket) => { 
     socket.join(socket.id);
     socket.join("menuScreen");
-    let username = simple.rnd(playerNames1) + simple.rnd(playerNames2);
-    let tag = "0000";
-    const date = new Date();
-    const formattedDate = date.toISOString().split('T')[0];
-    onlineAccounts[socket.id] = {
-        loggedIn: false,
-        id: socket.id,
-
-        playerLimit: 10,
-        players: [ ],
-        gameModeLimit: 10,
-        gameModes: [],
-        boardLimit: 10,
-        boards: [],
-
-        player: false, //For Lobbies
-        serverSnake: newPlayer(socket.id,username,tag),
-        lobby: false,
-        username: username,
-        tag: tag,
-        chatNameColor: "black",
-        status: "Guest",
-        dateCreated: formattedDate,
-        coins: 0,
-        battlePassPoints: 0,
-        challengeLimit: 2,
-        questsAccepted: [],
-        battlePasses: [{
-            name: "beta",
-            unlocked: [-1],
-        }],
-
-        musicVolume: 100,
-        sfxVolume: 100,
-
-
-        allowedItemIds: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50],
-        allowedTileIds: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50],
-        allowedItemSkinPacks: [0],
-        allowedSnakeColors: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-    }
-
-    let sendSnakeColors = [];
-    for (let i = 0; i < onlineAccounts[socket.id].allowedSnakeColors.length; i++) {
-        sendSnakeColors.push(getColorById(onlineAccounts[socket.id].allowedSnakeColors[i]));
-    }
-    onlineAccounts[socket.id].snakeColors = sendSnakeColors;
-    
-    let accessedBattlePasses = {};
-    for (let i = 0; i < onlineAccounts[socket.id].battlePasses.length; i++) {
-        accessedBattlePasses[onlineAccounts[socket.id].battlePasses[i].name] = allBattlePasses[onlineAccounts[socket.id].battlePasses[i].name];
-    }
-    let randomColor = getColorById(simple.rnd(onlineAccounts[socket.id].allowedSnakeColors)); 
-    onlineAccounts[socket.id].serverSnake.hue = randomColor.hue;
-    onlineAccounts[socket.id].serverSnake.saturation = randomColor.saturation;
-    onlineAccounts[socket.id].serverSnake.brightness = randomColor.brightness;
-    
-    compressObject(onlineAccounts[socket.id].boards,(err,compressed) => {
-        if (err) {
-            console.log(2,err)
-            return;
-        }
-        onlineAccounts[socket.id].boards = compressed;
-        decompressObject(onlineAccounts[socket.id].boards,(err,decompressedBoards) => {
-            if (err) {
-                console.log(3,err);
-                return;
-            }
-            updateLobbies();
-            let sendItems = pako.deflate(JSON.stringify(items), { to: 'string' });
-            let sendTiles = pako.deflate(JSON.stringify(tiles), { to: 'string' });
-
-            io.to(socket.id).emit('setPlayer', socket.id, onlineAccounts[socket.id],accessedBattlePasses,decompressedBoards,sendItems,basedGameMode,presetGameModes,presetBoards,backgrounds,sendTiles);
-        })
-    })
+    setGuestAccount(onlineAccounts[socket.id],socket.id,true);
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
@@ -277,7 +202,15 @@ io.on('connection', (socket) => {
 
         })
     })
+    socket.on("user_logout",() => {
+        if (onlineAccounts[socket.id].status == "Guest") return;
+
+        let query = "UPDATE credentials SET sign_in_token = ? WHERE tag = ?";
+        db.query(query,[null, onlineAccounts[socket.id].tag],(err) => {if (err) console.log(7543,err);});
+        setGuestAccount(onlineAccounts[socket.id]);
+    })
     socket.on("user_login", (email,password,staySignedIn = false) =>{
+        if (onlineAccounts[socket.id].status !== "Guest") return;
         let warning;
         if (email == "") warning = "Email Requied";
         if (password == "") warning = "Password Required";
@@ -341,6 +274,7 @@ io.on('connection', (socket) => {
         });
     })
     socket.on("user_signup", (email,username,password) => {
+        if (onlineAccounts[socket.id].status !== "Guest") return;
         let account = onlineAccounts[socket.id];
         if (account.loggedIn) {
             console.log("Caught Hacking",124);
@@ -2335,6 +2269,84 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function setGuestAccount(account,socketID,full = false) {
+    let username = simple.rnd(playerNames1) + simple.rnd(playerNames2);
+    let tag = simple.rnd(1000,9999) + "";
+    const date = new Date();
+    const formattedDate = date.toISOString().split('T')[0];
+    account = {
+        loggedIn: false,
+        id: socketID,
+
+        playerLimit: 10,
+        players: [ ],
+        gameModeLimit: 10,
+        gameModes: [],
+        boardLimit: 10,
+        boards: [],
+
+        player: false, //For Lobbies
+        serverSnake: newPlayer(socketID,username,tag),
+        lobby: false,
+        username: username,
+        tag: tag,
+        chatNameColor: "white",
+        status: "Guest",
+        dateCreated: formattedDate,
+        coins: 0,
+        battlePassPoints: 0,
+        challengeLimit: 2,
+        questsAccepted: [],
+        battlePasses: [{
+            name: "beta",
+            unlocked: [-1],
+        }],
+
+        musicVolume: 100,
+        sfxVolume: 100,
+
+
+        allowedItemIds: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50],
+        allowedTileIds: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50],
+        allowedItemSkinPacks: [0],
+        allowedSnakeColors: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+    }
+
+    let sendSnakeColors = [];
+    for (let i = 0; i < account.allowedSnakeColors.length; i++) {
+        sendSnakeColors.push(getColorById(account.allowedSnakeColors[i]));
+    }
+    account.snakeColors = sendSnakeColors;
+    
+    let accessedBattlePasses = {};
+    for (let i = 0; i < account.battlePasses.length; i++) {
+        accessedBattlePasses[account.battlePasses[i].name] = allBattlePasses[account.battlePasses[i].name];
+    }
+    let randomColor = getColorById(simple.rnd(account.allowedSnakeColors)); 
+    account.serverSnake.hue = randomColor.hue;
+    account.serverSnake.saturation = randomColor.saturation;
+    account.serverSnake.brightness = randomColor.brightness;
+    
+    compressObject(account.boards,(err,compressed) => {
+        if (err) {
+            console.log(2,err)
+            return;
+        }
+        account.boards = compressed;
+        decompressObject(account.boards,(err,decompressedBoards) => {
+            if (err) {
+                console.log(3,err);
+                return;
+            }
+            updateLobbies();
+            let sendItems = full ? pako.deflate(JSON.stringify(items), { to: 'string' }) : undefined;
+            let sendTiles = full ? pako.deflate(JSON.stringify(tiles), { to: 'string' }) : undefined;
+
+            io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,decompressedBoards,sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? presetBoards : undefined,full ? backgrounds : undefined,sendTiles);
+            io.to(socketID).emit("setScene","newMenu");
+        })
+    })
+}
 function gatherDBInventory(account,user) {
     let dbObj = {};
     let query = "SELECT * FROM inventory WHERE tag = ?";
