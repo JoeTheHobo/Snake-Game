@@ -432,7 +432,6 @@ io.on('connection', (socket) => {
         //Check Board TO BE ADDED
 
         let account = onlineAccounts[socket.id];
-        console.log(account.loggedIn);
         if (account.loggedIn && Number(board.tag) == Number(account.tag)) {
             compressObject(board,(err,compressedBoard) => {
                 if (err) {
@@ -441,7 +440,6 @@ io.on('connection', (socket) => {
                 let query = "UPDATE boards SET board = ? WHERE id = ? AND tag = ?";
                 db.query(query,[compressedBoard,Number(board.id),Number(account.tag)],(err,results)=>{
                     if (err) console.log(74534,err);
-                    console.log(results);
                 })
             })
         }

@@ -1312,8 +1312,8 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
             }
         }
     }
-    
     if (type == "all" || type == "players") {
+        console.log(player)
         $(".sc_bb_snakeImg").css({
             filter: getPlayerFilter(player),
         }); 
