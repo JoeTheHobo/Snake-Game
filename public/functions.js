@@ -374,7 +374,8 @@ function setScene(scene,lobby) {
 
     if (scene == "loading") {
         global_loading = 0;
-
+        global_loading_total = 200;
+        doLoadingAnimation();
     }
     if (scene == "mapEditor") {
         localAccount.isInMapEditor = true;
@@ -2029,8 +2030,7 @@ function doLoadingAnimation() {
 
     $(".loading_percentage").style.width = barWidth + "px";
 
-    console.log(global_loading,global_loading_total);
-    if (global_loading == global_loading_total) {
+    if (global_loading >= global_loading_total) {
         setScene("newMenu");
     }
 
