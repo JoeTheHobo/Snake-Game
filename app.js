@@ -237,6 +237,41 @@ io.on('connection', (socket) => {
         io.to(socket.id).emit("kickPlayer","Disconnected due to " + reason + " [Code: 002]");
         delete onlineAccounts[socket.id];
     }) 
+    socket.on("signInUsingToken",(token,email) => {
+        const query = "SELECT * FROM credentials WHERE email = ?";
+        db.query(query,[email],(err,results) => {
+            if (err) {
+                console.log(1452,err);
+                return;
+            }
+
+            // If no user found
+            if (results.length === 0) {
+                console.log(5234,"No User Found");
+                return;
+            }
+            
+            const user = results[0];
+
+            // If passwords are hashed, use bcrypt to compare
+            bcrypt.compare(token, user.sign_in_token, (err, isMatch) => {
+                if (err) {
+                    console.error(25436,"Bcrypt error:", err);
+                    return;
+                }
+
+                if (!isMatch) {
+                    console.log(5234532,"Does Not Match");
+                    return;
+                }
+
+                //Success
+                gatherDBInventory(onlineAccounts[socket.id],user);
+
+            });
+
+        })
+    })
     socket.on("user_login", (email,password,staySignedIn = false) =>{
         let warning;
         if (email == "") warning = "Email Requied";
@@ -290,6 +325,7 @@ io.on('connection', (socket) => {
                     let code = generateRandomString(10);
                     const hashedCode = await bcrypt.hash(code, 10);
                     io.to(socket.id).emit("lsSave","signInToken",code);
+                    io.to(socket.id).emit("lsSave","signInEmail",email);
 
                     let query = "UPDATE credentials SET sign_in_token = ? WHERE email = ?";
                     db.query(query,[hashedCode,email],(err) => {

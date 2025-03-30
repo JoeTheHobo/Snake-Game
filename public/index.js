@@ -575,5 +575,12 @@ window.onload = function() {
     if (token) {
         setScene("login");
         loginLoad("login");
+        return;
+    }
+
+    let signInToken = ls.get("signInToken",false);
+    let signInEmail = ls.get("signInEmail",false);
+    if (signInToken && signInEmail) {
+        socket.emit("signInUsingToken",signInToken,signInEmail);
     }
 };
