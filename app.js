@@ -2254,6 +2254,7 @@ function setSocketToUser(account,user,dbObj) {
     account.gameModeLimit = dbObj.inventory.gamemode_limit;
     account.coins = dbObj.inventory.coins;
     account.battlePassPoints = dbObj.inventory.battle_pass_points;
+    console.log(dbObj.inventory.server_snake);
     account.serverSnake = JSON.parse(dbObj.inventory.server_snake);
     account.chatNameColor = dbObj.inventory.name_color;
     account.challengeLimit = dbObj.inventory.challenge_limit;
