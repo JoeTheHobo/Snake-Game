@@ -559,7 +559,7 @@ io.on('connection', (socket) => {
             gameMode: presetGameModes[0],
             originalMap: newMap(width,height), 
             map: [],
-            id: Date.now() + "_" + simple.rnd(9999),
+            id: Number(Date.now().toString() + simple.rnd(9999)),
             accountID: socket.id,
             mouseOver: false,
             boardAuthors: [{
@@ -650,7 +650,7 @@ io.on('connection', (socket) => {
         }
 
         let gameMode = structuredClone(basedGameMode);
-        gameMode.id = Date.now();
+        gameMode.id = Number(Date.now().toString() + simple.rnd(9999));
         gameMode.accountID = socket.id;
         account.gameModes.push(gameMode);
 
@@ -682,7 +682,7 @@ io.on('connection', (socket) => {
     socket.on("newLobby", (lobby) =>{
         if (!lobby) return;
 
-        let id = Date.now() + "_" + simple.rnd(5000);
+        let id = Number(Date.now().toString() + simple.rnd(9999));
         lobbies[id] = {};
         lobbies[id].board = structuredClone(presetBoards[0]);
         lobbies[id].id = id;
