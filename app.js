@@ -755,7 +755,11 @@ io.on('connection', (socket) => {
         let account = onlineAccounts[socket.id];
         for (let i = 0; i < account.gameModes.length; i++) {
             if (account.gameModes[i].id == gameMode.id) {
-                if (checkGameMode(gameMode,socket.id) !== true) return;
+                if (checkGameMode(gameMode,socket.id) !== true) {
+                    console.log(7564,checkGameMode(gameMode,socket.id));
+                    return;
+                };
+                console.log("hmm");
 
                 account.gameModes[i] = gameMode;
                 account.gameModes[i].whenSnakesDie = account.gameModes[i].whenSnakesDie.toLowerCase(); 
