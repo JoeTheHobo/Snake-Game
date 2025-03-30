@@ -251,8 +251,6 @@ function loadAllCanvas(list) {
                 
             }
             function loopSkins(item,url) {
-                global_loading++;
-                doLoadingAnimation();
                 for (let j = 0; j < item.availableSkins.length; j++) {
                     loopTags(item,url + item.availableSkins[j]);
                 }
@@ -301,6 +299,9 @@ function addItemCanvas(item,url,filter = "",player) {
             type: item.type,
         }
         itemCanvas.push(obj);
+        
+        global_loading++;
+        doLoadingAnimation();
     }
 
 }
