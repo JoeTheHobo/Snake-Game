@@ -37,7 +37,7 @@ socket.on("updateLocalGameModes",(gameModes,sentFrom) => {
         loadGameModesScreen();
     }
 })
-socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_presetGameModes,server_presetBoards,server_backgrounds,server_tiles,player_boards,server_accessedBattlePasses) =>{
+socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,server_basedGameMode,server_presetGameModes,server_presetBoards,server_backgrounds,server_tiles,player_boards) =>{
     localAccount.id = id;
     localAccount.isInGame = false;
     localAccount.lobbyID = false;
@@ -54,10 +54,11 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
     localAccount.serverSnake = account.serverSnake;
     localAccount.allowedItemIds = account.allowedItemIds;
     localAccount.allowedTileIds = account.allowedTileIds;
-    localAccount.allowedSnakeColors = account.allowedSnakeColors;
+    localAccount.allowedSnakeColors = account.snakeColors;
     localAccount.battlePassPoints = account.battlePassPoints;
     localAccount.battlePasses = account.battlePasses;
     localAccount.coins = account.coins;
+    localAccount.loggedIn = account.loggedIn;
     accessedBattlePasses = server_accessedBattlePasses;
 
     global_musicVolume = account.musicVolume;
@@ -67,27 +68,29 @@ socket.on("setPlayer", (id,account,server_items,server_basedGameMode,server_pres
 
     $(".newMenu_statPoints").innerHTML = localAccount.battlePassPoints;
     $(".newMenu_statGold").innerHTML = localAccount.coins;
-    items = JSON.parse(pako.inflate(server_items, { to: 'string' }));
-    tiles = JSON.parse(pako.inflate(server_tiles, { to: 'string' }));
-    basedGameMode = server_basedGameMode;
-    presetGameModes = server_presetGameModes;
-    presetBoards = server_presetBoards;
+    if (server_items) items = JSON.parse(pako.inflate(server_items, { to: 'string' }));
+    if (server_tiles)  tiles = JSON.parse(pako.inflate(server_tiles, { to: 'string' }));
+    if (server_basedGameMode) basedGameMode = server_basedGameMode;
+    if (server_presetGameModes) presetGameModes = server_presetGameModes;
+    if (server_presetBoards)presetBoards = server_presetBoards;
 
     if (currentBoardIndex > localAccount.boards.length - 1) currentBoardIndex = 0;
 
-    backgrounds = server_backgrounds;
+    if (server_backgrounds) backgrounds = server_backgrounds;
 
     setScene("newMenu");
-    //Load All Item Images
-    requestIdleCallback(function() {
-        loadAllCanvas(items);
-    })
-    //Load All Tile Images
-    requestIdleCallback(function() {
-        loadAllCanvas(tiles);
-    })
-    //Make Game Tips
-    generateGameTips();
+    if (server_items) {
+        //Load All Item Images
+        requestIdleCallback(function() {
+            loadAllCanvas(items);
+        })
+        //Load All Tile Images
+        requestIdleCallback(function() {
+            loadAllCanvas(tiles);
+        })
+        //Make Game Tips
+        generateGameTips();
+    }
     
 
     loadAllBattlePasses();
@@ -506,13 +509,17 @@ socket.on("setPlayerToHomeScreen",() => {
     localAccount.isInLobby = false;
 })
 
+socket.on("login_error",(err) => {
+    $(".lrd_warning_signin").show();
+    $(".lrd_warning_signin").innerHTML = err;
+})
 socket.on("signup_error",(err) => {
     $(".lrd_warning_signup").show();
     $(".lrd_warning_signup").innerHTML = err;
-  })
-  socket.on("user_registered_successfully",(message) => {
+})
+socket.on("user_registered_successfully",(message) => {
     loginLoad("verifyEmail");
-  })
+})
 function updateLobbyToServer(lobby){
     socket.emit("newLobby", (lobby));  
 }
@@ -563,25 +570,8 @@ window.onload = function() {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token'); // Get token from URL
 
-    console.log(urlParams);
     if (token) {
-        verifyEmail(token);
+        setScene("login");
+        loginLoad("login");
     }
 };
-// Function to verify the email by sending an AJAX request
-function verifyEmail(token) {
-    // Use Fetch API to send the token to the server
-    fetch(`/verify?token=${token}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                setScene("login");
-                loginLoad("login");
-            } else {
-                console.log("error",1452)
-            }
-        })
-        .catch(error => {
-            console.log(error,1322)
-        });
-}

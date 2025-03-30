@@ -378,6 +378,12 @@ function setScene(scene,lobby) {
             filter: getPlayerFilter(localAccount.serverSnake),
         });
         $(".newMenu_statPoints").innerHTML = localAccount.battlePassPoints;
+
+        if (localAccount.loggedIn) {
+            $(".signinLink").hide();
+        } else {
+            $(".signinLink").show();
+        }
     }
     if (scene == "waiting"){
         if (localAccount.id != lobby.host){

@@ -120,6 +120,7 @@ io.on('connection', (socket) => {
     let username = simple.rnd(playerNames1) + simple.rnd(playerNames2);
     let tag = formatNumber(Object.keys(onlineAccounts).length);
     onlineAccounts[socket.id] = {
+        loggedIn: false,
         id: socket.id,
 
         playerLimit: 10,
@@ -134,10 +135,11 @@ io.on('connection', (socket) => {
         lobby: false,
         username: username,
         tag: tag,
-        chatNameColor: simple.rnd("color"),
+        chatNameColor: "black",
 
         coins: 0,
         battlePassPoints: 20,
+        challengeLimit: 2,
         questsAccepted: [],
         battlePasses: [{
             name: "beta",
@@ -150,38 +152,21 @@ io.on('connection', (socket) => {
 
         allowedItemIds: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50],
         allowedTileIds: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50],
-        allowedItemSkinPacks: ["basic"],
-        allowedSnakeColors: [{hue: 360, saturation: 300, brightness: 116},
-            {hue: 157, saturation: 234, brightness: 116},
-            {hue: 116, saturation: 211, brightness: 115},
-            {hue: 208, saturation: 203, brightness: 118},
-            {hue: 307, saturation: 160, brightness: 89},
-            {hue: 58, saturation: 192, brightness: 143},
-            {hue: 275, saturation: 62, brightness: 162},
-            {hue: 208, saturation: 62, brightness: 150},
-            {hue: 141, saturation: 62, brightness: 150},
-            {hue: 250, saturation: 234, brightness: 86},
-            {hue: 70, saturation: 0, brightness: 86},
-            {hue: 121, saturation: 180, brightness: 86},
-            {hue: 309, saturation: 300, brightness: 200},
-            {hue: 309, saturation: 58, brightness: 200},
-            {hue: 236, saturation: 106, brightness: 74},
-            {hue: 236, saturation: 210, brightness: 74},
-            {hue: 137, saturation: 210, brightness: 74},
-            {hue: 137, saturation: 53, brightness: 74},
-            {hue: 290, saturation: 130, brightness: 74},
-            {hue: 35, saturation: 119, brightness: 186},
-            {hue: 156, saturation: 119, brightness: 186},
-            {hue: 341, saturation: 119, brightness: 186},
-            {hue: 318, saturation: 300, brightness: 200},
-        ],
+        allowedItemSkinPacks: [0],
+        allowedSnakeColors: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
     }
+
+    let sendSnakeColors = [];
+    for (let i = 0; i < onlineAccounts[socket.id].allowedSnakeColors.length; i++) {
+        sendSnakeColors.push(getColorById(onlineAccounts[socket.id].allowedSnakeColors[i]));
+    }
+    onlineAccounts[socket.id].snakeColors = sendSnakeColors;
     
     let accessedBattlePasses = {};
     for (let i = 0; i < onlineAccounts[socket.id].battlePasses.length; i++) {
         accessedBattlePasses[onlineAccounts[socket.id].battlePasses[i].name] = allBattlePasses[onlineAccounts[socket.id].battlePasses[i].name];
     }
-    let randomColor = simple.rnd(onlineAccounts[socket.id].allowedSnakeColors); 
+    let randomColor = getColorById(simple.rnd(onlineAccounts[socket.id].allowedSnakeColors)); 
     onlineAccounts[socket.id].serverSnake.hue = randomColor.hue;
     onlineAccounts[socket.id].serverSnake.saturation = randomColor.saturation;
     onlineAccounts[socket.id].serverSnake.brightness = randomColor.brightness;
@@ -201,7 +186,7 @@ io.on('connection', (socket) => {
             let sendItems = pako.deflate(JSON.stringify(items), { to: 'string' });
             let sendTiles = pako.deflate(JSON.stringify(tiles), { to: 'string' });
 
-            io.to(socket.id).emit('setPlayer', socket.id, onlineAccounts[socket.id],sendItems,basedGameMode,presetGameModes,presetBoards,backgrounds,sendTiles,decompressed,accessedBattlePasses);
+            io.to(socket.id).emit('setPlayer', socket.id, onlineAccounts[socket.id],accessedBattlePasses,sendItems,basedGameMode,presetGameModes,presetBoards,backgrounds,sendTiles,decompressed);
         })
     })
 
@@ -252,7 +237,65 @@ io.on('connection', (socket) => {
         io.to(socket.id).emit("kickPlayer","Disconnected due to " + reason + " [Code: 002]");
         delete onlineAccounts[socket.id];
     }) 
-    socket.on("user_signup", async (email,username,password) => {
+    socket.on("user_login", (email,password) =>{
+        let warning;
+        if (email == "") warning = "Email Requied";
+        if (password == "") warning = "Password Required";
+        if (warning) {
+            // Send warning message to the client if any validation fails
+            io.to(socket.id).emit("login_error", warning);
+            return;
+        }
+        
+        // Check if email exists in the database
+        const query = "SELECT * FROM credentials WHERE email = ?";
+        db.query(query, [email], (err, results) => {
+            if (err) {
+                console.error("Database error:", err);
+                io.to(socket.id).emit("login_error", "Server error, please try again.");
+                return;
+            }
+
+            // If no user found
+            if (results.length === 0) {
+                io.to(socket.id).emit("login_error", "No accounts found.");
+                return;
+            }
+
+            const user = results[0];
+
+            // Check if the user is verified
+            if (user.verified !== 1) {
+                io.to(socket.id).emit("login_error", "Please verify your email before logging in.");
+                return;
+            }
+
+            // If passwords are hashed, use bcrypt to compare
+            bcrypt.compare(password, user.password, (err, isMatch) => {
+                if (err) {
+                    console.error("Bcrypt error:", err);
+                    io.to(socket.id).emit("login_error", "Server error, please try again.");
+                    return;
+                }
+
+                if (!isMatch) {
+                    io.to(socket.id).emit("login_error", "Invalid email or password.");
+                    return;
+                }
+
+                // SUCCESS: Send login success response
+                io.to(socket.id).emit("login_success");
+                gatherDBInventory(onlineAccounts[socket.id],user);
+            });
+        });
+    })
+    socket.on("user_signup", (email,username,password) => {
+        let account = onlineAccounts[socket.id];
+        if (account.loggedIn) {
+            console.log("Caught Hacking",124);
+            return;
+        }
+
         let warning;
         if (email == "" || !email) warning = "Email Requied";
         if (username == "" || !username) warning = "Username Requied";
@@ -267,53 +310,101 @@ io.on('connection', (socket) => {
         }
 
         try {
-            const hashedPassword = await bcrypt.hash(password, 10);
-
-            const query = 'INSERT INTO credentials (username, password, email) VALUES (?, ?, ?)';
-    
-            db.query(query, [username, hashedPassword, email], (err, results) => {
+            const countQuery = "SELECT COUNT(*) AS total FROM credentials";
+            db.query(countQuery, async(err,results) => {
                 if (err) {
-                    if (err.code === 'ER_DUP_ENTRY') {
-                        // This means the email is already taken
-                        io.to(socket.id).emit("signup_error", "Email Already Exists");
-                        return;
-                    }
-                    // If it's some other error (not duplicate entry), you can log it and notify the user
                     io.to(socket.id).emit("signup_error", "An error occurred, please try again later.");
                     return;
                 }
-                //Success
-                // Create a unique token (e.g., using crypto or JWT)
-                const verificationToken = crypto.randomBytes(20).toString('hex');
-                const verificationLink = `http://167.71.180.126:4000/verify?token=${verificationToken}`;
-                
-                // Insert verification token into the database (you can create a new column for it in your users table)
-                const updateQuery = 'UPDATE credentials SET verification_token = ? WHERE email = ?';
-                db.query(updateQuery, [verificationToken, email], (err, results) => {
+
+                let tag = formatNumber(results[0].total + 1);
+
+                const hashedPassword = await bcrypt.hash(password, 10);
+
+                const query = 'INSERT INTO credentials (username, tag, password, email) VALUES (?, ?, ?, ?)';
+        
+                db.query(query, [username, tag, hashedPassword, email], (err, results) => {
                     if (err) {
-                        console.error('Error updating verification token:', err);
-                        io.to(socket.id).emit("signup_error", "Error processing your request.");
-                        return;
-                    }
-
-                    // Send a confirmation email with the verification link
-                    const mailOptions = {
-                        from: 'rborpodcast@gmail.com', // Your email address
-                        to: email,
-                        subject: 'Please verify your email address',
-                        text: `Hello ${username},\n\nPlease verify your email address by clicking the link below:\n\n${verificationLink}\n\nThank you!`
-                    };
-
-                    transporter.sendMail(mailOptions, (error, info) => {
-                        if (error) {
-                            console.error('Error sending email:', error);
-                            io.to(socket.id).emit("signup_error", "Error sending verification email.");
+                        if (err.code === 'ER_DUP_ENTRY') {
+                            // This means the email is already taken
+                            io.to(socket.id).emit("signup_error", "Email Already Exists");
                             return;
                         }
-                        console.log('Email sent: ' + info.response);
-                        io.to(socket.id).emit("user_registered_successfully", "User registered successfully! Please check your email for verification.");
+                        // If it's some other error (not duplicate entry), you can log it and notify the user
+                        io.to(socket.id).emit("signup_error", "An error occurred, please try again later.");
+                        return;
+                    }
+                    //Success
+                    // Create a unique token (e.g., using crypto or JWT)
+                    const verificationToken = crypto.randomBytes(20).toString('hex');
+                    const verificationLink = `http://167.71.180.126:4000/verify?token=${verificationToken}`;
+                    
+                    // Insert verification token into the database
+                    const updateQuery = 'UPDATE credentials SET verification_token = ? WHERE email = ?';
+                    db.query(updateQuery, [verificationToken, email], (err, results) => {
+                        if (err) {
+                            console.error('Error updating verification token:', err);
+                            io.to(socket.id).emit("signup_error", "Error processing your request.");
+                            return;
+                        }
+    
+                        // Send a confirmation email with the verification link
+                        const mailOptions = {
+                            from: 'rborpodcast@gmail.com', // Your email address
+                            to: email,
+                            subject: 'Please verify your email address',
+                            text: `Hello ${username},\n\nPlease verify your email address by clicking the link below:\n\n${verificationLink}\n\nThank you!`
+                        };
+    
+                        transporter.sendMail(mailOptions, (error, info) => {
+                            if (error) {
+                                console.error('Error sending email:', error);
+                                io.to(socket.id).emit("signup_error", "Error sending verification email.");
+                                return;
+                            }
+                            console.log('Email sent: ' + info.response);
+                            io.to(socket.id).emit("user_registered_successfully", "User registered successfully! Please check your email for verification.");
+                        });
                     });
+    
+                    let account = onlineAccounts[socket.id];
+                    //Add To Inventory Database
+                    const invQuery = "INSERT INTO inventory (tag, board_limit, gamemode_limit, coins, battle_pass_points, server_snake, chat_name_color, challenge_limit, music_volume, sfx_volume) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    db.query(invQuery, [tag,account.boardLimit,account.gameModeLimit,account.coins,account.battlePassPoints, JSON.stringify(account.server_snake), account.chat_name_color, account.challengeLimit,account.musicVolume,account.sfxVolume], () => {});
+                    
+                    zipAllBoards(account.boards,function(rawList) {
+                        const boardQuery = "INSERT INTO boards (tag, board, published) VALUES (?, ?, ?)";
+                        for (let i = 0; i < rawList.length; i++) {
+                            db.query(boardQuery, [tag, rawList[i],0], () => {});
+                        }
+                    })
+
+                    const gamemodeQuery = "INSERT INTO gamemodes (tag, gamemode) VALUES (?, ?)";
+                    for (let i = 0; i < account.gameModes.length; i++) {
+                        db.query(gamemodeQuery,[tag, JSON.stringify(account.gameModes[i])],() => {});
+                    }
+
+                    let type;
+                    const allowedQuery = "INSERT INTO allowed (tag, allowed_id, type) VALUES (?, ?, ?)";
+                    type = "items";
+                    for (let i = 0; i < account.allowedItemIds.length; i++) {
+                        db.query(allowedQuery,[tag,account.allowedItemIds[i],type],() =>{});
+                    }
+                    type = "tiles";
+                    for (let i = 0; i < account.allowedTileIds.length; i++) {
+                        db.query(allowedQuery,[tag,account.allowedTileIds[i],type],() =>{});
+                    }
+                    type = "skinPacks";
+                    for (let i = 0; i < account.allowedItemSkinPacks.length; i++) {
+                        db.query(allowedQuery,[tag,account.allowedItemSkinPacks[i],type],() =>{});
+                    }
+                    type = "snakeColors";
+                    for (let i = 0; i < account.allowedSnakeColors.length; i++) {
+                        db.query(allowedQuery,[tag,account.allowedSnakeColors[i],type],() =>{});
+                    }
+                    
                 });
+
             });
         } catch {
             io.to(socket.id).emit("signup_error", "An error occurred while processing your request.");
@@ -1274,6 +1365,79 @@ server.listen(port, () => {
 
 
 //Copying From Functions.js
+
+function shortenBoard(oldBoard) {
+    oldBoard.map = [];
+    let board = structuredClone(oldBoard);
+
+    let _newMap = [];
+    for (let i = 0; i < board.originalMap.length; i++) {
+        let row = [];
+        for (let j = 0; j < board.originalMap[i].length; j++) {
+            let cell = board.originalMap[i][j];
+            let newCell = {
+                mouseOver: false,
+                tile: cell.tile.id,
+                item: cell.item?.id || 0,
+            }
+            row.push(newCell);
+        }
+        _newMap.push(row);
+    }
+    board.originalMap = _newMap;
+
+    board.originalMap = shortenMap(board.originalMap)
+
+    return board;
+}
+
+function shortenMap(map) {
+    let _newMap = [];
+    for (let i = 0; i < map.length; i++) {
+        let row = [];
+        let s_tiles = [];
+        let s_items = [];
+        for(let j = 0; j < map[i].length; j++) {
+            s_tiles.push(map[i][j].tile);
+            s_items.push(map[i][j].item);
+        }
+
+        function combineCells(array) {
+            let newTiles = [];
+            let current = false;
+            let count;
+            for (let i = 0; i < array.length; i++) {
+                if (current === false) {
+                    current = array[i];
+                    count = 1;
+                    continue;
+                }
+                if (array[i] !== current) {
+                    newTiles.push([current,count]);
+                    current = array[i];
+                    count = 1;
+                    continue;
+                }
+                if (array[i] === current) {
+                    count++;
+                    continue;
+                }
+            }
+            newTiles.push([current,count]);
+
+            return newTiles;
+        }
+
+        s_tiles = combineCells(s_tiles);
+        s_items = combineCells(s_items);
+
+
+        row.push(s_tiles);
+        row.push(s_items);
+        _newMap.push(row);
+    }
+    return _newMap;
+}
 function setNestedValue(obj, path, value, toReturn = false) {
     path = structuredClone(path);
     let lastKey = path.pop(); // Remove and store the last key
@@ -2004,6 +2168,187 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function gatherDBInventory(account,user) {
+    let dbObj = {};
+    let query = "SELECT * FROM inventory WHERE tag = ?";
+    db.query(query, [user.tag], (err,results) => {
+        if (err || results.length === 0) return false;
+
+        dbObj.inventory = results;
+
+        gatherDBboards(account,user,dbObj);
+
+
+    })
+}
+function gatherDBboards(account,user,dbObj) {
+    query = "SELECT * FROM boards WHERE tag = ?";
+    db.query(query,[user.tag],(err,results) => {
+        if (err) return false;
+
+        let rawBoards = [];
+        for (let i = 0; i < results.length; i++) {
+            rawBoards.push(results[i].board);
+        }
+        retrieveAllBoards(rawBoards,function(list) {
+            dbObj.boards = list;
+            gatherDBgamemodes(account,user,dbObj);
+        })
+
+    })
+}
+function gatherDBgamemodes(account,user,dbObj) {
+    query = "SELECT * FROM gamemodes WHERE tag = ?";
+    db.query(query, [user.tag], (err,results) => {
+        if (err) return false;
+
+        dbObj.gamemodes = [];
+        for (let i = 0; i < results.length; i++) {
+            dbObj.gameModes.push(JSON.parse(results[i].gamemode));
+        }
+        gatherDBallowed(account,user,dbObj);
+
+    })
+}
+function gatherDBallowed(account,user,dbObj) {
+    query = "SELECT * FROM allowed WHERE tag = ?";
+    db.query(query, [user.tab], (err,results) => {
+        if (err) return false;
+
+        dbObj.allowed = {
+            items: [],
+            tiles: [],
+            skinPacks: [],
+            snakeColors: [],
+        };
+        for (let i = 0; i < results.length; i++) {
+            dbObj.allowed[results[i].type].push(results[i].allowed_id);
+        }
+
+        setSocketToUser(account,user,dbObj);
+        
+    })
+}
+function setSocketToUser(account,user,dbObj) {
+    account.loggedIn = true;
+    //credentials
+    account.id = account.id;
+    account.username = user.username;
+    account.tag = user.tag;
+
+    //inventory
+    account.boardLimit = dbObj.inventory.board_limit;
+    account.gameModeLimit = dbObj.inventory.gamemode_limit;
+    account.coins = dbObj.inventory.coins;
+    account.battlePassPoints = dbObj.inventory.battle_pass_points;
+    account.serverSnake = JSON.parse(dbObj.inventory.server_snake);
+    account.chatNameColor = dbObj.inventory.chat_name_color;
+    account.challengeLimit = dbObj.inventory.challenge_limit;
+    account.musicVolume = dbObj.inventory.music_volume;
+    account.sfxVolume = dbObj.inventory.sfx_volume;
+    
+    //boards
+    account.boards = dbObj.boards;
+
+    //gamemodes
+    account.gameModes = dbObj.gamemodes;
+
+    //allowed
+    account.allowedItemIds = dbObj.allowed.items;
+    account.allowedTileIds = dbObj.allowed.tiles;
+    account.allowedItemSkinPacks = dbObj.allowed.skinPacks;
+    account.allowedSnakeColors = dbObj.allowed.snakeColors;
+
+    account.questsAccepted = [];
+    account.battlePasses = [{
+        name: "beta",
+        unlocked: [-1],
+    }];
+
+    
+    let sendSnakeColors = [];
+    for (let i = 0; i < account.allowedSnakeColors.length; i++) {
+        sendSnakeColors.push(getColorById(account.allowedSnakeColors[i]));
+    }
+    account.snakeColors = sendSnakeColors;
+
+    let accessedBattlePasses = {};
+    for (let i = 0; i < account.battlePasses.length; i++) {
+        accessedBattlePasses[account.battlePasses[i].name] = allBattlePasses[account.battlePasses[i].name];
+    }
+
+    io.to(socket.id).emit('setPlayer', account.id, account,accessedBattlePasses);
+
+    socket.to(account.id).emit("changedAccount");
+}
+
+
+function zipAllBoards(boardList,func,index = 0,list = []) {
+    compressObject(boardList[index],(err,compressed) => {
+        if (err) {
+            console.log("Error Code: 354",err);
+            return;
+        }
+        list.push(compressed);
+        if (index < boardList.length) {
+            zipAllBoards(boardList,func,index+1,list);
+        } else {
+            func(list);
+        }
+    })
+}
+function retrieveAllBoards(boardList,func,index = 0,newBoards = []) {
+    let buffer = base64ToArrayBuffer(boardList[index]);
+    decompressObject(buffer,(err,decompressed) => {
+        if (err) {
+            console.log(183,err);
+            return;
+        }
+        newBoards.push(fixBoard(decompressed));
+
+        if (index == boardList.length-1) {
+            func(newBoards);
+        } else retrieveAllBoards(boardList,func,index+1,newBoards);
+    })
+    
+}
+
+let server_skinPacks = ["basic"];
+let server_snakeColors = [
+    { color: { hue: 360, saturation: 300, brightness: 116 }, id: 0 },
+    { color: { hue: 157, saturation: 234, brightness: 116 }, id: 1 },
+    { color: { hue: 116, saturation: 211, brightness: 115 }, id: 2 },
+    { color: { hue: 208, saturation: 203, brightness: 118 }, id: 3 },
+    { color: { hue: 307, saturation: 160, brightness: 89 }, id: 4 },
+    { color: { hue: 58, saturation: 192, brightness: 143 }, id: 5 },
+    { color: { hue: 275, saturation: 62, brightness: 162 }, id: 6 },
+    { color: { hue: 208, saturation: 62, brightness: 150 }, id: 7 },
+    { color: { hue: 141, saturation: 62, brightness: 150 }, id: 8 },
+    { color: { hue: 250, saturation: 234, brightness: 86 }, id: 9 },
+    { color: { hue: 70, saturation: 0, brightness: 86 }, id: 10 },
+    { color: { hue: 121, saturation: 180, brightness: 86 }, id: 11 },
+    { color: { hue: 309, saturation: 300, brightness: 200 }, id: 12 },
+    { color: { hue: 309, saturation: 58, brightness: 200 }, id: 13 },
+    { color: { hue: 236, saturation: 106, brightness: 74 }, id: 14 },
+    { color: { hue: 236, saturation: 210, brightness: 74 }, id: 15 },
+    { color: { hue: 137, saturation: 210, brightness: 74 }, id: 16 },
+    { color: { hue: 137, saturation: 53, brightness: 74 }, id: 17 },
+    { color: { hue: 290, saturation: 130, brightness: 74 }, id: 18 },
+    { color: { hue: 35, saturation: 119, brightness: 186 }, id: 19 },
+    { color: { hue: 156, saturation: 119, brightness: 186 }, id: 20 },
+    { color: { hue: 341, saturation: 119, brightness: 186 }, id: 21 },
+    { color: { hue: 318, saturation: 300, brightness: 200 }, id: 22 }
+];
+
+function getColorById(id) {
+    for (let i = 0; i < server_snakeColors.length; i++) {
+        if (server_snakeColors[i].id === id) return server_snakeColors[i].color;
+    }
+}
+
+
+
+
 function getItemById(lobby,id) {
     for (let i = 0;i < lobby.items.length; i++) {
         if (lobby.items[i].id == id) return lobby.items[i];
