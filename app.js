@@ -475,7 +475,7 @@ io.on('connection', (socket) => {
             io.to(socket.id).emit("sendingZippedBoard",compressed.toString("base64"),board.name)
         })
     });
-    socket.on("deleteBoard",(boardID,sentFrom) => {
+    socket.on("deleteBoard",(boardTag,sentFrom) => {
         let account = onlineAccounts[socket.id];
 
         decompressObject(account.boards,(err,decompressed) => {
@@ -486,7 +486,7 @@ io.on('connection', (socket) => {
 
             account.boards = decompressed;
             for (let i = 0; i < account.boards.length; i++) {
-                if (account.boards[i].id === boardID) {
+                if (account.boards[i].tag === boardTag) {
                     account.boards.splice(i,1);
                     io.to(socket.id).emit("updatePlayersBoards",account.boards,sentFrom);
                     compressObject(account.boards,(err,compressed) => {
@@ -500,6 +500,13 @@ io.on('connection', (socket) => {
                 }
             }
         })
+
+        if (account.loggedIn && Number(boardTag) === Number(account.tag)) {
+            let query = "DELETE FROM boards WHERE tag = ?";
+            db.query(query,[Number(boardTag)],(err) => {
+                if (err) console.log(err)
+            })
+        }
 
     })
     
