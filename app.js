@@ -284,7 +284,7 @@ io.on('connection', (socket) => {
                 }
 
                 // SUCCESS: Send login success response
-                io.to(socket.id).emit("login_success");
+                console.log("NOICE")
                 gatherDBInventory(onlineAccounts[socket.id],user);
             });
         });
