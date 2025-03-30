@@ -181,7 +181,10 @@ io.on('connection', (socket) => {
             
             const user = results[0];
 
-            if (user.sign_in_token === null) return;
+            if (user.sign_in_token === null) {
+                io.to(socket.id).emit("setScene","newMenu");
+                return;
+            }
 
             // If passwords are hashed, use bcrypt to compare
             bcrypt.compare(token, user.sign_in_token, (err, isMatch) => {
