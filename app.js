@@ -2335,8 +2335,7 @@ function gatherDBgamemodes(account,user,dbObj) {
 
         dbObj.gamemodes = [];
         for (let i = 0; i < results.length; i++) {
-            console.log(results[i])
-            dbObj.gameModes.push(JSON.parse(results[i].gamemode));
+            dbObj.gamemodes.push(JSON.parse(results[i].gamemode));
         }
         gatherDBallowed(account,user,dbObj);
 
