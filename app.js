@@ -593,21 +593,24 @@ io.on('connection', (socket) => {
             }
             account.boards = decompressed;
 
+            let cancel = false;
             if (index > account.boards.length-1) {
-                if (account.boards.length + 1 >= account.boardLimit) return;
-                board.id = Date.now();
-                account.boards.push(board); 
-
-                if (account.loggedIn) {
-                    compressObject(board,(err,compressedBoard) => {
-                        if (err) {
-                            console.log(224,err);
-                        }
-                        let query = "INSERT INTO boards (tag, board, published, id) VALUES (?, ?, ?, ?)";
-                        db.query(query,[Number(account.tag),compressedBoard,0,Number(board.id)],(err)=>{
-                            if (err) console.log(64432,err);
+                if (account.boards.length + 1 >= account.boardLimit) cancel = true;
+                if (!cancel) {
+                    board.id = Date.now();
+                    account.boards.push(board); 
+    
+                    if (account.loggedIn) {
+                        compressObject(board,(err,compressedBoard) => {
+                            if (err) {
+                                console.log(224,err);
+                            }
+                            let query = "INSERT INTO boards (tag, board, published, id) VALUES (?, ?, ?, ?)";
+                            db.query(query,[Number(account.tag),compressedBoard,0,Number(board.id)],(err)=>{
+                                if (err) console.log(64432,err);
+                            })
                         })
-                    })
+                    }
                 }
             } else {
                 account.boards[index] = board;
