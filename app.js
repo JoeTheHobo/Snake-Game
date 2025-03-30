@@ -253,6 +253,8 @@ io.on('connection', (socket) => {
             
             const user = results[0];
 
+            if (user.sign_in_token === null) return;
+
             // If passwords are hashed, use bcrypt to compare
             bcrypt.compare(token, user.sign_in_token, (err, isMatch) => {
                 if (err) {
@@ -725,6 +727,11 @@ io.on('connection', (socket) => {
 
         io.to(socket.id).emit("updateLocalGameModes",account.gameModes,sentFrom);
 
+        if (account.loggedIn) {
+            let query = "INSERT INTO gamemodes (tag, gamemode, id) VALUES (?, ?, ?)";
+            db.query(query, [Number(account.tag),JSON.stringify(gameMode),gameMode.id]);
+        }
+
     })
     socket.on("deleteGameMode",(gameModeID,sentFrom) => {
         let account = onlineAccounts[socket.id];
@@ -732,6 +739,14 @@ io.on('connection', (socket) => {
             if (account.gameModes[i].id == gameModeID) {
                 account.gameModes.splice(i,1);
                 io.to(socket.id).emit("updateLocalGameModes",account.gameModes,sentFrom)
+
+                if (account.loggedIn) {
+                    let query = "DELETE FROM boards WHERE tag = ? AND id = ?";
+                    db.query(query,[Number(account.tag),gameModeID],(err) => {
+                        if (err) console.log(7653,err);
+                    })
+                }
+
                 return;
             }
         }
@@ -740,11 +755,20 @@ io.on('connection', (socket) => {
         let account = onlineAccounts[socket.id];
         for (let i = 0; i < account.gameModes.length; i++) {
             if (account.gameModes[i].id == gameMode.id) {
-                if (checkGameMode(gameMode,socket.id) === true) {
-                    account.gameModes[i] = gameMode;
-                    account.gameModes[i].whenSnakesDie = account.gameModes[i].whenSnakesDie.toLowerCase(); 
-                    io.to(socket.id).emit("updateLocalGameModes",account.gameModes)
+                if (checkGameMode(gameMode,socket.id) !== true) return;
+
+                account.gameModes[i] = gameMode;
+                account.gameModes[i].whenSnakesDie = account.gameModes[i].whenSnakesDie.toLowerCase(); 
+                io.to(socket.id).emit("updateLocalGameModes",account.gameModes)
+
+                if (account.loggedIn) {
+                    let query = "UPDATE gamemodes SET gamemode = ? WHERE id = ? AND tag = ?";
+                    db.query(query, [JSON.stringify(gameMode),gameMode.id,Number(account.tag)],(err) => {
+                        if (err) console.log(42315, err);
+                    })
                 }
+
+                return;
             }
         }
     })
