@@ -2218,6 +2218,7 @@ function gatherDBboards(account,user,dbObj) {
 
         let rawBoards = [];
         for (let i = 0; i < results.length; i++) {
+            console.log(results[i].board);
             rawBoards.push(results[i].board);
         }
         retrieveAllBoards(rawBoards,function(list) {
@@ -2351,7 +2352,6 @@ function retrieveAllBoards(boardList,func,index = 0,newBoards = []) {
         return;
     }
     let buffer = base64ToArrayBuffer(boardList[index]);
-    console.log(buffer);
     decompressObject(buffer,(err,decompressed) => {
         if (err) {
             console.log(183,err);
