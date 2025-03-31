@@ -1066,7 +1066,6 @@ function saveBoard() {
         }).catch((err) => {
             console.log("Error Loading Board Image");
         })
-        
     }
         
 

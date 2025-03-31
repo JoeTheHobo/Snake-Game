@@ -754,11 +754,15 @@ function getBoardImage(board) {
         canvas.height = height;
         canvas.width = width;
 
+        console.log(1);
+
         let backgroundImage = new Image();
         backgroundImage.src = "img/backgrounds/" + board.background + ".png";
+        console.log(2);
         backgroundImage.onload = function() {
             ctx.drawImage(backgroundImage,0,0,width,height);
 
+            console.log(3);
             for (let i = 0; i < board.length; i++) {
                 for (let j = 0; j < board[i].length; j++) {
                     let cell = board[i][j];
@@ -783,6 +787,7 @@ function getBoardImage(board) {
             canvas.remove(); // Clean up
         }
         backgroundImage.onerror = function() {
+            console.log(backgroundImage.src)
             reject(new Error("Failed to load background image: " + backgroundImage.src));
         };
     });
