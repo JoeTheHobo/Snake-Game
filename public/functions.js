@@ -742,41 +742,92 @@ function forceAllCellsToBeTheirOwn(map) {
 }
 
 
+function getBoardImage(board) {
+    return new Promise((resolve, reject) => {
+        let canvas = document.createElement("canvas");
+        let ctx = canvas.getContext("2d");
+        let grid_size = 30;
 
-function drawBoardToCanvas(board,canvas) {
-    let ctx = canvas.getContext("2d");
-    let grid_size;
+        let width = Math.round(board[0].length * grid_size);
+        let height = Math.round(board.length * grid_size);
 
-    if (board.length > board[0].length) {
-        grid_size = Math.round(canvas.getBoundingClientRect().height / board.length);
-    } else {
-        grid_size = Math.round(canvas.getBoundingClientRect().width / board[0].length);
-    } 
+        canvas.height = height;
+        canvas.width = width;
 
-    let width = Math.round(board[0].length * grid_size);
-    let height = Math.round(board.length * grid_size);
+        let backgroundImage = new Image();
+        backgroundImage.src = "img/backgrounds/" + board.background + ".png";
+        backgroundImage.onload = function() {
+            ctx.drawImage(backgroundImage,0,0,width,height);
 
-    canvas.height = height;
-    canvas.width = width;
-
-
-    for (let i = 0; i < board.length; i++) {
-        for (let j = 0; j < board[i].length; j++) {
-            let cell = board[i][j];
-
-            let Xpos = (j * grid_size);
-            let Ypos = (i * grid_size);
-            
-            ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(grid_size),(grid_size));
-
-            if (cell.item) {
-                let image = getImage(cell.item,"canvas");
-                if (!image) continue;
-                ctx.drawImage(image,Xpos,Ypos,(grid_size),(grid_size));
+            for (let i = 0; i < board.length; i++) {
+                for (let j = 0; j < board[i].length; j++) {
+                    let cell = board[i][j];
+        
+                    let Xpos = (j * grid_size);
+                    let Ypos = (i * grid_size);
+                    
+                    ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(grid_size),(grid_size));
+        
+                    if (cell.item) {
+                        let image = getImage(cell.item,"canvas");
+                        if (!image) continue;
+                        ctx.drawImage(image,Xpos,Ypos,(grid_size),(grid_size));
+                    }
+        
+                }
             }
 
+            let imageData = canvas.toDataURL("image/png");
+            resolve(imageData);
+            canvas.remove(); // Clean up
         }
-    }
+        backgroundImage.onerror = function() {
+            reject(new Error("Failed to load background image: " + backgroundImage.src));
+        };
+    });
+}
+function drawImageOnCanvas(base64ImageData, canvas) {
+    // Create a new Image element
+    let image = new Image();
+    
+    // Set the source of the image (Base64 data)
+    image.src = base64ImageData;
+
+    // Wait until the image has loaded before drawing it to the canvas
+    image.onload = function() {
+        // Get the context of the provided canvas
+        let ctx = canvas.getContext("2d");
+
+        // Get the canvas dimensions
+        let canvasWidth = canvas.width;
+        let canvasHeight = canvas.height;
+
+        // Calculate the aspect ratio of the image
+        let imageWidth = image.width;
+        let imageHeight = image.height;
+
+        // Scale the image to fit within the canvas
+        let scaleFactor = Math.min(canvasWidth / imageWidth, canvasHeight / imageHeight);
+
+        // Calculate the new width and height based on the scaling factor
+        let scaledWidth = imageWidth * scaleFactor;
+        let scaledHeight = imageHeight * scaleFactor;
+
+        // Calculate the position to center the image on the canvas (optional)
+        let xOffset = (canvasWidth - scaledWidth) / 2;
+        let yOffset = (canvasHeight - scaledHeight) / 2;
+
+        // Clear the canvas before drawing
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+        // Draw the scaled image onto the canvas
+        ctx.drawImage(image, xOffset, yOffset, scaledWidth, scaledHeight);
+    };
+
+    // Optional: Handle error if image fails to load
+    image.onerror = function() {
+        console.error("Failed to load the image.");
+    };
 }
 
 function drawTunnelCanvas(canvas,pos) {

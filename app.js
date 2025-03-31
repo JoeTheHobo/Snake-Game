@@ -570,7 +570,7 @@ io.on('connection', (socket) => {
             io.to(socket.id).emit("serverSending_boardStats",results);
         })
     })
-    socket.on("saveBoard",(board) => {
+    socket.on("saveBoard",(board,boardImageData) => {
         let account = onlineAccounts[socket.id];
         if (!account.loggedIn) return;
 
@@ -583,8 +583,8 @@ io.on('connection', (socket) => {
             if (err) {
                 console.log(2342134,err);
             }
-            let query = "UPDATE boards SET board = ?, name = ? WHERE id = ? AND tag = ?";
-            db.query(query,[compressedBoard,board.name,Number(board.id),Number(account.tag)],(err,results)=>{
+            let query = "UPDATE boards SET board = ?, name = ?, board_image = ? WHERE id = ? AND tag = ?";
+            db.query(query,[compressedBoard,board.name,boardImageData,Number(board.id),Number(account.tag)],(err,results)=>{
                 if (err) console.log(74534,err);
             })
         })

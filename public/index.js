@@ -130,7 +130,7 @@ socket.on("serverSending_boardStats",(boardStats) => {
             let boardName = container.create("div.bm_boardName");
             boardName.innerHTML = content.name;
 
-            //drawBoardToCanvas(content.originalMap,boardPortion);
+            drawImageOnCanvas(content.board_image,boardPortion);
 
             boardPortion.on("click",function() {
                 socket.emit("openMapEditor",content.id);

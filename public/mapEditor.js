@@ -1060,7 +1060,12 @@ function saveBoard() {
 
     if (Number(localAccount.tag) == Number(currentBoard.tag)) {
         //Save To Personal Boards
-        socket.emit("saveBoard",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }));
+        getBoardImage(currentBoard).then((boardImage) => {
+            socket.emit("saveBoard",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }),boardImage);
+        }).catch((err) => {
+            console.log("Error Loading Board Image");
+        })
+        
     }
         
 
