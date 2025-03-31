@@ -909,6 +909,7 @@ io.on('connection', (socket) => {
                 console.log(62,err);
                 return;
             }
+            console.log(results);
 
             decompressObject(results[0],(err,board) => {
                 if (err) {
