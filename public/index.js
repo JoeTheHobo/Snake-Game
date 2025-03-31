@@ -37,12 +37,12 @@ socket.on("updateLocalGameModes",(gameModes,sentFrom) => {
         loadGameModesScreen();
     }
 })
-socket.on("setPlayer", (id,account,server_accessedBattlePasses,player_boards,server_items,server_basedGameMode,server_presetGameModes,server_presetBoards,server_backgrounds,server_tiles) =>{
+socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,server_basedGameMode,server_presetGameModes,server_presetBoards,server_backgrounds,server_tiles) =>{
     localAccount.id = id;
     localAccount.isInGame = false;
     localAccount.lobbyID = false;
     localAccount.players = account.players;
-    localAccount.boards = player_boards;
+    localAccount.boardCount = account.boardCount;
     localAccount.gameModes = account.gameModes;
     localAccount.username = account.username;
     localAccount.tag = account.tag;
@@ -105,14 +105,9 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,player_boards,ser
 socket.on("sendingZippedBoard",(zippedBoard,boardName) => {
     downloadTextFile(boardName,zippedBoard);
 })
-socket.on("updatePlayersBoards",(boards,sentFrom,board) => {
-    localAccount.boards = boards;
-    
-    currentBoardIndex = localAccount.boards.length-1;
-    ls.save("currentBoardIndex",currentBoardIndex);
-    
+socket.on("updatePlayersBoards",(board,sentFrom) => {
     if (sentFrom == "openMapEditor") {
-        openMapEditor(localAccount.boards[currentBoardIndex]);
+        openMapEditor(board);
     }
     if (sentFrom == "loadBoardsScreen") {
         loadBoardMenu();
@@ -123,6 +118,116 @@ socket.on("updatePlayersBoards",(boards,sentFrom,board) => {
     if (sentFrom == "changeServerBoard") {
         socket.emit("changeServerBoard",pako.deflate(JSON.stringify(shortenBoard(board)), { to: 'string' }));
         setScene("lobby");
+    }
+})
+socket.on("serverSending_boardStats",(boardStats) => {
+    let listHolder = $(".cb_boardList");
+    listHolder.innerHTML = "";
+
+    function makeBoard(holder,content,type,index) {
+        if (type == "board") {
+            let container = holder.create("div.bm_boardContainer");
+            let boardPortion = container.create("canvas.bm_boardCanvas");
+            let settingPortion = container.create("div.bm_boardSettings")
+            let boardName = container.create("div.bm_boardName");
+            boardName.innerHTML = content.name;
+
+            //drawBoardToCanvas(content.originalMap,boardPortion);
+
+            boardPortion.on("click",function() {
+                socket.emit("openMapEditor",content.id);
+            })
+
+            function addSetting(src,func) {
+                let imgHolder = settingPortion.create("div.bm_settingDiv");
+                let img = imgHolder.create("img.bm_settingImg");
+                img.src = src;
+                imgHolder.on("click",func);
+            }
+            addSetting("img/menuIcons/edit.png",function() {
+                socket.emit("openMapEditor",content.id);
+            });
+            addSetting("img/menuIcons/delete.png",function() {
+                makePopUp([
+                    {type: "text",text: "Delete " + localAccount.boards[index].name},
+                    {type: "title",text: "Are You Sure?"},
+                    [
+                        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
+                        {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Delete",onClick: (ids,param) => {
+                            socket.emit("deleteBoard",content.id);
+                        }},
+                    ],
+                ],{
+                    id: "deletePopUp",
+                })
+            });
+            if (localAccount.status === "Admin") {
+                addSetting("img/menuIcons/download.png",function() {
+                    socket.emit("getZippedBoard",content.id);
+                });
+            }
+        }
+        
+        if (type == "newBoard") {
+            let container = holder.create("div.bm_boardContainer");
+            container.classAdd("hover");
+            container.classAdd("square");
+            container.classAdd("pointerCursor");
+            let plus = container.create("div.bm_plus");
+            plus.innerHTML = "+";
+            container.on("click",function() {
+                makePopUp([
+                    {type: "title",text: "New Board"},
+                    [
+                        {type: "text", text: "Name"},
+                        {type: "input", id:"name", maxLength: "30", placeholder: "Untitled", width: "200px"},
+                    ],
+                    /*
+                    [
+                        {type: "text", text: "Width"},
+                        {type: "number", id:"width", value: "50", min: 5, max: 70, width: "50px"},
+                        {type: "text", text: "Height"},
+                        {type: "number", id:"height", value: "30", min: 5, max: 70, width: "50px"},
+                    ],
+                    */
+                    {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "green",text:"Create",onClick: (ids) => {
+                        const {name,width,height} = ids;
+                        let boardName = name.value == "" ? "Untitled" : name.value;
+                        socket.emit("createNewBoard",boardName,50,30,"openMapEditor");
+                        
+                    }},
+                ],{
+                    exit: {
+                        cursor: "url('./img/pointer.cur'), auto",
+                    },
+                    id: "newBoard",
+        
+                })
+            })
+        }
+        
+        if (type == "buyBoard") {
+            
+            let container = holder.create("div.bm_boardContainer");
+            container.classAdd("hover");
+            container.classAdd("square");
+            container.classAdd("pointerCursor");
+            let img = container.create("img.bm_shopImg");
+            img.src = "img/menuIcons/shopingcart.png";
+            container.on("click",function() {
+
+            })
+        }
+    }
+
+    for (let i = 0; i < boardStats.length; i++) {
+        makeBoard(listHolder,boardStats[i],"board",i)
+    }
+
+    if (localAccount.boardCount < localAccount.boardLimit) {
+        makeBoard(listHolder,false,"newBoard")
+    } else {
+        makeBoard(listHolder,false,"buyBoard")
     }
 })
 socket.on("setClientLobby",(lobby) => {

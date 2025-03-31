@@ -174,8 +174,9 @@ function openMapEditor(boardComingIn) {
 
     clearInterval(saveInterval);
     saveInterval = setInterval(function() {
-        if (!isActiveGame)
+        if (global_scene === "mapEditor")
             saveBoard();
+        else clearInterval(saveInterval);
     },60000)
     addHistory();
 }

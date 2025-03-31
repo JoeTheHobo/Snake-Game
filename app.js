@@ -532,103 +532,111 @@ io.on('connection', (socket) => {
         }
         
     })
+    socket.on("openMapEditor",(boardID) => {
+        let account = onlineAccounts[socket.id];
+        if (!account.loggedIn) return;
+        let query = "SELECT * FROM boards WHERE tag = ? AND id = ?";
+        db.query(query,[Number(account.tag),boardID],(err,results) => {
+            if (err) {
+                console.log(723,err);
+                return;
+            }
+
+            if (results.length == 0) {
+                console.log(843,"No Board Found");
+                return;
+            }
+
+            let board = results[0];
+
+            io.to(socket.id).emit("updatePlayersBoards",board,"openMapEditor")
+        })
+    })
+    socket.on("db_getAccountBoardStats",() => {
+        let account = onlineAccounts[socket.id];
+        if (!account.loggedIn) return;
+        let query = "SELECT name, board_image, id FROM boards WHERE tag = ?";
+        db.query(query,[Number(account.tag)],(err,results) => {
+            if (err) {
+                console.log(73,err);
+                return;
+            }
+
+            io.to(socket.id).emit("serverSending_boardStats",results);
+        })
+    })
     socket.on("saveBoard",(board) => {
+        let account = onlineAccounts[socket.id];
+        if (!account.loggedIn) return;
+
         board = fixBoard(JSON.parse(pako.inflate(board, { to: 'string' })));
         //Check Board TO BE ADDED
+        if (!account.loggedIn) return;
+        if (Number(board.tag) !== Number(account.tag)) return;
 
-        let account = onlineAccounts[socket.id];
-        if (board.tag !== account.tag) return;
-        if (account.loggedIn && Number(board.tag) == Number(account.tag)) {
-            compressObject(board,(err,compressedBoard) => {
-                if (err) {
-                    console.log(2342134,err);
-                }
-                let query = "UPDATE boards SET board = ? WHERE id = ? AND tag = ?";
-                db.query(query,[compressedBoard,Number(board.id),Number(account.tag)],(err,results)=>{
-                    if (err) console.log(74534,err);
-                })
-            })
-        }
-        decompressObject(account.boards,(err,decompressed) => {
+        compressObject(board,(err,compressedBoard) => {
             if (err) {
-                console.log(4,err);
-                return;
+                console.log(2342134,err);
             }
-
-            account.boards = decompressed;
-            for (let i = 0; i < account.boards.length; i++) {
-                if (account.boards[i].id === board.id) {
-                    account.boards[i] = board;
-                    io.to(socket.id).emit("updatePlayersBoards",account.boards);
-                    compressObject(account.boards,(err,compressed) => {
-                        if (err) {
-                            console.log(5,err);
-                            return;
-                        }
-                        account.boards = compressed;
-                    })
-                    return;
-                }
-            }
-            compressObject(account.boards,(err,compressed) => {
-                if (err) {
-                    console.log(6,err);
-                    return;
-                }
-                account.boards = compressed;
+            let query = "UPDATE boards SET board = ?, name = ? WHERE id = ? AND tag = ?";
+            db.query(query,[compressedBoard,board.name,Number(board.id),Number(account.tag)],(err,results)=>{
+                if (err) console.log(74534,err);
             })
         })
-        
-        
     })
-    socket.on("getZippedBoard",(board) => {
-        board = JSON.parse(pako.inflate(board, { to: 'string' }));
-        compressObject(board,(err,compressed) => {
-            if (err) {
-                console.log(7,err);
-                return;
-            }
-            io.to(socket.id).emit("sendingZippedBoard",compressed.toString("base64"),board.name)
-        })
+    socket.on("getZippedBoard",(boardID) => {
+        try {
+            let account = onlineAccounts[socket.id];
+            if (!account.loggedIn) return;
+            
+            let query = "SELECT board from boards WHERE id = ? AND tag = ?";
+            db.query(query,[boardID,Number(account.tag)],(err,results) => {
+                if (err) {
+                    console.log(8324,err);
+                    return;
+                }
+                if (results.length == 0) {
+                    console.log(62,"No Boards Found")
+                    return;
+                }
+
+                io.to(socket.id).emit("sendingZippedBoard",compressed.toString("base64"),board.name)
+            })
+        } catch {
+            console.log("zipping error");
+        }
     });
     socket.on("deleteBoard",(boardID,sentFrom) => {
         let account = onlineAccounts[socket.id];
+        if (!account.loggedIn) return;
 
         if (account.loggedIn) {
             let query = "DELETE FROM boards WHERE tag = ? AND id = ?";
             db.query(query,[Number(account.tag),boardID],(err) => {
-                if (err) console.log(err)
-            })
-        }
-
-        decompressObject(account.boards,(err,decompressed) => {
-            if (err) {
-                console.log(8,err);
-                return;
-            }
-
-            account.boards = decompressed;
-            for (let i = 0; i < account.boards.length; i++) {
-                if (boardID === account.boards[i].id) {
-                    account.boards.splice(i,1);
-                    io.to(socket.id).emit("updatePlayersBoards",account.boards,sentFrom);
-                    compressObject(account.boards,(err,compressed) => {
-                        if (err) {
-                            console.log(9,err);
-                            return;
-                        }
-                        account.boards = compressed;
-                    })
+                if (err) {
+                    console.log(7563,err)
                     return;
                 }
-            }
-        })
 
+                let query = "SELECT name, board_image, id FROM boards WHERE tag = ?";
+                db.query(query,[Number(account.tag)],(err,results) => {
+                    if (err) {
+                        console.log(73,err);
+                        return;
+                    }
+        
+                    io.to(socket.id).emit("serverSending_boardStats",results);
+                })
+
+
+            })
+        }
 
     })
     
     socket.on("saveBoardToIndex",(board,index,sentFrom) => {
         let account = onlineAccounts[socket.id];
+        if (!account.loggedIn) return;
 
         //Varify Board Here -To Be Added
         board = fixBoard(JSON.parse(pako.inflate(board, { to: 'string' })));
@@ -699,7 +707,8 @@ io.on('connection', (socket) => {
     });
     socket.on("createNewBoard",(boardName,width,height,sentFrom) => {
         let account = onlineAccounts[socket.id];
-        if (simple.type(boardName) !== "string") boardName = "Untitled";
+        if (!account.loggedIn) return;
+        boardName = boardName.toString();
         if (boardName.length > 30) boardName = "Untitled";
         if (boardName == "") boardName = "Untitled";
         boardName = profanity.clean(boardName);
@@ -721,7 +730,6 @@ io.on('connection', (socket) => {
             originalMap: newMap(width,height), 
             map: [],
             id: Number(Date.now().toString() + simple.rnd(9999)),
-            accountID: socket.id,
             mouseOver: false,
             boardAuthors: [{
                 tag: account.tag,
@@ -769,40 +777,20 @@ io.on('connection', (socket) => {
             },
         };
 
-        decompressObject(account.boards,(err,decompressed) => {
-            if (err) {
-                console.log(12,err)
-                return;
-            }
-            account.boards = decompressed;
-
-            if (account.boards.length >= account.boardLimit) return;
-
-            account.boards.push(board);
-    
-            io.to(socket.id).emit("updatePlayersBoards",account.boards,sentFrom)
-            compressObject(account.boards,(err,compressed) => {
-                if (err) {
-                    console.log(13,err)
-                    return;
-                }
-                account.boards = compressed;
-            });
-        })
+        io.to(socket.id).emit("updatePlayersBoards",board,sentFrom)
         
         if (account.loggedIn) {
             compressObject(board,(err,compressedBoard) => {
                 if (err) {
                     console.log(34633,err);
+                    return;
                 }
-                let query = "INSERT INTO boards (tag, board, published, id) VALUES (?, ?, ?, ?)";
-                db.query(query,[Number(account.tag),compressedBoard,0,Number(board.id)],(err)=>{
+                let query = "INSERT INTO boards (tag, board, published, id, name) VALUES (?, ?, ?, ?, ?)";
+                db.query(query,[Number(account.tag),compressedBoard,0,Number(board.id),board.name],(err)=>{
                     if (err) console.log(6432,err);
                 })
             })
         }
-
-        
     })
     socket.on("addNewGameMode",(sentFrom) => {
         let account = onlineAccounts[socket.id];
@@ -2390,7 +2378,7 @@ function removePlayerStatus(lobby,player,itemName) {
 
 //From App.js
 function setGuestAccount(socketID,full = false,sendHome = false) {
-    let username = simple.rnd(playerNames1) + simple.rnd(playerNames2);
+    let username = "GuestSnake";//simple.rnd(playerNames1) + simple.rnd(playerNames2);
     let tag = simple.rnd(1000,9999) + "";
     const date = new Date();
     const formattedDate = date.toISOString().split('T')[0];
@@ -2403,7 +2391,7 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
         gameModeLimit: 10,
         gameModes: [],
         boardLimit: 10,
-        boards: [],
+        boardCount: 0,
         canChangePassword: false,
 
         player: false, //For Lobbies
@@ -2449,27 +2437,16 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
     account.serverSnake.hue = randomColor.hue;
     account.serverSnake.saturation = randomColor.saturation;
     account.serverSnake.brightness = randomColor.brightness;
-    
-    compressObject(account.boards,(err,compressed) => {
-        if (err) {
-            console.log(2,err)
-            return;
-        }
-        account.boards = compressed;
-        decompressObject(account.boards,(err,decompressedBoards) => {
-            if (err) {
-                console.log(3,err);
-                return;
-            }
-            updateLobbies();
-            let sendItems = full ? pako.deflate(JSON.stringify(items), { to: 'string' }) : undefined;
-            let sendTiles = full ? pako.deflate(JSON.stringify(tiles), { to: 'string' }) : undefined;
 
-            io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,decompressedBoards,sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? presetBoards : undefined,full ? backgrounds : undefined,sendTiles);
-            if (sendHome) 
-                io.to(socketID).emit("setScene","newMenu");
-        })
-    })
+
+    updateLobbies();
+    let sendItems = full ? pako.deflate(JSON.stringify(items), { to: 'string' }) : undefined;
+    let sendTiles = full ? pako.deflate(JSON.stringify(tiles), { to: 'string' }) : undefined;
+
+    io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? presetBoards : undefined,full ? backgrounds : undefined,sendTiles);
+    if (sendHome) 
+        io.to(socketID).emit("setScene","newMenu");
+
 }
 function gatherDBInventory(account,user) {
     let dbObj = {};
