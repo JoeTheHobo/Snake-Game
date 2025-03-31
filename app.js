@@ -903,7 +903,7 @@ io.on('connection', (socket) => {
     socket.on("newLobby", (lobby) =>{
         if (!lobby) return;
 
-        let boardQuery = "SELECT board, board_image FROM boards WHERE published = 1";
+        let boardQuery = "SELECT board FROM boards WHERE published = 1";
         db.query(boardQuery, (err,results) => {
             if (err) {
                 console.log(62,err);
@@ -919,7 +919,6 @@ io.on('connection', (socket) => {
                 let id = Number(Date.now().toString() + simple.rnd(9999));
                 lobbies[id] = {};
                 lobbies[id].board = board;
-                lobbies[id].boardImage = results[0].boardImage;
                 lobbies[id].id = id;
                 lobbies[id].hostID = socket.id;
                 lobbies[id].hostName = onlineAccounts[socket.id].username;

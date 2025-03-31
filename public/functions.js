@@ -1408,11 +1408,50 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
     if (type == "all" || type == "gameMode") logGameModeChanges($(".sc_gameModeChanges"),(type == "all" ? lobby.gameMode : lobby),false);
 
     if (type == "all" || type == "board") {
-        decompressObject(lobby.board_image,(err,result) => {
-            drawImageOnCanvas(result,$(".sc_boards_canvas"));
-        })
+        requestAnimationFrame(() => {
+            $(".sc_boards_canvas").width = $(".sc_canvas_holder").clientWidth;
+            $(".sc_boards_canvas").height = $(".sc_canvas_holder").clientHeight; 
+            drawBoardToCanvas(localAccount.lobbyBoard.originalMap,$(".sc_boards_canvas"),true);
+        });
     }
 }
+
+function drawBoardToCanvas(board,canvas) {
+    let ctx = canvas.getContext("2d");
+    let grid_size;
+
+    if (board.length > board[0].length) {
+        grid_size = Math.round(canvas.getBoundingClientRect().height / board.length);
+    } else {
+        grid_size = Math.round(canvas.getBoundingClientRect().width / board[0].length);
+    } 
+
+    let width = Math.round(board[0].length * grid_size);
+    let height = Math.round(board.length * grid_size);
+
+    canvas.height = height;
+    canvas.width = width;
+
+
+    for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+            let cell = board[i][j];
+
+            let Xpos = (j * grid_size);
+            let Ypos = (i * grid_size);
+            
+            ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(grid_size),(grid_size));
+
+            if (cell.item) {
+                let image = getImage(cell.item,"canvas");
+                if (!image) continue;
+                ctx.drawImage(image,Xpos,Ypos,(grid_size),(grid_size));
+            }
+
+        }
+    }
+}
+
 function generateBoardsPopup(type) {
     let parent = $(".cbp_boardsList");
 
