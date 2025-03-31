@@ -2553,8 +2553,7 @@ function setSocketToUser(account,user,dbObj) {
     account.challengeLimit = dbObj.inventory.challenge_limit;
     account.musicVolume = dbObj.inventory.music_volume;
     account.sfxVolume = dbObj.inventory.sfx_volume;
-    account.publishedBoardLimit = dbObj.published_board_limit;
-    console.log(account.publishedBoardLimit , dbObj.published_board_limit)
+    account.publishedBoardLimit = dbObj.inventory.published_board_limit;
 
     //gamemodes
     account.gameModes = dbObj.gamemodes;
