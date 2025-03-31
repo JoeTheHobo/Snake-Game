@@ -1466,9 +1466,7 @@ function generateBoardsPopup(type) {
     }
         */
     if (type == "personal") {
-        for (let i = 0; i < localAccount.boards.length; i++) {
-            generateBoard(parent,localAccount.boards[i]);
-        }
+        socket.emit("getPersonalBoards");
     }
     if (type == "published") {
         socket.emit("getPublishedBoards");

@@ -533,6 +533,24 @@ io.on('connection', (socket) => {
             });
         })
     })
+    socket.on("getPersonalBoards",() => {
+        let account = onlineAccounts[socket.id];
+        let lobby = lobbies[account.lobby];
+        if (!lobby) return;
+        if (lobby.hostID !== socket.id) return;
+
+        let query = `SELECT name, board_image, id FROM boards WHERE tag = ${account.tag}`;
+        db.query(query,(err,results) => {
+            if (err) {
+                console.log(735,err);
+                return;
+            }
+
+            io.to(socket.id).emit("serverSending_publishedBoards",results);
+        })
+
+
+    })
     socket.on("getPublishedBoards",() => {
         let account = onlineAccounts[socket.id];
         let lobby = lobbies[account.lobby];
