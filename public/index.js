@@ -58,6 +58,7 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,serv
     localAccount.battlePasses = account.battlePasses;
     localAccount.coins = account.coins;
     localAccount.publishedBoardLimit = account.publishedBoardLimit;
+    console.log(localAccount.publishedBoardLimit , account.publishedBoardLimit);
     localAccount.loggedIn = account.loggedIn;
     localAccount.status = account.status;
     localAccount.dateCreated = account.dateCreated;
