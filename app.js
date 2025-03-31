@@ -2544,27 +2544,10 @@ function setSocketToUser(account,user,dbObj) {
     for (let i = 0; i < account.battlePasses.length; i++) {
         accessedBattlePasses[account.battlePasses[i].name] = allBattlePasses[account.battlePasses[i].name];
     }
+    updateLobbies();
 
-    compressObject(account.boards,(err,compressed) => {
-        if (err) {
-            console.log(25463,err)
-            return;
-        }
-        account.boards = compressed;
-        decompressObject(account.boards,(err,decompressedBoards) => {
-            if (err) {
-                console.log(35234,err);
-                return;
-            }
-            updateLobbies();
-
-            io.to(account.id).emit('setPlayer', account.id, account,accessedBattlePasses,decompressedBoards);
-            io.to(account.id).emit("setScene","newMenu");
-        })
-    })
-
-    
-
+    io.to(account.id).emit('setPlayer', account.id, account,accessedBattlePasses);
+    io.to(account.id).emit("setScene","newMenu");
 }
 
 function generateRandomString(length = 10) {

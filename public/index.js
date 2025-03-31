@@ -75,8 +75,6 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,serv
     if (server_presetGameModes) presetGameModes = server_presetGameModes;
     if (server_presetBoards)presetBoards = server_presetBoards;
 
-    if (currentBoardIndex > localAccount.boards.length - 1) currentBoardIndex = 0;
-
     if (server_backgrounds) backgrounds = server_backgrounds;
 
     if (server_items) {
