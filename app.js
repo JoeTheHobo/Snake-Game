@@ -547,9 +547,14 @@ io.on('connection', (socket) => {
                 return;
             }
 
-            let board = results[0];
-
-            io.to(socket.id).emit("updatePlayersBoards",board,"openMapEditor")
+            let board = results[0].board;
+            decompressObject(board,(err,decompressed) => {
+                if (err) {
+                    console.log(1023,err)
+                    return;
+                }
+                io.to(socket.id).emit("updatePlayersBoards",decompressed,"openMapEditor")
+            });
         })
     })
     socket.on("db_getAccountBoardStats",() => {
