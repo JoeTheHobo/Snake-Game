@@ -904,7 +904,7 @@ io.on('connection', (socket) => {
         if (!lobby) return;
 
         let boardQuery = "SELECT board FROM boards WHERE published = 1";
-        db.query(query, (err,results) => {
+        db.query(boardQuery, (err,results) => {
             if (err) {
                 console.log(62,err);
                 return;
