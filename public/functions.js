@@ -778,8 +778,7 @@ function getBoardImage(board,func) {
             }
         }
 
-        let imageData = pako.deflate(canvas.toDataURL("image/jpeg",0.9), { to: 'string' });
-        console.log(imageData)
+        let imageData = canvas.toDataURL("image/jpeg",0.9);
         func(imageData)
         canvas.remove(); // Clean up
     }
@@ -2081,4 +2080,20 @@ function doLoadingAnimation() {
     let barWidth = (global_loading * width) / global_loading_total;
 
     $(".loading_percentage").style.width = barWidth + "px";
+}
+function decompressObject(compressedData, callback) {
+    try {
+        // Inflate (decompress) the gzip compressed data
+        const decompressedBuffer = pako.inflate(compressedData, { to: 'string' });
+
+        // Parse the decompressed JSON string
+        const jsonString = decompressedBuffer;
+        const parsedObject = JSON.parse(jsonString);
+
+        // Call the callback with the decompressed object
+        callback(null, parsedObject);
+    } catch (err) {
+        // Handle any errors (e.g., if decompression fails)
+        callback(err, null);
+    }
 }

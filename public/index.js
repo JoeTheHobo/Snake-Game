@@ -132,10 +132,11 @@ socket.on("serverSending_boardStats",(boardStats) => {
 
             
             try {
-                let imagePNG = pako.inflate(content.board_image, { to: 'string' });
-                drawImageOnCanvas(imagePNG,boardPortion);
+                decompressObject(content.board_image,(err,result) => {
+                    drawImageOnCanvas(result,boardPortion);
+                })
             } catch {
-                
+
             }
             
 

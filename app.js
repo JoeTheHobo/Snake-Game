@@ -583,9 +583,11 @@ io.on('connection', (socket) => {
             if (err) {
                 console.log(2342134,err);
             }
-            let query = "UPDATE boards SET board = ?, name = ?, board_image = ? WHERE id = ? AND tag = ?";
-            db.query(query,[compressedBoard,board.name,boardImageData,Number(board.id),Number(account.tag)],(err,results)=>{
-                if (err) console.log(74534,err);
+            compressObject(boardImageData,(err,compressedImage) => {
+                let query = "UPDATE boards SET board = ?, name = ?, board_image = ? WHERE id = ? AND tag = ?";
+                db.query(query,[compressedBoard,board.name,compressedImage,Number(board.id),Number(account.tag)],(err,results)=>{
+                    if (err) console.log(74534,err);
+                })
             })
         })
     })
