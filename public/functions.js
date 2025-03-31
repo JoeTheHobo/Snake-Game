@@ -1373,6 +1373,7 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
         }); 
     }
     
+    /*
     if (type == "all" || type == "submissionStatus") {
         if (player.canSubmitBoards && !isHost) {
             $(".canAddSubbmisionsOnly").show();
@@ -1380,6 +1381,7 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
             $(".canAddSubbmisionsOnly").hide();
         }
     }
+        */
     
     if (type == "all" || type == "chats") {
         if (type == "chats") reference = lobby;
@@ -1406,11 +1408,9 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
     if (type == "all" || type == "gameMode") logGameModeChanges($(".sc_gameModeChanges"),(type == "all" ? lobby.gameMode : lobby),false);
 
     if (type == "all" || type == "board") {
-        requestAnimationFrame(() => {
-            $(".sc_boards_canvas").width = $(".sc_canvas_holder").clientWidth;
-            $(".sc_boards_canvas").height = $(".sc_canvas_holder").clientHeight; 
-            drawBoardToCanvas(localAccount.lobbyBoard.originalMap,$(".sc_boards_canvas"),true);
-        });
+        decompressObject(lobby.board_image,(err,result) => {
+            drawImageOnCanvas(result,$(".sc_boards_canvas"));
+        })
     }
 }
 function generateBoardsPopup(type) {
@@ -1457,7 +1457,7 @@ function generateBoardsPopup(type) {
         }
     }
     if (type == "published") {
-        
+
     }
 }
 function selectTabInBoardMenu(tab) {
