@@ -778,7 +778,7 @@ function getBoardImage(board,func) {
             }
         }
 
-        let imageData = canvas.toDataURL("image/jpeg",0.7);
+        let imageData = canvas.toDataURL("image/jpeg",1);
         func(imageData)
         canvas.remove(); // Clean up
     }
