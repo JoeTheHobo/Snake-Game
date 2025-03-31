@@ -254,11 +254,13 @@ $(".sc_bb_customizeSnakeHolder").on("click",function() {
     });
 })
 
+/*
 $(".sc_addLobbyBoard").on("click",function() {
     showBoardMenu(function(board) {
         socket.emit("addBoardToLobbyBoards",pako.deflate(JSON.stringify(shortenBoard(board)), { to: 'string' }));
     }) 
 })
+    */
 
 $("quitGameButton").on("click",function() {
     socket.emit("quitServer");

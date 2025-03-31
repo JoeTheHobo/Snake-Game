@@ -807,9 +807,6 @@ function drawImageOnCanvas(base64ImageData, canvas) {
         let imageWidth = canvasWidth;
         let imageHeight = (image.height / image.width) * imageWidth; // Calculate height based on aspect ratio
 
-        console.log(imageWidth,imageHeight)
-
-
         // Clear the canvas before drawing
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
@@ -1351,13 +1348,14 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
                         }},
                         {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "none",className: "hoverBorderBlue", border: "3px solid white",text:"Kick Player",onClick: function() {
                             socket.emit("kickPlayerFromLobby",reference[i]);
-                        }},
+                        }}
+                        /*
                         [
                             {type: "text",text: "Allow Board Submissions",color: "white"},
                             {type: "checkbox",value: reference[i].canSubmitBoards,onClick: function(a,b,div) {
                                 socket.emit("setPlayerBoardSubbmisionStatus",reference[i],div.checked);
                             }},
-                        ],
+                        ],*/
                     ],{
                         exit: {
                             cursor: "url('./img/pointer.cur'), auto",
@@ -1444,6 +1442,7 @@ function generateBoardsPopup(type) {
         })
     }
 
+    /*
     if (type == "lobby") {
         for (let i = 0; i < localAccount.lobbyBoards.length; i++) {
             let board = localAccount.lobbyBoards[i];
@@ -1451,46 +1450,15 @@ function generateBoardsPopup(type) {
         }
         return;
     }
+        */
     if (type == "personal") {
         for (let i = 0; i < localAccount.boards.length; i++) {
             generateBoard(parent,localAccount.boards[i]);
         }
     }
-    if (type == "preset") {
-        for (let i = 0; i < presetBoards.length; i++) {
-            generateBoard(parent,presetBoards[i]);
-        }
+    if (type == "published") {
+        
     }
-    /*
-    if (type == "personal") {
-        let holder = parent.create("div");
-        holder.className = "cbp_board_holder";
-
-        let title = holder.create("div");
-        title.className = "cbp_board_import";
-        title.innerHTML = "+";
-
-        holder.board = board;
-        holder.on("click",function() {
-            // Create an input element of type file
-            const input = document.createElement('input');
-            input.type = 'file';
-
-            // When the user selects a file
-            input.addEventListener('change', (event) => {
-                const file = event.target.files[0]; // Get the first selected file
-                if (file) {
-                    readFileContent(file); // Read the content of the file
-                    $(".chooseBoardPopup").hide();
-                } else {
-                alert('No file selected!');
-                }
-            });
-
-            // Programmatically click the input to open the file dialog
-            input.click();
-        })
-    }*/
 }
 function selectTabInBoardMenu(tab) {
     $(".cbp_tab").classRemove("cbp_tab_selected");

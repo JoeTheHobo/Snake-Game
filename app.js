@@ -597,24 +597,36 @@ io.on('connection', (socket) => {
         try {
             let account = onlineAccounts[socket.id];
             if (!account.loggedIn) return;
-            
-            let query = "UPDATE boards SET published = 1 WHERE id = ? AND tag = ?";
-            db.query(query,[boardID,Number(account.tag)],(err,results) => {
+
+            let queryTotal = "SELECT * FROM boards WHERE tag = ? AND published = 1";
+            db.query(queryTotal,[Number(account.tag)],(err,total) => {
                 if (err) {
-                    console.log(8324,err);
+                    console.log(83214,err);
                     return;
                 }
 
-                let query = "SELECT name, board_image, id, published FROM boards WHERE tag = ?";
-                db.query(query,[Number(account.tag)],(err,results) => {
+                if (total.length >= account.publishedBoardLimit) return;
+
+                let query = "UPDATE boards SET published = 1 WHERE id = ? AND tag = ?";
+                db.query(query,[boardID,Number(account.tag)],(err,results) => {
                     if (err) {
-                        console.log(73,err);
+                        console.log(8324,err);
                         return;
                     }
-        
-                    io.to(socket.id).emit("serverSending_boardStats",results);
+    
+                    let query = "SELECT name, board_image, id, published FROM boards WHERE tag = ?";
+                    db.query(query,[Number(account.tag)],(err,results) => {
+                        if (err) {
+                            console.log(73,err);
+                            return;
+                        }
+            
+                        io.to(socket.id).emit("serverSending_boardStats",results);
+                    })
                 })
             })
+            
+            
         } catch {
             console.log("Publish error");
         }
@@ -891,41 +903,58 @@ io.on('connection', (socket) => {
     socket.on("newLobby", (lobby) =>{
         if (!lobby) return;
 
-        let id = Number(Date.now().toString() + simple.rnd(9999));
-        lobbies[id] = {};
-        lobbies[id].board = structuredClone(presetBoards[0]);
-        lobbies[id].id = id;
-        lobbies[id].hostID = socket.id;
-        lobbies[id].hostName = onlineAccounts[socket.id].username;
-        lobbies[id].hostTag = onlineAccounts[socket.id].tag;
-        lobbies[id].players = [socket.id];
-        lobbies[id].chats = [{
-            account: null,
-            message: "Lobby Created",
-        }];
-        if (lobby.code == "") lobby.code = rnd(9999);
-        lobbies[id].code = lobby.code + "";
-        let serverType = lobby.serverType.toLowerCase();
-        if (!["public","hidden","private"]) serverType = "public";
-        lobbies[id].serverType = serverType;
-        lobbies[id].gameMode = presetGameModes[0];
-        if (!lobby.playerMax) lobby.playerMax = 8;
-        let playerMax = Number(lobby.playerMax);
-        if (!simple.type(playerMax,true).isWholeNumber) playerMax = 8;
-        if (playerMax < 1) playerMax = 1;
-        if (playerMax > 8) playerMax = 8;
-        lobbies[id].playerMax = playerMax;
-        lobbies[id].lobbyBoards = [];
-        lobbies[id].isInGame = false;
-        lobbies[id].lobbyName = lobbies[id].hostName + "'s Lobby";
-        onlineAccounts[socket.id].lobby = id;
-        onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].serverSnake);
-        lobbies[id].activePlayers = getPlayersList(lobbies[id].players);
+        let boardQuery = "SELECT board FROM boards WHERE published = 1";
+        db.query(query, (err,results) => {
+            if (err) {
+                console.log(62,err);
+                return;
+            }
 
-        socket.join(id);
-        socket.leave("menuScreen")
-        io.to(socket.id).emit("setClientLobby",lobbies[id])
-        updateLobbies();
+            decompressObject(results[0],(err,board) => {
+                if (err) {
+                    console.log(63,err)
+                    return;
+                }
+
+                let id = Number(Date.now().toString() + simple.rnd(9999));
+                lobbies[id] = {};
+                lobbies[id].board = board;
+                lobbies[id].id = id;
+                lobbies[id].hostID = socket.id;
+                lobbies[id].hostName = onlineAccounts[socket.id].username;
+                lobbies[id].hostTag = onlineAccounts[socket.id].tag;
+                lobbies[id].players = [socket.id];
+                lobbies[id].chats = [{
+                    account: null,
+                    message: "Lobby Created",
+                }];
+                if (lobby.code == "") lobby.code = rnd(9999);
+                lobbies[id].code = lobby.code + "";
+                let serverType = lobby.serverType.toLowerCase();
+                if (!["public","hidden","private"]) serverType = "public";
+                lobbies[id].serverType = serverType;
+                lobbies[id].gameMode = presetGameModes[0];
+                if (!lobby.playerMax) lobby.playerMax = 8;
+                let playerMax = Number(lobby.playerMax);
+                if (!simple.type(playerMax,true).isWholeNumber) playerMax = 8;
+                if (playerMax < 1) playerMax = 1;
+                if (playerMax > 8) playerMax = 8;
+                lobbies[id].playerMax = playerMax;
+                lobbies[id].lobbyBoards = [];
+                lobbies[id].isInGame = false;
+                lobbies[id].lobbyName = lobbies[id].hostName + "'s Lobby";
+                onlineAccounts[socket.id].lobby = id;
+                onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].serverSnake);
+                lobbies[id].activePlayers = getPlayersList(lobbies[id].players);
+        
+                socket.join(id);
+                socket.leave("menuScreen")
+                io.to(socket.id).emit("setClientLobby",lobbies[id])
+                updateLobbies();
+            })
+
+        })
+
     })
     socket.on("quitServer",() => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
