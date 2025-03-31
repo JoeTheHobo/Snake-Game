@@ -799,6 +799,8 @@ function drawImageOnCanvas(base64ImageData, canvas) {
         let canvasWidth = canvas.width;
         let canvasHeight = canvas.height;
 
+        console.log(canvasWidth)
+
         // Calculate the aspect ratio of the image
         let imageWidth = image.width;
         let imageHeight = image.height;
@@ -810,15 +812,12 @@ function drawImageOnCanvas(base64ImageData, canvas) {
         let scaledWidth = imageWidth * scaleFactor;
         let scaledHeight = imageHeight * scaleFactor;
 
-        // Calculate the position to center the image on the canvas (optional)
-        let xOffset = (canvasWidth - scaledWidth) / 2;
-        let yOffset = (canvasHeight - scaledHeight) / 2;
 
         // Clear the canvas before drawing
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
         // Draw the scaled image onto the canvas
-        ctx.drawImage(image, xOffset, yOffset, scaledWidth, scaledHeight);
+        ctx.drawImage(image, 0, 0, scaledWidth, scaledHeight);
     };
 
     // Optional: Handle error if image fails to load
