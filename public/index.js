@@ -146,7 +146,7 @@ socket.on("serverSending_publishedBoards",(boardStats) => {
     }
 
     for (let i = 0; i < boardStats.length; i++) {
-        generateBoard(boardStats[i]);
+        generateBoard(parent,boardStats[i]);
     }
 })
 socket.on("serverSending_boardStats",(boardStats) => {
