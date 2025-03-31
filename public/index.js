@@ -37,7 +37,7 @@ socket.on("updateLocalGameModes",(gameModes,sentFrom) => {
         loadGameModesScreen();
     }
 })
-socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,server_basedGameMode,server_presetGameModes,server_presetBoards,server_backgrounds,server_tiles) =>{
+socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,server_basedGameMode,server_presetGameModes,server_backgrounds,server_tiles) =>{
     localAccount.id = id;
     localAccount.isInGame = false;
     localAccount.lobbyID = false;
@@ -57,6 +57,7 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,serv
     localAccount.battlePassPoints = account.battlePassPoints;
     localAccount.battlePasses = account.battlePasses;
     localAccount.coins = account.coins;
+    localAccount.publishedBoardLimit = account.publishedBoardLimit;
     localAccount.loggedIn = account.loggedIn;
     localAccount.status = account.status;
     localAccount.dateCreated = account.dateCreated;
@@ -73,7 +74,6 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,serv
     if (server_tiles)  tiles = JSON.parse(pako.inflate(server_tiles, { to: 'string' }));
     if (server_basedGameMode) basedGameMode = server_basedGameMode;
     if (server_presetGameModes) presetGameModes = server_presetGameModes;
-    if (server_presetBoards)presetBoards = server_presetBoards;
 
     if (server_backgrounds) backgrounds = server_backgrounds;
 
@@ -121,6 +121,11 @@ socket.on("serverSending_boardStats",(boardStats) => {
     let listHolder = $(".cb_boardList");
     listHolder.innerHTML = "";
     $(".cb_tr_text_boardCount").innerHTML =  boardStats.length + "/" + localAccount.boardLimit;
+    let publishedCount = 0;
+    for (let i = 0; i < boardStats.length; i++) {
+        publishedCount += boardStats[i].published;
+    }
+    $(".cb_tr_text_publishedCount").innerHTML =  publishedCount + "/" + localAccount.publishedBoardLimit;
 
     function makeBoard(holder,content,type,index) {
         if (type == "board") {
@@ -167,6 +172,16 @@ socket.on("serverSending_boardStats",(boardStats) => {
                     id: "deletePopUp",
                 })
             });
+            if (publishedCount < localAccount.publishedBoardLimit && content.published === 0) {
+                addSetting("img/menuIcons/publish.png",function() {
+                    socket.emit("publishBoard",content.id);
+                });
+            }
+            if (content.published === 1) {
+                addSetting("img/menuIcons/published.png",function() {
+                    socket.emit("depublishBoard",content.id);
+                });
+            }
             if (localAccount.status === "Admin") {
                 addSetting("img/menuIcons/download.png",function() {
                     socket.emit("getZippedBoard",content.id);

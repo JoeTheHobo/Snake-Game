@@ -1,6 +1,5 @@
 const simple = require("./server_simple.js");
 const {presetGameModes} = require("./presetGameModes.js");
-let {presetBoards} = require("./presetBoards.js");
 const {items} = require("./server_items.js");
 const {tiles} = require("./server_tiles.js");
 const zlib = require('zlib');
@@ -103,29 +102,6 @@ app.get('/verify', (req, res) => {
 
 const lobbies = {};
 const onlineAccounts = {};
-
-let newPreset = [];
-function retrieveAllPresetBoards(index) {
-    let buffer = base64ToArrayBuffer(presetBoards[index]);
-    decompressObject(buffer,(err,decompressed) => {
-        decompressed = fixBoard(decompressed);
-        if (err) {
-            console.log(1,err);
-            return;
-        }
-        decompressed.boardAuthors = [{
-            tag: false,
-            username: "Preset Board",
-        }];
-        decompressed.accountID = false;
-        newPreset.push(decompressed);
-        if (index == presetBoards.length-1) {
-            presetBoards = newPreset;
-        } else retrieveAllPresetBoards(index+1);
-    })
-    
-}
-retrieveAllPresetBoards(0);
 
 io.on('connection', (socket) => { 
     socket.join(socket.id);
@@ -560,7 +536,7 @@ io.on('connection', (socket) => {
     socket.on("db_getAccountBoardStats",() => {
         let account = onlineAccounts[socket.id];
         if (!account.loggedIn) return;
-        let query = "SELECT name, board_image, id FROM boards WHERE tag = ?";
+        let query = "SELECT name, board_image, id, published FROM boards WHERE tag = ?";
         db.query(query,[Number(account.tag)],(err,results) => {
             if (err) {
                 console.log(73,err);
@@ -590,6 +566,58 @@ io.on('connection', (socket) => {
                 })
             })
         })
+    })
+    socket.on("depublishBoard",(boardID) => {
+        try {
+            let account = onlineAccounts[socket.id];
+            if (!account.loggedIn) return;
+            
+            let query = "UPDATE boards SET published = 0 WHERE id = ? AND tag = ?";
+            db.query(query,[boardID,Number(account.tag)],(err,results) => {
+                if (err) {
+                    console.log(8324,err);
+                    return;
+                }
+
+                let query = "SELECT name, board_image, id, published FROM boards WHERE tag = ?";
+                db.query(query,[Number(account.tag)],(err,results) => {
+                    if (err) {
+                        console.log(73,err);
+                        return;
+                    }
+        
+                    io.to(socket.id).emit("serverSending_boardStats",results);
+                })
+            })
+        } catch {
+            console.log("Publish error");
+        }
+    })
+    socket.on("publishBoard",(boardID) => {
+        try {
+            let account = onlineAccounts[socket.id];
+            if (!account.loggedIn) return;
+            
+            let query = "UPDATE boards SET published = 1 WHERE id = ? AND tag = ?";
+            db.query(query,[boardID,Number(account.tag)],(err,results) => {
+                if (err) {
+                    console.log(8324,err);
+                    return;
+                }
+
+                let query = "SELECT name, board_image, id, published FROM boards WHERE tag = ?";
+                db.query(query,[Number(account.tag)],(err,results) => {
+                    if (err) {
+                        console.log(73,err);
+                        return;
+                    }
+        
+                    io.to(socket.id).emit("serverSending_boardStats",results);
+                })
+            })
+        } catch {
+            console.log("Publish error");
+        }
     })
     socket.on("getZippedBoard",(boardID) => {
         try {
@@ -625,7 +653,7 @@ io.on('connection', (socket) => {
                     return;
                 }
 
-                let query = "SELECT name, board_image, id FROM boards WHERE tag = ?";
+                let query = "SELECT name, board_image, id, published FROM boards WHERE tag = ?";
                 db.query(query,[Number(account.tag)],(err,results) => {
                     if (err) {
                         console.log(73,err);
@@ -2396,6 +2424,7 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
         playerLimit: 10,
         players: [ ],
         gameModeLimit: 10,
+        publishedBoardLimit: 2,
         gameModes: [],
         boardLimit: 10,
         canChangePassword: false,
@@ -2449,7 +2478,7 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
     let sendItems = full ? pako.deflate(JSON.stringify(items), { to: 'string' }) : undefined;
     let sendTiles = full ? pako.deflate(JSON.stringify(tiles), { to: 'string' }) : undefined;
 
-    io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? presetBoards : undefined,full ? backgrounds : undefined,sendTiles);
+    io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? backgrounds : undefined,sendTiles);
     if (sendHome) 
         io.to(socketID).emit("setScene","newMenu");
 
@@ -2524,6 +2553,7 @@ function setSocketToUser(account,user,dbObj) {
     account.challengeLimit = dbObj.inventory.challenge_limit;
     account.musicVolume = dbObj.inventory.music_volume;
     account.sfxVolume = dbObj.inventory.sfx_volume;
+    account.publishedBoardLimit = dbObj.published_board_limit;
 
     //gamemodes
     account.gameModes = dbObj.gamemodes;
