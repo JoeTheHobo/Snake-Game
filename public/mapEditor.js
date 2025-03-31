@@ -1842,7 +1842,7 @@ $("me_name").on("change",function() {
     saveBoard();
 })
 $("me_recommendedGameMode").on("change",function() {
-    boacurrentBoardrd.recommendedGameMode = this.checked;
+    currentBoardrd.recommendedGameMode = this.checked;
     $("saveStatus").innerHTML = "Board Is Not Saved";
 })
 $("me_background").on("click",function() {
