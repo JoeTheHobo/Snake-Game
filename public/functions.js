@@ -742,55 +742,46 @@ function forceAllCellsToBeTheirOwn(map) {
 }
 
 
-function getBoardImage(board) {
-    return new Promise((resolve, reject) => {
-        let canvas = document.createElement("canvas");
-        let ctx = canvas.getContext("2d");
-        let grid_size = 30;
+function getBoardImage(board,func) {
+    let canvas = document.createElement("canvas");
+    let ctx = canvas.getContext("2d");
+    let grid_size = 30;
 
-        let width = Math.round(board[0].length * grid_size);
-        let height = Math.round(board.length * grid_size);
+    let width = Math.round(board[0].length * grid_size);
+    let height = Math.round(board.length * grid_size);
 
-        canvas.height = height;
-        canvas.width = width;
+    canvas.height = height;
+    canvas.width = width;
 
-        console.log(1);
 
-        let backgroundImage = new Image();
-        backgroundImage.src = "img/backgrounds/" + board.background + ".png";
-        console.log(2);
-        backgroundImage.onload = function() {
-            ctx.drawImage(backgroundImage,0,0,width,height);
+    let backgroundImage = new Image();
+    backgroundImage.src = "img/backgrounds/" + board.background + ".png";
+    backgroundImage.onload = function() {
+        ctx.drawImage(backgroundImage,0,0,width,height);
 
-            console.log(3);
-            for (let i = 0; i < board.length; i++) {
-                for (let j = 0; j < board[i].length; j++) {
-                    let cell = board[i][j];
-        
-                    let Xpos = (j * grid_size);
-                    let Ypos = (i * grid_size);
-                    
-                    ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(grid_size),(grid_size));
-        
-                    if (cell.item) {
-                        let image = getImage(cell.item,"canvas");
-                        if (!image) continue;
-                        ctx.drawImage(image,Xpos,Ypos,(grid_size),(grid_size));
-                    }
-        
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[i].length; j++) {
+                let cell = board[i][j];
+    
+                let Xpos = (j * grid_size);
+                let Ypos = (i * grid_size);
+                
+                ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(grid_size),(grid_size));
+    
+                if (cell.item) {
+                    let image = getImage(cell.item,"canvas");
+                    if (!image) continue;
+                    ctx.drawImage(image,Xpos,Ypos,(grid_size),(grid_size));
                 }
+    
             }
-
-            let imageData = canvas.toDataURL("image/png");
-            console.log(imageData)
-            resolve(imageData);
-            canvas.remove(); // Clean up
         }
-        backgroundImage.onerror = function() {
-            console.log(backgroundImage.src)
-            reject(new Error("Failed to load background image: " + backgroundImage.src));
-        };
-    });
+
+        let imageData = canvas.toDataURL("image/png");
+        console.log(imageData)
+        func(imageData)
+        canvas.remove(); // Clean up
+    }
 }
 function drawImageOnCanvas(base64ImageData, canvas) {
     // Create a new Image element
