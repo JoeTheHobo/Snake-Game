@@ -2391,7 +2391,6 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
         gameModeLimit: 10,
         gameModes: [],
         boardLimit: 10,
-        boardCount: 0,
         canChangePassword: false,
 
         player: false, //For Lobbies
@@ -2459,24 +2458,8 @@ function gatherDBInventory(account,user) {
 
         dbObj.inventory = results[0];
 
-        gatherDBboards(account,user,dbObj);
+        gatherDBgamemodes(account,user,dbObj);
 
-
-    })
-}
-function gatherDBboards(account,user,dbObj) {
-    query = "SELECT * FROM boards WHERE tag = ?";
-    db.query(query,[Number(user.tag)],(err,results) => {
-        if (err) return false;
-
-        let rawBoards = [];
-        for (let i = 0; i < results.length; i++) {
-            rawBoards.push(results[i].board.toString("base64"));
-        }
-        retrieveAllBoards(rawBoards,function(list) {
-            dbObj.boards = list;
-            gatherDBgamemodes(account,user,dbObj);
-        })
 
     })
 }
@@ -2534,9 +2517,6 @@ function setSocketToUser(account,user,dbObj) {
     account.challengeLimit = dbObj.inventory.challenge_limit;
     account.musicVolume = dbObj.inventory.music_volume;
     account.sfxVolume = dbObj.inventory.sfx_volume;
-    
-    //boards
-    account.boards = dbObj.boards;
 
     //gamemodes
     account.gameModes = dbObj.gamemodes;

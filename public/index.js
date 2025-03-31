@@ -42,7 +42,6 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,serv
     localAccount.isInGame = false;
     localAccount.lobbyID = false;
     localAccount.players = account.players;
-    localAccount.boardCount = account.boardCount;
     localAccount.gameModes = account.gameModes;
     localAccount.username = account.username;
     localAccount.tag = account.tag;
@@ -123,6 +122,7 @@ socket.on("updatePlayersBoards",(board,sentFrom) => {
 socket.on("serverSending_boardStats",(boardStats) => {
     let listHolder = $(".cb_boardList");
     listHolder.innerHTML = "";
+    $(".cb_tr_text_boardCount").innerHTML =  boardStats.length + "/" + localAccount.boardLimit;
 
     function makeBoard(holder,content,type,index) {
         if (type == "board") {
@@ -224,7 +224,7 @@ socket.on("serverSending_boardStats",(boardStats) => {
         makeBoard(listHolder,boardStats[i],"board",i)
     }
 
-    if (localAccount.boardCount < localAccount.boardLimit) {
+    if (boardStats.length < localAccount.boardLimit) {
         makeBoard(listHolder,false,"newBoard")
     } else {
         makeBoard(listHolder,false,"buyBoard")

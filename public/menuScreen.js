@@ -1193,8 +1193,6 @@ function loadBoardMenu() {
     $(".content_boards").show("flex");
     $("boards_tab").classAdd("menu_tab_selected");
 
-    $(".cb_tr_text_boardCount").innerHTML =  localAccount.boards.length + "/" + localAccount.boardLimit;
-
     let listHolder = $(".cb_boardList");
     listHolder.innerHTML = "";
 
