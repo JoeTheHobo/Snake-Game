@@ -746,7 +746,7 @@ function getBoardImage(board,func) {
     let canvas = document.createElement("canvas");
     let map = board.originalMap;
     let ctx = canvas.getContext("2d");
-    let grid_size = 30;
+    let grid_size = 19;
 
     let width = Math.round(map[0].length * grid_size);
     let height = Math.round(map.length * grid_size);
@@ -778,8 +778,7 @@ function getBoardImage(board,func) {
             }
         }
 
-        let imageData = canvas.toDataURL("image/png");
-        console.log(imageData)
+        let imageData = canvas.toDataURL("image/jpeg",0.7);
         func(imageData)
         canvas.remove(); // Clean up
     }
