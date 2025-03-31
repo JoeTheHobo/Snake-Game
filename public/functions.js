@@ -796,13 +796,14 @@ function drawImageOnCanvas(base64ImageData, canvas) {
         let ctx = canvas.getContext("2d");
 
         // Get the canvas dimensions
-        let canvasWidth = canvas.width;
+        let canvasWidth = canvas.getBoundingClientRect().width;
         let canvasHeight = canvas.height;
 
         // Calculate the aspect ratio of the image
         let imageWidth = canvasWidth;
-        console.log(image.height,image.width);
         let imageHeight = (image.height / image.width) * imageWidth; // Calculate height based on aspect ratio
+
+        console.log(imageWidth,imageHeight)
 
 
         // Clear the canvas before drawing
