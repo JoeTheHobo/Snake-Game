@@ -1507,7 +1507,7 @@ function selectTabInBoardMenu(tab) {
 
 }
 function showBoardMenu(func) {
-    selectTabInBoardMenu("preset");
+    selectTabInBoardMenu("published");
     $(".chooseBoardPopup").func = func;
     $(".chooseBoardPopup").show("flex");
     socket.emit("askForLobbyBoards");
