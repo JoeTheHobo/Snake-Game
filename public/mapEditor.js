@@ -1060,7 +1060,7 @@ function saveBoard() {
 
     if (Number(localAccount.tag) == Number(currentBoard.tag)) {
         //Save To Personal Boards
-        getBoardImage(currentBoard.originalMap,(boardImage) => {
+        getBoardImage(currentBoard,(boardImage) => {
             socket.emit("saveBoard",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }),boardImage);
         })
     }

@@ -744,11 +744,12 @@ function forceAllCellsToBeTheirOwn(map) {
 
 function getBoardImage(board,func) {
     let canvas = document.createElement("canvas");
+    let map = board.originalMap;
     let ctx = canvas.getContext("2d");
     let grid_size = 30;
 
-    let width = Math.round(board[0].length * grid_size);
-    let height = Math.round(board.length * grid_size);
+    let width = Math.round(map[0].length * grid_size);
+    let height = Math.round(map.length * grid_size);
 
     canvas.height = height;
     canvas.width = width;
@@ -759,9 +760,9 @@ function getBoardImage(board,func) {
     backgroundImage.onload = function() {
         ctx.drawImage(backgroundImage,0,0,width,height);
 
-        for (let i = 0; i < board.length; i++) {
-            for (let j = 0; j < board[i].length; j++) {
-                let cell = board[i][j];
+        for (let i = 0; i < map.length; i++) {
+            for (let j = 0; j < map[i].length; j++) {
+                let cell = map[i][j];
     
                 let Xpos = (j * grid_size);
                 let Ypos = (i * grid_size);
