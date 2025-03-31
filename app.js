@@ -533,6 +533,23 @@ io.on('connection', (socket) => {
             });
         })
     })
+    socket.on("getPublishedBoards",() => {
+        let account = onlineAccounts[socket.id];
+        let lobby = lobbies[account.lobby];
+        if (!lobby) return;
+        if (lobby.hostID !== socket.id) return;
+
+        let query = "SELECT name, board_image, id FROM boards WHERE published = 1";
+        db.query(query,(err,results) => {
+            if (err) {
+                console.log(73,err);
+                return;
+            }
+
+            io.to(socket.id).emit("serverSending_publishedBoards",results);
+        })
+
+    })
     socket.on("db_getAccountBoardStats",() => {
         let account = onlineAccounts[socket.id];
         if (!account.loggedIn) return;
@@ -1143,17 +1160,43 @@ io.on('connection', (socket) => {
         io.to(lobby.id).emit("settingLobbyBoards",lobby.lobbyBoards);
 
     })
-    socket.on("changeServerBoard",(board) => {
-        let lobby = lobbies[onlineAccounts[socket.id].lobby];
+    socket.on("changeServerBoard",(boardID) => {
+        let account = onlineAccounts[socket.id];
+        let lobby = lobbies[account.lobby];
         if (!lobby) return;
         if (lobby.hostID !== socket.id) return;
-        if (!board) return;
+        if (!boardID) return;
 
-        //Varify Board Here -To Be Added
-        board = fixBoard(JSON.parse(pako.inflate(board, { to: 'string' })));
-        lobby.board = board;
-        io.to(lobby.id).emit("updateLobbyPage", lobby.board,"board",lobby.hostID);
-        updateLobbies();
+        let query = `SELECT * FROM boards WHERE id = ${boardID}`;
+        db.query(query,(err,results) => {
+            if (err) {
+                console.log(939,err);
+                return;
+            }
+
+            if (results.length == 0) return;
+
+            board = results[0];
+
+            let pass = false;
+            if (Number(account.tag) == Number(board.tag)) pass = true;
+            if (board.published === 1) pass = true;
+
+            if (!pass) return;
+
+            decompressObject(board.board,(err,goodBoard) => {
+                if (err) {
+                    console.log(73, err);
+                    return;
+                }
+
+                lobby.board = goodBoard;
+                io.to(lobby.id).emit("updateLobbyPage", lobby.board,"board",lobby.hostID);
+                updateLobbies();
+            })
+        })
+
+        
     })
     socket.on("setCode",(code) => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -2638,25 +2681,6 @@ function zipAllBoards(boardList,func,index = 0,list = []) {
             func(list);
         }
     })
-}
-function retrieveAllBoards(boardList,func,index = 0,newBoards = []) {
-    if (!boardList[index]) {
-        func(newBoards);
-        return;
-    }
-    let buffer = base64ToArrayBuffer(boardList[index]);
-    decompressObject(buffer,(err,decompressed) => {
-        if (err) {
-            console.log(183,err);
-            return;
-        }
-        newBoards.push(fixBoard(decompressed));
-
-        if (index == boardList.length-1) {
-            func(newBoards);
-        } else retrieveAllBoards(boardList,func,index+1,newBoards);
-    })
-    
 }
 
 let server_skinPacks = ["basic"];

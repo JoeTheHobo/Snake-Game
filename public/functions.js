@@ -1454,32 +1454,7 @@ function drawBoardToCanvas(board,canvas) {
 
 function generateBoardsPopup(type) {
     let parent = $(".cbp_boardsList");
-
     parent.innerHTML = "";
-
-    function generateBoard(parent,board) {
-        let holder = parent.create("div");
-        holder.className = "cbp_board_holder";
-
-        let canvas = holder.create("canvas");
-        canvas.className = "cbp_board_canvas";
-        setTimeout(function() {
-            canvas.width = canvas.clientWidth;
-            canvas.height = canvas.clientHeight;
-            drawBoardToCanvas(board.originalMap,canvas,true);
-        },1)
-        
-
-        let title = holder.create("div");
-        title.className = "cbp_board_title";
-        title.innerHTML = board.name;
-
-        holder.board = board;
-        holder.on("click",function() {
-            $(".chooseBoardPopup").hide();
-            $(".chooseBoardPopup").func(this.board);
-        })
-    }
 
     /*
     if (type == "lobby") {
@@ -1496,7 +1471,7 @@ function generateBoardsPopup(type) {
         }
     }
     if (type == "published") {
-
+        socket.emit("getPublishedBoards");
     }
 }
 function selectTabInBoardMenu(tab) {
@@ -1510,7 +1485,7 @@ function showBoardMenu(func) {
     selectTabInBoardMenu("published");
     $(".chooseBoardPopup").func = func;
     $(".chooseBoardPopup").show("flex");
-    socket.emit("askForLobbyBoards");
+    //socket.emit("askForLobbyBoards");
 }
 function loadGameModesToPopup(tab,func) {
     $(".cbp_tab").classRemove("cbp_tab_selected");

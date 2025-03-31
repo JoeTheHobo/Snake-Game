@@ -117,6 +117,38 @@ socket.on("updatePlayersBoards",(board,sentFrom) => {
         setScene("lobby");
     }
 })
+socket.on("serverSending_publishedBoards",(boardStats) => {
+    let parent = $(".cbp_boardsList");
+    parent.innerHTML = "";
+
+    function generateBoard(parent,board) {
+        let holder = parent.create("div");
+        holder.className = "cbp_board_holder";
+
+        let canvas = holder.create("canvas");
+        canvas.className = "cbp_board_canvas";
+        try {
+            decompressObject(board.board_image,(err,result) => {
+                drawImageOnCanvas(result,canvas);
+            })
+        } catch {
+
+        }
+
+        let title = holder.create("div");
+        title.className = "cbp_board_title";
+        title.innerHTML = board.name;
+
+        holder.on("click",function() {
+            $(".chooseBoardPopup").hide();
+            $(".chooseBoardPopup").func(board.id);
+        })
+    }
+
+    for (let i = 0; i < boardStats.length; i++) {
+        generateBoard(boardStats[i]);
+    }
+})
 socket.on("serverSending_boardStats",(boardStats) => {
     let listHolder = $(".cb_boardList");
     listHolder.innerHTML = "";

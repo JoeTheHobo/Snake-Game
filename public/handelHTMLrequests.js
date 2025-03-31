@@ -141,8 +141,8 @@ $(".sc_chat_input").on("keydown",function(e) {
     }
 })
 $(".sc_chooseboard").on("click",function() {
-    showBoardMenu(function(board) {
-        socket.emit("changeServerBoard",pako.deflate(JSON.stringify(shortenBoard(board)), { to: 'string' }));
+    showBoardMenu(function(boardID) {
+        socket.emit("changeServerBoard",boardID);
     }) 
 })
 /*
