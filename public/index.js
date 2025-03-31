@@ -130,7 +130,7 @@ socket.on("serverSending_boardStats",(boardStats) => {
             let boardName = container.create("div.bm_boardName");
             boardName.innerHTML = content.name;
 
-            let imagePNG = pako.inflate(imageData,content.board_image { to: 'string' });
+            let imagePNG = pako.inflate(imageData,content.board_image, { to: 'string' });
             drawImageOnCanvas(imagePNG,boardPortion);
 
             boardPortion.on("click",function() {
