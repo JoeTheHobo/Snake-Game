@@ -130,8 +130,14 @@ socket.on("serverSending_boardStats",(boardStats) => {
             let boardName = container.create("div.bm_boardName");
             boardName.innerHTML = content.name;
 
-            let imagePNG = pako.inflate(content.board_image, { to: 'string' });
-            drawImageOnCanvas(imagePNG,boardPortion);
+            
+            try {
+                let imagePNG = pako.inflate(content.board_image, { to: 'string' });
+                drawImageOnCanvas(imagePNG,boardPortion);
+            } catch {
+                
+            }
+            
 
             boardPortion.on("click",function() {
                 socket.emit("openMapEditor",content.id);
