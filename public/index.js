@@ -147,7 +147,7 @@ socket.on("serverSending_boardStats",(boardStats) => {
             });
             addSetting("img/menuIcons/delete.png",function() {
                 makePopUp([
-                    {type: "text",text: "Delete " + localAccount.boards[index].name},
+                    {type: "text",text: "Delete " + content.name},
                     {type: "title",text: "Are You Sure?"},
                     [
                         {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
