@@ -2554,6 +2554,7 @@ function setSocketToUser(account,user,dbObj) {
     account.musicVolume = dbObj.inventory.music_volume;
     account.sfxVolume = dbObj.inventory.sfx_volume;
     account.publishedBoardLimit = dbObj.published_board_limit;
+    console.log(dbObj)
 
     //gamemodes
     account.gameModes = dbObj.gamemodes;

@@ -145,9 +145,11 @@ $(".sc_chooseboard").on("click",function() {
         socket.emit("changeServerBoard",pako.deflate(JSON.stringify(shortenBoard(board)), { to: 'string' }));
     }) 
 })
+/*
 $(".sc_editboard").on("click",function() {
     openMapEditor(localAccount.lobbyBoard,"server");
 })
+*/
 $(".servers_invite_button").on("click",function() {
     socket.emit("searchingHiddenServer",$(".servers_invite_input").value);
     $(".servers_invite_input").value = "";

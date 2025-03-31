@@ -123,6 +123,7 @@ socket.on("serverSending_boardStats",(boardStats) => {
     $(".cb_tr_text_boardCount").innerHTML =  boardStats.length + "/" + localAccount.boardLimit;
     let publishedCount = 0;
     for (let i = 0; i < boardStats.length; i++) {
+        console.log(boardStats[i])
         publishedCount += boardStats[i].published;
     }
     $(".cb_tr_text_publishedCount").innerHTML =  publishedCount + "/" + localAccount.publishedBoardLimit;
