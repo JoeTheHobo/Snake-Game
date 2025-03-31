@@ -778,7 +778,7 @@ function getBoardImage(board,func) {
             }
         }
 
-        let imageData = canvas.toDataURL("image/jpeg",0.9);
+        let imageData = pako.deflate(canvas.toDataURL("image/jpeg",0.9), { to: 'string' });
         func(imageData)
         canvas.remove(); // Clean up
     }
