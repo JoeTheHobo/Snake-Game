@@ -4343,6 +4343,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   align-items: center;
   justify-content: center;
   cursor: url('./img/pointer.cur'), auto !important;
+  margin: 3px;
 }
 .me_gm_imgHolder:hover {
   background: rgb(180, 180, 180);
