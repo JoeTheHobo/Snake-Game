@@ -2537,7 +2537,7 @@ function loadBoardGameModes() {
     let gameModesHolder = $(".me_ih_gameModesHolder"); 
     gameModesHolder.innerHTML = "";
 
-    function generateGameMode(gameMode) {
+    function generateGameMode(gameMode,index) {
         let holder = gameModesHolder.create("div.me_gm_holder");
 
         let name = holder.create("div.me_gm_name");
@@ -2557,19 +2557,27 @@ function loadBoardGameModes() {
         })
         if (currentBoard.gameModes.length > 1) {
             addSetting("delete",() => {
-
+                currentBoard.gameModes.splice(index,1);
+                loadBoardGameModes();
             })
-            addSetting("selectDown",() => {
-
-            })
-            addSetting("selectUp",() => {
-
-            })
+            if (index !== currentBoard.gameModes.length-1) {
+                addSetting("selectDown",() => {
+                    let removedGameMode = currentBoard.gameModes.splice(index,1);
+                    currentBoard.gameModes.splice(index,0,removedGameMode);
+                })
+            }
+            if (index !== 0) {
+                addSetting("selectUp",() => {
+                    let removedGameMode = currentBoard.gameModes.splice(index,1);
+                    currentBoard.gameModes.splice(index-1,0,removedGameMode);
+    
+                })
+            }
         }
     }
 
     for (let i = 0; i < currentBoard.gameModes.length; i++) {
-        generateGameMode(currentBoard.gameModes[i]);
+        generateGameMode(currentBoard.gameModes[i],i);
     }
 
     if (currentBoard.gameModes.length < 5) {
@@ -2577,7 +2585,8 @@ function loadBoardGameModes() {
         plus.innerHTML = "+";
 
         plus.on("click",() => {
-            
+            currentBoard.gameModes.push(presetGameModes[0]);
+            loadBoardGameModes();
         })
     }
 
