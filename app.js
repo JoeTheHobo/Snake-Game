@@ -1146,7 +1146,9 @@ io.on('connection', (socket) => {
                 }
 
                 lobby.board = goodBoard;
+                lobby.gameMode = lobby.board.gameModes[0]; 
                 io.to(lobby.id).emit("updateLobbyPage", lobby.board,"board",lobby.hostID);
+                io.to(lobby.id).emit("updateLobbyPage", lobby.gameMode,"gameMode",lobby.hostID);
                 updateLobbies();
             })
         })
