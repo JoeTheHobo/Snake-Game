@@ -1431,7 +1431,7 @@ function getArrayOfSelection() {
 function runTool(type,desiredValue) {
     if (type == "boardSettings") {
         $(".me_popup_boardSettings").show("flex");
-        loadBoardGameModes($(".me_ih_gameModesHolder"),currentBoard.gameModes);
+        loadBoardGameModes($(".me_ih_gameModesHolder"),currentBoard.gameModes,"mapEditor");
     }
     if (type == "reflectX") {
         let newBoard = flipHorizontally(getArrayOfSelection());
