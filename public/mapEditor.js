@@ -2564,12 +2564,14 @@ function loadBoardGameModes() {
                 addSetting("selectDown",() => {
                     let removedGameMode = currentBoard.gameModes.splice(index,1);
                     currentBoard.gameModes.splice(index,0,removedGameMode);
+                    loadBoardGameModes();
                 })
             }
             if (index !== 0) {
                 addSetting("selectUp",() => {
                     let removedGameMode = currentBoard.gameModes.splice(index,1);
                     currentBoard.gameModes.splice(index-1,0,removedGameMode);
+                    loadBoardGameModes();
     
                 })
             }
