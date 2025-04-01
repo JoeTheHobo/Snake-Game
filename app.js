@@ -619,14 +619,16 @@ io.on('connection', (socket) => {
                     return;
                 }
 
-                let query = "SELECT name, board_image, id, published FROM boards WHERE tag = ?";
+                let query = "SELECT board, id, published FROM boards WHERE tag = ?";
                 db.query(query,[Number(account.tag)],(err,results) => {
                     if (err) {
                         console.log(73,err);
                         return;
                     }
         
-                    io.to(socket.id).emit("serverSending_boardStats",results);
+                    decompressBoardsFromDB(results,(dbBoards) => {
+                        io.to(socket.id).emit("serverSending_boardStats",dbBoards);
+                    });
                 })
             })
         } catch {
@@ -654,14 +656,16 @@ io.on('connection', (socket) => {
                         return;
                     }
     
-                    let query = "SELECT name, board_image, id, published FROM boards WHERE tag = ?";
+                    let query = "SELECT board, id, published FROM boards WHERE tag = ?";
                     db.query(query,[Number(account.tag)],(err,results) => {
                         if (err) {
                             console.log(73,err);
                             return;
                         }
             
-                        io.to(socket.id).emit("serverSending_boardStats",results);
+                        decompressBoardsFromDB(results,(dbBoards) => {
+                            io.to(socket.id).emit("serverSending_boardStats",dbBoards);
+                        });
                     })
                 })
             })
@@ -705,14 +709,16 @@ io.on('connection', (socket) => {
                     return;
                 }
 
-                let query = "SELECT name, board_image, id, published FROM boards WHERE tag = ?";
+                let query = "SELECT board, id, published FROM boards WHERE tag = ?";
                 db.query(query,[Number(account.tag)],(err,results) => {
                     if (err) {
                         console.log(73,err);
                         return;
                     }
         
-                    io.to(socket.id).emit("serverSending_boardStats",results);
+                    decompressBoardsFromDB(results,(dbBoards) => {
+                        io.to(socket.id).emit("serverSending_boardStats",dbBoards);
+                    });
                 })
 
 
@@ -812,8 +818,7 @@ io.on('connection', (socket) => {
             itemDifferences: [],
             tileDifferences: [],
             background: backgrounds[0],
-            recommendedGameMode: false,
-            gameMode: presetGameModes[0],
+            gameModes: [presetGameModes[0]],
             originalMap: newMap(width,height), 
             map: [],
             id: Number(Date.now().toString() + simple.rnd(9999)),
@@ -2512,7 +2517,7 @@ function decompressBoardsFromDB(dbBoards,func, index = 0,sendBackBoards = []) {
         func(sendBackBoards);
         return;
     }
-    
+
     decompressObject(dbBoards[index].board,(err,result) => {
         if (err) {
             console.log(8321,err);

@@ -1434,6 +1434,7 @@ function getArrayOfSelection() {
 function runTool(type,desiredValue) {
     if (type == "boardSettings") {
         $(".me_popup_boardSettings").show("flex");
+        loadBoardGameModes();
     }
     if (type == "reflectX") {
         let newBoard = flipHorizontally(getArrayOfSelection());
@@ -2539,3 +2540,43 @@ function generateKeyMapping(keys) {
     return Object.fromEntries(shuffled.map((key, i) => [key, (360 / keys.length) * i]));  
 }  
 keyMapping = generateKeyMapping(allPianoKeys);  
+function loadBoardGameModes() {
+    let gameModesHolder = $(".me_ih_gameModesHolder"); 
+    gameModesHolder.innerHTML = "";
+
+    function generateGameMode(gameMode) {
+        let holder = gameModesHolder.create("div.me_gm_holder");
+
+        let name = holder.create("div.me_gm_name");
+        name.innerHTML = gameMode.name;
+
+        let rightOptions = holder.create("div.me_gm_right");
+
+        function addSetting(src,func) {
+            let imgHolder = rightOptions.create("div.me_gm_imgHolder");
+            let img = imgHolder.create("img.me_gm_img");
+            img.src = "img/menuIcons/" + src + ".png";
+            imgHolder.on("click",func);
+        }
+
+        addSetting("edit",() => {
+
+        })
+        if (currentBoard.gameModes.length > 1) {
+            addSetting("delete",() => {
+
+            })
+            addSetting("selectDown",() => {
+
+            })
+            addSetting("selectUp",() => {
+
+            })
+        }
+    }
+
+    for (let i = 0; i < currentBoard.gameModes.length; i++) {
+        generateGameMode(currentBoard.gameModes[i]);
+    }
+
+} 

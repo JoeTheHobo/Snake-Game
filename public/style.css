@@ -4297,3 +4297,47 @@ gap: 1px; /* Optional: Adjust spacing between items */
   font-size: 30px;
   color: black;
 }
+
+
+
+.me_ih_gameModesHolder {
+  border: 3px solid white;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+}
+.me_gm_holder {
+  width: 100%;
+  border: 2px solid rgb(20, 20, 90);
+  background: rgb(43, 102, 211);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.me_gm_name {
+  color: white;
+  font-size: 25px;
+}
+.me_gm_right {
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.me_gm_imgHolder {
+  height: 90%;
+  aspect-ratio: 1/1;
+  border-radius: 5px;
+  border: 2px solid white;
+  background: rgb(207, 207, 207);
+  transition: all .2s ease-in-out;
+}
+.me_gm_imgHolder:hover {
+  background: rgb(150, 150, 150);
+  
+}
+.me_gm_img {
+  width: 70%;
+  height: 70%;
+  filter: invert(100%);
+}
