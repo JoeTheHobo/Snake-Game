@@ -186,9 +186,6 @@ $(".sc_gmb_editGameModeHolder").on("click",function() {
     $(".customizeGamemodePopup").show();
     editGameMode($(".customizeGamemodePopup"),localAccount.lobbyGamemode,false,"server");
 })
-$("sc_boards_recommendedGameMode").on("click",function() {
-    socket.emit("changeGameModetoBoards");
-})
 $("button_backToLobby").on("click",function() {
     $(".endScreenStats").hide();
 

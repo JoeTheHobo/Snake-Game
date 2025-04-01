@@ -2553,7 +2553,8 @@ function loadBoardGameModes() {
         }
 
         addSetting("edit",() => {
-
+            $(".customizeGamemodePopup").show();
+            editGameMode($(".customizeGamemodePopup"),gameMode,true,"mapEditor");
         })
         if (currentBoard.gameModes.length > 1) {
             addSetting("delete",() => {

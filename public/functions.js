@@ -1155,10 +1155,6 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
             $(".hostFlex").show("flex");
             $(".sc_tb_lobbyName").classAdd("cursorSelector");
 
-            if (lobby.board.recommendedGameMode) {
-                $("sc_boards_recommendedGameMode").show();
-                $("sc_boards_recommendedGameMode").innerHTML = "Recommended Game Mode: " + lobby.board.gameMode.name;
-            } else $("sc_boards_recommendedGameMode").hide();
         }
         else {
             localAccount.isHost = false;
@@ -1168,12 +1164,6 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
     }
     if (type == "all" || type == "lobbyName") {
         $(".sc_tb_lobbyName").innerHTML = type == "all" ? lobby.lobbyName : lobby;
-    }
-    if (type == "board" && localAccount.id === extra) {
-        if (lobby.recommendedGameMode) {
-            $("sc_boards_recommendedGameMode").show();
-            $("sc_boards_recommendedGameMode").innerHTML = "Recommended Game Mode: " + lobby.gameMode.name;
-        } else $("sc_boards_recommendedGameMode").hide();
     }
 
     if (type == "all" || type == "board") localAccount.lobbyBoard = type == "all" ? lobby.board : lobby;

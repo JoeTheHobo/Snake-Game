@@ -832,52 +832,22 @@ function loadGameModesScreen(index = false) {
         });
 }
 
-function editGameMode(holder2,gameMode,htmlName,server = false) {
+function editGameMode(holder2,gameMode,htmlName,cameFrom) {
     if (gameMode.cantEdit && !server) return;
     let html_gameModesHolder = holder2;
-    let deletehtml = `<div class="gameModes_settings_title">Danger Zone</div>
-    <div class="gameModes_fullWidth hover"><div class="gameModes_deleteButton">Delete Game Mode</div></div>`;
-    if (server) deletehtml = ``;
-    let returnhtml = `<div class="gameModes_fullWidth hover"><div class="gameModes_returnButton">Exit Game Mode Customization</div></div>`;
-    if (!server) returnhtml = ``;
     html_gameModesHolder.innerHTML = `
-        ${returnhtml}
+        <div class="gameModes_fullWidth hover"><div class="gameModes_returnButton">Exit Game Mode Customization</div></div>
         <div class="gameModes_settings_title">General Settings</div>
         <div class="settingsHolder"></div>
         <div class="gameModes_settings_title">Item Settings</div>
         <div class="onSpawnHolder"></div>
         <div class="gameModes_settings_title" id="gameModes_item_selected_name">Nothing Selected</div>
         <div class="gameModes_item_settings"></div>
-        
-        ${deletehtml}
-        
     `;
 
-    if (!server) {
-        $(".gameModes_deleteButton").on("click",function() {
-            for (let i = 0; i < localAccount.gameModes.length; i++) {
-                if (localAccount.gameModes[i].id === gameMode.id) {
-                    makePopUp([
-                        {type: "text",text: "Delete " + gameMode.name},
-                        {type: "title",text: "Are You Sure?"},
-                        [
-                            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
-                            {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Delete",onClick: () => {
-                                socket.emit("deleteGameMode",gameMode.id,"editGameMode");
-                            }},
-                        ],
-                    ],{
-                        id: "deletePopUp",
-                    })
-                    
-                }
-            }
-        })
-    } else {
-        $(".gameModes_returnButton").on("click",function() {
-            $(".customizeGamemodePopup").hide();
-        })
-    }
+    $(".gameModes_returnButton").on("click",function() {
+        holder2.hide();
+    })
     
     function addSetting(title,type,value,func,list,change = "input") {
         let holder = $(".settingsHolder").create("div");
@@ -928,10 +898,7 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
             if (_type(value).type !== "string") return;
 
             gameMode.name = value;
-            htmlName.innerHTML = value;
             input.value = value;
-            console.log("saving")
-            socket.emit("saveGamemode",gameMode);
         },false,"change");
     }
     addSetting("Inventory Slots","number",gameMode.howManyItemsCanPlayersUse,function(value,input) {
@@ -948,8 +915,7 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
             $("gm_inventoryslots").value = 2;
             gameMode.howManyItemsCanPlayersUse = 2;
         }
-        if (!server) socket.emit("saveGamemode",gameMode);
-        else socket.emit("editServerGameMode",gameMode);
+        if (server) socket.emit("editServerGameMode",gameMode);
     },["direct","scroll"]);
     addSetting("When Snakes Die","dropdown",gameMode.whenSnakesDie,function(value) {
         gameMode.whenSnakesDie = value.toLowerCase();
@@ -962,44 +928,37 @@ function editGameMode(holder2,gameMode,htmlName,server = false) {
         if (value > 100) value = 100;
 
         gameMode.setFoodRate = value;
-        if (!server) socket.emit("saveGamemode",gameMode);
-        else socket.emit("editServerGameMode",gameMode);
+        if (server) socket.emit("editServerGameMode",gameMode);
     });
     addSetting("Respawn","dropdown",gameMode.respawn,function(value) {
         gameMode.respawn = value == "true" ? true : false;
-        if (!server) socket.emit("saveGamemode",gameMode);
-        else socket.emit("editServerGameMode",gameMode);
+        if (server) socket.emit("editServerGameMode",gameMode);
     },["true","false"]);
     addSetting("Respawn Timer (Seconds)","number",gameMode.respawnTimer,function(value,input) {
         if (value < 0) input.value = 0;
         if (value > 60) input.value = 60;
         gameMode.respawnTimer = value;
-        if (!server) socket.emit("saveGamemode",gameMode);
-        else socket.emit("editServerGameMode",gameMode);
+        if (server) socket.emit("editServerGameMode",gameMode);
     });
     addSetting("Respawn Tail %","number",gameMode.respawnGrowth,function(value,input) {
         if (value < 0) input.value = 0;
         if (value > 100) input.value = 100;
         gameMode.respawnGrowth = value;
-        if (!server) socket.emit("saveGamemode",gameMode);
-        else socket.emit("editServerGameMode",gameMode);
+        if (server) socket.emit("editServerGameMode",gameMode);
     });
     addSetting("Respawn Protection (seconds)","number",gameMode.respawnProtection,function(value,input) {
         if (value < 0) input.value = 0;
         if (value > 15) input.value = 15;
         gameMode.respawnProtection = value;
-        if (!server) socket.emit("saveGamemode",gameMode);
-        else socket.emit("editServerGameMode",gameMode);
+        if (server) socket.emit("editServerGameMode",gameMode);
     });
     addSetting("Snake Collision","dropdown",gameMode.snakeCollision,function(value) {
         gameMode.snakeCollision = value == "true" ? true : false;
-        if (!server) socket.emit("saveGamemode",gameMode);
-        else socket.emit("editServerGameMode",gameMode);
+        if (server) socket.emit("editServerGameMode",gameMode);
     },["true","false"]);
     addSetting("Team Collision","dropdown",gameMode.teamCollision,function(value) {
         gameMode.teamCollision = value == "true" ? true : false;
-        if (!server) socket.emit("saveGamemode",gameMode);
-        else socket.emit("editServerGameMode",gameMode);
+        if (server) socket.emit("editServerGameMode",gameMode);
     },["true","false"]);
 
 
@@ -1069,10 +1028,7 @@ function setItemAlteration(gameMode,item,isServer) {
         })
     }
 
-    if (isServer)
-        socket.emit("editServerGameMode",gameMode);
-    else
-        socket.emit("saveGamemode",gameMode);  
+    if (isServer) socket.emit("editServerGameMode",gameMode);
 }
 function gameMode_editItem(item,html_holder,server,gameMode) {
     html_holder.innerHTML = "";

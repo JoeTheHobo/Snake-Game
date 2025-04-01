@@ -921,30 +921,6 @@ io.on('connection', (socket) => {
             }
         }
     })
-    socket.on("saveGamemode",(gameMode) => {
-        let account = onlineAccounts[socket.id];
-        for (let i = 0; i < account.gameModes.length; i++) {
-            if (account.gameModes[i].id == gameMode.id) {
-                if (checkGameMode(gameMode,socket.id) !== true) {
-                    console.log(7564,checkGameMode(gameMode,socket.id));
-                    return;
-                };
-
-                account.gameModes[i] = gameMode;
-                account.gameModes[i].whenSnakesDie = account.gameModes[i].whenSnakesDie.toLowerCase(); 
-                io.to(socket.id).emit("updateLocalGameModes",account.gameModes)
-
-                if (account.loggedIn) {
-                    let query = "UPDATE gamemodes SET gamemode = ? WHERE id = ? AND tag = ?";
-                    db.query(query, [JSON.stringify(gameMode),gameMode.id,Number(account.tag)],(err) => {
-                        if (err) console.log(42315, err);
-                    })
-                }
-
-                return;
-            }
-        }
-    })
     socket.on("newLobby", (lobby) =>{
         if (!lobby) return;
 
@@ -1128,18 +1104,6 @@ io.on('connection', (socket) => {
             code: lobby.code,
         },"settings",lobby.hostID);
         updateLobbies();
-
-    })
-    socket.on("changeGameModetoBoards",() => {
-        let lobby = lobbies[onlineAccounts[socket.id].lobby];
-        if (!lobby) return;
-        if (lobby.hostID !== socket.id) return;
-
-        let gameMode = lobby.board.gameMode;
-        if (!gameMode) return;
-
-        lobby.gameMode = gameMode;
-        io.to(lobby.id).emit("updateLobbyPage", lobby.gameMode,"gameMode");
 
     })
     socket.on("editServerGameMode", (gamemode) => {
