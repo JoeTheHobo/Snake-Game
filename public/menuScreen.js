@@ -824,7 +824,7 @@ function editGameMode(holder2,gameMode,htmlName,cameFrom) {
     $(".gameModes_returnButton").on("click",function() {
         holder2.hide();
         if (cameFrom == "mapEditor") {
-            loadBoardGameModes();
+            loadBoardGameModes($(".me_ih_gameModesHolder"),currentBoard.gameModes,"mapEditor");
         }
     })
     
