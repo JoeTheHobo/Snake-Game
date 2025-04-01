@@ -2508,10 +2508,9 @@ function removePlayerStatus(lobby,player,itemName) {
 
 //From App.js
 function decompressBoardsFromDB(dbBoards,func, index = 0,sendBackBoards = []) {
-    if (index === dbBoards.length) {
+    if (index === dbBoards.length-1) {
         func(sendBackBoards);
     }
-    console.log(dbBoards)
 
     decompressObject(dbBoards[index].board,(err,result) => {
         if (err) {
