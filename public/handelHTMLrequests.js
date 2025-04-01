@@ -182,16 +182,6 @@ $(".sc_gmb_changeGameModeHolder").on("click",function() {
         socket.emit("changeServerGameMode",gameMode);
     });
 });
-$("me_gameMode").on("click",function() {
-    
-    $(".chooseGameModePopup").show("flex");
-    loadGameModesToPopup("preset",function(gameMode) {
-        currentGameMode = gameMode;
-        currentBoard.gameMode = structuredClone(currentGameMode);
-        $("me_gameMode").innerHTML = gameMode.name;
-        $("saveStatus").innerHTML = "Board Is Not Saved";
-    });
-})
 $(".sc_gmb_editGameModeHolder").on("click",function() {
     $(".customizeGamemodePopup").show();
     editGameMode($(".customizeGamemodePopup"),localAccount.lobbyGamemode,false,"server");
