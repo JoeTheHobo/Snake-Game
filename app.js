@@ -2511,6 +2511,7 @@ function decompressBoardsFromDB(dbBoards,func, index = 0,sendBackBoards = []) {
     if (index === dbBoards.length) {
         func(sendBackBoards);
     }
+    console.log(dbBoards)
 
     decompressObject(dbBoards[index].board,(err,result) => {
         if (err) {
