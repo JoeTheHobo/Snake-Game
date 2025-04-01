@@ -132,11 +132,8 @@ function openMapEditor(boardComingIn) {
     $("me_name").value = currentBoard.name;
     if (!currentBoard.background) currentBoard.background = backgrounds[0];
     $("me_background").innerHTML = currentBoard.background;
-    if (!currentBoard.gameMode) currentBoard.gameMode = currentGameMode;
-    $("me_gameMode").innerHTML = currentBoard.gameMode.name;
     $("me_minPlayers").value = currentBoard.minPlayers;
     $("me_maxPlayers").value = currentBoard.maxPlayers;
-    $("me_recommendedGameMode").checked = currentBoard.recommendedGameMode;
 
     $(".gameModeSelectionScreen").hide();
     $(".backgroundSelectionScreen").hide();
@@ -1839,10 +1836,6 @@ $("me_name").on("change",function() {
     if (this.value == "") return;
     currentBoard.name = this.value;
     saveBoard();
-})
-$("me_recommendedGameMode").on("change",function() {
-    currentBoard.recommendedGameMode = this.checked;
-    $("saveStatus").innerHTML = "Board Is Not Saved";
 })
 $("me_background").on("click",function() {
     let holder = $(".backgroundSelectionScreen");
