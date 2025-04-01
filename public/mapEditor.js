@@ -1431,7 +1431,7 @@ function getArrayOfSelection() {
 function runTool(type,desiredValue) {
     if (type == "boardSettings") {
         $(".me_popup_boardSettings").show("flex");
-        loadBoardGameModes();
+        loadBoardGameModes($(".me_ih_gameModesHolder"),currentBoard.gameModes);
     }
     if (type == "reflectX") {
         let newBoard = flipHorizontally(getArrayOfSelection());
@@ -2533,8 +2533,7 @@ function generateKeyMapping(keys) {
     return Object.fromEntries(shuffled.map((key, i) => [key, (360 / keys.length) * i]));  
 }  
 keyMapping = generateKeyMapping(allPianoKeys);  
-function loadBoardGameModes() {
-    let gameModesHolder = $(".me_ih_gameModesHolder"); 
+function loadBoardGameModes(gameModesHolder,gameModes,sentFrom) {
     gameModesHolder.innerHTML = "";
 
     function generateGameMode(gameMode,index) {
@@ -2552,45 +2551,56 @@ function loadBoardGameModes() {
             imgHolder.on("click",func);
         }
 
-        addSetting("edit",() => {
-            $(".customizeGamemodePopup").show();
-            editGameMode($(".customizeGamemodePopup"),gameMode,true,"mapEditor");
-        })
-        if (currentBoard.gameModes.length > 1) {
-            addSetting("delete",() => {
-                currentBoard.gameModes.splice(index,1);
-                loadBoardGameModes();
+        if (sentFrom == "mapEditor") {
+            addSetting("edit",() => {
+                $(".customizeGamemodePopup").show();
+                editGameMode($(".customizeGamemodePopup"),gameMode,true,"mapEditor");
             })
-            if (index !== currentBoard.gameModes.length-1) {
-                addSetting("selectDown",() => {
-                    let removedGameMode = currentBoard.gameModes.splice(index,1)[0];
-                    currentBoard.gameModes.splice(index+1,0,removedGameMode);
+            if (gameModes.length > 1) {
+                addSetting("delete",() => {
+                    gameModes.splice(index,1);
                     loadBoardGameModes();
                 })
-            }
-            if (index !== 0) {
-                addSetting("selectUp",() => {
-                    let removedGameMode = currentBoard.gameModes.splice(index,1)[0];
-                    currentBoard.gameModes.splice(index-1,0,removedGameMode);
-                    loadBoardGameModes();
-    
-                })
+                if (index !== gameModes.length-1) {
+                    addSetting("selectDown",() => {
+                        let removedGameMode = gameModes.splice(index,1)[0];
+                        gameModes.splice(index+1,0,removedGameMode);
+                        loadBoardGameModes();
+                    })
+                }
+                if (index !== 0) {
+                    addSetting("selectUp",() => {
+                        let removedGameMode = gameModes.splice(index,1)[0];
+                        gameModes.splice(index-1,0,removedGameMode);
+                        loadBoardGameModes();
+        
+                    })
+                }
             }
         }
+        if (sentFrom == "lobby") {
+            addSetting("select",() => {
+                gameModesHolder.hide();
+                socket.emit("changeServerGameMode",gameModes[index]);
+            })
+        }
+        
     }
 
-    for (let i = 0; i < currentBoard.gameModes.length; i++) {
-        generateGameMode(currentBoard.gameModes[i],i);
+    for (let i = 0; i < gameModes.length; i++) {
+        generateGameMode(gameModes[i],i);
     }
 
-    if (currentBoard.gameModes.length < 5) {
-        let plus = gameModesHolder.create("div.me_gm_plus");
-        plus.innerHTML = "+";
-
-        plus.on("click",() => {
-            currentBoard.gameModes.push(presetGameModes[0]);
-            loadBoardGameModes();
-        })
+    if (sentFrom == "mapEditor") {
+        if (gameModes.length < 5) {
+            let plus = gameModesHolder.create("div.me_gm_plus");
+            plus.innerHTML = "+";
+    
+            plus.on("click",() => {
+                gameModes.push(presetGameModes[0]);
+                loadBoardGameModes();
+            })
+        }
     }
 
 } 

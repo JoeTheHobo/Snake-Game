@@ -4299,7 +4299,23 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 
 
-
+.gameModesPopup {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+  flex-direction: column;
+  align-items: center;
+  background: #1f1f1f;
+  border-radius: 5px;
+  padding: 20px;
+  display: none;
+  z-index: 501;
+  width: 400px;
+  height: 250px;
+}
 .me_ih_gameModesHolder {
   border: 3px solid white;
   display: flex;

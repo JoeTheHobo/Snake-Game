@@ -240,6 +240,13 @@ $("quitGameButton").on("click",function() {
 $("endGameButton").on("click",function() {
     socket.emit("endGame");
 })
+$(".sc_gmb_changeGameModeHolder").on("click",function() {
+    if (!localAccount.isHost) return;
+
+    $(".gameModesPopup").show("flex");
+    loadBoardGameModes($(".gameModesPopup"),);
+
+})
 $(".sc_tb_lobbyName").on("click",function() {
     if (!localAccount.isHost) return;
     
