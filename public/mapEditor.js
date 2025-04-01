@@ -2572,4 +2572,13 @@ function loadBoardGameModes() {
         generateGameMode(currentBoard.gameModes[i]);
     }
 
+    if (currentBoard.gameModes.length < 5) {
+        let plus = gameModesHolder.create("div.me_gm_plus");
+        plus.innerHTML = "+";
+
+        plus.on("click",() => {
+            
+        })
+    }
+
 } 

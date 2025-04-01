@@ -4305,6 +4305,9 @@ gap: 1px; /* Optional: Adjust spacing between items */
   display: flex;
   flex-direction: column;
   width: 400px;
+  margin-bottom: 5px;
+  height: 250px;
+  align-items: center;
 }
 .me_gm_holder {
   width: 100%;
@@ -4315,6 +4318,8 @@ gap: 1px; /* Optional: Adjust spacing between items */
   flex-direction: row;
   align-items: center;
   box-sizing: border-box;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .me_gm_name {
   color: white;
@@ -4347,4 +4352,22 @@ gap: 1px; /* Optional: Adjust spacing between items */
   width: 70%;
   height: 70%;
   filter: invert(100%);
+}
+.me_gm_plus {
+  height: 40px;
+  width: 40px;
+  margin-top: 5px;
+  font-size: 25px;
+  border-radius: 5px;
+  border: 2px solid rgb(12, 95, 26);
+  background: rgb(27, 155, 48);
+  transition: all .2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: url('./img/pointer.cur'), auto !important;
+  
+}
+.me_gm_plus:hover {
+  background: rgb(16, 110, 32);
 }
