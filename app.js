@@ -546,7 +546,10 @@ io.on('connection', (socket) => {
                 return;
             }
 
-            io.to(socket.id).emit("serverSending_publishedBoards",results);
+            decompressBoardsFromDB(results,(dbBoards) => {
+                io.to(socket.id).emit("serverSending_publishedBoards",dbBoards);
+            });
+
         })
 
 
@@ -557,14 +560,16 @@ io.on('connection', (socket) => {
         if (!lobby) return;
         if (lobby.hostID !== socket.id) return;
 
-        let query = "SELECT name, board_image, id FROM boards WHERE published = 1";
+        let query = "SELECT board, id FROM boards WHERE published = 1";
         db.query(query,(err,results) => {
             if (err) {
                 console.log(73,err);
                 return;
             }
 
-            io.to(socket.id).emit("serverSending_publishedBoards",results);
+            decompressBoardsFromDB(results,(dbBoards) => {
+                io.to(socket.id).emit("serverSending_publishedBoards",dbBoards);
+            });
         })
 
     })
@@ -578,7 +583,9 @@ io.on('connection', (socket) => {
                 return;
             }
 
-            io.to(socket.id).emit("serverSending_boardStats",results);
+            decompressBoardsFromDB(results,(dbBoards) => {
+                io.to(socket.id).emit("serverSending_boardStats",dbBoards);
+            });
         })
     })
     socket.on("saveBoard",(board) => {
@@ -2500,6 +2507,26 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function decompressBoardsFromDB(dbBoards,func, index = 0,sendBackBoards = []) {
+    if (index === dbBoards.length) {
+        func(sendBackBoards);
+    }
+
+    decompressObject(dbBoards[index].board,(err,result) => {
+        if (err) {
+            console.log(8321,err);
+            return;
+        }
+
+        let obj = dbBoards[index];
+        obj.board = result;
+
+        sendBackBoards.push(obj);
+
+        decompressBoardsFromDB(dbBoards,func,index+1,sendBackBoards);
+
+    })
+}
 function setGuestAccount(socketID,full = false,sendHome = false) {
     let username = "GuestSnake";//simple.rnd(playerNames1) + simple.rnd(playerNames2);
     let tag = simple.rnd(1000,9999) + "";
