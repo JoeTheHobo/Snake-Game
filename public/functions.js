@@ -1438,29 +1438,6 @@ function showBoardMenu(func) {
     $(".chooseBoardPopup").show("flex");
     //socket.emit("askForLobbyBoards");
 }
-function loadGameModesToPopup(tab,func) {
-    $(".cbp_tab").classRemove("cbp_tab_selected");
-    $("cgm_" + tab).classAdd("cbp_tab_selected");
-
-    let parent = $(".cgm_list");
-    parent.innerHTML = "";
-
-    let gameModes;
-    if (tab == "preset") gameModes = presetGameModes;
-    if (tab == "personal") gameModes = localAccount.gameModes;
-
-    for (let i = 0; i < gameModes.length; i++) {
-        let holder = parent.create("div");
-        holder.className = "cgm_gameMode_holder";
-        holder.innerHTML = gameModes[i].name;
-
-        holder.gameMode = gameModes[i];
-        holder.on("click",function() {
-            $(".chooseGameModePopup").hide()
-            func(this.gameMode);
-        })
-    }
-}
 
 function showEndScreen() {
     $(".endScreenStats").show("flex");

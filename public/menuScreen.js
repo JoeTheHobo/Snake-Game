@@ -808,30 +808,6 @@ function loadLocalScreen() {
     loadContent(gameModesHolder,gameModes,"gameModes");
 }
 
-
-function loadGameModesScreen(index = false) {
-    if (localAccount.gameModes.length == localAccount.gameModeLimit)
-        addTop = [];
-    else {
-        addTop = [{type: "button",text: "New Game Mode",onClick: function() {
-            socket.emit("addNewGameMode","loadGameModesScreen");
-        }}];
-    }
-
-    $(".menu_tab").classRemove("menu_tab_selected");
-    $(".menu_content").hide();
-    $(".content_gameModes").show("flex");
-    $("gameModes_tab").classAdd("menu_tab_selected");
-    generateHTMLScreen($(".content_gameModes"),
-        {
-            list: localAccount.gameModes,
-            forceOpen: index,
-            type: "gameModes",
-            listContent: [{type: "title",text: ".name",tag: "name"}],
-            top: addTop,
-        });
-}
-
 function editGameMode(holder2,gameMode,htmlName,cameFrom) {
     if (gameMode.cantEdit && !server) return;
     let html_gameModesHolder = holder2;

@@ -160,28 +160,9 @@ $(".cbp_cancel").on("click",function() {
 })
 $(".cbp_tab").on("click",function() {
     let idStart = this.id.subset(0,"_\\before");
-    if (idStart == "cgm") 
-        if (!localAccount.isInMapEditor) {
-            loadGameModesToPopup(this.id.subset("_\\after","end"),function(gameMode) {
-                socket.emit("changeServerGameMode",gameMode);
-            })
-        } else {
-            loadGameModesToPopup(this.id.subset("_\\after","end"),function(gameMode) {
-                currentGameMode = gameMode;
-                currentBoard.gameMode = structuredClone(currentGameMode);
-                $("me_gameMode").innerHTML = gameMode.name;
-                $("saveStatus").innerHTML = "Board Is Not Saved";
-            });
-        }
     if (idStart == "cbp")
         selectTabInBoardMenu(this.innerHTML.subset(0," \\before").toLowerCase());
 })
-$(".sc_gmb_changeGameModeHolder").on("click",function() {
-    $(".chooseGameModePopup").show("flex");
-    loadGameModesToPopup("preset",function(gameMode) {
-        socket.emit("changeServerGameMode",gameMode);
-    });
-});
 $(".sc_gmb_editGameModeHolder").on("click",function() {
     $(".customizeGamemodePopup").show();
     editGameMode($(".customizeGamemodePopup"),localAccount.lobbyGamemode,false,"server");

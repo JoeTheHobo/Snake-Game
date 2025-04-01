@@ -27,22 +27,11 @@ socket.on("kickPlayer",(message) => {
     alert(message);
 
 })
-socket.on("updateLocalGameModes",(gameModes,sentFrom) => {
-    localAccount.gameModes = gameModes;
-
-    if (sentFrom == "loadGameModesScreen") {
-        loadGameModesScreen(localAccount.gameModes.length-1);
-    }
-    if (sentFrom == "editGameMode") {
-        loadGameModesScreen();
-    }
-})
 socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,server_basedGameMode,server_presetGameModes,server_backgrounds,server_tiles) =>{
     localAccount.id = id;
     localAccount.isInGame = false;
     localAccount.lobbyID = false;
     localAccount.players = account.players;
-    localAccount.gameModes = account.gameModes;
     localAccount.username = account.username;
     localAccount.tag = account.tag;
     localAccount.isInLobby = false;

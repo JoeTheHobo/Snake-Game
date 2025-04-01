@@ -884,43 +884,6 @@ io.on('connection', (socket) => {
             })
         }
     })
-    socket.on("addNewGameMode",(sentFrom) => {
-        let account = onlineAccounts[socket.id];
-        if (account.gameModes.length > account.gameModeLimit) {
-            return;
-        }
-
-        let gameMode = structuredClone(basedGameMode);
-        gameMode.id = Number(Date.now().toString() + simple.rnd(9999));
-        gameMode.accountID = socket.id;
-        account.gameModes.push(gameMode);
-
-        io.to(socket.id).emit("updateLocalGameModes",account.gameModes,sentFrom);
-
-        if (account.loggedIn) {
-            let query = "INSERT INTO gamemodes (tag, gamemode, id) VALUES (?, ?, ?)";
-            db.query(query, [Number(account.tag),JSON.stringify(gameMode),gameMode.id]);
-        }
-
-    })
-    socket.on("deleteGameMode",(gameModeID,sentFrom) => {
-        let account = onlineAccounts[socket.id];
-        for (let i = 0; i < account.gameModes.length; i++) {
-            if (account.gameModes[i].id == gameModeID) {
-                account.gameModes.splice(i,1);
-                io.to(socket.id).emit("updateLocalGameModes",account.gameModes,sentFrom)
-
-                if (account.loggedIn) {
-                    let query = "DELETE FROM gamemodes WHERE tag = ? AND id = ?";
-                    db.query(query,[Number(account.tag),gameModeID],(err) => {
-                        if (err) console.log(7653,err);
-                    })
-                }
-
-                return;
-            }
-        }
-    })
     socket.on("newLobby", (lobby) =>{
         if (!lobby) return;
 
@@ -954,7 +917,7 @@ io.on('connection', (socket) => {
                 let serverType = lobby.serverType.toLowerCase();
                 if (!["public","hidden","private"]) serverType = "public";
                 lobbies[id].serverType = serverType;
-                lobbies[id].gameMode = presetGameModes[0];
+                lobbies[id].gameMode = board.gameModes[0];
                 if (!lobby.playerMax) lobby.playerMax = 8;
                 let playerMax = Number(lobby.playerMax);
                 if (!simple.type(playerMax,true).isWholeNumber) playerMax = 8;
@@ -2508,9 +2471,7 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
 
         playerLimit: 10,
         players: [ ],
-        gameModeLimit: 10,
         publishedBoardLimit: 2,
-        gameModes: [],
         boardLimit: 10,
         canChangePassword: false,
 
@@ -2579,21 +2540,8 @@ function gatherDBInventory(account,user) {
 
         dbObj.inventory = results[0];
 
-        gatherDBgamemodes(account,user,dbObj);
-
-
-    })
-}
-function gatherDBgamemodes(account,user,dbObj) {
-    query = "SELECT * FROM gamemodes WHERE tag = ?";
-    db.query(query, [Number(user.tag)], (err,results) => {
-        if (err) return false;
-
-        dbObj.gamemodes = [];
-        for (let i = 0; i < results.length; i++) {
-            dbObj.gamemodes.push(JSON.parse(results[i].gamemode));
-        }
         gatherDBallowed(account,user,dbObj);
+
 
     })
 }
@@ -2639,9 +2587,6 @@ function setSocketToUser(account,user,dbObj) {
     account.musicVolume = dbObj.inventory.music_volume;
     account.sfxVolume = dbObj.inventory.sfx_volume;
     account.publishedBoardLimit = dbObj.inventory.published_board_limit;
-
-    //gamemodes
-    account.gameModes = dbObj.gamemodes;
 
     //allowed
     account.allowedItemIds = dbObj.allowed.items;
