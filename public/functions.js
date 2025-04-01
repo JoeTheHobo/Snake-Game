@@ -32,7 +32,7 @@ for (let i = 0; i < snakeSkins.length; i++) {
 }
 setTimeout(function() {
     loadSnakeSkins();
-},1000);
+},3000);
 //Setting up colors
 
 function getColorFromTeam(color) {
