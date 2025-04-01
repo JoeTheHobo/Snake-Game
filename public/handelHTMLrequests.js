@@ -244,7 +244,7 @@ $(".sc_gmb_changeGameModeHolder").on("click",function() {
     if (!localAccount.isHost) return;
 
     $(".gameModesPopup").show("flex");
-    loadBoardGameModes($(".gameModesPopup"),);
+    loadBoardGameModes($(".gameModesPopup"),localAccount.lobby.board.gameModes,"lobby");
 
 })
 $(".sc_tb_lobbyName").on("click",function() {
