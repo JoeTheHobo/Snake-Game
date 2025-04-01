@@ -991,7 +991,7 @@ function editGameMode(holder2,gameMode,htmlName,cameFrom) {
             $(".spawn_holder").classRemove("spawn_itemSelected");
             this.holder.classAdd("spawn_itemSelected");
             $("gameModes_item_selected_name").innerHTML = this.item.displayName;
-            gameMode_editItem(this.item,$(".gameModes_item_settings"),server,gameMode)
+            gameMode_editItem(this.item,$(".gameModes_item_settings"),cameFrom == "server",gameMode)
         })
     }
 }
