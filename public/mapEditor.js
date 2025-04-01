@@ -2559,20 +2559,20 @@ function loadBoardGameModes(gameModesHolder,gameModes,sentFrom) {
             if (gameModes.length > 1) {
                 addSetting("delete",() => {
                     gameModes.splice(index,1);
-                    loadBoardGameModes();
+                    loadBoardGameModes(gameModesHolder,gameModes,sentFrom);
                 })
                 if (index !== gameModes.length-1) {
                     addSetting("selectDown",() => {
                         let removedGameMode = gameModes.splice(index,1)[0];
                         gameModes.splice(index+1,0,removedGameMode);
-                        loadBoardGameModes();
+                        loadBoardGameModes(gameModesHolder,gameModes,sentFrom);
                     })
                 }
                 if (index !== 0) {
                     addSetting("selectUp",() => {
                         let removedGameMode = gameModes.splice(index,1)[0];
                         gameModes.splice(index-1,0,removedGameMode);
-                        loadBoardGameModes();
+                        loadBoardGameModes(gameModesHolder,gameModes,sentFrom);
         
                     })
                 }
@@ -2598,7 +2598,7 @@ function loadBoardGameModes(gameModesHolder,gameModes,sentFrom) {
     
             plus.on("click",() => {
                 gameModes.push(presetGameModes[0]);
-                loadBoardGameModes();
+                loadBoardGameModes(gameModesHolder,gameModes,sentFrom);
             })
         }
     }
