@@ -127,17 +127,11 @@ socket.on("serverSending_publishedBoards",(boardStats) => {
 
         let canvas = holder.create("canvas");
         canvas.className = "cbp_board_canvas";
-        try {
-            decompressObject(board.board_image,(err,result) => {
-                drawImageOnCanvas(result,canvas);
-            })
-        } catch {
-
-        }
+        drawBoardToCanvas(board.board.originalMap,canvas);
 
         let title = holder.create("div");
         title.className = "cbp_board_title";
-        title.innerHTML = board.name;
+        title.innerHTML = board.board.name;
 
         holder.on("click",function() {
             $(".chooseBoardPopup").hide();
@@ -159,22 +153,15 @@ socket.on("serverSending_boardStats",(boardStats) => {
     }
     $(".cb_tr_text_publishedCount").innerHTML =  publishedCount + "/" + localAccount.publishedBoardLimit;
 
-    function makeBoard(holder,content,type,index) {
+    function makeBoard(holder,content,type) {
         if (type == "board") {
             let container = holder.create("div.bm_boardContainer");
             let boardPortion = container.create("canvas.bm_boardCanvas");
             let settingPortion = container.create("div.bm_boardSettings")
             let boardName = container.create("div.bm_boardName");
-            boardName.innerHTML = content.name;
+            boardName.innerHTML = content.board.name;
 
-            
-            try {
-                decompressObject(content.board_image,(err,result) => {
-                    drawImageOnCanvas(result,boardPortion);
-                })
-            } catch {
-
-            }
+            drawBoardToCanvas(content.board.originalMap,boardPortion);
             
 
             boardPortion.on("click",function() {
@@ -192,7 +179,7 @@ socket.on("serverSending_boardStats",(boardStats) => {
             });
             addSetting("img/menuIcons/delete.png",function() {
                 makePopUp([
-                    {type: "text",text: "Delete " + content.name},
+                    {type: "text",text: "Delete " + content.board.name},
                     {type: "title",text: "Are You Sure?"},
                     [
                         {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},

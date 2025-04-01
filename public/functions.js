@@ -742,84 +742,6 @@ function forceAllCellsToBeTheirOwn(map) {
 }
 
 
-function getBoardImage(board,func) {
-    let canvas = document.createElement("canvas");
-    let map = board.originalMap;
-    let ctx = canvas.getContext("2d");
-    let grid_size = 19;
-
-    let width = Math.round(map[0].length * grid_size);
-    let height = Math.round(map.length * grid_size);
-
-    canvas.height = height;
-    canvas.width = width;
-
-
-    let backgroundImage = new Image();
-    backgroundImage.src = "img/backgrounds/" + board.background + ".png";
-    backgroundImage.onload = function() {
-        ctx.drawImage(backgroundImage,0,0,width,height);
-
-        for (let i = 0; i < map.length; i++) {
-            for (let j = 0; j < map[i].length; j++) {
-                let cell = map[i][j];
-    
-                let Xpos = (j * grid_size);
-                let Ypos = (i * grid_size);
-                
-                ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(grid_size),(grid_size));
-    
-                if (cell.item) {
-                    let image = getImage(cell.item,"canvas");
-                    if (!image) continue;
-                    ctx.drawImage(image,Xpos,Ypos,(grid_size),(grid_size));
-                }
-    
-            }
-        }
-
-        let imageData = canvas.toDataURL("image/jpeg",0.7);
-        func(imageData)
-        canvas.remove(); // Clean up
-    }
-}
-function drawImageOnCanvas(base64ImageData, canvas) {
-    // Create a new Image element
-    let image = new Image();
-    
-    // Set the source of the image (Base64 data)
-    image.src = base64ImageData;
-
-    // Wait until the image has loaded before drawing it to the canvas
-    image.onload = function() {
-        // Get the context of the provided canvas
-        let ctx = canvas.getContext("2d");
-
-        // Get the canvas dimensions
-        let width = canvas.getBoundingClientRect().width;
-        let height = canvas.getBoundingClientRect().height;
-        canvas.width = width;
-        canvas.height = height;
-        let canvasWidth = canvas.width;
-        let canvasHeight = canvas.height;
-
-        // Calculate the aspect ratio of the image
-        let imageWidth = canvasWidth;
-        let imageHeight = (image.height / image.width) * imageWidth; // Calculate height based on aspect ratio
-
-        // Clear the canvas before drawing
-        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-        
-        // Draw the scaled image onto the canvas
-        ctx.drawImage(image, 0, 0, imageWidth,imageHeight);
-    };
-
-    // Optional: Handle error if image fails to load
-    image.onerror = function() {
-        console.error("Failed to load the image.");
-    };
-}
 
 function drawTunnelCanvas(canvas,pos) {
     let x = pos.x*gridSize;
@@ -1416,6 +1338,47 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
     }
 }
 
+function getBoardImage(board,func) {
+    let canvas = document.createElement("canvas");
+    let map = board.originalMap;
+    let ctx = canvas.getContext("2d");
+    let grid_size = 19;
+
+    let width = Math.round(map[0].length * grid_size);
+    let height = Math.round(map.length * grid_size);
+
+    canvas.height = height;
+    canvas.width = width;
+
+
+    let backgroundImage = new Image();
+    backgroundImage.src = "img/backgrounds/" + board.background + ".png";
+    backgroundImage.onload = function() {
+        ctx.drawImage(backgroundImage,0,0,width,height);
+
+        for (let i = 0; i < map.length; i++) {
+            for (let j = 0; j < map[i].length; j++) {
+                let cell = map[i][j];
+    
+                let Xpos = (j * grid_size);
+                let Ypos = (i * grid_size);
+                
+                ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(grid_size),(grid_size));
+    
+                if (cell.item) {
+                    let image = getImage(cell.item,"canvas");
+                    if (!image) continue;
+                    ctx.drawImage(image,Xpos,Ypos,(grid_size),(grid_size));
+                }
+    
+            }
+        }
+
+        let imageData = canvas.toDataURL("image/jpeg",0.7);
+        func(imageData)
+        canvas.remove(); // Clean up
+    }
+}
 function drawBoardToCanvas(board,canvas) {
     let ctx = canvas.getContext("2d");
     let grid_size;

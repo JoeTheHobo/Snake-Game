@@ -539,7 +539,7 @@ io.on('connection', (socket) => {
         if (!lobby) return;
         if (lobby.hostID !== socket.id) return;
 
-        let query = `SELECT name, board_image, id FROM boards WHERE tag = ${account.tag}`;
+        let query = `SELECT board, id FROM boards WHERE tag = ${account.tag}`;
         db.query(query,(err,results) => {
             if (err) {
                 console.log(735,err);
@@ -571,7 +571,7 @@ io.on('connection', (socket) => {
     socket.on("db_getAccountBoardStats",() => {
         let account = onlineAccounts[socket.id];
         if (!account.loggedIn) return;
-        let query = "SELECT name, board_image, id, published FROM boards WHERE tag = ?";
+        let query = "SELECT board, id, published FROM boards WHERE tag = ?";
         db.query(query,[Number(account.tag)],(err,results) => {
             if (err) {
                 console.log(73,err);
@@ -581,7 +581,7 @@ io.on('connection', (socket) => {
             io.to(socket.id).emit("serverSending_boardStats",results);
         })
     })
-    socket.on("saveBoard",(board,boardImageData) => {
+    socket.on("saveBoard",(board) => {
         let account = onlineAccounts[socket.id];
         if (!account.loggedIn) return;
 
@@ -594,11 +594,9 @@ io.on('connection', (socket) => {
             if (err) {
                 console.log(2342134,err);
             }
-            compressObject(boardImageData,(err,compressedImage) => {
-                let query = "UPDATE boards SET board = ?, name = ?, board_image = ? WHERE id = ? AND tag = ?";
-                db.query(query,[compressedBoard,board.name,compressedImage,Number(board.id),Number(account.tag)],(err,results)=>{
-                    if (err) console.log(74534,err);
-                })
+            let query = "UPDATE boards SET board = ? WHERE id = ? AND tag = ?";
+            db.query(query,[compressedBoard,Number(board.id),Number(account.tag)],(err,results)=>{
+                if (err) console.log(74534,err);
             })
         })
     })
@@ -867,8 +865,8 @@ io.on('connection', (socket) => {
                     console.log(34633,err);
                     return;
                 }
-                let query = "INSERT INTO boards (tag, board, published, id, name) VALUES (?, ?, ?, ?, ?)";
-                db.query(query,[Number(account.tag),compressedBoard,0,Number(board.id),board.name],(err)=>{
+                let query = "INSERT INTO boards (tag, board, published, id) VALUES (?, ?, ?, ?)";
+                db.query(query,[Number(account.tag),compressedBoard,0,Number(board.id)],(err)=>{
                     if (err) console.log(6432,err);
                 })
             })
