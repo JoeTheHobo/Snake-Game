@@ -847,6 +847,9 @@ function editGameMode(holder2,gameMode,htmlName,cameFrom) {
 
     $(".gameModes_returnButton").on("click",function() {
         holder2.hide();
+        if (cameFrom == "mapEditor") {
+            loadBoardGameModes();
+        }
     })
     
     function addSetting(title,type,value,func,list,change = "input") {
