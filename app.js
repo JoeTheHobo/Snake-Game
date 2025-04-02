@@ -450,36 +450,12 @@ io.on('connection', (socket) => {
     
                     let account = onlineAccounts[socket.id];
                     //Add To Inventory Database
-                    const invQuery = "INSERT INTO inventory (tag, board_limit, gamemode_limit, coins, battle_pass_points, server_snake, name_color, challenge_limit, music_volume, sfx_volume, status, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    db.query(invQuery, [tag,account.boardLimit,account.gameModeLimit,account.coins,account.battlePassPoints, JSON.stringify(account.serverSnake), account.chatNameColor, account.challengeLimit,account.musicVolume,account.sfxVolume, "Account", account.dateCreated], (err,results) => {
+                    const invQuery = "INSERT INTO inventory (tag, board_limit, coins, battle_pass_points, server_snake, name_color, challenge_limit, music_volume, sfx_volume, status, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    db.query(invQuery, [tag,account.boardLimit,account.coins,account.battlePassPoints, JSON.stringify(account.serverSnake), account.chatNameColor, account.challengeLimit,account.musicVolume,account.sfxVolume, "Account", account.dateCreated], (err,results) => {
                         if (err) {
                             console.log(err);
                         }
                     });
-
-                    decompressObject(account.boards,(err,decompressed) => {
-                        if (err) {
-                            console.log(3214,err);
-                            return;
-                        }
-
-                        for (let i = 0; i < decompressed.length; i++) {
-                            decompressed[i].tag = tag;
-                        }
-
-                        zipAllBoards(decompressed,function(rawList) {
-                            const boardQuery = "INSERT INTO boards (tag, board, published) VALUES (?, ?, ?)";
-                            for (let i = 0; i < rawList.length; i++) {
-                                db.query(boardQuery, [tag, rawList[i],0], () => {});
-                            }
-                        })
-                    })
-                    
-
-                    const gamemodeQuery = "INSERT INTO gamemodes (tag, gamemode) VALUES (?, ?)";
-                    for (let i = 0; i < account.gameModes.length; i++) {
-                        db.query(gamemodeQuery,[tag, JSON.stringify(account.gameModes[i])],() => {});
-                    }
 
                     let type;
                     const allowedQuery = "INSERT INTO allowed (tag, allowed_id, type) VALUES (?, ?, ?)";
