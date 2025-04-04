@@ -418,7 +418,7 @@ io.on('connection', (socket) => {
                     //Success
                     // Create a unique token (e.g., using crypto or JWT)
                     const verificationToken = crypto.randomBytes(20).toString('hex');
-                    const verificationLink = `http://167.71.180.126:4000/verify?token=${verificationToken}`;
+                    const verificationLink = `http://167.71.180.126:4000/verify?token=${verificationToken}=verify`;
                     
                     // Insert verification token into the database
                     const updateQuery = 'UPDATE credentials SET verification_token = ? WHERE email = ?';

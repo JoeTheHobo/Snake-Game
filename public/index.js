@@ -781,7 +781,6 @@ window.onload = function() {
         console.log(action);
         if (action === 'verify') {
             // Handle verification process
-            console.log("eyo")
             setScene("verify");
             loginLoad("verify");
         }
