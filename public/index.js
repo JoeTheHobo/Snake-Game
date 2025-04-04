@@ -778,6 +778,7 @@ window.onload = function() {
     const action = urlParams.get('action'); // Get the action type (verify or reset-password)
 
     if (token) {
+        console.log(action);
         if (action === 'verify') {
             // Handle verification process
             console.log("eyo")
