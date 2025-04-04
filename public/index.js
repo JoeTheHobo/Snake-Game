@@ -778,13 +778,12 @@ window.onload = function() {
     const action = urlParams.get('action'); // Get the action type (verify or reset-password)
 
     if (token) {
-        console.log(action);
-        if (action === 'verify') {
+        if (token.subset("=\\after","end") === 'verify') {
             // Handle verification process
             setScene("verify");
             loginLoad("verify");
         }
-        if (action === 'reset-password') {
+        if (token.subset("=\\after","end") === 'reset-password') {
             // Handle reset-password process
 
         }
