@@ -780,6 +780,7 @@ window.onload = function() {
     if (token) {
         if (action === 'verify') {
             // Handle verification process
+            console.log("eyo")
             setScene("verify");
             loginLoad("verify");
         }
