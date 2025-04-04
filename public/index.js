@@ -781,7 +781,7 @@ window.onload = function() {
         if (token.subset("=\\after","end") === 'verify') {
             // Handle verification process
             setScene("login");
-            loginLoad("verify");
+            loginLoad("login");
         }
         if (token.subset("=\\after","end") === 'reset-password') {
             // Handle reset-password process
