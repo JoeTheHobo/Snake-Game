@@ -370,8 +370,8 @@ io.on('connection', (socket) => {
         });
     })
     socket.on("user_signup", (email,username,password) => {
-        if (onlineAccounts[socket.id].status !== "Guest") return;
         let account = onlineAccounts[socket.id];
+        if (account.status !== "Guest") return;
         if (account.loggedIn) {
             console.log("Caught Hacking",124);
             return;
@@ -402,9 +402,9 @@ io.on('connection', (socket) => {
 
                 const hashedPassword = await bcrypt.hash(password, 10);
 
-                const query = 'INSERT INTO credentials (username, tag, password, email) VALUES (?, ?, ?, ?)';
+                const query = 'INSERT INTO credentials (username, tag, password, email, status, date_created) VALUES (?, ?, ?, ?, ?, ?)';
         
-                db.query(query, [username, tag, hashedPassword, email], (err, results) => {
+                db.query(query, [username, tag, hashedPassword, email,"Account", account.dateCreated], (err, results) => {
                     if (err) {
                         if (err.code === 'ER_DUP_ENTRY') {
                             // This means the email is already taken
@@ -448,10 +448,9 @@ io.on('connection', (socket) => {
                         });
                     });
     
-                    let account = onlineAccounts[socket.id];
                     //Add To Inventory Database
-                    const invQuery = "INSERT INTO inventory (tag, board_limit, coins, battle_pass_points, server_snake, name_color, challenge_limit, music_volume, sfx_volume, status, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    db.query(invQuery, [tag,account.boardLimit,account.coins,account.battlePassPoints, JSON.stringify(account.serverSnake), account.chatNameColor, account.challengeLimit,account.musicVolume,account.sfxVolume, "Account", account.dateCreated], (err,results) => {
+                    const invQuery = "INSERT INTO inventory (tag, board_limit, coins, battle_pass_points, server_snake, name_color, challenge_limit, music_volume, sfx_volume) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    db.query(invQuery, [tag,account.boardLimit,account.coins,account.battlePassPoints, JSON.stringify(account.serverSnake), account.chatNameColor, account.challengeLimit,account.musicVolume,account.sfxVolume], (err,results) => {
                         if (err) {
                             console.log(err);
                         }
