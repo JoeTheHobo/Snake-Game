@@ -4394,6 +4394,9 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 
 .redScale {
-  filter: grayscale(100%);
   border: 2px solid red !important;
+}
+.redScale * {
+  filter: grayscale(100%);
+
 }
