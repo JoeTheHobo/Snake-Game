@@ -2,7 +2,7 @@ let at_table = false;
 let at_filters = [];
 let at_headerNames = [];
 $(".at_tab").on("click",function() {
-    setTab(this.innerHTML.toLowerCase());
+    at_setTab(this.innerHTML.toLowerCase());
 })
 
 function at_setTab(tabName) {
