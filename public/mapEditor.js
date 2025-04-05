@@ -1063,7 +1063,7 @@ function saveBoard() {
 
     html_saveStatus.innerHTML = "Board Saved";
 }
-$("me_button").on("mouseOver",function() {
+$("me_button").on("mouseover",function() {
     console.log("EYO");
     socket.emit("db_getAccountBoardStats","MapEditor");
 })
