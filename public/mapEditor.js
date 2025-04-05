@@ -2078,7 +2078,6 @@ function updateItemList(allowedIds,itemList,tagList) {
 
     for (let i = 0; i < itemList.length; i++) {
         let item = itemList[i];
-        if (!allowedIds.includes(item.id)) continue;
         let hasAllowedTag = false;
         if (tagList.length == 0) hasAllowedTag = true;
         for (let j = 0; j < item.tags.length; j++) {
@@ -2096,6 +2095,10 @@ function updateItemList(allowedIds,itemList,tagList) {
         img.className = "me_itemImage";
         img.src = getImage(item,"src");
 
+        if (!allowedIds.includes(item.id)) {
+            div.classAdd("grayScale");
+            continue;
+        }
         div.on("click",function() {
             if (item.type == "item") savedSelectingItem = item.id;
             if (item.type == "tile") savedSelectingTile = item.id;
@@ -2441,6 +2444,7 @@ function loadItemSpawning() {
 
     for (let i = 0; i < items.length; i++) {
         let item = items[i];
+        if (!localAccount.allowedItemIds.includes(item.id)) continue;
 
         let div = holder.create("div");
         div.className = "me_itemHolder2 hover";
@@ -2455,10 +2459,6 @@ function loadItemSpawning() {
             div.classAdd("notAllowedItem")
         }
 
-        if (!localAccount.allowedItemIds.includes(item.id)) {
-            div.classAdd("grayScale");
-            continue;
-        }
         div.on("click",function() {
             if (this.classList.contains("notAllowedItem")) {
                 this.classRemove("notAllowedItem")
