@@ -774,6 +774,8 @@ io.on('connection', (socket) => {
                         team: "white",
                         spawnCap: false,
                         respawnHere: true,
+                        priority: 0,
+                        alternate: false,
     
                         active: true,
                         activateWhenBoardStatus: false,
@@ -1313,10 +1315,11 @@ io.on('connection', (socket) => {
         updateAllCells(lobby);
 
 
+        let playerZones = organizeZones(lobby.spawnZones.players);
         let allPlayersSpawned = true;
         for (let i = 0; i < lobby.players.length; i++) {
             let player = onlineAccounts[lobby.players[i]].player;
-            let playerSpawned = spawn(lobby,player,true);
+            let playerSpawned = spawn(lobby,player,true,playerZones);
             if (playerSpawned === false) allPlayersSpawned = false;
         }
 
@@ -1719,9 +1722,9 @@ function fixBoardDifferences(map,differences,type) {
         if (type == "tile") map[d.y][d.x].tile = pos;
     }
 }
-function spawn(lobby,thingToSpawn,gameStart = false) {
+function spawn(lobby,thingToSpawn,gameStart = false,setZones) {
     if (simple.type(thingToSpawn) == "number") spawnItem(lobby,thingToSpawn,gameStart)
-    if (thingToSpawn?.type == "player") return spawnPlayer(lobby,thingToSpawn,gameStart);
+    if (thingToSpawn?.type == "player") return spawnPlayer(lobby,thingToSpawn,gameStart,setZones);
 }
 function spawnItem(lobby,itemID,gameStart = false) {
     let board = lobby.board;
@@ -1774,15 +1777,15 @@ function spawnItem(lobby,itemID,gameStart = false) {
 
     if (item.spawnLimit !== false) item.spawnLimit--;
 }
-function spawnPlayer(lobby,player,gameStart = false) {
-    let spot = findEmptySpotInZones(lobby,lobby.spawnZones.players,"player",gameStart,player);
+function spawnPlayer(lobby,player,gameStart = false,setZones) {
+    let spot = findEmptySpotInZones(lobby,lobby.spawnZones.players,"player",gameStart,player,setZones);
     if (!spot) {
         console.log("No Available Spots For Player")
         if (gameStart) {
             return false;
         } else {
             setTimeout(function() {
-                spawnPlayer(lobby,player,gameStart)
+                spawnPlayer(lobby,player,gameStart);
             },1000);
         }
         return;
@@ -1801,30 +1804,40 @@ function spawnPlayer(lobby,player,gameStart = false) {
     lobby.updateSnakeCells.push(lobby.snakeMap[spot.y][spot.x]);
     return true;
 }
-function findEmptySpotInZones(lobby,zones,type,extra,extra2) {
-    let shuffledZones = simple.shuffle(zones);
+function findEmptySpotInZones(lobby,zones,type,extra,extra2,setZones) {
+    let gameStart = false;
+    if (type == "player") {
+        gameStart = extra;
+    }
+
+    let shuffledZones = gameStart ? setZones : simple.shuffle(zones);
 
     for (let i = 0; i < shuffledZones.length; i++) {
-        let z = shuffledZones[i];
-        if (!z.active) continue;
+        let zone = shuffledZones[i];
+        if (!zone.active) continue;
 
         if (type == "item") if (z.itemsThatCantSpawnHere.includes(extra.id)) continue;
         if (type == "player") {
-            let gameStart = extra;
             let player = extra2;
             if (!gameStart) {
-                if (player.team !== z.team) continue;
-                if (!z.respawnHere) continue;
+                if (player.team !== zone.team) continue;
+                if (!zone.respawnHere) continue;
             }
             if (gameStart) {
-                if (z.spawnCap !== false && z.spawnCap < 1) continue;
-                if (z.spawnCap !== false && z.spawnCap > 0) z.spawnCap--;
+                if (zone.spawnCap !== false && zone.spawnCap < 1) continue;
+                if (zone.spawnCap !== false && zone.spawnCap > 0) z.spawnCap--;
             }
         }
 
-        let spot = findEmptySpotInZone(z,lobby)
+        let spot = findEmptySpotInZone(zone,lobby)
 
         if (!spot) continue;
+
+        if (gameStart) {
+            if (zone.alternate) {
+                setZones.push(setZones.shift());
+            }
+        }
         
         return spot;
     }
@@ -1868,6 +1881,32 @@ function findEmptySpotInZone(zone,lobby) {
             team: zone.team,
         }
     }
+}
+function organizeZones(zones) {
+    let allZones = [];
+    let returnZones = [];
+
+    //Create Empty Zone List
+    for (let i = 0; i < 100; i++) {
+        allZones.push([]);
+    }
+    //Add Zone To Correct Priority Placement
+    for (let i = 0; i < zones.length; i++) {
+        let zone = zones[i];
+        let priority =  typeof zone.priority === "number" && zone.priority >= 0 && zone.priority < 100 ? zone.priority : 0;
+        allZones[priority].push(zone);
+    }
+    //Shuffle all Priority Zones
+    for (let i = 0; i < allZones.length; i++) {
+        allZones[i] = simple.shuffle(allZones[i]);
+    }
+    //Join All Zones Together
+    for (let i = 0; i < allZones.length; i++) {
+        for (let j = 0; j < allZones[i].length; j++) {
+            returnZones.push(allZones[i][j]);
+        }
+    }
+    return returnZones.reverse();
 }
 
 //Copied From Main.js

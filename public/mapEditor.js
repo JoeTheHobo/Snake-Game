@@ -2175,6 +2175,8 @@ function loadZoneOptions() {
             $(".mezs_spawnCap_row").hide();
         }
         $(".mezs_respawning").checked = zone.respawnHere;
+        $(".mezs_spawnPriority").value = zone.priority || 0;
+        $(".mezs_alternate").checked = zone.alternate || false;
     } else {
         $(".me_z_s_player").hide();
         $(".me_z_s_item").show("flex");
@@ -2182,6 +2184,12 @@ function loadZoneOptions() {
 }
 $(".mezs_active").on("change",function() {
     selectedZone.zone.active = this.checked;
+})
+$(".mezs_spawnPriority").on("change",function() {
+    value = Number(this.value);
+    if (this.value < 0) value = 0;
+    if (this.value > 100) value = 100;
+    selectedZone.zone.priority = value;
 })
 $(".mezs_spawnCap").on("change",function() {
     value = Number(this.value);
@@ -2243,6 +2251,9 @@ $(".mezs_limitSpawning").on("change",function() {
 })
 $(".mezs_respawning").on("change",function() {
     selectedZone.zone.respawnHere = this.checked;
+})
+$(".mezs_alternate").on("change",function() {
+    selectedZone.zone.alternate = this.checked;
 })
 $(".mezs_teamColor").on("click",function() {
     showStatusMenu(["status"],{status: function(status) {
