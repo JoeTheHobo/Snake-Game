@@ -18,6 +18,7 @@ tiles.push({
         playerCanMove: true,
     },
     visible: true,
+    showInEditor: true,
     tags: ["Normal Speed"],
 })
 tiles.push({
@@ -35,6 +36,7 @@ tiles.push({
         playerCanMove: true,
     },
     visible: true,
+    showInEditor: true,
     tags: ["Slow Speed"],
 })
 tiles.push({
@@ -52,6 +54,7 @@ tiles.push({
         playerCanMove: true,
     },
     visible: true,
+    showInEditor: true,
     tags: ["Normal Speed"],
 })
 tiles.push({
@@ -68,6 +71,7 @@ tiles.push({
     whileOn: {
         playerCanMove: true,
     },
+    showInEditor: true,
     visible: true,
     tags: ["Fast Speed"],
 })
@@ -86,6 +90,7 @@ tiles.push({
         playerCanMove: true,
     },
     visible: true,
+    showInEditor: true,
     tags: ["Normal Speed"],
 })
 tiles.push({
@@ -112,6 +117,7 @@ tiles.push({
     whileOn: {
         playerCanMove: true,
     },
+    showInEditor: true,
     timeEvents: [{
         time: 1, //In Seconds
         repeat: true, //Repeat or finish this time event
@@ -133,6 +139,7 @@ tiles.push({
         playerCanMove: true,
     },
     visible: true,
+    showInEditor: true,
     tags: ["Normal Speed"],
 })
 tiles.push({
@@ -150,6 +157,7 @@ tiles.push({
         playerCanMove: true,
     },
     visible: true,
+    showInEditor: true,
     tags: ["Normal Speed"],
 })
 
@@ -185,6 +193,7 @@ tiles.push({
         playerCanMove: true,
     },
     visible: true,
+    showInEditor: true,
     soundFolder: "piano",
     playSounds: true, //If Item should be muted or not;
     tags: ["Normal Speed"],
@@ -197,6 +206,7 @@ tiles.push({
     name: "ice",
     skin: "basic",
     availableSkins: ["basic"],
+    showInEditor: true,
     baseImgTags: [],
     renderImages: [],
     changePlayerSpeed: 1, //Player Speed Times This Number
@@ -215,6 +225,7 @@ tiles.push({
     name: "speed",
     skin: "basic",
     availableSkins: ["basic"],
+    showInEditor: true,
     baseImgTags: [".onCollision.forcePlayerMove"],
     renderImages: [["left","right","up","down"]],
     changePlayerSpeed: 2, //Player Speed Times This Number
