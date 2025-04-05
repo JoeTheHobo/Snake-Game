@@ -2400,6 +2400,7 @@ function sendBoardStats(socketID,sentFrom = null) {
         }
 
         decompressBoardsFromDB(results,(dbBoards) => {
+            console.log(sentFrom)
             io.to(socketID).emit("serverSending_boardStats",dbBoards,sentFrom);
         });
     })
