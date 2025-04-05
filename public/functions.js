@@ -2004,3 +2004,6 @@ function decompressObject(compressedData, callback) {
         callback(err, null);
     }
 }
+function adminTools() {
+    window.location.href = 'db/db.html';
+}
