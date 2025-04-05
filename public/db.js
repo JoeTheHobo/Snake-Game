@@ -43,6 +43,17 @@ function at_loadDatabaseTable(rows) {
         headerCol.innerHTML = headerNames[i];
     }
 
+    for (let i = 0; i < rows.length; i++) {
+        let row = table_html.insertRow(i+1);
+
+        for (let j = 0; j < headerNames.length; j++) {
+            let col = row.insertCell(j);
+            col.innerHTML = rows[i][headerNames[j]];
+        }
+
+
+    }
+
 }
 
 
