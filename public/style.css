@@ -3915,6 +3915,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   width: 160px;
   border-radius: 5px;
   position: relative;
+  height: max-content;
   margin: 5px;
 }
 .bm_boardCanvas {
