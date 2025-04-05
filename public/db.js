@@ -70,7 +70,7 @@ function at_loadFilters() {
             option.innerHTML = options[j];
         }
         select.value = at_filters[i].type;
-        select.on("change",function() {
+        select.addEventListener("change", function () {
             console.log(this.value);
             at_filters[i].type = this.value;
             at_loadFilters();
