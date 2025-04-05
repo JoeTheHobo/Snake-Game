@@ -1616,35 +1616,60 @@ io.on('connection', (socket) => {
         getAllColumnNames();
 
     })
-    socket.on("adminTools_loadTable",(tableName,filters = []) => {
+    socket.on("adminTools_loadTable", (tableName, filters = []) => {
         let account = onlineAccounts[socket.id];
         if (account.status !== "Admin") return;
-
-        let where = "";
-        if (filters.length > 0) {
-            const conditions = [];
-        
-            for (let i = 0; i < filters.length; i++) {
-                const { name, type, value } = filters[i];
-        
-                // Use parameterized values later to avoid SQL injection
-                conditions.push(`\`${name}\` ${type} ?`);
-            }
-        
-            where = "WHERE " + conditions.join(" AND ");
-        }
-
-        const query = `SELECT * FROM \`${tableName}\` ${where}`; // use backticks to safely handle table names
-        const values = filters.map(f => f.value);
-
-        db.query(query,values,(err,results) => {
-            if (err) throw err;
-
-            io.to(socket.id).emit("adminTools_giveTableData",results);
-
-        })
-
-    })
+    
+        // Step 1: Query the table columns first
+        const getTableColumns = () => {
+            return new Promise((resolve, reject) => {
+                db.query(`SHOW COLUMNS FROM \`${tableName}\``, (err, columns) => {
+                    if (err) return reject(err);
+                    // Extract column names into an array
+                    const columnNames = columns.map(col => col.Field);
+                    resolve(columnNames);
+                });
+            });
+        };
+    
+        getTableColumns()
+            .then(columnNames => {
+                // Step 2: Build WHERE condition based on filters and column existence
+                let where = "";
+                if (filters.length > 0) {
+                    const conditions = [];
+                    const values = [];
+    
+                    for (let i = 0; i < filters.length; i++) {
+                        const { name, type, value } = filters[i];
+    
+                        // Step 3: Only add filter to WHERE clause if column exists
+                        if (columnNames.includes(name)) {
+                            conditions.push(`\`${name}\` ${type} ?`);
+                            values.push(value);
+                        }
+                    }
+    
+                    if (conditions.length > 0) {
+                        where = "WHERE " + conditions.join(" AND ");
+                    }
+                }
+    
+                // Step 4: Build the query
+                const query = `SELECT * FROM \`${tableName}\` ${where}`;
+    
+                // Step 5: Run the query with values (filters)
+                db.query(query, values, (err, results) => {
+                    if (err) throw err;
+    
+                    io.to(socket.id).emit("adminTools_giveTableData", results);
+                });
+            })
+            .catch(err => {
+                console.error("Error fetching columns:", err);
+                io.to(socket.id).emit("adminTools_giveTableData", []);
+            });
+    });
 });
 
 
