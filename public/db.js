@@ -7,10 +7,10 @@ function at_setTab(tabName) {
     $(".at_tab").css({
         background: "rgb(223, 223, 223)",
     })
-    $(tabName + "Tab").css({
+    $("at_" + tabName + "Tab").css({
         background: "rgb(137, 69, 192)",
     })
-    $(tabName + "Content").show("flex");
+    $("at_" + tabName + "Content").show("flex");
     
     if (tabName == "database") socket.emit("adminTools_loadDatabase");
 }
