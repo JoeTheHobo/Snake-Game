@@ -70,9 +70,25 @@ function at_loadFilters() {
             option.innerHTML = options[j];
         }
         select.value = at_filters[i].type;
+        select.on("change",function() {
+            at_filters[i].type = this.value;
+            at_loadFilters();
+        })
 
         let value = row.create("input.at_dc_lb_filter_input");
         value.value = at_filters[i].value;
+        value.on("change",function() {
+            at_filters[i].value = this.value;
+            at_loadFilters();
+        })
+
+        let deleteText = row.create("div.at_dc_lb_delete");
+        deleteText.innerHTML = "X";
+        deleteText.on("click",() => {
+            at_filters.splice(i,1);
+            at_loadFilters();
+        })
+
     }
 
     let plus = filterSettingsHolder.create("div.at_dc_lb_filter_plus");
