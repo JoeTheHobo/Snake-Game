@@ -1,11 +1,11 @@
-$(".tab").on("click",function() {
+$(".at_tab").on("click",function() {
     setTab(this.innerHTML.toLowerCase());
 })
 
 
-function setTab(tabName) {
-    $(".content").hide();
-    $(".tab").css({
+function at_setTab(tabName) {
+    $(".at_content").hide();
+    $(".at_tab").css({
         background: "rgb(223, 223, 223)",
     })
     $(tabName + "Tab").css({
@@ -16,11 +16,11 @@ function setTab(tabName) {
     if (tabName == "database") socket.emit("adminTools_loadDatabase");
 }
 
-function loadDataBaseTab() {
-    let tableNamesHolder = $(".dc_leftBar");
-    let table = $(".dc_table");
+function at_loadDataBaseTab() {
+    let tableNamesHolder = $(".at_dc_leftBar");
+    let table = $(".at_dc_table");
 
 }
 
 
-setTab("database");
+

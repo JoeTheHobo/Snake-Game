@@ -10,9 +10,28 @@
     
     <link rel="icon" href="favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="db.css">
 </head>
 <body>
 
+    <div class="scene" id="scene_adminTools">
+        
+        <div class="at_topRow">
+            <div class="at_tab" id="at_databaseTab">Database</div>
+            <div class="at_tab" id="at_snakecolorsTab">SnakeColors</div>
+        </div>
+
+        <div class="at_content" id="at_databaseContent">
+            <div class="at_dc_leftBar"></div>
+            <div class="at_dc_contentHolder">
+                <table class="at_dc_table"></table>
+            </div>
+        </div>
+        <div class="at_content" id="at_snakecolorsContent">
+
+        </div>
+
+    </div>
     <div class="scene" id="scene_loading">
         <img src="img/logo.png" class="logo_loading">
         <div class="loading_bar">
@@ -849,5 +868,6 @@
     <script src="index.js"></script>
     <script src="techTrees.js"></script>
     <script src="market.js"></script>
+    <script src="db.js"></script>
 </body>
 </html>

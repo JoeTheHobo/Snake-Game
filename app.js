@@ -45,7 +45,7 @@ db.connect(err => {
     console.log('Connected to MySQL database.');
   });
 
-  //socke.io start up
+  //socket.io start up
 const http = require('http');
 const server = http.createServer(app);
 const path = require('path');
@@ -1576,7 +1576,6 @@ io.on('connection', (socket) => {
     //Admin Tools
     socket.on("adminTools_loadDatabase",() => {
         let account = onlineAccounts[socket.id];
-        console.log(account.status)
         if (account.status !== "Admin") return;
 
         let query = "SHOW TABLES";

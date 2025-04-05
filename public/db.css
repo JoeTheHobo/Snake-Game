@@ -1,16 +1,4 @@
-html {
-    width: 100%;
-    height: 100%;
-}
-body {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    background: rgb(236, 236, 236);
-}
-.topRow {
+.at_topRow {
     width: 100%;
     height: 40px;
     border-bottom: 3px solid black; 
@@ -18,7 +6,7 @@ body {
     display: flex;
     flex-direction: row;
 }
-.tab {
+.at_tab {
     width: 200px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -32,28 +20,28 @@ body {
     cursor: pointer;
     transition: all .2s ease-in-out;
 }
-.tab:hover {
+.at_tab:hover {
     opacity: 0.5;
 
 }
-.content {
+.at_content {
     display: none;
     width: 100%;
     flex-grow: 1;
 }
 
 
-.dc_leftBar {
+.at_dc_leftBar {
     width: 250px;
     height: 100%;
     background: rgb(175, 175, 175);
 }
-.dc_contentHolder {
+.at_dc_contentHolder {
     height: 100%;
     flex-grow: 1;
     position: relative;
 }
-.dc_table {
+.at_dc_table {
     position: absolute;
     left: 0;
     right: 0;

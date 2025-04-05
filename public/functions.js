@@ -2005,5 +2005,6 @@ function decompressObject(compressedData, callback) {
     }
 }
 function adminTools() {
-    window.location.href = 'db/db.html';
+    setScene("adminTools");
+    at_setTab("database");
 }
