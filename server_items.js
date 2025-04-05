@@ -1252,5 +1252,32 @@ items.push({
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: ["Food"],
 })
+items.push({
+    id: 35,
+    displayName: "Coin",
+    description: "You Shouldn't Be Seeing This",
+    name: "coin",
+    skin: "basic",
+    availableSkins: ["basic"],
+    baseImgTags: [],
+    renderImages: [],
+    type: "item",
+    showInEditor: false,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+    soundFolder: false,
+    playSounds: false, //If Item should be muted or not;
+    onCollision: {
+        serverGiveCoin: true,
+    },
+
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    tags: [],
+})
 
 module.exports = { items };
