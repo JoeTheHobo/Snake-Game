@@ -4394,5 +4394,5 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 
 .redScale {
-  filter: hue-rotate(0deg) saturate(3);
+  filter: grayscale(0) sepia(1) saturate(5) hue-rotate(-50deg);
 }
