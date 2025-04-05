@@ -1143,12 +1143,18 @@ function loadBoardMenu() {
 function generatePlayerBoardsScreen(boardStats) {
     let listHolder = $(".cb_boardList");
     listHolder.innerHTML = "";
-    $(".cb_tr_text_boardCount").innerHTML =  boardStats.length + "/" + localAccount.boardLimit;
+    if (localAccount.status == "Admin") 
+        $(".cb_tr_text_boardCount").innerHTML =  boardStats.length + "/Infinite";
+    else
+        $(".cb_tr_text_boardCount").innerHTML =  boardStats.length + "/" + localAccount.boardLimit;
     let publishedCount = 0;
     for (let i = 0; i < boardStats.length; i++) {
         publishedCount += boardStats[i].published;
     }
-    $(".cb_tr_text_publishedCount").innerHTML =  publishedCount + "/" + localAccount.publishedBoardLimit;
+    if (localAccount.status == "Admin")
+        $(".cb_tr_text_publishedCount").innerHTML =  publishedCount + "/Infinite";
+    else
+        $(".cb_tr_text_publishedCount").innerHTML =  publishedCount + "/" + localAccount.publishedBoardLimit;
 
     function makeBoard(holder,content,type,index) {
         if (type == "board") {

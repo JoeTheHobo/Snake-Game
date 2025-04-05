@@ -1313,9 +1313,16 @@ io.on('connection', (socket) => {
         updateAllCells(lobby);
 
 
+        let allPlayersSpawned = true;
         for (let i = 0; i < lobby.players.length; i++) {
             let player = onlineAccounts[lobby.players[i]].player;
-            spawn(lobby,player,true);
+            let playerSpawned = spawn(lobby,player,true);
+            if (playerSpawned === false) allPlayersSpawned = false;
+        }
+
+        if (!allPlayersSpawned) {
+            io.to(socket.id).emit("popup","Not All Players Can Spawn On This Board");
+            return;
         }
 
         for (let i = 0; i < lobby.items.length; i++) {
@@ -1714,7 +1721,7 @@ function fixBoardDifferences(map,differences,type) {
 }
 function spawn(lobby,thingToSpawn,gameStart = false) {
     if (simple.type(thingToSpawn) == "number") spawnItem(lobby,thingToSpawn,gameStart)
-    if (thingToSpawn?.type == "player") spawnPlayer(lobby,thingToSpawn,gameStart);
+    if (thingToSpawn?.type == "player") return spawnPlayer(lobby,thingToSpawn,gameStart);
 }
 function spawnItem(lobby,itemID,gameStart = false) {
     let board = lobby.board;
@@ -1771,9 +1778,13 @@ function spawnPlayer(lobby,player,gameStart = false) {
     let spot = findEmptySpotInZones(lobby,lobby.spawnZones.players,"player",gameStart,player);
     if (!spot) {
         console.log("No Available Spots For Player")
-        setTimeout(function() {
-            spawnPlayer(lobby,player,gameStart)
-        },1000);
+        if (gameStart) {
+            return false;
+        } else {
+            setTimeout(function() {
+                spawnPlayer(lobby,player,gameStart)
+            },1000);
+        }
         return;
     }
     
@@ -1788,6 +1799,7 @@ function spawnPlayer(lobby,player,gameStart = false) {
         y: spot.y,
     });
     lobby.updateSnakeCells.push(lobby.snakeMap[spot.y][spot.x]);
+    return true;
 }
 function findEmptySpotInZones(lobby,zones,type,extra,extra2) {
     let shuffledZones = simple.shuffle(zones);
