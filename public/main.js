@@ -347,6 +347,7 @@ document.body.onkeydown = function(e) {
     if (metaDown) preventDefault = false;
     if (keyDown == "f5") preventDefault = false;
     if (preventDefault) e.preventDefault;
+    console.log(metaDown,e.key)
     if (metaDown && e.key == "a") {
         console.log("ey")
         if (localAccount.status === "Admin")
