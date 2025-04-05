@@ -4395,6 +4395,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
 
 .redScale {
   border: 2px solid red !important;
+  background: rgb(221, 134, 134);
 }
 .redScale * {
   filter: grayscale(100%);
