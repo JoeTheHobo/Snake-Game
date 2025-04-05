@@ -2441,7 +2441,6 @@ function loadItemSpawning() {
 
     for (let i = 0; i < items.length; i++) {
         let item = items[i];
-        if (!localAccount.allowedItemIds.includes(item.id)) continue;
 
         let div = holder.create("div");
         div.className = "me_itemHolder2 hover";
@@ -2456,6 +2455,10 @@ function loadItemSpawning() {
             div.classAdd("notAllowedItem")
         }
 
+        if (!localAccount.allowedItemIds.includes(item.id)) {
+            div.classAdd("grayScale");
+            continue;
+        }
         div.on("click",function() {
             if (this.classList.contains("notAllowedItem")) {
                 this.classRemove("notAllowedItem")
