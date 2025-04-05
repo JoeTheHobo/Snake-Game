@@ -1575,6 +1575,7 @@ io.on('connection', (socket) => {
 
     //Admin Tools
     socket.on("adminTools_loadDatabase",() => {
+        console.log("EYO")
         let account = onlineAccounts[socket.id];
         if (account.status !== "Admin") return;
 
