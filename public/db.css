@@ -42,6 +42,19 @@
     width: 250px;
     height: 100%;
     background: rgb(175, 175, 175);
+    display: flex;
+    flex-direction: column;
+}
+.at_dc_tableName {
+    width: 100%;
+    height: 50px;
+    cursor: pointer;
+    background: rgb(175, 175, 175);
+    transition: all .2s ease-in-out;
+}
+.at_dc_tableName:hover {
+    opacity: 0.5;
+
 }
 .at_dc_contentHolder {
     height: 100%;

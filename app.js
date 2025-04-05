@@ -1582,7 +1582,15 @@ io.on('connection', (socket) => {
         db.query(query,(err,results) => {
             if (err) throw err;
 
-            console.log(results);
+            let tableNames = [];
+            results.forEach(row => {
+                // The key is dynamic like 'Tables_in_yourDatabase'
+                tableNames.push(row[Object.keys(row)[0]]);
+            });
+
+            io.to(socket.id).emit("adminTools_giveDatabaseData",{
+                tableNames: tableNames,
+            });
         })
 
     })

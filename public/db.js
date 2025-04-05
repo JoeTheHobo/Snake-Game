@@ -15,11 +15,20 @@ function at_setTab(tabName) {
     if (tabName == "database") socket.emit("adminTools_loadDatabase");
 }
 
-function at_loadDataBaseTab() {
+function at_loadDataBaseTab(data) {
     let tableNamesHolder = $(".at_dc_leftBar");
     let table = $(".at_dc_table");
+
+    tableNamesHolder.innerHTML = "";
+    for (let i = 0; i < data.tableNames.length; i++) {
+        let div = tableNamesHolder.create("div.at_dc_tableName");
+        div.innerHTML = data.tableNames[i];
+    }
 
 }
 
 
 
+io.on("adminTools_giveDatabaseData",(data) => {
+    at_loadDataBaseTab(data);
+})
