@@ -76,7 +76,7 @@ function at_loadFilters() {
     let plus = filterSettingsHolder.create("div.at_dc_lb_filter_plus");
     plus.innerHTML = "+";
     plus.on("click",function() {
-        $(".at_dc_columnNames").show();
+        $(".at_dc_columnNames").show("flex");
     })
 
 }
