@@ -630,7 +630,7 @@ io.on('connection', (socket) => {
                     return;
                 }
 
-                io.to(socket.id).emit("sendingZippedBoard",compressed.toString("base64"),board.name)
+                io.to(socket.id).emit("sendingZippedBoard",results[0].board,board.name)
             })
         } catch {
             console.log("zipping error");
