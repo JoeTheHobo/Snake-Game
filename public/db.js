@@ -16,9 +16,11 @@ function at_setTab(tabName) {
 }
 
 function at_loadDataBaseTab(data) {
-    let tableNamesHolder = $(".at_dc_leftBar");
+    let tableNamesHolder = $(".at_dc_lb_tableNames");
+    let filterSettingsHolder = $(".at_dc_lb_filter");
     let table = $(".at_dc_table");
     table.innerHTML = "";
+    filterSettingsHolder.innerHTML = "";
 
     tableNamesHolder.innerHTML = "";
     for (let i = 0; i < data.tableNames.length; i++) {
@@ -29,6 +31,12 @@ function at_loadDataBaseTab(data) {
             socket.emit("adminTools_loadTable",this.innerHTML);
         })
     }
+
+    for (let i = 0; i < data.columnNames.length; i++) {
+        filterSettingsHolder.create("div");
+        filterSettingsHolder.innerHTML = data.columnNames[i]; 
+    }
+
 
 }
 function at_loadDatabaseTable(rows) {

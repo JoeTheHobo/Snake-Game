@@ -1578,18 +1578,33 @@ io.on('connection', (socket) => {
         let account = onlineAccounts[socket.id];
         if (account.status !== "Admin") return;
 
+        const allColumns = new Set();
+
         let query = "SHOW TABLES";
-        db.query(query,(err,results) => {
+        db.query(query,(err,tables) => {
             if (err) throw err;
 
-            let tableNames = [];
-            results.forEach(row => {
-                // The key is dynamic like 'Tables_in_yourDatabase'
-                tableNames.push(row[Object.keys(row)[0]]);
-            });
+            const tableNames = tables.map(row => row[Object.keys(row)[0]]);
+            let completed = 0;
 
-            io.to(socket.id).emit("adminTools_giveDatabaseData",{
-                tableNames: tableNames,
+            tableNames.forEach(table => {
+                // Step 2: For each table, get columns
+                db.query(`SHOW COLUMNS FROM \`${table}\``, (err, columns) => {
+                    if (err) {
+                        console.error(`Error fetching columns from ${table}:`, err);
+                    } else {
+                        columns.forEach(col => allColumns.add(col.Field));
+                    }
+
+                    completed++;
+                    if (completed === tableNames.length) {
+                        // Step 4: Send result back
+                        io.to(socket.id).emit("adminTools_giveDatabaseData",{
+                            tableNames: tableNames,
+                            columnNames: Array.from(allColumns),
+                        });
+                    }
+                });
             });
         })
 
