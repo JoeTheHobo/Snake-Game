@@ -31,9 +31,17 @@ function at_loadDataBaseTab(data) {
     }
 
 }
-function at_loadDatabaseTable(table) {
+function at_loadDatabaseTable(rows) {
     let table_html = $(".at_dc_table");
     table_html.innerHTML = "";
+
+    let headerNames = Object.keys(rows[0]);
+
+    let headerRow = table_html.insertRow(0);
+    for (let i = 0; i < headerNames.length; i++) {
+        let headerCol = headerRow.insertCell(i);
+        headerCol.innerHTML = headerNames[i];
+    }
 
 }
 
