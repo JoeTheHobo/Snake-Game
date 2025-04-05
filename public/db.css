@@ -156,14 +156,18 @@
 }
 .at_dc_lb_filter_title {
     font-size: 18px;
+    height: 25px;
+    flex-grow: 1;
 }
 .at_dc_lb_filter_select {
     height: 25px;
+    flex-grow: 1;
 }
 .at_dc_lb_filter_input {
     outline: none;
     border: none;
     height: 25px;
+    flex-grow: 1;
     width: 100px;
 }
 .at_dc_lb_filter_plus {
@@ -174,7 +178,7 @@
     align-items: center;
     justify-content: center;
     background: green;
-    font-size: 20px;
+    font-size: 5px;
     border-radius: 25px;
     transition: all .2s ease-in-out;
 }

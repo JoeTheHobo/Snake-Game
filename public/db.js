@@ -66,7 +66,8 @@ function at_loadFilters() {
         let options = ["=","<",">","<=",">="];
         for (let j = 0; j < options.length; j++) {
             let option = select.create("option");
-            option.value = options[i];
+            option.value = options[j];
+            option.innerHTML = options[j];
         }
         select.value = at_filters[i].type;
 
