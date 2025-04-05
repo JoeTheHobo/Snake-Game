@@ -351,7 +351,8 @@ document.body.onkeydown = function(e) {
 
     if (preventDefault) e.preventDefault;
 
-    if (metaDown && e.key == "A") {
+    if (metaDown && e.key == "a") {
+        console.log("ey")
         if (localAccount.status === "Admin")
             adminTools();
     }
