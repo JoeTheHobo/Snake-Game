@@ -1065,8 +1065,8 @@ function saveBoard() {
     html_saveStatus.innerHTML = "Board Saved";
 }
 $("me_button").on("click",function() {
-    socket.emit("db_getAccountBoardStats");
-    
+    socket.emit("db_getAccountBoardStats","MapEditor");
+
     if (localAccount.isInLobby) {
         makePopUp([
             {type: "title",text: "Save Board"},
