@@ -1131,11 +1131,140 @@ function loadBoardMenu() {
     let listHolder = $(".cb_boardList");
     listHolder.innerHTML = "";
 
-    socket.emit("db_getAccountBoardStats");
-
+    generatePlayerBoardsScreen(localAccount.boards); 
 
 }
+function generatePlayerBoardsScreen(boardStats) {
+    let listHolder = $(".cb_boardList");
+    listHolder.innerHTML = "";
+    $(".cb_tr_text_boardCount").innerHTML =  boardStats.length + "/" + localAccount.boardLimit;
+    let publishedCount = 0;
+    for (let i = 0; i < boardStats.length; i++) {
+        publishedCount += boardStats[i].published;
+    }
+    $(".cb_tr_text_publishedCount").innerHTML =  publishedCount + "/" + localAccount.publishedBoardLimit;
 
+    function makeBoard(holder,content,type,index) {
+        if (type == "board") {
+            let container = holder.create("div.bm_boardContainer");
+            let boardPortion = container.create("canvas.bm_boardCanvas");
+            let settingPortion = container.create("div.bm_boardSettings")
+            let boardName = container.create("div.bm_boardName");
+            boardName.innerHTML = content.board.name;
+
+            drawBoardToCanvas(content.board.originalMap,boardPortion);
+            
+
+            boardPortion.on("click",function() {
+                socket.emit("openMapEditor",content.id);
+            })
+
+            function addSetting(src,func) {
+                let imgHolder = settingPortion.create("div.bm_settingDiv");
+                let img = imgHolder.create("img.bm_settingImg");
+                img.src = src;
+                imgHolder.on("click",func);
+            }
+            addSetting("img/menuIcons/edit.png",function() {
+                socket.emit("openMapEditor",content.id);
+            });
+            addSetting("img/menuIcons/delete.png",function() {
+                makePopUp([
+                    {type: "text",text: "Delete " + content.board.name},
+                    {type: "title",text: "Are You Sure?"},
+                    [
+                        {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
+                        {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Delete",onClick: (ids,param) => {
+                            socket.emit("deleteBoard",content.id);
+                        }},
+                    ],
+                ],{
+                    id: "deletePopUp",
+                })
+            });
+            if (((publishedCount < localAccount.publishedBoardLimit) || (localAccount.status == "Admin")) && content.published === 0) {
+                addSetting("img/menuIcons/publish.png",function() {
+                    socket.emit("publishBoard",content.id);
+                    localAccount.boards[index].published = 1;
+                    generatePlayerBoardsScreen(localAccount.boards);
+                });
+            }
+            if (content.published === 1) {
+                addSetting("img/menuIcons/published.png",function() {
+                    socket.emit("depublishBoard",content.id);
+                    localAccount.boards[index].published = 0;
+                    generatePlayerBoardsScreen(localAccount.boards);
+                });
+            }
+            if (localAccount.status === "Admin") {
+                addSetting("img/menuIcons/download.png",function() {
+                    socket.emit("getZippedBoard",content.id);
+                });
+            }
+        }
+        
+        if (type == "newBoard") {
+            let container = holder.create("div.bm_boardContainer");
+            container.classAdd("hover");
+            container.classAdd("square");
+            container.classAdd("pointerCursor");
+            let plus = container.create("div.bm_plus");
+            plus.innerHTML = "+";
+            container.on("click",function() {
+                makePopUp([
+                    {type: "title",text: "New Board"},
+                    [
+                        {type: "text", text: "Name"},
+                        {type: "input", id:"name", maxLength: "30", placeholder: "Untitled", width: "200px"},
+                    ],
+                    /*
+                    [
+                        {type: "text", text: "Width"},
+                        {type: "number", id:"width", value: "50", min: 5, max: 70, width: "50px"},
+                        {type: "text", text: "Height"},
+                        {type: "number", id:"height", value: "30", min: 5, max: 70, width: "50px"},
+                    ],
+                    */
+                    {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100%",background: "green",text:"Create",onClick: (ids) => {
+                        const {name,width,height} = ids;
+                        let boardName = name.value == "" ? "Untitled" : name.value;
+                        socket.emit("createNewBoard",boardName,50,30,"openMapEditor");
+                        
+                    }},
+                ],{
+                    exit: {
+                        cursor: "url('./img/pointer.cur'), auto",
+                    },
+                    id: "newBoard",
+        
+                })
+            })
+        }
+        
+        if (type == "buyBoard") {
+            
+            let container = holder.create("div.bm_boardContainer");
+            container.classAdd("hover");
+            container.classAdd("square");
+            container.classAdd("pointerCursor");
+            let img = container.create("img.bm_shopImg");
+            img.src = "img/menuIcons/shopingcart.png";
+            container.on("click",function() {
+
+            })
+        }
+    }
+
+    for (let i = 0; i < boardStats.length; i++) {
+        makeBoard(listHolder,boardStats[i],"board",i)
+    }
+
+    if (boardStats.length < localAccount.boardLimit || localAccount.status == "Admin") {
+        makeBoard(listHolder,false,"newBoard")
+    } else {
+        makeBoard(listHolder,false,"buyBoard")
+    }
+}
 
 function loadProfileMenu() {
     $(".menu_tab").classRemove("menu_tab_selected");

@@ -548,20 +548,8 @@ io.on('connection', (socket) => {
         })
 
     })
-    socket.on("db_getAccountBoardStats",() => {
-        let account = onlineAccounts[socket.id];
-        if (!account.loggedIn) return;
-        let query = "SELECT board, id, published FROM boards WHERE tag = ?";
-        db.query(query,[Number(account.tag)],(err,results) => {
-            if (err) {
-                console.log(73,err);
-                return;
-            }
-
-            decompressBoardsFromDB(results,(dbBoards) => {
-                io.to(socket.id).emit("serverSending_boardStats",dbBoards);
-            });
-        })
+    socket.on("db_getAccountBoardStats",(sentFrom) => {
+        sendBoardStats(socket.id,sentFrom);
     })
     socket.on("saveBoard",(board) => {
         let account = onlineAccounts[socket.id];
@@ -2425,6 +2413,21 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function sendBoardStats(socketID,sentFrom = null) {
+    let account = onlineAccounts[socketID];
+    if (!account.loggedIn) return;
+    let query = "SELECT board, id, published FROM boards WHERE tag = ?";
+    db.query(query,[Number(account.tag)],(err,results) => {
+        if (err) {
+            console.log(73,err);
+            return;
+        }
+
+        decompressBoardsFromDB(results,(dbBoards) => {
+            io.to(socketID).emit("serverSending_boardStats",dbBoards,sentFrom);
+        });
+    })
+}
 function decompressBoardsFromDB(dbBoards,func, index = 0,sendBackBoards = []) {
     if (index === dbBoards.length) {
         func(sendBackBoards);
@@ -2510,7 +2513,7 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
     let sendItems = full ? pako.deflate(JSON.stringify(items), { to: 'string' }) : undefined;
     let sendTiles = full ? pako.deflate(JSON.stringify(tiles), { to: 'string' }) : undefined;
 
-    io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? backgrounds : undefined,sendTiles);
+    io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,[],sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? backgrounds : undefined,sendTiles);
     if (sendHome) 
         io.to(socketID).emit("setScene","newMenu");
 
@@ -2601,6 +2604,7 @@ function setSocketToUser(account,user,dbObj) {
 
     io.to(account.id).emit('setPlayer', account.id, account,accessedBattlePasses);
     io.to(account.id).emit("setScene","newMenu");
+    sendBoardStats(socket.id,"Set Player");
 }
 
 function generateRandomString(length = 10) {
