@@ -1594,6 +1594,19 @@ io.on('connection', (socket) => {
         })
 
     })
+    socket.on("adminTools_loadTable",(tableName) => {
+        let account = onlineAccounts[socket.id];
+        if (account.status !== "Admin") return;
+
+        const query = `SELECT * FROM \`${tableName}\``; // use backticks to safely handle table names
+        db.quert(query,(err,results) => {
+            if (err) throw err;
+
+            io.to(socket.id).emit("adminTools_giveTableData",results);
+
+        })
+
+    })
 });
 
 
