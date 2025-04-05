@@ -1825,7 +1825,7 @@ function findEmptySpotInZones(lobby,zones,type,extra,extra2,setZones) {
             }
             if (gameStart) {
                 if (zone.spawnCap !== false && zone.spawnCap < 1) continue;
-                if (zone.spawnCap !== false && zone.spawnCap > 0) z.spawnCap--;
+                if (zone.spawnCap !== false && zone.spawnCap > 0) zone.spawnCap--;
             }
         }
 
