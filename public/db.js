@@ -32,8 +32,8 @@ function at_loadDataBaseTab(data) {
 
 }
 function at_loadDatabaseTable(table) {
-    let table = $(".at_dc_table");
-    table.innerHTML = "";
+    let table_html = $(".at_dc_table");
+    table_html.innerHTML = "";
 
 }
 
