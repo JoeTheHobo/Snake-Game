@@ -29,6 +29,6 @@ function at_loadDataBaseTab(data) {
 
 
 
-io.on("adminTools_giveDatabaseData",(data) => {
+socket.on("adminTools_giveDatabaseData",(data) => {
     at_loadDataBaseTab(data);
 })
