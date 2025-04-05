@@ -1597,13 +1597,13 @@ io.on('connection', (socket) => {
                         if (err) {
                             console.error(`Error fetching columns from ${table}:`, err);
                         } else {
-                            console.log(columns)
                             columns.forEach(col => allColumns.push(col.Field));
                         }
     
                         completed++;
                         if (completed === tableNames.length) {
                             // Step 4: Send result back
+                            console.log(allColumns)
                             io.to(socket.id).emit("adminTools_giveDatabaseData", {
                                 columnNames: allColumns,
                                 tableNames: tableNames,
