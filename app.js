@@ -622,7 +622,7 @@ io.on('connection', (socket) => {
                     return;
                 }
 
-                if (total.length >= account.publishedBoardLimit) return;
+                if (total.length >= account.publishedBoardLimit && account.status !== "Admin") return;
 
                 let query = "UPDATE boards SET published = 1 WHERE id = ? AND tag = ?";
                 db.query(query,[boardID,Number(account.tag)],(err,results) => {
