@@ -1,3 +1,5 @@
+let at_filters = [];
+let at_headerNames = [];
 $(".at_tab").on("click",function() {
     setTab(this.innerHTML.toLowerCase());
 })
@@ -17,10 +19,10 @@ function at_setTab(tabName) {
 
 function at_loadDataBaseTab(data) {
     let tableNamesHolder = $(".at_dc_lb_tableNames");
-    let filterSettingsHolder = $(".at_dc_lb_filter");
     let table = $(".at_dc_table");
     table.innerHTML = "";
-    filterSettingsHolder.innerHTML = "";
+    at_filters = [];
+    at_headerNames = data.columnNames;
 
     tableNamesHolder.innerHTML = "";
     for (let i = 0; i < data.tableNames.length; i++) {
@@ -32,11 +34,50 @@ function at_loadDataBaseTab(data) {
         })
     }
 
-    for (let i = 0; i < data.columnNames.length; i++) {
-        filterSettingsHolder.create("div");
-        filterSettingsHolder.innerHTML = data.columnNames[i]; 
+    $(".at_dc_columnNames").innerHTML = "";
+    for (let i = 0; i < at_headerNames.length; i++) {
+        let div = $(".at_dc_columnNames").create("div.at_dc_lb_filter_options");
+        div.innerHTML = at_headerNames[i];
+
+        div.on("click",function() {
+            at_filters.push({
+                name: at_headerNames[i],
+                type: "=",
+                value: 0,
+            })
+            at_loadFilters();
+        })
     }
 
+    at_loadFilters();
+
+}
+function at_loadFilters() {
+    let filterSettingsHolder = $(".at_dc_lb_filter");
+    filterSettingsHolder.innerHTML = "";
+
+    for (let i = 0; i < at_filters.length; i++) {
+        let row = filterSettingsHolder.create("div.at_dc_lb_filter_row");
+        let title = row.create("div.at_dc_lb_filter_title");
+        title.innerHTML = at_filters[i].name;
+
+        let select = row.create("select.at_dc_lb_filter_select");
+        let options = ["=","<",">","<=",">="];
+        for (let j = 0; j < options.length; j++) {
+            let option = select.create("option");
+            option.value = options[i];
+        }
+        select.value = at_filters[i].type;
+
+        let value = row.create("input.at_dc_lb_filter_input");
+        value.value = at_filters[i].value;
+    }
+
+    let plus = filterSettingsHolder.create("div.at_dc_lb_filter_plus");
+    plus.innerHTML = "+";
+    plus.on("click",function() {
+        $(".at_dc_columnNames").show();
+    })
 
 }
 function at_loadDatabaseTable(rows) {
@@ -70,6 +111,5 @@ socket.on("adminTools_giveDatabaseData",(data) => {
     at_loadDataBaseTab(data);
 })
 socket.on("adminTools_giveTableData",(table) => {
-    console.log(table);
     at_loadDatabaseTable(table);
 })

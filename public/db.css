@@ -118,3 +118,61 @@
     background: rgb(165, 165, 165);
 
 }
+.at_dc_columnNames {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgb(179, 179, 179);
+    border-radius: 5px;
+    z-index: 500;
+    width: 50%;
+    height: 50%;
+}
+.at_dc_lb_filter_options {
+    user-select: none;
+    cursor: pointer;
+    background: gray;
+    width: 200px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s ease-in-out;
+}
+.at_dc_lb_filter_options:hover {
+    opacity: 0.5;
+}
+.at_dc_lb_filter_row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+.at_dc_lb_filter_title {
+    font-size: 18px;
+}
+.at_dc_lb_filter_select {
+    height: 25px;
+}
+.at_dc_lb_filter_input {
+    outline: none;
+    border: none;
+    height: 25px;
+    width: 100px;
+}
+.at_dc_lb_filter_plus {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: green;
+    transition: all .2s ease-in-out;
+}
+.at_dc_lb_filter_plus:hover {
+    opacity: 0.5;
+}
