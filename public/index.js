@@ -180,7 +180,7 @@ socket.on("serverSending_boardStats",(boardStats) => {
                     id: "deletePopUp",
                 })
             });
-            if (publishedCount < localAccount.publishedBoardLimit && content.published === 0) {
+            if (((publishedCount < localAccount.publishedBoardLimit) || (localAccount.status == "Admin")) && content.published === 0) {
                 addSetting("img/menuIcons/publish.png",function() {
                     socket.emit("publishBoard",content.id);
                 });
