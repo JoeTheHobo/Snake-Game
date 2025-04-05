@@ -780,73 +780,80 @@ io.on('connection', (socket) => {
         if (boardName.length > 30) boardName = "Untitled";
         if (boardName == "") boardName = "Untitled";
         boardName = profanity.clean(boardName);
+        let boardCountQuery = "SELECT * FROM boards WHERE tag = ?";
+        db.query(boardCountQuery,[Number(account.tag)],(err,results) => {
+            if (err) {
+                console.log(62435,err);
+                return;
+            }
 
-        width = 50;//Number(width);
-        height = 30;//Number(height);
-        let board = {
-            name: boardName,
-            tag: Number(account.tag),
-            width: width,
-            height: height,
-            minPlayers: 1,
-            maxPlayers: 8,
-            itemDifferences: [],
-            tileDifferences: [],
-            background: backgrounds[0],
-            gameModes: [presetGameModes[0]],
-            originalMap: newMap(width,height), 
-            map: [],
-            id: Number(Date.now().toString() + simple.rnd(9999)),
-            mouseOver: false,
-            boardAuthors: [{
-                tag: account.tag,
-                username: account.username,
-            }],
-            spawnZones: {
-                players: [{
-                    id: "Player Zone: #0000",
-                    pos1: {
-                        x: 0,
-                        y: 0,
-                    },
-                    pos2: {
-                        x: width-1,
-                        y: height-1,
-                    },
-                    team: "white",
-                    spawnCap: false,
-                    respawnHere: true,
+            if (results.length >= account.boardLimit && account.status !== "Admin") return;
 
-                    active: true,
-                    activateWhenBoardStatus: false,
-                    deactivateWhenBoardStatus: false,
-                    activateWhenTimePassed: false, //Seconds
-                    deactivateWhenTimePassed: false, //Seconds
+            width = 50;//Number(width);
+            height = 30;//Number(height);
+            let board = {
+                name: boardName,
+                tag: Number(account.tag),
+                width: width,
+                height: height,
+                minPlayers: 1,
+                maxPlayers: 8,
+                itemDifferences: [],
+                tileDifferences: [],
+                background: backgrounds[0],
+                gameModes: [presetGameModes[0]],
+                originalMap: newMap(width,height), 
+                map: [],
+                id: Number(Date.now().toString() + simple.rnd(9999)),
+                mouseOver: false,
+                boardAuthors: [{
+                    tag: account.tag,
+                    username: account.username,
                 }],
-                items: [{
-                    id: "Item Zone: #0000",
-                    pos1: {
-                        x: 0,
-                        y: 0,
-                    },
-                    pos2: {
-                        x: width-1,
-                        y: height-1,
-                    },
-                    itemsThatCantSpawnHere: [],
-
-                    active: true,
-                    activateWhenBoardStatus: false,
-                    deactivateWhenBoardStatus: false,
-                    activateWhenTimePassed: false, //Seconds
-                    deactivateWhenTimePassed: false, //Seconds
-                }],
-            },
-        };
-
-        io.to(socket.id).emit("updatePlayersBoards",board,sentFrom)
-        
-        if (account.loggedIn) {
+                spawnZones: {
+                    players: [{
+                        id: "Player Zone: #0000",
+                        pos1: {
+                            x: 0,
+                            y: 0,
+                        },
+                        pos2: {
+                            x: width-1,
+                            y: height-1,
+                        },
+                        team: "white",
+                        spawnCap: false,
+                        respawnHere: true,
+    
+                        active: true,
+                        activateWhenBoardStatus: false,
+                        deactivateWhenBoardStatus: false,
+                        activateWhenTimePassed: false, //Seconds
+                        deactivateWhenTimePassed: false, //Seconds
+                    }],
+                    items: [{
+                        id: "Item Zone: #0000",
+                        pos1: {
+                            x: 0,
+                            y: 0,
+                        },
+                        pos2: {
+                            x: width-1,
+                            y: height-1,
+                        },
+                        itemsThatCantSpawnHere: [],
+    
+                        active: true,
+                        activateWhenBoardStatus: false,
+                        deactivateWhenBoardStatus: false,
+                        activateWhenTimePassed: false, //Seconds
+                        deactivateWhenTimePassed: false, //Seconds
+                    }],
+                },
+            };
+    
+            io.to(socket.id).emit("updatePlayersBoards",board,sentFrom)
+            
             compressObject(board,(err,compressedBoard) => {
                 if (err) {
                     console.log(34633,err);
@@ -857,7 +864,9 @@ io.on('connection', (socket) => {
                     if (err) console.log(6432,err);
                 })
             })
-        }
+
+        })
+
     })
     socket.on("newLobby", (lobby) =>{
         if (!lobby) return;
