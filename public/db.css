@@ -81,14 +81,20 @@
     font-weight: bold;
     font-size: 15px;
     max-width:200px;
+    white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
+    height: 30px;
 }
 .at_dc_table_cell1,.at_dc_table_cell0 {
     color: black;
     text-align: center;
     font-size: 15px;
     max-width:200px;
+    white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
+    height: 30px;
 }
 .at_dc_table_cell1 {
     background: rgb(223, 223, 223);
