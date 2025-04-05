@@ -71,6 +71,7 @@ function at_loadFilters() {
         }
         select.value = at_filters[i].type;
         select.on("change",function() {
+            console.log(this.value);
             at_filters[i].type = this.value;
             at_loadFilters();
         })
