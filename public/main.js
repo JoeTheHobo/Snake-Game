@@ -348,8 +348,13 @@ document.body.onkeydown = function(e) {
     if (keyDown == "f5") preventDefault = false;
     if (preventDefault) e.preventDefault();
     if (controlDown && shiftDown && keyDown == "a") {
-        if (localAccount.status === "Admin")
-            adminTools();
+        if (localAccount.status === "Admin") {
+            if (global_scene == "adminTools") {
+                setScene("newMenu");
+            } else {
+                adminTools();
+            }
+        }
     }
 
     if (killSwitch) return;
