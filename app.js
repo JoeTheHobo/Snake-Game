@@ -1636,9 +1636,9 @@ io.on('connection', (socket) => {
             .then(columnNames => {
                 // Step 2: Build WHERE condition based on filters and column existence
                 let where = "";
+                const values = [];
                 if (filters.length > 0) {
                     const conditions = [];
-                    const values = [];
     
                     for (let i = 0; i < filters.length; i++) {
                         const { name, type, value } = filters[i];
