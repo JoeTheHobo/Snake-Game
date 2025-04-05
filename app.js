@@ -1571,6 +1571,21 @@ io.on('connection', (socket) => {
             io.to(socket.id).emit("kickPlayer","Hacked Players: " + checksOut + " [Code: 7834]");
         }
     })
+
+
+    //Admin Tools
+    socket.on("adminTools_loadDatabase",() => {
+        let account = onlineAccounts[socket.id];
+        if (account.status !== "Admin") return;
+
+        let query = "SHOW TABLES";
+        db.query(query,(err,results) => {
+            if (err) throw err;
+
+            console.log(results);
+        })
+
+    })
 });
 
 

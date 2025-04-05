@@ -13,7 +13,7 @@ function setTab(tabName) {
     })
     $(tabName + "Content").show("flex");
 
-    if (tabName == "database") loadDataBaseTab();
+    if (tabName == "database") socket.emit("adminTools_loadDatabase");
 }
 
 function loadDataBaseTab() {
