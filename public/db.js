@@ -1,3 +1,4 @@
+let at_table = false;
 let at_filters = [];
 let at_headerNames = [];
 $(".at_tab").on("click",function() {
@@ -30,7 +31,8 @@ function at_loadDataBaseTab(data) {
         div.innerHTML = data.tableNames[i];
 
         div.on("click",function() {
-            socket.emit("adminTools_loadTable",this.innerHTML);
+            at_table = this.innerHTML;
+            socket.emit("adminTools_loadTable",at_table,at_filters);
         })
     }
 
@@ -98,6 +100,9 @@ function at_loadFilters() {
         $(".at_dc_columnNames").show("flex");
     })
 
+    if (table) {
+        socket.emit("adminTools_loadTable",at_table,at_filters);
+    }
 }
 function at_loadDatabaseTable(rows) {
     let table_html = $(".at_dc_table");

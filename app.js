@@ -1616,12 +1616,28 @@ io.on('connection', (socket) => {
         getAllColumnNames();
 
     })
-    socket.on("adminTools_loadTable",(tableName) => {
+    socket.on("adminTools_loadTable",(tableName,filters = []) => {
         let account = onlineAccounts[socket.id];
         if (account.status !== "Admin") return;
 
-        const query = `SELECT * FROM \`${tableName}\``; // use backticks to safely handle table names
-        db.query(query,(err,results) => {
+        let where = "";
+        if (filters.length > 0) {
+            const conditions = [];
+        
+            for (let i = 0; i < filters.length; i++) {
+                const { name, type, value } = filters[i];
+        
+                // Use parameterized values later to avoid SQL injection
+                conditions.push(`\`${name}\` ${type} ?`);
+            }
+        
+            where = "WHERE " + conditions.join(" AND ");
+        }
+
+        const query = `SELECT * FROM \`${tableName}\` ${where}`; // use backticks to safely handle table names
+        const values = filters.map(f => f.value);
+
+        db.query(query,values,(err,results) => {
             if (err) throw err;
 
             io.to(socket.id).emit("adminTools_giveTableData",results);
