@@ -253,7 +253,7 @@ socket.on("serverSending_boardStats",(boardStats) => {
         makeBoard(listHolder,boardStats[i],"board",i)
     }
 
-    if (boardStats.length < localAccount.boardLimit) {
+    if (boardStats.length < localAccount.boardLimit || localAccount.status == "Admin") {
         makeBoard(listHolder,false,"newBoard")
     } else {
         makeBoard(listHolder,false,"buyBoard")
