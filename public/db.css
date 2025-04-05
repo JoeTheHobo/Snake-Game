@@ -79,10 +79,12 @@
     background: rgb(31, 31, 31);
     color: white;
     font-weight: bold;
+    font-size: 15px;
 }
 .at_dc_table_cell1,.at_dc_table_cell0 {
     color: black;
     text-align: center;
+    font-size: 15px;
 }
 .at_dc_table_cell1 {
     background: rgb(223, 223, 223);

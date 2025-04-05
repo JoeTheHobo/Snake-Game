@@ -50,7 +50,7 @@ function at_loadDatabaseTable(rows) {
         for (let j = 0; j < headerNames.length; j++) {
             let col = row.insertCell(j);
             col.innerHTML = rows[i][headerNames[j]];
-            col.className = "at_dc_table_cell" + (j%2);
+            col.className = "at_dc_table_cell" + (i%2);
         }
     }
 
