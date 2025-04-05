@@ -775,7 +775,7 @@ io.on('connection', (socket) => {
                         spawnCap: false,
                         respawnHere: true,
                         priority: 0,
-                        alternate: false,
+                        alternate: true,
     
                         active: true,
                         activateWhenBoardStatus: false,

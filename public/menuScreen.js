@@ -809,6 +809,7 @@ function loadLocalScreen() {
 }
 
 function editGameMode(holder2,gameMode,htmlName,cameFrom) {
+    let server = cameFrom == "server";
     if (gameMode.cantEdit && !server) return;
     let html_gameModesHolder = holder2;
     html_gameModesHolder.innerHTML = `
