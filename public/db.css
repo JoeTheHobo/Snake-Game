@@ -158,13 +158,13 @@
 .at_dc_lb_filter_title {
     font-size: 15px;
     height: 25px;
-    flex-grow: 2;
     text-align: center;
+    width: 40%;
 }
 .at_dc_lb_filter_select {
     height: 25px;
     text-align: center;
-    flex-grow: 1;
+    width: 20%;
     font-size: 15px;
 }
 .at_dc_lb_filter_input {
@@ -172,7 +172,7 @@
     border: none;
     height: 25px;
     font-size: 15px;
-    flex-grow: 2;
+    width: 40%;
 }
 .at_dc_lb_filter_plus {
     margin-top: 5px;
