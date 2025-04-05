@@ -351,6 +351,10 @@ document.body.onkeydown = function(e) {
 
     if (preventDefault) e.preventDefault;
 
+    if (metaDown && e.key == "A") {
+        if (localAccount.status === "Admin")
+            adminTools();
+    }
     if (keyDown == "escape" && gameType !== "server") {
         if (gamePaused) {
             $(".pauseGamePopup").hide();
