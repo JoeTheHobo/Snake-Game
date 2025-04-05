@@ -1131,6 +1131,7 @@ function loadBoardMenu() {
     let listHolder = $(".cb_boardList");
     listHolder.innerHTML = "";
 
+    console.log(localAccount.boards);
     generatePlayerBoardsScreen(localAccount.boards); 
 
 }
