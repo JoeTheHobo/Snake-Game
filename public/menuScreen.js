@@ -1131,7 +1131,13 @@ function loadBoardMenu() {
     let listHolder = $(".cb_boardList");
     listHolder.innerHTML = "";
 
-    generatePlayerBoardsScreen(localAccount.boards); 
+    if (localAccount.boards.length == 0) {
+        socket.emit("db_getAccountBoardStats","MapEditor");
+    } else {
+        generatePlayerBoardsScreen(localAccount.boards); 
+    }
+
+    
 
 }
 function generatePlayerBoardsScreen(boardStats) {

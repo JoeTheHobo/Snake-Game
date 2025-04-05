@@ -636,7 +636,7 @@ io.on('connection', (socket) => {
             console.log("zipping error");
         }
     });
-    socket.on("deleteBoard",(boardID,sentFrom) => {
+    socket.on("deleteBoard",(boardID) => {
         let account = onlineAccounts[socket.id];
         if (!account.loggedIn) return;
 
@@ -2475,7 +2475,7 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
     let sendItems = full ? pako.deflate(JSON.stringify(items), { to: 'string' }) : undefined;
     let sendTiles = full ? pako.deflate(JSON.stringify(tiles), { to: 'string' }) : undefined;
 
-    io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,[],sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? backgrounds : undefined,sendTiles);
+    io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? backgrounds : undefined,sendTiles);
     if (sendHome) 
         io.to(socketID).emit("setScene","newMenu");
 

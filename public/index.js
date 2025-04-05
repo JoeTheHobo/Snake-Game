@@ -27,7 +27,7 @@ socket.on("kickPlayer",(message) => {
     alert(message);
 
 })
-socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_boards,server_items,server_basedGameMode,server_presetGameModes,server_backgrounds,server_tiles) =>{
+socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,server_basedGameMode,server_presetGameModes,server_backgrounds,server_tiles) =>{
     localAccount.id = id;
     localAccount.isInGame = false;
     localAccount.lobbyID = false;
@@ -50,7 +50,7 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_boards,ser
     localAccount.loggedIn = account.loggedIn;
     localAccount.status = account.status;
     localAccount.dateCreated = account.dateCreated;
-    localAccount.boards = server_boards;
+    localAccount.boards = [];
     accessedBattlePasses = server_accessedBattlePasses;
 
     global_musicVolume = account.musicVolume;
