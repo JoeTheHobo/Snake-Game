@@ -1578,7 +1578,7 @@ io.on('connection', (socket) => {
         let account = onlineAccounts[socket.id];
         if (account.status !== "Admin") return;
 
-        const allColumns = new Set();
+        let allColumns = [];
 
         const getAllColumnNames = async () => {
             // Step 1: Get all table names
@@ -1597,14 +1597,14 @@ io.on('connection', (socket) => {
                         if (err) {
                             console.error(`Error fetching columns from ${table}:`, err);
                         } else {
-                            columns.forEach(col => allColumns.add(col.Field));
+                            columns.forEach(col => allColumns.push(col.Field));
                         }
     
                         completed++;
                         if (completed === tableNames.length) {
                             // Step 4: Send result back
                             io.to(socket.id).emit("adminTools_giveDatabaseData", {
-                                columnNames: Array.from(allColumns),
+                                columnNames: allColumns,
                                 tableNames: tableNames,
                             });
                         }
