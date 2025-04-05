@@ -1580,33 +1580,40 @@ io.on('connection', (socket) => {
 
         const allColumns = new Set();
 
-        let query = "SHOW TABLES";
-        db.query(query,(err,tables) => {
-            if (err) throw err;
-
-            const tableNames = tables.map(row => row[Object.keys(row)[0]]);
-            let completed = 0;
-
-            tableNames.forEach(table => {
-                // Step 2: For each table, get columns
-                db.query(`SHOW COLUMNS FROM \`${table}\``, (err, columns) => {
-                    if (err) {
-                        console.error(`Error fetching columns from ${table}:`, err);
-                    } else {
-                        columns.forEach(col => allColumns.add(col.Field));
-                    }
-
-                    completed++;
-                    if (completed === tableNames.length) {
-                        // Step 4: Send result back
-                        io.to(socket.id).emit("adminTools_giveDatabaseData",{
-                            tableNames: tableNames,
-                            columnNames: Array.from(allColumns),
-                        });
-                    }
+        const getAllColumnNames = async () => {
+            // Step 1: Get all table names
+            db.query("SHOW TABLES", async (err, tables) => {
+                if (err) {
+                    console.error("Error fetching tables:", err);
+                    return;
+                }
+    
+                const tableNames = tables.map(row => row[Object.keys(row)[0]]);
+                let completed = 0;
+    
+                tableNames.forEach(table => {
+                    // Step 2: For each table, get columns
+                    db.query(`SHOW COLUMNS FROM \`${table}\``, (err, columns) => {
+                        if (err) {
+                            console.error(`Error fetching columns from ${table}:`, err);
+                        } else {
+                            columns.forEach(col => allColumns.add(col.Field));
+                        }
+    
+                        completed++;
+                        if (completed === tableNames.length) {
+                            // Step 4: Send result back
+                            io.to(socket.id).emit("adminTools_allColumnNames", {
+                                columnNames: Array.from(allColumns),
+                                tableNames: tableNames,
+                            });
+                        }
+                    });
                 });
             });
-        })
+        };
+    
+        getAllColumnNames();
 
     })
     socket.on("adminTools_loadTable",(tableName) => {
