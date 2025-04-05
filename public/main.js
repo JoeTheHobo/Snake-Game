@@ -323,6 +323,7 @@ document.body.on("wheel",function(e) {
     
 })
 document.body.onkeydown = function(e) {
+    if (global_scene == "adminTools") return;
     if (e.key == "Enter") {
         if (document.activeElement.classList.contains('goLogin')) {
             loginFunction();
