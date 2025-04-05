@@ -153,24 +153,29 @@
     flex-direction: row;
     align-items: center;
     width: 100%;
+    margin-top: 5px;
 }
 .at_dc_lb_filter_title {
-    font-size: 18px;
+    font-size: 15px;
     height: 25px;
-    flex-grow: 1;
+    flex-grow: 2;
+    text-align: center;
 }
 .at_dc_lb_filter_select {
     height: 25px;
+    text-align: center;
     flex-grow: 1;
+    font-size: 15px;
 }
 .at_dc_lb_filter_input {
     outline: none;
     border: none;
     height: 25px;
-    flex-grow: 1;
-    width: 100px;
+    font-size: 15px;
+    flex-grow: 2;
 }
 .at_dc_lb_filter_plus {
+    margin-top: 5px;
     cursor: pointer;
     width: 30px;
     height: 30px;
@@ -178,8 +183,8 @@
     align-items: center;
     justify-content: center;
     background: green;
-    font-size: 5px;
-    border-radius: 25px;
+    font-size: 25px;
+    border-radius: 5px;
     transition: all .2s ease-in-out;
 }
 .at_dc_lb_filter_plus:hover {
