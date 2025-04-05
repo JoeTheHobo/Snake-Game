@@ -1176,6 +1176,8 @@ function generatePlayerBoardsScreen(boardStats) {
                         {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"No"},
                         {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Delete",onClick: (ids,param) => {
                             socket.emit("deleteBoard",content.id);
+                            localAccount.boards.splice(index,1);
+                            generatePlayerBoardsScreen(localAccount.boards);
                         }},
                     ],
                 ],{

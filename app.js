@@ -647,20 +647,6 @@ io.on('connection', (socket) => {
                     console.log(7563,err)
                     return;
                 }
-
-                let query = "SELECT board, id, published FROM boards WHERE tag = ?";
-                db.query(query,[Number(account.tag)],(err,results) => {
-                    if (err) {
-                        console.log(73,err);
-                        return;
-                    }
-        
-                    decompressBoardsFromDB(results,(dbBoards) => {
-                        io.to(socket.id).emit("serverSending_boardStats",dbBoards);
-                    });
-                })
-
-
             })
         }
 
