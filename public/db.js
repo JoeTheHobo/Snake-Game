@@ -41,6 +41,7 @@ function at_loadDatabaseTable(rows) {
     for (let i = 0; i < headerNames.length; i++) {
         let headerCol = headerRow.insertCell(i);
         headerCol.innerHTML = headerNames[i];
+        headerCol.className = "at_dc_table_header";
     }
 
     for (let i = 0; i < rows.length; i++) {
@@ -49,9 +50,8 @@ function at_loadDatabaseTable(rows) {
         for (let j = 0; j < headerNames.length; j++) {
             let col = row.insertCell(j);
             col.innerHTML = rows[i][headerNames[j]];
+            col.className = "at_dc_table_cell" + (j%2);
         }
-
-
     }
 
 }
