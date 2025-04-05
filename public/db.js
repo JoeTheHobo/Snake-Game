@@ -46,6 +46,7 @@ function at_loadDataBaseTab(data) {
                 value: 0,
             })
             at_loadFilters();
+            $(".at_dc_columnNames").hide();
         })
     }
 
