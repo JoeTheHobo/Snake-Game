@@ -23,6 +23,7 @@ function at_loadDataBaseTab(data) {
     let table = $(".at_dc_table");
     table.innerHTML = "";
     at_filters = [];
+    at_table = false;
     at_headerNames = data.columnNames;
 
     tableNamesHolder.innerHTML = "";
@@ -100,7 +101,7 @@ function at_loadFilters() {
         $(".at_dc_columnNames").show("flex");
     })
 
-    if (table) {
+    if (at_table) {
         socket.emit("adminTools_loadTable",at_table,at_filters);
     }
 }
