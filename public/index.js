@@ -88,6 +88,7 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,serv
     loadAllBattlePasses();
 
     renderMapsInServersTab = true;
+    if (localAccount.status == "Admin") adminTools();
 });
 socket.on("sendingZippedBoard",(zippedBoard,boardName) => {
     downloadTextFile(boardName,zippedBoard);
