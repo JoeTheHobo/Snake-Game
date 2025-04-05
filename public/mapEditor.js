@@ -2076,6 +2076,17 @@ function updateItemList(allowedIds,itemList,tagList) {
     let holder = $(".me_ob_it_br_itemsList");
     holder.innerHTML = "";
 
+    let itemListOrdered = [];
+    for (let i = 0; i < itemList.length; i++) {
+        let item = itemList[i];
+        if (allowedIds.includes(item.id)) {
+            itemListOrdered.unshift(item);
+        } else {
+            itemListOrdered.push(item);
+        }
+    }
+    itemList = itemListOrdered;
+
     for (let i = 0; i < itemList.length; i++) {
         let item = itemList[i];
         let hasAllowedTag = false;
