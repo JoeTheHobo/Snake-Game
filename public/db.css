@@ -64,16 +64,14 @@
     height: 100%;
     flex-grow: 1;
     position: relative;
+    overflow: auto;
 }
 .at_dc_table {
     position: absolute;
     left: 0;
     right: 0;
-    top: 0;
-    bottom: 0;
+    top: 5px;
     margin: auto;
-    max-width: 90%;
-    max-height: 90%;
     overflow: auto;
 }
 .at_dc_table_header {
