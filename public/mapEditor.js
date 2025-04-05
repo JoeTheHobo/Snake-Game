@@ -1060,13 +1060,10 @@ function saveBoard() {
         socket.emit("saveBoard",pako.deflate(JSON.stringify(shortenBoard(currentBoard)), { to: 'string' }));
     }
         
+    socket.emit("db_getAccountBoardStats");
 
     html_saveStatus.innerHTML = "Board Saved";
 }
-$("me_button").on("mouseover",function() {
-    console.log("EYO");
-    socket.emit("db_getAccountBoardStats","MapEditor");
-})
 $("me_button").on("click",function() {
     if (localAccount.isInLobby) {
         makePopUp([
