@@ -1816,7 +1816,7 @@ function findEmptySpotInZones(lobby,zones,type,extra,extra2,setZones) {
         let zone = shuffledZones[i];
         if (!zone.active) continue;
 
-        if (type == "item") if (z.itemsThatCantSpawnHere.includes(extra.id)) continue;
+        if (type == "item") if (zone.itemsThatCantSpawnHere.includes(extra.id)) continue;
         if (type == "player") {
             let player = extra2;
             if (!gameStart) {
