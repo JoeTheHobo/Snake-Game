@@ -133,8 +133,11 @@ socket.on("serverSending_publishedBoards",(boardStats) => {
         generateBoard(parent,boardStats[i]);
     }
 })
-socket.on("serverSending_boardStats",(boardStats) => {
+socket.on("serverSending_boardStats",(boardStats,sentFrom) => {
     localAccount.boards = boardStats;
+    if (sentFrom == "MapEditor") {
+        generatePlayerBoardsScreen(localAccount.boards);
+    }
 })
 socket.on("setClientLobby",(lobby) => {
     if (lobby.hostID == localAccount.id) localAccount.isHost = true;
