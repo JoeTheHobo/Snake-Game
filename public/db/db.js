@@ -12,7 +12,7 @@ function setTab(tabName) {
         background: "rgb(137, 69, 192)",
     })
     $(tabName + "Content").show("flex");
-    console.log(tabName == "database");
+    
     if (tabName == "database") socket.emit("adminTools_loadDatabase");
 }
 
