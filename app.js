@@ -1597,6 +1597,7 @@ io.on('connection', (socket) => {
                         if (err) {
                             console.error(`Error fetching columns from ${table}:`, err);
                         } else {
+                            console.log(columns)
                             columns.forEach(col => allColumns.push(col.Field));
                         }
     
