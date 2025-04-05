@@ -495,7 +495,7 @@ items.push({
 items.push({
     id: 17,
     displayName: "Green Key",
-    description: "Have In Inventory To Access Blue Lock",
+    description: "Have In Inventory To Access Green Lock",
     name: "greenkey", //(string) Name Of Item
     skin: "basic",
     availableSkins: ["basic"],

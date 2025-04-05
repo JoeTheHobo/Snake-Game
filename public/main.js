@@ -325,7 +325,8 @@ document.body.on("wheel",function(e) {
 document.body.onkeydown = function(e) {
     if (global_scene == "adminTools") return;
     if (global_scene == "mapEditor") return;
-    
+    if (global_scene == "login") return;
+
     if (e.key == "Enter") {
         if (document.activeElement.classList.contains('goLogin')) {
             loginFunction();

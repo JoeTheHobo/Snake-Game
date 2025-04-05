@@ -2573,7 +2573,7 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
         playerLimit: 10,
         players: [ ],
         publishedBoardLimit: 2,
-        boardLimit: 10,
+        boardLimit: 3,
         canChangePassword: false,
 
         player: false, //For Lobbies
@@ -2598,10 +2598,10 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
         sfxVolume: 100,
 
 
-        allowedItemIds: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50],
-        allowedTileIds: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50],
+        allowedItemIds: [1,4,6,34,14,15,18,],
+        allowedTileIds: [1,3,6],
         allowedItemSkinPacks: [0],
-        allowedSnakeColors: [0,1,2,3,4,5],
+        allowedSnakeColors: [0,1,2,3],
     }
     let account = onlineAccounts[socketID];
 
