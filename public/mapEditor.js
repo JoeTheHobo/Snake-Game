@@ -2107,7 +2107,7 @@ function updateItemList(allowedIds,itemList,tagList) {
         img.src = getImage(item,"src");
 
         if (!allowedIds.includes(item.id)) {
-            div.classAdd("grayScale");
+            div.classAdd("redScale");
             continue;
         }
         div.on("click",function() {
