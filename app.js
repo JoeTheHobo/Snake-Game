@@ -1599,7 +1599,7 @@ io.on('connection', (socket) => {
         if (account.status !== "Admin") return;
 
         const query = `SELECT * FROM \`${tableName}\``; // use backticks to safely handle table names
-        db.quert(query,(err,results) => {
+        db.query(query,(err,results) => {
             if (err) throw err;
 
             io.to(socket.id).emit("adminTools_giveTableData",results);
