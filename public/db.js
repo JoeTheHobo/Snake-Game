@@ -109,6 +109,8 @@ function at_loadDatabaseTable(rows) {
     let table_html = $(".at_dc_table");
     table_html.innerHTML = "";
 
+    if (rows.length == 0) return;
+
     let headerNames = Object.keys(rows[0]);
 
     let headerRow = table_html.insertRow(0);
