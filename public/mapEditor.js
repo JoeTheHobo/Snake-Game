@@ -2079,6 +2079,7 @@ function updateItemList(allowedIds,itemList,tagList) {
     let itemListOrdered = [];
     for (let i = 0; i < itemList.length; i++) {
         let item = itemList[i];
+        if (!item.showInEditor) continue;
         if (allowedIds.includes(item.id)) {
             itemListOrdered.unshift(item);
         } else {
