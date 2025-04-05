@@ -342,20 +342,23 @@ document.body.onkeydown = function(e) {
     let metaDown = e.metaKey;
     let keyDown = e.key.toLowerCase();
     let preventDefault = true;
+
     if (controlDown && shiftDown && keyDown === 'i') preventDefault = false;
     if (metaDown) preventDefault = false;
     if (keyDown == "f5") preventDefault = false;
-    if (killSwitch) return;
-    if (!isActiveGame) return;
-    
-
     if (preventDefault) e.preventDefault;
-
     if (metaDown && e.key == "a") {
         console.log("ey")
         if (localAccount.status === "Admin")
             adminTools();
     }
+
+    if (killSwitch) return;
+    if (!isActiveGame) return;
+    
+
+
+    
     if (keyDown == "escape" && gameType !== "server") {
         if (gamePaused) {
             $(".pauseGamePopup").hide();
