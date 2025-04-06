@@ -4626,3 +4626,13 @@ cursor: url('./img/pointer.cur'), auto;
     color: white;
     font-size: 35px;
   }
+  .cbp_br_rc_pageTurner_on {
+    cursor: url('./img/pointer.cur'), auto !important;
+    color: white;
+
+  }
+  .cbp_br_rc_pageTurner_off {
+    cursor: url('./img/cursor.cur'), auto !important;
+    color: rgb(66, 66, 66);
+
+  }

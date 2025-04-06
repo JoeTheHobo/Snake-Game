@@ -1997,9 +1997,9 @@ function showBoardMenu(allBoards) {
 
     let html_board_content = $(".cbp_boardList");
 
-    removeAllEventListeners(html_page_left);
-    removeAllEventListeners(html_page_right);
-    removeAllEventListeners(html_close_popup);
+    html_page_left = removeAllEventListeners(html_page_left);
+    html_page_right = removeAllEventListeners(html_page_right);
+    html_close_popup = removeAllEventListeners(html_close_popup);
 
     //Reset Top Row
     $(".cbp_tr_lc_imageHolder").classRemove("cbp_tr_lc_imageHolder_selected");
