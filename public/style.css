@@ -4618,10 +4618,8 @@ cursor: url('./img/pointer.cur'), auto;
     background-position: right;
   }
   .bc_likeCounter {
-    color: #FFD700;
+    color: #000000;
     font-size: 25px;
-    -webkit-text-stroke: 2px rgb(0, 0, 0);
-    text-stroke: 2px rgb(0, 0, 0);
   }
 
   .cbp_bc_noBoard {
