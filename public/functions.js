@@ -2015,15 +2015,9 @@ function showBoardMenu(allBoards) {
         $(".chooseBoardPopup").hide();
     })
 
-    html_search_input.on("click",function() {
-        this.storedValue = this.value;
-        this.value = "";
+    html_search_input.on("keydown",function(e) {
+        if (e.key == "Enter") dispalyBoards();
     })
-    html_search_input.on("blur", function() {
-        if (this.value === "") {
-            this.value = this.storedValue || "";
-        }
-    });
     html_search_input.on("change",function() {
         dispalyBoards();
     })
