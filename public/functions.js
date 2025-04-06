@@ -2084,10 +2084,20 @@ function showBoardMenu(allBoards) {
 
         html_page_text.innerHTML = `Page ${page}/${pages}`;
         console.log(html_page_left,page);
-        if (page == 1) html_page_left.classRemove("cbp_br_rc_pageTurner_on")
-        else html_page_left.classAdd("cbp_br_rc_pageTurner_on")
-        if (page == pages) html_page_right.classRemove("cbp_br_rc_pageTurner_on")
-        else html_page_right.classAdd("cbp_br_rc_pageTurner_on")
+        if (page == 1) {
+            html_page_left.classRemove("cbp_br_rc_pageTurner_on")
+            html_page_left.classAdd("cbp_br_rc_pageTurner_off")
+        } else {
+            html_page_left.classAdd("cbp_br_rc_pageTurner_on")
+            html_page_left.classRemove("cbp_br_rc_pageTurner_off")
+        } 
+        if (page == pages) {
+            html_page_right.classRemove("cbp_br_rc_pageTurner_on")
+            html_page_right.classAdd("cbp_br_rc_pageTurner_off")
+        } else {
+            html_page_right.classAdd("cbp_br_rc_pageTurner_on")
+            html_page_right.classRemove("cbp_br_rc_pageTurner_off")
+        } 
 
         for (let i = 0; i < boardList.length; i++) {
             if (i <= ((page-1)*displayOnScreen)) continue;
