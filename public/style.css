@@ -4577,6 +4577,13 @@ cursor: url('./img/pointer.cur'), auto;
     bottom: 5px;
     aspect-ratio: 1/1;
     width: 30px;
+    cursor: url('./img/pointer.cur'), auto;
+    transition: all .2s ease-in-out;
+    filter: grayscale(100%);
+
+  }
+  .bc_likedImage:hover {
+    filter: none;
   }
   .bc_boardName {
     color: black;

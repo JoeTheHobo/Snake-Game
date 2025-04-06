@@ -2000,6 +2000,7 @@ function showBoardMenu(allBoards) {
     html_page_left = removeAllEventListeners(html_page_left);
     html_page_right = removeAllEventListeners(html_page_right);
     html_close_popup = removeAllEventListeners(html_close_popup);
+    html_search_button = removeAllEventListeners(html_search_button);
 
     //Reset Top Row
     $(".cbp_tr_lc_imageHolder").classRemove("cbp_tr_lc_imageHolder_selected");
@@ -2011,6 +2012,10 @@ function showBoardMenu(allBoards) {
 
     html_close_popup.on("click",function() {
         $(".chooseBoardPopup").hide();
+    })
+
+    html_search_button.on("click",function() {
+        dispalyBoards();
     })
 
     //Reset Bottom Row
@@ -2044,7 +2049,7 @@ function showBoardMenu(allBoards) {
         let cardImageHolder = cardHolder.create("div.bc_imageHolder");
         let canvas = cardImageHolder.create("canvas.bc_canvas");
         let likedImage = cardImageHolder.create("img.bc_likedImage");
-        likedImage.src = "img/menuIcons/star_inactive.png";
+        likedImage.src = "img/menuIcons/star_active.png";
         drawBoardToCanvas(card.board.originalMap,canvas);
 
         let boardName = cardHolder.create("div.bc_boardName");
@@ -2069,7 +2074,6 @@ function showBoardMenu(allBoards) {
     }
     function dispalyBoards() {
         let searchValue = html_search_input.value;
-        console.log(allBoards,type)
         let boardList = searchValue !== "" ? getSimilarNames(searchValue,allBoards[type]) : allBoards[type];
         html_board_content.innerHTML = "";
 
@@ -2078,6 +2082,8 @@ function showBoardMenu(allBoards) {
             noBoards.innerHTML = "No Boards Found";
             return;
         }
+
+        console.log(boardList)
 
         //Find How many Boards Can Display On Scree
         let displayOnScreen = 10;
