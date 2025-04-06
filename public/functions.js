@@ -2001,6 +2001,7 @@ function showBoardMenu(allBoards) {
     html_page_right = removeAllEventListeners(html_page_right);
     html_close_popup = removeAllEventListeners(html_close_popup);
     html_search_button = removeAllEventListeners(html_search_button);
+    html_search_input = removeAllEventListeners(html_search_input);
 
     //Reset Top Row
     $(".cbp_tr_lc_imageHolder").classRemove("cbp_tr_lc_imageHolder_selected");
@@ -2014,6 +2015,18 @@ function showBoardMenu(allBoards) {
         $(".chooseBoardPopup").hide();
     })
 
+    html_search_input.on("click",function() {
+        this.storedValue = this.value;
+        this.value = "";
+    })
+    html_search_input.on("blur", function() {
+        if (this.value === "") {
+            this.value = this.storedValue || "";
+        }
+    });
+    html_search_input.on("change",function() {
+        dispalyBoards();
+    })
     html_search_button.on("click",function() {
         dispalyBoards();
     })
