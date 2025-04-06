@@ -108,7 +108,6 @@ socket.on("updatePlayersBoards",(board,sentFrom) => {
     }
 })
 socket.on("serverSending_publishedBoards",(boardStats) => {
-    console.log(boardStats)
     showBoardMenu(boardStats);
 })
 socket.on("serverSending_boardStats",(boardStats,sentFrom) => {

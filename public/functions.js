@@ -2063,7 +2063,7 @@ function showBoardMenu(allBoards) {
         let boardName = cardHolder.create("div.bc_boardName");
         boardName.innerHTML = card.board.name;
         let boardAuthor = cardHolder.create("div.bc_boardAuthor");
-        boardAuthor.innerHTML = "Creator: -";
+        boardAuthor.innerHTML = "Creator: " + card.username;
         let boardDescription = cardHolder.create("div.bc_boardDescription");
         boardDescription.innerHTML = card.board.description || "";
 
