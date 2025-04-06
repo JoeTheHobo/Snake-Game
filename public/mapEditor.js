@@ -129,6 +129,7 @@ function openMapEditor(boardComingIn) {
 
 
     //Load Board Settings HTML
+    $("me_description").value = currentBoard.description || "";
     $("me_name").value = currentBoard.name;
     if (!currentBoard.background) currentBoard.background = backgrounds[0];
     $("me_background").innerHTML = currentBoard.background;
@@ -1838,6 +1839,13 @@ $("me_name").on("change",function() {
     if (this.value == "") return;
     currentBoard.name = this.value;
     saveBoard();
+})
+$("me_description").on("change",function() {
+    this.value = profanity.clean(this.value);
+    if (this.value == "") return;
+    currentBoard.description = this.value;
+    saveBoard();
+
 })
 $("me_background").on("click",function() {
     let holder = $(".backgroundSelectionScreen");

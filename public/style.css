@@ -1482,6 +1482,17 @@ cursor: url('./img/pointer.cur'), auto;
 border-radius: 5px;
 border: none;
 }
+.me_ih_textArea {
+  width: 40%;
+  aspect-ratio: 1/1;
+  outline: none;
+  border: none;
+  font-size: 25px;
+  border-radius: 5px;
+  font-family: VT323;
+
+
+}
 .me_ih_input {
 width: 40%;
 outline: none;

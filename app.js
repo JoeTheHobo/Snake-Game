@@ -757,6 +757,7 @@ io.on('connection', (socket) => {
                 height: height,
                 minPlayers: 1,
                 maxPlayers: 8,
+                description: "",
                 itemDifferences: [],
                 tileDifferences: [],
                 background: backgrounds[0],
