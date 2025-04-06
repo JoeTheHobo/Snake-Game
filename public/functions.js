@@ -2081,6 +2081,7 @@ function showBoardMenu(allBoards) {
         if (adjust) {
             let rect = cardHolder.getBoundingClientRect();
             let width = (rect.width * Math.ceil(displayOnScreen/2)) + (Math.ceil(displayOnScreen/2)*10) + 20;
+            console.log(rect.width,width,(rect.width * Math.ceil(displayOnScreen/2)),(Math.ceil(displayOnScreen/2)*10))
             let height = 45 + 50 + (rect.height*2) + 20 + 20;
             console.log(rect);
             $(".chooseBoardPopup").css({
