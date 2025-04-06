@@ -4668,7 +4668,7 @@ cursor: url('./img/pointer.cur'), auto;
     bottom: 0;
     margin: auto;
 
-    animation: spinEase 2.5s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+    animation: spinEase 1.5s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
   }
   @keyframes spinEase {
     0% {
