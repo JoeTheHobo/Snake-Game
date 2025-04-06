@@ -790,16 +790,37 @@
     <div class="customizeGamemodePopup closeWhenGameStarts"></div>
     <div class="customizeSnakePopup closeWhenGameStarts"></div>
     <div class="chooseBoardPopup closeWhenGameStarts">
-        <div class="cbp_tabsList">
-            <div class="cbp_tab" id="cbp_personal">Personal Board</div>
-            <div class="cbp_tab" id="cbp_published">Published Board</div>
-            <!--<div class="cbp_tab " id="cbp_lobby">Lobby Imported</div>-->
+        <div class="cbp_topRow">
+            <div class="cbp_tr_leftContent">
+                <div class="cbp_tr_lc_imageHolder" id="boardMenu_published">
+                    <img class="cbp_tr_lc_image" src="img/menuIcons/publishedIcon.png" alt="">
+                </div>
+                <div class="cbp_tr_lc_imageHolder" id="boardMenu_personal">
+                    <img class="cbp_tr_lc_image" src="img/menuIcons/myBoards.png" alt="">
+                </div>
+                <div class="cbp_tr_lc_imageHolder" id="boardMenu_liked">
+                    <img class="cbp_tr_lc_image" src="img/menuIcons/star_active.png" alt="">
+                </div>
+            </div>
+            <div class="cbp_tr_middleContent">
+                <div class="cbp_tr_mc_searchContainer">
+                    <input class="cbp_tr_mc_input" type="text" placeholder="Search Board Name...">
+                    <div class="cbp_tr_mc_searchHolder">
+                        <img class="cbp_tr_mc_searchImage" src="img/search.png" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="cbp_tr_rightContent">
+                <div class="cbp_tr_rc_close">x</div>
+            </div>
         </div>
-        <div class="cbp_boardsList">
-
-        </div>
-        <div class="cbp_bottom">
-            <div class="cbp_cancel">Cancel</div>
+        <div class="cbp_boardList"></div>
+        <div class="cbp_bottomRow">
+            <div class="cbp_br_rightContent">
+                <div class="cbp_br_rc_pageTracker cbp_br_rc_pageTurner" id="boardMenu_left"><</div>
+                <div class="cbp_br_rc_pageTracker" id="boardMenu_text">Page 3/5</div>
+                <div class="cbp_br_rc_pageTracker cbp_br_rc_pageTurner" id="boardMenu_right">></div>
+            </div>
         </div>
     </div>
 

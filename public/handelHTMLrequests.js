@@ -141,9 +141,7 @@ $(".sc_chat_input").on("keydown",function(e) {
     }
 })
 $(".sc_chooseboard").on("click",function() {
-    showBoardMenu(function(boardID) {
-        socket.emit("changeServerBoard",boardID);
-    }) 
+    socket.emit("gatherBoardsForBoardMenu");
 })
 /*
 $(".sc_editboard").on("click",function() {

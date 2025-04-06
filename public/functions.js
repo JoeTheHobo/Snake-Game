@@ -1405,40 +1405,6 @@ function drawBoardToCanvas(board,canvas) {
     }
 }
 
-function generateBoardsPopup(type) {
-    let parent = $(".cbp_boardsList");
-    parent.innerHTML = "";
-
-    /*
-    if (type == "lobby") {
-        for (let i = 0; i < localAccount.lobbyBoards.length; i++) {
-            let board = localAccount.lobbyBoards[i];
-            generateBoard(parent,board);
-        }
-        return;
-    }
-        */
-    if (type == "personal") {
-        socket.emit("getPersonalBoards");
-    }
-    if (type == "published") {
-        socket.emit("getPublishedBoards");
-    }
-}
-function selectTabInBoardMenu(tab) {
-    $(".cbp_tab").classRemove("cbp_tab_selected");
-    $("cbp_" + tab).classAdd("cbp_tab_selected");
-
-    generateBoardsPopup(tab);
-
-}
-function showBoardMenu(func) {
-    selectTabInBoardMenu("published");
-    $(".chooseBoardPopup").func = func;
-    $(".chooseBoardPopup").show("flex");
-    //socket.emit("askForLobbyBoards");
-}
-
 function showEndScreen() {
     $(".endScreenStats").show("flex");
     playEndScreenAnimation();
@@ -2008,3 +1974,159 @@ function adminTools() {
     setScene("adminTools");
     at_setTab("database");
 }
+
+
+function showBoardMenu(allBoards) {
+    $(".chooseBoardPopup").show("flex");
+    //boardVariables
+    let type;
+    let page;
+    //Declare HTML Variables
+    let html_choose_published = $("boardMenu_published");
+    let html_choose_personal = $("boardMenu_personal");
+    let html_choose_liked = $("boardMenu_liked");
+
+    let html_search_input = $(".cbp_tr_mc_input");
+    let html_search_button = $(".cbp_tr_mc_searchHolder");
+
+    let html_close_popup = $(".cbp_tr_rc_close");
+
+    let html_page_left = $("boardMenu_left");
+    let html_page_text = $("boardMenu_text");
+    let html_page_right = $("boardMenu_right");
+
+    let html_board_content = $(".cbp_boardList");
+
+    //Reset Top Row
+    $(".cbp_tr_lc_imageHolder").classRemove("cbp_tr_lc_imageHolder_selected");
+    $(".cbp_tr_lc_imageHolder").on("click",function() {
+        selectFilter(this.id.subset("_\\after","end"));
+    })
+
+    html_search_input.value = "";
+
+    html_close_popup.on("click",function() {
+        $(".chooseBoardPopup").hide();
+    })
+
+    //Reset Bottom Row
+    html_page_left.on("click",function() {
+        if (this.classList.contains("cbp_br_rc_pageTurner_on")) {
+            page--;
+            dispalyBoards();
+        }
+    })
+    html_page_right.on("click",function() {
+        if (this.classList.contains("cbp_br_rc_pageTurner_on")) {
+            page++;
+            dispalyBoards();
+        }
+    })
+
+    //Reset Board List
+    html_board_content.innerHTML = "";
+
+
+    function selectFilter(name) {
+        $(".cbp_tr_lc_imageHolder").classRemove("cbp_tr_lc_imageHolder_selected")
+        $("boardMenu_" + name).classAdd("cbp_tr_lc_imageHolder_selected");
+        type = name;
+        page = 1;
+        dispalyBoards();
+    }
+
+    function generateBoardCard(card) {
+        let cardHolder = html_board_content.create("div.bc_holder");
+        let cardImageHolder = cardHolder.create("div.bc_imageHolder");
+        let canvas = cardImageHolder.create("canvas.bc_canvas");
+        let likedImage = cardImageHolder.create("img.bc_likedImage");
+        likedImage.src = "img/menuIcons/star_inactive.png";
+        drawBoardToCanvas(card.board.originalMap,canvas);
+
+        let boardName = cardHolder.create("div.bc_boardName");
+        boardName.innerHTML = card.board.name;
+        let boardAuthor = cardHolder.create("div.bc_boardAuthor");
+        boardAuthor.innerHTML = "Creator: -";
+        let boardDescription = cardHolder.create("div.bc_boardDescription");
+        boardDescription.innerHTML = card.board.description || "";
+
+        let bottomRow = cardHolder.create("div.bc_bottomRow");
+        let playButton = bottomRow.create("div.bc_playButton");
+        playButton.innerHTML = "Play Board";
+        let likedCounter = bottomRow.create("div.bc_likeCounter");
+        likedCounter.innerHTML = "0 Likes";
+
+        playButton.on("click",function() {
+            $(".chooseBoardPopup").hide();
+            socket.emit("changeServerBoard",card.id);
+        })
+
+        
+    }
+    function dispalyBoards() {
+        let searchValue = html_search_input.value;
+        let boardList = getSimilarNames(searchValue,allBoards[type]);
+        html_board_content.innerHTML = "";
+
+        if (boardList.length == 0) {
+            let noBoards = html_board_content.create("div.cbp_bc_noBoard");
+            noBoards.innerHTML = "No Boards Found";
+            return;
+        }
+
+        //Find How many Boards Can Display On Scree
+        let displayOnScreen = 10;
+        let pages = Math.ceil(boardList.length/displayOnScreen);
+
+        html_page_text.innerHTML = `Page ${page}/${pages}`;
+        if (page == 1) html_page_left.classRemove("cbp_br_rc_pageTurner_on")
+        else html_page_left.classAdd("cbp_br_rc_pageTurner_on")
+        if (page == pages) html_page_right.classRemove("cbp_br_rc_pageTurner_on")
+        else html_page_right.classAdd("cbp_br_rc_pageTurner_on")
+
+        for (let i = 0; i < boardList.length; i++) {
+            if (i <= ((page-1)*displayOnScreen)) continue;
+            if (i > ((page-1)*displayOnScreen)+displayOnScreen) continue;
+
+            generateBoardCard(boardList[i]);
+        }
+
+
+
+    }
+
+    selectFilter("published")
+}
+function getSimilarNames(input, objList) {
+    const similarity = (a, b) => {
+      const distance = levenshteinDistance(a.toLowerCase(), b.toLowerCase());
+      return 1 - distance / Math.max(a.length, b.length);
+    };
+  
+    const levenshteinDistance = (a, b) => {
+      const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+  
+      for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+      for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+  
+      for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+          if (a[i - 1] === b[j - 1]) {
+            dp[i][j] = dp[i - 1][j - 1];
+          } else {
+            dp[i][j] = 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+          }
+        }
+      }
+  
+      return dp[a.length][b.length];
+    };
+  
+    return objList
+      .map(obj => {
+        const score = similarity(input, obj.name);
+        return { ...obj, similarity: score };
+      })
+      .filter(obj => obj.similarity >= 0.5)
+      .sort((a, b) => b.similarity - a.similarity);
+  }

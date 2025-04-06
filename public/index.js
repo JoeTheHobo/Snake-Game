@@ -108,30 +108,7 @@ socket.on("updatePlayersBoards",(board,sentFrom) => {
     }
 })
 socket.on("serverSending_publishedBoards",(boardStats) => {
-    let parent = $(".cbp_boardsList");
-    parent.innerHTML = "";
-
-    function generateBoard(parent,board) {
-        let holder = parent.create("div");
-        holder.className = "cbp_board_holder";
-
-        let canvas = holder.create("canvas");
-        canvas.className = "cbp_board_canvas";
-        drawBoardToCanvas(board.board.originalMap,canvas);
-
-        let title = holder.create("div");
-        title.className = "cbp_board_title";
-        title.innerHTML = board.board.name;
-
-        holder.on("click",function() {
-            $(".chooseBoardPopup").hide();
-            $(".chooseBoardPopup").func(board.id);
-        })
-    }
-
-    for (let i = 0; i < boardStats.length; i++) {
-        generateBoard(parent,boardStats[i]);
-    }
+    showBoardMenu(boardStats);
 })
 socket.on("serverSending_boardStats",(boardStats,sentFrom) => {
     localAccount.boards = boardStats;

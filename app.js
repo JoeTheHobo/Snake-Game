@@ -508,43 +508,42 @@ io.on('connection', (socket) => {
             });
         })
     })
-    socket.on("getPersonalBoards",() => {
+    socket.on("gatherBoardsForBoardMenu",() => {
         let account = onlineAccounts[socket.id];
         let lobby = lobbies[account.lobby];
         if (!lobby) return;
         if (lobby.hostID !== socket.id) return;
 
-        let query = `SELECT board, id FROM boards WHERE tag = ${account.tag}`;
-        db.query(query,(err,results) => {
+        let returningBoards = {
+            personal: [],
+            published: [],
+            liked: [],
+        };
+
+        let personalQuery = `SELECT board, id FROM boards WHERE tag = ${account.tag}`;
+        db.query(personalQuery,(err,results) => {
             if (err) {
                 console.log(735,err);
                 return;
             }
 
-            decompressBoardsFromDB(results,(dbBoards) => {
-                io.to(socket.id).emit("serverSending_publishedBoards",dbBoards);
+            decompressBoardsFromDB(results,(personalBoards) => {
+                returningBoards.personal = personalBoards;
+
+                let publishedQuery = "SELECT board, id FROM boards WHERE published = 1";
+                db.query(publishedQuery,(err,results) => {
+                    if (err) {
+                        console.log(73,err);
+                        return;
+                    }
+
+                    decompressBoardsFromDB(results,(publishedBoards) => {
+                        returningBoards.published = publishedBoards;
+                        io.to(socket.id).emit("serverSending_publishedBoards",returningBoards);
+                    });
+                })
             });
 
-        })
-
-
-    })
-    socket.on("getPublishedBoards",() => {
-        let account = onlineAccounts[socket.id];
-        let lobby = lobbies[account.lobby];
-        if (!lobby) return;
-        if (lobby.hostID !== socket.id) return;
-
-        let query = "SELECT board, id FROM boards WHERE published = 1";
-        db.query(query,(err,results) => {
-            if (err) {
-                console.log(73,err);
-                return;
-            }
-
-            decompressBoardsFromDB(results,(dbBoards) => {
-                io.to(socket.id).emit("serverSending_publishedBoards",dbBoards);
-            });
         })
 
     })
