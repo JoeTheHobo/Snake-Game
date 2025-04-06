@@ -4550,6 +4550,8 @@ cursor: url('./img/pointer.cur'), auto;
     align-items: center;
     background: #B4B4B4;
     border-radius: 5px;
+    width: 20%;
+    aspect-ratio: 300/334;
   }
   .bc_imageHolder {
     width: 95%;
