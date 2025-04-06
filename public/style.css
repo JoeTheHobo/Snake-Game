@@ -4413,6 +4413,8 @@ cursor: url('./img/pointer.cur'), auto;
   .cbp_topRow {
     flex: 0 0 auto; /* Don’t grow or shrink */
     display: flex;
+    height: 50px;
+    width: 100%;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -4511,6 +4513,8 @@ cursor: url('./img/pointer.cur'), auto;
 
   .cbp_bottomRow {
     flex: 0 0 auto;
+    height: 50px;
+    width: 100%;
     display: flex;
     justify-content: flex-end;
     align-items: center;

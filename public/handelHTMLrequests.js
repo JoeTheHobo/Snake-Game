@@ -148,14 +148,6 @@ $(".servers_invite_button").on("click",function() {
     $(".servers_invite_input").value = "";
 })
 
-$(".cbp_cancel").on("click",function() {
-    this.$P().$P().hide();
-})
-$(".cbp_tab").on("click",function() {
-    let idStart = this.id.subset(0,"_\\before");
-    if (idStart == "cbp")
-        selectTabInBoardMenu(this.innerHTML.subset(0," \\before").toLowerCase());
-})
 $(".sc_gmb_editGameModeHolder").on("click",function() {
     $(".customizeGamemodePopup").show();
     editGameMode($(".customizeGamemodePopup"),localAccount.lobbyGamemode,false,"server");
