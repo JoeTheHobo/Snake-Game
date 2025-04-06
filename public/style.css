@@ -4553,7 +4553,8 @@ cursor: url('./img/pointer.cur'), auto;
     background: #B4B4B4;
     border-radius: 5px;
     width: 20%;
-    aspect-ratio: 300/334;
+    height: 40%;
+    margin: 5px;
   }
   .bc_imageHolder {
     width: 95%;
@@ -4613,8 +4614,8 @@ cursor: url('./img/pointer.cur'), auto;
   .bc_likeCounter {
     color: #FFD700;
     font-size: 20px;
-    -webkit-text-stroke: 4px rgb(0, 0, 0);
-    text-stroke: 4px rgb(0, 0, 0);
+    -webkit-text-stroke: 1px rgb(0, 0, 0);
+    text-stroke: 1px rgb(0, 0, 0);
   }
 
   .cbp_bc_noBoard {
