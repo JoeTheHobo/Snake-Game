@@ -2060,6 +2060,7 @@ function showBoardMenu(allBoards) {
         likedImage.src = "img/menuIcons/star_active.png";
         drawBoardToCanvas(card.board.originalMap,canvas);
 
+
         let boardName = cardHolder.create("div.bc_boardName");
         boardName.innerHTML = card.board.name;
         let boardAuthor = cardHolder.create("div.bc_boardAuthor");
@@ -2076,6 +2077,17 @@ function showBoardMenu(allBoards) {
         playButton.on("click",function() {
             $(".chooseBoardPopup").hide();
             socket.emit("changeServerBoard",card.id);
+        })
+
+        
+        likedImage.on("click",function() {
+            if (this.classList.contains("bc_likedImage")) {
+                this.classRemove("bc_likedImage");
+                this.classAdd("bc_likedImage_liked");
+            } else {
+                this.classRemove("bc_likedImage_liked");
+                this.classAdd("bc_likedImage");
+            }
         })
 
         if (adjust) {
