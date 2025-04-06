@@ -2043,15 +2043,15 @@ function showBoardMenu(allBoards) {
     html_board_content.innerHTML = "";
 
 
-    function selectFilter(name) {
+    function selectFilter(name,adjustSize = false) {
         $(".cbp_tr_lc_imageHolder").classRemove("cbp_tr_lc_imageHolder_selected")
         $("boardMenu_" + name).classAdd("cbp_tr_lc_imageHolder_selected");
         type = name;
         page = 1;
-        dispalyBoards();
+        dispalyBoards(adjustSize);
     }
 
-    function generateBoardCard(card) {
+    function generateBoardCard(card,adjust = false) {
         let cardHolder = html_board_content.create("div.bc_holder");
         let cardImageHolder = cardHolder.create("div.bc_imageHolder");
         let canvas = cardImageHolder.create("canvas.bc_canvas");
@@ -2077,9 +2077,14 @@ function showBoardMenu(allBoards) {
             socket.emit("changeServerBoard",card.id);
         })
 
+        if (adjust) {
+            let rect = cardHolder.getBoundingClientRect();
+            console.log(rect);
+        }
+
         
     }
-    function dispalyBoards() {
+    function dispalyBoards(adjustSize = false) {
         let searchValue = html_search_input.value;
         let boardList = searchValue !== "" ? getSimilarNames(searchValue,allBoards[type]) : allBoards[type];
         html_board_content.innerHTML = "";
@@ -2114,14 +2119,16 @@ function showBoardMenu(allBoards) {
             if (i < ((page-1)*displayOnScreen)) continue;
             if (i > ((page-1)*displayOnScreen)+displayOnScreen) continue;
 
-            generateBoardCard(boardList[i]);
+            let adjust = false;
+            if (i == 0 && adjustSize) adjust = true;
+            generateBoardCard(boardList[i],adjust);
         }
 
 
 
     }
 
-    selectFilter("published")
+    selectFilter("published",true)
 }
 function removeAllEventListeners(el) {
     const clone = el.cloneNode(true); // true = deep clone (with children)
