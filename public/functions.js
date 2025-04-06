@@ -2081,12 +2081,10 @@ function showBoardMenu(allBoards) {
 
         
         likedImage.on("click",function() {
-            if (this.classList.contains("bc_likedImage")) {
-                this.classRemove("bc_likedImage");
-                this.classAdd("bc_likedImage_liked");
-            } else {
+            if (this.classList.contains("bc_likedImage_liked")) {
                 this.classRemove("bc_likedImage_liked");
-                this.classAdd("bc_likedImage");
+            } else {
+                this.classAdd("bc_likedImage_liked");
             }
         })
 

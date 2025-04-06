@@ -4583,18 +4583,7 @@ cursor: url('./img/pointer.cur'), auto;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
   .bc_likedImage_liked {
-    position: absolute;
-    right: 5px;
-    bottom: 5px;
-    aspect-ratio: 1/1;
-    width: 30px;
-    cursor: url('./img/pointer.cur'), auto;
-    transition: all .2s ease-in-out;
-    filter: none;
-
-  }
-  .bc_likedImage_liked:hover {
-    filter: grayscale(100%);
+    filter: none !important;
 
   }
   .bc_likedImage {
@@ -4607,9 +4596,6 @@ cursor: url('./img/pointer.cur'), auto;
     transition: all .2s ease-in-out;
     filter: grayscale(100%);
 
-  }
-  .bc_likedImage:hover {
-    filter: none;
   }
   .bc_boardName {
     color: black;
