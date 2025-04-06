@@ -520,8 +520,13 @@ io.on('connection', (socket) => {
             liked: [],
         };
 
-        let personalQuery = `SELECT board, id FROM boards WHERE tag = ${account.tag}`;
-        db.query(personalQuery,(err,results) => {
+        const personalQuery = `
+            SELECT b.board, b.id, c.username 
+            FROM boards b 
+            JOIN credentials c ON b.tag = c.tag 
+            WHERE b.tag = ?
+        `;
+        db.query(personalQuery,[Number(account.tag)],(err,results) => {
             if (err) {
                 console.log(735,err);
                 return;
@@ -530,7 +535,12 @@ io.on('connection', (socket) => {
             decompressBoardsFromDB(results,(personalBoards) => {
                 returningBoards.personal = personalBoards;
 
-                let publishedQuery = "SELECT board, id FROM boards WHERE published = 1";
+                const publishedQuery = `
+                    SELECT b.board, b.id, c.username 
+                    FROM boards b 
+                    JOIN credentials c ON b.tag = c.tag 
+                    WHERE b.published = 1
+                `;
                 db.query(publishedQuery,(err,results) => {
                     if (err) {
                         console.log(73,err);
