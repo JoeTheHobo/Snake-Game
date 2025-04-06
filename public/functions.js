@@ -2134,7 +2134,12 @@ function showBoardMenu(allBoards) {
 
     }
 
-    selectFilter("published",true)
+    if (allBoards === false) {
+        let spinner = html_board_content.create("img.cbp_spinner");
+        spinner.src = "img/loading.png";
+    } else {
+        selectFilter("published",true)
+    }
 }
 function removeAllEventListeners(el) {
     const clone = el.cloneNode(true); // true = deep clone (with children)
