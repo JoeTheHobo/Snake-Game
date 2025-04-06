@@ -4612,3 +4612,8 @@ cursor: url('./img/pointer.cur'), auto;
     -webkit-text-stroke: 4px rgb(0, 0, 0);
     text-stroke: 4px rgb(0, 0, 0);
   }
+
+  .cbp_bc_noBoard {
+    color: white;
+    font-size: 35px;
+  }
