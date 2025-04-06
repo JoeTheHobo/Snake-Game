@@ -4555,6 +4555,7 @@ cursor: url('./img/pointer.cur'), auto;
     width: 20%;
     height: 50%;
     margin: 5px;
+    padding: 5px;
   }
   .bc_imageHolder {
     width: 95%;
@@ -4564,6 +4565,8 @@ cursor: url('./img/pointer.cur'), auto;
   .bc_canvas {
     width: 100%;
     height: 100%;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
   .bc_likedImage {
     position: absolute;
@@ -4600,7 +4603,7 @@ cursor: url('./img/pointer.cur'), auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 60%;
+    width: 55%;
     height: 30px;
     cursor: url('./img/pointer.cur'), auto;
     background: linear-gradient(90deg, #6BD2FE, #027BAF);
@@ -4608,7 +4611,7 @@ cursor: url('./img/pointer.cur'), auto;
     background-position: left;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     transition: background-position 0.5s ease-in-out;
-    margin: 5px;
+    border-radius: 5px;
   }
   
   .bc_playButton:hover {
@@ -4616,10 +4619,9 @@ cursor: url('./img/pointer.cur'), auto;
   }
   .bc_likeCounter {
     color: #FFD700;
-    font-size: 20px;
-    -webkit-text-stroke: 1px rgb(0, 0, 0);
-    text-stroke: 1px rgb(0, 0, 0);
-    margin: 5px;
+    font-size: 25px;
+    -webkit-text-stroke: 2px rgb(0, 0, 0);
+    text-stroke: 2px rgb(0, 0, 0);
   }
 
   .cbp_bc_noBoard {
