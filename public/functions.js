@@ -2069,6 +2069,7 @@ function showBoardMenu(allBoards) {
     }
     function dispalyBoards() {
         let searchValue = html_search_input.value;
+        console.log(allBoards,type)
         let boardList = searchValue !== "" ? getSimilarNames(searchValue,allBoards[type]) : allBoards[type];
         html_board_content.innerHTML = "";
 
@@ -2083,7 +2084,6 @@ function showBoardMenu(allBoards) {
         let pages = Math.ceil(boardList.length/displayOnScreen);
 
         html_page_text.innerHTML = `Page ${page}/${pages}`;
-        console.log(html_page_left,page);
         if (page == 1) {
             html_page_left.classRemove("cbp_br_rc_pageTurner_on")
             html_page_left.classAdd("cbp_br_rc_pageTurner_off")

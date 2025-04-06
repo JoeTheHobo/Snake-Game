@@ -4413,7 +4413,7 @@ cursor: url('./img/pointer.cur'), auto;
   .cbp_topRow {
     flex: 0 0 auto; /* Don’t grow or shrink */
     display: flex;
-    height: 50px;
+    height: 45px;
     width: 100%;
     flex-direction: row;
     align-items: center;
@@ -4461,6 +4461,7 @@ cursor: url('./img/pointer.cur'), auto;
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding-left: 5px;
   }
   .cbp_tr_mc_input {
     height: 100%;
@@ -4470,6 +4471,8 @@ cursor: url('./img/pointer.cur'), auto;
     color: black;
     background: none;
     box-sizing: border-box;
+    font-family: VT323;
+    font-size: 20px;
   }
   .cbp_tr_mc_input::placeholder {
     color: #0000003f;
