@@ -4523,6 +4523,7 @@ cursor: url('./img/pointer.cur'), auto;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    align-items: center;
   }
 
 
