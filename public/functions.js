@@ -2083,8 +2083,6 @@ function showBoardMenu(allBoards) {
             return;
         }
 
-        console.log(boardList)
-
         //Find How many Boards Can Display On Scree
         let displayOnScreen = 10;
         let pages = Math.ceil(boardList.length/displayOnScreen);
@@ -2106,7 +2104,7 @@ function showBoardMenu(allBoards) {
         } 
 
         for (let i = 0; i < boardList.length; i++) {
-            if (i <= ((page-1)*displayOnScreen)) continue;
+            if (i < ((page-1)*displayOnScreen)) continue;
             if (i > ((page-1)*displayOnScreen)+displayOnScreen) continue;
 
             generateBoardCard(boardList[i]);
