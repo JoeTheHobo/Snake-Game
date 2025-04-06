@@ -4421,7 +4421,10 @@ cursor: url('./img/pointer.cur'), auto;
     background: linear-gradient(90deg, #A849D4 0%, #57266E 100%);
   }
   .cbp_tr_leftContent {
-
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
   .cbp_tr_lc_imageHolder {
     background: #D9D9D9;
@@ -4465,16 +4468,24 @@ cursor: url('./img/pointer.cur'), auto;
     outline: none;
     border: none;
     color: black;
+    background: none;
+    box-sizing: border-box;
   }
   .cbp_tr_mc_input::placeholder {
     color: #0000003f;
   }
   .cbp_tr_mc_searchHolder {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
     height: 100%;
+    box-sizing: border-box;
     aspect-ratio: 1/1;
     cursor: url('./img/pointer.cur'), auto;
     background: rgb(211, 211, 211);
     transition: all .2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .cbp_tr_mc_searchHolder:hover {
     background: rgb(170, 170, 170);
@@ -4519,6 +4530,7 @@ cursor: url('./img/pointer.cur'), auto;
     justify-content: flex-end;
     align-items: center;
     padding: 10px;
+    box-sizing: border-box;
 
   }
   .cbp_br_rightContent {

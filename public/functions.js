@@ -2133,7 +2133,7 @@ function getSimilarNames(input, objList) {
   
     return objList
       .map(obj => {
-        const score = similarity(input, obj.name);
+        const score = similarity(input, obj.board.name);
         return { ...obj, similarity: score };
       })
       .filter(obj => obj.similarity >= 0.5)
