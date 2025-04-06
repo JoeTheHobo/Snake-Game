@@ -2069,7 +2069,7 @@ function showBoardMenu(allBoards) {
     }
     function dispalyBoards() {
         let searchValue = html_search_input.value;
-        let boardList = getSimilarNames(searchValue,allBoards[type]);
+        let boardList = searchValue !== "" ? getSimilarNames(searchValue,allBoards[type]) : allBoards[type];
         html_board_content.innerHTML = "";
 
         if (boardList.length == 0) {
