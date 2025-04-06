@@ -579,6 +579,42 @@ io.on('connection', (socket) => {
             })
         })
     })
+    socket.on("userLikesBoard", (boardID) => {
+        let account = onlineAccounts[socket.id];
+        if (!account?.loggedIn) return;
+    
+        const query = `
+            INSERT INTO favorites (tag, id, type)
+            SELECT ?, ?, ?
+            WHERE NOT EXISTS (
+                SELECT 1 FROM favorites WHERE tag = ? AND id = ? AND type = ?
+            )
+        `;
+        
+        const values = [
+            Number(account.tag), boardID, "board",
+            Number(account.tag), boardID, "board"
+        ];
+    
+        db.query(query, values, (err, results) => {
+            if (err) throw err;
+        });
+    });
+    socket.on("userDislikesBoard", (boardID) => {
+        let account = onlineAccounts[socket.id];
+        if (!account?.loggedIn) return;
+    
+        const query = `
+            DELETE FROM favorites 
+            WHERE tag = ? AND id = ? AND type = ?
+        `;
+    
+        const values = [Number(account.tag), boardID, "board"];
+    
+        db.query(query, values, (err, results) => {
+            if (err) throw err;
+        });
+    });
     socket.on("depublishBoard",(boardID) => {
         try {
             let account = onlineAccounts[socket.id];

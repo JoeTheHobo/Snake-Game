@@ -2056,8 +2056,6 @@ function showBoardMenu(allBoards) {
         let cardHolder = html_board_content.create("div.bc_holder");
         let cardImageHolder = cardHolder.create("div.bc_imageHolder");
         let canvas = cardImageHolder.create("canvas.bc_canvas");
-        let likedImage = cardImageHolder.create("img.bc_likedImage");
-        likedImage.src = "img/menuIcons/star_active.png";
         drawBoardToCanvas(card.board.originalMap,canvas);
 
 
@@ -2079,14 +2077,27 @@ function showBoardMenu(allBoards) {
             socket.emit("changeServerBoard",card.id);
         })
 
+        if (type !== "personal") {
+            let likedImage = cardImageHolder.create("img.bc_likedImage");
+            likedImage.src = "img/menuIcons/star_active.png";
+            likedImage.on("click",function() {
+                if (this.classList.contains("bc_likedImage_liked")) {
+                    this.classRemove("bc_likedImage_liked");
+                    socket.emit("userDislikesBoard",card.id);
+                    for (let i = 0; i < allBoards.liked.length; i++) {
+                        if (allBoards.liked[i].id === card.id) allBoards.liked.splice(i,1);
+                    }
+                    likedCounter.innerHTML = (Number(likedCounter.innerHTML.subset(0," "))-1) + " Likes";
+
+                } else {
+                    this.classAdd("bc_likedImage_liked");
+                    socket.emit("userLikesBoard",card.id);
+                    allBoards.liked.push(card);
+                    likedCounter.innerHTML = (Number(likedCounter.innerHTML.subset(0," "))+1) + " Likes";
+                }
+            })
+        }
         
-        likedImage.on("click",function() {
-            if (this.classList.contains("bc_likedImage_liked")) {
-                this.classRemove("bc_likedImage_liked");
-            } else {
-                this.classAdd("bc_likedImage_liked");
-            }
-        })
 
         if (adjust) {
             let rect = cardHolder.getBoundingClientRect();
