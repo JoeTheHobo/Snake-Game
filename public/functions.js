@@ -1982,6 +1982,7 @@ function showBoardMenu(allBoards) {
     let type;
     let page;
     let displayOnScreen = 10;
+    let likedList = [];
     //Declare HTML Variables
     let html_choose_published = $("boardMenu_published");
     let html_choose_personal = $("boardMenu_personal");
@@ -2043,7 +2044,12 @@ function showBoardMenu(allBoards) {
     //Reset Board List
     html_board_content.innerHTML = "";
 
-
+    function setLikedList() {
+        likedList = [];
+        for (let i = 0; i < allBoards.liked.length; i++) {
+            likedList.push(allBoards.liked[i].id);
+        }
+    }
     function selectFilter(name,adjustSize = false) {
         $(".cbp_tr_lc_imageHolder").classRemove("cbp_tr_lc_imageHolder_selected")
         $("boardMenu_" + name).classAdd("cbp_tr_lc_imageHolder_selected");
@@ -2080,6 +2086,7 @@ function showBoardMenu(allBoards) {
         if (type !== "personal") {
             let likedImage = cardImageHolder.create("img.bc_likedImage");
             likedImage.src = "img/menuIcons/star_active.png";
+            if (likedList.includes(card.id)) likedImage.classAdd("bc_likedImage_liked");
             likedImage.on("click",function() {
                 if (this.classList.contains("bc_likedImage_liked")) {
                     this.classRemove("bc_likedImage_liked");
@@ -2095,6 +2102,7 @@ function showBoardMenu(allBoards) {
                     allBoards.liked.push(card);
                     likedCounter.innerHTML = (Number(likedCounter.innerHTML.subset(0," "))+1) + " Likes";
                 }
+                setLikedList();
             })
         }
         
@@ -2159,6 +2167,7 @@ function showBoardMenu(allBoards) {
         let spinner = html_board_content.create("img.cbp_spinner");
         spinner.src = "img/loading.png";
     } else {
+        setLikedList();
         selectFilter("published",true)
     }
 }
