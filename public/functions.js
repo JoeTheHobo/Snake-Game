@@ -1981,6 +1981,7 @@ function showBoardMenu(allBoards) {
     //boardVariables
     let type;
     let page;
+    let displayOnScreen = 10;
     //Declare HTML Variables
     let html_choose_published = $("boardMenu_published");
     let html_choose_personal = $("boardMenu_personal");
@@ -2079,7 +2080,13 @@ function showBoardMenu(allBoards) {
 
         if (adjust) {
             let rect = cardHolder.getBoundingClientRect();
+            let width = (rect.width * Math.ceil(displayOnScreen/2)) + (Math.ceil(displayOnScreen/2)*10) + 20;
+            let height = 45 + 50 + (rect.height*2) + 20 + 20;
             console.log(rect);
+            $(".chooseBoardPopup").css({
+                width: width + "px",
+                height: height + "px",
+            })
         }
 
         
@@ -2095,8 +2102,6 @@ function showBoardMenu(allBoards) {
             return;
         }
 
-        //Find How many Boards Can Display On Scree
-        let displayOnScreen = 10;
         let pages = Math.ceil(boardList.length/displayOnScreen);
 
         html_page_text.innerHTML = `Page ${page}/${pages}`;
