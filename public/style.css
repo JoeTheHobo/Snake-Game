@@ -4553,7 +4553,7 @@ cursor: url('./img/pointer.cur'), auto;
     background: #B4B4B4;
     border-radius: 5px;
     width: 20%;
-    height: 40%;
+    height: 50%;
     margin: 5px;
   }
   .bc_imageHolder {
@@ -4571,7 +4571,6 @@ cursor: url('./img/pointer.cur'), auto;
     bottom: 5px;
     aspect-ratio: 1/1;
     width: 30px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
   .bc_boardName {
     color: black;
@@ -4603,19 +4602,23 @@ cursor: url('./img/pointer.cur'), auto;
     justify-content: center;
     width: 60%;
     height: 30px;
-    background: linear-gradient(90deg, #6BD2FE 0%, #027BAF 100%);
+    cursor: url('./img/pointer.cur'), auto;
+    background: linear-gradient(90deg, #6BD2FE, #027BAF);
+    background-size: 200%;
+    background-position: left;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    transition: all .2s ease-in-out;
+    transition: background-position 0.5s ease-in-out;
   }
+  
   .bc_playButton:hover {
-    background: linear-gradient(90deg, #027BAF 0%, #6BD2FE 100%);
-
+    background-position: right;
   }
   .bc_likeCounter {
     color: #FFD700;
     font-size: 20px;
     -webkit-text-stroke: 1px rgb(0, 0, 0);
     text-stroke: 1px rgb(0, 0, 0);
+    margin-right: 5px;
   }
 
   .cbp_bc_noBoard {
