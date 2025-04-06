@@ -1997,6 +1997,10 @@ function showBoardMenu(allBoards) {
 
     let html_board_content = $(".cbp_boardList");
 
+    removeAllEventListeners(html_page_left);
+    removeAllEventListeners(html_page_right);
+    removeAllEventListeners(html_close_popup);
+
     //Reset Top Row
     $(".cbp_tr_lc_imageHolder").classRemove("cbp_tr_lc_imageHolder_selected");
     $(".cbp_tr_lc_imageHolder").on("click",function() {
@@ -2097,6 +2101,11 @@ function showBoardMenu(allBoards) {
 
     selectFilter("published")
 }
+function removeAllEventListeners(el) {
+    const clone = el.cloneNode(true); // true = deep clone (with children)
+    el.parentNode.replaceChild(clone, el);
+    return clone; // return the new element so you can use it
+  }
 function getSimilarNames(input, objList) {
     const similarity = (a, b) => {
       const distance = levenshteinDistance(a.toLowerCase(), b.toLowerCase());
