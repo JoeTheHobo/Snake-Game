@@ -2134,7 +2134,7 @@ function showBoardMenu(allBoards) {
         let boardList = searchValue !== "" ? getSimilarNames(searchValue,allBoards[type]) : allBoards[type];
         html_board_content.innerHTML = "";
 
-        console.log(boardList)
+        console.log(allBoards,type)
         if (boardList.length == 0) {
             let noBoards = html_board_content.create("div.cbp_bc_noBoard");
             noBoards.innerHTML = "No Boards Found";
