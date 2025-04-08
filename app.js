@@ -519,43 +519,50 @@ io.on('connection', (socket) => {
             published: [],
             liked: [],
         };
+        const likedQuery = `SELECT id FROM favorites WHERE tag = ${Number(account.tag)} AND type = "board"`;
+        db.query(likedQuery,[],(err,likedList) => {
+            if (err) throw err;
 
-        const personalQuery = `
-            SELECT b.board, b.id, c.username 
-            FROM boards b 
-            JOIN credentials c ON b.tag = c.tag 
-            WHERE b.tag = ?
-        `;
-        db.query(personalQuery,[Number(account.tag)],(err,results) => {
-            if (err) {
-                console.log(735,err);
-                return;
-            }
+            returningBoards.liked = likedList;
 
-            decompressBoardsFromDB(results,(personalBoards) => {
-                returningBoards.personal = personalBoards;
 
-                const publishedQuery = `
-                    SELECT b.board, b.id, c.username 
-                    FROM boards b 
-                    JOIN credentials c ON b.tag = c.tag 
-                    WHERE b.published = 1
-                `;
-                db.query(publishedQuery,(err,results) => {
-                    if (err) {
-                        console.log(73,err);
-                        return;
-                    }
+            const personalQuery = `
+                SELECT b.board, b.id, c.username 
+                FROM boards b 
+                JOIN credentials c ON b.tag = c.tag 
+                WHERE b.tag = ?
+            `;
+            db.query(personalQuery,[Number(account.tag)],(err,results) => {
+                if (err) {
+                    console.log(735,err);
+                    return;
+                }
 
-                    decompressBoardsFromDB(results,(publishedBoards) => {
-                        returningBoards.published = publishedBoards;
-                        io.to(socket.id).emit("serverSending_publishedBoards",returningBoards);
-                    });
-                })
-            });
+                decompressBoardsFromDB(results,(personalBoards) => {
+                    returningBoards.personal = personalBoards;
+
+                    const publishedQuery = `
+                        SELECT b.board, b.id, c.username 
+                        FROM boards b 
+                        JOIN credentials c ON b.tag = c.tag 
+                        WHERE b.published = 1
+                    `;
+                    db.query(publishedQuery,(err,results) => {
+                        if (err) {
+                            console.log(73,err);
+                            return;
+                        }
+
+                        decompressBoardsFromDB(results,(publishedBoards) => {
+                            returningBoards.published = publishedBoards;
+                            io.to(socket.id).emit("serverSending_publishedBoards",returningBoards);
+                        });
+                    })
+                });
+
+            })
 
         })
-
     })
     socket.on("db_getAccountBoardStats",(sentFrom) => {
         sendBoardStats(socket.id,sentFrom);

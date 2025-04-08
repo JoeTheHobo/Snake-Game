@@ -1982,7 +1982,8 @@ function showBoardMenu(allBoards) {
     let type;
     let page;
     let displayOnScreen = 10;
-    let likedList = [];
+    let likedList = allBoards === false ? [] : allBoards.liked;
+    console.log(likedList)
     //Declare HTML Variables
     let html_choose_published = $("boardMenu_published");
     let html_choose_personal = $("boardMenu_personal");
