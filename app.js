@@ -527,9 +527,19 @@ io.on('connection', (socket) => {
 
 
             const personalQuery = `
-                SELECT b.board, b.id, c.username 
-                FROM boards b 
-                JOIN credentials c ON b.tag = c.tag 
+                SELECT 
+                    b.board, 
+                    b.id, 
+                    c.username,
+                    IFNULL(f.likeCount, 0) AS likeCount
+                FROM boards b
+                JOIN credentials c ON b.tag = c.tag
+                LEFT JOIN (
+                    SELECT id, COUNT(*) AS likeCount 
+                    FROM favorites 
+                    WHERE type = 'board' 
+                    GROUP BY id
+                ) f ON b.id = f.id
                 WHERE b.tag = ?
             `;
             db.query(personalQuery,[Number(account.tag)],(err,results) => {
@@ -542,9 +552,19 @@ io.on('connection', (socket) => {
                     returningBoards.personal = personalBoards;
 
                     const publishedQuery = `
-                        SELECT b.board, b.id, c.username 
-                        FROM boards b 
-                        JOIN credentials c ON b.tag = c.tag 
+                        SELECT 
+                            b.board, 
+                            b.id, 
+                            c.username,
+                            IFNULL(f.likeCount, 0) AS likeCount
+                        FROM boards b
+                        JOIN credentials c ON b.tag = c.tag
+                        LEFT JOIN (
+                            SELECT id, COUNT(*) AS likeCount 
+                            FROM favorites 
+                            WHERE type = 'board' 
+                            GROUP BY id
+                        ) f ON b.id = f.id
                         WHERE b.published = 1
                     `;
                     db.query(publishedQuery,(err,results) => {
