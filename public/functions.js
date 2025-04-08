@@ -1979,11 +1979,11 @@ function adminTools() {
 function showBoardMenu(allBoards) {
     $(".chooseBoardPopup").show("flex");
     //boardVariables
+    console.log(allBoards)
     let type;
     let page;
     let displayOnScreen = 10;
     let likedList = allBoards === false ? [] : allBoards.liked;
-    console.log(likedList)
     //Declare HTML Variables
     let html_choose_published = $("boardMenu_published");
     let html_choose_personal = $("boardMenu_personal");
@@ -2111,9 +2111,7 @@ function showBoardMenu(allBoards) {
         if (adjust) {
             let rect = cardHolder.getBoundingClientRect();
             let width = (rect.width * Math.ceil(displayOnScreen/2)) + (Math.ceil(displayOnScreen/2)*10) + 20;
-            console.log(rect.width,width,(rect.width * Math.ceil(displayOnScreen/2)),(Math.ceil(displayOnScreen/2)*10))
             let height = 45 + 50 + (rect.height*2) + 20 + 20;
-            console.log(rect);
             $(".chooseBoardPopup").css({
                 width: width + "px",
                 height: height + "px",
