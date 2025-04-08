@@ -1988,6 +1988,7 @@ function showBoardMenu(allBoards) {
         }
     }
     let likedList = allBoards === false ? [] : allBoards.liked;
+    console.log(likedList)
     //Declare HTML Variables
     let html_choose_published = $("boardMenu_published");
     let html_choose_personal = $("boardMenu_personal");
@@ -2129,6 +2130,7 @@ function showBoardMenu(allBoards) {
         let boardList = searchValue !== "" ? getSimilarNames(searchValue,allBoards[type]) : allBoards[type];
         html_board_content.innerHTML = "";
 
+        console.log(boardList)
         if (boardList.length == 0) {
             let noBoards = html_board_content.create("div.cbp_bc_noBoard");
             noBoards.innerHTML = "No Boards Found";
