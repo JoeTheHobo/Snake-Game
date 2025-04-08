@@ -1982,8 +1982,12 @@ function showBoardMenu(allBoards) {
     let type;
     let page;
     let displayOnScreen = 10;
+    if (allBoards !== false) {
+        for (let i = 0; i < allBoards.liked.length; i++) {
+            allBoards.liked[i] = allBoards.liked[i].id;
+        }
+    }
     let likedList = allBoards === false ? [] : allBoards.liked;
-    console.log(likedList)
     //Declare HTML Variables
     let html_choose_published = $("boardMenu_published");
     let html_choose_personal = $("boardMenu_personal");
