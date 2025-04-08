@@ -1979,7 +1979,6 @@ function adminTools() {
 function showBoardMenu(allBoards) {
     $(".chooseBoardPopup").show("flex");
     //boardVariables
-    console.log(allBoards)
     let type;
     let page;
     let displayOnScreen = 10;
@@ -2077,7 +2076,7 @@ function showBoardMenu(allBoards) {
         let playButton = bottomRow.create("div.bc_playButton");
         playButton.innerHTML = "Play Board";
         let likedCounter = bottomRow.create("div.bc_likeCounter");
-        likedCounter.innerHTML = "0 Likes";
+        likedCounter.innerHTML = card.likeCount + " Likes";
 
         playButton.on("click",function() {
             $(".chooseBoardPopup").hide();
