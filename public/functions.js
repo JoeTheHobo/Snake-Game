@@ -1991,8 +1991,8 @@ function showBoardMenu(allBoards) {
                 }
             }
         }
+        allBoards.liked = likedList;
     }
-    allBoards.liked = likedList;
     //Declare HTML Variables
     let html_choose_published = $("boardMenu_published");
     let html_choose_personal = $("boardMenu_personal");
