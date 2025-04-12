@@ -4403,7 +4403,7 @@ cursor: url('./img/pointer.cur'), auto;
 }*/
 
 
-.chooseBoardPopup {
+.chooseBoardPopup, .editGameModePopup {
   position: absolute;
   top: 0;
   right: 0;
@@ -4421,7 +4421,7 @@ cursor: url('./img/pointer.cur'), auto;
   overflow: hidden;
   }
 
-  .cbp_topRow {
+  .modernPopup_topRow {
     flex: 0 0 auto; /* Don’t grow or shrink */
     display: flex;
     height: 45px;
@@ -4431,13 +4431,13 @@ cursor: url('./img/pointer.cur'), auto;
     justify-content: space-between;
     background: linear-gradient(90deg, #A849D4 0%, #57266E 100%);
   }
-  .cbp_tr_leftContent {
+  .modernPopup_topRow_leftContent {
     height: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
   }
-  .cbp_tr_lc_imageHolder {
+  .modernPopup_topRow_imageHolder {
     background: #D9D9D9;
     border-radius: 5px;
     display: flex;
@@ -4450,17 +4450,17 @@ cursor: url('./img/pointer.cur'), auto;
     aspect-ratio: 62/48;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
-  .cbp_tr_lc_imageHolder:hover {
+  .modernPopup_topRow_imageHolder:hover {
     background: #7e7e7e;
   }
   .cbp_tr_lc_imageHolder_selected {
     background: #027BAF !important;
   }
-  .cbp_tr_lc_image {
+  .modernPopup_topRow_image {
     height: 90%;
     aspect-ratio: 1/1;
   }
-  .cbp_tr_middleContent {
+  .modernPopup_topRow_middleContent {
     width: 33%;
     height: 80%;
   }
@@ -4508,10 +4508,10 @@ cursor: url('./img/pointer.cur'), auto;
     width: 80%;
     height: 80%;
   }
-  .cbp_tr_rightContent {
+  .modernPopup_topRow_rightContent {
     height: 100%;
   }
-  .cbp_tr_rc_close {
+  .modernPopup_topRow_close {
     height: 100%;
     aspect-ratio: 1/1;
     background: #8f0d0da9;
@@ -4522,7 +4522,7 @@ cursor: url('./img/pointer.cur'), auto;
     transition: all .2s ease-in-out;
     cursor: url('./img/pointer.cur'), auto;
   }
-  .cbp_tr_rc_close:hover {
+  .modernPopup_topRow_close:hover {
     background: #8f0d0d;
   }
 
@@ -4681,4 +4681,8 @@ cursor: url('./img/pointer.cur'), auto;
     100% {
       transform: rotate(360deg); /* Slow final quarter spin */
     }
+  }
+
+  .showFlex {
+    display: flex !important;
   }
