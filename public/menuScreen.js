@@ -1186,6 +1186,6 @@ function setPopupTab(tab) {
     $(".modernPopup_content").hide();
     $("modernPopup_content_" + tab).show("flex");
 }
-$(".modernPopup_content").on("click",function() {
+$(".modernPopup_topRow_imageHolder").on("click",function() {
     setPopupTab(this.id.subset("tab_\\after","end"))
 })
