@@ -1176,14 +1176,16 @@ function editGameMode(gameMode,sendToServer) {
     html_popup = $(".editGameModePopup");
     html_popup.show("flex");
 
-    function setTab(tab) {
-        $(".modernPopup_topRow_imageHolder").classRemove("modernPopup_topRow_image_selected");
-        $("gamemode_popup_tab_" + tab).classAdd("modernPopup_topRow_image_selected");
-
-        $(".modernPopup_content").hide();
-        $("modernPopup_content_" + tab).show("flex");
-
-    }
-
-    setTab("settings")
+    
+    setPopupTab("settings")
 }
+function setPopupTab(tab) {
+    $(".modernPopup_topRow_imageHolder").classRemove("modernPopup_topRow_image_selected");
+    $("gamemode_popup_tab_" + tab).classAdd("modernPopup_topRow_image_selected");
+
+    $(".modernPopup_content").hide();
+    $("modernPopup_content_" + tab).show("flex");
+}
+$(".modernPopup_content").on("click",function() {
+    setPopupTab(this.id.subset("tab_\\after","end"))
+})
