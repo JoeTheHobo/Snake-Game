@@ -1180,7 +1180,9 @@ function editGameMode(gameMode,sendToServer) {
         $(".modernPopup_topRow_imageHolder").classRemove("modernPopup_topRow_image_selected");
         $("gamemode_popup_tab_" + tab).classAdd("modernPopup_topRow_image_selected");
 
-        
+        $(".modernPopup_content").hide();
+        $("modernPopup_content_" + tab).show("flex");
+
     }
 
     setTab("settings")
