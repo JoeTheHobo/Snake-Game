@@ -1583,8 +1583,22 @@ function loadGamemodeTabWinning() {
             html_delete.src = "img/tool_delete.png";
             html_delete.on("click",function() {
                 gamemode.winningConditions[i] = false;
+                let approvedConditions = false;
+                for (let i = 0; i < gamemode.winningConditions.length; i++) {
+                    if (!gamemode.winningConditions) continue;
+                    if (gamemode.winningConditions[i].condition === "Last One Standing" || gamemode.winningConditions[i].condition === "Last Team Standing") {
+                        approvedConditions = true;
+                    }
+                }
+                if (!approvedConditions) {
+                    gamemode.winningConditions[i] = {
+                        condition: "Last One Standing",
+                        x: false,
+                        whoWins: "Player",
+                        type: false,
+                    }
+                }
                 loadWinningConditions();
-                console.log(gamemode.winningConditions)
             })
 
             let pullFromCondition = false;
