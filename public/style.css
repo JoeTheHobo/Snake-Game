@@ -4851,15 +4851,15 @@ cursor: url('./img/pointer.cur'), auto;
     height: 100%;
     width: 33%;
     display: flex;
-    padding: 10px;
+    padding: 20px;
     flex-direction: row;
     flex-wrap: wrap;
     align-content: flex-start;
     align-items: flex-start;
   }
   .gmItems_imageHolder {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     background: white;
     border-radius: 5px;
     border: 3px solid black;
@@ -4875,9 +4875,13 @@ cursor: url('./img/pointer.cur'), auto;
   .modernPopup_verticalLine {
     width: 2px;
     background: white;
-    height: 80%;
+    height: 90%;
   }
   .gamemodePopup_item_settingsList {
     height: 100%;
     flex-grow: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    
   }
