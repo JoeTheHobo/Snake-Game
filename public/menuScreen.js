@@ -1578,6 +1578,7 @@ function loadGamemodeTabWinning() {
                         whoWins: whoWins,
                     }
                     let slot = html_slots[i].$(".gmp_condition_slot_foreground");
+                    console.log(slot,gamemode.winningConditions[i]);
                     let htmlText = title;
                     if (whereToModify) {
                         let replacementText = value;
