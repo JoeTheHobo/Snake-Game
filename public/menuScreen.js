@@ -1182,6 +1182,7 @@ function editGameMode(gameMode,sendToServer = false) {
     setPopupTab("settings","gamemode");
 }
 function createGamemodeGrid(holder,width,height,grid) {
+    html_popup = $(".editGameModePopup");
     holder.innerHTML = "";
     let rect = holder.getBoundingClientRect();
 
@@ -1212,22 +1213,48 @@ function createGamemodeGrid(holder,width,height,grid) {
                     let group = columns[j].create("div.gmGroup_group");
                     group.id = "fa" + g.familyID;
                     holder = group.create("div.gmGroup_holder");
-
                 }
+                holder.id = "family" + g.familyID + "my" + g.myID;
             } else {
-                familyDivs.push("i" + i + "j" + "j");
                 holder = columns[j].create("div.gmGroup_holder");
             }
 
             holder.css({
                 height: heightValue,
             })
+            holder.showCases = [];
+            holder.activateList = function() {
+                for (let i = 0; i < this.showCases.length; i++) {
+                    let showCase = this.showCases[i];
+                    
+                    if (showCase.equals == this.gmValue) {
+                        showCase.element.show("flex");
+                    } else {
+                        showCase.element.hide();
+                    }
+                }
+            }
 
-            generateGamemodeSetting(holder,g);
+            if (g.showWhen) {
+                $("family" + g.familyID + "my" + g.showWhen.valueFromId).showCases.push({
+                    element: holder,
+                    equals: g.showWhen.equals,
+                })
+
+                let value = $("family" + g.familyID + "my" + g.showWhen.valueFromId).gmValue;
+                if (g.showWhen.equals == value) {
+                    holder.show("flex");
+                } else {
+                    holder.hide();
+                }
+            }
+
+            generateGamemodeSetting(holder,g,g.familyID,g.myID);
+
         }
     }
 }
-function generateGamemodeSetting(holder,settings) {
+function generateGamemodeSetting(holder,settings,familyID,myID) {
     html_popup = $(".editGameModePopup");
     let gamemode = html_popup.gameMode;
     let title = holder.create("div.gmGroup_title");
@@ -1237,26 +1264,35 @@ function generateGamemodeSetting(holder,settings) {
     if (settings.type == "input") {
         valueInput = holder.create("input.gmGroup_input");
         valueInput.value = gamemode[settings.valueString];
+        holder.gmValue = gamemode[settings.valueString];
 
         valueInput.on("change",function() {
             gamemode[settings.valueString] = this.value;
+            holder.gmValue = this.value;
+            holder.activeList();
         })
     }
     if (settings.type == "textarea") {
         valueInput = holder.create("textarea.gmGroup_textarea");
         valueInput.value = gamemode[settings.valueString];
+        holder.gmValue = gamemode[settings.valueString];
         
         valueInput.on("change",function() {
             gamemode[settings.valueString] = this.value;
+            holder.gmValue = this.value;
+            holder.activeList();
         })
     }
     if (settings.type == "number") {
         valueInput = holder.create("input.gmGroup_number");
         valueInput.value = gamemode[settings.valueString];
+        holder.gmValue = gamemode[settings.valueString];
         valueInput.type = "number";
 
         valueInput.on("change",function() {
             gamemode[settings.valueString] = Number(this.value);
+            holder.gmValue = Number(this.value);
+            holder.activeList();
         })
     }
     if (settings.type == "toggle") {
@@ -1264,21 +1300,30 @@ function generateGamemodeSetting(holder,settings) {
         if (gamemode[settings.valueString] == true) {
             valueInput.classAdd("gmGroup_toggle_on");
             valueInput.innerHTML = "ON";
+            valueInput.value = true;
         } else {
             valueInput.classAdd("gmGroup_toggle_off");
             valueInput.innerHTML = "OFF";
+            valueInput.value = false;
         }
+        holder.gmValue = gamemode[settings.valueString];
 
         valueInput.on("click",function() {
             if (this.classList.contains("gmGroup_toggle_on")) {
                 this.classRemove("gmGroup_toggle_on")
                 this.classAdd("gmGroup_toggle_off");
+                this.innerHTML = "OFF";
                 gamemode[settings.valueString] = false;
+                
+                holder.gmValue = false;
             } else {
                 this.classAdd("gmGroup_toggle_on")
                 this.classRemove("gmGroup_toggle_off");
+                this.innerHTML = "ON";
                 gamemode[settings.valueString] = true;
+                holder.gmValue = true;
             }
+            holder.activeList();
         })
     }
     if (settings.type == "list") {
@@ -1291,14 +1336,21 @@ function generateGamemodeSetting(holder,settings) {
 
             if (settings.typeSettings.options[i].toLowerCase() == gamemode[settings.valueString].toLowerCase()) {
                 option.classAdd("gmGroup_list_option_selected");
+                holder.gmValue = gamemode[settings.valueString].toLowerCase();
             } 
 
             option.on("click",function() {
                 options.classRemove("gmGroup_list_option_selected");
                 this.classAdd("gmGroup_list_option_selected");
                 gamemode[settings.valueString] = settings.typeSettings.options[i].toLowerCase();
+                holder.gmValue = settings.typeSettings.options[i].toLowerCase();
+                holder.activeList();
             })
         }
+
+    }
+    if (familyID && myID) {
+        valueInput.id = "family" + familyID + "my" + myID;
     }
 
     let typeSettings = settings.typeSettings;
