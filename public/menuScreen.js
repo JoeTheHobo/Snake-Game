@@ -1581,8 +1581,9 @@ function loadGamemodeTabWinning() {
 
             let html_delete = slot.create("img.gmp_slot_foreground_delete");
             html_delete.src = "img/tool_delete.png";
+            html_delete.i = i;
             html_delete.on("click",function() {
-                gamemode.winningConditions[i] = false;
+                gamemode.winningConditions[this.i] = false;
                 loadWinningConditions();
             })
 
