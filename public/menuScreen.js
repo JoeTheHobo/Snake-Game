@@ -1185,14 +1185,14 @@ function createGamemodeGrid(holder,width,height,grid) {
     holder.innerHTML = "";
     let rect = holder.getBoundingClientRect();
 
-    width = ((1/width)*rect.width) + "px";
-    height = ((1/height)*rect.height) + "px";
+    widthValue = ((1/width)*rect.width) + "px";
+    heightValue = ((1/height)*rect.height) + "px";
 
     let columns = [];
     for (let i = 0; i < width; i++) {
         let column = holder.create("div.gmGroup_column");
         column.css({
-            width: width,
+            width: widthValue,
         })
         columns.push(column);
     }
@@ -1220,7 +1220,7 @@ function createGamemodeGrid(holder,width,height,grid) {
             }
 
             holder.css({
-                height: height,
+                height: heightValue,
             })
 
             generateGamemodeSetting(holder,g);
