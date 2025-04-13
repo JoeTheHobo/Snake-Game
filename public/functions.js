@@ -1974,7 +1974,7 @@ function adminTools() {
     at_setTab("database");
 }
 
-
+let beenAdjusted = false;
 function showBoardMenu(allBoards) {
     $(".chooseBoardPopup").show("flex");
     //boardVariables
@@ -2107,7 +2107,8 @@ function showBoardMenu(allBoards) {
         }
         
 
-        if (adjust) {
+        if (adjust && !beenAdjusted) {
+            beenAdjusted = true;
             let rect = cardHolder.getBoundingClientRect();
             let width = (rect.width * Math.ceil(displayOnScreen/2)) + (Math.ceil(displayOnScreen/2)*10) + 20;
             let height = 45 + 50 + (rect.height*2) + 20 + 20;
