@@ -5016,9 +5016,12 @@ cursor: url('./img/pointer.cur'), auto;
     margin-top: 7px;
   }
   .gmp_plus {
-    color: green;
     position: absolute;
     right: 5px;
     top: 5px;
-    font-size: 20px;
+    width: 10%;
+    aspect-ratio: 1/1;
+    cursor: url('./img/pointer.cur'), auto;
+
+
   }
