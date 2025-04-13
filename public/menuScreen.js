@@ -1657,6 +1657,7 @@ function loadGamemodeTabWinning() {
     addAvailableCondition("Touch Item X","X","item.0","Player","Touch Item","item","Touch this item to win the game!");
     addAvailableCondition("Touch Tile X","X","tile.0","Player","Touch Tile","tile","Touch this tile to win the game!");
 
+    console.log(conditions)
     loadWinningConditions();
 }
 function setPopupTab(tab,type) {
