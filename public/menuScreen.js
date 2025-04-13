@@ -1581,7 +1581,7 @@ function loadGamemodeTabWinning() {
                 }
             }
             
-            let htmlText = condition.title;
+            let htmlText = condition.condition;
             if (pullFromCondition.whereToModify) {
                 let replacementText = condition.x;
                 if (condition.type === "item" || condition.type === "tile") {
