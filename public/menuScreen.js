@@ -1216,7 +1216,10 @@ function createGamemodeGrid(holder,width,height,grid) {
                 }
                 holder.id = "family" + g.familyID + "my" + g.myID;
             } else {
-                holder = columns[j].create("div.gmGroup_holder");
+                let group = columns[j].create("div.gmGroup_group");
+                group.id = "naGroup";
+
+                holder = group.create("div.gmGroup_holder");
             }
 
             holder.css({
