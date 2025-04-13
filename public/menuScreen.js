@@ -1294,6 +1294,7 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
 
         valueInput.on("change",function() {
             if (settings.typeSettings.min) {
+                console.log(Number(this.value),settings.typeSettings.min);
                 if (Number(this.value) < settings.typeSettings.min) this.value = settings.typeSettings.min;
             }
             if (settings.typeSettings.max) {
