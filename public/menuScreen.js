@@ -1583,7 +1583,9 @@ function loadGamemodeTabWinning() {
             
             let htmlText = condition.condition;
             if (pullFromCondition.whereToModify) {
+                console.log("ey")
                 let replacementText = condition.x;
+                console.log(replacementText);
                 if (condition.type === "item" || condition.type === "tile") {
                     let type = condition.type == "item" ? items : tiles;
                     replacementText = `<img src="${getImage(getByID(condition.x,type),"src")}" class="gmp_slot_image">`;
