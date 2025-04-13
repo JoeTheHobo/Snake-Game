@@ -1585,6 +1585,7 @@ function loadGamemodeTabWinning() {
             html_delete.on("click",function() {
                 gamemode.winningConditions[this.i] = false;
                 loadWinningConditions();
+                console.log(gamemode.winningConditions)
             })
 
             let pullFromCondition = false;
