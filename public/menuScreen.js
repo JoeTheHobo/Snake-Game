@@ -1636,7 +1636,7 @@ function loadGamemodeTabWinning() {
                         condition: title,
                         x: sendX,
                         whoWins: whoWins,
-                        type: sendValue,
+                        type: sendType,
                     }
                     loadWinningConditions();
 
