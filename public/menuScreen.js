@@ -1457,7 +1457,7 @@ function loadGamemodeTabItems() {
                 familyID: false, myID: false, showWhen: false,
             })
             attributes.push({
-                title: "Spawn Weight",
+                title: "Visible",
                 type: "toggle",
                 valueString: "visible",
                 typeSettings: {},
