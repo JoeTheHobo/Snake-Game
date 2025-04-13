@@ -5032,3 +5032,7 @@ cursor: url('./img/pointer.cur'), auto;
 
 
   }
+  .gmp_slot_image {
+    width: 25%;
+    aspect-ratio: 1/1;
+  }
