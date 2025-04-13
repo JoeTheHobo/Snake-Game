@@ -1558,6 +1558,7 @@ function loadGamemodeTabWinning() {
         condition: "Survive X Minutes",
         x: 5,
         whoWins: false,
+        type: "number",
     },false,false,false,false];
 
     html_settings.innerHTML = "";
@@ -1573,41 +1574,68 @@ function loadGamemodeTabWinning() {
             } else {
                 slot.show();
             }
-            
-            let htmlText = title;
-            if (whereToModify) {
-                let replacementText = value;
-                if (value.subset(0,".\\before") === "item" || value.subset(0,".\\before") === "tile") {
-                    let type = value.subset(0,".\\before") == "item" ? items : tiles;
-                    replacementText = `<img src="${getImage(getByID(Number(value.subset(".\\after","end")),type),"src")}" class="gmp_slot_image">`;
+            let pullFromCondition = false;
+            for (let j = 0; j < conditions.length; j++) {
+                if (conditions[j].condition == condition.condition) {
+                    pullFromCondition == conditions[j];
                 }
-                htmlText.replace(whereToModify,replacementText);
+            }
+            
+            let htmlText = condition.title;
+            if (pullFromCondition.whereToModify) {
+                let replacementText = condition.x;
+                if (condition.type === "item" || condition.type === "tile") {
+                    let type = condition.type == "item" ? items : tiles;
+                    replacementText = `<img src="${getImage(getByID(condition.x,type),"src")}" class="gmp_slot_image">`;
+                }
+                htmlText.replace(pullFromCondition.whereToModify,replacementText);
             }
             slot.$(".gmp_slot_foreground_text").innerHTML = htmlText;
-            if (whoWins === "Player") slot.$(".gmp_slot_foreground_team").hide();
-            else if (whoWins === "Players Team") {
+            if (condition.whoWins === "Player") slot.$(".gmp_slot_foreground_team").hide();
+            else if (condition.whoWins === "Players Team") {
                 slot.$(".gmp_slot_foreground_team").show();
                 slot.$(".gmp_slot_foreground_team").src = "img/items/item_flag_basic_white.png";
             } else {
                 slot.$(".gmp_slot_foreground_team").show();
-                slot.$(".gmp_slot_foreground_team").src = "img/items/item_flag_basic_" + whoWins + ".png";
+                slot.$(".gmp_slot_foreground_team").src = "img/items/item_flag_basic_" + condition.whoWins + ".png";
             }
         }
     }
 
+    let conditions = [];
     function addAvailableCondition(title,whereToModify,value,whoWins,settingsTitle,settingsType,settingsDescription) {
         let div = html_availableConditions.create("div.gmp_slot");
         div.innerHTML = title;
         let plus = div.create("img.gmp_plus")
         plus.src = "img/menuIcons/plus.png";
+        conditions.push({
+            conditions: title,
+            whereToModify: whereToModify,
+            settingsTitle: settingsTitle,
+            settingsType: settingsType,
+            settingsDescription: settingsDescription,
+        })
 
         plus.on("click",function() {
             for (let i = 0; i < 5; i++) {
                 if (gamemode.winningConditions[i] === false) {
+                    let sendX = value;
+                    let sendType = value;
+
+                    if (_type(value) === "number") {
+                        sendType = "number",
+                        sendX = value;
+                    }
+                    if (value.subset(0,".\\before") === "item" || value.subset(0,".\\before") === "tile") {
+                        sendType = value.subset(0,".\\before");
+                        sendX = Number(value.subset(".\\after","end"));
+                    }
+
                     gamemode.winningConditions[i] = {
                         condition: title,
-                        x: value,
+                        x: sendX,
                         whoWins: whoWins,
+                        type: sendValue,
                     }
                     loadWinningConditions();
 

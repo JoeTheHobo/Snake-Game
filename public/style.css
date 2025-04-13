@@ -4949,7 +4949,7 @@ cursor: url('./img/pointer.cur'), auto;
     height: 100%;
     aspect-ratio: 1/1;
     background: #3F3F3F;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 3px 5px 7.1px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 3px 5px 7.1px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
     position: relative;
   }
@@ -4975,6 +4975,7 @@ cursor: url('./img/pointer.cur'), auto;
     color: black;
     align-items: center;
     justify-content: center;
+    border-radius: 5px;
 
   }
   .gmp_slot_foreground_delete {

@@ -18,6 +18,7 @@ presetGameModes.push({
         condition: "survive x minutes",
         x: 5,
         whoWins: false,
+        value: "number",
     },false,false,false,false],
 })
 
