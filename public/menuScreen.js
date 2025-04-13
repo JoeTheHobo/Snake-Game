@@ -1349,9 +1349,6 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
         }
 
     }
-    if (familyID && myID) {
-        valueInput.id = "family" + familyID + "my" + myID;
-    }
 
     let typeSettings = settings.typeSettings;
     if (typeSettings.placeholder) valueInput.placeholder = typeSettings.placeholder;
