@@ -1343,6 +1343,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             option.innerHTML = settings.typeSettings.options[i];
             options.push(option);
 
+            console.log(pullFrom,settings.valueString);
             if (settings.typeSettings.options[i].toLowerCase() == getNestedValue(pullFrom,settings.valueString).toLowerCase()) {
                 option.classAdd("gmGroup_list_option_selected");
                 holder.gmValue = settings.typeSettings.options[i].toLowerCase();
