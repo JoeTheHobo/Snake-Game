@@ -1293,9 +1293,17 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
         valueInput.type = "number";
 
         valueInput.on("change",function() {
+            if (settings.typeSettings.min) {
+                if (Number(this.value) < settings.typeSettings.min) this.value = settings.typeSettings.min;
+            }
+            if (settings.typeSettings.max) {
+                if (Number(this.value) > settings.typeSettings.max) this.value = settings.typeSettings.max;
+            }
+
             gamemode[settings.valueString] = Number(this.value);
             holder.gmValue = Number(this.value);
             holder.activateList();
+
         })
     }
     if (settings.type == "toggle") {
@@ -1356,8 +1364,6 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
     let typeSettings = settings.typeSettings;
     if (typeSettings.placeholder) valueInput.placeholder = typeSettings.placeholder;
     if (typeSettings.maxLength) valueInput.maxLength = typeSettings.maxLength;
-    if (typeSettings.max) valueInput.max = typeSettings.max;
-    if (typeSettings.min) valueInput.min = typeSettings.min;
 
 
 
