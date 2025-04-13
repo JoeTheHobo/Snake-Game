@@ -4873,6 +4873,12 @@ cursor: url('./img/pointer.cur'), auto;
     width: 100%;
     height: 100%;
   }
+  .modernPopup_horizontalLine {
+    height: 2px;
+    background: white;
+    width: 90%;
+
+  }
   .modernPopup_verticalLine {
     width: 2px;
     background: white;
@@ -4886,4 +4892,107 @@ cursor: url('./img/pointer.cur'), auto;
     flex-direction: row;
     justify-content: space-evenly;
 
+  }
+
+  #modernPopup_content_winning {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  .modernPopup_title {
+    color: white;
+    width: 100%;
+    text-align: center;
+    font-size: 1.5em;
+  }
+  .gamemodePopup_availableConditionsHolder {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+  .gamemodePopup_availableConditionsList {
+    flex: 1 1 auto; /* Fills all available space */
+    overflow-y: auto;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+
+  }
+  .gamemodePopup_winningConditions_column {
+    flex: 1 1 auto; /* Fills all available space */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+  }
+  .gamemodePopup_activeConditions_list {
+    width: 95%;
+    height: 150px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  .gmp_condition_slot {
+    height: 100%;
+    aspect-ratio: 1/1;
+    background: #3F3F3F;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 3px 5px 7.1px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    position: relative;
+  }
+  .gmp_condition_slot_background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    color: #ffffff28;
+    font-size: 2em;
+
+  }
+  .gmp_condition_slot_foreground {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: none;
+    background: #E3E3E3;
+    color: black;
+    align-items: center;
+    justify-content: center;
+
+  }
+  .gmp_slot_foreground_delete {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 10%;
+    aspect-ratio: 1/1;
+  }
+  .gmp_slot_foreground_team {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 10%;
+    aspect-ratio: 1/1;
+  }
+  .gmp_slot_foreground_text {
+    color: black;
+  }
+  .gamemodePopup_conditionSettings_list {
+    display: flex;
+    height: 25%;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
   }
