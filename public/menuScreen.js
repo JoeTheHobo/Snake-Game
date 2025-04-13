@@ -821,7 +821,7 @@ function getItemAlterations(gameMode,item) {
     }
     return item;
 }
-function setItemAlteration(gameMode,item,isServer) {
+function setItemAlteration(gameMode,item) {
     let realItem = getRealItem(item.name);
     let differences = compareObjects(realItem,item);
 
@@ -844,7 +844,6 @@ function setItemAlteration(gameMode,item,isServer) {
         })
     }
 
-    if (isServer) socket.emit("editServerGameMode",gameMode);
 }
 function gameMode_editItem(item,html_holder,server,gameMode) {
     html_holder.innerHTML = "";
@@ -1258,6 +1257,8 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom) {
     }
 }
 function generateGamemodeSetting(holder,settings,pullFrom) {
+    html_popup = $(".editGameModePopup");
+    let gamemode = html_popup.gameMode;
     let title = holder.create("div.gmGroup_title");
     title.innerHTML = settings.title;
 
@@ -1271,6 +1272,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             holder.gmValue = this.value;
             setNestedValue(pullFrom,settings.valueString.split("."),this.value);
             holder.activateList();
+            if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
         })
     }
     if (settings.type == "textarea") {
@@ -1282,6 +1284,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             setNestedValue(pullFrom,settings.valueString.split("."),this.value);
             holder.gmValue = this.value;
             holder.activateList();
+            if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
         })
     }
     if (settings.type == "number") {
@@ -1301,6 +1304,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             setNestedValue(pullFrom,settings.valueString.split("."),Number(this.value));
             holder.gmValue = Number(this.value);
             holder.activateList();
+            if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
 
         })
     }
@@ -1315,7 +1319,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             valueInput.innerHTML = "OFF";
             valueInput.value = false;
         }
-        holder.gmValue = getNestedValue(pullFrom,settings.valueString);;
+        holder.gmValue = getNestedValue(pullFrom,settings.valueString);
 
         valueInput.on("click",function() {
             if (this.classList.contains("gmGroup_toggle_on")) {
@@ -1333,6 +1337,8 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                 holder.gmValue = true;
             }
             holder.activateList();
+            
+            if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
         })
     }
     if (settings.type == "list") {
@@ -1354,6 +1360,8 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                 setNestedValue(pullFrom,settings.valueString.split("."),settings.typeSettings.options[i].toLowerCase());
                 holder.gmValue = settings.typeSettings.options[i].toLowerCase();
                 holder.activateList();
+                
+            if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
             })
         }
 
@@ -1422,6 +1430,8 @@ function loadGamemodeTabSettings() {
 
 }
 function loadGamemodeTabItems() {
+    html_popup = $(".editGameModePopup");
+    let gamemode = html_popup.gameMode;
     let itemHolder = $(".gamemodePopup_itemList");
     itemHolder.innerHTML = "";
     $(".gamemodePopup_item_settingsList").innerHTML = "";
@@ -1446,7 +1456,7 @@ function loadGamemodeTabItems() {
                 valueString: "onStartSpawn",
                 typeSettings: {min: 0, max: 60},
                 description: "When game starts spawn this many items.",
-                familyID: false, myID: false, showWhen: false,
+                familyID: false, myID: false, showWhen: false,setItemAlteration: true,
             })
             attributes.push({
                 title: "Spawn Weight",
@@ -1454,7 +1464,7 @@ function loadGamemodeTabItems() {
                 valueString: "specialSpawnWeight",
                 typeSettings: {min: 0},
                 description: "A higher rate increases the chances of this item spawning.",
-                familyID: false, myID: false, showWhen: false,
+                familyID: false, myID: false, showWhen: false,setItemAlteration: true,
             })
             attributes.push({
                 title: "Visible",
@@ -1462,7 +1472,7 @@ function loadGamemodeTabItems() {
                 valueString: "visible",
                 typeSettings: {},
                 description: "If the item shows or hides when rendereing the game.",
-                familyID: false, myID: false, showWhen: false,
+                familyID: false, myID: false, showWhen: false,setItemAlteration: true,
             })
             attributes.push({
                 title: "Plays Audio",
@@ -1470,7 +1480,7 @@ function loadGamemodeTabItems() {
                 valueString: "playSounds",
                 typeSettings: {},
                 description: "Does the item play sounds?",
-                familyID: false, myID: false, showWhen: false,
+                familyID: false, myID: false, showWhen: false,setItemAlteration: true,
             })
             if (item.onCollision.growPlayer) {
                 attributes.push({
@@ -1479,7 +1489,7 @@ function loadGamemodeTabItems() {
                     valueString: "onCollision.growPlayer",
                     typeSettings: {min: 0, max: 200},
                     description: "How much to grow snake when eaten.",
-                    familyID: false, myID: false, showWhen: false,
+                    familyID: false, myID: false, showWhen: false,setItemAlteration: true,
                 })
             }
             if (item.onCollision.spawnRandomItem !== undefined) {
@@ -1489,7 +1499,7 @@ function loadGamemodeTabItems() {
                     valueString: "onCollision.spawnRandomItem",
                     typeSettings: {},
                     description: "When eaten do I attempt to spawn random item?",
-                    familyID: false, myID: false, showWhen: false,
+                    familyID: false, myID: false, showWhen: false,setItemAlteration: true,
                 })
             }
             if (item.onActivate?.giveTurbo) {
@@ -1499,7 +1509,7 @@ function loadGamemodeTabItems() {
                     valueString: "onActivate.giveTurbo.duration",
                     typeSettings: {min: 0, max: 60},
                     description: "How long turbo lasts (seconds).",
-                    familyID: false, myID: false, showWhen: false,
+                    familyID: false, myID: false, showWhen: false,setItemAlteration: true,
                 })
             }
             if (item.onActivate?.giveTurbo) {
@@ -1509,7 +1519,7 @@ function loadGamemodeTabItems() {
                     valueString: "onActivate.giveTurbo.moveSpeed",
                     typeSettings: {min: 1.1, max: 5},
                     description: "How fast turbo is.",
-                    familyID: false, myID: false, showWhen: false,
+                    familyID: false, myID: false, showWhen: false,setItemAlteration: true,
                 })
             }
 
@@ -1531,7 +1541,7 @@ function loadGamemodeTabItems() {
                 }
             }
 
-            createGamemodeGrid($(".gamemodePopup_item_settingsList"),2,4,grid,item);
+            createGamemodeGrid($(".gamemodePopup_item_settingsList"),2,4,grid,getItemAlterations(gamemode,item));
 
         })
     }
@@ -1565,5 +1575,10 @@ $(".modernPopup_topRow_imageHolder").on("click",function() {
     setPopupTab(this.id.subset("tab_\\after","end"),this.id.subset(0,"_\\before"));
 })
 $(".modernPopup_topRow_close").on("click",function() {
-    this.$P().$P().$P().hide();
+    let parent = this.$P().$P().$P(); 
+    parent.hide();
+
+    if (parent.id.subset(0,"_\\before") == "gamemode") {
+        socket.emit("editServerGameMode",$(".editGameModePopup").gameMode);
+    }
 })
