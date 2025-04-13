@@ -1568,10 +1568,9 @@ function loadGamemodeTabWinning() {
         for (let i = 0; i < 5; i++) {
             let condition = gamemode.winningConditions[i];
             let slot = html_slots[i].$(".gmp_condition_slot_foreground");
-            console.log(slot)
             if (!condition) {
                 slot.hide();
-                return;
+                continue;
             } else {
                 slot.show("flex");
             }
