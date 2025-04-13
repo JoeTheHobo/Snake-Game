@@ -1183,12 +1183,16 @@ function editGameMode(gameMode,sendToServer = false) {
 }
 function createGamemodeGrid(holder,width,height,grid) {
     holder.innerHTML = "";
+    let rect = holder.getBoundingClientRect();
+
+    let width = ((1/width)*rect.width) + "px";
+    let height = ((1/height)*rect.height) + "px";
 
     let columns = [];
     for (let i = 0; i < width; i++) {
         let column = holder.create("div.gmGroup_column");
         column.css({
-            width: ((1/width)*100) + "%",
+            width: width,
         })
         columns.push(column);
     }
@@ -1215,7 +1219,7 @@ function createGamemodeGrid(holder,width,height,grid) {
             }
 
             holder.css({
-                height: ((1/height)*100) + "%",
+                height: height,
             })
 
             generateGamemodeSetting(holder,g);
