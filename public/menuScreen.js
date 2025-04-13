@@ -1498,6 +1498,7 @@ function loadGamemodeTabItems() {
                     familyID: false, myID: false, showWhen: false,
                 })
             }
+            console.log(item.onActivate?.giveTurbo);
             if (item.onActivate?.giveTurbo) {
                 attributes.push({
                     title: "Turbo Duration",
@@ -1524,6 +1525,7 @@ function loadGamemodeTabItems() {
                 [false,false],
                 [false,false],
                 [false,false],
+                [false,false],
             ];
 
             for (let y = 0; y < grid.length; y++) {
@@ -1536,7 +1538,7 @@ function loadGamemodeTabItems() {
                 }
             }
 
-            createGamemodeGrid($(".gamemodePopup_item_settingsList"),2,3,grid);
+            createGamemodeGrid($(".gamemodePopup_item_settingsList"),2,4,grid);
 
         })
     }
