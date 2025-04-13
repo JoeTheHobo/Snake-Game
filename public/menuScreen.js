@@ -1586,7 +1586,6 @@ function loadGamemodeTabWinning() {
                 let replacementText = condition.x;
                 if (condition.type === "item" || condition.type === "tile") {
                     let type = condition.type == "item" ? items : tiles;
-                    console.log(condition.x,type,getByID(condition.x,type));
                     replacementText = `<img src="${getImage(getByID(condition.x,type),"src")}" class="gmp_slot_image">`;
                 }
                 htmlText = htmlText.replace(pullFromCondition.whereToModify,replacementText);
@@ -1656,8 +1655,8 @@ function loadGamemodeTabWinning() {
     addAvailableCondition("Kill X Snakes","X",3,"Player","Kill X Snakes","number","Kill this many snakes to win the game!");
     addAvailableCondition("Reach Snake Size Of X","X",200,"Player","Reach Snake Size","number","Get this long to win the game!");
     addAvailableCondition("Touch Zone X","X","set zone","Player","Touch Zone","select zone","Touch this zone to win the game!");
-    addAvailableCondition("Touch Item X","X","item.0","Player","Touch Item","item","Touch this item to win the game!");
-    addAvailableCondition("Touch Tile X","X","tile.0","Player","Touch Tile","tile","Touch this tile to win the game!");
+    addAvailableCondition("Touch Item X","X","item.1","Player","Touch Item","item","Touch this item to win the game!");
+    addAvailableCondition("Touch Tile X","X","tile.1","Player","Touch Tile","tile","Touch this tile to win the game!");
 
     loadWinningConditions();
 }
