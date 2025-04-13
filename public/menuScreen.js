@@ -1575,8 +1575,8 @@ function loadGamemodeTabWinning() {
                 slot.show("flex");
             }
             let pullFromCondition = false;
-            console.log(conditions,condition);
             for (let j = 0; j < conditions.length; j++) {
+                console.log(conditions[j].condition,condition.condition,condition.condition==conditions[j].condition);
                 if (conditions[j].condition == condition.condition) {
                     pullFromCondition == conditions[j];
                 }
