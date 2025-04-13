@@ -17,7 +17,7 @@ presetGameModes.push({
     winningConditions: [{
         condition: "survive x minutes",
         x: 5,
-        whoWins: false,
+        whoWins: "Player",
         value: "number",
     },false,false,false,false],
 })

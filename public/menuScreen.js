@@ -1557,7 +1557,7 @@ function loadGamemodeTabWinning() {
     if (!gamemode.winningConditions) gamemode.winningConditions = [{
         condition: "Survive X Minutes",
         x: 5,
-        whoWins: false,
+        whoWins: "Player",
         type: "number",
     },false,false,false,false];
 
@@ -1576,9 +1576,8 @@ function loadGamemodeTabWinning() {
             }
             let pullFromCondition = false;
             for (let j = 0; j < conditions.length; j++) {
-                console.log(conditions[j].condition,condition.condition,condition.condition==conditions[j].condition);
                 if (conditions[j].condition == condition.condition) {
-                    pullFromCondition == conditions[j];
+                    pullFromCondition = conditions[j];
                 }
             }
             
@@ -1592,6 +1591,7 @@ function loadGamemodeTabWinning() {
                 htmlText.replace(pullFromCondition.whereToModify,replacementText);
             }
             slot.$(".gmp_slot_foreground_text").innerHTML = htmlText;
+
             if (condition.whoWins === "Player") slot.$(".gmp_slot_foreground_team").hide();
             else if (condition.whoWins === "Players Team") {
                 slot.$(".gmp_slot_foreground_team").show();
