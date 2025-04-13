@@ -1238,16 +1238,26 @@ function generateGamemodeSetting(holder,settings) {
         valueInput = holder.create("input.gmGroup_input");
         valueInput.value = gamemode[settings.valueString];
 
+        valueInput.on("change",function() {
+            gamemode[settings.valueString] = this.value;
+        })
     }
     if (settings.type == "textarea") {
         valueInput = holder.create("textarea.gmGroup_textarea");
         valueInput.value = gamemode[settings.valueString];
         
+        valueInput.on("change",function() {
+            gamemode[settings.valueString] = this.value;
+        })
     }
     if (settings.type == "number") {
         valueInput = holder.create("input.gmGroup_number");
         valueInput.value = gamemode[settings.valueString];
         valueInput.type = "number";
+
+        valueInput.on("change",function() {
+            gamemode[settings.valueString] = Number(this.value);
+        })
     }
     if (settings.type == "toggle") {
         valueInput = holder.create("div.gmGroup_toggle");
@@ -1258,17 +1268,36 @@ function generateGamemodeSetting(holder,settings) {
             valueInput.classAdd("gmGroup_toggle_off");
             valueInput.innerHTML = "OFF";
         }
+
+        valueInput.on("click",function() {
+            if (this.classList.includes("gmGroup_toggle_on")) {
+                this.classRemove("gmGroup_toggle_on")
+                this.classAdd("gmGroup_toggle_off");
+                gamemode[settings.valueString] = false;
+            } else {
+                this.classAdd("gmGroup_toggle_on")
+                this.classRemove("gmGroup_toggle_off");
+                gamemode[settings.valueString] = true;
+            }
+        })
     }
     if (settings.type == "list") {
         valueInput = holder.create("div.gmGroup_list");
-
+        let options = [];
         for (let i = 0; i < settings.typeSettings.options.length; i++) {
             let option = valueInput.create("div.gmGroup_list_option");
             option.innerHTML = settings.typeSettings.options[i];
+            options.push(option);
 
             if (settings.typeSettings.options[i].toLowerCase() == gamemode[settings.valueString].toLowerCase()) {
                 option.classAdd("gmGroup_list_option_selected");
             } 
+
+            option.on("click",function() {
+                options.classRemove("gmGroup_list_option_selected");
+                this.classAdd("gmGroup_list_option_selected");
+                gamemode[settings.valueString] = settings.typeSettings.options[i].toLowerCase();
+            })
         }
     }
 
@@ -1277,6 +1306,7 @@ function generateGamemodeSetting(holder,settings) {
     if (typeSettings.maxLength) valueInput.maxLength = typeSettings.maxLength;
     if (typeSettings.max) valueInput.max = typeSettings.max;
     if (typeSettings.min) valueInput.min = typeSettings.min;
+
 
 
 
