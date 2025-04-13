@@ -4744,6 +4744,9 @@ cursor: url('./img/pointer.cur'), auto;
     font-family: VT323;
 
   }
+  .gmGroup_input::placeholder {
+    color: rgba(255, 255, 255, 0.432);
+  }
   .gmGroup_textarea {
     border: none;
     outline: none;
