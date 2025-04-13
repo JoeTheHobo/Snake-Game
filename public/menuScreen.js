@@ -1575,6 +1575,10 @@ function loadGamemodeTabWinning() {
                 slot.show("flex");
             }
 
+            if (slot.$(".gmp_slot_foreground_delete")) {
+                slot.$(".gmp_slot_foreground_delete").remove();
+            }
+
             let html_delete = slot.create("img.gmp_slot_foreground_delete");
             html_delete.src = "img/tool_delete.png";
             html_delete.on("click",function() {
