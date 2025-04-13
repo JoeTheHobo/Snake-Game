@@ -1258,37 +1258,36 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom) {
     }
 }
 function generateGamemodeSetting(holder,settings,pullFrom) {
-    let gamemode = pullFrom;
     let title = holder.create("div.gmGroup_title");
     title.innerHTML = settings.title;
 
     let valueInput;
     if (settings.type == "input") {
         valueInput = holder.create("input.gmGroup_input");
-        valueInput.value = getNestedValue(gameMode,settings.valueString);
-        holder.gmValue = getNestedValue(gameMode,settings.valueString);
+        valueInput.value = getNestedValue(pullFrom,settings.valueString);
+        holder.gmValue = getNestedValue(pullFrom,settings.valueString);
 
         valueInput.on("change",function() {
             holder.gmValue = this.value;
-            setNestedValue(gamemode,settings.valueString.splice("."),this.value);
+            setNestedValue(pullFrom,settings.valueString.splice("."),this.value);
             holder.activateList();
         })
     }
     if (settings.type == "textarea") {
         valueInput = holder.create("textarea.gmGroup_textarea");
-        valueInput.value = getNestedValue(gameMode,settings.valueString);
-        holder.gmValue = getNestedValue(gameMode,settings.valueString);
+        valueInput.value = getNestedValue(pullFrom,settings.valueString);
+        holder.gmValue = getNestedValue(pullFrom,settings.valueString);
         
         valueInput.on("change",function() {
-            setNestedValue(gamemode,settings.valueString.splice("."),this.value);
+            setNestedValue(pullFrom,settings.valueString.splice("."),this.value);
             holder.gmValue = this.value;
             holder.activateList();
         })
     }
     if (settings.type == "number") {
         valueInput = holder.create("input.gmGroup_number");
-        valueInput.value = getNestedValue(gameMode,settings.valueString);
-        holder.gmValue = getNestedValue(gameMode,settings.valueString);
+        valueInput.value = getNestedValue(pullFrom,settings.valueString);
+        holder.gmValue = getNestedValue(pullFrom,settings.valueString);
         valueInput.type = "number";
 
         valueInput.on("change",function() {
@@ -1299,7 +1298,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                 if (Number(this.value) > settings.typeSettings.max) this.value = settings.typeSettings.max;
             }
 
-            setNestedValue(gamemode,settings.valueString.splice("."),Number(this.value));
+            setNestedValue(pullFrom,settings.valueString.splice("."),Number(this.value));
             holder.gmValue = Number(this.value);
             holder.activateList();
 
@@ -1307,7 +1306,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
     }
     if (settings.type == "toggle") {
         valueInput = holder.create("div.gmGroup_toggle");
-        if (getNestedValue(gameMode,settings.valueString) == true) {
+        if (getNestedValue(pullFrom,settings.valueString) == true) {
             valueInput.classAdd("gmGroup_toggle_on");
             valueInput.innerHTML = "ON";
             valueInput.value = true;
@@ -1316,21 +1315,21 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             valueInput.innerHTML = "OFF";
             valueInput.value = false;
         }
-        holder.gmValue = getNestedValue(gameMode,settings.valueString);;
+        holder.gmValue = getNestedValue(pullFrom,settings.valueString);;
 
         valueInput.on("click",function() {
             if (this.classList.contains("gmGroup_toggle_on")) {
                 this.classRemove("gmGroup_toggle_on")
                 this.classAdd("gmGroup_toggle_off");
                 this.innerHTML = "OFF";
-                setNestedValue(gamemode,settings.valueString.splice("."),false);
+                setNestedValue(pullFrom,settings.valueString.splice("."),false);
                 
                 holder.gmValue = false;
             } else {
                 this.classAdd("gmGroup_toggle_on")
                 this.classRemove("gmGroup_toggle_off");
                 this.innerHTML = "ON";
-                setNestedValue(gamemode,settings.valueString.splice("."),true);
+                setNestedValue(pullFrom,settings.valueString.splice("."),true);
                 holder.gmValue = true;
             }
             holder.activateList();
@@ -1344,15 +1343,15 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             option.innerHTML = settings.typeSettings.options[i];
             options.push(option);
 
-            if (settings.typeSettings.options[i].toLowerCase() == getNestedValue(gameMode,settings.valueString).toLowerCase()) {
+            if (settings.typeSettings.options[i].toLowerCase() == getNestedValue(pullFrom,settings.valueString).toLowerCase()) {
                 option.classAdd("gmGroup_list_option_selected");
-                holder.gmValue = gamemode[settings.valueString].toLowerCase();
+                holder.gmValue = settings.typeSettings.options[i].toLowerCase();
             } 
 
             option.on("click",function() {
                 options.classRemove("gmGroup_list_option_selected");
                 this.classAdd("gmGroup_list_option_selected");
-                setNestedValue(gamemode,settings.valueString.splice("."),settings.typeSettings.options[i].toLowerCase());
+                setNestedValue(pullFrom,settings.valueString.splice("."),settings.typeSettings.options[i].toLowerCase());
                 holder.gmValue = settings.typeSettings.options[i].toLowerCase();
                 holder.activateList();
             })
@@ -1363,10 +1362,6 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
     let typeSettings = settings.typeSettings;
     if (typeSettings.placeholder) valueInput.placeholder = typeSettings.placeholder;
     if (typeSettings.maxLength) valueInput.maxLength = typeSettings.maxLength;
-
-
-
-
 
     let description = holder.create("div.gmGroup_description");
     description.innerHTML = settings.description || "";
