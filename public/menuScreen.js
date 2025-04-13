@@ -1574,6 +1574,14 @@ function loadGamemodeTabWinning() {
             } else {
                 slot.show("flex");
             }
+
+            let html_delete = slot.create("img.gmp_slot_foreground_delete");
+            html_delete.src = "img/tool_delete.png";
+            html_delete.on("click",function() {
+                gamemode.winningConditions.splice(i,1);
+                loadWinningConditions();
+            })
+
             let pullFromCondition = false;
             for (let j = 0; j < conditions.length; j++) {
                 if (conditions[j].condition == condition.condition) {
