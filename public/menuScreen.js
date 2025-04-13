@@ -1201,6 +1201,7 @@ function createGamemodeGrid(holder,width,height,grid) {
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[0].length; j++) {
             let g = grid[i][j];
+            if (!g) continue;
 
             let holder;
             if (g.familyID) {
