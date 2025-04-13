@@ -1565,9 +1565,9 @@ function loadGamemodeTabWinning() {
 
     function addAvailableCondition(title,whereToModify,value,whoWins,settingsTitle,settingsType,settingsDescription) {
         let div = html_availableConditions.create("div.gmp_slot");
+        div.innerHTML = title;
         let plus = div.create("img.gmp_plus")
         plus.src = "img/menuIcons/plus.png";
-        div.innerHTML += title;
 
         plus.on("click",function() {
             for (let i = 0; i < 5; i++) {
