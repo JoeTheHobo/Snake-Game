@@ -1623,7 +1623,7 @@ function loadGamemodeTabWinning() {
                     let sendX = value;
                     let sendType = value;
 
-                    if (_type(value) === "number") {
+                    if (_type(value).type === "number") {
                         sendType = "number",
                         sendX = value;
                     } else {
