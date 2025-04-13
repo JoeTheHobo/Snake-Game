@@ -1525,7 +1525,7 @@ function loadGamemodeTabItems() {
                 for (let x = 0; x < grid[0].length; x++) {
                     if (!attributes[counter]) continue;
 
-                    grid[x][y] = attributes[counter];
+                    grid[y][x] = attributes[counter];
 
                     counter++;
                 }
