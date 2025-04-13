@@ -1323,6 +1323,7 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
                 gamemode[settings.valueString] = true;
                 holder.gmValue = true;
             }
+            console.log(holder)
             holder.activeList();
         })
     }
@@ -1387,7 +1388,7 @@ function loadGamemodeTabSettings() {
     let e = createGamemodeSetting("Snake Collision","toggle","snakeCollision",{},"Do you take damage when hitting other snakes.",2,1);
     let f = createGamemodeSetting("Team Collision","toggle","teamCollision",{},"Do you take damage when hitting other snakes on the same team.",2,2,{
         valueFromId: 1,
-        equals: false,
+        equals: true,
     });
     let i = createGamemodeSetting("When Sankes Die","list","whenSnakesDie",{options: ["Remain","Vanish","Become Food"]},"What happens when a snake dies.",3,1);
     let j = createGamemodeSetting("Become Food %","number","setFoodRate",{min: 0, max: 100},"What percent of the snake turns into food.",3,2,{
