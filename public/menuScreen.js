@@ -1626,12 +1626,12 @@ function loadGamemodeTabWinning() {
                     if (_type(value) === "number") {
                         sendType = "number",
                         sendX = value;
+                    } else {
+                        if (value.subset(0,".\\before") === "item" || value.subset(0,".\\before") === "tile") {
+                            sendType = value.subset(0,".\\before");
+                            sendX = Number(value.subset(".\\after","end"));
+                        }
                     }
-                    if (value.subset(0,".\\before") === "item" || value.subset(0,".\\before") === "tile") {
-                        sendType = value.subset(0,".\\before");
-                        sendX = Number(value.subset(".\\after","end"));
-                    }
-
                     gamemode.winningConditions[i] = {
                         condition: title,
                         x: sendX,
