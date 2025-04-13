@@ -4692,10 +4692,9 @@ cursor: url('./img/pointer.cur'), auto;
   .modernPopup_content {
     flex: 1 1 auto; /* Fills all available space */
     overflow-y: auto;
-    padding: 10px;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    justify-content: space-evenly;
   }
 
 
@@ -4770,6 +4769,16 @@ cursor: url('./img/pointer.cur'), auto;
     font-family: VT323;
 
   }
+  .gmGroup_number::-webkit-outer-spin-button,
+  .gmGroup_number::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  /* Firefox */
+  .gmGroup_number[type=number] {
+    -moz-appearance: textfield;
+  }
+
   .gmGroup_toggle {
     height: 15%;
     aspect-ratio: 52/98;
@@ -4804,6 +4813,8 @@ cursor: url('./img/pointer.cur'), auto;
     background: #727272;
     border-radius: 5px;
     display: flex;
+    width: 20%;
+    max-width: 20%;
     align-items: center;
     justify-content: center;
     transition: background .2s ease-in-out;
