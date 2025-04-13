@@ -15,10 +15,10 @@ presetGameModes.push({
     teamCollision: true,
     setFoodRate: 50,
     winningConditions: [{
-        condition: "survive x minutes",
-        x: 5,
+        condition: "Last One Standing",
+        x: false,
         whoWins: "Player",
-        value: "number",
+        type: false,
     },false,false,false,false],
 })
 

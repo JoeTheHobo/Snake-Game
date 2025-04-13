@@ -1555,10 +1555,10 @@ function loadGamemodeTabWinning() {
     let html_settings = $(".gamemodePopup_conditionSettings_list");
 
     if (!gamemode.winningConditions) gamemode.winningConditions = [{
-        condition: "Survive X Minutes",
-        x: 5,
+        condition: "Last One Standing",
+        x: false,
         whoWins: "Player",
-        type: "number",
+        type: false,
     },false,false,false,false];
 
     html_settings.innerHTML = "";
@@ -1626,12 +1626,13 @@ function loadGamemodeTabWinning() {
                     if (_type(value).type === "number") {
                         sendType = "number",
                         sendX = value;
-                    } else {
+                    } else if (_type(value).type == "string") {
                         if (value.subset(0,".\\before") === "item" || value.subset(0,".\\before") === "tile") {
                             sendType = value.subset(0,".\\before");
                             sendX = Number(value.subset(".\\after","end"));
                         }
                     }
+                    
                     gamemode.winningConditions[i] = {
                         condition: title,
                         x: sendX,
