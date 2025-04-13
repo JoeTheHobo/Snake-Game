@@ -769,7 +769,7 @@ function getNestedValue(item, string) {
         if (value === undefined) return undefined; // Prevent errors on missing properties
         value = value[key];
     }
-
+    console.log(value)
     return value;
 }
 function getBaseImgFromTag(item,tag,mapEditor = false) {
