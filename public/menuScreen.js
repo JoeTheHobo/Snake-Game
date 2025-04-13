@@ -1568,6 +1568,7 @@ function loadGamemodeTabWinning() {
         for (let i = 0; i < 5; i++) {
             let condition = gamemode.winningConditions[i];
             let slot = html_slots[i].$(".gmp_condition_slot_foreground");
+            console.log(slot)
             if (!condition) {
                 slot.hide();
                 return;
@@ -1581,9 +1582,8 @@ function loadGamemodeTabWinning() {
 
             let html_delete = slot.create("img.gmp_slot_foreground_delete");
             html_delete.src = "img/tool_delete.png";
-            html_delete.i = i;
             html_delete.on("click",function() {
-                gamemode.winningConditions[this.i] = false;
+                gamemode.winningConditions[i] = false;
                 loadWinningConditions();
                 console.log(gamemode.winningConditions)
             })
