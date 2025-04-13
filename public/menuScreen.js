@@ -1252,7 +1252,7 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom) {
                 }
             }
 
-            generateGamemodeSetting(holder,g,g.familyID,g.myID,pullFrom);
+            generateGamemodeSetting(holder,g,pullFrom);
 
         }
     }
