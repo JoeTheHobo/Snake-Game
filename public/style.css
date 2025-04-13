@@ -4981,18 +4981,20 @@ cursor: url('./img/pointer.cur'), auto;
     position: absolute;
     top: 5px;
     right: 5px;
-    width: 10%;
+    width: 20%;
     aspect-ratio: 1/1;
+    cursor: url('./img/pointer.cur'), auto;
   }
   .gmp_slot_foreground_team {
     position: absolute;
     top: 5px;
     left: 5px;
-    width: 10%;
+    width: 20%;
     aspect-ratio: 1/1;
   }
   .gmp_slot_foreground_text {
     color: black;
+    font-size: 2em;
   }
   .gamemodePopup_conditionSettings_list {
     display: flex;

@@ -1563,6 +1563,38 @@ function loadGamemodeTabWinning() {
     html_settings.innerHTML = "";
     html_availableConditions.innerHTML = "";
 
+    function loadWinningConditions() {
+        for (let i = 0; i < 5; i++) {
+            let condition = gamemode.winningConditions[i];
+            let slot = html_slots[i].$(".gmp_condition_slot_foreground");
+            if (!condition) {
+                slot.hide();
+                return;
+            } else {
+                slot.show();
+            }
+            
+            let htmlText = title;
+            if (whereToModify) {
+                let replacementText = value;
+                if (value.subset(0,".\\before") === "item" || value.subset(0,".\\before") === "tile") {
+                    let type = value.subset(0,".\\before") == "item" ? items : tiles;
+                    replacementText = `<img src="${getImage(getByID(Number(value.subset(".\\after","end")),type),"src")}" class="gmp_slot_image">`;
+                }
+                htmlText.replace(whereToModify,replacementText);
+            }
+            slot.$(".gmp_slot_foreground_text").innerHTML = htmlText;
+            if (whoWins === "Player") slot.$(".gmp_slot_foreground_team").hide();
+            else if (whoWins === "Players Team") {
+                slot.$(".gmp_slot_foreground_team").show();
+                slot.$(".gmp_slot_foreground_team").src = "img/items/item_flag_basic_white.png";
+            } else {
+                slot.$(".gmp_slot_foreground_team").show();
+                slot.$(".gmp_slot_foreground_team").src = "img/items/item_flag_basic_" + whoWins + ".png";
+            }
+        }
+    }
+
     function addAvailableCondition(title,whereToModify,value,whoWins,settingsTitle,settingsType,settingsDescription) {
         let div = html_availableConditions.create("div.gmp_slot");
         div.innerHTML = title;
@@ -1577,27 +1609,7 @@ function loadGamemodeTabWinning() {
                         x: value,
                         whoWins: whoWins,
                     }
-                    let slot = html_slots[i].$(".gmp_condition_slot_foreground");
-                    slot.show("flex");
-                    console.log(gamemode.winningConditions);
-                    let htmlText = title;
-                    if (whereToModify) {
-                        let replacementText = value;
-                        if (value.subset(0,".\\before") === "item" || value.subset(0,".\\before") === "tile") {
-                            let type = value.subset(0,".\\before") == "item" ? items : tiles;
-                            replacementText = `<img src="${getImage(getByID(Number(value.subset(".\\after","end")),type),"src")}" class="gmp_slot_image">`;
-                        }
-                        htmlText.replace(whereToModify,replacementText);
-                    }
-                    slot.$(".gmp_slot_foreground_text").innerHTML = htmlText;
-                    if (whoWins === "Player") slot.$(".gmp_slot_foreground_team").hide();
-                    else if (whoWins === "Players Team") {
-                        slot.$(".gmp_slot_foreground_team").show();
-                        slot.$(".gmp_slot_foreground_team").src = "img/items/item_flag_basic_white.png";
-                    } else {
-                        slot.$(".gmp_slot_foreground_team").show();
-                        slot.$(".gmp_slot_foreground_team").src = "img/items/item_flag_basic_" + whoWins + ".png";
-                    }
+                    loadWinningConditions();
 
                     return;
                 }
@@ -1616,6 +1628,7 @@ function loadGamemodeTabWinning() {
     addAvailableCondition("Touch Item X","X","item.0","Player","Touch Item","item","Touch this item to win the game!");
     addAvailableCondition("Touch Tile X","X","tile.0","Player","Touch Tile","tile","Touch this tile to win the game!");
 
+    loadWinningConditions();
 }
 function setPopupTab(tab,type) {
     if (type == "gamemode") {
