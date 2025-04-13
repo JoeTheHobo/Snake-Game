@@ -1293,7 +1293,7 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
         valueInput.type = "number";
 
         valueInput.on("change",function() {
-            if (settings.typeSettings.min) {
+            if (_type(settings.typeSettings.min).type == "number") {
                 if (Number(this.value) < settings.typeSettings.min) this.value = settings.typeSettings.min;
             }
             if (settings.typeSettings.max) {
