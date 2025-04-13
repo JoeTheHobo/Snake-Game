@@ -1993,14 +1993,9 @@ function showBoardMenu(allBoards) {
         allBoards.liked = likedList;
     }
     //Declare HTML Variables
-    let html_choose_published = $("boardMenu_published");
-    let html_choose_personal = $("boardMenu_personal");
-    let html_choose_liked = $("boardMenu_liked");
 
     let html_search_input = $(".cbp_tr_mc_input");
     let html_search_button = $(".cbp_tr_mc_searchHolder");
-
-    let html_close_popup = $(".cbp_tr_rc_close");
 
     let html_page_left = $("boardMenu_left");
     let html_page_text = $("boardMenu_text");
@@ -2010,7 +2005,6 @@ function showBoardMenu(allBoards) {
 
     html_page_left = removeAllEventListeners(html_page_left);
     html_page_right = removeAllEventListeners(html_page_right);
-    html_close_popup = removeAllEventListeners(html_close_popup);
     html_search_button = removeAllEventListeners(html_search_button);
     html_search_input = removeAllEventListeners(html_search_input);
 
@@ -2022,9 +2016,6 @@ function showBoardMenu(allBoards) {
 
     html_search_input.value = "";
 
-    html_close_popup.on("click",function() {
-        $(".chooseBoardPopup").hide();
-    })
 
     html_search_input.on("keydown",function(e) {
         if (e.key == "Enter") dispalyBoards();

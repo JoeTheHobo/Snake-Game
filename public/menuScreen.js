@@ -1558,12 +1558,15 @@ function setPopupTab(tab,type) {
 
     if (type == "gamemode") {
         if (tab == "settings") {
+            $(".modernPopup_topRow_title").innerHTML = "General Settings";
             loadGamemodeTabSettings();   
         }
         if (tab == "items") {
+            $(".modernPopup_topRow_title").innerHTML = "Item Settings";
             loadGamemodeTabItems();   
         }
         if (tab == "winning") {
+            $(".modernPopup_topRow_title").innerHTML = "Winning Conditions";
             loadGamemodeTabWinning();   
         }
     }
