@@ -1181,7 +1181,7 @@ function editGameMode(gameMode,sendToServer = false) {
     
     setPopupTab("settings","gamemode");
 }
-function createGamemodeGrid(holder,width,height,grid) {
+function createGamemodeGrid(holder,width,height,grid,pullFrom) {
     html_popup = $(".editGameModePopup");
     holder.innerHTML = "";
     let rect = holder.getBoundingClientRect();
@@ -1252,44 +1252,43 @@ function createGamemodeGrid(holder,width,height,grid) {
                 }
             }
 
-            generateGamemodeSetting(holder,g,g.familyID,g.myID);
+            generateGamemodeSetting(holder,g,g.familyID,g.myID,pullFrom);
 
         }
     }
 }
-function generateGamemodeSetting(holder,settings,familyID,myID) {
-    html_popup = $(".editGameModePopup");
-    let gamemode = html_popup.gameMode;
+function generateGamemodeSetting(holder,settings,pullFrom) {
+    let gamemode = pullFrom;
     let title = holder.create("div.gmGroup_title");
     title.innerHTML = settings.title;
 
     let valueInput;
     if (settings.type == "input") {
         valueInput = holder.create("input.gmGroup_input");
-        valueInput.value = gamemode[settings.valueString];
-        holder.gmValue = gamemode[settings.valueString];
+        valueInput.value = getNestedValue(gameMode,settings.valueString);
+        holder.gmValue = getNestedValue(gameMode,settings.valueString);
 
         valueInput.on("change",function() {
-            gamemode[settings.valueString] = this.value;
             holder.gmValue = this.value;
+            setNestedValue(gamemode,settings.valueString.splice("."),this.value);
             holder.activateList();
         })
     }
     if (settings.type == "textarea") {
         valueInput = holder.create("textarea.gmGroup_textarea");
-        valueInput.value = gamemode[settings.valueString];
-        holder.gmValue = gamemode[settings.valueString];
+        valueInput.value = getNestedValue(gameMode,settings.valueString);
+        holder.gmValue = getNestedValue(gameMode,settings.valueString);
         
         valueInput.on("change",function() {
-            gamemode[settings.valueString] = this.value;
+            setNestedValue(gamemode,settings.valueString.splice("."),this.value);
             holder.gmValue = this.value;
             holder.activateList();
         })
     }
     if (settings.type == "number") {
         valueInput = holder.create("input.gmGroup_number");
-        valueInput.value = gamemode[settings.valueString];
-        holder.gmValue = gamemode[settings.valueString];
+        valueInput.value = getNestedValue(gameMode,settings.valueString);
+        holder.gmValue = getNestedValue(gameMode,settings.valueString);
         valueInput.type = "number";
 
         valueInput.on("change",function() {
@@ -1300,7 +1299,7 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
                 if (Number(this.value) > settings.typeSettings.max) this.value = settings.typeSettings.max;
             }
 
-            gamemode[settings.valueString] = Number(this.value);
+            setNestedValue(gamemode,settings.valueString.splice("."),Number(this.value));
             holder.gmValue = Number(this.value);
             holder.activateList();
 
@@ -1308,7 +1307,7 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
     }
     if (settings.type == "toggle") {
         valueInput = holder.create("div.gmGroup_toggle");
-        if (gamemode[settings.valueString] == true) {
+        if (getNestedValue(gameMode,settings.valueString) == true) {
             valueInput.classAdd("gmGroup_toggle_on");
             valueInput.innerHTML = "ON";
             valueInput.value = true;
@@ -1317,21 +1316,21 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
             valueInput.innerHTML = "OFF";
             valueInput.value = false;
         }
-        holder.gmValue = gamemode[settings.valueString];
+        holder.gmValue = getNestedValue(gameMode,settings.valueString);;
 
         valueInput.on("click",function() {
             if (this.classList.contains("gmGroup_toggle_on")) {
                 this.classRemove("gmGroup_toggle_on")
                 this.classAdd("gmGroup_toggle_off");
                 this.innerHTML = "OFF";
-                gamemode[settings.valueString] = false;
+                setNestedValue(gamemode,settings.valueString.splice("."),false);
                 
                 holder.gmValue = false;
             } else {
                 this.classAdd("gmGroup_toggle_on")
                 this.classRemove("gmGroup_toggle_off");
                 this.innerHTML = "ON";
-                gamemode[settings.valueString] = true;
+                setNestedValue(gamemode,settings.valueString.splice("."),true);
                 holder.gmValue = true;
             }
             holder.activateList();
@@ -1345,7 +1344,7 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
             option.innerHTML = settings.typeSettings.options[i];
             options.push(option);
 
-            if (settings.typeSettings.options[i].toLowerCase() == gamemode[settings.valueString].toLowerCase()) {
+            if (settings.typeSettings.options[i].toLowerCase() == getNestedValue(gameMode,settings.valueString).toLowerCase()) {
                 option.classAdd("gmGroup_list_option_selected");
                 holder.gmValue = gamemode[settings.valueString].toLowerCase();
             } 
@@ -1353,7 +1352,7 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
             option.on("click",function() {
                 options.classRemove("gmGroup_list_option_selected");
                 this.classAdd("gmGroup_list_option_selected");
-                gamemode[settings.valueString] = settings.typeSettings.options[i].toLowerCase();
+                setNestedValue(gamemode,settings.valueString.splice("."),settings.typeSettings.options[i].toLowerCase());
                 holder.gmValue = settings.typeSettings.options[i].toLowerCase();
                 holder.activateList();
             })
@@ -1424,7 +1423,7 @@ function loadGamemodeTabSettings() {
         [false,false,false,p]
     ]
 
-    createGamemodeGrid(holder,4,4,grid);
+    createGamemodeGrid(holder,4,4,grid,gameMode);
 
 }
 function loadGamemodeTabItems() {
@@ -1498,7 +1497,6 @@ function loadGamemodeTabItems() {
                     familyID: false, myID: false, showWhen: false,
                 })
             }
-            console.log(item.onActivate?.giveTurbo);
             if (item.onActivate?.giveTurbo) {
                 attributes.push({
                     title: "Turbo Duration",
@@ -1538,7 +1536,7 @@ function loadGamemodeTabItems() {
                 }
             }
 
-            createGamemodeGrid($(".gamemodePopup_item_settingsList"),2,4,grid);
+            createGamemodeGrid($(".gamemodePopup_item_settingsList"),2,4,grid,item);
 
         })
     }
