@@ -1577,8 +1577,9 @@ $(".modernPopup_topRow_imageHolder").on("click",function() {
 $(".modernPopup_topRow_close").on("click",function() {
     let parent = this.$P().$P().$P(); 
     parent.hide();
-
+    console.log(parent.id.subset(0,"_\\before"))
     if (parent.id.subset(0,"_\\before") == "gamemode") {
+        console.log("ey")
         socket.emit("editServerGameMode",$(".editGameModePopup").gameMode);
     }
 })
