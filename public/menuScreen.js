@@ -1294,7 +1294,6 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
 
         valueInput.on("change",function() {
             if (settings.typeSettings.min) {
-                console.log(Number(this.value),settings.typeSettings.min);
                 if (Number(this.value) < settings.typeSettings.min) this.value = settings.typeSettings.min;
             }
             if (settings.typeSettings.max) {
@@ -1399,7 +1398,7 @@ function loadGamemodeTabSettings() {
         valueFromId: 1,
         equals: true,
     });
-    let i = createGamemodeSetting("When Sankes Die","list","whenSnakesDie",{options: ["Remain","Vanish","Become Food"]},"What happens when a snake dies.",3,1);
+    let i = createGamemodeSetting("When Snakes Die","list","whenSnakesDie",{options: ["Remain","Vanish","Become Food"]},"What happens when a snake dies.",3,1);
     let j = createGamemodeSetting("Become Food %","number","setFoodRate",{min: 0, max: 100},"What percent of the snake turns into food.",3,2,{
         valueFromId: 1,
         equals: "become food",
@@ -1460,5 +1459,5 @@ $(".modernPopup_topRow_imageHolder").on("click",function() {
     setPopupTab(this.id.subset("tab_\\after","end"),this.id.subset(0,"_\\before"));
 })
 $(".modernPopup_topRow_close").on("click",function() {
-    this.parent.parent.parent.hide();
+    this.$P().$P().$P().hide();
 })
