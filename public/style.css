@@ -4920,7 +4920,7 @@ cursor: url('./img/pointer.cur'), auto;
     flex: 1 1 auto; /* Fills all available space */
     overflow-y: auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: flex-start;
@@ -5012,6 +5012,8 @@ cursor: url('./img/pointer.cur'), auto;
     justify-content: center;
     position: relative;
     font-size: 2em;
+    text-align: center;
+    margin-top: 7px;
   }
   .gmp_plus {
     color: green;

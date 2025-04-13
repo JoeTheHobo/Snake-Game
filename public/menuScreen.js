@@ -1567,7 +1567,7 @@ function loadGamemodeTabWinning() {
         let div = html_availableConditions.create("div.gmp_slot");
         let plus = div.create("div.gmp_plus")
         plus.innerHTML = "+";
-        div.innerHTML = title;
+        div.innerHTML += title;
 
         plus.on("click",function() {
             for (let i = 0; i < 5; i++) {
@@ -1596,7 +1596,7 @@ function loadGamemodeTabWinning() {
                         slot.$(".gmp_slot_foreground_team").show();
                         slot.$(".gmp_slot_foreground_team").src = "img/items/item_flag_basic_" + whoWins + ".png";
                     }
-                    
+
                     return;
                 }
             }
