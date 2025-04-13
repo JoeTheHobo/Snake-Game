@@ -1190,10 +1190,10 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom) {
     heightValue = (((1/height)-0.02)*rect.height) + "px";
 
     let columns = [];
-    for (let i = 0; i < width; i++) {
+    for (let i = 0; i < grid[0].length; i++) {
         let column = holder.create("div.gmGroup_column");
         column.css({
-            width: (((1/width)*100)-1) + "%",
+            width: (((1/grid[0].length)*100)-1) + "%",
         })
         columns.push(column);
     }
