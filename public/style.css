@@ -4715,6 +4715,7 @@ cursor: url('./img/pointer.cur'), auto;
 
   }
   .gmGroup_holder {
+    margin: 5px;
     border-radius: 5px;
     background: #262626;
     width: 100%;
@@ -4738,7 +4739,7 @@ cursor: url('./img/pointer.cur'), auto;
     border: none;
     outline: none;
     border-radius: 5px;
-    height: 5%;
+    height: 15%;
     color: black;
     font-family: VT323;
 
@@ -4751,7 +4752,7 @@ cursor: url('./img/pointer.cur'), auto;
     color: black;
     font-family: VT323;
     width: 90%;
-    height: 10%;
+    height: 30%;
 
   }
   .gmGroup_number {
@@ -4761,14 +4762,14 @@ cursor: url('./img/pointer.cur'), auto;
     border: none;
     outline: none;
     border-radius: 5px;
-    height: 5%;
+    height: 15%;
     color: black;
     font-family: VT323;
 
   }
   .gmGroup_toggle {
-    height: 5%;
-    aspect-ratio: 98/52;
+    height: 15%;
+    aspect-ratio: 52/98;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4793,7 +4794,7 @@ cursor: url('./img/pointer.cur'), auto;
     align-items: center;
     width: 90%;
     justify-content: space-evenly;
-    height: 5%;
+    height: 15%;
   }
   .gmGroup_list_option {
     height: 100%;
@@ -4803,6 +4804,8 @@ cursor: url('./img/pointer.cur'), auto;
     align-items: center;
     justify-content: center;
     transition: background .2s ease-in-out;
+    color: white;
+    cursor: url('./img/pointer.cur'), auto;
   }
   .gmGroup_list_option_selected {
     background: linear-gradient(146.4deg, #6BD2FE -10.61%, #027BAF 90.71%);
