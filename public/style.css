@@ -4839,3 +4839,17 @@ cursor: url('./img/pointer.cur'), auto;
     background: linear-gradient(146.4deg, #6BD2FE -10.61%, #027BAF 90.71%);
 
   }
+
+  .gamemodePopup_itemList {
+    height: 100%;
+    width: 33%;
+  }
+  .modernPopup_verticalLine {
+    width: 1px;
+    height: 80%;
+    border: 2px solid white;
+  }
+  .gamemodePopup_item_settingsList {
+    height: 100%;
+    flex-grow: 1;
+  }

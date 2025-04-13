@@ -1428,7 +1428,118 @@ function loadGamemodeTabSettings() {
 
 }
 function loadGamemodeTabItems() {
+    let itemHolder = $(".gamemodePopup_itemList");
+    itemHolder.innerHTML = "";
+    $(".gamemodePopup_item_settingsList").innerHTML = "";
 
+    for (let i = 0; i < items.length; i++) {
+        let item = items[i];
+        if (!item.showInEditor) continue;
+
+        let itemDiv = itemHolder.create("div.gmItems_imageHolder");
+        let itemImg = itemDiv.create("image.gmItems_image");
+        itemImg.src = getImage(item,"src");
+
+        itemDiv.on("click",function() {
+            $(".gmItems_imageHolder").classRemove("gmItems_imageHolder_selected");
+            this.classAdd("gmItems_imageHolder_selected");
+
+            let attributes = [];
+
+            attributes.push({
+                title: "At Start Spawn",
+                type: "number",
+                valueString: "onStartSpawn",
+                typeSettings: {min: 0, max: 60},
+                description: "When game starts spawn this many items.",
+                familyID: false, myID: false, showWhen: false,
+            })
+            attributes.push({
+                title: "Spawn Weight",
+                type: "number",
+                valueString: "specialSpawnWeight",
+                typeSettings: {min: 0},
+                description: "A higher rate increases the chances of this item spawning.",
+                familyID: false, myID: false, showWhen: false,
+            })
+            attributes.push({
+                title: "Spawn Weight",
+                type: "toggle",
+                valueString: "visible",
+                typeSettings: {},
+                description: "If the item shows or hides when rendereing the game.",
+                familyID: false, myID: false, showWhen: false,
+            })
+            attributes.push({
+                title: "Plays Audio",
+                type: "toggle",
+                valueString: "playSounds",
+                typeSettings: {},
+                description: "Does the item play sounds?",
+                familyID: false, myID: false, showWhen: false,
+            })
+            if (item.onCollision.growPlayer) {
+                attributes.push({
+                    title: "Grow Snake",
+                    type: "number",
+                    valueString: "onCollision.growPlayer",
+                    typeSettings: {min: 0, max: 200},
+                    description: "How much to grow snake when eaten.",
+                    familyID: false, myID: false, showWhen: false,
+                })
+            }
+            if (item.onCollision.spawnRandomItem !== undefined) {
+                attributes.push({
+                    title: "Attempt To Spawn Random Item",
+                    type: "toggle",
+                    valueString: "onCollision.spawnRandomItem",
+                    typeSettings: {},
+                    description: "When eaten do I attempt to spawn random item?",
+                    familyID: false, myID: false, showWhen: false,
+                })
+            }
+            if (item.onActivate?.giveTurbo) {
+                attributes.push({
+                    title: "Turbo Duration",
+                    type: "number",
+                    valueString: "onActivate.giveTurbo.duration",
+                    typeSettings: {min: 0, max: 60},
+                    description: "How long turbo lasts (seconds).",
+                    familyID: false, myID: false, showWhen: false,
+                })
+            }
+            if (item.onActivate?.giveTurbo) {
+                attributes.push({
+                    title: "Turbo Speed",
+                    type: "number",
+                    valueString: "onActivate.giveTurbo.moveSpeed",
+                    typeSettings: {min: 1.1, max: 5},
+                    description: "How fast turbo is.",
+                    familyID: false, myID: false, showWhen: false,
+                })
+            }
+
+            let counter = 0;
+            let grid = [
+                [false,false],
+                [false,false],
+                [false,false],
+            ];
+
+            for (let y = 0; y < grid.length; y++) {
+                for (let x = 0; x < grid[0].length; x++) {
+                    if (!attributes[counter]) continue;
+
+                    grid[x][y] = attributes[counter];
+
+                    counter++;
+                }
+            }
+
+            createGamemodeGrid($(".gamemodePopup_item_settingsList"),2,3,grid);
+
+        })
+    }
 }
 function loadGamemodeTabWinning() {
 
