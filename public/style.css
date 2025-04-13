@@ -4800,7 +4800,6 @@ cursor: url('./img/pointer.cur'), auto;
     color: white;
     border-radius: 5px;
     cursor: url('./img/pointer.cur'), auto;
-    transition: background .2s ease-in-out;
 
   }
   .gmGroup_toggle_on {
@@ -4829,7 +4828,6 @@ cursor: url('./img/pointer.cur'), auto;
     max-width: 30%;
     align-items: center;
     justify-content: center;
-    transition: background .2s ease-in-out;
     color: white;
     cursor: url('./img/pointer.cur'), auto;
   }

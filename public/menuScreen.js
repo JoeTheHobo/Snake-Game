@@ -1270,7 +1270,7 @@ function generateGamemodeSetting(holder,settings) {
         }
 
         valueInput.on("click",function() {
-            if (this.classList.includes("gmGroup_toggle_on")) {
+            if (this.classList.contains("gmGroup_toggle_on")) {
                 this.classRemove("gmGroup_toggle_on")
                 this.classAdd("gmGroup_toggle_off");
                 gamemode[settings.valueString] = false;
