@@ -4711,6 +4711,7 @@ cursor: url('./img/pointer.cur'), auto;
     border-radius: 5px;
     background: #262626;
     box-sizing: border-box;
+    margin: 5%;
 
   }
   .gmGroup_holder {
@@ -4725,11 +4726,13 @@ cursor: url('./img/pointer.cur'), auto;
   }
   .gmGroup_title {
     color: white;
-    font-size: large;
+    font-size: 1.5em;
+    margin-bottom: 5px;
   }
   .gmGroup_description {
     color: white;
     font-size: 1em;
+    margin-top: 10px;
   }
   .gmGroup_input {
     width: 90%;
@@ -4781,7 +4784,7 @@ cursor: url('./img/pointer.cur'), auto;
 
   .gmGroup_toggle {
     height: 15%;
-    aspect-ratio: 52/98;
+    aspect-ratio: 98/52;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4813,7 +4816,7 @@ cursor: url('./img/pointer.cur'), auto;
     background: #727272;
     border-radius: 5px;
     display: flex;
-    width: 20%;
+    width: 25%;
     max-width: 20%;
     align-items: center;
     justify-content: center;
