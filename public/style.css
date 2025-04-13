@@ -4696,6 +4696,7 @@ cursor: url('./img/pointer.cur'), auto;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    padding-top: 5px;
   }
 
 
@@ -4712,7 +4713,7 @@ cursor: url('./img/pointer.cur'), auto;
     border-radius: 5px;
     background: #262626;
     box-sizing: border-box;
-    margin: 5%;
+    margin: 1%;
 
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     

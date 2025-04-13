@@ -1450,7 +1450,7 @@ function generateSettingsCard() {
     
 }
 $(".modernPopup_topRow_imageHolder").on("click",function() {
-    setPopupTab(this.id.subset("tab_\\after","end"),this.id(0,"_\\before"));
+    setPopupTab(this.id.subset("tab_\\after","end"),this.id.subset(0,"_\\before"));
 })
 $(".modernPopup_topRow_close").on("click",function() {
     this.parent.parent.parent.hide();
