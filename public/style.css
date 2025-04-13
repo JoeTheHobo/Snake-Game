@@ -4840,6 +4840,13 @@ cursor: url('./img/pointer.cur'), auto;
 
   }
 
+  #modernPopup_content_items {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
   .gamemodePopup_itemList {
     height: 100%;
     width: 33%;
@@ -4847,6 +4854,8 @@ cursor: url('./img/pointer.cur'), auto;
     padding: 10px;
     flex-direction: row;
     flex-wrap: wrap;
+    align-content: flex-start;
+    align-items: flex-start;
   }
   .gmItems_imageHolder {
     width: 50px;
@@ -4854,7 +4863,7 @@ cursor: url('./img/pointer.cur'), auto;
     background: white;
     border-radius: 5px;
     border: 3px solid black;
-    margin: 3px;
+    margin: 1px;
   }
   .gmItems_imageHolder_selected {
     border: 3px solid rgb(38, 120, 228);
@@ -4864,9 +4873,9 @@ cursor: url('./img/pointer.cur'), auto;
     height: 100%;
   }
   .modernPopup_verticalLine {
-    width: 1px;
+    width: 2px;
+    background: white;
     height: 80%;
-    border: 2px solid white;
   }
   .gamemodePopup_item_settingsList {
     height: 100%;

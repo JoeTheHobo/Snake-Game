@@ -1437,7 +1437,7 @@ function loadGamemodeTabItems() {
         if (!item.showInEditor) continue;
 
         let itemDiv = itemHolder.create("div.gmItems_imageHolder");
-        let itemImg = itemDiv.create("image.gmItems_image");
+        let itemImg = itemDiv.create("img.gmItems_image");
         itemImg.src = getImage(item,"src");
 
         itemDiv.on("click",function() {
