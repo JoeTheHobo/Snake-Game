@@ -1192,7 +1192,7 @@ function createGamemodeGrid(holder,width,height,grid) {
     for (let i = 0; i < width; i++) {
         let column = holder.create("div.gmGroup_column");
         column.css({
-            width: (((1/width)*100)-2) + "%",
+            width: (((1/width)*100)-1) + "%",
         })
         columns.push(column);
     }
