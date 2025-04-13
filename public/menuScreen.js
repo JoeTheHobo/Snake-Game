@@ -1572,7 +1572,7 @@ function loadGamemodeTabWinning() {
                 slot.hide();
                 return;
             } else {
-                slot.show();
+                slot.show("flex");
             }
             let pullFromCondition = false;
             for (let j = 0; j < conditions.length; j++) {
@@ -1580,6 +1580,7 @@ function loadGamemodeTabWinning() {
                     pullFromCondition == conditions[j];
                 }
             }
+            console.log(pullFromCondition)
             
             let htmlText = condition.condition;
             if (pullFromCondition.whereToModify) {
