@@ -1269,7 +1269,7 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
         valueInput.on("change",function() {
             gamemode[settings.valueString] = this.value;
             holder.gmValue = this.value;
-            holder.activeList();
+            holder.activateList();
         })
     }
     if (settings.type == "textarea") {
@@ -1280,7 +1280,7 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
         valueInput.on("change",function() {
             gamemode[settings.valueString] = this.value;
             holder.gmValue = this.value;
-            holder.activeList();
+            holder.activateList();
         })
     }
     if (settings.type == "number") {
@@ -1292,7 +1292,7 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
         valueInput.on("change",function() {
             gamemode[settings.valueString] = Number(this.value);
             holder.gmValue = Number(this.value);
-            holder.activeList();
+            holder.activateList();
         })
     }
     if (settings.type == "toggle") {
@@ -1323,8 +1323,7 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
                 gamemode[settings.valueString] = true;
                 holder.gmValue = true;
             }
-            console.log(holder)
-            holder.activeList();
+            holder.activateList();
         })
     }
     if (settings.type == "list") {
@@ -1345,7 +1344,7 @@ function generateGamemodeSetting(holder,settings,familyID,myID) {
                 this.classAdd("gmGroup_list_option_selected");
                 gamemode[settings.valueString] = settings.typeSettings.options[i].toLowerCase();
                 holder.gmValue = settings.typeSettings.options[i].toLowerCase();
-                holder.activeList();
+                holder.activateList();
             })
         }
 
