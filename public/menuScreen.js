@@ -1610,7 +1610,7 @@ function loadGamemodeTabWinning() {
         let plus = div.create("img.gmp_plus")
         plus.src = "img/menuIcons/plus.png";
         conditions.push({
-            conditions: title,
+            condition: title,
             whereToModify: whereToModify,
             settingsTitle: settingsTitle,
             settingsType: settingsType,
@@ -1657,7 +1657,6 @@ function loadGamemodeTabWinning() {
     addAvailableCondition("Touch Item X","X","item.0","Player","Touch Item","item","Touch this item to win the game!");
     addAvailableCondition("Touch Tile X","X","tile.0","Player","Touch Tile","tile","Touch this tile to win the game!");
 
-    console.log(conditions)
     loadWinningConditions();
 }
 function setPopupTab(tab,type) {
