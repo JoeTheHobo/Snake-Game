@@ -1482,7 +1482,7 @@ function loadGamemodeTabItems() {
                 description: "Does the item play sounds?",
                 familyID: false, myID: false, showWhen: false,setItemAlteration: true,
             })
-            if (item.onCollision.growPlayer) {
+            if (item.onCollision?.growPlayer) {
                 attributes.push({
                     title: "Grow Snake",
                     type: "number",
@@ -1492,7 +1492,7 @@ function loadGamemodeTabItems() {
                     familyID: false, myID: false, showWhen: false,setItemAlteration: true,
                 })
             }
-            if (item.onCollision.spawnRandomItem !== undefined) {
+            if (item.onCollision?.spawnRandomItem !== undefined) {
                 attributes.push({
                     title: "Attempt To Spawn Random Item",
                     type: "toggle",
@@ -1579,9 +1579,7 @@ $(".modernPopup_topRow_imageHolder").on("click",function() {
 $(".modernPopup_topRow_close").on("click",function() {
     let parent = this.$P().$P().$P(); 
     parent.hide();
-    console.log(parent.id.subset(0,"_\\before"))
-    if (parent.id.subset(0,"_\\before") == "gamemode") {
-        console.log("ey")
+    if (parent.id.subset(0,"_\\before") == "gamemode" && parent.sendToServer) {
         socket.emit("editServerGameMode",$(".editGameModePopup").gameMode);
     }
 })

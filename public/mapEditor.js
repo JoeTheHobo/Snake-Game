@@ -2590,7 +2590,7 @@ function loadBoardGameModes(gameModesHolder,gameModes,sentFrom) {
         if (sentFrom == "mapEditor") {
             addSetting("edit",() => {
                 $(".customizeGamemodePopup").show();
-                editGameMode($(".customizeGamemodePopup"),gameMode,true,"mapEditor");
+                editGameMode($(".customizeGamemodePopup"),gameMode,false);
             })
             if (gameModes.length > 1) {
                 addSetting("delete",() => {

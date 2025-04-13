@@ -150,7 +150,7 @@ $(".servers_invite_button").on("click",function() {
 })
 
 $(".sc_gmb_editGameModeHolder").on("click",function() {
-    editGameMode(localAccount.lobbyGamemode,false,"server");
+    editGameMode(localAccount.lobbyGamemode,true);
 })
 $("button_backToLobby").on("click",function() {
     $(".endScreenStats").hide();
