@@ -1550,13 +1550,12 @@ function loadGamemodeTabWinning() {
 
 }
 function setPopupTab(tab,type) {
-    $(".modernPopup_topRow_imageHolder").classRemove("modernPopup_topRow_image_selected");
-    $("gamemode_popup_tab_" + tab).classAdd("modernPopup_topRow_image_selected");
-
-    $(".modernPopup_content").hide();
-    $("modernPopup_content_" + tab).show("flex");
-
     if (type == "gamemode") {
+        $(".modernPopup_topRow_imageHolder").classRemove("modernPopup_topRow_image_selected");
+        $("gamemode_popup_tab_" + tab).classAdd("modernPopup_topRow_image_selected");
+    
+        $(".modernPopup_content").hide();
+        $("modernPopup_content_" + tab).show("flex");
         if (tab == "settings") {
             $(".modernPopup_topRow_title").innerHTML = "General Settings";
             loadGamemodeTabSettings();   

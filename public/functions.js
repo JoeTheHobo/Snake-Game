@@ -2009,8 +2009,8 @@ function showBoardMenu(allBoards) {
     html_search_input = removeAllEventListeners(html_search_input);
 
     //Reset Top Row
-    $(".cbp_tr_lc_imageHolder").classRemove("cbp_tr_lc_imageHolder_selected");
-    $(".cbp_tr_lc_imageHolder").on("click",function() {
+    $(".board_tab").classRemove("modernPopup_topRow_image_selected");
+    $(".board_tab").on("click",function() {
         selectFilter(this.id.subset("_\\after","end"));
     })
 
@@ -2051,8 +2051,8 @@ function showBoardMenu(allBoards) {
         }
     }
     function selectFilter(name,adjustSize = false) {
-        $(".cbp_tr_lc_imageHolder").classRemove("cbp_tr_lc_imageHolder_selected")
-        $("boardMenu_" + name).classAdd("cbp_tr_lc_imageHolder_selected");
+        $(".board_tab").classRemove("modernPopup_topRow_image_selected")
+        $("boardMenu_" + name).classAdd("modernPopup_topRow_image_selected");
         type = name;
         page = 1;
         dispalyBoards(adjustSize);
