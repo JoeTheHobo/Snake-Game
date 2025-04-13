@@ -1582,7 +1582,7 @@ function loadGamemodeTabWinning() {
             let html_delete = slot.create("img.gmp_slot_foreground_delete");
             html_delete.src = "img/tool_delete.png";
             html_delete.on("click",function() {
-                gamemode.winningConditions.splice(i,1);
+                gamemode.winningConditions[i] = false;
                 loadWinningConditions();
             })
 
