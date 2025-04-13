@@ -1269,7 +1269,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
 
         valueInput.on("change",function() {
             holder.gmValue = this.value;
-            setNestedValue(pullFrom,settings.valueString.splice("."),this.value);
+            setNestedValue(pullFrom,settings.valueString.split("."),this.value);
             holder.activateList();
         })
     }
@@ -1279,7 +1279,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
         holder.gmValue = getNestedValue(pullFrom,settings.valueString);
         
         valueInput.on("change",function() {
-            setNestedValue(pullFrom,settings.valueString.splice("."),this.value);
+            setNestedValue(pullFrom,settings.valueString.split("."),this.value);
             holder.gmValue = this.value;
             holder.activateList();
         })
@@ -1298,7 +1298,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                 if (Number(this.value) > settings.typeSettings.max) this.value = settings.typeSettings.max;
             }
 
-            setNestedValue(pullFrom,settings.valueString.splice("."),Number(this.value));
+            setNestedValue(pullFrom,settings.valueString.split("."),Number(this.value));
             holder.gmValue = Number(this.value);
             holder.activateList();
 
@@ -1322,14 +1322,14 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                 this.classRemove("gmGroup_toggle_on")
                 this.classAdd("gmGroup_toggle_off");
                 this.innerHTML = "OFF";
-                setNestedValue(pullFrom,settings.valueString.splice("."),false);
+                setNestedValue(pullFrom,settings.valueString.split("."),false);
                 
                 holder.gmValue = false;
             } else {
                 this.classAdd("gmGroup_toggle_on")
                 this.classRemove("gmGroup_toggle_off");
                 this.innerHTML = "ON";
-                setNestedValue(pullFrom,settings.valueString.splice("."),true);
+                setNestedValue(pullFrom,settings.valueString.split("."),true);
                 holder.gmValue = true;
             }
             holder.activateList();
@@ -1343,7 +1343,6 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             option.innerHTML = settings.typeSettings.options[i];
             options.push(option);
 
-            console.log(pullFrom,settings.valueString);
             if (settings.typeSettings.options[i].toLowerCase() == getNestedValue(pullFrom,settings.valueString).toLowerCase()) {
                 option.classAdd("gmGroup_list_option_selected");
                 holder.gmValue = settings.typeSettings.options[i].toLowerCase();
@@ -1352,7 +1351,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             option.on("click",function() {
                 options.classRemove("gmGroup_list_option_selected");
                 this.classAdd("gmGroup_list_option_selected");
-                setNestedValue(pullFrom,settings.valueString.splice("."),settings.typeSettings.options[i].toLowerCase());
+                setNestedValue(pullFrom,settings.valueString.split("."),settings.typeSettings.options[i].toLowerCase());
                 holder.gmValue = settings.typeSettings.options[i].toLowerCase();
                 holder.activateList();
             })
