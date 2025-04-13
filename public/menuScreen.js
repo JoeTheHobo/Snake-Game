@@ -1185,8 +1185,8 @@ function createGamemodeGrid(holder,width,height,grid) {
     holder.innerHTML = "";
     let rect = holder.getBoundingClientRect();
 
-    let width = ((1/width)*rect.width) + "px";
-    let height = ((1/height)*rect.height) + "px";
+    width = ((1/width)*rect.width) + "px";
+    height = ((1/height)*rect.height) + "px";
 
     let columns = [];
     for (let i = 0; i < width; i++) {
