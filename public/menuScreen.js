@@ -1589,7 +1589,7 @@ function loadGamemodeTabWinning() {
                     replacementText = `<img src="${getImage(getByID(condition.x,type),"src")}" class="gmp_slot_image">`;
                 }
                 console.log(pullFromCondition.whereToModify,replacementText)
-                htmlText.replace(pullFromCondition.whereToModify,replacementText);
+                htmlText.replaceAll(pullFromCondition.whereToModify,replacementText);
             }
             slot.$(".gmp_slot_foreground_text").innerHTML = htmlText;
 
