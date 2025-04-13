@@ -1575,12 +1575,12 @@ function loadGamemodeTabWinning() {
                 slot.show("flex");
             }
             let pullFromCondition = false;
+            console.log(conditions,condition);
             for (let j = 0; j < conditions.length; j++) {
                 if (conditions[j].condition == condition.condition) {
                     pullFromCondition == conditions[j];
                 }
             }
-            console.log(pullFromCondition)
             
             let htmlText = condition.condition;
             if (pullFromCondition.whereToModify) {
