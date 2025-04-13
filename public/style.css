@@ -4931,11 +4931,14 @@ cursor: url('./img/pointer.cur'), auto;
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
 
   }
   .gamemodePopup_activeConditions_list {
     width: 95%;
-    height: 150px;
+    height: 20%;
+    margin-top: 10%;
+    margin-bottom: 10%;
 
     display: flex;
     flex-direction: row;
@@ -4956,7 +4959,10 @@ cursor: url('./img/pointer.cur'), auto;
     height: 100%;
     z-index: 1;
     color: #ffffff28;
-    font-size: 2em;
+    font-size: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
   }
   .gmp_condition_slot_foreground {
