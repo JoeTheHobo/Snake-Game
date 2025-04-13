@@ -1586,6 +1586,7 @@ function loadGamemodeTabWinning() {
                 let replacementText = condition.x;
                 if (condition.type === "item" || condition.type === "tile") {
                     let type = condition.type == "item" ? items : tiles;
+                    console.log(condition.x,type,getByID(condition.x,type));
                     replacementText = `<img src="${getImage(getByID(condition.x,type),"src")}" class="gmp_slot_image">`;
                 }
                 htmlText = htmlText.replace(pullFromCondition.whereToModify,replacementText);
@@ -1632,7 +1633,7 @@ function loadGamemodeTabWinning() {
                             sendX = Number(value.subset(".\\after","end"));
                         }
                     }
-                    
+
                     gamemode.winningConditions[i] = {
                         condition: title,
                         x: sendX,
