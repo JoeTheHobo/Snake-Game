@@ -1423,7 +1423,7 @@ function loadGamemodeTabSettings() {
         [false,false,false,p]
     ]
 
-    createGamemodeGrid(holder,4,4,grid,gameMode);
+    createGamemodeGrid(holder,4,4,grid,gamemode);
 
 }
 function loadGamemodeTabItems() {
