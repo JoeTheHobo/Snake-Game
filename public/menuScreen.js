@@ -1171,11 +1171,12 @@ $(".cp_deleteAccount").on("click",function() {
 })
 
 
-function editGameMode(gameMode,sendToServer = false) {
+function editGameMode(gameMode,sendToServer = false,func = () => {}) {
     html_popup = $(".editGameModePopup");
     html_popup.show("flex");
     html_popup.gameMode = gameMode;
     html_popup.sendToServer = sendToServer;
+    html_popup.closeFunction = func;
 
     
     setPopupTab("settings","gamemode");
@@ -1579,7 +1580,8 @@ $(".modernPopup_topRow_imageHolder").on("click",function() {
 $(".modernPopup_topRow_close").on("click",function() {
     let parent = this.$P().$P().$P(); 
     parent.hide();
-    if (parent.id.subset(0,"_\\before") == "gamemode" && parent.sendToServer) {
-        socket.emit("editServerGameMode",$(".editGameModePopup").gameMode);
+    if (parent.id.subset(0,"_\\before") == "gamemode") {
+        parent.closeFunction();
+        if (parent.sendToServer) socket.emit("editServerGameMode",$(".editGameModePopup").gameMode);
     }
 })

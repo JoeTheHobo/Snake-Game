@@ -2589,8 +2589,9 @@ function loadBoardGameModes(gameModesHolder,gameModes,sentFrom) {
 
         if (sentFrom == "mapEditor") {
             addSetting("edit",() => {
-                $(".customizeGamemodePopup").show();
-                editGameMode(gameMode,false);
+                editGameMode(gameMode,false,() => {
+                    loadBoardGameModes(gameModesHolder,gameModes,sentFrom);
+                });
             })
             if (gameModes.length > 1) {
                 addSetting("delete",() => {
