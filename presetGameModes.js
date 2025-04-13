@@ -2,6 +2,7 @@ let presetGameModes = [];
 
 presetGameModes.push({
     name: "Classic",
+    description: "",
     howManyItemsCanPlayersUse: 2,
     mode_usingItemType: "scroll",
     itemAlterations: [],

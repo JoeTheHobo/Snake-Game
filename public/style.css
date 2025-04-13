@@ -4697,3 +4697,114 @@ cursor: url('./img/pointer.cur'), auto;
     flex-direction: row;
     flex-wrap: wrap;
   }
+
+
+  .gmGroup_column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  .gmGroup_group {
+    width: 100%;
+    height: max-content;
+    border-radius: 5px;
+    background: #262626;
+    box-sizing: border-box;
+
+  }
+  .gmGroup_holder {
+    border-radius: 5px;
+    background: #262626;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .gmGroup_title {
+    color: white;
+    font-size: large;
+  }
+  .gmGroup_description {
+    color: white;
+    font-size: 1em;
+  }
+  .gmGroup_input {
+    width: 90%;
+    text-align: center;
+    background: white;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    height: 5%;
+    color: black;
+    font-family: VT323;
+
+  }
+  .gmGroup_textarea {
+    border: none;
+    outline: none;
+    background: white;
+    border-radius: 5px;
+    color: black;
+    font-family: VT323;
+    width: 90%;
+    height: 10%;
+
+  }
+  .gmGroup_number {
+    width: 10%;
+    text-align: center;
+    background: white;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    height: 5%;
+    color: black;
+    font-family: VT323;
+
+  }
+  .gmGroup_toggle {
+    height: 5%;
+    aspect-ratio: 98/52;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
+    color: white;
+    border-radius: 5px;
+    cursor: url('./img/pointer.cur'), auto;
+    transition: background .2s ease-in-out;
+
+  }
+  .gmGroup_toggle_on {
+    background: linear-gradient(146.4deg, #1F9238 -10.61%, #0B7121 90.71%);
+
+  }
+  .gmGroup_toggle_off {
+    background: linear-gradient(146.4deg, #BA4343 -10.61%, #710B0B 90.71%);
+
+  }
+  .gmGroup_list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 90%;
+    justify-content: space-evenly;
+    height: 5%;
+  }
+  .gmGroup_list_option {
+    height: 100%;
+    background: #727272;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s ease-in-out;
+  }
+  .gmGroup_list_option_selected {
+    background: linear-gradient(146.4deg, #6BD2FE -10.61%, #027BAF 90.71%);
+
+  }

@@ -1172,20 +1172,199 @@ $(".cp_deleteAccount").on("click",function() {
 })
 
 
-function editGameMode(gameMode,sendToServer) {
+function editGameMode(gameMode,sendToServer = false) {
     html_popup = $(".editGameModePopup");
     html_popup.show("flex");
+    html_popup.gameMode = gameMode;
+    html_popup.sendToServer = sendToServer;
 
     
-    setPopupTab("settings")
+    setPopupTab("settings","gamemode");
 }
-function setPopupTab(tab) {
+function createGamemodeGrid(holder,width,height,grid) {
+    holder.innerHTML = "";
+
+    let columns = [];
+    for (let i = 0; i < width; i++) {
+        let column = holder.create("div.gmGroup_column");
+        column.css({
+            width: ((1/width)*100) + "%",
+        })
+        columns.push(column);
+    }
+
+    let familyDivs = [];
+    for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[0].length; j++) {
+            let g = grid[i][j];
+
+            let holder;
+            if (g.familyID) {
+                if (familyDivs.includes("fa" + g.familyID)) {
+                    holder = $("fa" + g.familyID).create("div.gmGroup_holder");
+                } else {
+                    familyDivs.push("fa" + g.familyID);
+                    let group = columns[j].create("div.gmGroup_group");
+                    group.id = "fa" + g.familyID;
+                    holder = group.create("div.gmGroup_holder");
+
+                }
+            } else {
+                familyDivs.push("i" + i + "j" + "j");
+                holder = columns[j].create("div.gmGroup_holder");
+            }
+
+            holder.css({
+                height: ((1/height)*100) + "%",
+            })
+
+            generateGamemodeSetting(holder,g);
+        }
+    }
+}
+function generateGamemodeSetting(holder,settings) {
+    html_popup = $(".editGameModePopup");
+    let gamemode = html_popup.gameMode;
+    let title = holder.create("div.gmGroup_title");
+    title.innerHTML = settings.title;
+
+    let valueInput;
+    if (settings.type == "input") {
+        valueInput = holder.create("input.gmGroup_input");
+        valueInput.value = gamemode[settings.valueString];
+
+    }
+    if (settings.type == "textarea") {
+        valueInput = holder.create("textarea.gmGroup_textarea");
+        valueInput.value = gamemode[settings.valueString];
+        
+    }
+    if (settings.type == "number") {
+        valueInput = holder.create("input.gmGroup_number");
+        valueInput.value = gamemode[settings.valueString];
+        valueInput.type = "number";
+    }
+    if (settings.type == "toggle") {
+        valueInput = holder.create("div.gmGroup_toggle");
+        if (gamemode[settings.valueString] == true) {
+            valueInput.classAdd("gmGroup_toggle_on");
+            valueInput.innerHTML = "ON";
+        } else {
+            valueInput.classAdd("gmGroup_toggle_off");
+            valueInput.innerHTML = "OFF";
+        }
+    }
+    if (settings.type == "list") {
+        valueInput = holder.create("div.gmGroup_list");
+
+        for (let i = 0; i < settings.typeSettings.options.length; i++) {
+            let option = valueInput.create("div.gmGroup_list_option");
+            option.innerHTML = settings.typeSettings.options[i];
+
+            if (settings.typeSettings.options[i].toLowerCase() == gamemode[settings.valueString].toLowerCase()) {
+                option.classAdd("gmGroup_list_option_selected");
+            } 
+        }
+    }
+
+    let typeSettings = settings.typeSettings;
+    if (typeSettings.placeholder) valueInput.placeholder = typeSettings.placeholder;
+    if (typeSettings.maxLength) valueInput.maxLength = typeSettings.maxLength;
+    if (typeSettings.max) valueInput.max = typeSettings.max;
+    if (typeSettings.min) valueInput.min = typeSettings.min;
+
+
+
+
+    let description = holder.create("div.gmGroup_description");
+    description.innerHTML = settings.description;
+}
+function createGamemodeSetting(title,type,valueString,typeSettings,description,familyID = false,myID = false,showWhen = false) {
+    return {
+        title: title,
+        type: type,
+        valueString: valueString,
+        typeSettings: typeSettings,
+        description: description,
+        familyID: familyID,
+        myID: myID,
+        showWhen: showWhen,
+    }
+}
+function loadGamemodeTabSettings() {
+    html_popup = $(".editGameModePopup");
+    let gamemode = html_popup.gameMode;
+    let holder = $("modernPopup_content_settings");
+    holder.innerHTML = "";
+
+    let a = createGamemodeSetting("Gamemode Name","input","name",{maxLength: 30,default: "Untitled",placeholder: "Gamemode name..."},"Title that is presented to the players.",1);
+    let b = createGamemodeSetting("Gamemode Description","textarea","description",{maxLength: 150},"Explain what this gamemode does, and how to play it.",1);
+    let c = createGamemodeSetting("Inventory Slots","number","howManyItemsCanPlayersUse",{min: 0, max: 10},"How many inventory slots the players have.");
+    let e = createGamemodeSetting("Snake Collision","toggle","snakeCollision",{},"Do you take damage when hitting other snakes.",2,1);
+    let f = createGamemodeSetting("Team Collision","toggle","teamCollision",{},"Do you take damage when hitting other snakes on the same team.",2,2,{
+        valueFromId: 1,
+        equals: false,
+    });
+    let i = createGamemodeSetting("When Sankes Die","list","whenSnakesDie",{options: ["Remain","Vanish","Become Food"]},"What happens when a snake dies.",3,1);
+    let j = createGamemodeSetting("Become Food %","number","setFoodRate",{min: 0, max: 100},"What percent of the snake turns into food.",3,2,{
+        valueFromId: 1,
+        equals: "become food",
+    });
+    let m = createGamemodeSetting("Repsawn","toggle","respawn",{},"Do players respawn when they die.",4,1);
+    let n = createGamemodeSetting("Respawn Timer","number","respawnTimer",{min: 0, max: 60},"How long it takes to respawn in seconds.",4,2,{
+        valueFromId: 1,
+        equals: true,
+    });
+    let o = createGamemodeSetting("Respawn Tail %","number","respawnGrowth",{min: 0, max: 100},"What percent of the players tail do they keep when they respawn.",4,3,{
+        valueFromId: 1,
+        equals: true,
+    });
+    let p = createGamemodeSetting("Respawn Protection","number","respawnGrowth",{min: 0, max: 60},"How many seconds does the player have protection after respawning.",4,4,{
+        valueFromId: 1,
+        equals: true,
+    });
+
+    let grid = [
+        [a,e,i,m],
+        [b,f,j,n],
+        [c,false,false,o],
+        [false,false,false,p]
+    ]
+
+    createGamemodeGrid(holder,4,4,grid);
+
+}
+function loadGamemodeTabItems() {
+
+}
+function loadGamemodeTabWinning() {
+
+}
+function setPopupTab(tab,type) {
     $(".modernPopup_topRow_imageHolder").classRemove("modernPopup_topRow_image_selected");
     $("gamemode_popup_tab_" + tab).classAdd("modernPopup_topRow_image_selected");
 
     $(".modernPopup_content").hide();
     $("modernPopup_content_" + tab).show("flex");
+
+    if (type == "gamemode") {
+        if (tab == "settings") {
+            loadGamemodeTabSettings();   
+        }
+        if (tab == "items") {
+            loadGamemodeTabItems();   
+        }
+        if (tab == "winning") {
+            loadGamemodeTabWinning();   
+        }
+    }
+}
+function generateSettingsCard() {
+    
 }
 $(".modernPopup_topRow_imageHolder").on("click",function() {
-    setPopupTab(this.id.subset("tab_\\after","end"))
+    setPopupTab(this.id.subset("tab_\\after","end"),this.id(0,"_\\before"));
+})
+$(".modernPopup_topRow_close").on("click",function() {
+    this.parent.parent.parent.hide();
 })
