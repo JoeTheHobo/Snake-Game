@@ -1548,6 +1548,71 @@ function loadGamemodeTabItems() {
     }
 }
 function loadGamemodeTabWinning() {
+    html_popup = $(".editGameModePopup");
+    let gamemode = html_popup.gameMode;
+    let html_availableConditions = $(".gamemodePopup_availableConditionsList");
+    let html_slots = $(".gmp_condition_slot");
+    let html_settings = $(".gamemodePopup_conditionSettings_list");
+
+    if (!gamemode.winningConditions) gamemode.winningConditions = [{
+        condition: "Survive X Minutes",
+        x: 5,
+        whoWins: false,
+    },false,false,false,false];
+
+    html_settings.innerHTML = "";
+    html_availableConditions.innerHTML = "";
+
+    function addAvailableCondition(title,whereToModify,value,whoWins,settingsTitle,settingsType,settingsDescription) {
+        let div = html_availableConditions.create("div.gmp_slot");
+        let plus = div.create("div.gmp_plus")
+        plus.innerHTML = "+";
+        div.innerHTML = title;
+
+        plus.on("click",function() {
+            for (let i = 0; i < 5; i++) {
+                if (gamemode.winningConditions[i] === false) {
+                    gamemode.winningConditions[i] = {
+                        condition: title,
+                        x: value,
+                        whoWins: whoWins,
+                    }
+                    let slot = html_slots[i].$(".gmp_condition_slot_foreground");
+                    let htmlText = title;
+                    if (whereToModify) {
+                        let replacementText = value;
+                        if (value.subset(0,".\\before") === "item" || value.subset(0,".\\before") === "tile") {
+                            let type = value.subset(0,".\\before") == "item" ? items : tiles;
+                            replacementText = `<img src="${getImage(getByID(Number(value.subset(".\\after","end")),type),"src")}" class="gmp_slot_image">`;
+                        }
+                        htmlText.replace(whereToModify,replacementText);
+                    }
+                    slot.$(".gmp_slot_foreground_text").innerHTML = htmlText;
+                    if (whoWins === "Player") slot.$(".gmp_slot_foreground_team").hide();
+                    else if (whoWins === "Players Team") {
+                        slot.$(".gmp_slot_foreground_team").show();
+                        slot.$(".gmp_slot_foreground_team").src = "img/items/item_flag_basic_white.png";
+                    } else {
+                        slot.$(".gmp_slot_foreground_team").show();
+                        slot.$(".gmp_slot_foreground_team").src = "img/items/item_flag_basic_" + whoWins + ".png";
+                    }
+                    
+                    return;
+                }
+            }
+            
+            genericPopup("No Available Slots");
+
+        })
+    }
+    addAvailableCondition("Last One Standing",false,false,"Player",false);
+    addAvailableCondition("Last Team Standing",false, false, "Players Team",false);
+    addAvailableCondition("Survive X Minutes","X",5,"Player","Survive X Minutes","number","Survive this long to win the game!");
+    addAvailableCondition("Kill X Snakes","X",3,"Player","Kill X Snakes","number","Kill this many snakes to win the game!");
+    addAvailableCondition("Reach Snake Size Of X","X",200,"Player","Reach Snake Size","number","Get this long to win the game!");
+    addAvailableCondition("Touch Zone X","X","set zone","Player","Touch Zone","select zone","Touch this zone to win the game!");
+    addAvailableCondition("Touch Item X","X","item.0","Player","Touch Item","item","Touch this item to win the game!");
+    addAvailableCondition("Touch Tile X","X","tile.0","Player","Touch Tile","tile","Touch this tile to win the game!");
 
 }
 function setPopupTab(tab,type) {

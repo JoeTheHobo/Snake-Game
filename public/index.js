@@ -544,6 +544,9 @@ function getAndLoadNewPlayer() {
     socket.emit("createNewPlayer");
 }
 socket.on("popup",(text) => {
+    genericPopup(text);
+})
+function genericPopup(text) {
     makePopUp([
         {type: "title",text: text},
         {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "200px",background: "green",text:"Close"}
@@ -551,7 +554,8 @@ socket.on("popup",(text) => {
         id: "serverPopup",
 
     })
-})
+
+}
 socket.on("setScene",(scene) => {
     setScene(scene);
 })
