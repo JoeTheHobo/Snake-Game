@@ -1588,8 +1588,7 @@ function loadGamemodeTabWinning() {
                     let type = condition.type == "item" ? items : tiles;
                     replacementText = `<img src="${getImage(getByID(condition.x,type),"src")}" class="gmp_slot_image">`;
                 }
-                console.log(pullFromCondition.whereToModify,replacementText)
-                htmlText.replaceAll(pullFromCondition.whereToModify,replacementText);
+                htmlText = htmlText.replace(pullFromCondition.whereToModify,replacementText);
             }
             slot.$(".gmp_slot_foreground_text").innerHTML = htmlText;
 
