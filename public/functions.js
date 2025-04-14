@@ -1507,8 +1507,7 @@ function logAllWinningConditions(holder,gamemode) {
         let howToWin;
 
         if (whoWins !== "Players Team" && whoWins !== "Player") {
-            console.log(whoWins,`img/items/item_flag_basic_${whoWins}.png`)
-            whoWins =  `<img class="gm_alt_team" src="img/items/item_flag_basic_${whoWins}.png> Team ${whoWins}`;
+            whoWins =  `<img class="gm_alt_team" src="img/items/item_flag_basic_${whoWins}.png"> Team ${whoWins}`;
         }
 
         if (condition.condition == "Last One Standing") {
