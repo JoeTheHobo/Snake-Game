@@ -1575,7 +1575,7 @@ function loadGamemodeTabWinning() {
         let a = createGamemodeSetting("Who Wins","list","whoWins",{options: ["Player","Players Team","Specific Team"]},"When winning condition is met who wins?");
 
         let grid = [
-            [false,false],
+            [a,false],
         ]
 
         createGamemodeGrid(html_settings,2,1,grid,gamemode.winningConditions[index])
