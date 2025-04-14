@@ -2169,9 +2169,11 @@ transition: all .2s ease !important;
 }
 
 .sc_gameModeChanges,.sc_winningConditions,.sc_description {
-display: flex;
-flex-direction: column;
-width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: white;
+  margin-top: 5px;
 }
 .gm_alt_holder {
 width: 100%;
