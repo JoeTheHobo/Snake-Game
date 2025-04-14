@@ -1553,6 +1553,7 @@ function loadGamemodeTabWinning() {
     let html_availableConditions = $(".gamemodePopup_availableConditionsList");
     let html_slots = $(".gmp_condition_slot");
     let html_settings = $(".gamemodePopup_conditionSettings_list");
+    html_slots.classRemove("gmp_slot_selected");
 
     if (!gamemode.winningConditions) gamemode.winningConditions = [{
         condition: "Last One Standing",
@@ -1599,8 +1600,17 @@ function loadGamemodeTabWinning() {
                     }
                 }
                 loadWinningConditions();
+                html_settings.innerHTML = "";
+                html_slots.classRemove("gmp_slot_selected");
             })
 
+            let html_edit = slot.create("img.gmp_slot_foreground_edit");
+            html_edit.src = "img/menuIcons/edit.png";
+            html_edit.on("click",function() {
+                html_slots.classRemove("gmp_slot_selected");
+                slot.$P().classAdd('gmp_slot_selected');
+            })
+            
             let pullFromCondition = false;
             for (let j = 0; j < conditions.length; j++) {
                 if (conditions[j].condition == condition.condition) {
@@ -1627,6 +1637,9 @@ function loadGamemodeTabWinning() {
                 slot.$(".gmp_slot_foreground_team").show();
                 slot.$(".gmp_slot_foreground_team").src = "img/items/item_flag_basic_" + condition.whoWins + ".png";
             }
+
+
+
         }
     }
 
