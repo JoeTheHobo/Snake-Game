@@ -1378,6 +1378,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
     if (settings.type == "item" || settings.type == "tile") {
         valueInput = holder.create("div.gmGroup_imageHolder");
         let img = valueInput.create("img.fullImage");
+        console.log(getNestedValue(pullFrom,settings.valueString));
         img.src = getImage(getByID(Number(getNestedValue(pullFrom,settings.valueString)),settings.type),"src")
         holder.gmValue = getNestedValue(pullFrom,settings.valueString);
 
