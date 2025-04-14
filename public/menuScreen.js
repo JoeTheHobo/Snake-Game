@@ -1354,16 +1354,19 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             option.innerHTML = settings.typeSettings.options[i];
             options.push(option);
 
-            if (settings.typeSettings.options[i].toLowerCase() == getNestedValue(pullFrom,settings.valueString).toLowerCase()) {
+            let valueA = settings.typeSettings.caseSensitive ? settings.typeSettings.options[i] : settings.typeSettings.options[i].toLowerCase();
+            let valueB = settings.typeSettings.caseSensitive ? getNestedValue(pullFrom,settings.valueString) : getNestedValue(pullFrom,settings.valueString).toLowerCase();
+
+            if (valueA == valueB) {
                 option.classAdd("gmGroup_list_option_selected");
-                holder.gmValue = settings.typeSettings.options[i].toLowerCase();
+                holder.gmValue = valueA;
             } 
 
             option.on("click",function() {
                 options.classRemove("gmGroup_list_option_selected");
                 this.classAdd("gmGroup_list_option_selected");
-                setNestedValue(pullFrom,settings.valueString.split("."),settings.typeSettings.options[i].toLowerCase());
-                holder.gmValue = settings.typeSettings.options[i].toLowerCase();
+                setNestedValue(pullFrom,settings.valueString.split("."),valueA);
+                holder.gmValue = valueA;
                 holder.activateList();
                 
                 if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
@@ -1586,7 +1589,7 @@ function loadGamemodeTabWinning() {
             }
         }
 
-        let a = createGamemodeSetting("Who Wins","list","whoWins",{options: ["Player","Players Team","Specific Team"]},"When winning condition is met who wins?",false,false,false,() => {
+        let a = createGamemodeSetting("Who Wins","list","whoWins",{options: ["Player","Players Team","Specific Team"],caseSensitive: true},"When winning condition is met who wins?",false,false,false,() => {
             loadWinningConditions();
         });
         let b = createGamemodeSetting(pullFromCondition.settingsTitle,pullFromCondition.settingsType,"x",{},pullFromCondition.settingsDescription,false,false,false,() => {
