@@ -1770,7 +1770,7 @@ function loadGamemodeTabWinning() {
     addAvailableCondition("Survive X Minutes","X",5,"Player","Survive X Minutes","number","Survive this long to win the game!");
     addAvailableCondition("Kill X Snakes","X",3,"Player","Kill X Snakes","number","Kill this many snakes to win the game!");
     addAvailableCondition("Reach Snake Size Of X","X",200,"Player","Reach Snake Size","number","Get this long to win the game!");
-    addAvailableCondition("Touch Zone X","X","set zone","Player","Touch Zone","select zone","Touch this zone to win the game!");
+    addAvailableCondition("Touch Zone X","X","0000","Player","Touch Zone","input","Touch this zone to win the game!");
     addAvailableCondition("Touch Item X","X","item.25","Player","Touch Item","item","Touch this item to win the game!");
     addAvailableCondition("Touch Tile X","X","tile.1","Player","Touch Tile","tile","Touch this tile to win the game!");
 

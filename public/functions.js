@@ -2217,6 +2217,8 @@ function getSimilarNames(input, objList) {
     $(".cip_title").innerHTML = "Choose a " + type;
 
     for (let i = 0; i < group.length; i++) {
+        if (!group[i].showInEditor) continue;
+        
         let holder = list.create("div.gmItems_imageHolder");
         let img = holder.create("img.fullImage");
         img.src = getImage(group[i],"src");
