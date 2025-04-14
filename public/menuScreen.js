@@ -1271,7 +1271,6 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
 
         valueInput.on("change",function() {
             holder.gmValue = this.value;
-            console.log(this.value);
             setNestedValue(pullFrom,settings.valueString.split("."),this.value);
             holder.activateList();
             if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
@@ -1284,6 +1283,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
         holder.gmValue = getNestedValue(pullFrom,settings.valueString);
         
         valueInput.on("change",function() {
+            console.log(this.value);
             setNestedValue(pullFrom,settings.valueString.split("."),this.value);
             holder.gmValue = this.value;
             holder.activateList();
