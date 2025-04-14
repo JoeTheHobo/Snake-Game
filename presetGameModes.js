@@ -19,7 +19,12 @@ presetGameModes.push({
         x: false,
         whoWins: "Player",
         type: false,
-    },false,false,false,false],
+    },{
+        condition: "Touch Item X",
+        x: 25,
+        whoWins: "Player",
+        type: "item",
+    },false,false,false],
 })
 
 module.exports = { presetGameModes };

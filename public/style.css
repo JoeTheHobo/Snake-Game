@@ -4814,6 +4814,17 @@ cursor: url('./img/pointer.cur'), auto;
     background: linear-gradient(146.4deg, #BA4343 -10.61%, #710B0B 90.71%);
 
   }
+  .gmGroup_imageHolder {
+    border: 3px solid black;
+    border-radius: 5px;
+    background: white;
+    height: 40px;
+    width: 40px;
+  }
+  .fullImage {
+    width: 100%;
+    height: 100%;
+  }
   .gmGroup_list {
     display: flex;
     flex-direction: row;

@@ -1375,6 +1375,16 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
         }
 
     }
+    if (settings.type == "item" || settings.type == "tile") {
+        valueInput = holder.create("div.gmGroup_imageHolder");
+        let img = valueInput.create("img.fullImage");
+        img.src = getImage(getByID(Number(getNestedValue(pullFrom,settings.valueString)),settings.type),"src")
+        holder.gmValue = getNestedValue(pullFrom,settings.valueString);
+
+
+
+
+    }
 
     let typeSettings = settings.typeSettings;
     if (typeSettings.placeholder) valueInput.placeholder = typeSettings.placeholder;
@@ -1569,7 +1579,12 @@ function loadGamemodeTabWinning() {
         x: false,
         whoWins: "Player",
         type: false,
-    },false,false,false,false];
+    },{
+        condition: "Touch Item X",
+        x: 25,
+        whoWins: "Player",
+        type: "item",
+    },false,false,false];
 
     html_settings.innerHTML = "";
     html_availableConditions.innerHTML = "";
@@ -1746,7 +1761,7 @@ function loadGamemodeTabWinning() {
     addAvailableCondition("Kill X Snakes","X",3,"Player","Kill X Snakes","number","Kill this many snakes to win the game!");
     addAvailableCondition("Reach Snake Size Of X","X",200,"Player","Reach Snake Size","number","Get this long to win the game!");
     addAvailableCondition("Touch Zone X","X","set zone","Player","Touch Zone","select zone","Touch this zone to win the game!");
-    addAvailableCondition("Touch Item X","X","item.1","Player","Touch Item","item","Touch this item to win the game!");
+    addAvailableCondition("Touch Item X","X","item.25","Player","Touch Item","item","Touch this item to win the game!");
     addAvailableCondition("Touch Tile X","X","tile.1","Player","Touch Tile","tile","Touch this tile to win the game!");
 
     loadWinningConditions();
