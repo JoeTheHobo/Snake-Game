@@ -1444,7 +1444,7 @@ function loadGamemodeTabSettings() {
         valueFromId: 1,
         equals: true,
     });
-    let p = createGamemodeSetting("Respawn Protection","number","respawnGrowth",{min: 0, max: 60},"How many seconds does the player have protection after respawning.",4,4,{
+    let p = createGamemodeSetting("Respawn Protection","number","respawnProtection",{min: 0, max: 60},"How many seconds does the player have protection after respawning.",4,4,{
         valueFromId: 1,
         equals: true,
     });
