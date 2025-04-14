@@ -4982,6 +4982,15 @@ cursor: url('./img/pointer.cur'), auto;
     border-radius: 5px;
 
   }
+  .gmp_slot_foreground_edit {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 20%;
+    aspect-ratio: 1/1;
+    cursor: url('./img/pointer.cur'), auto;
+
+  }
   .gmp_slot_foreground_delete {
     position: absolute;
     top: 5px;
