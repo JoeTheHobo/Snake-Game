@@ -1571,14 +1571,23 @@ function loadGamemodeTabWinning() {
         if (index === false) return;
         let slot = html_slots[index].$(".gmp_condition_slot_foreground");
         slot.classAdd('gmp_slot_selected');
+        let condition = gamemode.winningConditions[index];
+
+        let pullFromCondition = false;
+        for (let j = 0; j < conditions.length; j++) {
+            if (conditions[j].condition == condition.condition) {
+                pullFromCondition = conditions[j];
+            }
+        }
 
         let a = createGamemodeSetting("Who Wins","list","whoWins",{options: ["Player","Players Team","Specific Team"]},"When winning condition is met who wins?");
+        let b = createGamemodeSetting(pullFromCondition.settingsTitle,pullFromCondition.settingsType,"x",{},pullFromCondition.settingsDescription)
 
         let grid = [
-            [a,false],
+            [a,b],
         ]
 
-        createGamemodeGrid(html_settings,2,1,grid,gamemode.winningConditions[index])
+        createGamemodeGrid(html_settings,2,1,grid,condition)
     }
     function loadWinningConditions() {
         for (let i = 0; i < 5; i++) {
