@@ -1384,6 +1384,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
         valueInput.on("click",function() {
             chooseItemPopup(settings.type,(item) => {
                 holder.gmValue = item.id;
+                img.src = getImage(item,"src");
                 
                 setNestedValue(pullFrom,settings.valueString.split("."),holder.gmValue);
                 if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
