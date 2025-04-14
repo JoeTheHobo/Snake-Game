@@ -5088,3 +5088,6 @@ cursor: url('./img/pointer.cur'), auto;
     flex-wrap: wrap;
     
   }
+  .gm_alt_team {
+    width: 20px;
+  }
