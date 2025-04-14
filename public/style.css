@@ -2172,13 +2172,13 @@ transition: all .2s ease !important;
 display: flex;
 flex-direction: column;
 width: 100%;
-height: 100%;
 }
 .gm_alt_holder {
 width: 100%;
 display: flex;
 align-items: center;
 flex-direction: row;
+color: white;
 
 }
 .gm_alt_item_holder {
