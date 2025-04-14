@@ -4989,6 +4989,7 @@ cursor: url('./img/pointer.cur'), auto;
     width: 20%;
     aspect-ratio: 1/1;
     cursor: url('./img/pointer.cur'), auto;
+    filter: invert(1);
 
   }
   .gmp_slot_foreground_delete {

@@ -1553,7 +1553,7 @@ function loadGamemodeTabWinning() {
     let html_availableConditions = $(".gamemodePopup_availableConditionsList");
     let html_slots = $(".gmp_condition_slot");
     let html_settings = $(".gamemodePopup_conditionSettings_list");
-    html_slots.classRemove("gmp_slot_selected");
+    $(".gmp_condition_slot_foreground").classRemove("gmp_slot_selected");
 
     if (!gamemode.winningConditions) gamemode.winningConditions = [{
         condition: "Last One Standing",
@@ -1601,14 +1601,14 @@ function loadGamemodeTabWinning() {
                 }
                 loadWinningConditions();
                 html_settings.innerHTML = "";
-                html_slots.classRemove("gmp_slot_selected");
+                $(".gmp_condition_slot_foreground").classRemove("gmp_slot_selected");
             })
 
             let html_edit = slot.create("img.gmp_slot_foreground_edit");
             html_edit.src = "img/menuIcons/edit.png";
             html_edit.on("click",function() {
-                html_slots.classRemove("gmp_slot_selected");
-                slot.$P().classAdd('gmp_slot_selected');
+                $(".gmp_condition_slot_foreground").classRemove("gmp_slot_selected");
+                slot.classAdd('gmp_slot_selected');
             })
             
             let pullFromCondition = false;
