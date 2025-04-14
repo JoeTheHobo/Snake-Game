@@ -5080,3 +5080,10 @@ cursor: url('./img/pointer.cur'), auto;
     width: 25%;
     aspect-ratio: 1/1;
   }
+  .cip_list {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    
+  }
