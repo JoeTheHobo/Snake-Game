@@ -1571,6 +1571,14 @@ function loadGamemodeTabWinning() {
         if (index === false) return;
         let slot = html_slots[index].$(".gmp_condition_slot_foreground");
         slot.classAdd('gmp_slot_selected');
+
+        let a = createGamemodeSetting("Who Wins","list","whoWins",{options: ["Player","Players Team","Specific Team"]},"When winning condition is met who wins?");
+
+        let grid = [
+            [false,false],
+        ]
+
+        createGamemodeGrid(html_settings,2,1,grid,gamemode.winningConditions[index])
     }
     function loadWinningConditions() {
         for (let i = 0; i < 5; i++) {
@@ -1585,6 +1593,9 @@ function loadGamemodeTabWinning() {
 
             if (slot.$(".gmp_slot_foreground_delete")) {
                 slot.$(".gmp_slot_foreground_delete").remove();
+            }
+            if (slot.$(".gmp_slot_foreground_edit")) {
+                slot.$(".gmp_slot_foreground_edit").remove();
             }
 
             let html_delete = slot.create("img.gmp_slot_foreground_delete");
@@ -1605,6 +1616,7 @@ function loadGamemodeTabWinning() {
                         whoWins: "Player",
                         type: false,
                     }
+                    genericPopup("You need at least 'Last One Standing' or 'Last Team Standing'");
                 }
                 loadWinningConditions();
                 html_settings.innerHTML = "";
