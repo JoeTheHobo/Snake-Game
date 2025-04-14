@@ -1506,6 +1506,8 @@ function logAllWinningConditions(holder,gamemode) {
         let whoWins = condition.whoWins;
         let howToWin;
 
+        console.log(whoWins)
+
         if (whoWins !== "Players Team" && whoWins !== "Player") {
             whoWins =  `<img class="gm_alt_team" src="img/items/item_flag_basic_${whoWins}.png> Team ${whoWins}`;
         }
@@ -1529,10 +1531,10 @@ function logAllWinningConditions(holder,gamemode) {
             howToWin = `Touch Zone ${condition.x}`;
         }
         if (condition.condition == "Touch Item X") {
-            howToWin = `Touch Item <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
+            howToWin = `Touch Item  <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
         }
         if (condition.condition == "Touch Tile X") {
-            howToWin = `Touch Tile <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
+            howToWin = `Touch Tile  <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
         }
 
 
