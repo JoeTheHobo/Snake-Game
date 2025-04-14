@@ -1274,6 +1274,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             setNestedValue(pullFrom,settings.valueString.split("."),this.value);
             holder.activateList();
             if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
+            if (settings.editFunc) settings.editFunc();
         })
     }
     if (settings.type == "textarea") {
@@ -1286,6 +1287,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             holder.gmValue = this.value;
             holder.activateList();
             if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
+            if (settings.editFunc) settings.editFunc();
         })
     }
     if (settings.type == "number") {
@@ -1306,6 +1308,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             holder.gmValue = Number(this.value);
             holder.activateList();
             if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
+            if (settings.editFunc) settings.editFunc();
 
         })
     }
@@ -1340,6 +1343,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             holder.activateList();
             
             if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
+            if (settings.editFunc) settings.editFunc();
         })
     }
     if (settings.type == "list") {
@@ -1362,7 +1366,8 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                 holder.gmValue = settings.typeSettings.options[i].toLowerCase();
                 holder.activateList();
                 
-            if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
+                if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
+                if (settings.editFunc) settings.editFunc();
             })
         }
 
@@ -1375,7 +1380,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
     let description = holder.create("div.gmGroup_description");
     description.innerHTML = settings.description || "";
 }
-function createGamemodeSetting(title,type,valueString,typeSettings,description,familyID = false,myID = false,showWhen = false) {
+function createGamemodeSetting(title,type,valueString,typeSettings,description,familyID = false,myID = false,showWhen = false,editFunc = () => {}) {
     return {
         title: title,
         type: type,
@@ -1385,6 +1390,7 @@ function createGamemodeSetting(title,type,valueString,typeSettings,description,f
         familyID: familyID,
         myID: myID,
         showWhen: showWhen,
+        editFunc: editFunc,
     }
 }
 function loadGamemodeTabSettings() {
@@ -1580,8 +1586,14 @@ function loadGamemodeTabWinning() {
             }
         }
 
-        let a = createGamemodeSetting("Who Wins","list","whoWins",{options: ["Player","Players Team","Specific Team"]},"When winning condition is met who wins?");
-        let b = createGamemodeSetting(pullFromCondition.settingsTitle,pullFromCondition.settingsType,"x",{},pullFromCondition.settingsDescription)
+        let a = createGamemodeSetting("Who Wins","list","whoWins",{options: ["Player","Players Team","Specific Team"]},"When winning condition is met who wins?",false,false,false,() => {
+            loadWinningConditions();
+        });
+        let b = createGamemodeSetting(pullFromCondition.settingsTitle,pullFromCondition.settingsType,"x",{},pullFromCondition.settingsDescription,false,false,false,() => {
+            loadWinningConditions();
+        })
+
+        if (pullFromCondition.settingsTitle === false) b = false;
 
         let grid = [
             [a,b],
