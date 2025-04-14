@@ -1565,6 +1565,13 @@ function loadGamemodeTabWinning() {
     html_settings.innerHTML = "";
     html_availableConditions.innerHTML = "";
 
+    function selectSlot(index) {
+        $(".gmp_condition_slot_foreground").classRemove("gmp_slot_selected");
+        html_settings.innerHTML = "";
+        if (index === false) return;
+        let slot = html_slots[index].$(".gmp_condition_slot_foreground");
+        slot.classAdd('gmp_slot_selected');
+    }
     function loadWinningConditions() {
         for (let i = 0; i < 5; i++) {
             let condition = gamemode.winningConditions[i];
@@ -1601,14 +1608,13 @@ function loadGamemodeTabWinning() {
                 }
                 loadWinningConditions();
                 html_settings.innerHTML = "";
-                $(".gmp_condition_slot_foreground").classRemove("gmp_slot_selected");
+                selectSlot(false);
             })
 
             let html_edit = slot.create("img.gmp_slot_foreground_edit");
             html_edit.src = "img/menuIcons/edit.png";
             html_edit.on("click",function() {
-                $(".gmp_condition_slot_foreground").classRemove("gmp_slot_selected");
-                slot.classAdd('gmp_slot_selected');
+                selectSlot(i);
             })
             
             let pullFromCondition = false;
@@ -1680,6 +1686,7 @@ function loadGamemodeTabWinning() {
                         type: sendType,
                     }
                     loadWinningConditions();
+                    selectSlot(i);
 
                     return;
                 }

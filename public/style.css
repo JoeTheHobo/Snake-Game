@@ -4955,7 +4955,7 @@ cursor: url('./img/pointer.cur'), auto;
     transition: all .2s ease-in-out;
   }
   .gmp_slot_selected {
-    background: rgb(73, 164, 224);
+    background: rgb(73, 164, 224) !important;
   }
   .gmp_condition_slot_background {
     position: absolute;
