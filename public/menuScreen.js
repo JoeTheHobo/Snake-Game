@@ -1590,6 +1590,8 @@ function loadGamemodeTabWinning() {
         }
 
         let a = createGamemodeSetting("Who Wins","list","whoWins",{options: ["Player","Players Team","Specific Team"],caseSensitive: true},"When winning condition is met who wins?",false,false,false,(value) => {
+            if (value !== "Specific Team") return;
+            
             showStatusMenu(["status"],{status: function(status) {
                 gamemode.winningConditions[index].whoWins = status;
                 $(".statusSelectionScreen").hide();
