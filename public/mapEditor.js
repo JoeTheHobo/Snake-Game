@@ -2634,7 +2634,7 @@ function loadBoardGameModes(gameModesHolder,gameModes,sentFrom) {
             plus.innerHTML = "+";
     
             plus.on("click",() => {
-                gameModes.push(presetGameModes[0]);
+                gameModes.push(structuredClone(presetGameModes[0]));
                 loadBoardGameModes(gameModesHolder,gameModes,sentFrom);
             })
         }
