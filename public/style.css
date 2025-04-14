@@ -4402,7 +4402,25 @@ cursor: url('./img/pointer.cur'), auto;
 
 }*/
 
+.chooseItemPopup {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  display: none;
+  flex-direction: column;
+  width: 50%;
+  height: max-content;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  z-index: 1000;
+  overflow: hidden;
+  background: linear-gradient(106.84deg, #1A1A1A 4.86%, #373737 92.96%);
 
+}
 .chooseBoardPopup, .editGameModePopup {
   position: absolute;
   top: 0;
@@ -4820,6 +4838,7 @@ cursor: url('./img/pointer.cur'), auto;
     background: white;
     height: 40px;
     width: 40px;
+    cursor: url('./img/pointer.cur'), auto;
   }
   .fullImage {
     width: 100%;

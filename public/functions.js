@@ -2209,3 +2209,21 @@ function getSimilarNames(input, objList) {
       .filter(obj => obj.similarity >= 0.5)
       .sort((a, b) => b.similarity - a.similarity);
   }
+  function chooseItemPopup(type,returnFunc) {
+    let group = type == "tile" ? tiles : items;
+    $(".chooseItemPopup").show("flex");
+    let list = $(".cip_list");
+    list.innerHTML = "";
+    $(".cip_title").innerHTML = "Choose a " + type;
+
+    for (let i = 0; i < group.length; i++) {
+        let holder = list.create("div.gmItems_imageHolder");
+        let img = holder.create("img.fullImage");
+        img.src = getImage(group[i],"src");
+
+        holder.on("click",function() {
+            returnFunc(group[i]);
+            $(".chooseItemPopup").hide();
+        })
+    }
+  }
