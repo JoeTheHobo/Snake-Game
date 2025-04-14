@@ -1589,8 +1589,13 @@ function loadGamemodeTabWinning() {
             }
         }
 
-        let a = createGamemodeSetting("Who Wins","list","whoWins",{options: ["Player","Players Team","Specific Team"],caseSensitive: true},"When winning condition is met who wins?",false,false,false,() => {
-            loadWinningConditions();
+        let a = createGamemodeSetting("Who Wins","list","whoWins",{options: ["Player","Players Team","Specific Team"],caseSensitive: true},"When winning condition is met who wins?",false,false,false,(value) => {
+            showStatusMenu(["status"],{status: function(status) {
+                
+                $(".statusSelectionScreen").hide();
+                loadWinningConditions();
+            }});
+
         });
         let b = createGamemodeSetting(pullFromCondition.settingsTitle,pullFromCondition.settingsType,"x",{},pullFromCondition.settingsDescription,false,false,false,() => {
             loadWinningConditions();
