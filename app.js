@@ -835,7 +835,7 @@ io.on('connection', (socket) => {
                 }],
                 spawnZones: {
                     players: [{
-                        id: "Player Zone: #0000",
+                        id: "player",
                         pos1: {
                             x: 0,
                             y: 0,
@@ -857,7 +857,7 @@ io.on('connection', (socket) => {
                         deactivateWhenTimePassed: false, //Seconds
                     }],
                     items: [{
-                        id: "Item Zone: #0000",
+                        id: "item",
                         pos1: {
                             x: 0,
                             y: 0,
@@ -1271,6 +1271,28 @@ io.on('connection', (socket) => {
             return;
         }
         
+        //Making Sure We Have Correct Winning Conditions
+        if (!lobby.gameMode.winningConditions) {
+            lobby.gameMode.winningConditions = [false,false,false,false,false];
+        }
+        //Setting Up Quick Cheat For Conditions
+
+        lobby.condition_size = [];
+        lobby.condition_time = [];
+        lobby.condition_kill = [];
+        
+        for (let i = 0; i < lobby.gameMode.winningConditions.length; i++) {
+            let condition = lobby.gameMode.winningConditions[i];
+            if (!condition) continue;
+
+            if (condition.condition == "Reach Snake Size Of X") lobby.condition_size.push(condition);
+            if (condition.condition == "Survive X Minutes") lobby.condition_time.push(condition);
+            if (condition.condition == "Kill X Players") lobby.condition_kill.push(condition);
+        }
+
+        //Winning Condition Check End
+
+
         lobby.board.map = structuredClone(lobby.board.originalMap);
 
         lobby.oldObj = false;
@@ -1378,6 +1400,8 @@ io.on('connection', (socket) => {
             player.timeAlive = [0];
             player.timeCameAlive = false;
             player.allowedToMove = true;
+            player.playerZone = false;
+            player.itemZone = false;
         }
 
         
@@ -1441,69 +1465,8 @@ io.on('connection', (socket) => {
             this.playSounds = [];
             this.canvasFilters = [];
             
-            //Check If Anyone Got The Crown
-            let winningPlayer = false;
-            for (let i = 0; i < this.inGamePlayers.length; i++) {
-                if (this.inGamePlayers[i].winGame) {
-                    winningPlayer = this.inGamePlayers[i];
-                    break;
-                }
-            }
-
-            if (!this.gameEnd && !winningPlayer) {
+            if (!this.gameEnd) {
                 setTimeout(() => this.gameLoop(), 16);
-            } else {
-                this.isActiveGame = false;
-                this.isInGame = false;
-
-                //Kill Any Non Dead Snakes
-                for (let i = 0; i < this.inGamePlayers.length; i++) {
-                    if (!this.inGamePlayers[i].isDead) {
-                        deletePlayer(this,this.inGamePlayers[i],false,false,true);
-                    }
-                }
-
-                let longestTail = this.inGamePlayers[0].longestTail;
-                let timeSurvived = Math.max(...this.inGamePlayers[0].timeAlive);
-                let mostKills = this.inGamePlayers[0].playerKills;
-                let longestTailPlayer = this.inGamePlayers[0];
-                let timeSurvivedPlayer = this.inGamePlayers[0];
-                let mostKillsPlayer = this.inGamePlayers[0];
-                for (let i = 1; i < this.inGamePlayers.length; i++) {
-                    if (this.inGamePlayers[i].longestTail > longestTail) {
-                        longestTail = this.inGamePlayers[i].longestTail;
-                        longestTailPlayer = this.inGamePlayers[i];
-                    }
-                    if (Math.max(...this.inGamePlayers[i].timeAlive) > timeSurvived) {
-                        timeSurvived = Math.max(this.inGamePlayers[i].timeAlive);
-                        timeSurvivedPlayer = this.inGamePlayers[i];
-                    }
-                    if (this.inGamePlayers[i].playerKills > mostKills) {
-                        mostKills = this.inGamePlayers[i].mostKills;
-                        mostKillsPlayer = this.inGamePlayers[i];
-                    }
-                }
-
-                let totalSeconds = Math.floor(timeSurvived / 1000);
-                let minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
-                let seconds = (totalSeconds % 60).toString().padStart(2, '0');
-
-                let obj = {
-                    lobby: this,
-                    longestTail: longestTail,
-                    timeSurvived: timeSurvived,
-                    longestTailPlayer: longestTailPlayer,
-                    timeSurvivedPlayer: timeSurvivedPlayer,
-                    mostKillsPlayer: mostKillsPlayer,
-                    minutes: minutes,
-                    seconds: seconds,
-                    winningPlayer: winningPlayer,
-                };
-                io.to(lobby.id).emit("endGame",obj)
-
-                
-                updateLobbies();
-                
             }
         }
 
@@ -2294,7 +2257,17 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
     }
 
     if (playerDied || instaKill){
-        if (playerWhoKilled) if (playerWhoKilled.name !== player.name) playerWhoKilled.playerKills++;
+        if (playerWhoKilled) if (playerWhoKilled.name !== player.name) {
+            playerWhoKilled.playerKills++;
+            if (lobby.condition_kill.length > 0) {
+                for (let i = 0; i < lobby.condition_kill.length; i++) {
+                    let condition = lobby.condition_kill[i];
+                    if (playerWhoKilled.playerKills >= condition.x) {
+                        triggerWinningCondition(lobby,condition,playerWhoKilled);
+                    }
+                }
+            }
+        }
 
         //Delete Tail
         if (currentGameMode.whenSnakesDie == "vanish") {
@@ -2310,11 +2283,25 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
 
         if (!currentGameMode.respawn) {
             let playersDead = 0;
+            let activeTeams = [];
             for (let i = 0; i < activePlayers.length; i++) {
                 if (activePlayers[i].isDead) playersDead++;
+                else {
+                    if (!activeTeams.includes(activePlayers[i].team))
+                        activeTeams.push(activePlayers[i].team);
+                }
             }
             if (playersDead == activePlayers.length) {
-                lobby.gameEnd = true;
+                triggerWinningCondition(lobby,"All Dead");
+                return;
+            }
+            if (playersDead + 1 == activePlayers.length) {
+                checkWinningCondition(lobby,"Last One Standing",false,player);
+                return;
+            }
+            if (activeTeams.length === 1) {
+                checkWinningCondition(lobby,"Last Team Standing",activeTeams[0]);
+                return;
             }
         } else {
             setTimeout(function() {
@@ -2598,6 +2585,191 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function setPlayersZones(lobby,player) {
+    let playerZones = lobby.spawnZones.players;
+    let itemZones = lobby.spawnZones.items;
+
+    let playerX = player.pos.x;
+    let playerY = player.pos.y;
+
+    function checkIfInZone(zones,x,y) {
+        for (let i = 0; i < zones.length; i++) {
+            let zone = zones[i];
+            if (x >= zone.pos1.x && x <= zone.pos2.x) {
+                if (y >= zone.pos1.y && y <= zone.pos2.y) {
+                    return zone.id;
+                }
+            }
+        }
+        return false;
+    }
+
+    let playerZone = checkIfInZone(playerZones,playerX,playerY);
+    let itemZone = checkIfInZone(itemZones,playerX,playerY);
+
+    if (player.playerZone !== playerZone) {
+        player.playerZone = playerZone;
+        checkWinningCondition(lobby,"Touch Zone X",playerZone,player);
+    }
+    if (player.itemZone !== itemZone) {
+        player.itemZone = itemZone;
+        checkWinningCondition(lobby,"Touch Zone X",playerZone,player);
+    }
+
+}
+function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,conditionImage) {
+    if (lobby.endGame === true) return;
+
+    lobby.endGame = true;
+    lobby.isActiveGame = false;
+    lobby.isInGame = false;
+
+    //Kill Any Non Dead Snakes
+    for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+        if (!lobby.inGamePlayers[i].isDead) {
+            deletePlayer(lobby,lobby.inGamePlayers[i],false,false,true);
+        }
+    }
+
+    /*
+    let longestTail = this.inGamePlayers[0].longestTail;
+    let timeSurvived = Math.max(...this.inGamePlayers[0].timeAlive);
+    let mostKills = this.inGamePlayers[0].playerKills;
+    let longestTailPlayer = this.inGamePlayers[0];
+    let timeSurvivedPlayer = this.inGamePlayers[0];
+    let mostKillsPlayer = this.inGamePlayers[0];
+    for (let i = 1; i < this.inGamePlayers.length; i++) {
+        if (this.inGamePlayers[i].longestTail > longestTail) {
+            longestTail = this.inGamePlayers[i].longestTail;
+            longestTailPlayer = this.inGamePlayers[i];
+        }
+        if (Math.max(...this.inGamePlayers[i].timeAlive) > timeSurvived) {
+            timeSurvived = Math.max(this.inGamePlayers[i].timeAlive);
+            timeSurvivedPlayer = this.inGamePlayers[i];
+        }
+        if (this.inGamePlayers[i].playerKills > mostKills) {
+            mostKills = this.inGamePlayers[i].mostKills;
+            mostKillsPlayer = this.inGamePlayers[i];
+        }
+    }
+
+    let totalSeconds = Math.floor(timeSurvived / 1000);
+    let minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+    let seconds = (totalSeconds % 60).toString().padStart(2, '0');
+*/
+
+    let obj = {
+        lobby: lobby,
+        activePlayers: lobby.inGamePlayers,
+        winningPlayers: winningPlayers,
+        winningTitle: winningTitle,
+        conditionTitle: conditionTitle,
+        conditionImage: conditionImage,
+    };
+    io.to(lobby.id).emit("endGame",obj)
+
+    
+    updateLobbies();
+}
+function triggerWinningCondition(lobby,condition,player) {
+    if (lobby.endGame === true) return;
+    let winningPlayers = [];
+    let winningTitle = "The Winners";
+    let conditionTitle = "";
+    let conditionImage = false;
+
+    if (condition == "All Dead") {
+        condition = {
+            condition: "All Dead",
+            x: false,
+            type: false,
+            whoWins: false,
+        }
+    }
+
+    if (condition.condition == "Last One Standing") {
+        conditionTitle = "Condition: Last One Standing";
+    }
+    if (condition.condition == "Last Team Standing") {
+        conditionTitle = "Condition: Last Team Standing";
+    }
+    if (condition.condition == "Survive X Minutes") {
+        conditionTitle = "Condition: Survive " + condition.x + " Minutes";
+    }
+    if (condition.condition == "Kill X Snakes") {
+        conditionTitle = "Condition: Kill " + condition.x + " Snakes";
+    }
+    if (condition.condition == "Reach Snake Size Of X") {
+        conditionTitle = "Condition: Reach Snake Size Of " + condition.x;
+    }
+    if (condition.condition == "Touch Zone X") {
+        conditionTitle = "Condition: Touch Zone " + condition.x;
+    }
+    if (condition.condition == "Touch Item X") {
+        conditionTitle = "Condition: Touch Item ";
+        conditionImage = {
+            type: "item",
+            id: condition.x,
+        }
+    }
+    if (condition.condition == "Touch Tile X") {
+        conditionTitle = "Condition: Touch Tile ";
+        conditionImage = {
+            type: "tile",
+            id: condition.x,
+        }
+    }
+    if (condition.condition == "All Dead") {
+        winningTitle = "No Winners";
+    }
+
+    if (condition.whoWins == "Player") {
+        winningPlayers.push(player);
+    } else if (condition.whoWins == "Players Team") {
+        for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+            if (lobby.inGamePlayers[i].team === player.team) {
+                winningPlayers.push(lobby.inGamePlayers[i])
+            }
+        }
+    } else if (condition.whoWins !== false) {
+        for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+            if (lobby.inGamePlayers[i].team === condition.whoWins) {
+                winningPlayers.push(lobby.inGamePlayers[i])
+            }
+        }
+    }
+
+    endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,conditionImage);
+
+
+}
+function checkWinningCondition(lobby,condition,value,player) {
+    let winningConditions = lobby.gameMode.winningConditions;
+    if (lobby.endGame === true) return;
+
+    for (let i = 0; i < winningConditions.length; i++) {
+        if (!winningConditions[i]) continue;
+        if (winningConditions[i].condition !== condition) continue;
+
+        if (condition == "Touch Item X" || condition == "Touch Tile X") {
+            if (value.id === winningConditions[i].x) {
+                triggerWinningCondition(lobby,condition,player)
+            }
+        }
+        if (condition == "Last One Standing") {
+            triggerWinningCondition(lobby,condition,player);
+        }
+        if (condition == "Last Team Standing") {
+            triggerWinningCondition(lobby,condition,value);
+        }
+        if (condition == "Touch Zone X") {
+            if (value == winningConditions[i].x) {
+                triggerWinningCondition(lobby,condition,player);
+            }
+        }
+    }
+
+}
 function sendBoardStats(socketID,sentFrom = null) {
     let account = onlineAccounts[socketID];
     if (!account.loggedIn) return;
@@ -3286,6 +3458,14 @@ function server_movePlayers(lobby,socketID) {
         if (player.isDead) continue;
 
         player.timeAlive[player.timeAlive.length-1] = Date.now() - player.timeCameAlive;
+        if (lobby.condition_time.length > 0) {
+            for (let cs = 0; cs < lobby.condition_time.length; cs++) {
+                let condition = lobby.condition_time[cs];
+                if (player.timeAlive[player.timeAlive.length-1] >= condition.x*60000) {
+                    triggerWinningCondition(lobby,condition,player);
+                }
+            }
+        }
         
         if ((player.moveTik) < (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
             player.moveTik++;
@@ -3385,12 +3565,16 @@ function server_movePlayers(lobby,socketID) {
 
         //Test Item Underplayer
         let mapItem = currentBoard.map[player.pos.y][player.pos.x].item;
-        if (mapItem) runItemFunction(lobby,player,mapItem,"onCollision",{x: player.pos.x,y: player.pos.y},undefined,socketID);
+        if (mapItem) {
+            runItemFunction(lobby,player,mapItem,"onCollision",{x: player.pos.x,y: player.pos.y},undefined,socketID);
+            checkWinningCondition(lobby,"Touch Item X",mapItem,player);
+        }
 
         if (!player.isDead) {
 
             //Test Tile UnderPlayer
             let mapTile = currentBoard.map[player.pos.y][player.pos.x].tile;
+            checkWinningCondition(lobby,"Touch Tile X",mapTile,player);
             if (mapTile.onCollision) runItemFunction(lobby,player,mapTile,"onCollision",{x: player.pos.x,y: player.pos.y});
 
             //Testing While On Tile Properties
@@ -3416,6 +3600,14 @@ function server_movePlayers(lobby,socketID) {
                     })
                 }
                 if (player.tail.length > player.longestTail) player.longestTail = player.tail.length;
+                if (lobby.condition_size.length > 0) {
+                    for (let cs = 0; cs < lobby.condition_size.length; cs++) {
+                        let condition = lobby.condition_size[cs];
+                        if (player.tail.length + 1 >= condition.x) {
+                            triggerWinningCondition(lobby,condition,player);
+                        }
+                    }
+                }
             } else if(player.tail.length > 0) {
                 player.tail.unshift({
                     x: playerX,
@@ -3467,6 +3659,9 @@ function server_movePlayers(lobby,socketID) {
             lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);
 
             //End Growing Tail
+
+            //Set Players Zones
+            setPlayersZones(lobby,player);
         } else {
             player.pos = playerOldPos;
             player.moving = playerOldMoving;

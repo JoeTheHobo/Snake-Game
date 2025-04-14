@@ -1585,16 +1585,11 @@ function loadGamemodeTabWinning() {
     $(".gmp_condition_slot_foreground").classRemove("gmp_slot_selected");
 
     if (!gamemode.winningConditions) gamemode.winningConditions = [{
-        condition: "Last One Standing",
-        x: false,
-        whoWins: "Player",
-        type: false,
-    },{
         condition: "Touch Item X",
         x: 25,
         whoWins: "Player",
         type: "item",
-    },false,false,false];
+    },false,false,false,false];
 
     html_settings.innerHTML = "";
     html_availableConditions.innerHTML = "";

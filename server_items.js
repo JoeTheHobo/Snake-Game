@@ -815,8 +815,18 @@ items.push({
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
 
+    onActivate: {
+        equip: "head",
+    },
     onCollision: {
-        winGame: true,
+        checkStatus: {
+            check: {
+                playerHasEmptySlot: true,
+            },
+            pass: {
+                pickUp: true,
+            },
+        },
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
