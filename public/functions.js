@@ -1317,8 +1317,10 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
     }
 
     if (type == "all" || type == "gameMode") {
-        logAllWinningConditions($(".sc_winningConditions"),(type == "all" ? lobby.gameMode : lobby));
-        logGameModeChanges($(".sc_gameModeChanges"),(type == "all" ? lobby.gameMode : lobby),false);
+        let gamemode = (type == "all" ? lobby.gameMode : lobby);
+        logAllWinningConditions($(".sc_winningConditions"),gamemode);
+        logGameModeChanges($(".sc_gameModeChanges"),gamemode,false);
+        $(".sc_description").innerHTML = gamemode.description;
     }
 
     if (type == "all" || type == "board") {
