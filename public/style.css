@@ -2165,10 +2165,10 @@ margin-left: 5px;
 transition: all .2s ease !important;
 }
 .hoverBorderBlue:hover {
-border: 3px solid rgb(115, 144, 240) !important;
+  border: 3px solid rgb(115, 144, 240) !important;
 }
 
-.sc_gameModeChanges {
+.sc_gameModeChanges,.sc_winningConditions {
 display: flex;
 flex-direction: column;
 width: 100%;

@@ -1316,7 +1316,10 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
         chatHolder.scrollTo({ top: chatHolder.scrollHeight, behavior: 'smooth' })
     }
 
-    if (type == "all" || type == "gameMode") logGameModeChanges($(".sc_gameModeChanges"),(type == "all" ? lobby.gameMode : lobby),false);
+    if (type == "all" || type == "gameMode") {
+        logAllWinningConditions($(".sc_winningConditions"),(type == "all" ? lobby.gameMode : lobby));
+        logGameModeChanges($(".sc_gameModeChanges"),(type == "all" ? lobby.gameMode : lobby),false);
+    }
 
     if (type == "all" || type == "board") {
         requestAnimationFrame(() => {
@@ -1493,6 +1496,51 @@ function getAverageCanvasColor(canvas) {
     return `rgb(${r}, ${g}, ${b})`; // Return as RGB string
 }
 
+function logAllWinningConditions(holder,gamemode) {
+    holder.innerHTML = "";
+    for (let i = 0; i < gamemode.winningConditions.length; i++) {
+        let condition = gamemode.winningConditions[i];
+
+        if (!condition) continue;
+        let div = holder.create("div.gm_alt_holder");
+        let whoWins = condition.whoWins;
+        let howToWin;
+
+        if (whoWins !== "Players Team" && whoWins !== "Player") {
+            whoWins =  `<img class="gm_alt_team" src="img/items/item_flag_basic_${whoWins}.png> Team ${whoWins}`;
+        }
+
+        if (condition.condition == "Last One Standing") {
+            howToWin = "Are The Last One Standing";
+        }
+        if (condition.condition == "Last Team Standing") {
+            howToWin = "Are The Last Team Standing";
+        }
+        if (condition.condition == "Survive X Minutes") {
+            howToWin = `Survive ${condition.x} Minutes`;
+        }
+        if (condition.condition == "Kill X Snakes") {
+            howToWin = `Kill ${condition.x} Snakes`;
+        }
+        if (condition.condition == "Reach Snake Size Of X") {
+            howToWin = `Reach A Snake Size Of ${condition.x}`;
+        }
+        if (condition.condition == "Touch Zone X") {
+            howToWin = `Touch Zone ${condition.x}`;
+        }
+        if (condition.condition == "Touch Item X") {
+            howToWin = `Touch Item <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
+        }
+        if (condition.condition == "Touch Tile X") {
+            howToWin = `Touch Tile <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
+        }
+
+
+        div.innerHTML = whoWins + " Wins When They " + howToWin;
+
+        
+    }
+}
 function logGameModeChanges(holder,gameMode) {
     holder.innerHTML = "";
 
@@ -2218,7 +2266,7 @@ function getSimilarNames(input, objList) {
 
     for (let i = 0; i < group.length; i++) {
         if (!group[i].showInEditor) continue;
-        
+
         let holder = list.create("div.gmItems_imageHolder");
         let img = holder.create("img.fullImage");
         img.src = getImage(group[i],"src");
