@@ -1274,7 +1274,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             setNestedValue(pullFrom,settings.valueString.split("."),this.value);
             holder.activateList();
             if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
-            if (settings.editFunc) settings.editFunc();
+            if (settings.editFunc) settings.editFunc(holder.gmValue);
         })
     }
     if (settings.type == "textarea") {
@@ -1287,7 +1287,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             holder.gmValue = this.value;
             holder.activateList();
             if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
-            if (settings.editFunc) settings.editFunc();
+            if (settings.editFunc) settings.editFunc(holder.gmValue);
         })
     }
     if (settings.type == "number") {
@@ -1308,7 +1308,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             holder.gmValue = Number(this.value);
             holder.activateList();
             if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
-            if (settings.editFunc) settings.editFunc();
+            if (settings.editFunc) settings.editFunc(holder.gmValue);
 
         })
     }
@@ -1343,7 +1343,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             holder.activateList();
             
             if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
-            if (settings.editFunc) settings.editFunc();
+            if (settings.editFunc) settings.editFunc(holder.gmValue);
         })
     }
     if (settings.type == "list") {
@@ -1370,7 +1370,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                 holder.activateList();
                 
                 if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
-                if (settings.editFunc) settings.editFunc();
+                if (settings.editFunc) settings.editFunc(valueA);
             })
         }
 
