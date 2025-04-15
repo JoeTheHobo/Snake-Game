@@ -1904,7 +1904,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
         $(".editZonePopup").show("flex");
 
         let a = false, b= false, c = false, d = false, e = false,f = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false;
-        if (spawnZoneHolder.type == "player") {
+        if (type == "player") {
             a = createGamemodeSetting("Zone Name","input","id",{maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.");
             b = createGamemodeSetting("Zone Team","status","team",{},"Give team status to people who spawn here.");
             c = createGameModeSetting("Allow Respawning","toggle","respawnHere",{},"Can players respawn here if they're on the zones team?");
