@@ -327,6 +327,7 @@ document.body.onkeydown = function(e) {
     if (global_scene == "mapEditor") return;
     if (global_scene == "login") return;
     if (global_scene == "lobby") return;
+    if (global_scene == "newMenu") return;
 
     if (e.key == "Enter") {
         if (document.activeElement.classList.contains('goLogin')) {
