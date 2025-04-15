@@ -1175,12 +1175,11 @@ io.on('connection', (socket) => {
         const query = `SELECT * FROM favorites WHERE tag = ${Number(account.tag)} AND type = "board" AND id = "${lobby.boardID}"`;
         db.query(query,(err,results) => {
             if (err) throw err;
-            
+
             if (results.length == 0) {
-                socket.to(socket.id).emit("playerHasNotLikedBoard");
+                io.to(socket.id).emit("playerHasNotLikedBoard");
             } else {
-                console.log("EYO")
-                socket.to(socket.id).emit("playerHasLikedBoard");
+                io.to(socket.id).emit("playerHasLikedBoard");
             }
         })
 
