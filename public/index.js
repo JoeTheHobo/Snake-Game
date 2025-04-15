@@ -328,11 +328,34 @@ socket.on("updatePreGamePlayerInfo",(players) => {
         }
     }
 })
+$(".endScreen_br_image").on("click",function() {
+    if (this.src == "img/menuIcons/star_active.png") {
+        this.src = "img/menuIcons/star_inactive.png";
+        socket.emit("playerDislikedLobbyBoard");
+    } else {
+        this.src = "img/menuIcons/star_active.png";
+        socket.emit("playerLikedLobbyBoard");
+    }
+})
+socket.on("playerHasLikedBoard",() => {
+    $(".endScreen_br_image").src = "img/menuIcons/star_active.png";
+})
+socket.on("playerHasNotLikedBoard",() => {
+    $(".endScreen_br_image").src = "img/menuIcons/star_inactive.png";
+
+})
 socket.on("endGame",(obj) => {
     obj = obj;
     if (!localAccount.isInGame) return;
     localAccount.isInGame = false;
     showEndScreen()
+
+    if (localAccount.status !== "Guest") {
+        $(".endScreen_boardRating").show("flex");
+        socket.emit("checkIfILikeTheBoard")
+    } else {
+        $(".endScreen_boardRating").hide();
+    }
     
     $("playerCardsHolder").style.cursor = "";
     gameEnd = true;

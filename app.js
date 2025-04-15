@@ -896,7 +896,7 @@ io.on('connection', (socket) => {
     socket.on("newLobby", (lobby) =>{
         if (!lobby) return;
 
-        let boardQuery = "SELECT board FROM boards WHERE published = 1";
+        let boardQuery = "SELECT board, id FROM boards WHERE published = 1";
         db.query(boardQuery, (err,results) => {
             if (err) {
                 console.log(62,err);
@@ -912,6 +912,7 @@ io.on('connection', (socket) => {
                 let id = Number(Date.now().toString() + simple.rnd(9999));
                 lobbies[id] = {};
                 lobbies[id].board = board;
+                lobbies[id].boardID = results[0].id;
                 lobbies[id].id = id;
                 lobbies[id].hostID = socket.id;
                 lobbies[id].hostName = onlineAccounts[socket.id].username;
@@ -1124,6 +1125,67 @@ io.on('connection', (socket) => {
         io.to(lobby.id).emit("settingLobbyBoards",lobby.lobbyBoards);
 
     })
+    socket.on("playerDislikedLobbyBoard",() =>{
+        let account = onlineAccounts[socket.id];
+        if (!account.loggedIn) return;
+        let lobby = lobbies[account.lobby];
+        if (!lobby) return;
+        
+        const query = `
+            DELETE FROM favorites 
+            WHERE tag = ? AND id = ? AND type = ?
+        `;
+    
+        const values = [Number(account.tag), lobby.boardID, "board"];
+    
+        db.query(query, values, (err, results) => {
+            if (err) throw err;
+        });
+
+    })
+    socket.on("playerLikedLobbyBoard",() => {
+        let account = onlineAccounts[socket.id];
+        if (!account.loggedIn) return;
+        let lobby = lobbies[account.lobby];
+        if (!lobby) return;
+
+        const query = `
+            INSERT INTO favorites (tag, id, type)
+            SELECT ?, ?, ?
+            WHERE NOT EXISTS (
+                SELECT 1 FROM favorites WHERE tag = ? AND id = ? AND type = ?
+            )
+        `;
+        
+        const values = [
+            Number(account.tag), lobby.boardID, "board",
+            Number(account.tag), lobby.boardID, "board"
+        ];
+    
+        db.query(query, values, (err, results) => {
+            if (err) throw err;
+        });
+    })
+    socket.on("checkIfILikeTheBoard",() => {
+        let account = onlineAccounts[socket.id];
+        if (!account.loggedIn) return;
+        let lobby = lobbies[account.lobby];
+        if (!lobby) return;
+
+        const query = `SELECT * FROM favorites WHERE tag = ${Number(account.tag)} AND type = "board" AND id = "${lobby.boardID}"`;
+        db.query(query,(err,results) => {
+            if (err) throw err;
+
+            if (results.length == 0) {
+                socket.to(socket.id).emit("playerHasNotLikedBoard");
+            } else {
+                socket.to(socket.id).emit("playerHasLikedBoard");
+            }
+        })
+
+
+
+    })
     socket.on("changeServerBoard",(boardID) => {
         let account = onlineAccounts[socket.id];
         let lobby = lobbies[account.lobby];
@@ -1155,6 +1217,7 @@ io.on('connection', (socket) => {
                 }
 
                 lobby.board = goodBoard;
+                lobby.boardID = boardID;
                 lobby.gameMode = lobby.board.gameModes[0]; 
                 io.to(lobby.id).emit("updateLobbyPage", lobby.board,"board",lobby.hostID);
                 io.to(lobby.id).emit("updateLobbyPage", lobby.gameMode,"gameMode",lobby.hostID);
