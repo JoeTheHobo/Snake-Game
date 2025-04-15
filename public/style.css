@@ -171,55 +171,36 @@ visibility: hidden;
 
 
 
-.endGamePopup,.pauseGamePopup {
-position: absolute;
-left: 0;
-right: 0;
-bottom: 0;
-top: 0;
-margin: auto;
-flex-direction: column;
-align-items: center;
-background: #888888;
-border-radius: 5px;
-width: max-content;
-height: max-content;
-padding: 20px;
-display: none;
-z-index: 501;
-}
-.title {
+.endScreenTitle {
 user-select: none;
 color: white;
-font-size: 100px;
+font-size: 2em;
 }
-.endGameHolder {
-display: flex;
-flex-direction: row;
-width: 100%;
-align-items: center;
+.endScreenSubTitle {
+  color: white;
+  font-size: 1em;
+  margin-top: 5px;
+}
+.endScreen_conditionTitle {
+  color: white;
+  font-size: 0.6em;
+  margin-top: 2px;
+}
+.endScreen_LobbyButton {
+  color: black;
+  background: #D9D9D9;
+  border-radius: 5px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  cursor: url('./img/pointer.cur'), auto;
 }
 .header {
 color: white;
 font-size: 25px;
 }
-.engGame_playerImgHolder {
-width: 50px;
-height: 50px;
-background: white;
-border: 2px solid black;
-border-radius: 5px;
-}
-.engGame_playerImg {
-width: 100%;
-}
-.endGame_text {
-color: rgb(187, 187, 187);
-font-size: 20px;
-margin: 5px;
-flex-grow: 1;
-}
-
 
 
 .listHolder {
@@ -2092,24 +2073,23 @@ height: 100%;
 position: absolute;
 }
 .endScreenContent {
-display: flex;
-flex-direction: column;
-align-items: center;
-position: absolute;
-left: 0;
-right: 0;
-top: 0;
-bottom: 0;
-width: max-content;
-height: max-content;
-border-radius: 5px;
-opacity: 0;
-
-margin: auto;
-padding: 15px;
-flex-direction: column;
-background: rgb(41, 41, 41);
-box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: max-content;
+  height: max-content;
+  border-radius: 5px;
+  opacity: 0;
+  padding: 15px;
+  flex-direction: column;
+  background: linear-gradient(106.84deg, #1A1A1A 4.86%, #373737 92.96%);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .lobbySnakeName {
 margin-left: 5px;
@@ -4436,10 +4416,10 @@ cursor: url('./img/pointer.cur'), auto;
   width: 70%;
   height: 75%;
   border-radius: 5px;
+  background: linear-gradient(106.84deg, #1A1A1A 4.86%, #373737 92.96%);
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   z-index: 1000;
   overflow: hidden;
-  background: linear-gradient(106.84deg, #1A1A1A 4.86%, #373737 92.96%);
 
   }
 
