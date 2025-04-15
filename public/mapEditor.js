@@ -1969,21 +1969,21 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
             source: "activateWhenTimePassed",
             value: false,
         }},"Allow a status to deactiate this board.",4,1);
-        o = createGamemodeSetting("Time (Seconds)","status","activateWhenTimePassed",{},"Activate zone after this many seconds.",4,2,{
+        o = createGamemodeSetting("Time (Seconds)","number","activateWhenTimePassed",{},"Activate zone after this many seconds.",4,2,{
             valueFromId: 1,
             isNumber: true,
             onActiveSetValue: {
                 value: 60,
             },
         })
-        k = createGamemodeSetting("Deactivate When Time Passes","toggle","deactivateWhenTimePassed",{setTrueIfValueIsNumber: true,whenCheckedSet: {
+        l = createGamemodeSetting("Deactivate When Time Passes","toggle","deactivateWhenTimePassed",{setTrueIfValueIsNumber: true,whenCheckedSet: {
             source: "deactivateWhenTimePassed",
             value: 60,
         }, whenUncheckedSet: {
             source: "deactivateWhenTimePassed",
             value: false,
         }},"Allow a status to deactiate this board.",5,1);
-        o = createGamemodeSetting("Time (Seconds)","status","deactivateWhenTimePassed",{},"Deactivate zone after this many seconds.",5,2,{
+        p = createGamemodeSetting("Time (Seconds)","number","deactivateWhenTimePassed",{},"Deactivate zone after this many seconds.",5,2,{
             valueFromId: 1,
             isNumber: true,
             onActiveSetValue: {
