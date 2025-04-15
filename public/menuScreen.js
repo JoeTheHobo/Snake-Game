@@ -1366,6 +1366,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                     value = typeSettings.whenCheckedSet.value;
                 }
             }
+            console.log(source,value)
 
             holder.gmValue = value;
             setNestedValue(pullFrom,source,value);
