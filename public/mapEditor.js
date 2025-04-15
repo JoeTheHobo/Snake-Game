@@ -1944,16 +1944,22 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
         e = createGamemodeSetting("Active","toggle","active",{},"Is the zone active at the start of the game? Can things spawn here");
         i = createGamemodeSetting("Active On Board Status","toggle","activateWhenBoardStatus",{setTrueIfValueIsNumber: true,whenCheckedSet: {
             source: "activateWhenBoardStatus",
-            value: "red",
+            value: {
+                status: "red",
+                count: 1,
+            },
         }, whenUncheckedSet: {
             source: "activateWhenBoardStatus",
             value: false,
         }},"Allow a status to actiate this board.",2,1);
         m = createGamemodeSetting("Activation Status","status","activateWhenBoardStatus",{showNumber: true,readAs: "object",statusMenuOptions: ["status","count","submit"]},"Activate zone when board status is met",2,2,{
             valueFromId: 1,
-            isNumber: true,
+            isObject: true,
             onActiveSetValue: {
-                value: "red",
+                value: {
+                    status: "red",
+                    count: 1,
+                },
             },
         })
         j = createGamemodeSetting("Deactive On Board Status","toggle","deactivateWhenBoardStatus",{setTrueIfValueIsNumber: true,whenCheckedSet: {
@@ -1968,7 +1974,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
         }},"Allow a status to deactiate this board.",3,1);
         n = createGamemodeSetting("Deactivation Status","status","deactivateWhenBoardStatus",{showNumber: true,readAs: "object",statusMenuOptions: ["status","count","submit"]},"Deactivate zone when board status is met",3,2,{
             valueFromId: 1,
-            isNumber: true,
+            isObject: true,
             onActiveSetValue: {
                 value: {
                     status: "red",

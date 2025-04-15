@@ -1265,6 +1265,20 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
                             });
                         }
                     }
+                    if (showCase.isObject) {
+                        if (_type(this.gmValue).type == "object") {
+                            showCase.element.css({
+                                visibility: "visible",
+                            });
+                            if (showCase.onActiveSetValue) {
+                                showCase.element.setValue(showCase.onActiveSetValue.value);
+                            }
+                        } else {
+                            showCase.element.css({
+                                visibility: "hidden",
+                            });
+                        }
+                    }
                 }
             }
 
@@ -1273,6 +1287,7 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
                     element: holder,
                     equals: g.showWhen.equals,
                     isNumber: g.showWhen.isNumber,
+                    isObject: g.showWhen.isObject,
                     onActiveSetValue: g.showWhen.onActiveSetValue,
                 })
 
@@ -1291,6 +1306,17 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
                 }
                 if (g.showWhen.isNumber) {
                     if (_type(value).type == "number") {
+                        holder.css({
+                            visibility: "visible",
+                        });
+                    } else {
+                        holder.css({
+                            visibility: "hidden",
+                        });
+                    }
+                }
+                if (g.showWhen.isObject) {
+                    if (_type(value).type == "object") {
                         holder.css({
                             visibility: "visible",
                         });
