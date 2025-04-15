@@ -1334,7 +1334,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             holder.setValue(this.value)
         })
         holder.setValue = function(value) {
-            console.log(value);
+            valueInput.value = value;
             if (_type(settings.typeSettings.min).type == "number") {
                 if (Number(value) < settings.typeSettings.min) valueInput.value = settings.typeSettings.min;
             }
