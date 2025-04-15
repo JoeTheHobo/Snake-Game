@@ -1578,8 +1578,21 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                 }
             });
         })
-        holder.setValue = function() {
-
+        holder.setValue = function(value) {
+            if (typeSettings.readAs == "color") {
+                valueInput.css({
+                    background: _color(value).ogColor,
+                })
+                valueNumber.innerHTML = 1;
+            }
+            if (typeSettings.readAs == "object") {
+                valueInput.css({
+                    background: _color(value.status).ogColor,
+                })
+                valueNumber.innerHTML = value.count;
+            }
+    
+            holder.gmValue = value;
         }
     }
 
