@@ -329,6 +329,7 @@ socket.on("updatePreGamePlayerInfo",(players) => {
     }
 })
 $(".endScreen_br_image").on("click",function() {
+    console.log(this.src);
     if (this.src == "img/menuIcons/star_active.png") {
         this.src = "img/menuIcons/star_inactive.png";
         socket.emit("playerDislikedLobbyBoard");
