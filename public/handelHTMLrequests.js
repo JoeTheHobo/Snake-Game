@@ -55,12 +55,6 @@ $("local_button_playSolo").on("click",function() {
     $(".button_mapEditorHolder").hide();
     
 })
-$("button_mainMenu").on("click",function() {
-    setScene("newMenu")
-    $(".production").show("none");
-    loadLocalScreen();
-    isActiveGame = false;
-})
 $("button_playAgain").on("click",function() {
     startGame();
     $(".button_mapEditorHolder").hide();
