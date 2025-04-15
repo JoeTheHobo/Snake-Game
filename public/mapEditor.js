@@ -1928,8 +1928,69 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
         }
 
         e = createGamemodeSetting("Active","toggle","active",{},"Is the zone active at the start of the game? Can things spawn here");
+        i = createGamemodeSetting("Active On Board Status","toggle","activateWhenBoardStatus",{setTrueIfValueIsNumber: true,whenCheckedSet: {
+            source: "activateWhenBoardStatus",
+            value: "red",
+        }, whenUncheckedSet: {
+            source: "activateWhenBoardStatus",
+            value: false,
+        }},"Allow a status to actiate this board.",2,1);
+        m = createGamemodeSetting("Activation Status","status","activateWhenBoardStatus",{},"Activate zone when board status is met",2,2,{
+            valueFromId: 1,
+            isNumber: true,
+            onActiveSetValue: {
+                value: "red",
+            },
+        })
+        j = createGamemodeSetting("Deactive On Board Status","toggle","deactivateWhenBoardStatus",{setTrueIfValueIsNumber: true,whenCheckedSet: {
+            source: "deactivateWhenBoardStatus",
+            value: {
+                status: "red",
+                count: 1,
+            },
+        }, whenUncheckedSet: {
+            source: "deactivateWhenBoardStatus",
+            value: false,
+        }},"Allow a status to deactiate this board.",3,1);
+        n = createGamemodeSetting("Deactivation Status","status","deactivateWhenBoardStatus",{},"Deactivate zone when board status is met",3,2,{
+            valueFromId: 1,
+            isNumber: true,
+            onActiveSetValue: {
+                value: {
+                    status: "red",
+                    count: 1,
+                },
+            },
+        })
+        k = createGamemodeSetting("Activate When Time Passes","toggle","activateWhenTimePassed",{setTrueIfValueIsNumber: true,whenCheckedSet: {
+            source: "activateWhenTimePassed",
+            value: 60,
+        }, whenUncheckedSet: {
+            source: "activateWhenTimePassed",
+            value: false,
+        }},"Allow a status to deactiate this board.",4,1);
+        o = createGamemodeSetting("Time (Seconds)","status","activateWhenTimePassed",{},"Activate zone after this many seconds.",4,2,{
+            valueFromId: 1,
+            isNumber: true,
+            onActiveSetValue: {
+                value: 60,
+            },
+        })
+        k = createGamemodeSetting("Deactivate When Time Passes","toggle","deactivateWhenTimePassed",{setTrueIfValueIsNumber: true,whenCheckedSet: {
+            source: "deactivateWhenTimePassed",
+            value: 60,
+        }, whenUncheckedSet: {
+            source: "deactivateWhenTimePassed",
+            value: false,
+        }},"Allow a status to deactiate this board.",5,1);
+        o = createGamemodeSetting("Time (Seconds)","status","deactivateWhenTimePassed",{},"Deactivate zone after this many seconds.",5,2,{
+            valueFromId: 1,
+            isNumber: true,
+            onActiveSetValue: {
+                value: 60,
+            },
+        })
 
-        console.log(type)
         let grid = [
             [a,b,c,d],
             [e,f,g,h],
