@@ -4566,7 +4566,7 @@ cursor: url('./img/pointer.cur'), auto;
   width: 70%;
   height: 75%;
   border-radius: 5px;
-  background: linear-gradient(106.84deg, #1A1A1A 4.86%, #373737 92.96%);
+  background: linear-gradient(106.84deg, #ffffff 4.86%, #aea4a4 92.96%);;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   z-index: 1000;
   overflow: hidden;
