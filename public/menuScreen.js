@@ -1546,7 +1546,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
 
                     let list = settings.valueString.split(".");
                     if (typeSettings.readAs == "object") {
-                        list = list.push("status");
+                        list.push("status");
                         holder.gmValue.status = status;
                     }
                     if (typeSettings.readAs == "color") {
