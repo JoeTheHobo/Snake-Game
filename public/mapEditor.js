@@ -1908,8 +1908,8 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
         if (type == "player") {
             a = createGamemodeSetting("Zone Name","input","id",{maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.");
             b = createGamemodeSetting("Zone Team","status","team",{},"Give team status to people who spawn here.");
-            c = createGameModeSetting("Allow Respawning","toggle","respawnHere",{},"Can players respawn here if they're on the zones team?");
-            d = createGameModeSetting("Limit Spawning","toggle","spawnCap",{setTrueIfValueIsNumber: true,whenCheckedSet: {
+            c = createGamemodeSetting("Allow Respawning","toggle","respawnHere",{},"Can players respawn here if they're on the zones team?");
+            d = createGamemodeSetting("Limit Spawning","toggle","spawnCap",{setTrueIfValueIsNumber: true,whenCheckedSet: {
                 source: "spawnCap",
                 value: 3,
             }, whenUncheckedSet: {
