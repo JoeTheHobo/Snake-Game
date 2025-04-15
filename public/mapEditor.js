@@ -2045,7 +2045,7 @@ function setObjectTab(type) {
         runTool("showZones",true);
         $(".me_sz_zoneList").innerHTML = "";
         if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {
-            generateZoneListings("item",0,currentBoard.spawnZones.players);
+            generateZoneListings("player",0,currentBoard.spawnZones.players);
         } else {
             generateZoneListings("item",0,currentBoard.spawnZones.items);
         }

@@ -1431,19 +1431,6 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
     let description = holder.create("div.gmGroup_description");
     description.innerHTML = settings.description || "";
 }
-function createGamemodeSetting(title,type,valueString,typeSettings,description,familyID = false,myID = false,showWhen = false,editFunc = () => {}) {
-    return {
-        title: title,
-        type: type,
-        valueString: valueString,
-        typeSettings: typeSettings,
-        description: description,
-        familyID: familyID,
-        myID: myID,
-        showWhen: showWhen,
-        editFunc: editFunc,
-    }
-}
 function loadGamemodeTabSettings() {
     html_popup = $(".editGameModePopup");
     let gamemode = html_popup.gameMode;
