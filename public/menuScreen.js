@@ -1234,7 +1234,7 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom) {
                         if (showCase.equals == this.gmValue) {
                             showCase.element.show("flex");
                             if (showCase.onActiveSetValue) {
-                                showCase.element.setValue(showCase.onActiveSetValue);
+                                showCase.element.setValue(showCase.onActiveSetValue.value);
                             }
                         } else {
                             showCase.element.hide();
@@ -1244,8 +1244,8 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom) {
                         if (_type(this.gmValue).type == "number") {
                             showCase.element.show("flex");
                             if (showCase.onActiveSetValue) {
-                                console.log("eyo")
-                                showCase.element.setValue(showCase.onActiveSetValue);
+                                console.log(showCase.element.setValue)
+                                showCase.element.setValue(showCase.onActiveSetValue.value);
                             }
                         } else {
                             showCase.element.hide();
@@ -1335,6 +1335,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             holder.setValue(this.value)
         })
         holder.setValue = function(value) {
+            console.log("YASS")
             if (_type(settings.typeSettings.min).type == "number") {
                 if (Number(value) < settings.typeSettings.min) valueInput.value = settings.typeSettings.min;
             }
