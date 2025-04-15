@@ -1483,7 +1483,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             
         }
     }
-    if (type == "status") {
+    if (settings.type == "status") {
         valueInput = holder.create("div.gmGroup_statusHolder");
         valueNumber = valueInput.create("div.gmGroup_statusNumber");
 
