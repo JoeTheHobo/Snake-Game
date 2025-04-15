@@ -1998,7 +1998,6 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
             [m,n,o,p]
         ]
 
-        console.log("EYO");
         createGamemodeGrid(content,4,4,grid,zone,"zones");
     })
 

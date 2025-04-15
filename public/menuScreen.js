@@ -1203,7 +1203,13 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[0].length; j++) {
             let g = grid[i][j];
-            if (!g) continue;
+            if (!g) {
+                let holder = columns[j].create("div.gmGroup_invisible");
+                holder.css({
+                    height: heightValue,
+                })
+                continue;
+            }
 
             let holder;
             if (g.familyID) {
