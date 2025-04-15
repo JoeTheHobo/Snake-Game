@@ -2631,30 +2631,26 @@ function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,condition
         }
     }
 
-    let longestTail = this.inGamePlayers[0].longestTail;
-    let timeSurvived = Math.max(...this.inGamePlayers[0].timeAlive);
-    let mostKills = this.inGamePlayers[0].playerKills;
-    let longestTailPlayer = this.inGamePlayers[0];
-    let timeSurvivedPlayer = this.inGamePlayers[0];
-    let mostKillsPlayer = this.inGamePlayers[0];
-    for (let i = 1; i < this.inGamePlayers.length; i++) {
-        if (this.inGamePlayers[i].longestTail > longestTail) {
-            longestTail = this.inGamePlayers[i].longestTail;
-            longestTailPlayer = this.inGamePlayers[i];
+    let longestTail = lobby.inGamePlayers[0].longestTail;
+    let timeSurvived = Math.max(...lobby.inGamePlayers[0].timeAlive);
+    let mostKills = lobby.inGamePlayers[0].playerKills;
+    let longestTailPlayer = lobby.inGamePlayers[0];
+    let timeSurvivedPlayer = lobby.inGamePlayers[0];
+    let mostKillsPlayer = lobby.inGamePlayers[0];
+    for (let i = 1; i < lobby.inGamePlayers.length; i++) {
+        if (lobby.inGamePlayers[i].longestTail > longestTail) {
+            longestTail = lobby.inGamePlayers[i].longestTail;
+            longestTailPlayer = lobby.inGamePlayers[i];
         }
-        if (Math.max(...this.inGamePlayers[i].timeAlive) > timeSurvived) {
-            timeSurvived = Math.max(this.inGamePlayers[i].timeAlive);
-            timeSurvivedPlayer = this.inGamePlayers[i];
+        if (Math.max(...lobby.inGamePlayers[i].timeAlive) > timeSurvived) {
+            timeSurvived = Math.max(lobby.inGamePlayers[i].timeAlive);
+            timeSurvivedPlayer = lobby.inGamePlayers[i];
         }
-        if (this.inGamePlayers[i].playerKills > mostKills) {
-            mostKills = this.inGamePlayers[i].mostKills;
-            mostKillsPlayer = this.inGamePlayers[i];
+        if (lobby.inGamePlayers[i].playerKills > mostKills) {
+            mostKills = lobby.inGamePlayers[i].mostKills;
+            mostKillsPlayer = lobby.inGamePlayers[i];
         }
     }
-
-    let totalSeconds = Math.floor(timeSurvived / 1000);
-    let minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
-    let seconds = (totalSeconds % 60).toString().padStart(2, '0');
 
     let obj = {
         longestTailPlayer: longestTailPlayer,
