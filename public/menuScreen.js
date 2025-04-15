@@ -1251,13 +1251,24 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom) {
                 $("family" + g.familyID + "my" + g.showWhen.valueFromId).showCases.push({
                     element: holder,
                     equals: g.showWhen.equals,
+                    isNumber: g.showWhen.isNumber,
                 })
 
                 let value = $("family" + g.familyID + "my" + g.showWhen.valueFromId).gmValue;
-                if (g.showWhen.equals == value) {
-                    holder.show("flex");
-                } else {
-                    holder.hide();
+                if ( g.showWhen.equals) {
+
+                    if (g.showWhen.equals == value) {
+                        holder.show("flex");
+                    } else {
+                        holder.hide();
+                    }
+                }
+                if (g.showWhen.isNumber) {
+                    if (_type(value).type == "number") {
+                        holder.show("flex");
+                    } else {
+                        holder.hide();
+                    }
                 }
             }
 
@@ -1366,7 +1377,6 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                     value = typeSettings.whenCheckedSet.value;
                 }
             }
-            console.log(source,value)
 
             holder.gmValue = value;
             setNestedValue(pullFrom,source,value);
