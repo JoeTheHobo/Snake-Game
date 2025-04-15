@@ -1181,7 +1181,7 @@ function editGameMode(gameMode,sendToServer = false,func = () => {}) {
     
     setPopupTab("settings","gamemode");
 }
-function createGamemodeGrid(holder,width,height,grid,pullFrom) {
+function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
     html_popup = $(".editGameModePopup");
     holder.innerHTML = "";
     let rect = holder.getBoundingClientRect();
@@ -1206,15 +1206,15 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom) {
 
             let holder;
             if (g.familyID) {
-                if (familyDivs.includes("fa" + g.familyID)) {
-                    holder = $("fa" + g.familyID).create("div.gmGroup_holder");
+                if (familyDivs.includes(gridName + "fa" + g.familyID)) {
+                    holder = $(gridName + "fa" + g.familyID).create("div.gmGroup_holder");
                 } else {
-                    familyDivs.push("fa" + g.familyID);
+                    familyDivs.push(gridName + "fa" + g.familyID);
                     let group = columns[j].create("div.gmGroup_group");
-                    group.id = "fa" + g.familyID;
+                    group.id = gridName + "fa" + g.familyID;
                     holder = group.create("div.gmGroup_holder");
                 }
-                holder.id = "family" + g.familyID + "my" + g.myID;
+                holder.id = gridName + "family" + g.familyID + "my" + g.myID;
             } else {
                 let group = columns[j].create("div.gmGroup_group");
                 group.id = "naGroup";
@@ -1254,14 +1254,14 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom) {
             }
 
             if (g.showWhen) {
-                $("family" + g.familyID + "my" + g.showWhen.valueFromId).showCases.push({
+                $(gridName + "family" + g.familyID + "my" + g.showWhen.valueFromId).showCases.push({
                     element: holder,
                     equals: g.showWhen.equals,
                     isNumber: g.showWhen.isNumber,
                     onActiveSetValue: g.showWhen.onActiveSetValue,
                 })
 
-                let value = $("family" + g.familyID + "my" + g.showWhen.valueFromId).gmValue;
+                let value = $(gridName + "family" + g.familyID + "my" + g.showWhen.valueFromId).gmValue;
                 if ( g.showWhen.equals) {
 
                     if (g.showWhen.equals == value) {
@@ -1334,14 +1334,14 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             holder.setValue(this.value)
         })
         holder.setValue = function(value) {
-            valueInput.value = value;
             if (_type(settings.typeSettings.min).type == "number") {
-                if (Number(value) < settings.typeSettings.min) valueInput.value = settings.typeSettings.min;
+                if (Number(value) < settings.typeSettings.min) value = settings.typeSettings.min;
             }
             if (settings.typeSettings.max) {
-                if (Number(value) > settings.typeSettings.max) valueInput.value = settings.typeSettings.max;
+                if (Number(value) > settings.typeSettings.max) value = settings.typeSettings.max;
             }
-            
+            valueInput.value = value;
+
             setNestedValue(pullFrom,settings.valueString.split("."),Number(value));
             holder.gmValue = Number(value);
             holder.activateList();
@@ -1459,8 +1459,6 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             holder.activateList();
             
         }
-
-
     }
 
     if (typeSettings.placeholder) valueInput.placeholder = typeSettings.placeholder;
@@ -1509,7 +1507,7 @@ function loadGamemodeTabSettings() {
         [false,false,false,p]
     ]
 
-    createGamemodeGrid(holder,4,4,grid,gamemode);
+    createGamemodeGrid(holder,4,4,grid,gamemode,"gamemode");
 
 }
 function loadGamemodeTabItems() {
@@ -1624,7 +1622,7 @@ function loadGamemodeTabItems() {
                 }
             }
 
-            createGamemodeGrid($(".gamemodePopup_item_settingsList"),2,4,grid,getItemAlterations(gamemode,item));
+            createGamemodeGrid($(".gamemodePopup_item_settingsList"),2,4,grid,getItemAlterations(gamemode,item),"items");
 
         })
     }
@@ -1683,7 +1681,7 @@ function loadGamemodeTabWinning() {
             [a,b],
         ]
 
-        createGamemodeGrid(html_settings,2,1,grid,condition)
+        createGamemodeGrid(html_settings,2,1,grid,condition,"winning")
     }
     function loadWinningConditions() {
         for (let i = 0; i < 5; i++) {

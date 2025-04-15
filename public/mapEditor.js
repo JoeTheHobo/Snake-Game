@@ -1999,7 +1999,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
         ]
 
         
-        createGamemodeGrid(content,4,4,grid,zone);
+        createGamemodeGrid(content,4,4,grid,zone,"mapeditor");
     })
 
     let deleteIcon = rightIcons.create("img.spawnZoneImg");
