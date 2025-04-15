@@ -1922,7 +1922,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
             })
         }
 
-        console.log(a);
+        console.log(type)
         let grid = [
             [a,b,c,d],
             [e,f,g,h],
