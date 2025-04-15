@@ -1919,6 +1919,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
             h = createGamemodeSetting("Spawn Cap","number","spawnCap",{min: 0, max: 100},"Amount of snakes allowed to spawn here. (Can be 0)",1,2,{
                 valueFromId: 1,
                 isNumber: true,
+                onActiveSetValue: 3,
             })
         }
 

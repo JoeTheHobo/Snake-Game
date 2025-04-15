@@ -1233,6 +1233,9 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom) {
                     if (showCase.equals) {
                         if (showCase.equals == this.gmValue) {
                             showCase.element.show("flex");
+                            if (showCase.onActiveSetValue) {
+                                showCase.element.setValue(showCase.onActiveSetValue);
+                            }
                         } else {
                             showCase.element.hide();
                         }
@@ -1240,6 +1243,9 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom) {
                     if (showCase.isNumber) {
                         if (_type(this.gmValue).type == "number") {
                             showCase.element.show("flex");
+                            if (showCase.onActiveSetValue) {
+                                showCase.element.setValue(showCase.onActiveSetValue);
+                            }
                         } else {
                             showCase.element.hide();
                         }
@@ -1252,6 +1258,7 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom) {
                     element: holder,
                     equals: g.showWhen.equals,
                     isNumber: g.showWhen.isNumber,
+                    onActiveSetValue: g.showWhen.onActiveSetValue,
                 })
 
                 let value = $("family" + g.familyID + "my" + g.showWhen.valueFromId).gmValue;
@@ -1291,12 +1298,15 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
         holder.gmValue = getNestedValue(pullFrom,settings.valueString);
 
         valueInput.on("change",function() {
-            holder.gmValue = this.value;
-            setNestedValue(pullFrom,settings.valueString.split("."),this.value);
+            holder.setValue(this.value);
+        })
+        holder.setValue = function(value) {
+            holder.gmValue = value;
+            setNestedValue(pullFrom,settings.valueString.split("."),value);
             holder.activateList();
             if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
             if (settings.editFunc) settings.editFunc(holder.gmValue);
-        })
+        }
     }
     if (settings.type == "textarea") {
         valueInput = holder.create("textarea.gmGroup_textarea");
@@ -1310,6 +1320,9 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
             if (settings.editFunc) settings.editFunc(holder.gmValue);
         })
+        holder.setValue = function(value) {
+
+        }
     }
     if (settings.type == "number") {
         valueInput = holder.create("input.gmGroup_number");
@@ -1318,20 +1331,23 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
         valueInput.type = "number";
 
         valueInput.on("change",function() {
+            holder.setValue(this.value)
+        })
+        holder.setValue = function(value) {
             if (_type(settings.typeSettings.min).type == "number") {
-                if (Number(this.value) < settings.typeSettings.min) this.value = settings.typeSettings.min;
+                if (Number(value) < settings.typeSettings.min) valueInput.value = settings.typeSettings.min;
             }
             if (settings.typeSettings.max) {
-                if (Number(this.value) > settings.typeSettings.max) this.value = settings.typeSettings.max;
+                if (Number(value) > settings.typeSettings.max) valueInput.value = settings.typeSettings.max;
             }
 
-            setNestedValue(pullFrom,settings.valueString.split("."),Number(this.value));
-            holder.gmValue = Number(this.value);
+            setNestedValue(pullFrom,settings.valueString.split("."),Number(value));
+            holder.gmValue = Number(value);
             holder.activateList();
             if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
             if (settings.editFunc) settings.editFunc(holder.gmValue);
-
-        })
+            
+        }
     }
     if (settings.type == "toggle") {
         valueInput = holder.create("div.gmGroup_toggle");
@@ -1385,6 +1401,9 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
             if (settings.editFunc) settings.editFunc(holder.gmValue);
         })
+        holder.setValue = function(value) {
+            
+        }
     }
     if (settings.type == "list") {
         valueInput = holder.create("div.gmGroup_list");
@@ -1412,6 +1431,9 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                 if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
                 if (settings.editFunc) settings.editFunc(valueA);
             })
+            holder.setValue = function(value) {
+                
+            }
         }
 
     }
@@ -1423,15 +1445,19 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
 
         valueInput.on("click",function() {
             chooseItemPopup(settings.type,(item) => {
-                holder.gmValue = item.id;
-                img.src = getImage(item,"src");
-                
-                setNestedValue(pullFrom,settings.valueString.split("."),holder.gmValue);
-                if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
-                if (settings.editFunc) settings.editFunc(holder.gmValue);
-                holder.activateList();
+                holder.setValue(item);
             })
         })
+        holder.setValue = function(item) {
+            holder.gmValue = item.id;
+            img.src = getImage(item,"src");
+            
+            setNestedValue(pullFrom,settings.valueString.split("."),holder.gmValue);
+            if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
+            if (settings.editFunc) settings.editFunc(holder.gmValue);
+            holder.activateList();
+            
+        }
 
 
     }
