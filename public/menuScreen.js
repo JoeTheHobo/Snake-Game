@@ -1184,6 +1184,7 @@ function editGameMode(gameMode,sendToServer = false,func = () => {}) {
 function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
     html_popup = $(".editGameModePopup");
     holder.innerHTML = "";
+    holder.show("flex");
     let rect = holder.getBoundingClientRect();
 
     widthValue = ((1/width)*rect.width) + "px";
