@@ -1923,7 +1923,11 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
                     value: 3,
                 },
             })
+            f = createGamemodeSetting("Spawn Priority","number","priority",{min: 0, max: 100},"Should snakes spawn here first or last? (Higher Number = Higher Priority");
+            g = createGamemodeSetting("Alternate Spawning","toggle","alternate",{},"When spawning at the start of the game, should we alternate between this zone and others?");
         }
+
+        e = createGamemodeSetting("Active","toggle","active",{},"Is the zone active at the start of the game? Can things spawn here");
 
         console.log(type)
         let grid = [

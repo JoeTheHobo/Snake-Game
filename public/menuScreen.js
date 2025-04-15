@@ -1341,9 +1341,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             if (settings.typeSettings.max) {
                 if (Number(value) > settings.typeSettings.max) valueInput.value = settings.typeSettings.max;
             }
-
-            console.log(valueInput,settings.valueString.split("."));
-
+            
             setNestedValue(pullFrom,settings.valueString.split("."),Number(value));
             holder.gmValue = Number(value);
             holder.activateList();
