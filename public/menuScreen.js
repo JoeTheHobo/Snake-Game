@@ -1244,7 +1244,6 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom) {
                         if (_type(this.gmValue).type == "number") {
                             showCase.element.show("flex");
                             if (showCase.onActiveSetValue) {
-                                console.log(showCase.element.setValue)
                                 showCase.element.setValue(showCase.onActiveSetValue.value);
                             }
                         } else {
@@ -1335,13 +1334,15 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             holder.setValue(this.value)
         })
         holder.setValue = function(value) {
-            console.log("YASS")
+            console.log(value);
             if (_type(settings.typeSettings.min).type == "number") {
                 if (Number(value) < settings.typeSettings.min) valueInput.value = settings.typeSettings.min;
             }
             if (settings.typeSettings.max) {
                 if (Number(value) > settings.typeSettings.max) valueInput.value = settings.typeSettings.max;
             }
+
+            console.log(valueInput,settings.valueString.split("."));
 
             setNestedValue(pullFrom,settings.valueString.split("."),Number(value));
             holder.gmValue = Number(value);
