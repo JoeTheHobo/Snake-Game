@@ -249,6 +249,10 @@ font-size: 5em;
   justify-content: center;
   align-items: center;
   cursor: url('./img/pointer.cur'), auto;
+  transition: transform 0.2s ease;
+}
+.endScreen_br_imageHolder:hover {
+  transform: scale(1.05);
 }
 .endScreen_br_image {
   width: 90%;
@@ -312,6 +316,9 @@ font-size: 5em;
 .endSceeen_pch_stat {
   color: white;
   font-size: 1.5em;
+}
+.endScreen_pch_goldText {
+  color: gold !important;
 }
 
 .header {

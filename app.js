@@ -2697,21 +2697,21 @@ function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,condition
     let longestTail = lobby.inGamePlayers[0].longestTail;
     let timeSurvived = Math.max(...lobby.inGamePlayers[0].timeAlive);
     let mostKills = lobby.inGamePlayers[0].playerKills;
-    let longestTailPlayer = lobby.inGamePlayers[0];
-    let timeSurvivedPlayer = lobby.inGamePlayers[0];
-    let mostKillsPlayer = lobby.inGamePlayers[0];
+    let longestTailPlayer = lobby.inGamePlayers[0].accountName;
+    let timeSurvivedPlayer = lobby.inGamePlayers[0].accountName;
+    let mostKillsPlayer = lobby.inGamePlayers[0].accountName;
     for (let i = 1; i < lobby.inGamePlayers.length; i++) {
         if (lobby.inGamePlayers[i].longestTail > longestTail) {
             longestTail = lobby.inGamePlayers[i].longestTail;
-            longestTailPlayer = lobby.inGamePlayers[i];
+            longestTailPlayer = lobby.inGamePlayers[i].accountName;
         }
         if (Math.max(...lobby.inGamePlayers[i].timeAlive) > timeSurvived) {
             timeSurvived = Math.max(lobby.inGamePlayers[i].timeAlive);
-            timeSurvivedPlayer = lobby.inGamePlayers[i];
+            timeSurvivedPlayer = lobby.inGamePlayers[i].accountName;
         }
         if (lobby.inGamePlayers[i].playerKills > mostKills) {
             mostKills = lobby.inGamePlayers[i].mostKills;
-            mostKillsPlayer = lobby.inGamePlayers[i];
+            mostKillsPlayer = lobby.inGamePlayers[i].accountName;
         }
     }
 
@@ -2787,14 +2787,14 @@ function triggerWinningCondition(lobby,condition,player) {
         winningTitle = player.accountName + " Won";
         winningPlayers.push(player);
     } else if (condition.whoWins == "Players Team") {
-        winningTitle = player.team + " Team Won";
+        winningTitle = (player.team.charAt(0).toUpperCase() + player.team.slice(1)) + " Team Won";
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
             if (lobby.inGamePlayers[i].team === player.team) {
                 winningPlayers.push(lobby.inGamePlayers[i])
             }
         }
     } else if (condition.whoWins !== false) {
-        winningTitle = condition.whoWins + " Team Won";
+        winningTitle = (condition.whoWins.charAt(0).toUpperCase() + condition.whoWins.slice(1)) + " Team Won";
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
             if (lobby.inGamePlayers[i].team === condition.whoWins) {
                 winningPlayers.push(lobby.inGamePlayers[i])

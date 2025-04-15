@@ -414,7 +414,8 @@ socket.on("endGame",(obj) => {
         playerName.innerHTML = player.accountName;
 
         let longestTailText = playerCardHolder.create("div.endSceeen_pch_stat");
-        longestTailText.innerHTML = "Longest Tail: " + player.longestTail;
+        longestTailText.innerHTML = "Longest Tail: " + (player.longestTail + 1);
+        if (longestTailPlayer === player.accountName) longestTailText.classAdd("endScreen_pch_goldText");
 
         let timeSurvived = Math.max(player.timeAlive);
         let totalSeconds = Math.floor(timeSurvived / 1000);
@@ -422,9 +423,11 @@ socket.on("endGame",(obj) => {
         let seconds = (totalSeconds % 60).toString().padStart(2, '0');
         let timeSurvivedText = playerCardHolder.create("div.endSceeen_pch_stat");
         timeSurvivedText.innerHTML = "Time Survived: " + minutes + ":" + seconds;
+        if (timeSurvivedPlayer === player.accountName) timeSurvivedText.classAdd("endScreen_pch_goldText");
 
         let playersKilledText = playerCardHolder.create("div.endSceeen_pch_stat");
         playersKilledText.innerHTML = "Players Killed: " + player.playerKills;
+        if (mostKillsPlayer === player.accountName) playersKilledText.classAdd("endScreen_pch_goldText");
 
         playerCardHolder.css({
             background: `linear-gradient(107.12deg, ${_color(player.team).darken(30).ogColor} 2.94%, ${_color(player.team).darken(50).ogColor} 100%)`,
