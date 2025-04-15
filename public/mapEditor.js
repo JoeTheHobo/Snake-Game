@@ -1906,8 +1906,22 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
 
         let a = false, b= false, c = false, d = false, e = false,f = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false;
         if (type == "player") {
-            a = createGamemodeSetting("Zone Name","input","id",{maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.");
-            b = createGamemodeSetting("Zone Team","status","team",{readAs: "color",statusMenuOptions: ["status","submit"]},"Give team status to people who spawn here.");
+            a = createGamemodeSetting("Zone Name","input","id",{maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.",false,false,false,() => {
+                renderZoneCanvas();
+                if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {
+                    generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
+                } else {
+                    generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
+                }
+            });
+            b = createGamemodeSetting("Zone Team","status","team",{readAs: "color",statusMenuOptions: ["status","submit"]},"Give team status to people who spawn here.",false,false,false,() => {
+                renderZoneCanvas();
+                if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {
+                    generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
+                } else {
+                    generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
+                }
+            });
             c = createGamemodeSetting("Allow Respawning","toggle","respawnHere",{},"Can players respawn here if they're on the zones team?");
             d = createGamemodeSetting("Limit Spawning","toggle","spawnCap",{setTrueIfValueIsNumber: true,whenCheckedSet: {
                 source: "spawnCap",

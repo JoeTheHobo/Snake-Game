@@ -4568,7 +4568,7 @@ cursor: url('./img/pointer.cur'), auto;
   border-radius: 5px;
   background: linear-gradient(106.84deg, #1A1A1A 4.86%, #373737 92.96%);
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  z-index: 1000;
+  z-index: 999;
   overflow: hidden;
 
   }
