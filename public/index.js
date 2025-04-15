@@ -232,7 +232,6 @@ socket.on("startingGame", (lobby) => {
 
     $(".closeWhenGameStarts").hide();
     setScene("game");
-    $(".pauseGamePopup").hide();
     $("playerCardsHolder").innerHTML = "";
     $("playerCardsHolder").style.visibility = "visible";
     $(".firstPersonMap").hide();
@@ -397,7 +396,7 @@ socket.on("endGame",(obj) => {
         playerCardHolder.css({
             background: `linear-gradient(107.12deg, ${_color(player.team).darken(30).ogColor} 2.94%, ${_color(player.team).darken(50).ogColor} 100%)`,
         })
-        
+
     }
 
 })
