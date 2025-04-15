@@ -1902,6 +1902,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
     editIcon.on("click",function() {
         let content = $("spawn_zones_content");
         $(".editZonePopup").show("flex");
+        $(".modernPopup_topRow_title_zones").innerHTML = type.format("A") + " Zone: " + zone.id;
 
         let a = false, b= false, c = false, d = false, e = false,f = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false;
         if (type == "player") {
@@ -1921,6 +1922,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
             })
         }
 
+        console.log(a);
         let grid = [
             [a,b,c,d],
             [e,f,g,h],
