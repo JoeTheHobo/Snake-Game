@@ -345,7 +345,7 @@ socket.on("endGame",(obj) => {
     $("endScreen_winnerTitle").innerHTML = obj.winningTitle;
     $("endScreen_conditionTitle").innerHTML = obj.conditionTitle;
     if (obj.conditionImage) {
-        $("endScreen_conditionTitle").innerHTML += `<img src="${getImage(getById(obj.conditionImage.type,obj.conditionImage.id))}" class="endScreen_conditionTitleImage">`;
+        $("endScreen_conditionTitle").innerHTML += `<img src="${getImage(getById(obj.conditionImage.type,obj.conditionImage.id),"src")}" class="endScreen_conditionTitleImage">`;
     }
 
     $(".endScreen_winnersList").innerHTML = "";

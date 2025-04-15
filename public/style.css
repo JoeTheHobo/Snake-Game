@@ -170,7 +170,12 @@ visibility: hidden;
 }
 
 
-
+.endScreen_topRow {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .endScreenTitle {
 user-select: none;
 color: white;
@@ -178,17 +183,20 @@ font-size: 5em;
 }
 .endScreenSubTitle {
   color: white;
-  font-size: 1em;
+  font-size: 2em;
   margin-top: 5px;
 }
 #endScreen_conditionTitle {
   color: white;
-  font-size: 0.6em;
+  font-size: 0.9em;
   margin-top: 2px;
+  display: flex;
+  align-items: center;
 }
 .endScreen_conditionTitleImage {
   height: 20px;
   aspect-ratio: 1/1;
+  margin-left: 5px;
 }
 .endScreen_winnersList {
   display: flex;
