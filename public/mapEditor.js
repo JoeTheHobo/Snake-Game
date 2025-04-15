@@ -1903,17 +1903,29 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
         let content = $("spawn_zones_content");
         $(".editZonePopup").show("flex");
 
-        let a = false, b= false, c = false, d = false, e = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false, q = false;
+        let a = false, b= false, c = false, d = false, e = false,f = flase, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false;
         if (spawnZoneHolder.type == "player") {
-            let a = createGamemodeSetting("Zone Name","input","id",{maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.",1);
-            //let b = createGamemodeSetting("")
+            let a = createGamemodeSetting("Zone Name","input","id",{maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.");
+            let b = createGamemodeSetting("Zone Team","status","team",{},"Give team status to people who spawn here.");
+            let c = createGameModeSetting("Allow Respawning","toggle","respawnHere",{},"Can players respawn here if they're on the zones team?");
+            let d = createGameModeSetting("Limit Spawning","toggle","spawnCap",{setTrueIfValueIsNumber: true,whenCheckedSet: {
+                source: "spawnCap",
+                value: 3,
+            }, whenUncheckedSet: {
+                source: "spawnCap",
+                value: false,
+            }},"Control how many snakes can spawn in this zone.",1,1);
+            let h = createGamemodeSetting("Spawn Cap","number","spawnCap",{min: 0, max: 100},"Amount of snakes allowed to spawn here. (Can be 0)",1,2,{
+                valueFromId: 1,
+                isNumber: true,
+            })
         }
 
         let grid = [
             [a,b,c,d],
-            [f,g,h,i],
-            [j,k,l,m],
-            [n,o,p,q]
+            [e,f,g,h],
+            [i,j,k,l],
+            [m,n,o,p]
         ]
 
         

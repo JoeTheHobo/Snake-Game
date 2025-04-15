@@ -1230,10 +1230,19 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom) {
                 for (let i = 0; i < this.showCases.length; i++) {
                     let showCase = this.showCases[i];
                     
-                    if (showCase.equals == this.gmValue) {
-                        showCase.element.show("flex");
-                    } else {
-                        showCase.element.hide();
+                    if (showCase.equals) {
+                        if (showCase.equals == this.gmValue) {
+                            showCase.element.show("flex");
+                        } else {
+                            showCase.element.hide();
+                        }
+                    }
+                    if (showCase.isNumber) {
+                        if (_type(this.gmValue).type == "number") {
+                            showCase.element.show("flex");
+                        } else {
+                            showCase.element.hide();
+                        }
                     }
                 }
             }
@@ -1262,6 +1271,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
     let gamemode = html_popup.gameMode;
     let title = holder.create("div.gmGroup_title");
     title.innerHTML = settings.title;
+    let typeSettings = settings.typeSettings;
 
     let valueInput;
     if (settings.type == "input") {
@@ -1314,7 +1324,13 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
     }
     if (settings.type == "toggle") {
         valueInput = holder.create("div.gmGroup_toggle");
-        if (getNestedValue(pullFrom,settings.valueString) == true) {
+        let isTrue = getNestedValue(pullFrom,settings.valueString);
+        if (typeSettings.setTrueIfValueIsNumber) {
+            if (_type(isTrue).type == "number") isTrue = true;
+            else isTrue = false;
+        }
+
+        if (isTrue) {
             valueInput.classAdd("gmGroup_toggle_on");
             valueInput.innerHTML = "ON";
             valueInput.value = true;
@@ -1326,22 +1342,35 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
         holder.gmValue = getNestedValue(pullFrom,settings.valueString);
 
         valueInput.on("click",function() {
+            let source = settings.valueString.split(".");
+            let value;
+
             if (this.classList.contains("gmGroup_toggle_on")) {
                 this.classRemove("gmGroup_toggle_on")
                 this.classAdd("gmGroup_toggle_off");
                 this.innerHTML = "OFF";
-                setNestedValue(pullFrom,settings.valueString.split("."),false);
-                
-                holder.gmValue = false;
+                value = false;
+
+                if (typeSettings.whenUncheckedSet) {
+                    source = typeSettings.whenUncheckedSet.source.split(".");
+                    value = typeSettings.whenUncheckedSet.value;
+                }
             } else {
                 this.classAdd("gmGroup_toggle_on")
                 this.classRemove("gmGroup_toggle_off");
                 this.innerHTML = "ON";
-                setNestedValue(pullFrom,settings.valueString.split("."),true);
-                holder.gmValue = true;
+                value = true;
+
+                if (typeSettings.whenCheckedSet) {
+                    source = typeSettings.whenCheckedSet.source.split(".");
+                    value = typeSettings.whenCheckedSet.value;
+                }
             }
+
+            holder.gmValue = value;
+            setNestedValue(pullFrom,source,value);
+
             holder.activateList();
-            
             if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
             if (settings.editFunc) settings.editFunc(holder.gmValue);
         })
@@ -1396,7 +1425,6 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
 
     }
 
-    let typeSettings = settings.typeSettings;
     if (typeSettings.placeholder) valueInput.placeholder = typeSettings.placeholder;
     if (typeSettings.maxLength) valueInput.maxLength = typeSettings.maxLength;
 
