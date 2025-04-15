@@ -2031,27 +2031,9 @@ function setObjectTab(type) {
         runTool("showZones",true);
         $(".me_sz_zoneList").innerHTML = "";
         if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {
-            for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
-                makeSpawnZoneListing($(".me_sz_zoneList"),currentBoard.spawnZones.players[i],i);
-            }
-            if (!selectedZone) {
-                selectedZone = {
-                    type: "player",
-                    zoneIndex: 0,
-                    zone: currentBoard.spawnZones.players[0],
-                }
-            }
+            generateZoneListings("item",0,currentBoard.spawnZones.players);
         } else {
-            for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
-                makeSpawnZoneListing($(".me_sz_zoneList"),currentBoard.spawnZones.items[i],i);
-            }
-            if (!selectedZone) {
-                selectedZone = {
-                    type: "item",
-                    zoneIndex: 0,
-                    zone: currentBoard.spawnZones.items[0],
-                }
-            }
+            generateZoneListings("item",0,currentBoard.spawnZones.items);
         }
         $(".me_s_holder_tools").hide();
         $(".me_s_holder_subtool").hide();
