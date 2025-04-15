@@ -1879,7 +1879,7 @@ function loadBackgroundContent(parent) {
         })
     }
 }
-function makeSpawnZoneListing(holder,zone,i) {
+function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
     let color = "#ffffff";
     if (zone.team) color = _color(zone.team).ogColor;
 
@@ -1894,13 +1894,7 @@ function makeSpawnZoneListing(holder,zone,i) {
     spawnZoneID.className = "spawnZoneID";
     spawnZoneID.innerHTML = zone.id;
 
-    spawnZoneHolder.type = zone.team ? "player" : "item";
-    if (spawnZoneHolder.type == "player") {
-        if (savedSelectingZonePlayer === i) spawnZoneHolder.classAdd("spawnZoneSelected")
-    }
-    if (spawnZoneHolder.type == "item") {
-        if (savedSelectingZoneItem === i) spawnZoneHolder.classAdd("spawnZoneSelected")
-    }
+    if (selectingZoneIndex === i) spawnZoneHolder.classAdd("spawnZoneSelected")
 
     let rightIcons = spawnZoneHolder.create("div.spawnZoneRight");
     let editIcon = rightIcons.create("img.spawnZoneImg");
@@ -1912,7 +1906,7 @@ function makeSpawnZoneListing(holder,zone,i) {
         let a = false, b= false, c = false, d = false, e = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false, q = false;
         if (spawnZoneHolder.type == "player") {
             let a = createGamemodeSetting("Zone Name","input","id",{maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.",1);
-            let b = createGamemodeSetting("")
+            //let b = createGamemodeSetting("")
         }
 
         let grid = [
@@ -1929,28 +1923,15 @@ function makeSpawnZoneListing(holder,zone,i) {
     let deleteIcon = rightIcons.create("img.spawnZoneImg");
     deleteIcon.src = "img/tool_delete.png";
     deleteIcon.on("click",function() {
-        if (spawnZoneHolder.type == "player") {
-            if (currentBoard.spawnZones.players.length == 1) return;
-            currentBoard.spawnZones.players.splice(i,1);
-            savedSelectingZonePlayer = 0;
-            selectedZone = {
-                type: "player",
-                zoneIndex: savedSelectingZonePlayer,
-                zone: currentBoard.spawnZones.players[savedSelectingZonePlayer],
-            }
-            generateZoneListings("Player Zones");
+        if (zoneList.length == 1) return;
+        zoneList.splice(i,1);
+        selectingZoneIndex = 0;
+        selectedZone = {
+            type: type,
+            zoneIndex: selectingZoneIndex,
+            zone: zoneList[selectingZoneIndex],
         }
-        if (spawnZoneHolder.type == "item") {
-            if (currentBoard.spawnZones.items.length == 1) return;
-            currentBoard.spawnZones.items.splice(i,1);
-            savedSelectingZoneItem = 0;
-            selectedZone = {
-                type: "item",
-                zoneIndex: savedSelectingZoneItem,
-                zone: currentBoard.spawnZones.items[savedSelectingZoneItem],
-            }
-            generateZoneListings("Item Zones");
-        }
+        generateZoneListings(type,selectingZoneIndex,zoneList);
         
         //loadZoneOptions();
         renderZoneCanvas();
@@ -1961,13 +1942,12 @@ function makeSpawnZoneListing(holder,zone,i) {
         $(".spawnZoneHolder").classRemove("spawnZoneSelected");
         this.classAdd("spawnZoneSelected");
         selectedZone = {
-            type: this.type,
+            type: type,
             zoneIndex: i,
             zone: zone,
         }
-        if (this.type == "item") savedSelectingZoneItem = i;
-        if (this.type == "player") savedSelectingZonePlayer = i;
-        //loadZoneOptions();
+        selectingZoneIndex = i;
+        renderZoneCanvas();
     })
 
 }
@@ -1982,32 +1962,20 @@ $(".me_ob_sz_tr_tab").on("click",function() { //Player Zones / Item Zones Tabs O
     $(".me_ob_sz_tr_tab").classRemove("me_ob_sz_tr_tab_selected");
     this.classAdd("me_ob_sz_tr_tab_selected");
 
-    generateZoneListings(this.innerHTML);
+    if (this.innerHTML == "Item Zones") generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
+    if (this.innerHTML == "Player Zones") generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
 
 })
-function generateZoneListings(zoneType) {
+function generateZoneListings(type,selectingIndex,zoneList) {
     $(".me_sz_zoneList").innerHTML = "";
-    if (zoneType == "Player Zones") {
-        selectedZone = {
-            type: "player",
-            zoneIndex: savedSelectingZonePlayer,
-            zone: currentBoard.spawnZones.players[savedSelectingZonePlayer],
-        }
-        for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
-            makeSpawnZoneListing($(".me_sz_zoneList"),currentBoard.spawnZones.players[i],i);
-        }
+    selectedZone = {
+        type: type,
+        zoneIndex: selectingIndex,
+        zone: zoneList[selectingIndex],
     }
-    if (zoneType == "Item Zones") {
-        selectedZone = {
-            type: "item",
-            zoneIndex: savedSelectingZoneItem,
-            zone: currentBoard.spawnZones.items[savedSelectingZoneItem],
-        }
-        for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
-            makeSpawnZoneListing($(".me_sz_zoneList"),currentBoard.spawnZones.items[i],i);
-        }
+    for (let i = 0; i < zoneList.length; i++) {
+        makeSpawnZoneListing(type,selectingIndex,zoneList,$(".me_sz_zoneList"),zoneList[i],i);
     }
-    loadZoneOptions();
 }
 
 function setObjectTab(type) {
