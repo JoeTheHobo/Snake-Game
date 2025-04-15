@@ -1204,7 +1204,6 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
         for (let j = 0; j < grid[0].length; j++) {
             let g = grid[i][j];
             if (!g) {
-                console.log("EYO")
                 let holder = columns[j].create("div.gmGroup_invisible");
                 holder.css({
                     height: heightValue,
@@ -1240,22 +1239,30 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
                     
                     if (showCase.equals) {
                         if (showCase.equals == this.gmValue) {
-                            showCase.element.show("flex");
+                            showCase.element.css({
+                                visibility: "visible",
+                            });
                             if (showCase.onActiveSetValue) {
                                 showCase.element.setValue(showCase.onActiveSetValue.value);
                             }
                         } else {
-                            showCase.element.hide();
+                            showCase.element.css({
+                                visibility: "hidden",
+                            });
                         }
                     }
                     if (showCase.isNumber) {
                         if (_type(this.gmValue).type == "number") {
-                            showCase.element.show("flex");
+                            showCase.element.css({
+                                visibility: "visible",
+                            });
                             if (showCase.onActiveSetValue) {
                                 showCase.element.setValue(showCase.onActiveSetValue.value);
                             }
                         } else {
-                            showCase.element.hide();
+                            showCase.element.css({
+                                visibility: "hidden",
+                            });
                         }
                     }
                 }
@@ -1273,16 +1280,24 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
                 if ( g.showWhen.equals) {
 
                     if (g.showWhen.equals == value) {
-                        holder.show("flex");
+                        holder.css({
+                            visibility: "visible",
+                        });
                     } else {
-                        holder.hide();
+                        holder.css({
+                            visibility: "hidden",
+                        });
                     }
                 }
                 if (g.showWhen.isNumber) {
                     if (_type(value).type == "number") {
-                        holder.show("flex");
+                        holder.css({
+                            visibility: "visible",
+                        });
                     } else {
-                        holder.hide();
+                        holder.css({
+                            visibility: "hidden",
+                        });
                     }
                 }
             }
