@@ -2753,19 +2753,18 @@ function checkWinningCondition(lobby,condition,value,player) {
 
         if (condition == "Touch Item X" || condition == "Touch Tile X") {
             if (value.id === winningConditions[i].x) {
-                console.log(condition,player)
-                triggerWinningCondition(lobby,condition,player)
+                triggerWinningCondition(lobby,winningConditions[i],player)
             }
         }
         if (condition == "Last One Standing") {
-            triggerWinningCondition(lobby,condition,player);
+            triggerWinningCondition(lobby,winningConditions[i],player);
         }
         if (condition == "Last Team Standing") {
-            triggerWinningCondition(lobby,condition,value);
+            triggerWinningCondition(lobby,winningConditions[i],value);
         }
         if (condition == "Touch Zone X") {
             if (value == winningConditions[i].x) {
-                triggerWinningCondition(lobby,condition,player);
+                triggerWinningCondition(lobby,winningConditions[i],player);
             }
         }
     }
