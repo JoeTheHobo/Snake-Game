@@ -353,6 +353,7 @@ socket.on("endGame",(obj) => {
         let div = $(".endScreen_winnersList").create("div.endScreen_winnerHolder");
         let imgHolder = div.create("div.endScreen_winnerImageHolder");
         let img = imgHolder.create("img.fullImage");
+        img.classAdd("borderRadius5");
         img.src = "img/snakeSkins/classic/snake_classic_head.png";
         img.css({
             filter: getPlayerFilter(obj.winningPlayers[i]),
@@ -376,6 +377,11 @@ socket.on("endGame",(obj) => {
         let row1 = playerCardHolder.create("div.endScreen_pch_topRow");
         let playerImageHolder = row1.create("div.endScreen_pch_playerImageHolder");
         let playerImage = playerImageHolder.create("img.fullImage");
+        playerImage.classAdd("borderRadius5");
+        playerImage.src = "img/snakeSkins/classic/snake_classic_head.png";
+        playerImage.css({
+            filter: getPlayerFilter(player),
+        })
 
         let playerName = row1.create("div.endScreen_pch_playerName");
         playerName.innerHTML = player.accountName;

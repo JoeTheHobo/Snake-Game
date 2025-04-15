@@ -2753,6 +2753,7 @@ function checkWinningCondition(lobby,condition,value,player) {
 
         if (condition == "Touch Item X" || condition == "Touch Tile X") {
             if (value.id === winningConditions[i].x) {
+                console.log(condition,player)
                 triggerWinningCondition(lobby,condition,player)
             }
         }
