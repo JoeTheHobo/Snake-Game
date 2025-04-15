@@ -1419,10 +1419,10 @@ function playEndScreenAnimation() {
     let extra = (height*.2);
     let snakeHeightNoExt = (height/3);
     let snakeHeight = (height/3)+extra;
-    $(".endScreenContent").style.transition = "none";
-    $(".endScreenContent").style.opacity = "0";
-    $(".endScreenContent").clientWidth;
-    $(".endScreenContent").style.transition = "all .8s ease";
+    $(".endScreen_hideContent").style.transition = "none";
+    $(".endScreen_hideContent").style.opacity = "0";
+    $(".endScreen_hideContent").clientWidth;
+    $(".endScreen_hideContent").style.transition = "all .8s ease";
 
     
     for (let i = 1; i < 4; i++) {
@@ -1473,7 +1473,7 @@ function playEndScreenAnimation() {
     }
 
     setTimeout(function() {
-        $(".endScreenContent").style.opacity = "1";
+        $(".endScreen_hideContent").style.opacity = "1";
     },2700)
 }
 function getAverageCanvasColor(canvas) {

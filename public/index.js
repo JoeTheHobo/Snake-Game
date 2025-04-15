@@ -342,33 +342,62 @@ socket.on("endGame",(obj) => {
     let timeSurvivedPlayer = obj.timeSurvivedPlayer;
     let longestTailPlayer = obj.longestTailPlayer;
     let mostKillsPlayer = obj.mostKillsPlayer;
-    let minutes = obj.minutes;
-    let seconds = obj.seconds;
-    let longestTail = obj.longestTail;
-    let mostKills = obj.mostKills;
-    let winningPlayer = obj.winningPlayer;
 
-    $(".longestTimePlayerImg").style.filter = getPlayerFilter(timeSurvivedPlayer);
-    $(".longestTailPlayerImg").style.filter = getPlayerFilter(longestTailPlayer);
-    $(".mostKillsImg").style.filter = getPlayerFilter(mostKillsPlayer);
-    $(".engGame_playerNameTime").innerHTML = timeSurvivedPlayer.accountName;
-    $(".engGame_playerTime").innerHTML = minutes + ":" + seconds + " Minutes";
-    $(".engGame_playerNameLength").innerHTML = longestTailPlayer.accountName;
-    $(".engGame_playerLength").innerHTML = (longestTail+1) + " Length";
-    $(".engGame_playerNameKills").innerHTML = mostKillsPlayer.accountName;
-    $(".engGame_playerKills").innerHTML = (mostKills) + " Kill" + (mostKills > 1 ? "s" : "");
-
-    if (activePlayers.length > 1 && mostKills > 0) {
-        $("snakeKillsStat").show("flex");
-    } else {
-        $("snakeKillsStat").hide();
+    $("endScreen_winnerTitle").innerHTML = obj.winningTitle;
+    $("endScreen_conditionTitle").innerHTML = obj.conditionTitle;
+    if (obj.conditionImage) {
+        $("endScreen_conditionTitle").innerHTML += `<img src="${getImage(getById(obj.conditionImage.type,obj.conditionImage.id))}" class="endScreen_conditionTitleImage">`;
     }
 
-    $("winnerStat").hide();
-    if (winningPlayer) {
-        $("winnerStat").show("flex");
-        $(".winnerPlayerImg").style.filter = getPlayerFilter(winningPlayer);
-        $(".engGame_playerNameWinner").innerHTML = winningPlayer.accountName;
+    $(".endScreen_winnersList").innerHTML = "";
+    for (let i = 0; i < obj.winningPlayers.length; i++) {
+        let div = $(".endScreen_winnersList").create("div.endScreen_winnerHolder");
+        let imgHolder = div.create("div.endScreen_winnerImageHolder");
+        let img = imgHolder.create("img.fullImage");
+        img.src = "img/snakeSkins/classic/snake_classic_head.png";
+        img.css({
+            filter: getPlayerFilter(obj.winningPlayers[i]),
+        })
+
+        let name = div.create("div.endScreen_winnerName");
+        name.innerHTML = obj.winningPlayers[i].accountName;
+    }
+
+    let listA = $("endScreen_playerList1");
+    let listB = $("endScreen_playerList2");
+
+    listA.innerHTML = "";
+    listB.innerHTML = "";
+
+    for (let i = 0; i < obj.activePlayers.length; i++) {
+        let html_list = Math.floor(i/4) === 0 ? listA : listB;
+        let player = obj.activePlayers[i];
+        let playerCardHolder = html_list.create("div.endScreen_playerCardHolder");
+
+        let row1 = playerCardHolder.create("div.endScreen_pch_topRow");
+        let playerImageHolder = row1.create("div.endScreen_pch_playerImageHolder");
+        let playerImage = playerImageHolder.create("img.fullImage");
+
+        let playerName = row1.create("div.endScreen_pch_playerName");
+        playerName.innerHTML = player.accountName;
+
+        let longestTailText = playerCardHolder.create("div.endSceeen_pch_stat");
+        longestTailText.innerHTML = "Longest Tail: " + player.longestTail;
+
+        let timeSurvived = Math.max(player.timeAlive);
+        let totalSeconds = Math.floor(timeSurvived / 1000);
+        let minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+        let seconds = (totalSeconds % 60).toString().padStart(2, '0');
+        let timeSurvivedText = playerCardHolder.create("div.endSceeen_pch_stat");
+        timeSurvivedText.innerHTML = "Time Survived: " + minutes + ":" + seconds;
+
+        let playersKilledText = playerCardHolder.create("div.endSceeen_pch_stat");
+        playersKilledText.innerHTML = "Players Killed: " + player.playerKills;
+
+        playerCardHolder.css({
+            background: `linear-gradient(107.12deg, ${_color(player.team).darken(30).ogColor} 2.94%, ${_color(player.team).darken(50).ogColor} 100%)`,
+        })
+        
     }
 
 })

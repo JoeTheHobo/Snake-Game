@@ -2631,7 +2631,6 @@ function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,condition
         }
     }
 
-    /*
     let longestTail = this.inGamePlayers[0].longestTail;
     let timeSurvived = Math.max(...this.inGamePlayers[0].timeAlive);
     let mostKills = this.inGamePlayers[0].playerKills;
@@ -2656,9 +2655,11 @@ function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,condition
     let totalSeconds = Math.floor(timeSurvived / 1000);
     let minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
     let seconds = (totalSeconds % 60).toString().padStart(2, '0');
-*/
 
     let obj = {
+        longestTailPlayer: longestTailPlayer,
+        timeSurvivedPlayer: timeSurvivedPlayer,
+        mostKillsPlayer: mostKillsPlayer,
         lobby: lobby,
         activePlayers: lobby.inGamePlayers,
         winningPlayers: winningPlayers,
@@ -2674,7 +2675,7 @@ function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,condition
 function triggerWinningCondition(lobby,condition,player) {
     if (lobby.endGame === true) return;
     let winningPlayers = [];
-    let winningTitle = "The Winners";
+    let winningTitle;
     let conditionTitle = "";
     let conditionImage = false;
 
@@ -2724,14 +2725,17 @@ function triggerWinningCondition(lobby,condition,player) {
     }
 
     if (condition.whoWins == "Player") {
+        winningTitle = player.accountName + " Won";
         winningPlayers.push(player);
     } else if (condition.whoWins == "Players Team") {
+        winningTitle = player.team + " Team Won";
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
             if (lobby.inGamePlayers[i].team === player.team) {
                 winningPlayers.push(lobby.inGamePlayers[i])
             }
         }
     } else if (condition.whoWins !== false) {
+        winningTitle = condition.whoWins + " Team Won";
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
             if (lobby.inGamePlayers[i].team === condition.whoWins) {
                 winningPlayers.push(lobby.inGamePlayers[i])

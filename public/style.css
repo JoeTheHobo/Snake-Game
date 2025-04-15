@@ -181,10 +181,25 @@ font-size: 2em;
   font-size: 1em;
   margin-top: 5px;
 }
-.endScreen_conditionTitle {
+#endScreen_conditionTitle {
   color: white;
   font-size: 0.6em;
   margin-top: 2px;
+}
+.endScreen_conditionTitleImage {
+  height: 20px;
+  aspect-ratio: 1/1;
+}
+.endScreen_winnersList {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+}
+.endScreen_playerList {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 .endScreen_LobbyButton {
   color: black;
@@ -197,6 +212,90 @@ font-size: 2em;
   padding-right: 20px;
   cursor: url('./img/pointer.cur'), auto;
 }
+.endScreen_boardRating {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  border-radius: 5px;
+  background: #323232;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.endScreen_br_title {
+  color: white;
+  font-size: 20px
+}
+.endScreen_br_imageHolder {
+  aspect-ratio: 1/1;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.endScreen_br_image {
+  width: 90%;
+  aspect-ratio: 1/1;
+}
+.endScreen_winnerHolder {
+  margin: 10px;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.endScreen_winnerImageHolder {
+  border-radius: 5px;
+  background: #D9D9D9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+
+
+}
+.endScreen_winnerName {
+  color: white;
+  font-size: 1.5em;
+}
+.endScreen_playerCardHolder {
+  border-radius: 5px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 22%;
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+
+}
+.endScreen_pch_topRow {
+  display: flex;
+  align-items: center;
+}
+.endScreen_pch_playerImageHolder {
+  border-radius: 5px;
+  background: #D9D9D9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+}
+.endScreen_pch_playerName {
+  color: white;
+  margin-left: 5px;
+  font-size: 1em; 
+}
+.endSceeen_pch_stat {
+  color: white;
+  font-size: 1em;
+}
+
 .header {
 color: white;
 font-size: 25px;
@@ -2072,6 +2171,12 @@ height: 100%;
 .endScreenSnakeAniation {
 position: absolute;
 }
+.endScreen_hideContent {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+
+}
 .endScreenContent {
   display: flex;
   flex-direction: column;
@@ -2085,7 +2190,6 @@ position: absolute;
   width: max-content;
   height: max-content;
   border-radius: 5px;
-  opacity: 0;
   padding: 15px;
   flex-direction: column;
   background: linear-gradient(106.84deg, #1A1A1A 4.86%, #373737 92.96%);
