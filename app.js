@@ -1175,6 +1175,7 @@ io.on('connection', (socket) => {
         const query = `SELECT * FROM favorites WHERE tag = ${Number(account.tag)} AND type = "board" AND id = "${lobby.boardID}"`;
         db.query(query,(err,results) => {
             if (err) throw err;
+            console.log(results);
 
             if (results.length == 0) {
                 socket.to(socket.id).emit("playerHasNotLikedBoard");
@@ -2681,9 +2682,9 @@ function setPlayersZones(lobby,player) {
 
 }
 function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,conditionImage) {
-    if (lobby.endGame === true) return;
+    if (lobby.gameEnd === true) return;
 
-    lobby.endGame = true;
+    lobby.gameEnd = true;
     lobby.isActiveGame = false;
     lobby.isInGame = false;
 
@@ -2732,7 +2733,7 @@ function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,condition
     updateLobbies();
 }
 function triggerWinningCondition(lobby,condition,player) {
-    if (lobby.endGame === true) return;
+    if (lobby.gameEnd === true) return;
     let winningPlayers = [];
     let winningTitle;
     let conditionTitle = "";
@@ -2808,7 +2809,7 @@ function triggerWinningCondition(lobby,condition,player) {
 }
 function checkWinningCondition(lobby,condition,value,player) {
     let winningConditions = lobby.gameMode.winningConditions;
-    if (lobby.endGame === true) return;
+    if (lobby.gameEnd === true) return;
 
     for (let i = 0; i < winningConditions.length; i++) {
         if (!winningConditions[i]) continue;

@@ -329,19 +329,22 @@ socket.on("updatePreGamePlayerInfo",(players) => {
     }
 })
 $(".endScreen_br_image").on("click",function() {
-    console.log(this.src);
-    if (this.src == "img/menuIcons/star_active.png") {
+    if (this.liked == true) {
+        this.liked = false;
         this.src = "img/menuIcons/star_inactive.png";
         socket.emit("playerDislikedLobbyBoard");
     } else {
+        this.liked = true;
         this.src = "img/menuIcons/star_active.png";
         socket.emit("playerLikedLobbyBoard");
     }
 })
 socket.on("playerHasLikedBoard",() => {
+    $(".endScreen_br_image").liked = true;
     $(".endScreen_br_image").src = "img/menuIcons/star_active.png";
 })
 socket.on("playerHasNotLikedBoard",() => {
+    $(".endScreen_br_image").liked = false;
     $(".endScreen_br_image").src = "img/menuIcons/star_inactive.png";
 
 })
