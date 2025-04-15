@@ -2279,3 +2279,17 @@ function getSimilarNames(input, objList) {
         })
     }
   }
+  
+function createGamemodeSetting(title,type,valueString,typeSettings,description,familyID = false,myID = false,showWhen = false,editFunc = () => {}) {
+    return {
+        title: title,
+        type: type,
+        valueString: valueString,
+        typeSettings: typeSettings,
+        description: description,
+        familyID: familyID,
+        myID: myID,
+        showWhen: showWhen,
+        editFunc: editFunc,
+    }
+}
