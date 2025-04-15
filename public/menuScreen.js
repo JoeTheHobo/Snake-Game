@@ -1432,13 +1432,13 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
     if (settings.type == "list") {
         valueInput = holder.create("div.gmGroup_list");
         let options = [];
-        for (let i = 0; i < settings.typeSettings.options.length; i++) {
+        for (let i = 0; i < typeSettings.options.length; i++) {
             let option = valueInput.create("div.gmGroup_list_option");
-            option.innerHTML = settings.typeSettings.options[i];
+            option.innerHTML = typeSettings.options[i];
             options.push(option);
 
-            let valueA = settings.typeSettings.caseSensitive ? settings.typeSettings.options[i] : settings.typeSettings.options[i].toLowerCase();
-            let valueB = settings.typeSettings.caseSensitive ? getNestedValue(pullFrom,settings.valueString) : getNestedValue(pullFrom,settings.valueString).toLowerCase();
+            let valueA = typeSettings.caseSensitive ? typeSettings.options[i] : typeSettings.options[i].toLowerCase();
+            let valueB = typeSettings.caseSensitive ? getNestedValue(pullFrom,settings.valueString) : getNestedValue(pullFrom,settings.valueString).toLowerCase();
 
             if (valueA == valueB) {
                 option.classAdd("gmGroup_list_option_selected");
@@ -1481,6 +1481,79 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             if (settings.editFunc) settings.editFunc(holder.gmValue);
             holder.activateList();
             
+        }
+    }
+    if (type == "status") {
+        valueInput = holder.create("div.gmGroup_statusHolder");
+        valueNumber = valueInput.create("div.gmGroup_statusNumber");
+
+        if (typeSettings.showNumber) {
+            valueNumber.show();
+        } else {
+            valueNumber.hide();
+        }
+
+        let value = getNestedValue(pullFrom,settings.valueString);
+
+        if (typeSettings.readAs == "color") {
+            valueInput.css({
+                background: _color(value).ogColor,
+            })
+            valueNumber.innerHTML = 1;
+        }
+        if (typeSettings.readAs == "object") {
+            valueInput.css({
+                background: _color(value.status).ogColor,
+            })
+            valueNumber.innerHTML = value.count;
+        }
+
+        holder.gmValue = value;
+
+        valueInput.on("click",function() {
+            showStatusMenu(typeSettings.statusMenuOptions,{
+                status: function(status,element) {
+                    $(".nonPlayer").css({
+                        border: "2px solid black", 
+                    })
+                    element.style.border = "2px solid blue";
+
+                    let list = settings.valueString.split(".");
+                    if (typeSettings.readAs == "object") {
+                        list = list.push("status");
+                        holder.gmValue.status = status;
+                    }
+                    if (typeSettings.readAs == "color") {
+                        holder.gmValue = status;
+                    }
+                    valueInput.css({
+                        background: _color(status).ogColor,
+                    })
+
+                    setNestedValue(pullFrom,list,status);
+
+                    if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
+                    if (settings.editFunc) settings.editFunc(holder.gmValue);
+                    holder.activateList();
+                },
+                number: function(value) {
+                    let list = settings.valueString.split(".");
+                    list.push("count")
+                    holder.gmValue.count = value;
+                    setNestedValue(pullFrom,list,value);
+                    valueNumber.innerHTML = value;
+
+                    if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
+                    if (settings.editFunc) settings.editFunc(holder.gmValue);
+                    holder.activateList();
+                },
+                final: function() {
+                    $(".statusSelectionScreen").hide();
+                }
+            });
+        })
+        holder.setValue = function() {
+
         }
     }
 

@@ -1907,7 +1907,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
         let a = false, b= false, c = false, d = false, e = false,f = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false;
         if (type == "player") {
             a = createGamemodeSetting("Zone Name","input","id",{maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.");
-            b = createGamemodeSetting("Zone Team","status","team",{},"Give team status to people who spawn here.");
+            b = createGamemodeSetting("Zone Team","status","team",{readAs: "color",statusMenuOptions: ["status","submit"]},"Give team status to people who spawn here.");
             c = createGamemodeSetting("Allow Respawning","toggle","respawnHere",{},"Can players respawn here if they're on the zones team?");
             d = createGamemodeSetting("Limit Spawning","toggle","spawnCap",{setTrueIfValueIsNumber: true,whenCheckedSet: {
                 source: "spawnCap",
@@ -1935,7 +1935,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
             source: "activateWhenBoardStatus",
             value: false,
         }},"Allow a status to actiate this board.",2,1);
-        m = createGamemodeSetting("Activation Status","status","activateWhenBoardStatus",{},"Activate zone when board status is met",2,2,{
+        m = createGamemodeSetting("Activation Status","status","activateWhenBoardStatus",{showNumber: true,readAs: "object",statusMenuOptions: ["status","count","submit"]},"Activate zone when board status is met",2,2,{
             valueFromId: 1,
             isNumber: true,
             onActiveSetValue: {
@@ -1952,7 +1952,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
             source: "deactivateWhenBoardStatus",
             value: false,
         }},"Allow a status to deactiate this board.",3,1);
-        n = createGamemodeSetting("Deactivation Status","status","deactivateWhenBoardStatus",{},"Deactivate zone when board status is met",3,2,{
+        n = createGamemodeSetting("Deactivation Status","status","deactivateWhenBoardStatus",{showNumber: true,readAs: "object",statusMenuOptions: ["status","count","submit"]},"Deactivate zone when board status is met",3,2,{
             valueFromId: 1,
             isNumber: true,
             onActiveSetValue: {

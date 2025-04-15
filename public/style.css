@@ -4566,7 +4566,7 @@ cursor: url('./img/pointer.cur'), auto;
   width: 70%;
   height: 75%;
   border-radius: 5px;
-  background: linear-gradient(106.84deg, #ffffff 4.86%, #aea4a4 92.96%);;
+  background: linear-gradient(106.84deg, #1A1A1A 4.86%, #373737 92.96%);
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   z-index: 1000;
   overflow: hidden;
@@ -4970,6 +4970,20 @@ cursor: url('./img/pointer.cur'), auto;
   .gmGroup_toggle_off {
     background: linear-gradient(146.4deg, #BA4343 -10.61%, #710B0B 90.71%);
 
+  }
+  .gmGroup_statusHolder {
+    border: 3px solid black;
+    border-radius: 5px;
+    height: 40px;
+    width: 40px;
+    cursor: url('./img/pointer.cur'), auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .gmGroup_statusNumber {
+    color: black;
+    font-size: 20px;
   }
   .gmGroup_imageHolder {
     border: 3px solid black;
