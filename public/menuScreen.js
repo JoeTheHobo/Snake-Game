@@ -1244,6 +1244,7 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom) {
                         if (_type(this.gmValue).type == "number") {
                             showCase.element.show("flex");
                             if (showCase.onActiveSetValue) {
+                                console.log("eyo")
                                 showCase.element.setValue(showCase.onActiveSetValue);
                             }
                         } else {
