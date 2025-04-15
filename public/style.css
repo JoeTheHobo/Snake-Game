@@ -3108,6 +3108,24 @@ height: 100%;
   color: black;
   font-size: 30px;
 }
+.spawnZoneRight {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.spawnZoneImg {
+  height: 90%;
+  aspect-ratio: 1/1;
+  cursor: url('./img/pointer.cur'), auto;
+  transition: all .2s ease-in-out;
+  margin-right: 5px;
+
+}
+.spawnZoneImg:hover {
+  opacity: 0.5;
+}
+
 .me_zone_settings_holder {
   width: 100%;
   height: 40%;
@@ -4536,7 +4554,7 @@ cursor: url('./img/pointer.cur'), auto;
   background: linear-gradient(106.84deg, #1A1A1A 4.86%, #373737 92.96%);
 
 }
-.chooseBoardPopup, .editGameModePopup {
+.chooseBoardPopup, .editGameModePopup,.editZonePopup {
   position: absolute;
   top: 0;
   right: 0;
@@ -4819,7 +4837,7 @@ cursor: url('./img/pointer.cur'), auto;
       transform: rotate(360deg); /* Slow final quarter spin */
     }
   }
-  .modernPopup_topRow_title {
+  .modernPopup_topRow_title,.modernPopup_topRow_title_zones {
     color: white;
     font-size: 25px;
   }

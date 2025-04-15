@@ -1892,7 +1892,6 @@ function makeSpawnZoneListing(holder,zone,i) {
 
     let spawnZoneID = spawnZoneHolder.create("div.spawnZoneID");
     spawnZoneID.className = "spawnZoneID";
-
     spawnZoneID.innerHTML = zone.id;
 
     spawnZoneHolder.type = zone.team ? "player" : "item";
@@ -1902,18 +1901,73 @@ function makeSpawnZoneListing(holder,zone,i) {
     if (spawnZoneHolder.type == "item") {
         if (savedSelectingZoneItem === i) spawnZoneHolder.classAdd("spawnZoneSelected")
     }
-    spawnZoneHolder.i = i;
+
+    let rightIcons = spawnZoneHolder.create("div.spawnZoneRight");
+    let editIcon = rightIcons.create("img.spawnZoneImg");
+    editIcon.src = "img/menuIcons/edit.png";
+    editIcon.on("click",function() {
+        let content = $("spawn_zones_content");
+        $(".editZonePopup").show("flex");
+
+        let a = false, b= false, c = false, d = false, e = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false, q = false;
+        if (spawnZoneHolder.type == "player") {
+            let a = createGamemodeSetting("Zone Name","input","id",{maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.",1);
+            let b = createGamemodeSetting("")
+        }
+
+        let grid = [
+            [a,b,c,d],
+            [f,g,h,i],
+            [j,k,l,m],
+            [n,o,p,q]
+        ]
+
+        
+        createGamemodeGrid(content,4,4,grid,zone);
+    })
+
+    let deleteIcon = rightIcons.create("img.spawnZoneImg");
+    deleteIcon.src = "img/tool_delete.png";
+    deleteIcon.on("click",function() {
+        if (spawnZoneHolder.type == "player") {
+            if (currentBoard.spawnZones.players.length == 1) return;
+            currentBoard.spawnZones.players.splice(i,1);
+            savedSelectingZonePlayer = 0;
+            selectedZone = {
+                type: "player",
+                zoneIndex: savedSelectingZonePlayer,
+                zone: currentBoard.spawnZones.players[savedSelectingZonePlayer],
+            }
+            generateZoneListings("Player Zones");
+        }
+        if (spawnZoneHolder.type == "item") {
+            if (currentBoard.spawnZones.items.length == 1) return;
+            currentBoard.spawnZones.items.splice(i,1);
+            savedSelectingZoneItem = 0;
+            selectedZone = {
+                type: "item",
+                zoneIndex: savedSelectingZoneItem,
+                zone: currentBoard.spawnZones.items[savedSelectingZoneItem],
+            }
+            generateZoneListings("Item Zones");
+        }
+        
+        //loadZoneOptions();
+        renderZoneCanvas();
+    })
+    
+
     spawnZoneHolder.on("click",function() {
         $(".spawnZoneHolder").classRemove("spawnZoneSelected");
         this.classAdd("spawnZoneSelected");
         selectedZone = {
             type: this.type,
-            zoneIndex: this.i,
+            zoneIndex: i,
             zone: zone,
         }
-        if (this.type == "item") savedSelectingZoneItem = this.i;
-        if (this.type == "player") savedSelectingZonePlayer = this.i;
-        loadZoneOptions();
+        if (this.type == "item") savedSelectingZoneItem = i;
+        if (this.type == "player") savedSelectingZonePlayer = i;
+        //loadZoneOptions();
     })
 
 }
@@ -2350,7 +2404,7 @@ function showStatusMenu(showing,funcs) {
 $(".me_sz_addButton").on("click",function() {
     if (selectedZone.type == "player") {
         currentBoard.spawnZones.players.push({
-                id: "Player Zone #" + rnd(1000,9999),
+                id: "player" + rnd(100),
                 pos1: {
                     x: Math.round(currentBoard.width/4),
                     y: Math.round(currentBoard.height/4),
@@ -2380,7 +2434,7 @@ $(".me_sz_addButton").on("click",function() {
     }
     if (selectedZone.type == "item") {
         currentBoard.spawnZones.items.push({
-            id: "Item Zone #" + rnd(1000,9999),
+            id: "item" + rnd(100),
             pos1: {
                 x: Math.round(currentBoard.width/4),
                 y: Math.round(currentBoard.height/4),
@@ -2408,47 +2462,6 @@ $(".me_sz_addButton").on("click",function() {
     }
     loadZoneOptions();
     renderZoneCanvas();
-})
-$(".me_zone_delete").on("click",function() {
-    makePopUp([
-        {type: "title",text: "Delete Zone?"},
-        [
-            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", background: "red", width: "100px",text:"Delete",onClick: () => {
-                if (selectedZone.type == "player") {
-                    if (currentBoard.spawnZones.players.length == 1) return;
-                    currentBoard.spawnZones.players.splice(savedSelectingZonePlayer,1);
-                    savedSelectingZonePlayer = 0;
-                    selectedZone = {
-                        type: "player",
-                        zoneIndex: savedSelectingZonePlayer,
-                        zone: currentBoard.spawnZones.players[savedSelectingZonePlayer],
-                    }
-                    generateZoneListings("Player Zones");
-                }
-                if (selectedZone.type == "item") {
-                    if (currentBoard.spawnZones.items.length == 1) return;
-                    currentBoard.spawnZones.items.splice(savedSelectingZoneItem,1);
-                    savedSelectingZoneItem = 0;
-                    selectedZone = {
-                        type: "item",
-                        zoneIndex: savedSelectingZoneItem,
-                        zone: currentBoard.spawnZones.items[savedSelectingZoneItem],
-                    }
-                    generateZoneListings("Item Zones");
-                }
-                
-                loadZoneOptions();
-                renderZoneCanvas();
-            }},
-            {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto", width: "100px",background: "green",text:"No!"},
-        ],
-    ],{
-        exit: {
-            cursor: "url('./img/pointer.cur'), auto",
-        },
-        id: "deleteZonePopUp",
-    
-    })
 })
 $(".closeBoardSettings").on("click",function() {
     this.$P().hide();
