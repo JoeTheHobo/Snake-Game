@@ -55,10 +55,6 @@ $("local_button_playSolo").on("click",function() {
     $(".button_mapEditorHolder").hide();
     
 })
-$("button_playAgain").on("click",function() {
-    startGame();
-    $(".button_mapEditorHolder").hide();
-})
 $("button_mapEditor").on("click",function() {
     openMapEditor(currentBoard);
     isActiveGame = false;
