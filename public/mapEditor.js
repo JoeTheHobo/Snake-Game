@@ -1915,7 +1915,6 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
                 generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
             }
         });
-        console.log(type)
         if (type == "item") {
             b = createGamemodeSetting("Manage Item Spawning","button",false,{text: "Manage",func: () => {
                 loadItemSpawning();
@@ -2319,135 +2318,6 @@ function loadZoneOptions() {
         $(".me_z_s_item").show("flex");
     }
 }
-$(".mezs_active").on("change",function() {
-    selectedZone.zone.active = this.checked;
-})
-$(".mezs_spawnPriority").on("change",function() {
-    value = Number(this.value);
-    if (this.value < 0) value = 0;
-    if (this.value > 100) value = 100;
-    selectedZone.zone.priority = value;
-})
-$(".mezs_spawnCap").on("change",function() {
-    value = Number(this.value);
-    if (this.value < 0) return;
-    selectedZone.zone.spawnCap = value;
-})
-$(".mezs_activate_whenTime").on("change",function() {
-    if (this.checked === false)
-        selectedZone.zone.activateWhenTimePassed = false;
-    if (this.checked === true)
-        selectedZone.zone.activateWhenTimePassed = 5;
-    loadZoneOptions();
-})
-$(".mezs_activateOnBoardStatus").on("change",function() {
-    if (this.checked === false)
-        selectedZone.zone.activateWhenBoardStatus = false;
-    if (this.checked === true) {
-        selectedZone.zone.activateWhenBoardStatus = {
-            status: "red",
-            count: 3,
-        };
-    }
-    loadZoneOptions();
-})
-$(".mezs_deactivateOnBoardStatus").on("change",function() {
-    if (this.checked === false)
-        selectedZone.zone.deactivateWhenBoardStatus = false;
-    if (this.checked === true) {
-        selectedZone.zone.deactivateWhenBoardStatus = {
-            status: "red",
-            count: 3,
-        };
-    }
-    loadZoneOptions();
-})
-$(".mezs_activateTime").on("input",function() {
-    value = Number(this.value);
-    if (this.value < 0) return;
-    selectedZone.zone.activateWhenTimePassed = value;
-})
-$(".mezs_deactivate_whenTime").on("change",function() {
-    if (this.checked === false)
-        selectedZone.zone.deactivateWhenTimePassed = false;
-    if (this.checked === true)
-        selectedZone.zone.deactivateWhenTimePassed = 5;
-    loadZoneOptions();
-})
-$(".mezs_deactivateTime").on("input",function() {
-    value = Number(this.value);
-    if (this.value < 0) return;
-    selectedZone.zone.deactivateWhenTimePassed = value;
-})
-$(".mezs_limitSpawning").on("change",function() {
-    if (this.checked === false)
-        selectedZone.zone.spawnCap = false;
-    if (this.checked === true)
-        selectedZone.zone.spawnCap = 3;
-    loadZoneOptions();
-})
-$(".mezs_respawning").on("change",function() {
-    selectedZone.zone.respawnHere = this.checked;
-})
-$(".mezs_alternate").on("change",function() {
-    selectedZone.zone.alternate = this.checked;
-})
-$(".mezs_teamColor").on("click",function() {
-    showStatusMenu(["status"],{status: function(status) {
-        selectedZone.zone.team = status;
-        loadZoneOptions();
-        generateZoneListings("Player Zones");
-        $(".statusSelectionScreen").hide();
-    }});
-})
-$(".mezs_activateBoardStatus").on("click",function() {
-    showStatusMenu(["status","count","submit"],{
-        status: function(status,element) {
-            $(".nonPlayer").css({
-                border: "2px solid black", 
-            })
-            element.style.border = "2px solid blue";
-            selectedZone.zone.activateWhenBoardStatus.status = status;
-        },
-        number: function(value) {
-            selectedZone.zone.activateWhenBoardStatus.count = value;
-        },
-        final: function() {
-            $(".statusSelectionScreen").hide();
-        }
-    });
-    
-    $(".nonPlayer").css({
-        border: "2px solid black", 
-    })
-
-    $(".popup_status_input").value = selectedZone.zone.activateWhenBoardStatus.count;
-    $(".statusOption_" + selectedZone.zone.activateWhenBoardStatus.status).style.border = "2px solid blue";
-})
-$(".mezs_deactivateBoardStatus").on("click",function() {
-    showStatusMenu(["status","count","submit"],{
-        status: function(status,element) {
-            $(".nonPlayer").css({
-                border: "2px solid black", 
-            })
-            if (element) element.style.border = "2px solid blue";
-            selectedZone.zone.deactivateWhenBoardStatus.status = status;
-        },
-        number: function(value) {
-            selectedZone.zone.deactivateWhenBoardStatus.count = value;
-        },
-        final: function() {
-            $(".statusSelectionScreen").hide();
-        }
-    });
-    
-    $(".nonPlayer").css({
-        border: "2px solid black", 
-    })
-
-    $(".popup_status_input").value = selectedZone.zone.deactivateWhenBoardStatus.count;
-    $(".statusOption_" + selectedZone.zone.deactivateWhenBoardStatus.status).style.border = "2px solid blue";
-})
 function showStatusMenu(showing,funcs,defaults = {}) {
     //Showing can equal ["status","playerStatus"]
     $(".status_popup_option").hide();
@@ -2510,7 +2380,7 @@ $(".me_sz_addButton").on("click",function() {
             zoneIndex: savedSelectingZonePlayer,
             zone: currentBoard.spawnZones.players[savedSelectingZonePlayer],
         }
-        generateZoneListings("Player Zones",savedSelectingZonePlayer,currentBoard.spawnZones.players);
+        generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
     }
     if (selectedZone.type == "item") {
         currentBoard.spawnZones.items.push({
@@ -2538,17 +2408,13 @@ $(".me_sz_addButton").on("click",function() {
             zoneIndex: savedSelectingZoneItem,
             zone: currentBoard.spawnZones.items[savedSelectingZoneItem],
         }
-        generateZoneListings("Item Zones",savedSelectingZoneItem,currentBoard.spawnZones.items);
+        generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
     }
     loadZoneOptions();
     renderZoneCanvas();
 })
 $(".closeBoardSettings").on("click",function() {
     this.$P().hide();
-})
-$(".mezs_itemSpawning").on("click",function() {
-    loadItemSpawning();
-    
 })
 function loadItemSpawning() {
     let holder = $(".me_itemSpawning_list");
