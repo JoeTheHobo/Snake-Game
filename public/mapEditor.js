@@ -1905,16 +1905,17 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
         $(".modernPopup_topRow_title_zones").innerHTML = type.format("A") + " Zone: " + zone.id;
 
         let a = false, b= false, c = false, d = false, e = false,f = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false;
+        a = createGamemodeSetting("Zone Name","input","id",{maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.",false,false,false,(value) => {
+            renderZoneCanvas();
+            $(".modernPopup_topRow_title_zones").innerHTML = "Player Zone: " + value;
+            if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {
+                generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
+            } else {
+                generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
+            }
+        });
         if (type == "player") {
-            a = createGamemodeSetting("Zone Name","input","id",{maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.",false,false,false,(value) => {
-                renderZoneCanvas();
-                $(".modernPopup_topRow_title_zones").innerHTML = "Player Zone: " + value;
-                if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {
-                    generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
-                } else {
-                    generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
-                }
-            });
+            
             b = createGamemodeSetting("Zone Team","status","team",{readAs: "color",statusMenuOptions: ["remove","status","submit"]},"Give team status to people who spawn here.",false,false,false,() => {
                 renderZoneCanvas();
                 if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {

@@ -1541,6 +1541,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
         holder.gmValue = value;
 
         valueInput.htmlNumber = valueNumber;
+        holder.htmlNumber = valueNumber;
 
         valueInput.on("click",function() {
             let defaultNumber,defaultStatus;
@@ -1585,7 +1586,6 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                     list.push("count")
                     holder.gmValue.count = value;
                     setNestedValue(pullFrom,list,value);
-                    console.log(numberHTML)
                     numberHTML.innerHTML = value;
 
                     if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
@@ -1605,13 +1605,13 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                 valueInput.css({
                     background: _color(value).ogColor,
                 })
-                valueNumber.innerHTML = 1;
+                this.htmlNumber.innerHTML = 1;
             }
             if (typeSettings.readAs == "object") {
                 valueInput.css({
                     background: _color(value.status).ogColor,
                 })
-                valueNumber.innerHTML = value.count;
+                this.htmlNumber.innerHTML = value.count;
             }
     
             holder.gmValue = value;
