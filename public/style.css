@@ -3424,7 +3424,7 @@ margin-top: 15px;
   width: 40%;
   height: max-content;
   padding: 20px;
-  z-index: 501;
+  z-index: 1000;
 }
 .me_popup_boardSettings {
   display: none;
