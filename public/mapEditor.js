@@ -2042,7 +2042,6 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
         }
         generateZoneListings(type,selectingZoneIndex,zoneList);
         
-        //loadZoneOptions();
         renderZoneCanvas();
     })
     
@@ -2146,7 +2145,6 @@ function setObjectTab(type) {
         }
         $(".me_s_holder_tools").hide();
         $(".me_s_holder_subtool").hide();
-        loadZoneOptions();
     }
 }
 function loadTagsList(allowedIds,itemList,tagList) {
@@ -2266,58 +2264,6 @@ function getTileById(id) {
         if (tiles[i].id == id) return tiles[i];
     }
 }
-function loadZoneOptions() {
-    if (!selectedZone) return;
-    let zone = selectedZone.zone;
-
-    $(".mezs_active").checked = zone.active;
-    $(".mezs_activate_whenTime").checked = zone.activateWhenTimePassed !== false;
-    if ($(".mezs_activate_whenTime").checked) {
-        $(".mezs_activateTime_row").show("flex");
-        $(".mezs_activateTime").value = zone.activateWhenTimePassed;
-    } else {
-        $(".mezs_activateTime_row").hide();
-    }
-    $(".mezs_deactivate_whenTime").checked = zone.deactivateWhenTimePassed !== false;
-    if ($(".mezs_deactivate_whenTime").checked) {
-        $(".mezs_deactivateTime_row").show("flex");
-        $(".mezs_deactivateTime").value = zone.deactivateWhenTimePassed;
-    } else {
-        $(".mezs_deactivateTime_row").hide();
-    }
-
-    $(".mezs_activateOnBoardStatus").checked = zone.activateWhenBoardStatus !== false;
-    if ($(".mezs_activateOnBoardStatus").checked) {
-        $(".mezs_activateOnBoardStatus_row").show("flex");
-    } else {
-        $(".mezs_activateOnBoardStatus_row").hide();
-    }
-    $(".mezs_deactivateOnBoardStatus").checked = zone.deactivateWhenBoardStatus !== false;
-    if ($(".mezs_deactivateOnBoardStatus").checked) {
-        $(".mezs_deactivateOnBoardStatus_row").show("flex");
-    } else {
-        $(".mezs_deactivateOnBoardStatus_row").hide();
-    }
-
-    if (selectedZone.type == "player") {
-        $(".me_z_s_item").hide();
-        $(".me_z_s_player").show("flex");
-        $(".mezs_teamColor").style.background = _color(zone.team).ogColor;
-        $(".mezs_limitSpawning").checked = zone.spawnCap !== false;
-        if ($(".mezs_limitSpawning").checked) {
-            $(".mezs_spawnCap_row").show("flex");
-            $(".mezs_spawnCap").value = zone.spawnCap;
-        } else {
-            $(".mezs_spawnCap_row").hide();
-        }
-        $(".mezs_respawning").checked = zone.respawnHere;
-        $(".mezs_spawnPriority").value = zone.priority || 0;
-        $(".mezs_alternate").checked = zone.alternate || false;
-    } else {
-        $(".me_z_s_player").hide();
-        $(".me_z_s_item").show("flex");
-    }
-}
 function showStatusMenu(showing,funcs,defaults = {}) {
     //Showing can equal ["status","playerStatus"]
     $(".status_popup_option").hide();
@@ -2410,7 +2356,6 @@ $(".me_sz_addButton").on("click",function() {
         }
         generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
     }
-    loadZoneOptions();
     renderZoneCanvas();
 })
 $(".closeBoardSettings").on("click",function() {
