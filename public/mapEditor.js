@@ -1915,9 +1915,9 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
                 generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
             }
         });
+        console.log(type)
         if (type == "item") {
             b = createGamemodeSetting("Manage Item Spawning","button",false,{text: "Manage",func: () => {
-                console.log("YASS")
                 loadItemSpawning();
             }},"Control which items are allowed to spawn here.");
         }
