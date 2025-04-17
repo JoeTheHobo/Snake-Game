@@ -1915,7 +1915,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
                     generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
                 }
             });
-            b = createGamemodeSetting("Zone Team","status","team",{readAs: "color",statusMenuOptions: ["status","submit"]},"Give team status to people who spawn here.",false,false,false,() => {
+            b = createGamemodeSetting("Zone Team","status","team",{readAs: "color",statusMenuOptions: ["remove","status","submit"]},"Give team status to people who spawn here.",false,false,false,() => {
                 renderZoneCanvas();
                 if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {
                     generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
@@ -2422,7 +2422,7 @@ $(".mezs_deactivateBoardStatus").on("click",function() {
             $(".nonPlayer").css({
                 border: "2px solid black", 
             })
-            element.style.border = "2px solid blue";
+            if (element) element.style.border = "2px solid blue";
             selectedZone.zone.deactivateWhenBoardStatus.status = status;
         },
         number: function(value) {
@@ -2465,6 +2465,11 @@ function showStatusMenu(showing,funcs,defaults = {}) {
 
 
     $(".statusSelectionScreen").funcs = funcs;
+    $(".statusSelectionScreen").removeStatus = function() {
+        if ($(".statusSelectionScreen").funcs.status) {
+            $(".statusSelectionScreen").funcs.status("white");
+        }
+    }
 
     $(".statusSelectionScreen").show("flex");
 }
@@ -2572,6 +2577,9 @@ function loadItemSpawning() {
         })
     }
 }
+$(".status_button_remove").on("click",function() {
+    $(".statusSelectionScreen").removeStatus();
+})
 $(".status_button_close").on("click",function() {
     $(".statusSelectionScreen").hide();
 })
