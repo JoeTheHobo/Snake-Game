@@ -1583,8 +1583,8 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                     let list = settings.valueString.split(".");
                     list.push("count")
                     holder.gmValue.count = value;
-                    console.log(list)
                     setNestedValue(pullFrom,list,value);
+                    console.log(valueNumber)
                     valueNumber.innerHTML = value;
 
                     if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);

@@ -2455,8 +2455,11 @@ function showStatusMenu(showing,funcs,defaults = {}) {
         $(".popup_status_number").value = defaults.number;
     }
     if (defaults.status) {
-        console.log(".statusOption_" + defaults.status);
-        $(".statusOption_" + defaults.status).style.border = "2px solid blue";
+        if (defaults.status === "white") {
+
+        } else {
+            $(".statusOption_" + defaults.status).style.border = "2px solid blue";
+        }
     }
 
 
