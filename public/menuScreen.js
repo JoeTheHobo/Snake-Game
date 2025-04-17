@@ -1373,7 +1373,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
 
         }
     }
-    if (settings.type == "number") {
+    if (settings.type == "button") {
         valueInput = holder.create("div.endScreen_LobbyButton");
         valueInput.innerHTML = typeSettings.text;
         valueInput.on("click",typeSettings.func);
