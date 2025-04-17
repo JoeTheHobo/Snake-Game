@@ -1406,6 +1406,10 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             if (_type(isTrue).type == "number") isTrue = true;
             else isTrue = false;
         }
+        if (typeSettings.setTrueIfValueIsObject) {
+            if (_type(isTrue).type == "object") isTrue = true;
+            else isTrue = false;
+        }
 
         if (isTrue) {
             valueInput.classAdd("gmGroup_toggle_on");
@@ -1512,6 +1516,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
     if (settings.type == "status") {
         valueInput = holder.create("div.gmGroup_statusHolder");
         valueNumber = valueInput.create("div.gmGroup_statusNumber");
+        let defaultNumber,defaultStatus;
 
         if (typeSettings.showNumber) {
             valueNumber.show();
@@ -1526,15 +1531,21 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                 background: _color(value).ogColor,
             })
             valueNumber.innerHTML = 1;
+            defaultNumber = 1;
+            defaultStatus = value;
         }
         if (typeSettings.readAs == "object") {
             valueInput.css({
                 background: _color(value.status).ogColor,
             })
             valueNumber.innerHTML = value.count;
+            defaultNumber = value.count;
+            defaultStatus = value.status;
         }
 
         holder.gmValue = value;
+
+        
 
         valueInput.on("click",function() {
             showStatusMenu(typeSettings.statusMenuOptions,{
@@ -1576,6 +1587,9 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                 final: function() {
                     $(".statusSelectionScreen").hide();
                 }
+            },{
+                number: defaultNumber,
+                status: defaultStatus,
             });
         })
         holder.setValue = function(value) {

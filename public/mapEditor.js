@@ -1906,8 +1906,9 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
 
         let a = false, b= false, c = false, d = false, e = false,f = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false;
         if (type == "player") {
-            a = createGamemodeSetting("Zone Name","input","id",{maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.",false,false,false,() => {
+            a = createGamemodeSetting("Zone Name","input","id",{maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.",false,false,false,(value) => {
                 renderZoneCanvas();
+                $(".modernPopup_topRow_title_zones").innerHTML = "Player Zone: " + value;
                 if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {
                     generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
                 } else {
@@ -1942,7 +1943,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
         }
 
         e = createGamemodeSetting("Active","toggle","active",{},"Is the zone active at the start of the game? Can things spawn here");
-        i = createGamemodeSetting("Active On Board Status","toggle","activateWhenBoardStatus",{setTrueIfValueIsNumber: true,whenCheckedSet: {
+        i = createGamemodeSetting("Active On Board Status","toggle","activateWhenBoardStatus",{setTrueIfValueIsObject: true,whenCheckedSet: {
             source: "activateWhenBoardStatus",
             value: {
                 status: "red",
@@ -1962,7 +1963,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
                 },
             },
         })
-        j = createGamemodeSetting("Deactive On Board Status","toggle","deactivateWhenBoardStatus",{setTrueIfValueIsNumber: true,whenCheckedSet: {
+        j = createGamemodeSetting("Deactive On Board Status","toggle","deactivateWhenBoardStatus",{setTrueIfValueIsObject: true,whenCheckedSet: {
             source: "deactivateWhenBoardStatus",
             value: {
                 status: "red",
@@ -2439,11 +2440,20 @@ $(".mezs_deactivateBoardStatus").on("click",function() {
     $(".popup_status_input").value = selectedZone.zone.deactivateWhenBoardStatus.count;
     $(".statusOption_" + selectedZone.zone.deactivateWhenBoardStatus.status).style.border = "2px solid blue";
 })
-function showStatusMenu(showing,funcs) {
+function showStatusMenu(showing,funcs,defaults = {}) {
     //Showing can equal ["status","playerStatus"]
     $(".status_popup_option").hide();
     for (let i = 0; i < showing.length; i++) {
         $(".status_popup_" + showing[i]).show("flex");
+    }
+
+    $(".nonPlayer").style.border = "2px solid black";
+
+    if (defaults.number) {
+        $(".popup_status_number").value = defaults.number;
+    }
+    if (defaults.status) {
+        $(".statusOption_" + defaults.status).style.border = "2px solid blue";
     }
 
 
