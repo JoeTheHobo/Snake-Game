@@ -1516,7 +1516,6 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
     if (settings.type == "status") {
         valueInput = holder.create("div.gmGroup_statusHolder");
         valueNumber = valueInput.create("div.gmGroup_statusNumber");
-        let defaultNumber,defaultStatus;
 
         if (typeSettings.showNumber) {
             valueNumber.show();
@@ -1531,16 +1530,12 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                 background: _color(value).ogColor,
             })
             valueNumber.innerHTML = 1;
-            defaultNumber = 1;
-            defaultStatus = value;
         }
         if (typeSettings.readAs == "object") {
             valueInput.css({
                 background: _color(value.status).ogColor,
             })
             valueNumber.innerHTML = value.count;
-            defaultNumber = value.count;
-            defaultStatus = value.status;
         }
 
         holder.gmValue = value;
@@ -1548,6 +1543,17 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
         
 
         valueInput.on("click",function() {
+            let defaultNumber,defaultStatus;
+
+            if (_type(holder.gmValue).type == "string") {
+                defaultNumber = 0;
+                defaultStatus = holder.gmValue;
+            }
+            if (_type(holder.gmValue).type == "object") {
+                defaultNumber = holder.gmValue.count;
+                defaultStatus = holder.gmValue.status;
+            }
+
             showStatusMenu(typeSettings.statusMenuOptions,{
                 status: function(status,element) {
                     $(".nonPlayer").css({
@@ -1577,6 +1583,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                     let list = settings.valueString.split(".");
                     list.push("count")
                     holder.gmValue.count = value;
+                    console.log(list)
                     setNestedValue(pullFrom,list,value);
                     valueNumber.innerHTML = value;
 
