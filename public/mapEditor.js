@@ -2447,7 +2447,9 @@ function showStatusMenu(showing,funcs,defaults = {}) {
         $(".status_popup_" + showing[i]).show("flex");
     }
 
-    $(".nonPlayer").style.border = "2px solid black";
+    $(".nonPlayer").css({
+        border: "2px solid black", 
+    });
 
     if (defaults.number) {
         $(".popup_status_number").value = defaults.number;
