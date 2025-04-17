@@ -1907,13 +1907,19 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
         let a = false, b= false, c = false, d = false, e = false,f = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false;
         a = createGamemodeSetting("Zone Name","input","id",{maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.",false,false,false,(value) => {
             renderZoneCanvas();
-            $(".modernPopup_topRow_title_zones").innerHTML = "Player Zone: " + value;
             if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {
+                $(".modernPopup_topRow_title_zones").innerHTML = "Player Zone: " + value;
                 generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
             } else {
+                $(".modernPopup_topRow_title_zones").innerHTML = "Item Zone: " + value;
                 generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
             }
         });
+        if (type == "item") {
+            b = createGamemodeSetting("Manage Item Spawning","button",false,{text: "Manage",func: () => {
+                loadItemSpawning();
+            }},"Control which items are allowed to spawn here.");
+        }
         if (type == "player") {
             
             b = createGamemodeSetting("Zone Team","status","team",{readAs: "color",statusMenuOptions: ["remove","status","submit"]},"Give team status to people who spawn here.",false,false,false,() => {

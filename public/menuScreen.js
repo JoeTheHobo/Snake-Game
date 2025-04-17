@@ -1374,6 +1374,11 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
         }
     }
     if (settings.type == "number") {
+        valueInput = holder.create("div.endScreen_LobbyButton");
+        valueInput.innerHTML = typeSettings.text;
+        valueInput.on("click",typeSettings.func);
+    }
+    if (settings.type == "number") {
         valueInput = holder.create("input.gmGroup_number");
         valueInput.value = getNestedValue(pullFrom,settings.valueString);
         holder.gmValue = getNestedValue(pullFrom,settings.valueString);
