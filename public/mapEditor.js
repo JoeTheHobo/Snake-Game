@@ -2548,7 +2548,6 @@ $(".closeBoardSettings").on("click",function() {
 })
 $(".mezs_itemSpawning").on("click",function() {
     loadItemSpawning();
-    $(".me_itemSpawning_popup").show("flex");
     
 })
 function loadItemSpawning() {
@@ -2584,6 +2583,7 @@ function loadItemSpawning() {
             }
         })
     }
+    $(".me_itemSpawning_popup").show("flex");
 }
 $(".status_button_remove").on("click",function() {
     $(".statusSelectionScreen").removeStatus();
