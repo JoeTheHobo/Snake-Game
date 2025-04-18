@@ -215,6 +215,7 @@ function loadPasses(index) {
     }
 }
 function loadRadialPass(holder,pass,unlocked = []) {
+    holder.innerHTML = "";
     let canvas = holder.create("canvas.battlePassCanvas");
     canvas.stars;
     canvas.techTree_ctx;
@@ -241,25 +242,25 @@ function loadRadialPass(holder,pass,unlocked = []) {
 
       
     canvas.on('mouseout', function(e) {
-        const rect = this.getBoundingClientRect();
+        const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        if (x < 0 || x > this.clientWidth || y < 0 || y > this.clientHeight) {
+        if (x < 0 || x > canvas.clientWidth || y < 0 || y > canvas.clientHeight) {
             drag = false;
         }
     });
     canvas.on("mousedown", (e) => {
-        const rect = this.getBoundingClientRect();
-        this.drag = true;
-        this.startX = e.clientX - rect.left;
-        this.startY = e.clientY - rect.top;
-        this.mouseDownTime = Date.now();
+        const rect = canvas.getBoundingClientRect();
+        canvas.drag = true;
+        canvas.startX = e.clientX - rect.left;
+        canvas.startY = e.clientY - rect.top;
+        canvas.mouseDownTime = Date.now();
     });
     canvas.on("mouseup", (e) => {
         canvas.drag = false;
 
-        const clickDuration = Date.now() - this.mouseDownTime; // Calculate the time between mousedown and mouseup
+        const clickDuration = Date.now() - canvas.mouseDownTime; // Calculate the time between mousedown and mouseup
         if (clickDuration <= maxClickDuration) {
             if (!e.target.classList.contains("techTree_reward") && !e.target.classList.contains("techTree_insideReward")) {
                 $(".techTree_reward").classRemove("techTree_reward_selected")
@@ -268,22 +269,22 @@ function loadRadialPass(holder,pass,unlocked = []) {
         }
     });
     canvas.on("mousemove", (e) => {
-        if (this.drag) {
-            this.offsetX -= (e.clientX - this.startX)*this.dragSpeed;
-            this.offsetY -= (e.clientY - this.startY)*this.dragSpeed;
+        if (canvas.drag) {
+            canvas.offsetX -= (e.clientX - canvas.startX)*canvas.dragSpeed;
+            canvas.offsetY -= (e.clientY - canvas.startY)*canvas.dragSpeed;
 
-            for (let i = 0; i < this.movingPoints.length; i++) {
-                this.movingPoints[i].x += (e.clientX - this.startX)*this.elementDragSpeed;
-                this.movingPoints[i].y += (e.clientY - this.startY)*this.elementDragSpeed;
-                this.movingPoints[i].div.css({
-                    top: this.movingPoints[i].y + "px",
-                    left: this.movingPoints[i].x + "px",
+            for (let i = 0; i < canvas.movingPoints.length; i++) {
+                canvas.movingPoints[i].x += (e.clientX - canvas.startX)*canvas.elementDragSpeed;
+                canvas.movingPoints[i].y += (e.clientY - canvas.startY)*canvas.elementDragSpeed;
+                canvas.movingPoints[i].div.css({
+                    top: canvas.movingPoints[i].y + "px",
+                    left: canvas.movingPoints[i].x + "px",
                 })
             }
 
-            this.startX = e.clientX;
-            this.startY = e.clientY;
-            drawStars(this);
+            canvas.startX = e.clientX;
+            canvas.startY = e.clientY;
+            drawStars(canvas);
         }
     });
 
