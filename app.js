@@ -3434,6 +3434,7 @@ function checkBoard(board,account) {
         if (board.originalMap[0].length !== 50) return "Board Width Is Not 50";
         if (board.originalMap.length !== 30) return "Board Height Is Not 30";
 
+        console.log(account.allowedItemSkinPacks);
         let itemCheck = checkBoardItems(board,"item",account.allowedItemIds,account.allowedItemSkinPacks);
         if (itemCheck !== true) return itemCheck;
         let tileCheck = checkBoardItems(board,"tile",account.allowedTileIds,account.allowedItemSkinPacks);
