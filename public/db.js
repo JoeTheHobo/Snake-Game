@@ -418,7 +418,7 @@ function pass_drawSet(canvas, i, set) {
             const x = centerX + Math.cos(angle) * radius;
             const y = centerY + Math.sin(angle) * radius;
             const element = set[j];
-            
+
             element.index = nodeIndex;
 
             if (element?.type !== false) {
@@ -429,6 +429,10 @@ function pass_drawSet(canvas, i, set) {
                     ctx.strokeStyle = "red";
                     ctx.lineWidth = 3;
                     ctx.strokeRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
+                }
+
+                if (element.id) {
+                    console.log(element.id);
                 }
 
             } else {
