@@ -340,27 +340,50 @@ function renderRadialPass2(canvas,pass,unlocked) {
 }
 function pass_drawSet(canvas, i, thickness, set) {
     const ctx = canvas.getContext("2d");
-
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-
-    const radius = (thickness / 2) + (i * thickness);
 
     const squareSize = 20;
     const total = set.length;
 
-    for (let j = 0; j < total; j++) {
-        // Angle per item, starting at the top (-90° in radians)
-        const angle = (-Math.PI / 2) + (j * (2 * Math.PI / total));
+    const img = new Image();
+    img.src = "img/techTrees/item_empty.png";
 
-        // Polar to cartesian
-        const x = centerX + Math.cos(angle) * radius;
-        const y = centerY + Math.sin(angle) * radius;
+    img.onload = () => {
+        if (i === 0) {
+            const totalHeight = total * squareSize + (total - 1) * 5;
+            const startY = centerY - totalHeight / 2;
 
-        // Draw gray square centered at (x, y)
-        ctx.fillStyle = 'gray';
-        ctx.fillRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
-    }
+            for (let j = 0; j < total; j++) {
+                const x = centerX - squareSize / 2;
+                const y = startY + j * (squareSize + 5);
+                const element = set[j];
+
+                if (element?.type === "item") {
+                    ctx.drawImage(img, x, y, squareSize, squareSize);
+                } else {
+                    ctx.fillStyle = 'gray';
+                    ctx.fillRect(x, y, squareSize, squareSize);
+                }
+            }
+        } else {
+            const radius = (thickness / 2) + (i * thickness);
+
+            for (let j = 0; j < total; j++) {
+                const angle = (-Math.PI / 2) + (j * (2 * Math.PI / total));
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+                const element = set[j];
+
+                if (element?.type === "item") {
+                    ctx.drawImage(img, x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
+                } else {
+                    ctx.fillStyle = 'gray';
+                    ctx.fillRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
+                }
+            }
+        }
+    };
 }
 function pass_drawRing(canvas, i, thickness) {
     const ctx = canvas.getContext("2d");
