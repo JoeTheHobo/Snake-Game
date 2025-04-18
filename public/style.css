@@ -4860,13 +4860,14 @@ cursor: url('./img/pointer.cur'), auto;
     align-items: flex-start;
   }
   .gamemodePopup_availableConditionsList {
-    flex: 1 1 auto; /* Fills all available space */
+    height: 95%;
     overflow-y: auto;
     display: flex;
     justify-content: space-evenly;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: flex-start;
+    gap: 5px;
 
   }
   .gamemodePopup_winningConditions_column {
@@ -4964,7 +4965,7 @@ cursor: url('./img/pointer.cur'), auto;
     justify-content: space-between;
   }
   .gmp_slot {
-    width: 40%;
+    width: 35%;
     aspect-ratio: 1/1;
     background: #E3E3E3;
     color: black;
@@ -4974,9 +4975,8 @@ cursor: url('./img/pointer.cur'), auto;
     position: relative;
     font-size: 2em;
     text-align: center;
-    margin-top: 7px;
     border-radius: 5px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
   }
   .gmp_plus {
