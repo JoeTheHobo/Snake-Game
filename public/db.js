@@ -359,6 +359,7 @@ function renderRadialPass2(canvas,pass,unlocked = []) {
         pass_drawSet(canvas,i,pass.set[i]);
     }
 }
+let selectedNodeId = false;
 let nodeImages = {}
 let nodeImageList = ["item","super_tile","tile","skin","reward","chest"];
 for (let i = 0; i < nodeImageList.length; i++) {
