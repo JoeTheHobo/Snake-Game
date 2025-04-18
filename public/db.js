@@ -1,6 +1,7 @@
 let at_table = false;
 let at_filters = [];
 let at_headerNames = [];
+let showingRings = true;
 $(".at_tab").on("click",function() {
     at_setTab(this.innerHTML.toLowerCase());
 })
@@ -364,7 +365,7 @@ function renderRadialPass2(canvas,pass,unlocked = []) {
     canvas.points = [];
     nodeIndex = 0;
     for (let i = 0; i < pass.set.length; i++) {
-        pass_drawRing(canvas,i);
+        if (showingRings) pass_drawRing(canvas,i);
         pass_drawSet(canvas,i,pass.set[i]);
     }
 
@@ -506,6 +507,11 @@ document.body.on("keydown",function(e) {
     let shiftDown = e.shiftKey;
     let altDown = e.altKey;
 
+    if (e.key === "Tab" && e.shiftKey) {
+        e.preventDefault(); // Prevent browser tab navigation
+        showingRings = !showingRings;
+        renderRadialPass2(selectedPass.canvas,selectedPass);
+    }
     if (e.key == "R") {
         selectedPass.set.push([]);
         renderRadialPass2(selectedPass.canvas,selectedPass);
@@ -520,6 +526,16 @@ document.body.on("keydown",function(e) {
         console.log("Start Writing ID")
         startWritingNumbers = true;
         writingNumber = "";
+    }
+    if (selectedNodeId !== false && e.key == "Delete") {
+        for (let i = 0; i < selectedPass.set.length; i++) {
+            for (let j = 0; j < selectedPass.set[i].length; j++) {
+                if (selectedPass.set[i][j].index == selectedNodeId) {
+                    selectedPass.set[i].splice(j,0);
+                }
+            }
+        }
+        renderRadialPass2(selectedPass.canvas,selectedPass);
     }
     if (_type(e.key).isNumber && selectedNodeId !== false && startWritingNumbers) {
         writingNumber += e.key;
