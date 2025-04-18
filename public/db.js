@@ -346,7 +346,7 @@ function drawRing(canvas, i, thickness, selected) {
 
     // Dynamic blue color
     const maxBlue = 220;
-    const step = 30;
+    const step = 10;
     const blue = Math.max(0, maxBlue - i * step);
     let ringColor = `rgba(0, 0, ${blue}, 0.4)`;
 
