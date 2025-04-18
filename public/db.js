@@ -210,11 +210,11 @@ function loadPasses(index) {
         if (index === i) {
             div.classAdd("battlePassDivSelected");
             selectedPass = battlePasses[i];
-            loadRadialPass($(".at_bp_canvas"),selectedPass);
+            loadRadialPass($(".at_bp_canvas"),selectedPass,[],true);
         }
     }
 }
-function loadRadialPass(holder,pass,unlocked = []) {
+function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
     holder.innerHTML = "";
     let canvas = holder.create("canvas.battlePassCanvas");
     canvas.stars;
@@ -233,11 +233,13 @@ function loadRadialPass(holder,pass,unlocked = []) {
     canvas.mouseDownTime = 0; // Store time of the mousedown event
     canvas.maxClickDuration = 200; // Maximum duration (in ms) for a click to be considered fast
 
+    pass.canvas = canvas;
+
     requestAnimationFrame(() => {
         canvas.width = canvas.clientWidth;
         canvas.height = canvas.clientHeight;
       
-        renderRadialPass(canvas,pass,unlocked)
+        renderRadialPass(canvas,pass,unlocked,adminTools)
       });
 
       
@@ -316,14 +318,52 @@ function loadRadialPass(holder,pass,unlocked = []) {
 }
 function renderRadialPass(canvas,pass,unlocked) {
     let ctx = canvas.getContext("2d");
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
     if (pass.background == "space") {
         generateStarBackground(canvas);
     }
 
 
+    for (let i = 0; i < pass.set.length; i++) {
+        drawRing(canvas,i);
+    }
+
+
+
+}
+function drawRing(canvas,i,thickness) {
+    const ctx = canvas.getContext("2d");
+
+    // Get center
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+
+    // Set radius and color (based on index `i`, if needed)
+    const radius = Math.min(canvas.width, canvas.height) / 2 - thickness / 2;
+    const colors = ["red", "green", "blue", "orange", "purple", "cyan"];
+    const color = colors[i % colors.length]; // cycle through colors
+
+    // Draw ring
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = thickness;
+    ctx.stroke();
+
 }
 
+document.body.on("keydown",function(e) {
+    if (global_scene !== "adminTools") return;
+    if ($("at_battlepassTab").style.background !== 'rgb(137, 69, 192)') return;
+    if (!selectedPass) return;
+
+    if (e.key == "r") {
+        selectedPass.sets.push([]);
+        renderRadialPass(selectedPass.canvas,selectedPass,[]);
+    }
+
+})
 
 function generateStarBackground(canvas) {
     canvas.viewWidth = window.innerWidth;
