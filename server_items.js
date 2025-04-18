@@ -555,14 +555,14 @@ items.push({
                 snakeSize: false,
                 playerHasEmptySlot: false,
                 playerHasItem: [{
-                    name: "blueKey",
+                    name: "bluekey",
                     count: 1,
                 }],
             },
             pass: {
                 deleteMe: true,
                 removePlayerItem: [{
-                    name: "blueKey",
+                    name: "bluekey",
                     count: 1,
                 }]
             },
@@ -603,14 +603,14 @@ items.push({
                 snakeSize: false,
                 playerHasEmptySlot: false,
                 playerHasItem: [{
-                    name: "redKey",
+                    name: "redkey",
                     count: 1,
                 }],
             },
             pass: {
                 deleteMe: true,
                 removePlayerItem: [{
-                    name: "redKey",
+                    name: "redkey",
                     count: 1,
                 }]
             },
@@ -653,14 +653,14 @@ items.push({
                 snakeSize: false,
                 playerHasEmptySlot: false,
                 playerHasItem: [{
-                    name: "greenKey",
+                    name: "greenkey",
                     count: 1,
                 }],
             },
             pass: {
                 deleteMe: true,
                 removePlayerItem: [{
-                    name: "greenKey",
+                    name: "greenkey",
                     count: 1,
                 }]
             },
@@ -1090,14 +1090,14 @@ items.push({
                 snakeSize: false,
                 playerHasEmptySlot: false,
                 playerHasItem: [{
-                    name: "Yellow_Key",
+                    name: "yellowkey",
                     count: 1,
                 }],
             },
             pass: {
                 deleteMe: true,
                 removePlayerItem: [{
-                    name: "Yellow_Key",
+                    name: "yellowkey",
                     count: 1,
                 }]
             },

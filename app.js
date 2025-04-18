@@ -2400,7 +2400,17 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     }
 
     if (collision.forcePlayerMove && player) {
+        let playerMoving = player.moving;
         let direction = collision.forcePlayerMove;
+
+        let upSet = ["up","down"];
+        let leftSet = ["left","right"];
+
+        if (collision.forcePlayerMove == "right" && playerMoving == "left") direction = simple.rnd(upSet);
+        if (collision.forcePlayerMove == "left" && playerMoving == "right") direction = simple.rnd(upSet);
+        if (collision.forcePlayerMove == "down" && playerMoving == "up") direction = simple.rnd(leftSet);
+        if (collision.forcePlayerMove == "up" && playerMoving == "down") direction = simple.rnd(leftSet);
+
         player.moveQueue = [direction];
     }
     if (collision.setPlayerProperty && player) {
