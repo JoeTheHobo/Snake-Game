@@ -449,7 +449,7 @@ function drawNodeImage(ctx,image,x,y,nodeSize,nodeIndex,element) {
             let shrinkNodeSize = nodeSize * shrinkSize;
             let shrinkDifference = nodeSize - shrinkNodeSize;
 
-            ctx.drawImage(srcImage, x, y, shrinkNodeSize, shrinkNodeSize);
+            ctx.drawImage(srcImage, x+(shrinkDifference/2), y+(shrinkDifference/2), shrinkNodeSize, shrinkNodeSize);
 
         }
     }
