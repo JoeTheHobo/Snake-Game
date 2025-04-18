@@ -352,7 +352,7 @@ function drawRing(canvas, i, thickness, selected) {
 
     // If selected, draw red fill underneath
     if (i === selected) {
-        const ringColor = `rgba(0, 255, 0, 0.4)`;
+        ringColor = `rgba(0, 255, 0, 0.4)`;
     }
 
     // Draw the ring
