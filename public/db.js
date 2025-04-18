@@ -333,9 +333,11 @@ function renderRadialPass(canvas,pass,unlocked) {
 function renderRadialPass2(canvas,pass,unlocked) {
     if (pass.background == "space") drawStars(canvas);
 
+    let thickness = 80;
+
     for (let i = 0; i < pass.set.length; i++) {
-        pass_drawRing(canvas,i,50);
-        pass_drawSet(canvas,i,50,pass.set[i]);
+        pass_drawRing(canvas,i,thickness);
+        pass_drawSet(canvas,i,thickness,pass.set[i]);
     }
 }
 function pass_drawSet(canvas, i, thickness, set) {
@@ -343,7 +345,7 @@ function pass_drawSet(canvas, i, thickness, set) {
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
 
-    const squareSize = 20;
+    const squareSize = thickness*0.9;
     const total = set.length;
 
     const img = new Image();
