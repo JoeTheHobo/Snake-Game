@@ -330,34 +330,42 @@ function renderRadialPass(canvas,pass,unlocked) {
     renderRadialPass2(canvas,pass,unlocked);
 
 }
-function renderRadialPass2(canvas,pass,unlocked) {
-    drawStars(canvas);
+function renderRadialPass2(canvas,pass,unlocked,selectedRing) {
+    if (pass.background == "space") drawStars(canvas);
 
     for (let i = 0; i < pass.set.length; i++) {
-        drawRing(canvas,i,50);
+        drawRing(canvas,i,50,selectedRing);
     }
 }
-function drawRing(canvas, i, thickness) {
+function drawRing(canvas, i, thickness, selected) {
     const ctx = canvas.getContext("2d");
+
+    // Ensure canvas resolution matches display size
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
 
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const radius = (thickness / 2) + (i * thickness);
 
-    // Set semi-transparent color
-    const colors = [
-        "rgba(255, 0, 0, 0.4)",     // red
-        "rgba(0, 255, 0, 0.4)",     // green
-        "rgba(0, 0, 255, 0.4)",     // blue
-        "rgba(255, 165, 0, 0.4)",   // orange
-        "rgba(128, 0, 128, 0.4)",   // purple
-        "rgba(0, 255, 255, 0.4)"    // cyan
-    ];
-    const color = colors[i % colors.length];
+    // Dynamic blue color
+    const maxBlue = 220;
+    const step = 30;
+    const blue = Math.max(0, maxBlue - i * step);
+    const ringColor = `rgba(0, 0, ${blue}, 0.4)`;
 
+    // If selected, draw red fill underneath
+    if (i === selected) {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 0, 0, 0.2)'; // subtle red background
+        ctx.fill();
+    }
+
+    // Draw the ring
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = ringColor;
     ctx.lineWidth = thickness;
     ctx.stroke();
 }
@@ -369,7 +377,10 @@ document.body.on("keydown",function(e) {
 
     if (e.key == "r") {
         selectedPass.set.push([]);
-        renderRadialPass(selectedPass.canvas,selectedPass,[]);
+        renderRadialPass(selectedPass.canvas,selectedPass,[],false);
+    }
+    if (_type(e.key).isNumber) {
+        renderRadialPass(selectedPass.canvas,selectedPass,[],Number(e.key));
     }
 
 })
