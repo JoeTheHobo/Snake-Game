@@ -3445,6 +3445,9 @@ function checkBoard(board,account) {
         if (!board.spawnZones) return "Board Doesn't Have Spawn Zones";
         let spawnZoneCheck = checkSpawnZones(board.spawnZones);
         if (spawnZoneCheck !== true) return spawnZoneCheck;
+
+        let tileDifferencesCheck = checkTileDifferences(board.tileDifferences,account.allowedItemSkinPacks);
+        if (tileDifferencesCheck !== true) return tileDifferencesCheck;
     
         return true;
     } catch (err) {
@@ -3452,6 +3455,20 @@ function checkBoard(board,account) {
         return err;
     }
 }
+
+function checkTileDifferences(differences,allowedSkins) {
+    for (let i = 0; i < differences.length; i++) {
+        let difference = differences[i];
+        if (difference[0]) {
+            if (difference[0][0] == "skin") {
+                if (!allowedSkins.includes(difference[0][1])) return "Illegal Skin: " + difference[0][1];
+            }
+        }
+    }
+
+    return true;
+}
+
 function checkSpawnZones(boardSpawnZones) {
     let playerZonesChecked = checkSpawnZoneHelper(boardSpawnZones.players);
     if (playerZonesChecked !== true) return playerZonesChecked;
@@ -3479,20 +3496,18 @@ function checkBoardItems(board,type,allowedIDs,allowedSkinPacks) {
             if (cell === false && type == "tile") return "No Tile Found At " + i + "," + j;
 
             if (!allowedIDs.includes(cell.id)) return "Illegal Item At " + i  +"," + j + ": " + cell.name;
-            let itemCheck = checkItem(cell,type,allowedSkinPacks,"Illegal Item At " + i  +"," + j + ": " + cell.name);
+            let itemCheck = checkItem(cell,type,"Illegal Item At " + i  +"," + j + ": " + cell.name);
             if (itemCheck !== true) return "Illegal Item At " + i  +"," + j + ": " + itemCheck;
         }
     }
 
     return true;
 }
-function checkItem(item,type,allowedSkinPacks,returnPrefix) {
+function checkItem(item,type,returnPrefix) {
 
     let realItem = getRealItem(item.id,type);
 
-    if (type == "tile" && item.id == 9) console.log(allowedSkinPacks,item)
     if (realItem.name !== item.name) return returnPrefix + ", Illegal Name: " + item.name;
-    if (!allowedSkinPacks.includes(item.skin)) return returnPrefix + ", Illegal Skin: " + item.skin;
 
 
     return true;
