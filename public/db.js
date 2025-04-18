@@ -424,7 +424,7 @@ document.body.on("keydown",function(e) {
     if ($("at_battlepassTab").style.background !== 'rgb(137, 69, 192)') return;
     if (!selectedPass) return;
 
-    if (e.key == "r") {
+    if (e.key == "R") {
         selectedPass.set.push([]);
         renderRadialPass2(selectedPass.canvas,selectedPass,[],false);
     }
@@ -440,7 +440,30 @@ document.body.on("keydown",function(e) {
 
         })
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
+    }
+    if (e.key == "t") {
+        if (selectedRing === false) return;
+        selectedPass.set[selectedRing].push({
+            type: "tile",
 
+        })
+        renderRadialPass2(selectedPass.canvas,selectedPass,[]);
+    }
+    if (e.key == "r") {
+        if (selectedRing === false) return;
+        selectedPass.set[selectedRing].push({
+            type: "reward",
+
+        })
+        renderRadialPass2(selectedPass.canvas,selectedPass,[]);
+    }
+    if (e.key == "s") {
+        if (selectedRing === false) return;
+        selectedPass.set[selectedRing].push({
+            type: "skin",
+
+        })
+        renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
 
 })
