@@ -501,7 +501,7 @@ document.body.on("keydown",function(e) {
         selectedPass.set.push([]);
         renderRadialPass2(selectedPass.canvas,selectedPass);
     }
-    if (e.key == "enter" && selectedNodeId !== false && startWritingNumbers) {
+    if (e.key == "Enter" && selectedNodeId !== false && startWritingNumbers) {
         console.log("ID SUBMITTED")
         startWritingNumbers = true;
         setIdOfNode(selectedNodeId,writingNumber);
