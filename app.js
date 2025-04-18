@@ -111,7 +111,7 @@ io.on('connection', (socket) => {
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
         let username = onlineAccounts[socket.id].username;
-        console.log("A user disconnected due to " + reason);
+
         if (onlineAccounts[socket.id].lobby) {
             socket.leave(onlineAccounts[socket.id].lobby.id)
             let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -596,6 +596,11 @@ io.on('connection', (socket) => {
         //Check Board TO BE ADDED
         if (!account.loggedIn) return;
         if (Number(board.tag) !== Number(account.tag)) return;
+        let boardCheck = checkBoard(board,account);
+        if (boardCheck !== true) {
+            io.to(socket.id).emit("popup","Board Saving Error:" + boardCheck);
+            return;
+        }
 
         compressObject(board,(err,compressedBoard) => {
             if (err) {
@@ -726,6 +731,7 @@ io.on('connection', (socket) => {
     })
     
     socket.on("saveBoardToIndex",(board,index,sentFrom) => {
+        return; //Outdated Function
         let account = onlineAccounts[socket.id];
         if (!account.loggedIn) return;
 
@@ -1351,7 +1357,7 @@ io.on('connection', (socket) => {
 
             if (condition.condition == "Reach Snake Size Of X") lobby.condition_size.push(condition);
             if (condition.condition == "Survive X Minutes") lobby.condition_time.push(condition);
-            if (condition.condition == "Kill X Players") lobby.condition_kill.push(condition);
+            if (condition.condition == "Kill X Snakes") lobby.condition_kill.push(condition);
         }
 
         //Winning Condition Check End
@@ -1512,25 +1518,31 @@ io.on('connection', (socket) => {
         lobby.checkingSpawnTimers = true;
         lobby.gameStartedAt = false;
         lobby.gameLoop = function() {
-            if (this.gameStartedAt === false) {
-                startGameLoop(lobby);
-            }
-            lobby.lobby_gameLoop_start = Date.now();
-            server_movePlayers(this,socket.id)
+            try {
+                if (this.gameStartedAt === false) {
+                    startGameLoop(lobby);
+                }
+                lobby.lobby_gameLoop_start = Date.now();
+                server_movePlayers(this,socket.id)
+    
+                if (this.checkingSpawnTimers) checkSpawnStatusTimers(this);
+    
+                updateClientPositions(this);
+    
+                this.updatePositionTimeStamp = Date.now();
+                this.updateSnakeCells = [];
+                this.updateCells = [];
+                this.updateTiles = [];
+                this.playSounds = [];
+                this.canvasFilters = [];
+                
+                if (!this.gameEnd) {
+                    setTimeout(() => this.gameLoop(), 16);
+                }
 
-            if (this.checkingSpawnTimers) checkSpawnStatusTimers(this);
-
-            updateClientPositions(this);
-
-            this.updatePositionTimeStamp = Date.now();
-            this.updateSnakeCells = [];
-            this.updateCells = [];
-            this.updateTiles = [];
-            this.playSounds = [];
-            this.canvasFilters = [];
-            
-            if (!this.gameEnd) {
-                setTimeout(() => this.gameLoop(), 16);
+            } catch (err) {
+                console.log("SERVER CRASHED",err);
+                server_closeLobby(lobby);
             }
         }
 
@@ -1873,6 +1885,14 @@ function setNestedValue(obj, path, value, toReturn = false) {
         return target[lastKey]; // Return the value instead of setting it
     } else {
         target[lastKey] = value; // Set the value if not in return mode
+    }
+}
+function getRealItem(id,type) {
+    let list = type == "item" ? items : tiles;
+    for (let i = 0; i < list.length; i++) {
+        if (tiles[i].id == id) {
+            return structuredClone(list[i]);
+        }
     }
 }
 function getRealTile(name) {
@@ -2366,7 +2386,7 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
                 return;
             }
             if (activeTeams.length === 1) {
-                checkWinningCondition(lobby,"Last Team Standing",activeTeams[0]);
+                checkWinningCondition(lobby,"Last Team Standing",activeTeams[0],livingPlayers[0]);
                 return;
             }
         } else {
@@ -2661,6 +2681,21 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+async function server_closeLobby(lobby) {
+    let socketsInRoom = await io.in(lobby.id).fetchSockets();
+
+    io.to(lobby.id).emit("popup","Lobby Crashed");
+    delete lobbies[lobby.id];
+
+    socketsInRoom.forEach(socket => {
+        socket.leave(lobby.id);
+        socket.join("menuScreen");
+        io.to(socket.id).emit("setScene","newMenu");
+    });
+
+    updateLobbies();
+
+}
 function database_addTotalPlaysToBoard(boardID,amount) {
     const query = `
         UPDATE boards 
@@ -3369,12 +3404,101 @@ let playerNames2 = [
 function formatNumber(num) {
     return num.toString().padStart(4, '0');
 }
+function checkBoard(board,account) {
+    try {
+
+        /*
+            Check Each Gamemode
+            Check Player Has Access to each item (skins too)
+            Check Player Has Access to each tile (skins too)
+            Check Board Settings (name, background, description)
+            Check Spawn zones (Names)
+        */
+        if (!board) return "No Board Found";
+
+        if (!board.gameModes) return "No Gamemodes Found";
+        if (!board.gameModes.length == 0) return "No Gamemodes Found";
+        for (let i = 0; i < board.gameModes.length; i++) {
+            let gameModeCheck = checkGameMode(board.gameModes[i]);
+            if (simple.type(gameModeCheck) == "string") return  "Gamemode " + board.gameModes[i].name + " Error: " + gameModeCheck;
+        }
+
+        if (simple.type(board.description) !== "string") return "Board Description Is Not A String";
+        if (board.description.length >= 200) return "Board Description Is To Long";
+        if (simple.type(board.height) !== "number") return "Board Height Is Not A Number";
+        if (simple.type(board.width) !== "number") return "Board Width Is Not A Number";
+        if (board.height !== 30) return "Board Height Is Not 30";
+        if (board.width !== 50) return "Board Width Is Not 50";
+        if (!board.originalMap) return "Board has no map";
+        if (simple.type(board.originalMap) !== "array") return "Boards Map Is Not An Array";
+        if (board.originalMap[0].length !== 50) return "Board Width Is Not 50";
+        if (board.originalMap.length !== 30) return "Board Height Is Not 30";
+
+        let itemCheck = checkBoardItems(board,"item",account.allowedItemIds,account.allowedItemSkinPacks);
+        if (itemCheck !== true) return itemCheck;
+        let tileCheck = checkBoardItems(board,"tile",account.allowedTileIds,account.allowedItemSkinPacks);
+        if (tileCheck !== true) return tileCheck;
+
+        if (!board.spawnZones) return "Board Doesn't Have Spawn Zones";
+        let spawnZoneCheck = checkSpawnZones(board.spawnZones);
+        if (spawnZoneCheck !== true) return spawnZoneCheck;
+    
+        return true;
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
+}
+function checkSpawnZones(boardSpawnZones) {
+    let playerZonesChecked = checkSpawnZoneHelper(boardSpawnZones.players);
+    if (playerZonesChecked !== true) return playerZonesChecked;
+    let itemZonesChecked = checkSpawnZoneHelper(boardSpawnZones.items);
+    if (itemZonesChecked !== true) return itemZonesChecked;
+
+    return true;
+}
+function checkSpawnZoneHelper(zones) {
+
+    if (zone.length == 0) return "No Spawn Zones Found";
+    for (let i = 0; i < zones.length; i++) {
+        let zone = zones[i];
+        if (profanity.check(zone.id)) return "Profanity Found In Zone Name:" + gameMode.name;
+
+    }
+
+    return true;
+}
+function checkBoardItems(board,type,allowedIDs,allowedSkinPacks) {
+    for (let i = 0; i < board.originalMap.length; i++) {
+        for (let j = 0; j < board.originalMap[i].length; j++) {
+            let cell = board.originalMap[i][j][type];
+            if (cell === false && type == "item") continue;
+            if (cell === false && type == "tile") return "No Tile Found At " + i + "," + j;
+
+            if (!allowedIDs.includes(cell.id)) return "Illegal Item At " + i  +"," + j + ": " + cell.name;
+            let itemCheck = checkItem(cell,type,allowedSkinPacks,"Illegal Item At " + i  +"," + j + ": " + cell.name);
+            if (itemCheck !== true) return "Illegal Item At " + i  +"," + j + ": " + itemCheck;
+        }
+    }
+
+    return true;
+}
+function checkItem(item,type,allowedSkinPacks,returnPrefix) {
+
+    let realItem = getRealItem(item.id,type);
+
+    if (realItem.name !== item.name) return returnPrefix + ", Illegal Name: " + item.name;
+    if (!allowedSkinPacks.includes(item.skin)) return returnPrefix + ", Illegal Skin: " + item.skin;
+
+
+    return true;
+}
 function checkGameMode(gameMode,accountID) {
     //if (gameMode.accountID !== accountID) return "accountID";
-    if (simple.type(gameMode.name) !== "string") return ["name1",gameMode.name];
-    if (gameMode.name == "") return ["name2",gameMode.name];
-    if (gameMode.name.length > 32) return ["name3",gameMode.name];
-    if (profanity.check(gameMode.name)) return ["name4",gameMode.name,profanity.clean(gameMode.name)];
+    if (simple.type(gameMode.name) !== "string") return "Incorrect Gamemode Name:" + gameMode.name;
+    if (gameMode.name == "") return "Incorrect Gamemode Name2:" + gameMode.name;
+    if (gameMode.name.length > 32) return "Incorrect Gamemode Name3:" + gameMode.name;
+    if (profanity.check(gameMode.name)) return "Incorrect Gamemode Name4:" + gameMode.name;
     if (gameMode.howManyItemsCanPlayersUse < 0 || gameMode.howManyItemsCanPlayersUse > 10) return "howManyItemsCanPlayersUse";
     if (!["scroll","direct"].includes(gameMode.mode_usingItemType)) return "mode_usingItemType";
     if (!["vanish","remain","become food"].includes(gameMode.whenSnakesDie)) return "whenSnakesDie";
@@ -3382,11 +3506,16 @@ function checkGameMode(gameMode,accountID) {
     if (![false,true].includes(gameMode.snakeCollision)) return "snakeCollision";
     if (![false,true].includes(gameMode.teamCollision)) return "teamCollision";
     gameMode.respawnGrowth = Number(gameMode.respawnGrowth);
-    if (gameMode.respawnGrowth < 0 || gameMode.respawnGrowth > 100) return ["respawnGrowth",gameMode.respawnGrowth];
-    if (gameMode.respawnProtection < 0 || gameMode.respawnProtection > 15) return ["respawnProtection",gameMode.respawnProtection];
+    if (gameMode.respawnGrowth < 0 || gameMode.respawnGrowth > 100) return "Incorrect Gamemode Respawn Growth:" + gameMode.respawnGrowth;
+    if (gameMode.respawnProtection < 0 || gameMode.respawnProtection > 15) return "Incorrect Gamemode Respawn Protection:" + gameMode.respawnProtection;
     gameMode.respawnTimer = Number(gameMode.respawnTimer);
     if (gameMode.respawnTimer < 0 || gameMode.respawnTimer > 60) return "respawnTimer";
-    if (gameMode.setFoodRate < 0 || gameMode.setFoodRate > 100) return ["setFoodRate",gameMode.setFoodRate];
+    if (gameMode.setFoodRate < 0 || gameMode.setFoodRate > 100) return "Incorrect Gamemode Food Rate:" + gameMode.setFoodRate;
+
+    //Need to check winning conditions
+
+    //Check player has right items
+
 
     return true;
 }
@@ -3552,6 +3681,8 @@ function server_movePlayers(lobby,socketID) {
     activePlayers = lobby.inGamePlayers;
     let currentBoard = lobby.board;
     let currentGameMode = lobby.gameMode;
+    if (lobby.gameEnd) return;
+
     for (let i = 0; i < activePlayers.length; i++) {
         let player = activePlayers[i];
         
