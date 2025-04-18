@@ -496,6 +496,7 @@ function setIdOfNode(nodeID,givenID) {
 let selectedRing = false;
 let startWritingNumbers = false;
 let writingNumber;
+let writeType = false;
 
 document.body.on("keydown",function(e) {
     if (global_scene !== "adminTools") return;
@@ -518,16 +519,28 @@ document.body.on("keydown",function(e) {
                 if (selectedPass.set[i][j].index === selectedNodeId) {
                     // Insert a new empty object before the current element
                     if (j > 0) {
-                        selectedPass.set[i].splice(j, 0, { type: false, id: false });
+                        selectedPass.set[i].splice(j, 0, { type: "item", id: false });
                     } else {
                         // If it's the first element, insert at the beginning
-                        selectedPass.set[i].unshift({ type: false, id: false });
+                        selectedPass.set[i].unshift({ type: "item", id: false });
                     }
                     break;
                 }
             }
         }
         renderRadialPass2(selectedPass.canvas,selectedPass);
+    }
+    if (e.key == "}" && selectedNodeId !== false) {
+        for (let i = 0; i < selectedPass.set.length; i++) {
+            for (let j = 0; j < selectedPass.set[i].length; j++) {
+                if (selectedPass.set[i][j].index === selectedNodeId) {
+                    // Insert after current element
+                    selectedPass.set[i].splice(j + 1, 0, { type: "item", id: false });
+                    break;
+                }
+            }
+        }
+        renderRadialPass2(selectedPass.canvas, selectedPass);
     }
     if (e.key == "R") {
         selectedPass.set.push([]);
@@ -538,11 +551,75 @@ document.body.on("keydown",function(e) {
         startWritingNumbers = false;
         setIdOfNode(selectedNodeId,writingNumber);
     }
-    if (altDown && selectedNodeId !== false && startWritingNumbers === false) {
+    if (altDown && e.key == "t" && selectedNodeId !== false) {
+        writeType = true;
+    }
+    if (altDown && e.key == "i" && selectedNodeId !== false && startWritingNumbers === false) {
         e.preventDefault();
         console.log("Start Writing ID")
         startWritingNumbers = true;
         writingNumber = "";
+    }
+
+    if (writeType && selectedNodeId !== false && e.key == "i") {
+        for (let i = 0; i < selectedPass.set.length; i++) {
+            for (let j = 0; j < selectedPass.set[i].length; j++) {
+                if (selectedPass.set[i][j].index === selectedNodeId) {
+                    selectedPass.set[i][j].type = "item";
+                    selectedPass.set[i][j].id = false;
+                }
+            }
+        }
+        renderRadialPass2(selectedPass.canvas,selectedPass);
+    }
+    if (writeType && selectedNodeId !== false && e.key == "l") {
+        for (let i = 0; i < selectedPass.set.length; i++) {
+            for (let j = 0; j < selectedPass.set[i].length; j++) {
+                if (selectedPass.set[i][j].index === selectedNodeId) {
+                    selectedPass.set[i][j].type = "tile";
+                    selectedPass.set[i][j].id = false;
+                }
+            }
+        }
+        renderRadialPass2(selectedPass.canvas,selectedPass);
+    }
+    if (writeType && selectedNodeId !== false && e.key == "L") {
+        for (let i = 0; i < selectedPass.set.length; i++) {
+            for (let j = 0; j < selectedPass.set[i].length; j++) {
+                if (selectedPass.set[i][j].index === selectedNodeId) {
+                    selectedPass.set[i][j].type = "super_tile";
+                    selectedPass.set[i][j].id = false;
+                }
+            }
+        }
+        renderRadialPass2(selectedPass.canvas,selectedPass);
+    }
+    if (writeType && selectedNodeId !== false && e.key == "r") {
+        for (let i = 0; i < selectedPass.set.length; i++) {
+            for (let j = 0; j < selectedPass.set[i].length; j++) {
+                if (selectedPass.set[i][j].index === selectedNodeId) {
+                    selectedPass.set[i][j].type = "reward";
+                    selectedPass.set[i][j].id = false;
+                }
+            }
+        }
+        renderRadialPass2(selectedPass.canvas,selectedPass);
+    }
+    if (writeType && selectedNodeId !== false && e.key == "c") {
+        for (let i = 0; i < selectedPass.set.length; i++) {
+            for (let j = 0; j < selectedPass.set[i].length; j++) {
+                if (selectedPass.set[i][j].index === selectedNodeId) {
+                    selectedPass.set[i][j].type = "chest";
+                    selectedPass.set[i][j].id = false;
+                }
+            }
+        }
+        renderRadialPass2(selectedPass.canvas,selectedPass);
+    }
+
+    if (_type(e.key).isNumber && selectedNodeId !== false && startWritingNumbers) {
+        writingNumber += e.key;
+        console.log("ID:",writingNumber);
     }
     if (selectedNodeId !== false && e.key == "Delete") {
         for (let i = 0; i < selectedPass.set.length; i++) {
@@ -553,10 +630,6 @@ document.body.on("keydown",function(e) {
             }
         }
         renderRadialPass2(selectedPass.canvas,selectedPass);
-    }
-    if (_type(e.key).isNumber && selectedNodeId !== false && startWritingNumbers) {
-        writingNumber += e.key;
-        console.log("ID:",writingNumber);
     }
     if (shiftDown && e.code.startsWith("Digit")) {
         selectedRing = Number(e.code.replace("Digit", ""));
