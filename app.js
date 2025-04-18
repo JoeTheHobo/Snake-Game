@@ -3073,6 +3073,9 @@ function setSocketToUser(account,user,dbObj) {
     account.allowedItemIds = dbObj.allowed.items;
     account.allowedTileIds = dbObj.allowed.tiles;
     account.allowedItemSkinPacks = dbObj.allowed.skinPacks;
+    for (let i = 0; i < account.allowedItemSkinPacks.length; i++) {
+        account.allowedItemSkinPacks[i] = server_skinPacks[account.allowedItemSkinPacks[i]];
+    }
     account.allowedSnakeColors = dbObj.allowed.snakeColors;
 
     account.questsAccepted = [];
@@ -3123,7 +3126,7 @@ function zipAllBoards(boardList,func,index = 0,list = []) {
     })
 }
 
-let server_skinPacks = ["basic"];
+let server_skinPacks = ["basic","disco"];
 let server_snakeColors = [
     { color: { hue: 360, saturation: 300, brightness: 116 }, id: 0 },
     { color: { hue: 157, saturation: 234, brightness: 116 }, id: 1 },
