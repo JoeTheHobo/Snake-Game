@@ -450,7 +450,7 @@ io.on('connection', (socket) => {
     
                     //Add To Inventory Database
                     const invQuery = "INSERT INTO inventory (tag, board_limit, coins, battle_pass_points, server_snake, name_color, challenge_limit, music_volume, sfx_volume) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    db.query(invQuery, [tag,account.boardLimit,account.coins,account.battlePassPoints, JSON.stringify(account.serverSnake), account.chatNameColor, account.challengeLimit,account.musicVolume,account.sfxVolume], (err,results) => {
+                    db.query(invQuery, [tag,account.boardLimit,account.coins,account.battlePassPoints, JSON.stringify(account.serverSnake), "white", account.challengeLimit,account.musicVolume,account.sfxVolume], (err,results) => {
                         if (err) {
                             console.log(err);
                         }
@@ -474,6 +474,8 @@ io.on('connection', (socket) => {
                     for (let i = 0; i < account.allowedSnakeColors.length; i++) {
                         db.query(allowedQuery,[tag,account.allowedSnakeColors[i],type],() =>{});
                     }
+                    type = "nameColors";
+                    db.query(allowedQuery,[tag,1,type],() =>{});
                     
                 });
 
@@ -1048,10 +1050,13 @@ io.on('connection', (socket) => {
             }
         }
 
+        let color = server_nameColors[onlineAccounts[socket.id].chatNameColor];
+        if (!color) color = "#a3a3a3";
+
         lobby.chats.push({
             message: message,
             account: account,
-            color: onlineAccounts[socket.id].chatNameColor,
+            color: color,
         })
 
         io.to(lobby.id).emit("updateLobbyPage", lobby.chats,"chats");
@@ -2961,7 +2966,7 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
         lobby: false,
         username: username,
         tag: tag,
-        chatNameColor: "white",
+        chatNameColor: "#a3a2a2",
         status: "Guest",
         dateCreated: formattedDate,
         coins: 0,
@@ -2982,6 +2987,7 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
         allowedTileIds: [1,3,6],
         allowedItemSkinPacks: [0],
         allowedSnakeColors: [0,1,2,3],
+        allowedNameColorIds: [0],
     }
     let account = onlineAccounts[socketID];
 
@@ -3036,6 +3042,7 @@ function gatherDBallowed(account,user,dbObj) {
             tiles: [],
             skinPacks: [],
             snakeColors: [],
+            nameColors: [],
         };
         for (let i = 0; i < results.length; i++) {
             dbObj.allowed[results[i].type].push(results[i].allowed_id);
@@ -3070,6 +3077,7 @@ function setSocketToUser(account,user,dbObj) {
     account.publishedBoardLimit = dbObj.inventory.published_board_limit;
 
     //allowed
+    account.allowedNameColors = dbObj.allowed.nameColors;
     account.allowedItemIds = dbObj.allowed.items;
     account.allowedTileIds = dbObj.allowed.tiles;
     account.allowedItemSkinPacks = dbObj.allowed.skinPacks;
@@ -3126,6 +3134,7 @@ function zipAllBoards(boardList,func,index = 0,list = []) {
     })
 }
 
+let server_nameColors = ["#a3a3a3","white","purple"];
 let server_skinPacks = ["basic","disco"];
 let server_snakeColors = [
     { color: { hue: 360, saturation: 300, brightness: 116 }, id: 0 },
