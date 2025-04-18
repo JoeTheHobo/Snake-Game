@@ -262,10 +262,7 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
         canvas.mouseDownTime = Date.now();
     });
     canvas.on('click', (e) => {
-        canvas.width = canvas.clientWidth;
-        canvas.height = canvas.clientHeight;
         const canvasRect = canvas.getBoundingClientRect();
-        console.log(e.clientX,canvasRect.left);
         const mouseX = e.clientX - canvasRect.left;
         const mouseY = e.clientY - canvasRect.top;
     
@@ -546,10 +543,6 @@ document.body.on("keydown",function(e) {
 
 })
 function generateStarBackground(canvas) {
-    canvas.viewWidth = window.innerWidth;
-    canvas.viewHeight = window.innerHeight;
-    canvas.width = canvas.viewWidth;
-    canvas.height = canvas.viewHeight;
 
     canvas.offsetX = (canvas.spaceSize - canvas.viewWidth) / 2;
     canvas.offsetY = (canvas.spaceSize - canvas.viewHeight) / 2;
