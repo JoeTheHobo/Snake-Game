@@ -447,7 +447,7 @@ document.body.on("keydown",function(e) {
         })
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
-    if (controlDown && e.key == "t") {
+    if (controlDown && e.key == "l") {
         if (selectedRing === false) return;
         selectedPass.set[selectedRing].push({
             type: "tile",
@@ -456,7 +456,7 @@ document.body.on("keydown",function(e) {
         })
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
-    if (controlDown && e.key == "T") {
+    if (controlDown && e.key == "L") {
         e.preventDefault();
         if (selectedRing === false) return;
         selectedPass.set[selectedRing].push({
@@ -496,11 +496,6 @@ document.body.on("keydown",function(e) {
     }
 
 })
-window.addEventListener('keydown', function(e) {
-    if (controlDown && e.key === "t") {
-        e.preventDefault();  // Prevent the default tab opening
-    }
-});
 function generateStarBackground(canvas) {
     canvas.viewWidth = window.innerWidth;
     canvas.viewHeight = window.innerHeight;
