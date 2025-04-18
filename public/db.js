@@ -333,25 +333,22 @@ function renderRadialPass(canvas,pass,unlocked) {
 
 
 }
-function drawRing(canvas,i,thickness) {
+function drawRing(canvas, i, thickness) {
     const ctx = canvas.getContext("2d");
 
-    // Get center
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
 
-    // Set radius and color (based on index `i`, if needed)
-    const radius = Math.min(canvas.width, canvas.height) / 2 - thickness / 2;
-    const colors = ["red", "green", "blue", "orange", "purple", "cyan"];
-    const color = colors[i % colors.length]; // cycle through colors
+    const radius = (thickness / 2) + (i * thickness);
 
-    // Draw ring
+    const colors = ["red", "green", "blue", "orange", "purple", "cyan"];
+    const color = colors[i % colors.length];
+
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
     ctx.strokeStyle = color;
     ctx.lineWidth = thickness;
     ctx.stroke();
-
 }
 
 document.body.on("keydown",function(e) {
