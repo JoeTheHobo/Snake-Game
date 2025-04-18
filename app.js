@@ -3475,6 +3475,7 @@ function checkBoardItems(board,type,allowedIDs,allowedSkinPacks) {
     for (let i = 0; i < board.originalMap.length; i++) {
         for (let j = 0; j < board.originalMap[i].length; j++) {
             let cell = board.originalMap[i][j][type];
+            if (type == "item") console.log(cell)
             if (cell === false && type == "item") continue;
             if (cell === false && type == "tile") return "No Tile Found At " + i + "," + j;
 
