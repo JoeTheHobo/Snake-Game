@@ -348,7 +348,7 @@ function drawRing(canvas, i, thickness, selected) {
     const maxBlue = 220;
     const step = 30;
     const blue = Math.max(0, maxBlue - i * step);
-    const ringColor = `rgba(0, 0, ${blue}, 0.4)`;
+    let ringColor = `rgba(0, 0, ${blue}, 0.4)`;
 
     // If selected, draw red fill underneath
     if (i === selected) {
