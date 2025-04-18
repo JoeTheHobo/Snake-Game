@@ -354,6 +354,7 @@ function renderRadialPass2(canvas,pass,unlocked = []) {
     if (pass.background == "space") drawStars(canvas);
 
     canvas.points = [];
+    nodeIndex = 0;
     for (let i = 0; i < pass.set.length; i++) {
         pass_drawRing(canvas,i);
         pass_drawSet(canvas,i,pass.set[i]);
@@ -361,6 +362,7 @@ function renderRadialPass2(canvas,pass,unlocked = []) {
 }
 let selectedNodeId = false;
 let nodeImages = {}
+let nodeIndex = 0;
 let nodeImageList = ["item","super_tile","tile","skin","reward","chest"];
 for (let i = 0; i < nodeImageList.length; i++) {
     let image = new Image();
@@ -373,7 +375,6 @@ function pass_drawSet(canvas, i, set) {
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     let thickness = canvas.thickness;
-    let nodeIndex = 0;
 
     const squareSize = thickness*0.75;
     const total = set.length;
@@ -390,7 +391,7 @@ function pass_drawSet(canvas, i, set) {
             if (element?.type !== false) {
                 canvas.points.push({ x, y, id: nodeIndex });
                 ctx.drawImage(nodeImages[element.type], x, y, squareSize, squareSize);
-                if (selectedNodeId == nodeIndex) {
+                if (selectedNodeId === nodeIndex) {
                     ctx.strokeStyle = "red";
                     ctx.lineWidth = 3;
                     ctx.strokeRect(x, y, squareSize, squareSize);
@@ -413,7 +414,7 @@ function pass_drawSet(canvas, i, set) {
             if (element?.type !== false) {
                 canvas.points.push({ x: x - squareSize / 2, y: y - squareSize / 2, id: nodeIndex });
                 ctx.drawImage(nodeImages[element.type], x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
-                if (selectedNodeId == nodeIndex) {
+                if (selectedNodeId === nodeIndex) {
                     ctx.strokeStyle = "red";
                     ctx.lineWidth = 3;
                     ctx.strokeRect(x, y, squareSize, squareSize);
