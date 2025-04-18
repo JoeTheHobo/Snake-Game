@@ -330,7 +330,7 @@ function renderRadialPass(canvas,pass,unlocked) {
     renderRadialPass2(canvas,pass,unlocked);
 
 }
-function renderRadialPass2(canvas,pass,unlocked,selectedRing) {
+function renderRadialPass2(canvas,pass,unlocked,selectedRing = false) {
     if (pass.background == "space") drawStars(canvas);
 
     for (let i = 0; i < pass.set.length; i++) {
@@ -374,10 +374,11 @@ document.body.on("keydown",function(e) {
 
     if (e.key == "r") {
         selectedPass.set.push([]);
-        renderRadialPass(selectedPass.canvas,selectedPass,[],false);
+        renderRadialPass2(selectedPass.canvas,selectedPass,[],false);
     }
     if (_type(e.key).isNumber) {
-        renderRadialPass(selectedPass.canvas,selectedPass,[],Number(e.key));
+        console.log(e.key,Number(e.key))
+        renderRadialPass2(selectedPass.canvas,selectedPass,[],Number(e.key));
     }
 
 })
