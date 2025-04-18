@@ -267,6 +267,7 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
     
         canvas.points.forEach((point, index) => {
             // Check if the click is inside the image bounds
+            console.log(mouseX,mouseY,point.x,point.y);
             if (mouseX >= point.x && mouseX <= point.x + 20 && mouseY >= point.y && mouseY <= point.y + 20) {
                 // Toggle selection
                 point.selected = !point.selected;
