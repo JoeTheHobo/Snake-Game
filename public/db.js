@@ -512,6 +512,23 @@ document.body.on("keydown",function(e) {
         showingRings = !showingRings;
         renderRadialPass2(selectedPass.canvas,selectedPass);
     }
+    if (e.key == "{" && selectedNodeId !== false) {
+        for (let i = 0; i < selectedPass.set.length; i++) {
+            for (let j = 0; j < selectedPass.set[i].length; j++) {
+                if (selectedPass.set[i][j].index === selectedNodeId) {
+                    // Insert a new empty object before the current element
+                    if (j > 0) {
+                        selectedPass.set[i].splice(j, 0, { type: false, id: false });
+                    } else {
+                        // If it's the first element, insert at the beginning
+                        selectedPass.set[i].unshift({ type: false, id: false });
+                    }
+                    break;
+                }
+            }
+        }
+        renderRadialPass2(selectedPass.canvas,selectedPass);
+    }
     if (e.key == "R") {
         selectedPass.set.push([]);
         renderRadialPass2(selectedPass.canvas,selectedPass);
