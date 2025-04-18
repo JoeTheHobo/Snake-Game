@@ -527,6 +527,7 @@ document.body.on("keydown",function(e) {
         startWritingNumbers = true;
         writingNumber = "";
     }
+    console.log(e.key)
     if (selectedNodeId !== false && e.key == "Delete") {
         for (let i = 0; i < selectedPass.set.length; i++) {
             for (let j = 0; j < selectedPass.set[i].length; j++) {
