@@ -1350,6 +1350,12 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             holder.setValue(this.value);
         })
         holder.setValue = function(value) {
+            if (typeSettings.profanityCheck) {
+                if (profanity.check(value)) {
+                    valueInput.value = holder.gmValue;
+                    return;
+                }
+            }
             holder.gmValue = value;
             setNestedValue(pullFrom,settings.valueString.split("."),value);
             holder.activateList();

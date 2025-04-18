@@ -3465,7 +3465,7 @@ function checkSpawnZoneHelper(zones) {
     if (zones.length == 0) return "No Spawn Zones Found";
     for (let i = 0; i < zones.length; i++) {
         let zone = zones[i];
-        if (profanity.check(zone.id)) return "Profanity Found In Zone Name:" + gameMode.name;
+        if (profanity.check(zone.id)) return "Profanity Found In Zone Name:" + zone.id;
 
     }
 
