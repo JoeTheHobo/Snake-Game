@@ -399,7 +399,7 @@ function pass_drawSet(canvas, i, set) {
             element.index = nodeIndex;
 
             if (element?.type !== false) {
-                drawNodeImage(nodeImages[element.type],x,y,squareSize,nodeIndex,element);
+                drawNodeImage(ctx,nodeImages[element.type],x,y,squareSize,nodeIndex,element);
             } else {
                 ctx.fillStyle = 'gray';
                 ctx.fillRect(x, y, squareSize, squareSize);
@@ -420,7 +420,7 @@ function pass_drawSet(canvas, i, set) {
             if (element?.type !== false) {
                 canvas.points.push({ x: x - squareSize / 2, y: y - squareSize / 2, id: nodeIndex });
 
-                drawNodeImage(nodeImages[element.type],x - squareSize / 2,y - squareSize / 2,squareSize,nodeIndex,element);
+                drawNodeImage(ctx,nodeImages[element.type],x - squareSize / 2,y - squareSize / 2,squareSize,nodeIndex,element);
 
             } else {
                 ctx.fillStyle = 'gray';
@@ -430,7 +430,7 @@ function pass_drawSet(canvas, i, set) {
         }
     }
 }
-function drawNodeImage(image,x,y,nodeSize,nodeIndex,element) {
+function drawNodeImage(ctx,image,x,y,nodeSize,nodeIndex,element) {
     ctx.drawImage(image, x, y, nodeSize, nodeSize);
     if (selectedNodeId === nodeIndex) {
         ctx.strokeStyle = "red";
