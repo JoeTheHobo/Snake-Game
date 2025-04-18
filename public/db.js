@@ -340,10 +340,6 @@ function renderRadialPass2(canvas,pass,unlocked,selectedRing) {
 function drawRing(canvas, i, thickness, selected) {
     const ctx = canvas.getContext("2d");
 
-    // Ensure canvas resolution matches display size
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
-
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const radius = (thickness / 2) + (i * thickness);
@@ -380,6 +376,7 @@ document.body.on("keydown",function(e) {
         renderRadialPass(selectedPass.canvas,selectedPass,[],false);
     }
     if (_type(e.key).isNumber) {
+        console.log("EY")
         renderRadialPass(selectedPass.canvas,selectedPass,[],Number(e.key));
     }
 
