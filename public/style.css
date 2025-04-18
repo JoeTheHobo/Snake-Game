@@ -5011,7 +5011,6 @@ cursor: url('./img/pointer.cur'), auto;
     width: 60%;
     height: 100%;
     box-sizing: border-box;
-    outline: 1px solid blue;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -5021,6 +5020,7 @@ cursor: url('./img/pointer.cur'), auto;
     display: flex;
     align-items: center;
     flex-direction: column;
+    margin-bottom: 25px;
   }
   .snc_snakeImageHolder {
     background: white;
@@ -5080,18 +5080,38 @@ cursor: url('./img/pointer.cur'), auto;
     width: 40%;
     height: 100%;
     box-sizing: border-box;
-    outline: 1px solid blue;
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
   }
   .snc_title {
-
+    color: white;
+    font-size: xx-large;
+    margin-top: 10px;
   }
   .snc_keyBindHolder {
-
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-top: 5px;
   }
   .snc_keyBindText {
-
+    width: 50%;
+    color: #9a9a9a;
+    text-align: right;
+    padding-right: 10px;
+    font-size: x-large;
   }
   .snc_keyBindInput {
-
+    cursor: url(./img/pointer.cur), auto;
+    outline: none;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    font-family: VT323;
+    width: 100px;
+    font-size: large;
   }
