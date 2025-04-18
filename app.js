@@ -3416,6 +3416,7 @@ function checkBoard(board,account) {
         */
         if (!board) return "No Board Found";
 
+        console.log(board)
         if (!board.gameModes) return "No Gamemodes Found";
         if (!board.gameModes.length == 0) return "No Gamemodes Found";
         for (let i = 0; i < board.gameModes.length; i++) {
