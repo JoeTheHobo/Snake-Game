@@ -278,8 +278,11 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
     
                 // Redraw images (or adjust their appearance based on selection)
                 renderRadialPass2(canvas,selectedPass,[]);
+                return;
             }
         });
+        selectedNodeId = false;
+        renderRadialPass2(canvas,selectedPass,[]);
     });
     
     canvas.on("mouseup", (e) => {
@@ -391,13 +394,15 @@ function pass_drawSet(canvas, i, set) {
             const y = startY + j * (squareSize + 5);
             const element = set[j];
 
+            element.index = nodeIndex;
+
             if (element?.type !== false) {
                 canvas.points.push({ x, y, id: nodeIndex });
                 ctx.drawImage(nodeImages[element.type], x, y, squareSize, squareSize);
                 if (selectedNodeId === nodeIndex) {
                     ctx.strokeStyle = "red";
                     ctx.lineWidth = 3;
-                    ctx.strokeRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
+                    ctx.strokeRect(x, y, squareSize, squareSize);
                 }
             } else {
                 ctx.fillStyle = 'gray';
@@ -413,6 +418,8 @@ function pass_drawSet(canvas, i, set) {
             const x = centerX + Math.cos(angle) * radius;
             const y = centerY + Math.sin(angle) * radius;
             const element = set[j];
+            
+            element.index = nodeIndex;
 
             if (element?.type !== false) {
                 canvas.points.push({ x: x - squareSize / 2, y: y - squareSize / 2, id: nodeIndex });
@@ -459,8 +466,20 @@ function pass_drawRing(canvas, i) {
     ctx.lineWidth = thickness;
     ctx.stroke();
 }
-
+function setIdOfNode(nodeID,givenID) {
+    for (let i = 0; i < selectedPass.set.length; i++) {
+        for (let j = 0; j < selectedPass.set[i].length; j++) {
+            let node = selectedPass.set[i][j];
+            if (node.index == nodeID) {
+                node.id = givenID;
+                renderRadialPass2(selectedPass.canvas,selectedPass);
+            }
+        }
+    }
+}
 let selectedRing = false;
+let startWritingNumbers = false;
+let writingNumber;
 
 document.body.on("keydown",function(e) {
     if (global_scene !== "adminTools") return;
@@ -470,14 +489,26 @@ document.body.on("keydown",function(e) {
     
     let controlDown = e.ctrlKey;
     let shiftDown = e.shiftKey;
+    let altDown = e.altKey;
 
     if (e.key == "R") {
         selectedPass.set.push([]);
-        renderRadialPass2(selectedPass.canvas,selectedPass,[],false);
+        renderRadialPass2(selectedPass.canvas,selectedPass);
+    }
+    if (e.key == "enter" && selectedNodeId !== false && startWritingNumbers) {
+        startWritingNumbers = true;
+        setIdOfNode(selectedNodeId,writingNumber);
+    }
+    if (altDown && selectedNodeId !== false && startWritingNumbers === false) {
+        startWritingNumbers = true;
+        writingNumber = "";
+    }
+    if (_type(e.key).isNumber && selectedNodeId !== false && startWritingNumbers) {
+        writingNumber += e.key;
     }
     if (shiftDown && e.code.startsWith("Digit")) {
         selectedRing = Number(e.code.replace("Digit", ""));
-        renderRadialPass2(selectedPass.canvas, selectedPass, []);
+        renderRadialPass2(selectedPass.canvas, selectedPass);
     }
 
     if (controlDown && e.key == "i") {
