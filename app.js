@@ -556,7 +556,8 @@ io.on('connection', (socket) => {
                             b.board, 
                             b.id, 
                             c.username,
-                            IFNULL(f.likeCount, 0) AS likeCount
+                            IFNULL(f.likeCount, 0) AS likeCount,
+                            IFNULL(b.plays, 0) AS plays
                         FROM boards b
                         JOIN credentials c ON b.tag = c.tag
                         LEFT JOIN (
@@ -2658,6 +2659,25 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function database_addPlaysToBoard(boardID, amount) {
+    /*
+        Find the board in the "boards" database using the boardID parameter.
+        Then add the amount parameter to the board's "plays" column.
+        Only add it to that column if the board's "published" column is = 1.
+        If plays is NULL, treat it as 0.
+    */
+
+    const query = `
+        UPDATE boards 
+        SET plays = IFNULL(plays, 0) + ? 
+        WHERE id = ? AND published = 1
+    `;
+
+    db.query(query, [amount, boardID], (err, results) => {
+        if (err) throw err;
+        console.log(`Updated ${results.affectedRows} row(s).`);
+    });
+}
 function setPlayersZones(lobby,player) {
     let playerZones = lobby.spawnZones.players;
     let itemZones = lobby.spawnZones.items;
@@ -2737,6 +2757,7 @@ function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,condition
         conditionImage: conditionImage,
     };
     io.to(lobby.id).emit("endGame",obj)
+    database_addPlaysToBoard(lobby.boardID,1);
 
     
     updateLobbies();

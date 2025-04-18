@@ -3683,6 +3683,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   height: 300px;
   flex-grow: 1;
   overflow-y: auto;
+  gap: 5px;
 }
 .bm_boardContainer {
   display: flex;
@@ -3692,7 +3693,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
   border-radius: 5px;
   position: relative;
   height: max-content;
-  margin: 5px;
 }
 .bm_boardCanvas {
   width: 100%;
@@ -4448,6 +4448,7 @@ cursor: url('./img/pointer.cur'), auto;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    gap: 5px;
   }
 
 
@@ -4482,7 +4483,6 @@ cursor: url('./img/pointer.cur'), auto;
     border-radius: 5px;
     width: 18%;
     height: 50%;
-    margin: 5px;
     padding: 5px;
   }
   .bc_imageHolder {
