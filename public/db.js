@@ -345,7 +345,7 @@ let nodeImageList = ["item","super_tile","tile","skin","reward"];
 for (let i = 0; i < nodeImageList.length; i++) {
     let image = new Image();
     image.src = "img/techTrees/" + nodeImageList[i] + "_node.png";
-    nodeImages[nodeImageList] = image;
+    nodeImages[nodeImageList[i]] = image;
 }
 
 function pass_drawSet(canvas, i, thickness, set) {
