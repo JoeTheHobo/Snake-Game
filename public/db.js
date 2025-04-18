@@ -262,6 +262,8 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
         canvas.mouseDownTime = Date.now();
     });
     canvas.on('click', (e) => {
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
         const canvasRect = canvas.getBoundingClientRect();
         console.log(e.clientX,canvasRect.left);
         const mouseX = e.clientX - canvasRect.left;
