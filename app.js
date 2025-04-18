@@ -3461,6 +3461,7 @@ function checkBoard(board,account) {
 function checkDifferences(differences,allowedSkins) {
     for (let i = 0; i < differences.length; i++) {
         let difference = differences[i];
+        console.log(difference,allowedSkins)
         if (difference[0]) {
             if (difference[0][0] == "skin") {
                 if (!allowedSkins.includes(difference[0][1])) return "Illegal Skin: " + difference[0][1];
