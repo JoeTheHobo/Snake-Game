@@ -2162,7 +2162,7 @@ function showBoardMenu(allBoards) {
             let playsText = cardHolder.create("div.bc_playCounter");
             let plays = card.plays;
             if (!plays) plays = 0;
-            playsText.innerHTML = plays + " Plays";
+            playsText.innerHTML = plays + " Play";
         }
         
 
@@ -2170,7 +2170,7 @@ function showBoardMenu(allBoards) {
             beenAdjusted = true;
             let rect = cardHolder.getBoundingClientRect();
             let width = (rect.width * Math.ceil(displayOnScreen/2)) + (Math.ceil(displayOnScreen/2)*10) + 20;
-            let height = 45 + 50 + (rect.height*2) + 20 + 20;
+            let height = 45 + 50 + (rect.height*2) + 20 + 20 + 20;
             $(".chooseBoardPopup").css({
                 width: width + "px",
                 height: height + "px",
