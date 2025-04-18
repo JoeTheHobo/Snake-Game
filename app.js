@@ -2348,11 +2348,13 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
         if (!currentGameMode.respawn) {
             let playersDead = 0;
             let activeTeams = [];
+            let livingPlayers = [];
             for (let i = 0; i < activePlayers.length; i++) {
                 if (activePlayers[i].isDead) playersDead++;
                 else {
                     if (!activeTeams.includes(activePlayers[i].team))
                         activeTeams.push(activePlayers[i].team);
+                    livingPlayers.push(activePlayers[i])
                 }
             }
             if (playersDead == activePlayers.length) {
@@ -2360,7 +2362,7 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
                 return;
             }
             if (playersDead + 1 == activePlayers.length) {
-                checkWinningCondition(lobby,"Last One Standing",false,player);
+                checkWinningCondition(lobby,"Last One Standing",false,livingPlayers[0]);
                 return;
             }
             if (activeTeams.length === 1) {
