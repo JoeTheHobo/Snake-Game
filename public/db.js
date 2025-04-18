@@ -326,7 +326,8 @@ function renderRadialPass(canvas,pass,unlocked) {
 
 
     for (let i = 0; i < pass.set.length; i++) {
-        drawRing(canvas,i);
+        console.log("EYO")
+        drawRing(canvas,i,50);
     }
 
 

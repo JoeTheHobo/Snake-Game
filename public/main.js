@@ -328,8 +328,8 @@ document.body.onkeydown = function(e) {
     let metaDown = e.metaKey;
     let keyDown = e.key.toLowerCase();
     if (global_scene == "newMenu" || global_scene == "adminTools") {
-        e.preventDefault();
         if (controlDown && shiftDown && keyDown == "a") {
+            e.preventDefault();
             if (localAccount.status === "Admin") {
                 if (global_scene == "adminTools") {
                     setScene("newMenu");
