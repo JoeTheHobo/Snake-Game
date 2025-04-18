@@ -3461,10 +3461,10 @@ function checkBoard(board,account) {
 function checkDifferences(differences,allowedSkins) {
     for (let i = 0; i < differences.length; i++) {
         let difference = differences[i];
-        console.log(difference,allowedSkins)
-        if (difference[0]) {
-            if (difference[0][0] == "skin") {
-                if (!allowedSkins.includes(difference[0][1])) return "Illegal Skin: " + difference[0][1];
+        for (let j = 0; j < difference[0].length; j++) {
+            let dArray = difference[0][j];
+            if (dArray[0] == "skin") {
+                if (!allowedSkins.includes(dArray[1])) return "Illegal Skin: " + dArray[1];
             }
         }
     }
