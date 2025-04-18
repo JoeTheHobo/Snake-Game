@@ -413,6 +413,10 @@ function pass_drawSet(canvas, i, set) {
 
             if (element?.type !== false) {
                 canvas.points.push({ x: x - squareSize / 2, y: y - squareSize / 2, id: nodeIndex });
+
+                ctx.fillStyle = "green";
+                ctx.fillRect(x-5,y-5,10,10);
+
                 ctx.drawImage(nodeImages[element.type], x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
                 if (selectedNodeId === nodeIndex) {
                     ctx.strokeStyle = "red";
