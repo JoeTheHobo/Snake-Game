@@ -543,6 +543,8 @@ document.body.on("keydown",function(e) {
 
 })
 function generateStarBackground(canvas) {
+    canvas.viewWidth = canvas.width;
+    canvas.viewHeight = canvas.height;
 
     canvas.offsetX = (canvas.spaceSize - canvas.viewWidth) / 2;
     canvas.offsetY = (canvas.spaceSize - canvas.viewHeight) / 2;
