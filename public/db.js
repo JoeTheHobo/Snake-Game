@@ -341,7 +341,7 @@ function renderRadialPass2(canvas,pass,unlocked) {
     }
 }
 let nodeImages = {}
-let nodeImageList = ["item","super_tile","tile","skin","reward"];
+let nodeImageList = ["item","super_tile","tile","skin","reward","chest"];
 for (let i = 0; i < nodeImageList.length; i++) {
     let image = new Image();
     image.src = "img/techTrees/" + nodeImageList[i] + "_node.png";
@@ -424,44 +424,67 @@ document.body.on("keydown",function(e) {
     if ($("at_battlepassTab").style.background !== 'rgb(137, 69, 192)') return;
     if (!selectedPass) return;
 
+    
+    let controlDown = e.ctrlKey;
+    let shiftDown = e.shiftKey;
+
     if (e.key == "R") {
         selectedPass.set.push([]);
         renderRadialPass2(selectedPass.canvas,selectedPass,[],false);
     }
-    if (_type(e.key).isNumber) {
+    if (shiftDown && _type(e.key).isNumber) {
         selectedRing = Number(e.key);
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
 
-    if (e.key == "i") {
+    if (controlDown && e.key == "i") {
         if (selectedRing === false) return;
         selectedPass.set[selectedRing].push({
             type: "item",
-
+            id: false,
         })
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
-    if (e.key == "t") {
+    if (controlDown && e.key == "t") {
         if (selectedRing === false) return;
         selectedPass.set[selectedRing].push({
             type: "tile",
+            id: false,
 
         })
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
-    if (e.key == "r") {
+    if (controlDown && e.key == "T") {
+        if (selectedRing === false) return;
+        selectedPass.set[selectedRing].push({
+            type: "super_tile",
+            id: false,
+
+        })
+        renderRadialPass2(selectedPass.canvas,selectedPass,[]);
+    }
+    if (controlDown && e.key == "r") {
         if (selectedRing === false) return;
         selectedPass.set[selectedRing].push({
             type: "reward",
+            id: false,
 
         })
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
-    if (e.key == "s") {
+    if (controlDown && e.key == "s") {
         if (selectedRing === false) return;
         selectedPass.set[selectedRing].push({
             type: "skin",
-
+            id: false,
+        })
+        renderRadialPass2(selectedPass.canvas,selectedPass,[]);
+    }
+    if (controlDown && e.key == "c") {
+        if (selectedRing === false) return;
+        selectedPass.set[selectedRing].push({
+            type: "chest",
+            id: false,
         })
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
