@@ -232,6 +232,7 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
     canvas.spaceSize = 25000; // Huge space
     canvas.mouseDownTime = 0; // Store time of the mousedown event
     canvas.maxClickDuration = 200; // Maximum duration (in ms) for a click to be considered fast
+    canvas.thickness = 70;
 
     pass.canvas = canvas;
     canvas.points = [];
@@ -268,7 +269,7 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
         canvas.points.forEach((point, index) => {
             // Check if the click is inside the image bounds
             console.log(mouseX,mouseY,point.x,point.y);
-            if (mouseX >= point.x && mouseX <= point.x + 20 && mouseY >= point.y && mouseY <= point.y + 20) {
+            if (mouseX >= point.x && mouseX <= point.x + canvas.thickness && mouseY >= point.y && mouseY <= point.y + canvas.thickness) {
                 // Toggle selection
                 point.selected = !point.selected;
     
@@ -352,12 +353,10 @@ function renderRadialPass(canvas,pass,unlocked) {
 function renderRadialPass2(canvas,pass,unlocked = []) {
     if (pass.background == "space") drawStars(canvas);
 
-    let thickness = 80;
-
     canvas.points = [];
     for (let i = 0; i < pass.set.length; i++) {
-        pass_drawRing(canvas,i,thickness);
-        pass_drawSet(canvas,i,thickness,pass.set[i]);
+        pass_drawRing(canvas,i);
+        pass_drawSet(canvas,i,pass.set[i]);
     }
 }
 let nodeImages = {}
@@ -368,10 +367,11 @@ for (let i = 0; i < nodeImageList.length; i++) {
     nodeImages[nodeImageList[i]] = image;
 }
 
-function pass_drawSet(canvas, i, thickness, set) {
+function pass_drawSet(canvas, i, set) {
     const ctx = canvas.getContext("2d");
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
+    let thickness = canvas.thickness;
 
     const squareSize = thickness*0.75;
     const total = set.length;
@@ -426,9 +426,10 @@ function pass_drawSet(canvas, i, thickness, set) {
         }
     }
 }
-function pass_drawRing(canvas, i, thickness) {
+function pass_drawRing(canvas, i) {
     const ctx = canvas.getContext("2d");
     selected = selectedRing;
+    let thickness = canvas.thickness;
 
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
