@@ -1356,6 +1356,9 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
                     return;
                 }
             }
+            if (typeSettings.profanityClean) {
+                value = profanity.clean(value);
+            }
             holder.gmValue = value;
             setNestedValue(pullFrom,settings.valueString.split("."),value);
             holder.activateList();
@@ -1369,6 +1372,16 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
         holder.gmValue = getNestedValue(pullFrom,settings.valueString);
         
         valueInput.on("change",function() {
+            if (typeSettings.profanityCheck) {
+                if (profanity.check(this.value)) {
+                    valueInput.value = holder.gmValue;
+                    return;
+                }
+            }
+            if (typeSettings.profanityClean) {
+                this.value = profanity.clean(this.value);
+            }
+
             setNestedValue(pullFrom,settings.valueString.split("."),this.value);
             holder.gmValue = this.value;
             holder.activateList();
@@ -1641,8 +1654,8 @@ function loadGamemodeTabSettings() {
     let holder = $("modernPopup_content_settings");
     holder.innerHTML = "";
 
-    let a = createGamemodeSetting("Gamemode Name","input","name",{maxLength: 30,default: "Untitled",placeholder: "Gamemode name..."},"Title that is presented to the players.",1);
-    let b = createGamemodeSetting("Gamemode Description","textarea","description",{maxLength: 150},"Explain what this gamemode does, and how to play it.",1);
+    let a = createGamemodeSetting("Gamemode Name","input","name",{profanityClean: true,maxLength: 30,default: "Untitled",placeholder: "Gamemode name..."},"Title that is presented to the players.",1);
+    let b = createGamemodeSetting("Gamemode Description","textarea","description",{profanityClean: true,maxLength: 150},"Explain what this gamemode does, and how to play it.",1);
     let c = createGamemodeSetting("Inventory Slots","number","howManyItemsCanPlayersUse",{min: 0, max: 10},"How many inventory slots the players have.");
     let e = createGamemodeSetting("Snake Collision","toggle","snakeCollision",{},"Do you take damage when hitting other snakes.",2,1);
     let f = createGamemodeSetting("Team Collision","toggle","teamCollision",{},"Do you take damage when hitting other snakes on the same team.",2,2,{
