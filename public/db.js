@@ -268,10 +268,10 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
     
         canvas.points.forEach((point, index) => {
             // Check if the click is inside the image bounds
-            console.log(mouseX,mouseY,point.x,point.y);
             if (mouseX >= point.x && mouseX <= point.x + canvas.thickness && mouseY >= point.y && mouseY <= point.y + canvas.thickness) {
-                // Toggle selection
-                point.selected = !point.selected;
+                console.log("EYO");
+
+                selectedNodeId = point.id;
     
                 // Redraw images (or adjust their appearance based on selection)
                 renderRadialPass2(canvas,selectedPass);
@@ -372,6 +372,7 @@ function pass_drawSet(canvas, i, set) {
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     let thickness = canvas.thickness;
+    let nodeIndex = 0;
 
     const squareSize = thickness*0.75;
     const total = set.length;
@@ -386,19 +387,18 @@ function pass_drawSet(canvas, i, set) {
             const element = set[j];
 
             if (element?.type !== false) {
-                canvas.points.push({ x, y, selected: false });
+                canvas.points.push({ x, y, id: nodeIndex });
                 ctx.drawImage(nodeImages[element.type], x, y, squareSize, squareSize);
-                if (canvas.points[j]) {
-                    if (canvas.points[j].selected) {
-                        ctx.strokeStyle = "red";
-                        ctx.lineWidth = 3;
-                        ctx.strokeRect(x, y, squareSize, squareSize);
-                    }
+                if (selectedNodeId == nodeIndex) {
+                    ctx.strokeStyle = "red";
+                    ctx.lineWidth = 3;
+                    ctx.strokeRect(x, y, squareSize, squareSize);
                 }
             } else {
                 ctx.fillStyle = 'gray';
                 ctx.fillRect(x, y, squareSize, squareSize);
             }
+            nodeIndex++;
         }
     } else {
         const radius = (thickness / 2) + (i * thickness);
@@ -410,19 +410,18 @@ function pass_drawSet(canvas, i, set) {
             const element = set[j];
 
             if (element?.type !== false) {
-                canvas.points.push({ x: x - squareSize / 2, y: y - squareSize / 2, selected: false });
+                canvas.points.push({ x: x - squareSize / 2, y: y - squareSize / 2, id: nodeIndex });
                 ctx.drawImage(nodeImages[element.type], x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
-                if (canvas.points[j]) {
-                    if (canvas.points[j].selected) {
-                        ctx.strokeStyle = "red";
-                        ctx.lineWidth = 3;
-                        ctx.strokeRect(x, y, squareSize, squareSize);
-                    }
+                if (selectedNodeId == nodeIndex) {
+                    ctx.strokeStyle = "red";
+                    ctx.lineWidth = 3;
+                    ctx.strokeRect(x, y, squareSize, squareSize);
                 }
             } else {
                 ctx.fillStyle = 'gray';
                 ctx.fillRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
             }
+            nodeIndex++;
         }
     }
 }
