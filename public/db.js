@@ -277,9 +277,9 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
                 selectedNodeId = point.id;
     
                 // Redraw images (or adjust their appearance based on selection)
+                renderRadialPass2(canvas,selectedPass,[]);
             }
         });
-        renderRadialPass2(canvas,selectedPass,[],mouseX,mouseY);
     });
     
     canvas.on("mouseup", (e) => {
@@ -353,7 +353,7 @@ function renderRadialPass(canvas,pass,unlocked) {
     renderRadialPass2(canvas,pass,unlocked);
 
 }
-function renderRadialPass2(canvas,pass,unlocked = [],mouseX=0,mouseY=0) {
+function renderRadialPass2(canvas,pass,unlocked = []) {
     if (pass.background == "space") drawStars(canvas);
 
     canvas.points = [];
@@ -363,9 +363,6 @@ function renderRadialPass2(canvas,pass,unlocked = [],mouseX=0,mouseY=0) {
         pass_drawSet(canvas,i,pass.set[i]);
     }
 
-    let ctx = canvas.getContext("2d");
-    ctx.fillStyle = "purple";
-    ctx.fillRect(mouseX-5,mouseY-5,10,10);
 }
 let selectedNodeId = false;
 let nodeImages = {}
@@ -400,7 +397,7 @@ function pass_drawSet(canvas, i, set) {
                 if (selectedNodeId === nodeIndex) {
                     ctx.strokeStyle = "red";
                     ctx.lineWidth = 3;
-                    ctx.strokeRect(x, y, squareSize, squareSize);
+                    ctx.strokeRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
                 }
             } else {
                 ctx.fillStyle = 'gray';
@@ -424,11 +421,9 @@ function pass_drawSet(canvas, i, set) {
                 if (selectedNodeId === nodeIndex) {
                     ctx.strokeStyle = "red";
                     ctx.lineWidth = 3;
-                    ctx.strokeRect(x, y, squareSize, squareSize);
+                    ctx.strokeRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
                 }
 
-                ctx.fillStyle = "green";
-                ctx.fillRect(x - squareSize / 2,y - squareSize / 2,squareSize,squareSize);
             } else {
                 ctx.fillStyle = 'gray';
                 ctx.fillRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
