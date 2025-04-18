@@ -289,7 +289,7 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
 
             canvas.startX = realX;
             canvas.startY = realY;
-            drawStars(canvas);
+            renderRadialPass2(canvas,pass,unlocked);
         }
     });
 
@@ -327,12 +327,15 @@ function renderRadialPass(canvas,pass,unlocked) {
     }
 
 
+    renderRadialPass2(canvas,pass,unlocked);
+
+}
+function renderRadialPass2(canvas,pass,unlocked) {
+    drawStars(canvas);
+
     for (let i = 0; i < pass.set.length; i++) {
         drawRing(canvas,i,50);
     }
-
-
-
 }
 function drawRing(canvas, i, thickness) {
     const ctx = canvas.getContext("2d");
