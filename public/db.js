@@ -433,8 +433,16 @@ function pass_drawSet(canvas, i, set) {
                     ctx.strokeRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
                 }
 
-                if (element.id) {
-                    console.log(element.id);
+                if (element.id !== false) {
+                    let srcImage = false;
+                    if (element.type == "item" || element.type == "tile") {
+                        srcImage = getImage(getById(element.type,element.id),"canvas");
+                    }
+
+                    if (srcImage) {
+                        ctx.drawImage(srcImage, x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
+
+                    }
                 }
 
             } else {
