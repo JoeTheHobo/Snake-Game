@@ -2661,14 +2661,18 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
-function database_addPlaysToBoard(boardID, amount) {
-    /*
-        Find the board in the "boards" database using the boardID parameter.
-        Then add the amount parameter to the board's "plays" column.
-        Only add it to that column if the board's "published" column is = 1.
-        If plays is NULL, treat it as 0.
-    */
+function database_addTotalPlaysToBoard(boardID,amount) {
+    const query = `
+        UPDATE boards 
+        SET total_plays = IFNULL(total_plays, 0) + ? 
+        WHERE id = ? AND published = 1
+    `;
 
+    db.query(query, [amount, boardID], (err, results) => {
+        if (err) throw err;
+    });
+}
+function database_addPlaysToBoard(boardID, amount) {
     const query = `
         UPDATE boards 
         SET plays = IFNULL(plays, 0) + ? 
@@ -2677,7 +2681,6 @@ function database_addPlaysToBoard(boardID, amount) {
 
     db.query(query, [amount, boardID], (err, results) => {
         if (err) throw err;
-        console.log(`Updated ${results.affectedRows} row(s).`);
     });
 }
 function setPlayersZones(lobby,player) {
@@ -2760,6 +2763,7 @@ function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,condition
     };
     io.to(lobby.id).emit("endGame",obj)
     database_addPlaysToBoard(lobby.boardID,1);
+    database_addTotalPlaysToBoard(lobby.boardID,lobby.inGamePlayers.length);
 
     
     updateLobbies();
