@@ -270,20 +270,23 @@ function loadRadialPass(holder,pass,unlocked = []) {
     });
     canvas.on("mousemove", (e) => {
         if (canvas.drag) {
-            canvas.offsetX -= (e.clientX - canvas.startX)*canvas.dragSpeed;
-            canvas.offsetY -= (e.clientY - canvas.startY)*canvas.dragSpeed;
+            const rect = canvas.getBoundingClientRect();
+            let realX = e.clientX - rect.left;
+            let realY = e.clientY - rect.top
+            canvas.offsetX -= (realX - canvas.startX)*canvas.dragSpeed;
+            canvas.offsetY -= (realY - canvas.startY)*canvas.dragSpeed;
 
             for (let i = 0; i < canvas.movingPoints.length; i++) {
-                canvas.movingPoints[i].x += (e.clientX - canvas.startX)*canvas.elementDragSpeed;
-                canvas.movingPoints[i].y += (e.clientY - canvas.startY)*canvas.elementDragSpeed;
+                canvas.movingPoints[i].x += (realX - canvas.startX)*canvas.elementDragSpeed;
+                canvas.movingPoints[i].y += (realY - canvas.startY)*canvas.elementDragSpeed;
                 canvas.movingPoints[i].div.css({
                     top: canvas.movingPoints[i].y + "px",
                     left: canvas.movingPoints[i].x + "px",
                 })
             }
 
-            canvas.startX = e.clientX;
-            canvas.startY = e.clientY;
+            canvas.startX = realX;
+            canvas.startY = realY;
             drawStars(canvas);
         }
     });
@@ -333,8 +336,6 @@ function generateStarBackground(canvas) {
 
     const starCount = Math.floor((canvas.spaceSize*15000)/4000); // Number of stars
     canvas.stars = [];
-
-    console.log(starCount);
 
     for (let i = 0; i < starCount; i++) {
         canvas.stars.push({
