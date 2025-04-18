@@ -2302,3 +2302,8 @@ function createGamemodeSetting(title,type,valueString,typeSettings,description,f
         editFunc: editFunc,
     }
 }
+function loadSnakeCustomizationPopup() {
+    
+
+    $(".customizeSnakePopupV2").show();
+}

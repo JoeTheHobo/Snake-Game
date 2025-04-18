@@ -7,6 +7,8 @@ const express = require('express');
 const app = express();
 const pako = require('pako');
 const profanity = require("./profanity.js");
+//                         Guest   Account AdminPurple
+let server_nameColors = ["#a3a3a3","white","#C92FFD"];
 
 //Account Libraries
 const bcrypt = require('bcryptjs');
@@ -3011,7 +3013,7 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
     let sendItems = full ? pako.deflate(JSON.stringify(items), { to: 'string' }) : undefined;
     let sendTiles = full ? pako.deflate(JSON.stringify(tiles), { to: 'string' }) : undefined;
 
-    io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? backgrounds : undefined,sendTiles);
+    io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? backgrounds : undefined,sendTiles,server_nameColors);
     if (sendHome) 
         io.to(socketID).emit("setScene","newMenu");
 
@@ -3134,7 +3136,6 @@ function zipAllBoards(boardList,func,index = 0,list = []) {
     })
 }
 
-let server_nameColors = ["#a3a3a3","white","purple"];
 let server_skinPacks = ["basic","disco"];
 let server_snakeColors = [
     { color: { hue: 360, saturation: 300, brightness: 116 }, id: 0 },

@@ -148,6 +148,8 @@ $("button_backToLobby").on("click",function() {
     setScene("lobby")
 })
 $(".sc_bb_customizeSnakeHolder").on("click",function() {
+    loadSnakeCustomizationPopup();
+    return;
     $(".customizeSnakePopup").show();
     generateHTMLContent($(".customizeSnakePopup"),[
         {type: "title",text: "Appearance"},

@@ -4303,7 +4303,7 @@ cursor: url('./img/pointer.cur'), auto;
   background: linear-gradient(106.84deg, #1A1A1A 4.86%, #373737 92.96%);
 
 }
-.chooseBoardPopup, .editGameModePopup,.editZonePopup {
+.chooseBoardPopup, .editGameModePopup,.editZonePopup,.customizeSnakePopupV2 {
   position: absolute;
   top: 0;
   right: 0;
@@ -4587,7 +4587,7 @@ cursor: url('./img/pointer.cur'), auto;
       transform: rotate(360deg); /* Slow final quarter spin */
     }
   }
-  .modernPopup_topRow_title,.modernPopup_topRow_title_zones {
+  .modernPopup_topRow_title,.modernPopup_topRow_title_zones,.modernPopup_topRow_title_snakeCustomization {
     color: white;
     font-size: 25px;
   }
@@ -4999,4 +4999,56 @@ cursor: url('./img/pointer.cur'), auto;
     position: absolute;
     left: 5px;
     bottom: 40px;
+  }
+
+
+  .snc_leftBar {
+    width: 60%;
+    height: 100%;
+    box-sizing: border-box;
+    outline: 1px solid blue;
+  }
+  .snc_row1 {
+
+  }
+  .snc_snakeImageHolder {
+
+  }
+  .snc_snakeImage {
+
+  }
+  .snc_snakeName {
+
+  }
+  .snc_row2 {
+
+  }
+  .snc_colorHolder {
+
+  }
+  .snc_colorTopRow {
+
+  }
+  .snc_colorList {
+
+  }
+
+  .snc_rightBar {
+    width: 60%;
+    height: 100%;
+    box-sizing: border-box;
+    outline: 1px solid blue;
+
+  }
+  .snc_title {
+
+  }
+  .snc_keyBindHolder {
+
+  }
+  .snc_keyBindText {
+
+  }
+  .snc_keyBindInput {
+
   }

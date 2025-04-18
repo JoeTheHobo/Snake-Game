@@ -15,6 +15,7 @@ let accessedBattlePasses;
 let currentAudio = null;
 let version = "Alpha 0.0.1";
 $(".versionNumber").innerHTML = version;
+let local_nameColors = [];
 
 let global_musicVolume = 100;
 let global_sfxVolume = 100;
