@@ -330,11 +330,11 @@ function renderRadialPass(canvas,pass,unlocked) {
     renderRadialPass2(canvas,pass,unlocked);
 
 }
-function renderRadialPass2(canvas,pass,unlocked,selectedRing = false) {
+function renderRadialPass2(canvas,pass,unlocked) {
     if (pass.background == "space") drawStars(canvas);
 
     for (let i = 0; i < pass.set.length; i++) {
-        pass_drawRing(canvas,i,50,selectedRing);
+        pass_drawRing(canvas,i,50);
         pass_drawSet(canvas,i,50,pass.set[i]);
     }
 }
@@ -362,8 +362,9 @@ function pass_drawSet(canvas, i, thickness, set) {
         ctx.fillRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
     }
 }
-function pass_drawRing(canvas, i, thickness, selected) {
+function pass_drawRing(canvas, i, thickness) {
     const ctx = canvas.getContext("2d");
+    selected = selectedRing;
 
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
@@ -401,16 +402,16 @@ document.body.on("keydown",function(e) {
     }
     if (_type(e.key).isNumber) {
         selectedRing = Number(e.key);
-        renderRadialPass2(selectedPass.canvas,selectedPass,[],Number(e.key));
+        renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
 
     if (e.key == "i") {
-        if (!selectedRing) return;
+        if (selectedRing === false) return;
         selectedPass.set[selectedRing].push({
             type: "item",
 
         })
-        renderRadialPass2(selectedPass.canvas,selectedPass,[],Number(e.key));
+        renderRadialPass2(selectedPass.canvas,selectedPass,[]);
 
     }
 
