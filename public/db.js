@@ -266,9 +266,12 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
         const mouseX = e.clientX - canvasRect.left;
         const mouseY = e.clientY - canvasRect.top;
     
+        let thickness = canvas.thickness;
+        const squareSize = thickness*0.75;
+
         canvas.points.forEach((point, index) => {
             // Check if the click is inside the image bounds
-            if (mouseX >= point.x-(canvas.thickness/2) && mouseX <= point.x + (canvas.thickness/2) && mouseY >= point.y-(canvas.thickness/2) && mouseY <= point.y + (canvas.thickness/2)) {
+            if (mouseX >= point.x && mouseX <= point.x + (squareSize) && mouseY >= point.y && mouseY <= point.y + (squareSize)) {
                 console.log("EYO");
 
                 selectedNodeId = point.id;
@@ -379,7 +382,6 @@ function pass_drawSet(canvas, i, set) {
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     let thickness = canvas.thickness;
-
     const squareSize = thickness*0.75;
     const total = set.length;
 
