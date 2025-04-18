@@ -2159,7 +2159,7 @@ function showBoardMenu(allBoards) {
                 setLikedList();
             })
 
-            let playsText = cardHolder.create("bc_playCounter");
+            let playsText = cardHolder.create("div.bc_playCounter");
             let plays = card.plays;
             if (!plays) plays = 0;
             playsText.innerHTML = plays + " Plays";
