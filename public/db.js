@@ -274,9 +274,9 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
                 selectedNodeId = point.id;
     
                 // Redraw images (or adjust their appearance based on selection)
-                renderRadialPass2(canvas,selectedPass,[],mouseX,mouseY);
             }
         });
+        renderRadialPass2(canvas,selectedPass,[],mouseX,mouseY);
     });
     
     canvas.on("mouseup", (e) => {
