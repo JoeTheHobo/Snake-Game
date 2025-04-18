@@ -309,14 +309,13 @@ function loadRadialPass(holder,pass,unlocked = []) {
     battlePointsImg.src = "img/techTrees/battlePoints.png";
     let battlePointsCounter = topLeftContent.create("div.techTree_battlePointsCounter");
     battlePointsCounter.innerHTML = "x" + localAccount.battlePassPoints;
-    if (pass.background == "space") {
-        generateStarBackground(canvas);
-
-    }
 }
 function renderRadialPass(canvas,pass,unlocked) {
     let ctx = canvas.getContext("2d");
 
+    if (pass.background == "space") {
+        generateStarBackground(canvas);
+    }
 
 
 }
@@ -349,7 +348,6 @@ function generateStarBackground(canvas) {
 }
 function drawStars(canvas) {
     let techTree_ctx = canvas.getContext("2d");
-    console.log("EYO")
 
     techTree_ctx.fillStyle = "black";
     techTree_ctx.fillRect(0, 0, canvas.width, canvas.height);
