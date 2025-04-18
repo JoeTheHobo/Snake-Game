@@ -263,8 +263,8 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
     });
     canvas.on('click', (e) => {
         const canvasRect = canvas.getBoundingClientRect();
-        const mouseX = e.clientX - canvasRect.left + 200;
-        const mouseY = e.clientY - canvasRect.top - 50;
+        const mouseX = e.clientX - canvasRect.left + 150;
+        const mouseY = e.clientY - canvasRect.top - 25;
     
         canvas.points.forEach((point, index) => {
             // Check if the click is inside the image bounds
