@@ -140,3 +140,39 @@ socket.on("adminTools_giveDatabaseData",(data) => {
 socket.on("adminTools_giveTableData",(table) => {
     at_loadDatabaseTable(table);
 })
+
+
+
+
+
+let battlePasses = [];
+let selectedPass = false;
+$(".addPassButton").on("click",function() {
+    battlePasses.push({
+        set: [],
+        background: "space",
+        name: "untitled",
+
+    })
+    selectedPass = battlePasses[battlePasses.length - 1];
+    loadRadialPass($(".at_bp_canvas"),selectedPass);
+    loadPasses(battlePasses.length - 1);
+
+})
+function loadPasses(index) {
+    let passHolder = $(".battlePassHolder");
+    passHolder.innerHTML = "";
+    for (let i = 0; i < battlePasses.length; i++) {
+        let div = passHolder.create("div.battlePassDiv");
+        div.innerHTML = battlePasses[i].name;
+        div.on("click",function() {
+            loadPasses(i);
+            selectedPass = battlePasses[i];
+            loadRadialPass($(".at_bp_canvas"),selectedPass);
+        })
+        if (index === i) div.classAdd("battlePassDivSelected");
+    }
+}
+function loadRadialPass(canvas,pass,unlocked = []) {
+
+}
