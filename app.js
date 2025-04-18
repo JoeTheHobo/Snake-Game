@@ -3490,6 +3490,7 @@ function checkItem(item,type,allowedSkinPacks,returnPrefix) {
 
     let realItem = getRealItem(item.id,type);
 
+    if (type == "item") console.log(allowedSkinPacks,item.skin)
     if (realItem.name !== item.name) return returnPrefix + ", Illegal Name: " + item.name;
     if (!allowedSkinPacks.includes(item.skin)) return returnPrefix + ", Illegal Skin: " + item.skin;
 
