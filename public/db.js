@@ -249,14 +249,14 @@ function loadRadialPass(holder,pass,unlocked = []) {
             drag = false;
         }
     });
-    canvas.body.on("mousedown", (e) => {
+    canvas.on("mousedown", (e) => {
         const rect = this.getBoundingClientRect();
         this.drag = true;
         this.startX = e.clientX - rect.left;
         this.startY = e.clientY - rect.top;
         this.mouseDownTime = Date.now();
     });
-    canvas.body.on("mouseup", (e) => {
+    canvas.on("mouseup", (e) => {
         canvas.drag = false;
 
         const clickDuration = Date.now() - this.mouseDownTime; // Calculate the time between mousedown and mouseup
@@ -267,7 +267,7 @@ function loadRadialPass(holder,pass,unlocked = []) {
             }
         }
     });
-    canvas.body.on("mousemove", (e) => {
+    canvas.on("mousemove", (e) => {
         if (this.drag) {
             this.offsetX -= (e.clientX - this.startX)*this.dragSpeed;
             this.offsetY -= (e.clientY - this.startY)*this.dragSpeed;
