@@ -432,9 +432,9 @@ document.body.on("keydown",function(e) {
         selectedPass.set.push([]);
         renderRadialPass2(selectedPass.canvas,selectedPass,[],false);
     }
-    if (shiftDown && _type(e.key).isNumber) {
-        selectedRing = Number(e.key);
-        renderRadialPass2(selectedPass.canvas,selectedPass,[]);
+    if (shiftDown && e.code.startsWith("Digit")) {
+        selectedRing = Number(e.code.replace("Digit", ""));
+        renderRadialPass2(selectedPass.canvas, selectedPass, []);
     }
 
     if (controlDown && e.key == "i") {
