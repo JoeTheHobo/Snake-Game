@@ -438,6 +438,7 @@ document.body.on("keydown",function(e) {
     }
 
     if (controlDown && e.key == "i") {
+        e.preventDefault();
         if (selectedRing === false) return;
         selectedPass.set[selectedRing].push({
             type: "item",
@@ -446,6 +447,7 @@ document.body.on("keydown",function(e) {
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
     if (controlDown && e.key == "t") {
+        e.preventDefault();
         if (selectedRing === false) return;
         selectedPass.set[selectedRing].push({
             type: "tile",
@@ -455,6 +457,7 @@ document.body.on("keydown",function(e) {
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
     if (controlDown && e.key == "T") {
+        e.preventDefault();
         if (selectedRing === false) return;
         selectedPass.set[selectedRing].push({
             type: "super_tile",
@@ -464,6 +467,7 @@ document.body.on("keydown",function(e) {
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
     if (controlDown && e.key == "r") {
+        e.preventDefault();
         if (selectedRing === false) return;
         selectedPass.set[selectedRing].push({
             type: "reward",
@@ -473,6 +477,7 @@ document.body.on("keydown",function(e) {
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
     if (controlDown && e.key == "s") {
+        e.preventDefault();
         if (selectedRing === false) return;
         selectedPass.set[selectedRing].push({
             type: "skin",
@@ -481,6 +486,7 @@ document.body.on("keydown",function(e) {
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
     if (controlDown && e.key == "c") {
+        e.preventDefault();
         if (selectedRing === false) return;
         selectedPass.set[selectedRing].push({
             type: "chest",
