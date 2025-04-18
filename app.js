@@ -575,7 +575,7 @@ io.on('connection', (socket) => {
                         }
 
                         decompressBoardsFromDB(results,(publishedBoards) => {
-                            returningBoards.published = publishedBoards;
+                            returningBoards.published = publishedBoards.slice().reverse();
                             io.to(socket.id).emit("serverSending_publishedBoards",returningBoards);
                         });
                     })
