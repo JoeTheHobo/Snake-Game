@@ -2305,5 +2305,5 @@ function createGamemodeSetting(title,type,valueString,typeSettings,description,f
 function loadSnakeCustomizationPopup() {
     
 
-    $(".customizeSnakePopupV2").show();
+    $(".customizeSnakePopupV2").show("flex");
 }
