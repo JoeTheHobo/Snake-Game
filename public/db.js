@@ -319,6 +319,8 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
 function renderRadialPass(canvas,pass,unlocked) {
     let ctx = canvas.getContext("2d");
     ctx.clearRect(0,0,canvas.width,canvas.height);
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
 
     if (pass.background == "space") {
         generateStarBackground(canvas);
@@ -326,7 +328,6 @@ function renderRadialPass(canvas,pass,unlocked) {
 
 
     for (let i = 0; i < pass.set.length; i++) {
-        console.log("EYO")
         drawRing(canvas,i,50);
     }
 
@@ -335,10 +336,6 @@ function renderRadialPass(canvas,pass,unlocked) {
 }
 function drawRing(canvas, i, thickness) {
     const ctx = canvas.getContext("2d");
-
-    // Make sure canvas isn't stretched weirdly
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
 
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
