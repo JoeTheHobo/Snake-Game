@@ -269,18 +269,20 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
         let thickness = canvas.thickness;
         const squareSize = thickness*0.75;
 
+        let clickedPoint = false;
         canvas.points.forEach((point, index) => {
             // Check if the click is inside the image bounds
             if (mouseX >= point.x && mouseX <= point.x + (squareSize) && mouseY >= point.y && mouseY <= point.y + (squareSize)) {
-                console.log("EYO");
-
                 selectedNodeId = point.id;
     
                 // Redraw images (or adjust their appearance based on selection)
                 renderRadialPass2(canvas,selectedPass,[]);
-                return;
+                clickedPoint = true;
             }
         });
+
+        if (clickedPoint) return;
+
         selectedNodeId = false;
         renderRadialPass2(canvas,selectedPass,[]);
     });
