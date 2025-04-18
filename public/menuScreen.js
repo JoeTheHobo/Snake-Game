@@ -1358,6 +1358,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             }
             if (typeSettings.profanityClean) {
                 value = profanity.clean(value);
+                valueInput.value = value;
             }
             holder.gmValue = value;
             setNestedValue(pullFrom,settings.valueString.split("."),value);
