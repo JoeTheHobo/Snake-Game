@@ -218,6 +218,7 @@
     width: 100%;
     height: 100%;
     width: 20px;
+    position: relative;
 }
 .addButton {
     
@@ -251,4 +252,205 @@
 .battlePassCanvas {
     width: 100%;
     height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
 }
+
+
+
+  .techTree_background {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    position: absolute;
+    z-index: -1;
+  }
+  .techTree_vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* So it doesn't interfere with dragging */
+    background: radial-gradient(circle, rgb(0 0 0 / 0%) 50%, rgb(62 40 44 / 50%) 100%);
+    z-index: 1000; /* Keep it above the canvas */
+  }
+  .techTree_line {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%,rgba(255, 255, 255, 0) 15%, rgba(255, 255, 255, 0.801) 20%, rgba(255, 255, 255, 0.801) 80%,rgba(255, 255, 255, 0) 85%, rgba(255, 255, 255, 0) 100%);
+  }
+  .techTree_lineLocked {
+    position: absolute !important;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.801);
+    cursor: url('./img/pointer.cur'), auto;
+    background: black;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border .2s ease-in-out;
+  }
+  .techTree_lineLocked:hover {
+    border: 2px solid rgba(150, 150, 150, 0.801);
+  }
+  .techTree_line_count {
+    position: absolute;
+    transform: rotate(90deg);
+    right: 60%;
+    top: 50%;
+    color: purple;
+    font-size: 25px;
+    z-index: 2;
+    width: max-content;
+    height: max-content;
+    -webkit-text-stroke: 3px black;
+    paint-order: stroke fill;
+    pointer-events: none;
+  }
+  .techTree_line_unlocked {
+    background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%,rgba(255, 255, 255, 0) 15%, rgba(45, 226, 54, 0.801) 20%, rgba(45, 226, 54, 0.801) 80%,rgba(255, 255, 255, 0) 85%, rgba(255, 255, 255, 0) 100%) !important;
+  }
+  .techTree_lineLockedImg {
+    filter: invert(1);
+    width: 80%;
+    height: 80%;
+    transform: rotate(90deg);
+  }
+  .techTree_infoCard {
+    position: absolute;
+    z-index: 100;
+    background: rgba(65, 65, 65, 0.863);
+    border: 4px solid rgba(255, 255, 255, 0.904);
+    padding: 10px;
+    height: max-content;
+    width: 275px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    border-radius: 5px;
+  }
+  .infocard_name {
+    font-size: 26px;
+  
+  }
+  .infocard_title {
+    font-size: 19px;
+  
+  }
+  .infocard_description {
+    font-size: 23px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  .techTree_unlocked {
+    border: 3px solid rgba(45, 226, 54, 0.801);
+  }
+  .techTree_locked {
+    border: 3px solid rgba(255, 255, 255, 0.801);
+    filter: grayscale(100%);
+  }
+  .grayScale {
+    filter: grayscale(100%);
+  }
+  .noInvert {
+    filter: none !important;
+  }
+  .textTree_rewards {
+    position: absolute;
+    cursor: url('./img/pointer.cur'), auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    transition: opacity 0.2s ease-in-out;
+  }
+  .techTree_reward_selected {
+    border: 3px solid rgba(63, 126, 199, 0.801) !important;
+  }
+  .techTree_reward {
+    transition: border .2s ease-in-out;
+    border-radius: 5px;
+    position: relative;
+    z-index: 1;
+  }
+  .techTree_insideReward {
+    width: 100%;
+    height: 100%;
+  }
+  .techTree_reward_text {
+    width: max-content;
+    height: max-content;
+    padding: 10px;
+    font-size: 2em;
+    background: rgba(255, 255, 255, 0.11);
+    color: white;
+  }
+  .techTree_reward_img {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.11);
+    margin: 5px;
+  }
+  .techTree_reward_miniText {
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
+    font-size: 25px;
+    z-index: 2;
+    -webkit-text-stroke: 2px black;
+    paint-order: stroke fill;
+  }
+  .textGold {
+    color: gold;
+  }
+  .textWhite {
+    color: white;
+  }
+  
+  .techTree_content {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    z-index: 1000;
+  }
+  .techTree_returnButton {
+    width: max-content;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 35px;
+    line-height: 35px;
+    font-size: 30px;
+    cursor: url('./img/pointer.cur'), auto;
+    border-radius: 5px;
+    border: 3px solid rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+    transition: all .2s ease-in-out;
+  }
+  .techTree_returnButton:hover {
+    border: 3px solid rgb(45, 226, 54);
+    color: rgb(45, 226, 54);
+  }
+  .techTree_battlePointsImg {
+    height: 45px;
+    margin-left: 5px;
+  
+  }
+  .techTree_battlePointsCounter {
+    color: purple;
+    margin-left: 5px;
+    font-size: 35px;
+  }
