@@ -323,6 +323,23 @@ document.body.on("wheel",function(e) {
     
 })
 document.body.onkeydown = function(e) {
+    let controlDown = e.ctrlKey;
+    let shiftDown = e.shiftKey;
+    let metaDown = e.metaKey;
+    let keyDown = e.key.toLowerCase();
+    if (global_scene == "newMenu") {
+        e.preventDefault();
+        if (controlDown && shiftDown && keyDown == "a") {
+            if (localAccount.status === "Admin") {
+                if (global_scene == "adminTools") {
+                    setScene("newMenu");
+                } else {
+                    adminTools();
+                }
+            }
+        }
+    }
+
     if (global_scene == "adminTools") return;
     if (global_scene == "mapEditor") return;
     if (global_scene == "login") return;
@@ -343,44 +360,15 @@ document.body.onkeydown = function(e) {
         if (showPerformance) $(".production").show("flex");
         else $(".production").hide();
     }
-    let controlDown = e.ctrlKey;
-    let shiftDown = e.shiftKey;
-    let metaDown = e.metaKey;
-    let keyDown = e.key.toLowerCase();
     let preventDefault = true;
 
     if (controlDown && shiftDown && keyDown === 'i') preventDefault = false;
     if (metaDown) preventDefault = false;
     if (keyDown == "f5") preventDefault = false;
     if (preventDefault) e.preventDefault();
-    if (controlDown && shiftDown && keyDown == "a") {
-        if (localAccount.status === "Admin") {
-            if (global_scene == "adminTools") {
-                setScene("newMenu");
-            } else {
-                adminTools();
-            }
-        }
-    }
 
     if (killSwitch) return;
     if (!isActiveGame) return;
-    
-
-
-    
-    if (keyDown == "escape" && gameType !== "server") {
-        if (gamePaused) {
-            $(".pauseGamePopup").hide();
-            gamePaused = false;
-            requestAnimationFrame(gameLoop);
-            $("playerCardsHolder").style.cursor = "none";
-        }
-        else {
-            pauseGame();
-            $("playerCardsHolder").style.cursor = "";
-        }
-    }
 
     if (cameraFollowPlayer && gameType !== "server") {
         if (keyDown == "m") {
