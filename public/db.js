@@ -341,10 +341,6 @@ function renderRadialPass2(canvas,pass,unlocked,selectedRing = false) {
 function pass_drawSet(canvas, i, thickness, set) {
     const ctx = canvas.getContext("2d");
 
-    // Match canvas resolution to display size
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
-
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
 
