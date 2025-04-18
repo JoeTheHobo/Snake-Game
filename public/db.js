@@ -399,13 +399,7 @@ function pass_drawSet(canvas, i, set) {
             element.index = nodeIndex;
 
             if (element?.type !== false) {
-                canvas.points.push({ x, y, id: nodeIndex });
-                ctx.drawImage(nodeImages[element.type], x, y, squareSize, squareSize);
-                if (selectedNodeId === nodeIndex) {
-                    ctx.strokeStyle = "red";
-                    ctx.lineWidth = 3;
-                    ctx.strokeRect(x, y, squareSize, squareSize);
-                }
+                drawNodeImage(nodeImages[element.type],x,y,squareSize,nodeIndex,element);
             } else {
                 ctx.fillStyle = 'gray';
                 ctx.fillRect(x, y, squareSize, squareSize);
@@ -426,30 +420,37 @@ function pass_drawSet(canvas, i, set) {
             if (element?.type !== false) {
                 canvas.points.push({ x: x - squareSize / 2, y: y - squareSize / 2, id: nodeIndex });
 
-                ctx.drawImage(nodeImages[element.type], x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
-                if (selectedNodeId === nodeIndex) {
-                    ctx.strokeStyle = "red";
-                    ctx.lineWidth = 3;
-                    ctx.strokeRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
-                }
-
-                if (element.id !== false) {
-                    let srcImage = false;
-                    if (element.type == "item" || element.type == "tile") {
-                        srcImage = getImage(getById(element.type,element.id),"canvas");
-                    }
-
-                    if (srcImage) {
-                        ctx.drawImage(srcImage, x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
-
-                    }
-                }
+                drawNodeImage(nodeImages[element.type],x - squareSize / 2,y - squareSize / 2,squareSize,nodeIndex,element);
 
             } else {
                 ctx.fillStyle = 'gray';
                 ctx.fillRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
             }
             nodeIndex++;
+        }
+    }
+}
+function drawNodeImage(image,x,y,nodeSize,nodeIndex,element) {
+    ctx.drawImage(image, x, y, nodeSize, nodeSize);
+    if (selectedNodeId === nodeIndex) {
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(x, y, nodeSize, nodeSize);
+    }
+
+    if (element.id !== false) {
+        let srcImage = false;
+        if (element.type == "item" || element.type == "tile") {
+            srcImage = getImage(getById(element.type,element.id),"canvas");
+        }
+
+        if (srcImage) {
+            let shrinkSize = 0.7;
+            let shrinkNodeSize = nodeSize * shrinkSize;
+            let shrinkDifference = nodeSize - shrinkNodeSize;
+
+            ctx.drawImage(srcImage, x-shrinkDifference, y-shrinkDifference, shrinkNodeSize, shrinkNodeSize);
+
         }
     }
 }
@@ -511,7 +512,7 @@ document.body.on("keydown",function(e) {
     }
     if (e.key == "Enter" && selectedNodeId !== false && startWritingNumbers) {
         console.log("ID SUBMITTED")
-        startWritingNumbers = true;
+        startWritingNumbers = false;
         setIdOfNode(selectedNodeId,writingNumber);
     }
     if (altDown && selectedNodeId !== false && startWritingNumbers === false) {
