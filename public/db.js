@@ -502,15 +502,19 @@ document.body.on("keydown",function(e) {
         renderRadialPass2(selectedPass.canvas,selectedPass);
     }
     if (e.key == "enter" && selectedNodeId !== false && startWritingNumbers) {
+        console.log("ID SUBMITTED")
         startWritingNumbers = true;
         setIdOfNode(selectedNodeId,writingNumber);
     }
     if (altDown && selectedNodeId !== false && startWritingNumbers === false) {
+        e.preventDefault();
+        console.log("Start Writing ID")
         startWritingNumbers = true;
         writingNumber = "";
     }
     if (_type(e.key).isNumber && selectedNodeId !== false && startWritingNumbers) {
         writingNumber += e.key;
+        console.log("ID:",writingNumber);
     }
     if (shiftDown && e.code.startsWith("Digit")) {
         selectedRing = Number(e.code.replace("Digit", ""));
