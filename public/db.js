@@ -414,8 +414,6 @@ function pass_drawSet(canvas, i, set) {
             if (element?.type !== false) {
                 canvas.points.push({ x: x - squareSize / 2, y: y - squareSize / 2, id: nodeIndex });
 
-                ctx.fillStyle = "green";
-                ctx.fillRect(x-5,y-5,10,10);
 
                 ctx.drawImage(nodeImages[element.type], x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
                 if (selectedNodeId === nodeIndex) {
@@ -423,6 +421,8 @@ function pass_drawSet(canvas, i, set) {
                     ctx.lineWidth = 3;
                     ctx.strokeRect(x, y, squareSize, squareSize);
                 }
+                ctx.fillStyle = "green";
+                ctx.fillRect(x-5,y-5,10,10);
             } else {
                 ctx.fillStyle = 'gray';
                 ctx.fillRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
