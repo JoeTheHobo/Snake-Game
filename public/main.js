@@ -327,7 +327,7 @@ document.body.onkeydown = function(e) {
     let shiftDown = e.shiftKey;
     let metaDown = e.metaKey;
     let keyDown = e.key.toLowerCase();
-    if (global_scene == "newMenu") {
+    if (global_scene == "newMenu" || global_scene == "adminTools") {
         e.preventDefault();
         if (controlDown && shiftDown && keyDown == "a") {
             if (localAccount.status === "Admin") {
