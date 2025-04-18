@@ -263,8 +263,8 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
     });
     canvas.on('click', (e) => {
         const canvasRect = canvas.getBoundingClientRect();
-        const mouseX = e.clientX - canvasRect.left + 150;
-        const mouseY = e.clientY - canvasRect.top - 25;
+        const mouseX = e.clientX - canvasRect.left;
+        const mouseY = e.clientY - canvasRect.top;
     
         canvas.points.forEach((point, index) => {
             // Check if the click is inside the image bounds
@@ -274,7 +274,7 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
                 selectedNodeId = point.id;
     
                 // Redraw images (or adjust their appearance based on selection)
-                renderRadialPass2(canvas,selectedPass);
+                renderRadialPass2(canvas,selectedPass,[],mouseX,mouseY);
             }
         });
     });
@@ -350,7 +350,7 @@ function renderRadialPass(canvas,pass,unlocked) {
     renderRadialPass2(canvas,pass,unlocked);
 
 }
-function renderRadialPass2(canvas,pass,unlocked = []) {
+function renderRadialPass2(canvas,pass,unlocked = [],mouseX=0,mouseY=0) {
     if (pass.background == "space") drawStars(canvas);
 
     canvas.points = [];
@@ -359,6 +359,10 @@ function renderRadialPass2(canvas,pass,unlocked = []) {
         pass_drawRing(canvas,i);
         pass_drawSet(canvas,i,pass.set[i]);
     }
+
+    let ctx = canvas.getContext("2d");
+    ctx.fillStyle = "purple";
+    ctx.fillRect(mouseX-5,mouseY-5,10,10);
 }
 let selectedNodeId = false;
 let nodeImages = {}
@@ -420,6 +424,9 @@ function pass_drawSet(canvas, i, set) {
                     ctx.lineWidth = 3;
                     ctx.strokeRect(x, y, squareSize, squareSize);
                 }
+
+                ctx.fillStyle = "green";
+                ctx.fillRect(x - squareSize / 2,y - squareSize / 2,squareSize,squareSize);
             } else {
                 ctx.fillStyle = 'gray';
                 ctx.fillRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
