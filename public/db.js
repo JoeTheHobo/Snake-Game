@@ -336,12 +336,23 @@ function renderRadialPass(canvas,pass,unlocked) {
 function drawRing(canvas, i, thickness) {
     const ctx = canvas.getContext("2d");
 
+    // Make sure canvas isn't stretched weirdly
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-
     const radius = (thickness / 2) + (i * thickness);
 
-    const colors = ["red", "green", "blue", "orange", "purple", "cyan"];
+    // Set semi-transparent color
+    const colors = [
+        "rgba(255, 0, 0, 0.4)",     // red
+        "rgba(0, 255, 0, 0.4)",     // green
+        "rgba(0, 0, 255, 0.4)",     // blue
+        "rgba(255, 165, 0, 0.4)",   // orange
+        "rgba(128, 0, 128, 0.4)",   // purple
+        "rgba(0, 255, 255, 0.4)"    // cyan
+    ];
     const color = colors[i % colors.length];
 
     ctx.beginPath();
