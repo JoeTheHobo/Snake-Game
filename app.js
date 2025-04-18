@@ -3418,6 +3418,7 @@ function checkBoard(board,account) {
             Check Spawn zones (Names)
         */
         if (!board) return "No Board Found";
+        if (account.status == "Admin") return true;
 
         if (!board.gameModes) return "No Gamemodes Found1";
         if (board.gameModes.length == 0) return "No Gamemodes Found2";
