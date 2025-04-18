@@ -3446,8 +3446,10 @@ function checkBoard(board,account) {
         let spawnZoneCheck = checkSpawnZones(board.spawnZones);
         if (spawnZoneCheck !== true) return spawnZoneCheck;
 
-        let tileDifferencesCheck = checkTileDifferences(board.tileDifferences,account.allowedItemSkinPacks);
+        let tileDifferencesCheck = checkDifferences(board.tileDifferences,account.allowedItemSkinPacks);
         if (tileDifferencesCheck !== true) return tileDifferencesCheck;
+        let itemDifferencesCheck = checkDifferences(board.itemDifferences,account.allowedItemSkinPacks);
+        if (itemDifferencesCheck !== true) return itemDifferencesCheck;
     
         return true;
     } catch (err) {
@@ -3456,7 +3458,7 @@ function checkBoard(board,account) {
     }
 }
 
-function checkTileDifferences(differences,allowedSkins) {
+function checkDifferences(differences,allowedSkins) {
     for (let i = 0; i < differences.length; i++) {
         let difference = differences[i];
         if (difference[0]) {
