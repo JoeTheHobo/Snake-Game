@@ -338,7 +338,6 @@ function renderRadialPass2(canvas,pass,unlocked,selectedRing = false) {
     }
 }
 function drawRing(canvas, i, thickness, selected) {
-    console.log(selected)
     const ctx = canvas.getContext("2d");
 
     const centerX = canvas.width / 2;
@@ -353,10 +352,7 @@ function drawRing(canvas, i, thickness, selected) {
 
     // If selected, draw red fill underneath
     if (i === selected) {
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 0, 0, 0.2)'; // subtle red background
-        ctx.fill();
+        const ringColor = `rgba(0, 255, 0, 0.4)`;
     }
 
     // Draw the ring
