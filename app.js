@@ -3475,7 +3475,6 @@ function checkBoardItems(board,type,allowedIDs,allowedSkinPacks) {
     for (let i = 0; i < board.originalMap.length; i++) {
         for (let j = 0; j < board.originalMap[i].length; j++) {
             let cell = board.originalMap[i][j][type];
-            if (type == "item" && cell !== false) console.log(cell)
             if (cell === false && type == "item") continue;
             if (cell === false && type == "tile") return "No Tile Found At " + i + "," + j;
 
@@ -3491,7 +3490,7 @@ function checkItem(item,type,allowedSkinPacks,returnPrefix) {
 
     let realItem = getRealItem(item.id,type);
 
-    if (type == "item") console.log(allowedSkinPacks,item.skin)
+    if (type == "tile" && item.id == 9) console.log(allowedSkinPacks,item.skin)
     if (realItem.name !== item.name) return returnPrefix + ", Illegal Name: " + item.name;
     if (!allowedSkinPacks.includes(item.skin)) return returnPrefix + ", Illegal Skin: " + item.skin;
 
