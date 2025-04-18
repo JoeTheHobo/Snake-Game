@@ -234,6 +234,7 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
     canvas.maxClickDuration = 200; // Maximum duration (in ms) for a click to be considered fast
 
     pass.canvas = canvas;
+    canvas.points = [];
 
     requestAnimationFrame(() => {
         canvas.width = canvas.clientWidth;
@@ -259,6 +260,23 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
         canvas.startY = e.clientY - rect.top;
         canvas.mouseDownTime = Date.now();
     });
+    canvas.on('click', (e) => {
+        const canvasRect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - canvasRect.left;
+        const mouseY = e.clientY - canvasRect.top;
+    
+        canvas.points.forEach((point, index) => {
+            // Check if the click is inside the image bounds
+            if (mouseX >= point.x && mouseX <= point.x + 20 && mouseY >= point.y && mouseY <= point.y + 20) {
+                // Toggle selection
+                point.selected = !point.selected;
+    
+                // Redraw images (or adjust their appearance based on selection)
+                renderRadialPass2(canvas,selectedPass);
+            }
+        });
+    });
+    
     canvas.on("mouseup", (e) => {
         canvas.drag = false;
 
@@ -330,11 +348,12 @@ function renderRadialPass(canvas,pass,unlocked) {
     renderRadialPass2(canvas,pass,unlocked);
 
 }
-function renderRadialPass2(canvas,pass,unlocked) {
+function renderRadialPass2(canvas,pass,unlocked = []) {
     if (pass.background == "space") drawStars(canvas);
 
     let thickness = 80;
 
+    canvas.points = [];
     for (let i = 0; i < pass.set.length; i++) {
         pass_drawRing(canvas,i,thickness);
         pass_drawSet(canvas,i,thickness,pass.set[i]);
@@ -366,7 +385,15 @@ function pass_drawSet(canvas, i, thickness, set) {
             const element = set[j];
 
             if (element?.type !== false) {
+                canvas.points.push({ x, y, selected: false });
                 ctx.drawImage(nodeImages[element.type], x, y, squareSize, squareSize);
+                if (canvas.points[j]) {
+                    if (canvas.points[j].selected) {
+                        ctx.strokeStyle = "red";
+                        ctx.lineWidth = 3;
+                        ctx.strokeRect(x, y, squareSize, squareSize);
+                    }
+                }
             } else {
                 ctx.fillStyle = 'gray';
                 ctx.fillRect(x, y, squareSize, squareSize);
@@ -382,7 +409,15 @@ function pass_drawSet(canvas, i, thickness, set) {
             const element = set[j];
 
             if (element?.type !== false) {
+                canvas.points.push({ x: x - squareSize / 2, y: y - squareSize / 2, selected: false });
                 ctx.drawImage(nodeImages[element.type], x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
+                if (canvas.points[j]) {
+                    if (canvas.points[j].selected) {
+                        ctx.strokeStyle = "red";
+                        ctx.lineWidth = 3;
+                        ctx.strokeRect(x, y, squareSize, squareSize);
+                    }
+                }
             } else {
                 ctx.fillStyle = 'gray';
                 ctx.fillRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
@@ -427,7 +462,6 @@ document.body.on("keydown",function(e) {
     
     let controlDown = e.ctrlKey;
     let shiftDown = e.shiftKey;
-    e.preventDefault();
 
     if (e.key == "R") {
         selectedPass.set.push([]);
@@ -448,6 +482,7 @@ document.body.on("keydown",function(e) {
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
     if (controlDown && e.key == "l") {
+        e.preventDefault();
         if (selectedRing === false) return;
         selectedPass.set[selectedRing].push({
             type: "tile",
