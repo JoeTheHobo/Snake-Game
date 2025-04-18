@@ -427,6 +427,7 @@ document.body.on("keydown",function(e) {
     
     let controlDown = e.ctrlKey;
     let shiftDown = e.shiftKey;
+    e.preventDefault();
 
     if (e.key == "R") {
         selectedPass.set.push([]);
@@ -447,7 +448,6 @@ document.body.on("keydown",function(e) {
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
     if (controlDown && e.key == "t") {
-        e.preventDefault();
         if (selectedRing === false) return;
         selectedPass.set[selectedRing].push({
             type: "tile",
