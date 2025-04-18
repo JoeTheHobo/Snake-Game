@@ -248,3 +248,7 @@
 .battlePassDivSelected {
     border: 3px solid blue;
 }
+.battlePassCanvas {
+    width: 100%;
+    height: 100%;
+}

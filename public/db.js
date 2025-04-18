@@ -145,6 +145,47 @@ socket.on("adminTools_giveTableData",(table) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 let battlePasses = [];
 let selectedPass = false;
 $(".addPassButton").on("click",function() {
@@ -154,8 +195,6 @@ $(".addPassButton").on("click",function() {
         name: "untitled",
 
     })
-    selectedPass = battlePasses[battlePasses.length - 1];
-    loadRadialPass($(".at_bp_canvas"),selectedPass);
     loadPasses(battlePasses.length - 1);
 
 })
@@ -167,12 +206,157 @@ function loadPasses(index) {
         div.innerHTML = battlePasses[i].name;
         div.on("click",function() {
             loadPasses(i);
+        })
+        if (index === i) {
+            div.classAdd("battlePassDivSelected");
             selectedPass = battlePasses[i];
             loadRadialPass($(".at_bp_canvas"),selectedPass);
-        })
-        if (index === i) div.classAdd("battlePassDivSelected");
+        }
     }
 }
-function loadRadialPass(canvas,pass,unlocked = []) {
+function loadRadialPass(holder,pass,unlocked = []) {
+    let canvas = holder.create("canvas.battlePassCanvas");
+    canvas.stars;
+    canvas.techTree_ctx;
+    canvas.viewWidth, 
+    canvas.viewHeight,
+    canvas.offsetX,
+    canvas.offsetY,
+    canvas.drag = false,
+    canvas.startX,
+    canvas.startY;
+    canvas.laUnlocked;
+    canvas.dragSpeed = 0.5;
+    canvas.elementDragSpeed = 0.8;
+    canvas.spaceSize = 25000; // Huge space
+    canvas.mouseDownTime = 0; // Store time of the mousedown event
+    canvas.maxClickDuration = 200; // Maximum duration (in ms) for a click to be considered fast
 
+    requestAnimationFrame(() => {
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+      
+        renderRadialPass(canvas,pass,unlocked)
+      });
+
+      
+    canvas.on('mouseout', function(e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        if (x < 0 || x > this.clientWidth || y < 0 || y > this.clientHeight) {
+            drag = false;
+        }
+    });
+    canvas.body.on("mousedown", (e) => {
+        const rect = this.getBoundingClientRect();
+        this.drag = true;
+        this.startX = e.clientX - rect.left;
+        this.startY = e.clientY - rect.top;
+        this.mouseDownTime = Date.now();
+    });
+    canvas.body.on("mouseup", (e) => {
+        canvas.drag = false;
+
+        const clickDuration = Date.now() - this.mouseDownTime; // Calculate the time between mousedown and mouseup
+        if (clickDuration <= maxClickDuration) {
+            if (!e.target.classList.contains("techTree_reward") && !e.target.classList.contains("techTree_insideReward")) {
+                $(".techTree_reward").classRemove("techTree_reward_selected")
+                $(".techTree_infoCard").hide();
+            }
+        }
+    });
+    canvas.body.on("mousemove", (e) => {
+        if (this.drag) {
+            this.offsetX -= (e.clientX - this.startX)*this.dragSpeed;
+            this.offsetY -= (e.clientY - this.startY)*this.dragSpeed;
+
+            for (let i = 0; i < this.movingPoints.length; i++) {
+                this.movingPoints[i].x += (e.clientX - this.startX)*this.elementDragSpeed;
+                this.movingPoints[i].y += (e.clientY - this.startY)*this.elementDragSpeed;
+                this.movingPoints[i].div.css({
+                    top: this.movingPoints[i].y + "px",
+                    left: this.movingPoints[i].x + "px",
+                })
+            }
+
+            this.startX = e.clientX;
+            this.startY = e.clientY;
+            drawStars(this);
+        }
+    });
+
+    
+    let vignette = holder.create("div.techTree_vignette");
+    let infoCard = holder.create("div.techTree_infoCard");
+    infoCard.create("div.infocard_name");
+    infoCard.create("div.infocard_title");
+    infoCard.create("div.infocard_description")
+    canvas.movingPoints = [{
+        div: infoCard,
+        x: 0,
+        y: 0,
+    }];
+    
+    let topLeftContent = holder.create("div.techTree_content");
+    let goBackHomeButton = topLeftContent.create("div.techTree_returnButton");
+    goBackHomeButton.innerHTML = "Return Home";
+    goBackHomeButton.on("click",function() {
+        setScene("newMenu")
+    })
+    let battlePointsImg = topLeftContent.create("img.techTree_battlePointsImg");
+    battlePointsImg.src = "img/techTrees/battlePoints.png";
+    let battlePointsCounter = topLeftContent.create("div.techTree_battlePointsCounter");
+    battlePointsCounter.innerHTML = "x" + localAccount.battlePassPoints;
+    generateStarBackground(canvas);
+}
+function renderRadialPass(canvas,pass,unlocked) {
+    let ctx = canvas.getContext("2d");
+
+
+
+}
+
+
+function generateStarBackground(canvas) {
+    canvas.viewWidth = window.innerWidth;
+    canvas.viewHeight = window.innerHeight;
+    canvas.width = canvas.viewWidth;
+    canvas.height = canvas.viewHeight;
+
+    canvas.offsetX = (canvas.spaceSize - canvas.viewWidth) / 2;
+    canvas.offsetY = (canvas.spaceSize - canvas.viewHeight) / 2;
+
+    const starCount = Math.floor((canvas.spaceSize*15000)/4000); // Number of stars
+    canvas.stars = [];
+
+    for (let i = 0; i < starCount; i++) {
+        canvas.stars.push({
+            x: Math.random() * canvas.spaceSize,
+            y: Math.random() * canvas.spaceSize,
+            size: Math.random() * 2,
+            brightness: Math.random() * 255,
+        });
+    }
+
+    drawStars(canvas);
+}
+function drawStars(canvas) {
+    let techTree_ctx = canvas.getContext("2d");
+
+    techTree_ctx.fillStyle = "black";
+    techTree_ctx.fillRect(0, 0, canvas.viewWidth, canvas.viewHeight);
+
+    techTree_ctx.fillStyle = "white";
+    for (let star of canvas.stars) {
+        const x = star.x - canvas.offsetX;
+        const y = star.y - canvas.offsetY;
+        if (x >= 0 && x < canvas.viewWidth && y >= 0 && y < canvas.viewHeight) {
+        techTree_ctx.fillStyle = `rgb(${star.brightness}, ${star.brightness}, ${star.brightness})`;
+        techTree_ctx.beginPath();
+        techTree_ctx.arc(x, y, star.size, 0, Math.PI * 2);
+        techTree_ctx.fill();
+        }
+    }
 }
