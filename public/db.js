@@ -268,7 +268,8 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
     
         canvas.points.forEach((point, index) => {
             // Check if the click is inside the image bounds
-            if (mouseX >= point.x && mouseX <= point.x + canvas.thickness && mouseY >= point.y && mouseY <= point.y + canvas.thickness) {
+            console.log(mouseX, mouseY, point.x-(canvas.thickness/2) , point.x + (canvas.thickness/2) , point.y-(canvas.thickness/2) , point.y + (canvas.thickness/2));
+            if (mouseX >= point.x-(canvas.thickness/2) && mouseX <= point.x + (canvas.thickness/2) && mouseY >= point.y-(canvas.thickness/2) && mouseY <= point.y + (canvas.thickness/2)) {
                 console.log("EYO");
 
                 selectedNodeId = point.id;
@@ -421,8 +422,6 @@ function pass_drawSet(canvas, i, set) {
                     ctx.lineWidth = 3;
                     ctx.strokeRect(x, y, squareSize, squareSize);
                 }
-                ctx.fillStyle = "green";
-                ctx.fillRect(x-5,y-5,10,10);
             } else {
                 ctx.fillStyle = 'gray';
                 ctx.fillRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
