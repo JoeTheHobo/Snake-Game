@@ -334,10 +334,39 @@ function renderRadialPass2(canvas,pass,unlocked,selectedRing = false) {
     if (pass.background == "space") drawStars(canvas);
 
     for (let i = 0; i < pass.set.length; i++) {
-        drawRing(canvas,i,50,selectedRing);
+        pass_drawRing(canvas,i,50,selectedRing);
+        pass_drawSet(canvas,i,50,pass.set[i]);
     }
 }
-function drawRing(canvas, i, thickness, selected) {
+function pass_drawSet(canvas, i, thickness, set) {
+    const ctx = canvas.getContext("2d");
+
+    // Match canvas resolution to display size
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+
+    const radius = (thickness / 2) + (i * thickness);
+
+    const squareSize = 20;
+    const total = set.length;
+
+    for (let j = 0; j < total; j++) {
+        // Angle per item, starting at the top (-90° in radians)
+        const angle = (-Math.PI / 2) + (j * (2 * Math.PI / total));
+
+        // Polar to cartesian
+        const x = centerX + Math.cos(angle) * radius;
+        const y = centerY + Math.sin(angle) * radius;
+
+        // Draw gray square centered at (x, y)
+        ctx.fillStyle = 'gray';
+        ctx.fillRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
+    }
+}
+function pass_drawRing(canvas, i, thickness, selected) {
     const ctx = canvas.getContext("2d");
 
     const centerX = canvas.width / 2;
@@ -363,6 +392,8 @@ function drawRing(canvas, i, thickness, selected) {
     ctx.stroke();
 }
 
+let selectedRing = false;
+
 document.body.on("keydown",function(e) {
     if (global_scene !== "adminTools") return;
     if ($("at_battlepassTab").style.background !== 'rgb(137, 69, 192)') return;
@@ -373,8 +404,18 @@ document.body.on("keydown",function(e) {
         renderRadialPass2(selectedPass.canvas,selectedPass,[],false);
     }
     if (_type(e.key).isNumber) {
-        console.log(e.key,Number(e.key))
+        selectedRing = Number(e.key);
         renderRadialPass2(selectedPass.canvas,selectedPass,[],Number(e.key));
+    }
+
+    if (e.key == "i") {
+        if (!selectedRing) return;
+        selectedPass.set[selectedRing].push({
+            type: "item",
+
+        })
+        renderRadialPass2(selectedPass.canvas,selectedPass,[],Number(e.key));
+
     }
 
 })
