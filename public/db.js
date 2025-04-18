@@ -528,12 +528,10 @@ document.body.on("keydown",function(e) {
         writingNumber = "";
     }
     if (selectedNodeId !== false && e.key == "Delete") {
-        console.log("EY")
         for (let i = 0; i < selectedPass.set.length; i++) {
             for (let j = 0; j < selectedPass.set[i].length; j++) {
-                console.log(selectedPass.set[i][j],selectedNodeId);
-                if (selectedPass.set[i][j].index == selectedNodeId) {
-                    selectedPass.set[i].splice(j,0);
+                if (selectedPass.set[i][j].index === selectedNodeId) {
+                    selectedPass.set[i].splice(j,1);
                 }
             }
         }
