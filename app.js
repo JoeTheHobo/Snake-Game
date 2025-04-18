@@ -3416,9 +3416,9 @@ function checkBoard(board,account) {
         */
         if (!board) return "No Board Found";
 
-        console.log(board)
-        if (!board.gameModes) return "No Gamemodes Found";
-        if (!board.gameModes.length == 0) return "No Gamemodes Found";
+        console.log(board.gameModes)
+        if (!board.gameModes) return "No Gamemodes Found1";
+        if (!board.gameModes.length == 0) return "No Gamemodes Found2";
         for (let i = 0; i < board.gameModes.length; i++) {
             let gameModeCheck = checkGameMode(board.gameModes[i]);
             if (simple.type(gameModeCheck) == "string") return  "Gamemode " + board.gameModes[i].name + " Error: " + gameModeCheck;
