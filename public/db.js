@@ -445,7 +445,7 @@ function drawNodeImage(ctx,image,x,y,nodeSize,nodeIndex,element) {
         }
 
         if (srcImage) {
-            let shrinkSize = 0.7;
+            let shrinkSize = 0.65;
             let shrinkNodeSize = nodeSize * shrinkSize;
             let shrinkDifference = nodeSize - shrinkNodeSize;
 
