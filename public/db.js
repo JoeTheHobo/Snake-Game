@@ -359,7 +359,7 @@ document.body.on("keydown",function(e) {
     if (!selectedPass) return;
 
     if (e.key == "r") {
-        selectedPass.sets.push([]);
+        selectedPass.set.push([]);
         renderRadialPass(selectedPass.canvas,selectedPass,[]);
     }
 
