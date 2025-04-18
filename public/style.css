@@ -1782,6 +1782,7 @@ height: 100%;
 display: flex;
 flex-direction: column;
 padding: 5px;
+align-items: center;
 }
 .sc_contentColumn2 {
 width: 30%;
@@ -1796,7 +1797,7 @@ box-sizing: border-box;
 overflow: hidden;
 }
 .sc_canvas_holder {
-width: 95%;
+width: 75%;
 aspect-ratio: 1920/1080;
 display: flex;
 align-items: center;
@@ -3685,6 +3686,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   align-items: center;
   width: 160px;
   border-radius: 5px;
+  margin: 5px;
   position: relative;
   height: max-content;
   background: rgb(139, 139, 139);
@@ -3725,8 +3727,6 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 .square {
   background: rgb(240, 240, 240);
-  justify-content: center;
-  height: 155px;
 }
 .pointerCursor {
   cursor: url('./img/pointer.cur'), auto;
@@ -3736,14 +3736,10 @@ gap: 1px; /* Optional: Adjust spacing between items */
   height: 80%;
 }
 .bm_plus {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
   margin: auto;
   width: max-content;
-  height: max-content;
+  height: 130px;
+  line-height: 130px;
   font-size: 80px;
   color: black;
 }
