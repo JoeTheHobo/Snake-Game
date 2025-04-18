@@ -520,7 +520,6 @@ document.body.on("keydown",function(e) {
                     // Insert a new empty object before the current element
                     if (j > 0) {
                         selectedPass.set[i].splice(j, 0, { type: "item", id: false });
-                        selectedNodeId--;
                     } else {
                         // If it's the first element, insert at the beginning
                         selectedPass.set[i].unshift({ type: "item", id: false });
