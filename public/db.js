@@ -496,7 +496,11 @@ document.body.on("keydown",function(e) {
     }
 
 })
-
+window.addEventListener('keydown', function(e) {
+    if (controlDown && e.key === "t") {
+        e.preventDefault();  // Prevent the default tab opening
+    }
+});
 function generateStarBackground(canvas) {
     canvas.viewWidth = window.innerWidth;
     canvas.viewHeight = window.innerHeight;
