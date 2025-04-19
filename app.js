@@ -2808,6 +2808,7 @@ function specialZone_timer(lobby,zone,time) {
         console.log(7)
         setTimeout(function() {
             console.log(8)
+            if (lobby.gameEnd) return;
             specialZone_timer(lobby,zone,time-1);
         },500);
     }
