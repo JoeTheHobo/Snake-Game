@@ -1963,7 +1963,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
         $(".editZonePopup").show("flex");
         $(".modernPopup_topRow_title_zones").innerHTML = type.format("A") + " Zone: " + zone.id;
 
-        let a = false, b= false, c = false, d = false, e = false,f = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false,q = false, r = false, s = false;
+        let a = false, b= false, c = false, d = false, e = false,f = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false,q = false, r = false, s = false, t = false;
         a = createGamemodeSetting("Zone Name","input","id",{profanityClean: true,maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.",false,false,false,(value) => {
             renderZoneCanvas();
             if (selectedZone.type == "player") {
