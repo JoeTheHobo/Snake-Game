@@ -2893,6 +2893,33 @@ function triggerWinningCondition(lobby,condition,player) {
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
             winningPlayers.push(lobby.inGamePlayers[i])
         }
+    } else if (condition.condition == "Highest Value") {
+        let highestValue = condition.highestValue;
+        if (!highestValue) highestValue = "Kills";
+        winningTitle = "Snakes With Highest " + highestValue + " Won";
+
+        let value = 0;
+
+        //Step One Find Highest Value
+        for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+            let check;
+            if (highestValue.toLowerCase() == "kills") check = lobby.inGamePlayers[i].playerKills;
+            if (highestValue.toLowerCase() == "size") check = lobby.inGamePlayers[i].tail.length;
+            if (highestValue.toLowerCase() == "time") check = lobby.inGamePlayers[i].timeAlive[lobby.inGamePlayers[i].timeAlive.length-1];
+
+            if (check > value) value = check;
+        }
+
+        //Step Two Find All Players With Highest Value
+        for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+            let check;
+            if (highestValue.toLowerCase() == "kills") check = lobby.inGamePlayers[i].playerKills;
+            if (highestValue.toLowerCase() == "size") check = lobby.inGamePlayers[i].tail.length;
+            if (highestValue.toLowerCase() == "time") check = lobby.inGamePlayers[i].timeAlive[lobby.inGamePlayers[i].timeAlive.length-1];
+
+            if (check == value) winningPlayers.push(lobby.inGamePlayers[i]);
+
+        }
     } else if (condition.whoWins !== false) {
         winningTitle = (condition.whoWins.charAt(0).toUpperCase() + condition.whoWins.slice(1)) + " Team Won";
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
