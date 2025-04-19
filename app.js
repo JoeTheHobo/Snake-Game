@@ -2975,7 +2975,7 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
         allowedTileIds: [1,3,6],
         allowedItemSkinPacks: [0],
         allowedSnakeColors: [0,1,2,3],
-        allowedNameColorIds: [0],
+        allowedNameColors: [0],
     }
     let account = onlineAccounts[socketID];
     
