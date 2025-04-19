@@ -1641,7 +1641,7 @@ function getColorFilter(id) {
     return getPlayerFilter(local_snakeColors[id]);
 }
 function getPlayerFilter(player) {
-    if (!player.hue) return "";
+    if (!player) return "";
     return `hue-rotate(${player.hue}deg) saturate(${player.saturation}%) brightness(${player.brightness}%)`;
 }
 
