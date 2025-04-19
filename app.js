@@ -1658,7 +1658,6 @@ io.on('connection', (socket) => {
             io.to(socket.id).emit("popup","Couldn't Save Snake");
             return;
         }
-        console.log(serverSnake);
         account.serverSnake = serverSnake;
         let lobby = lobbies[account.lobby];
         if (lobby) {
@@ -1673,6 +1672,7 @@ io.on('connection', (socket) => {
         }
 
         if (account.loggedIn) {
+            console.log("ey");
             account.serverSnake.tag = Number(account.tag);
             let query = "UPDATE inventory SET server_snake = ? WHERE tag = ?";
             db.query(query,[JSON.stringify(account.serverSnake),Number(account.tag)],(err) => {
