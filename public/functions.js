@@ -2337,16 +2337,16 @@ function loadSnakeCustomizationPopup() {
     html_keyBindToggleNames.value = player.toggleNamesKey || "Tab";
     html_keyBindToggleTeams.value = player.toggleTeamsKey || "Shift";
 
+    function generateColor(holder) {
+
+    }
+
+    for (let i = 0; i < localAccount.allowedSnakeColors.length; i++) {
+        
+    }
+
+
     return;
-
-    generateAllowedSnakeColors($(".colorOptions"),function(color) {
-        $(".snakeHeadYEE").style.filter = getPlayerFilter(color);
-        localAccount.serverSnake.hue = color.hue;
-        localAccount.serverSnake.saturation = color.saturation;
-        localAccount.serverSnake.brightness = color.brightness;
-        savePlayers(localAccount.isInLobby);
-    });
-
     
     generateHTMLContent($(".customizeSnakePopup"),[
         {type: "title",text: "Appearance"},
