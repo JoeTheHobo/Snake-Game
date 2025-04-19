@@ -2371,7 +2371,7 @@ function loadSnakeCustomizationPopup() {
 
     $(".customizeSnakePopupV2").setKeyBind = function(key,where) {
         localAccount.serverSnake[where] = key;
-        saveServerSnake(player);
+        saveServerSnake(localAccount.serverSnake);
     }
     $(".customizeSnakePopupV2").show("flex");
     return;
