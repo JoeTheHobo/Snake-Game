@@ -2766,6 +2766,7 @@ function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,condition
     let longestTailPlayer = lobby.inGamePlayers[0].accountName;
     let timeSurvivedPlayer = lobby.inGamePlayers[0].accountName;
     let mostKillsPlayer = lobby.inGamePlayers[0].accountName;
+    console.log(lobby.inGamePlayers);
     for (let i = 1; i < lobby.inGamePlayers.length; i++) {
         if (lobby.inGamePlayers[i].longestTail > longestTail) {
             longestTail = lobby.inGamePlayers[i].longestTail;
