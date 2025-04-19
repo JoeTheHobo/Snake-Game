@@ -2346,6 +2346,7 @@ function loadSnakeCustomizationPopup() {
     }
 
 
+    $(".customizeSnakePopupV2").show("flex");
     return;
     
     generateHTMLContent($(".customizeSnakePopup"),[
@@ -2397,5 +2398,4 @@ function loadSnakeCustomizationPopup() {
 
 
 
-    $(".customizeSnakePopupV2").show("flex");
 }
