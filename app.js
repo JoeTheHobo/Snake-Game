@@ -2893,14 +2893,13 @@ function triggerWinningCondition(lobby,condition,player) {
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
             winningPlayers.push(lobby.inGamePlayers[i])
         }
-    } else if (condition.condition == "Highest Value") {
+    } else if (condition.whoWins == "Highest Value") {
         let highestValue = condition.highestValue;
         if (!highestValue) highestValue = "Kills";
         winningTitle = "Snakes With Highest " + highestValue + " Won";
 
         let value = 0;
 
-        console.log(highestValue);
         //Step One Find Highest Value
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
             let check;
@@ -2910,7 +2909,6 @@ function triggerWinningCondition(lobby,condition,player) {
 
             if (check > value) value = check;
         }
-        console.log(value)
 
         //Step Two Find All Players With Highest Value
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
