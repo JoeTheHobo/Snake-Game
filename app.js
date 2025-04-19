@@ -975,6 +975,10 @@ io.on('connection', (socket) => {
             }
         }
 
+        onlineAccounts[socket.id].lobby = false;
+        socket.leave(lobby.id);
+        socket.join("menuScreen");
+
         if (lobby.isInGame) {
             for (let i = 0; i < lobby.inGamePlayers.length; i++) {
                 if (lobby.inGamePlayers[i].accountID === socket.id) {
@@ -983,9 +987,6 @@ io.on('connection', (socket) => {
             }
         }
 
-        onlineAccounts[socket.id].lobby = false;
-        socket.leave(lobby.id);
-        socket.join("menuScreen");
 
         if (lobby.players.length == 0) {
             delete lobbies[lobby.id];
@@ -2826,6 +2827,7 @@ function specialZone_startTimer(lobby,zone) {
 function specialZone_testOccupied(lobby,zone) {
     let type = zone.giveStatusWhenOccupiedBy;
 
+    console.log(3.5,type,zone.occupiedBy)
     if (type == "Everyone" && zone.occupiedBy.length > 0) return true;
     if (type == "Solo Player" && zone.occupiedBy.length == 1) return true;
     if (type == "Solo Team") {
