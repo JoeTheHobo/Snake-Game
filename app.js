@@ -1050,6 +1050,7 @@ io.on('connection', (socket) => {
         for (let i = 0; i < lobby.players.length; i++) {
             if (lobby.players[i] == socket.id) {
                 username = onlineAccounts[lobby.players[i]].username;
+                console.log(lobby.players[i]);
                 color = server_nameColors[lobby.players[i].chatNameColor];
             }
         }
