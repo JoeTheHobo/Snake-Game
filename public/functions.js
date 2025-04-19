@@ -2370,7 +2370,7 @@ function loadSnakeCustomizationPopup() {
     }
 
     $(".customizeSnakePopupV2").setKeyBind = function(key,where) {
-        player[where] = key;
+        localAccount.serverSnake[where] = key;
         saveServerSnake(player);
     }
     $(".customizeSnakePopupV2").show("flex");

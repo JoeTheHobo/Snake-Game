@@ -1673,7 +1673,6 @@ io.on('connection', (socket) => {
 
         if (account.loggedIn) {
             account.serverSnake.tag = Number(account.tag);
-            console.log(account.serverSnake.moveLeft);
             let query = "UPDATE inventory SET server_snake = ? WHERE tag = ?";
             db.query(query,[JSON.stringify(account.serverSnake),Number(account.tag)],(err) => {
                 if (err) console.log(err);
