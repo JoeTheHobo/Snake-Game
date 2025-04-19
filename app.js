@@ -3012,7 +3012,7 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
     updateLobbies();
     let sendItems = full ? pako.deflate(JSON.stringify(items), { to: 'string' }) : undefined;
     let sendTiles = full ? pako.deflate(JSON.stringify(tiles), { to: 'string' }) : undefined;
-
+    
     io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? backgrounds : undefined,sendTiles,server_nameColors);
     if (sendHome) 
         io.to(socketID).emit("setScene","newMenu");

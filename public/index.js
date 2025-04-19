@@ -54,7 +54,6 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,serv
     localAccount.boards = [];
     localAccount.chatNameColor = account.chatNameColor;
     accessedBattlePasses = server_accessedBattlePasses;
-    local_nameColors = server_nameColors;
 
     global_musicVolume = account.musicVolume;
     global_sfxVolume = account.sfxVolume;
@@ -67,6 +66,7 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,serv
     if (server_tiles)  tiles = JSON.parse(pako.inflate(server_tiles, { to: 'string' }));
     if (server_basedGameMode) basedGameMode = server_basedGameMode;
     if (server_presetGameModes) presetGameModes = server_presetGameModes;
+    if (server_nameColors) local_nameColors = server_nameColors;
 
     if (server_backgrounds) backgrounds = server_backgrounds;
 
