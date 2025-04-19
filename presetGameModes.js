@@ -13,6 +13,7 @@ presetGameModes.push({
     respawnProtection: 3, //Seconds
     snakeCollision: true,
     teamCollision: true,
+    respawnCount: -1,
     setFoodRate: 50,
     winningConditions: [{
         condition: "Last One Standing",

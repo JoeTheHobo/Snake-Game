@@ -4303,6 +4303,9 @@ cursor: url('./img/pointer.cur'), auto;
   background: linear-gradient(106.84deg, #1A1A1A 4.86%, #373737 92.96%);
 
 }
+.editGameModePopup {
+  height: 90% !important;
+}
 .chooseBoardPopup, .editGameModePopup,.editZonePopup,.customizeSnakePopupV2 {
   position: absolute;
   top: 0;

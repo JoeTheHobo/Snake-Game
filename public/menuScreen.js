@@ -925,15 +925,20 @@ function loadGamemodeTabSettings() {
         valueFromId: 1,
         equals: true,
     });
+    let q = createGamemodeSetting("Limit Respawns","number","respawnCount",{min: -1,max: 100},"Limit how many times a player is allowed to respawn. (-1 means infinite)",4,5,{
+        valueFromId: 1,
+        equals: true,
+    });
 
     let grid = [
         [a,e,i,m],
         [b,f,j,n],
         [c,false,false,o],
         [false,false,false,p]
+        [false,false,false,q],
     ]
 
-    createGamemodeGrid(holder,4,4,grid,gamemode,"gamemode");
+    createGamemodeGrid(holder,4,5,grid,gamemode,"gamemode");
 
 }
 function loadGamemodeTabItems() {

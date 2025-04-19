@@ -420,7 +420,7 @@ socket.on("endGame",(obj) => {
         longestTailText.innerHTML = "Longest Tail: " + (player.longestTail + 1);
         if (longestTailPlayer === player.accountName) longestTailText.classAdd("endScreen_pch_goldText");
 
-        let timeSurvived = Math.max(player.timeAlive);
+        let timeSurvived = Math.max(...player.timeAlive);
         let totalSeconds = Math.floor(timeSurvived / 1000);
         let minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
         let seconds = (totalSeconds % 60).toString().padStart(2, '0');
