@@ -2720,9 +2720,9 @@ function removePlayerStatus(lobby,player,itemName) {
 //From App.js
 
 function specialZone_timer(lobby,zone,time) {
-    console.log(6)
+    console.log(6,time,zone.startTimeStamp)
     if (time <= 0 && zone.startTimeStamp) {
-        console.log(8)
+        console.log(9)
         let correctOccupied = specialZone_testOccupied(lobby,zone);
         if (!correctOccupied) return;
         console.log(10)
