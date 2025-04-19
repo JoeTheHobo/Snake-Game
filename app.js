@@ -272,6 +272,7 @@ io.on('connection', (socket) => {
             // If no user found
             if (results.length === 0) {
                 console.log(5234,"No User Found");
+                io.to(socket.id).emit("setScene","newMenu");
                 return;
             }
             
