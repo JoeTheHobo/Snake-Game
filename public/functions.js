@@ -2344,8 +2344,8 @@ function loadSnakeCustomizationPopup() {
     if (html_keyBindToggleTeams.value == " ") html_keyBindToggleTeams.value = "Spacebar";
 
     function generateColor(holder,type,color,index,playerColorID,func) {
-        let colorHolder = holder.create("div.snc_colorHolder");
-        let colorDiv = colorHolder.create("div.snc_color");
+        let colorHolder = holder.create("div.snc_color_colorHolder");
+        let colorDiv = colorHolder.create("div.snc_color_color");
 
         if (type == "filter") {
             colorDiv.style.color = "green";
