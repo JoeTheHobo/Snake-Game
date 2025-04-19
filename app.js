@@ -2968,7 +2968,7 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
         lobby: false,
         username: username,
         tag: tag,
-        chatNameColor: "#a3a2a2",
+        chatNameColor: 0,
         status: "Guest",
         dateCreated: formattedDate,
         coins: 0,
