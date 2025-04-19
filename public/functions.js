@@ -2323,10 +2323,10 @@ function loadSnakeCustomizationPopup() {
     let html_snakeName = $(".snc_snakeName");
     let html_snakeColorList = $("colorOptions_snakeColor");
     let html_nameColorList = $("colorOptions_nameColor");
-    let html_keyBindLeft = $("keyBind_moveLeft");
-    let html_keyBindRight = $("keyBind_moveRight");
-    let html_keyBindUp = $("keyBind_moveUp");
-    let html_keyBindDown = $("keyBind_moveDown");
+    let html_keyBindLeft = $("keyBind_leftKey");
+    let html_keyBindRight = $("keyBind_rightKey");
+    let html_keyBindUp = $("keyBind_upKey");
+    let html_keyBindDown = $("keyBind_downKey");
     let html_keyBindUseItem = $("keyBind_fireItem");
     let html_keyBindDropItem = $("keyBind_dropItem");
     let html_keyBindToggleTeams = $("keyBind_toggleTeamsKey");
@@ -2371,7 +2371,6 @@ function loadSnakeCustomizationPopup() {
 
     $(".customizeSnakePopupV2").setKeyBind = function(key,where) {
         localAccount.serverSnake[where] = key;
-        localAccount.serverSnake.leftKey = "t";
         saveServerSnake(localAccount.serverSnake);
     }
     $(".customizeSnakePopupV2").show("flex");
