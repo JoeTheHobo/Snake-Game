@@ -762,7 +762,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             option.on("click",function() {
                 options.classRemove("gmGroup_list_option_selected");
                 this.classAdd("gmGroup_list_option_selected");
-                setNestedValue(pullFrom,settings.valueString.split("."),valueA);
+                setNestedValue(pullFrom,settings.valueString.split("."),valueA,false,true);
                 holder.gmValue = valueA;
                 holder.activateList();
                 
