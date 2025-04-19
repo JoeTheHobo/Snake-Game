@@ -3535,6 +3535,7 @@ let basedGameMode = {
     respawnTimer: 5,
     respawnGrowth: 50, //Percent
     respawnProtection: 3, //Seconds
+    respawnCount: -1,
     snakeCollision: true,
     teamCollision: true,
     setFoodRate: 50,
