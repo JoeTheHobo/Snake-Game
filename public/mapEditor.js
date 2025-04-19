@@ -227,8 +227,8 @@ function renderZoneCanvas() {
     }
     if (showingZoneTypes.includes("special")) {
         for (let i = 0; i < currentBoard.spawnZones.special.length; i++) {
-            let zone = currentBoard.spawnZones.items[i];
-            drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color("white").ogColor,zone.id);
+            let zone = currentBoard.spawnZones.special[i];
+            drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color(zone.giveStatus).ogColor,zone.id);
         }
     }
 }
@@ -2402,8 +2402,6 @@ function showStatusMenu(showing,funcs,defaults = {}) {
             $(".statusOption_" + defaults.status).style.border = "2px solid blue";
         }
     }
-
-
 
     $(".statusSelectionScreen").funcs = funcs;
     $(".statusSelectionScreen").removeStatus = function() {
