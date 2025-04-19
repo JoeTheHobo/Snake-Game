@@ -1569,7 +1569,6 @@ function logGameModeChanges(holder,gameMode) {
 
     for (let i = 0; i < useArr.length; i++) {
         let key = useArr[i];
-        if (key == "respawnCount") console.log(key,basedGameMode,gameMode)
         if (basedGameMode[key] !== gameMode[key]) alterations.push({
             key: formatString(key),
             oldValue: basedGameMode[key],
