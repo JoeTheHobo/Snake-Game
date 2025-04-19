@@ -587,8 +587,12 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
     let valueInput;
     if (settings.type == "input") {
         valueInput = holder.create("input.gmGroup_input");
-        valueInput.value = getNestedValue(pullFrom,settings.valueString);
-        holder.gmValue = getNestedValue(pullFrom,settings.valueString);
+        let nestedValue = getNestedValue(pullFrom,settings.valueString)
+        if (nestedValue === undefined && typeSettings.default) {
+            nestedValue = typeSettings.default;
+        }
+        valueInput.value = nestedValue;
+        holder.gmValue = nestedValue;
 
         valueInput.on("change",function() {
             holder.setValue(this.value);
