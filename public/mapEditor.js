@@ -1980,33 +1980,33 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
             }
         });
         if (type == "special") {
-            b = createGamemodeSetting("Give Status On Enter","toggle","giveStatusOnEnter",{background: "#517891"},"When a snake enters this zone follow zone giving settings.",5,1);
-            f = createGamemodeSetting("Give Status","status","giveStatus",{background: "#517891", readAs: "color",statusMenuOptions: ["status","playerStatus","submit"]},"Which status to give when snake enters zone",6,1,{
-                valueFromFamily: 5,
+            b = createGamemodeSetting("Give Status On Enter","toggle","giveStatusOnEnter",{background: "#070738"},"When a snake enters this zone follow zone giving settings.",7,1);
+            f = createGamemodeSetting("Give Status","status","giveStatus",{background: "#070738", readAs: "color",statusMenuOptions: ["status","playerStatus","submit"]},"Which status to give when snake enters zone",6,1,{
+                valueFromFamily: 7,
                 valueFromId: 1,
                 equals: true,
             });
-            r = createGamemodeSetting("Give Status From","list","giveStatusFrom",{background: "#517891", options: ["All Players","Random Player","Random Team","All Teams","Largest Team"]},"When zone gives players status who within zone should it pull from?",6,2,{
+            r = createGamemodeSetting("Give Status From","list","giveStatusFrom",{background: "#070738", options: ["All Players","Random Player","Random Team","All Teams","Largest Team"]},"When zone gives players status who within zone should it pull from?",6,2,{
                 valueFromId: 1,
                 equals: "*P",
             });
-            c = createGamemodeSetting("Give Status When Occupied By","list","giveStatusWhenOccupiedBy",{background: "#517891", options: ["Solo Player","Solo Team","Everyone","No One"]},"Only give the status when this zone is occupied by these people",false,false,{
-                valueFromFamily: 5,
+            c = createGamemodeSetting("Give Status When Occupied By","list","giveStatusWhenOccupiedBy",{background: "#070738", options: ["Solo Player","Solo Team","Everyone","No One"]},"Only give the status when this zone is occupied by these people",false,false,{
+                valueFromFamily: 7,
                 valueFromId: 1,
                 equals: true,
             });
-            g = createGamemodeSetting("Give Status Type","list","giveStatusType",{background: "#517891", options: ["set","add","remove"]},"How does the zone give the status?",false,false,{
-                valueFromFamily: 5,
+            g = createGamemodeSetting("Give Status Type","list","giveStatusType",{background: "#070738", options: ["set","add","remove"]},"How does the zone give the status?",false,false,{
+                valueFromFamily: 7,
                 valueFromId: 1,
                 equals: true,
             });
-            s = createGamemodeSetting("Give Status Delay","number","giveStatusDelay",{background: "#517891"},"When snake enters how long do they need to stay in zone to have the zone give status",false,false,{
-                valueFromFamily: 5,
+            s = createGamemodeSetting("Give Status Delay","number","giveStatusDelay",{background: "#070738"},"When snake enters how long do they need to stay in zone to have the zone give status",false,false,{
+                valueFromFamily: 7,
                 valueFromId: 1,
                 equals: true,
             });
-            d = createGamemodeSetting("Repeat Status Type","list","repeatStatusType",{background: "#517891", options: ["Repeat While On","Repeat When Enter","Single Use"]},"How does this zone give another status after it already gave one",false,false,{
-                valueFromFamily: 5,
+            d = createGamemodeSetting("Repeat Status Type","list","repeatStatusType",{background: "#070738", options: ["Repeat While On","Repeat When Enter","Single Use"]},"How does this zone give another status after it already gave one",false,false,{
+                valueFromFamily: 7,
                 valueFromId: 1,
                 equals: true,
             });
