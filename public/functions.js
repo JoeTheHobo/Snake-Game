@@ -2346,6 +2346,7 @@ function loadSnakeCustomizationPopup() {
     function generateColor(holder,type,color,index,playerColorID,func) {
         let colorHolder = holder.create("div.snc_color_colorHolder");
         let colorDiv = colorHolder.create("div.snc_color_color");
+        if (playerColorID === index) colorHolder.classAdd("snc_color_selected")
 
         if (type == "filter") {
             colorDiv.style.background = "#06470B";
@@ -2365,6 +2366,7 @@ function loadSnakeCustomizationPopup() {
             localAccount.serverSnake.colorID = id;
             html_snakeImage.style.filter = getColorFilter(id);
             saveServerSnake();
+            loadSnakeCustomizationPopup();
         });
     }
 
