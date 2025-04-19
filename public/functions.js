@@ -2342,9 +2342,9 @@ function loadSnakeCustomizationPopup() {
     html_snakeImage.style.filter = getPlayerFilter(player);
     html_snakeName.innerHTML = localAccount.username;
     let nameColor = local_nameColors[localAccount.chatNameColor];
-    if (!nameColor) nameColor = "white"; 
+    if (!nameColor) nameColor = "white";
     html_snakeName.style.color = nameColor;
-    html_keyBindLeft.value = player.leftKey || "a";
+    html_keyBindLeft.value = player.leftKey;
     if (html_keyBindLeft.value == " ") html_keyBindLeft.value = "Spacebar";
     html_keyBindRight.value = player.rightKey || "d";
     if (html_keyBindRight.value == " ") html_keyBindRight.value = "Spacebar";
