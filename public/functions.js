@@ -1521,6 +1521,7 @@ function logAllWinningConditions(holder,gamemode) {
         if (whoWins == "Everyone") {
             whoWins = `<img class="gm_alt_team" src="img/menuIcons/publish.png"> Everyone`;
         }
+        console.log(whoWins)
         if (whoWins == "Highest Value") {
             whoWins = "Player With Highest " + condition.highestValue.format("A");
         }

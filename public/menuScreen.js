@@ -1115,11 +1115,6 @@ function loadGamemodeTabWinning() {
                     loadWinningConditions();
                 }});
             }
-            if (value.toLowerCase() == "highest value") {
-
-            }
-
-            
 
         });
         let b = createGamemodeSetting(pullFromCondition.settingsTitle,pullFromCondition.settingsType,"x",{},pullFromCondition.settingsDescription,false,false,false,() => {
