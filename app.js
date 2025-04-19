@@ -1469,7 +1469,7 @@ io.on('connection', (socket) => {
             player.playerKills = 0;
             player.index = i;
             player.preGameStatus = "waiting";
-
+            player.respawnCount = lobby.gameMode.respawnCount || basedGameMode.respawnCount;
             player.pos = {
                 x: false,
                 y: false,
@@ -2317,6 +2317,16 @@ function specialItemManager(lobby) {
 function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false){
     let currentGameMode = lobby.gameMode;
     let activePlayers = lobby.inGamePlayers;
+    let playerCanRespawn = false;
+    if (lobby.currentGameMode.respawn) {
+        playerCanRespawn = true;
+        if (player.respawnCount !== -1) {
+            if (player.respawnCount < 1)
+                playerCanRespawn = false;
+            else
+                player.respawnCount--;
+        }
+    }
 
     let playerDied = true;
     if (playerWhoKilled) damage = playerWhoKilled.bodyArmor;
@@ -2361,7 +2371,7 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
         player.isDead = true;
         player.justDied = true;
 
-        if (!currentGameMode.respawn) {
+        if (!playerCanRespawn) {
             let playersDead = 0;
             let activeTeams = [];
             let livingPlayers = [];
