@@ -2401,7 +2401,7 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
                 }
             }
             if (playersDead == activePlayers.length) {
-                triggerWinningCondition(lobby,"All Dead");
+                checkWinningCondition(lobby,"All Dead",false,player);
                 return;
             }
             if (playersDead + 1 == activePlayers.length) {
@@ -2833,15 +2833,6 @@ function triggerWinningCondition(lobby,condition,player) {
     let conditionTitle = "";
     let conditionImage = false;
 
-    if (condition == "All Dead") {
-        condition = {
-            condition: "All Dead",
-            x: false,
-            type: false,
-            whoWins: false,
-        }
-    }
-
     if (condition.condition == "Last One Standing") {
         conditionTitle = "Condition: Last One Standing";
     }
@@ -2893,6 +2884,8 @@ function triggerWinningCondition(lobby,condition,player) {
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
             winningPlayers.push(lobby.inGamePlayers[i])
         }
+    } else if (condition.whoWins == "No One") {
+        winningTitle = "No One Won";
     } else if (condition.whoWins == "Highest Value") {
         let highestValue = condition.highestValue;
         if (!highestValue) highestValue = "Kills";
@@ -2944,19 +2937,39 @@ function checkWinningCondition(lobby,condition,value,player) {
         if (condition == "Touch Item X" || condition == "Touch Tile X") {
             if (value.id === winningConditions[i].x) {
                 triggerWinningCondition(lobby,winningConditions[i],player)
+                return;
             }
         }
         if (condition == "Last One Standing") {
             triggerWinningCondition(lobby,winningConditions[i],player);
+            return;
         }
         if (condition == "Last Team Standing") {
             triggerWinningCondition(lobby,winningConditions[i],value);
+            return;
         }
         if (condition == "Touch Zone X") {
             if (value == winningConditions[i].x) {
                 triggerWinningCondition(lobby,winningConditions[i],player);
+                return;
             }
         }
+        if (condition == "All Dead") {
+            triggerWinningCondition(lobby,winningConditions[i],player);
+            return;
+        }
+    }
+
+    if (condition == "All Dead") {
+        triggerWinningCondition(lobby,{
+            condition: "All Dead",
+            x: false,
+            whoWins: "No One",
+            type: false,
+            pullTeamStats: false,
+            highestValue: "kills",
+        },player);
+
     }
 
 }
