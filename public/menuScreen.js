@@ -1099,7 +1099,7 @@ function loadGamemodeTabWinning() {
             }
         }
 
-        let a = createGamemodeSetting("Who Wins","list","whoWins",{options: ["Player","Players Team","Specific Team"],caseSensitive: true},"When winning condition is met who wins?",false,false,false,(value) => {
+        let a = createGamemodeSetting("Who Wins","list","whoWins",{options: ["Player","Players Team","Specific Team","Everyone"],caseSensitive: true},"When winning condition is met who wins?",false,false,false,(value) => {
             loadWinningConditions();
             if (value.toLowerCase() !== "specific team") return;
 
