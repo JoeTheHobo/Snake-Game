@@ -747,8 +747,12 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             option.innerHTML = typeSettings.options[i];
             options.push(option);
 
+            let nestedValue = getNestedValue(pullFrom,settings.valueString);
+            if (nestedValue == undefined && typeSettings.default !== undefined) {
+                nestedValue = typeSettings.default;
+            }
             let valueA = typeSettings.caseSensitive ? typeSettings.options[i] : typeSettings.options[i].toLowerCase();
-            let valueB = typeSettings.caseSensitive ? getNestedValue(pullFrom,settings.valueString) : getNestedValue(pullFrom,settings.valueString).toLowerCase();
+            let valueB = typeSettings.caseSensitive ? nestedValue : nestedValue.toLowerCase();
 
             if (valueA == valueB) {
                 option.classAdd("gmGroup_list_option_selected");
@@ -1102,30 +1106,39 @@ function loadGamemodeTabWinning() {
             }
         }
 
-        let a = createGamemodeSetting("Who Wins","list","whoWins",{options: ["Player","Players Team","Specific Team","Everyone"],caseSensitive: true},"When winning condition is met who wins?",false,false,false,(value) => {
+        let a = createGamemodeSetting("Who Wins","list","whoWins",{options: ["Player","Players Team","Specific Team","Everyone","Highest Value"],caseSensitive: true},"When winning condition is met who wins?",1,1,false,(value) => {
             loadWinningConditions();
-            if (value.toLowerCase() !== "specific team") return;
+            if (value.toLowerCase() == "specific team") {
+                showStatusMenu(["status"],{status: function(status) {
+                    gamemode.winningConditions[index].whoWins = status;
+                    $(".statusSelectionScreen").hide();
+                    loadWinningConditions();
+                }});
+            }
+            if (value.toLowerCase() == "highest value") {
 
-            showStatusMenu(["status"],{status: function(status) {
-                gamemode.winningConditions[index].whoWins = status;
-                $(".statusSelectionScreen").hide();
-                loadWinningConditions();
-            }});
+            }
+
+            
 
         });
         let b = createGamemodeSetting(pullFromCondition.settingsTitle,pullFromCondition.settingsType,"x",{},pullFromCondition.settingsDescription,false,false,false,() => {
             loadWinningConditions();
         })
-        let c = false;
+        let c = createGamemodeSetting("Highest Value","list","highestValue",{options: ["kills","size","time"], default: "kills"},"Whoever has the highest value of this will win.",1,2,{
+            valueFromId:1,
+            equals: "Highest Value",
+        })
+        let d = false;
         if (["Kill X Snakes","Reach Snake Size"].includes(pullFromCondition.settingsTitle)) {
-            c = createGamemodeSetting("Pull Team Stats","toggle","pullTeamStats",{default: false},"Pull players team stats when testing condition. (EX: Kill 4 Snakes, will grab all snakes killed from players team)")
+            d = createGamemodeSetting("Pull Team Stats","toggle","pullTeamStats",{default: false},"Pull players team stats when testing condition. (EX: Kill 4 Snakes, will grab all snakes killed from players team)")
         }
 
         if (pullFromCondition.settingsTitle === false) b = false;
 
         let grid = [
             [a,b],
-            [c,false]
+            [c,d]
         ]
 
         createGamemodeGrid(html_settings,2,2,grid,condition,"winning")

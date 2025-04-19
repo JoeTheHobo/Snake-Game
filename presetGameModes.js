@@ -21,12 +21,14 @@ presetGameModes.push({
         whoWins: "Player",
         type: false,
         pullTeamStats: false,
+        highestValue: "kills",
     },{
         condition: "Touch Item X",
         x: 25,
         whoWins: "Player",
         type: "item",
         pullTeamStats: false,
+        highestValue: "kills",
     },false,false,false],
 })
 
