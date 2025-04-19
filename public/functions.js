@@ -272,7 +272,7 @@ function makeItemCanvas(image,filter = "",player) {
     let itemCtx = itemCanvas.getContext("2d");
 
     if (filter == "*P") {
-        filter = getPlayerFilter(player);
+        filter = getColorFilter(player.colorID);
     }
 
     itemCanvas.width = image.width;
@@ -384,7 +384,7 @@ function setScene(scene,lobby) {
         loadServersHTML();
         $(".account_name").innerHTML = localAccount.username + "#" + localAccount.tag; 
         $(".sc_bb_snakeImg").css({
-            filter: getPlayerFilter(localAccount.serverSnake),
+            filter: getColorFilter(localAccount.serverSnake.colorID),
         });
         $(".newMenu_statPoints").innerHTML = localAccount.battlePassPoints;
 
@@ -867,7 +867,7 @@ function setGameScene(players) {
     $(".game_c2_extra").innerHTML = "";
 
     //Setting Player Snake Color
-    $(".game_c1_snakeHead").style.filter = getPlayerFilter(player);
+    $(".game_c1_snakeHead").style.filter = getColorFilter(player.colorID);
 
     //Setting Up Other Player flags
     let flagHolder = $("playerCardsHolder");
@@ -884,7 +884,7 @@ function setGameScene(players) {
 
         let playersTeam = player.team;
         clone.$(".pc_banner").src = "img/status/playerCard_" + playersTeam + "_left.png";
-        clone.$(".pc_c1_img").style.filter = getPlayerFilter(player);
+        clone.$(".pc_c1_img").style.filter = getColorFilter(player.colorID);
 
         clone.$("pc_c1_minutes").innerHTML = "00";
         clone.$("pc_c1_seconds").innerHTML = "00";
@@ -1233,7 +1233,7 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
                     image.src = src;
         
                     if (filter) {
-                        image.style.filter = getPlayerFilter(filter);
+                        image.style.filter = getColorFilter(filter.colorID);
                     }
                     if (func) {
                         imageHolder.on("click",function() {
@@ -1284,7 +1284,7 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
     }
     if (type == "all" || type == "players") {
         $(".sc_bb_snakeImg").css({
-            filter: getPlayerFilter(player),
+            filter: getColorFilter(player.colorID),
         }); 
     }
     
@@ -1637,7 +1637,9 @@ $(".playButtonSounds").forEach(button => {
     button.addEventListener("mouseenter", () => playSound(hoverSound)); // Hover sound
     button.addEventListener("click", () => playSound(clickSound)); // Click sound
 });
-
+function getColorFilter(id) {
+    return getPlayerFilter(local_snakeColors[id]);
+}
 function getPlayerFilter(player) {
     return `hue-rotate(${player.hue}deg) saturate(${player.saturation}%) brightness(${player.brightness}%)`;
 }
@@ -1741,27 +1743,6 @@ async function playAudio(url, type = "sfx") {
     gainNode.connect(audioContext.destination);
 
     source.start();
-}
-function generateAllowedSnakeColors(holder,func) {
-    holder.innerHTML = "";
-    for (let i = 0; i < localAccount.allowedSnakeColors.length; i++) {
-        let color = localAccount.allowedSnakeColors[i];
-        let div = holder.create("div");
-        div.className = "colorOption"
-        div.style.filter = getPlayerFilter(color);
-        if (localAccount.serverSnake.hue === color.hue &&
-            localAccount.serverSnake.saturation === color.saturation &&
-            localAccount.serverSnake.brightness === color.brightness
-        ) {
-            div.classAdd("colorOptionSelected");
-        }
-
-        div.on("click",function() {
-            $(".colorOption").classRemove("colorOptionSelected");
-            this.classAdd("colorOptionSelected");
-            func(color)
-        })
-    }
 }
 
 function checkItemFilter(item) {
@@ -2339,7 +2320,7 @@ function loadSnakeCustomizationPopup() {
     html_nameColorList.innerHTML = "";
 
     //Set Menu
-    html_snakeImage.style.filter = getPlayerFilter(player);
+    html_snakeImage.style.filter = getColorFilter(player.colorID);
     html_snakeName.innerHTML = localAccount.username;
     let nameColor = local_nameColors[localAccount.chatNameColor];
     if (!nameColor) nameColor = "white";
@@ -2361,17 +2342,34 @@ function loadSnakeCustomizationPopup() {
     html_keyBindToggleTeams.value = player.toggleTeamsKey || "Shift";
     if (html_keyBindToggleTeams.value == " ") html_keyBindToggleTeams.value = "Spacebar";
 
-    function generateColor(holder) {
+    function generateColor(holder,type,color,index,playerColorID,func) {
+        let colorHolder = holder.create("div.snc_colorHolder");
+        let color = colorHolder.create("div.snc_color");
 
+        if (type == "filter") {
+            color.style.color = "green";
+            color.style.filter = color;
+        }
+        if (type == "set") {
+            color.style.color = color;
+        }
+
+        colorHolder.on("click",()=> {
+            func(index);
+        })
     }
 
     for (let i = 0; i < localAccount.allowedSnakeColors.length; i++) {
-        
+        generateColor(html_snakeColorList,"filter",getColorFilter(localAccount.allowedSnakeColors[i]),i,player.colorID,function(id) {
+            localAccount.serverSnake.colorID = id;
+            html_snakeImage.style.filter = getColorFilter(id);
+            saveServerSnake();
+        });
     }
 
     $(".customizeSnakePopupV2").setKeyBind = function(key,where) {
         localAccount.serverSnake[where] = key;
-        saveServerSnake(localAccount.serverSnake);
+        saveServerSnake();
     }
     $(".customizeSnakePopupV2").show("flex");
     return;

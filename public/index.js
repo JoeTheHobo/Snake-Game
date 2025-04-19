@@ -27,7 +27,7 @@ socket.on("kickPlayer",(message) => {
     alert(message);
 
 })
-socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,server_basedGameMode,server_presetGameModes,server_backgrounds,server_tiles,server_nameColors) =>{
+socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,server_basedGameMode,server_presetGameModes,server_backgrounds,server_tiles,server_nameColors,server_snakeColors) =>{
     localAccount.id = id;
     localAccount.isInGame = false;
     localAccount.lobbyID = false;
@@ -67,6 +67,7 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,serv
     if (server_basedGameMode) basedGameMode = server_basedGameMode;
     if (server_presetGameModes) presetGameModes = server_presetGameModes;
     if (server_nameColors) local_nameColors = server_nameColors;
+    if (server_snakeColors) local_snakeColors = server_snakeColors;
 
     if (server_backgrounds) backgrounds = server_backgrounds;
 
@@ -103,7 +104,7 @@ socket.on("updatePlayersBoards",(board,sentFrom) => {
         loadBoardMenu();
     }
     if (sentFrom == "loadCustomizeSnakeScreen") {
-        loadCustomizeSnakeScreen();
+        console.log("AHHHH")
     }
     if (sentFrom == "changeServerBoard") {
         socket.emit("changeServerBoard",pako.deflate(JSON.stringify(shortenBoard(board)), { to: 'string' }));
@@ -626,14 +627,10 @@ function genericPopup(text) {
 socket.on("setScene",(scene) => {
     setScene(scene);
 })
-socket.on("playersBeenMade",(players) => {
-    localAccount.players = players;
-    loadCustomizeSnakeScreen(players.length-1);
-})
-function saveServerSnake(snake) {
-    socket.emit("localSendingPlayers",snake);
+function saveServerSnake() {
+    socket.emit("saveServerSnake",localAccount.serverSnake);
     $(".sc_bb_snakeImg").css({
-        filter: getPlayerFilter(snake),
+        filter: getColorFilter(localAccount.serverSnake.colorID),
     });
 }
 

@@ -13,9 +13,10 @@ let keyMapping;
 let global_scene;
 let accessedBattlePasses;
 let currentAudio = null;
-let version = "Alpha 0.0.1";
+let version = "Alpha 4.2.0";
 $(".versionNumber").innerHTML = version;
 let local_nameColors = [];
+let local_snakeColors = [];
 
 let global_musicVolume = 100;
 let global_sfxVolume = 100;

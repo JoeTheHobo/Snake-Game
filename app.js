@@ -1648,11 +1648,7 @@ io.on('connection', (socket) => {
 
 
     //Menu
-    socket.on("createNewPlayer",() => {
-        onlineAccounts[socket.id].players.push(newPlayer(socket.id,onlineAccounts[socket.id].username),onlineAccounts[socket.id].tag);
-        io.emit("playersBeenMade",onlineAccounts[socket.id].players);
-    })
-    socket.on("localSendingPlayers",(serverSnake) => {
+    socket.on("saveServerSnake",(serverSnake) => {
         let account = onlineAccounts[socket.id];
         if (checkPlayer(serverSnake,socket.id) !== true) {
             io.to(socket.id).emit("popup","Couldn't Save Snake");
@@ -2981,28 +2977,20 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
         allowedNameColorIds: [0],
     }
     let account = onlineAccounts[socketID];
-
-    let sendSnakeColors = [];
-    for (let i = 0; i < account.allowedSnakeColors.length; i++) {
-        sendSnakeColors.push(getColorById(account.allowedSnakeColors[i]));
-    }
-    account.snakeColors = sendSnakeColors;
     
     let accessedBattlePasses = {};
     for (let i = 0; i < account.battlePasses.length; i++) {
         accessedBattlePasses[account.battlePasses[i].name] = allBattlePasses[account.battlePasses[i].name];
     }
-    let randomColor = getColorById(simple.rnd(account.allowedSnakeColors)); 
-    account.serverSnake.hue = randomColor.hue;
-    account.serverSnake.saturation = randomColor.saturation;
-    account.serverSnake.brightness = randomColor.brightness;
-
+    account.serverSnake.colorID = simple.rnd(account.allowedSnakeColors);
 
     updateLobbies();
     let sendItems = full ? pako.deflate(JSON.stringify(items), { to: 'string' }) : undefined;
     let sendTiles = full ? pako.deflate(JSON.stringify(tiles), { to: 'string' }) : undefined;
+    let sendNameColors = full ? server_nameColors : undefined;
+    let sendSnakeColors = full ? server_snakeColors : undefined;
     
-    io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? backgrounds : undefined,sendTiles,server_nameColors);
+    io.to(socketID).emit('setPlayer', socketID, account,accessedBattlePasses,sendItems,full ? basedGameMode : undefined,full ? presetGameModes : undefined,full ? backgrounds : undefined,sendTiles,sendNameColors,sendSnakeColors);
     if (sendHome) 
         io.to(socketID).emit("setScene","newMenu");
 
@@ -3083,13 +3071,6 @@ function setSocketToUser(account,user,dbObj) {
         unlocked: [-1],
     }];
 
-    
-    let sendSnakeColors = [];
-    for (let i = 0; i < account.allowedSnakeColors.length; i++) {
-        sendSnakeColors.push(getColorById(account.allowedSnakeColors[i]));
-    }
-    account.snakeColors = sendSnakeColors;
-
     let accessedBattlePasses = {};
     for (let i = 0; i < account.battlePasses.length; i++) {
         accessedBattlePasses[account.battlePasses[i].name] = allBattlePasses[account.battlePasses[i].name];
@@ -3127,29 +3108,29 @@ function zipAllBoards(boardList,func,index = 0,list = []) {
 
 let server_skinPacks = ["basic","disco"];
 let server_snakeColors = [
-    { color: { hue: 360, saturation: 300, brightness: 116 }, id: 0 },
-    { color: { hue: 157, saturation: 234, brightness: 116 }, id: 1 },
-    { color: { hue: 116, saturation: 211, brightness: 115 }, id: 2 },
-    { color: { hue: 208, saturation: 203, brightness: 118 }, id: 3 },
-    { color: { hue: 307, saturation: 160, brightness: 89 }, id: 4 },
-    { color: { hue: 58, saturation: 192, brightness: 143 }, id: 5 },
-    { color: { hue: 275, saturation: 62, brightness: 162 }, id: 6 },
-    { color: { hue: 208, saturation: 62, brightness: 150 }, id: 7 },
-    { color: { hue: 141, saturation: 62, brightness: 150 }, id: 8 },
-    { color: { hue: 250, saturation: 234, brightness: 86 }, id: 9 },
-    { color: { hue: 70, saturation: 0, brightness: 86 }, id: 10 },
-    { color: { hue: 121, saturation: 180, brightness: 86 }, id: 11 },
-    { color: { hue: 309, saturation: 300, brightness: 200 }, id: 12 },
-    { color: { hue: 309, saturation: 58, brightness: 200 }, id: 13 },
-    { color: { hue: 236, saturation: 106, brightness: 74 }, id: 14 },
-    { color: { hue: 236, saturation: 210, brightness: 74 }, id: 15 },
-    { color: { hue: 137, saturation: 210, brightness: 74 }, id: 16 },
-    { color: { hue: 137, saturation: 53, brightness: 74 }, id: 17 },
-    { color: { hue: 290, saturation: 130, brightness: 74 }, id: 18 },
-    { color: { hue: 35, saturation: 119, brightness: 186 }, id: 19 },
-    { color: { hue: 156, saturation: 119, brightness: 186 }, id: 20 },
-    { color: { hue: 341, saturation: 119, brightness: 186 }, id: 21 },
-    { color: { hue: 318, saturation: 300, brightness: 200 }, id: 22 }
+    { hue: 360, saturation: 300, brightness: 116 },
+    { hue: 157, saturation: 234, brightness: 116 },
+    { hue: 116, saturation: 211, brightness: 115 },
+    { hue: 208, saturation: 203, brightness: 118 },
+    { hue: 307, saturation: 160, brightness: 89 }, 
+    { hue: 58, saturation: 192, brightness: 143 }, 
+    { hue: 275, saturation: 62, brightness: 162 }, 
+    { hue: 208, saturation: 62, brightness: 150 }, 
+    { hue: 141, saturation: 62, brightness: 150 }, 
+    { hue: 250, saturation: 234, brightness: 86 }, 
+    { hue: 70, saturation: 0, brightness: 86 },
+    { hue: 121, saturation: 180, brightness: 86 }, 
+    { hue: 309, saturation: 300, brightness: 200 },
+    { hue: 309, saturation: 58, brightness: 200 }, 
+    { hue: 236, saturation: 106, brightness: 74 }, 
+    { hue: 236, saturation: 210, brightness: 74 }, 
+    { hue: 137, saturation: 210, brightness: 74 }, 
+    { hue: 137, saturation: 53, brightness: 74 },
+    { hue: 290, saturation: 130, brightness: 74 }, 
+    { hue: 35, saturation: 119, brightness: 186 }, 
+    { hue: 156, saturation: 119, brightness: 186 },
+    { hue: 341, saturation: 119, brightness: 186 },
+    { hue: 318, saturation: 300, brightness: 200 },
 ];
 
 function getColorById(id) {
