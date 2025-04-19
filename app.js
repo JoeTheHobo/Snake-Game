@@ -1658,7 +1658,7 @@ io.on('connection', (socket) => {
             io.to(socket.id).emit("popup","Couldn't Save Snake");
             return;
         }
-
+        console.log(serverSnake);
         account.serverSnake = serverSnake;
         let lobby = lobbies[account.lobby];
         if (lobby) {
