@@ -2348,7 +2348,7 @@ function loadSnakeCustomizationPopup() {
         let colorDiv = colorHolder.create("div.snc_color_color");
 
         if (type == "filter") {
-            colorDiv.style.background = "green";
+            colorDiv.style.background = "#06470B";
             colorDiv.style.filter = color;
         }
         if (type == "set") {
