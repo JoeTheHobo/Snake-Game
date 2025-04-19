@@ -1434,6 +1434,7 @@ io.on('connection', (socket) => {
 
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
             let player = lobby.inGamePlayers[i];
+            player.index = i;
             player.isPlayer = true;
             //Ressurect Player
             player.isDead = false;
@@ -1486,11 +1487,20 @@ io.on('connection', (socket) => {
             player.timeAlive = [0];
             player.timeCameAlive = false;
             player.allowedToMove = true;
-            player.playerZone = false;
-            player.itemZone = false;
+
+            player.zones = [];
         }
 
-        
+        lobby.specialZones = [];
+        if (!lobby.spawnZones.special) lobby.spawnZones.special = [];
+        else lobby.specialZones = structuredClone(lobby.spawnZones.special)
+        for (let i = 0; i < lobby.specialZones.length; i++) {
+            lobby.specialZones[i].occupiedBy = [];
+            lobby.specialZones[i].startTimeStamp = false;
+            lobby.specialZones[i].statusGave = 0;
+            lobby.specialZones[i].statusGiven = [];
+        }
+
 
         getLocations(lobby);
         fixBoardDifferences(lobby.board.map,lobby.board.itemDifferences,"item");
@@ -2006,14 +2016,17 @@ function spawnPlayer(lobby,player,gameStart = false,setZones) {
             return false;
         } else {
             setTimeout(function() {
+                if (lobby.gameEnd) return;
                 spawnPlayer(lobby,player,gameStart);
             },1000);
         }
         return;
     }
+
     
     player.pos.x = spot.x;
     player.pos.y = spot.y;
+    setPlayersZones(lobby,player);
     player.team = spot.team;
     lobby.snakeMap[spot.y][spot.x].push({
         index: player.index,
@@ -2705,6 +2718,150 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+
+function specialZone_timer(lobby,zone,time) {
+    if (time <= 0 && zone.startTimeStamp) {
+        let correctOccupied = specialZone_testOccupied(lobby,zone);
+        if (!correctOccupied) return;
+
+        let status = [];
+        if (zone.giveStatus === "*P") {
+            if (zone.giveStatusFrom == "All Players") {
+                for (let i = 0; i < zone.occupiedBy.length; i++) {
+                    status.push(zone.occupiedBy.team);
+                }
+            }
+            if (zone.giveStatusFrom == "Random Player") {
+                status.push(simple.rnd(zone.occupiedBy).team);
+            }
+            if (specialZone_.giveStatusFrom == "Random Team") {
+                let teams = [];
+                for (let i = 0; i < zone.occupiedBy.length; i++) {
+                    if (!teams.includes(zone.occupiedBy[i].team)) teams.push(zone.occupiedBy[i].team);
+                }
+                status.push(simple.rnd(teams));
+
+            }
+            if (zone.giveStatusFrom == "All Teams") {
+                let teams = [];
+                for (let i = 0; i < zone.occupiedBy.length; i++) {
+                    if (!teams.includes(zone.occupiedBy[i].team)) teams.push(zone.occupiedBy[i].team);
+                }
+                status = teams;
+            }
+            if (zone.giveStatusFrom == "Largest Team") {
+                let teams = [];
+                for (let i = 0; i < zone.occupiedBy.length; i++) {
+                    teams.push(zone.occupiedBy[i].team);
+                }
+                status.push(findMostFrequent(teams));
+            }
+        } else status.push(zone.giveStatus);
+
+
+
+        if (zone.giveStatusType == "add") {
+            for (let i = 0; i < status.length; i++) {
+                addBoardStatus(lobby,status[i]);
+                zone.statusGiven.push(status[i]);
+            }
+            zone.statusGave++;
+        }
+        if (zone.giveStatusType == "remove") {
+            for (let i = 0; i < status.length; i++) {
+                removeBoardStatus(lobby,status[i]);
+                checkZoneStatus: for (let j = 0; j < zone.statusGiven.length; j++) {
+                    if (zone.statusGiven[j] == status[i]) {
+                        zone.statusGiven.splice(j,1);
+                        break checkZoneStatus;
+                    }
+                }
+            }
+            zone.statusGave++;
+        }
+        if (zone.giveStatusType == "set") {
+            for (let j = 0; j < zone.statusGiven.length; j++) {
+                removeBoardStatus(lobby,zone.statusGiven[j]);
+            }
+            zone.statusGiven = [];
+            for (let i = 0; i < status.length; i++) {
+                addBoardStatus(lobby,status[i]);
+                zone.statusGiven.push(status[i]);
+            }
+            zone.statusGave++;
+        }
+
+        if (zone.repeatStatusType == "Repeat") {
+            specialZone_endTimer(lobby,zone);
+            specialZone_startTimer(lobby,zone);
+        }
+
+        return;
+    }
+
+    if (zone.startTimeStamp) {
+        setTimeout(function() {
+            specialZone_timer(lobby,zone,time-1);
+        },1000);
+    }
+
+}
+function specialZone_endTimer(lobby,zone) {
+    zone.startTimeStamp = false;
+}
+function specialZone_startTimer(lobby,zone) {
+    if (zone.startTimeStamp !== false) return;
+
+    zone.startTimeStamp = true;
+
+    specialZone_timer(lobby,zone,this.giveStatusDelay);
+}
+function specialZone_testOccupied(lobby,zone) {
+    let type = zone.giveStatusWhenOccupiedBy;
+
+    if (type == "Everyone" && zone.occupiedBy.length > 0) return true;
+    if (type == "Solo Player" && zone.occupiedBy.length == 1) return true;
+    if (type == "Solo Team") {
+        let teams = [];
+        for (let i = 0; i < zone.occupiedBy.length; i++) {
+            if (!teams.includes(zone.occupiedBy[i].team)) teams.push(zone.occupiedBy[i].team);
+        }
+        if (teams.length == 1) return true;
+    }
+        
+    return false;
+}
+function specialZone_onEnter(lobby,zone) {
+    if (!zone.giveStatusOnEnter) return;
+    if (zone.repeatStatusType == "Single Use" && zone.statusGave > 0) return;
+    let correctOccupied = specialZone_testOccupied(lobby,zone);
+    if (!correctOccupied) specialZone_endTimer(lobby,zone);
+    else specialZone_startTimer(lobby,zone);
+}
+function specialZone_onLeave(lobby,zone) {
+    if (!zone.giveStatusOnEnter) return;
+    let correctOccupied = specialZone_testOccupied(lobby,zone);
+    if (!correctOccupied) specialZone_endTimer(lobby,zone);
+}
+
+
+
+
+function findMostFrequent(arr) {
+    const frequencyMap = {};
+    let maxCount = 0;
+    let mostFrequentValue;
+  
+    for (const value of arr) {
+      frequencyMap[value] = (frequencyMap[value] || 0) + 1;
+      if (frequencyMap[value] > maxCount) {
+        maxCount = frequencyMap[value];
+        mostFrequentValue = value;
+      }
+    }
+  
+    return mostFrequentValue;
+  }
 async function server_closeLobby(lobby) {
     let socketsInRoom = await io.in(lobby.id).fetchSockets();
 
@@ -2745,33 +2902,55 @@ function database_addPlaysToBoard(boardID, amount) {
 function setPlayersZones(lobby,player) {
     let playerZones = lobby.spawnZones.players;
     let itemZones = lobby.spawnZones.items;
+    let specialZones = lobby.specialZones;
 
     let playerX = player.pos.x;
     let playerY = player.pos.y;
 
-    function checkIfInZone(zones,x,y) {
+    let oldZones = player.zones;
+    player.zones = [];
+
+    function addPlayerZones(player,zones,x,y,type) {
         for (let i = 0; i < zones.length; i++) {
             let zone = zones[i];
+            if (!zone.active && (type == "item" || type == "player")) continue;
+
+            let inZone = false;
             if (x >= zone.pos1.x && x <= zone.pos2.x) {
                 if (y >= zone.pos1.y && y <= zone.pos2.y) {
-                    return zone.id;
+                    inZone = true;
+                    player.zones.push(zone.id)
+
+                    if (type == "special") {
+                        //On Enter
+                        if (!oldZones.includes(zone.id)) {
+                            zone.occupiedBy.push(player);
+                            zone.onEnter();
+                        }
+                    }
+                }
+            }
+            if (!inZone) {
+                if (type == "special") {
+                    //On Leave
+                    if (oldZones.includes(zone.id)) {
+                        for (let j = 0; j < zone.occupiedBy.length; j++) {
+                            if (zone.occupiedBy[i].index == player.index) {
+                                zone.occupiedBy.splice(i,1);
+                                zone.onLeave();
+                            }
+                        }
+                    }
                 }
             }
         }
-        return false;
     }
 
-    let playerZone = checkIfInZone(playerZones,playerX,playerY);
-    let itemZone = checkIfInZone(itemZones,playerX,playerY);
+    addPlayerZones(player,playerZones,playerX,playerY,"player");
+    addPlayerZones(player,itemZones,playerX,playerY,"item");
+    addPlayerZones(player,specialZones,playerX,playerY,"special");
 
-    if (player.playerZone !== playerZone) {
-        player.playerZone = playerZone;
-        checkWinningCondition(lobby,"Touch Zone X",playerZone,player);
-    }
-    if (player.itemZone !== itemZone) {
-        player.itemZone = itemZone;
-        checkWinningCondition(lobby,"Touch Zone X",playerZone,player);
-    }
+    checkWinningCondition(lobby,"Touch Zone X",false,player);
 
 }
 function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,conditionImage) {
@@ -2950,7 +3129,7 @@ function checkWinningCondition(lobby,condition,value,player) {
             return;
         }
         if (condition == "Touch Zone X") {
-            if (value == winningConditions[i].x) {
+            if (player.zones.includes(winningConditions[i].x)) {
                 triggerWinningCondition(lobby,winningConditions[i],player);
                 return;
             }

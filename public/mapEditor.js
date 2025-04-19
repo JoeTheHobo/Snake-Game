@@ -1993,7 +1993,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
                 valueFromId: 1,
                 equals: "*P",
             });
-            c = createGamemodeSetting("Give Status When Occupied By","list","giveStatusWhenOccupiedBy",{background: "#070738", options: ["Solo Player","Solo Team","Everyone","No One"]},"Only give the status when this zone is occupied by these people",false,false,{
+            c = createGamemodeSetting("Give Status When Occupied By","list","giveStatusWhenOccupiedBy",{background: "#070738", options: ["Solo Player","Solo Team","Everyone"]},"Only give the status when this zone is occupied by these people",false,false,{
                 valueFromFamily: 7,
                 valueFromId: 1,
                 equals: true,
@@ -2003,12 +2003,12 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
                 valueFromId: 1,
                 equals: true,
             });
-            s = createGamemodeSetting("Give Status Delay","number","giveStatusDelay",{background: "#070738"},"When snake enters how long do they need to stay in zone to have the zone give status",false,false,{
+            s = createGamemodeSetting("Give Status Delay (Seconds)","number","giveStatusDelay",{background: "#070738"},"When snake enters how long do they need to stay in zone to have the zone give status",false,false,{
                 valueFromFamily: 7,
                 valueFromId: 1,
                 equals: true,
             });
-            d = createGamemodeSetting("Repeat Status Type","list","repeatStatusType",{background: "#070738", options: ["Repeat While On","Repeat When Enter","Single Use"]},"How does this zone give another status after it already gave one",false,false,{
+            d = createGamemodeSetting("Repeat Status Type","list","repeatStatusType",{background: "#070738", options: ["Repeat","Single Use"]},"How does this zone give another status after it already gave one",false,false,{
                 valueFromFamily: 7,
                 valueFromId: 1,
                 equals: true,
@@ -2432,7 +2432,7 @@ $(".me_sz_addButton").on("click",function() {
             giveStatusFrom: "Largest Team",
             giveStatusType: "set",
             giveStatusDelay: 5,
-            repeatStatusType: "Repeat While On",
+            repeatStatusType: "Repeat",
             giveStatusWhenOccupiedBy: "Solo Team",
             displayStatusStats: true,
 
