@@ -3672,6 +3672,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
   color: white;
 }
 .cb_boardList {
+  flex-wrap: wrap;
   display: flex;
   align-content: flex-start;
   width: 100%;
@@ -3694,6 +3695,7 @@ gap: 1px; /* Optional: Adjust spacing between items */
 }
 .bm_boardCanvas {
   width: 100%;
+  aspect-ratio: 50/30;
   cursor: url('./img/pointer.cur'), auto;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;

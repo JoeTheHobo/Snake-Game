@@ -1572,6 +1572,7 @@ function runTool(type,desiredValue) {
         if (showFullGrid) $(".show_grid_tool2").classAdd("toolIsSelected");
         else $(".show_grid_tool2").classRemove("toolIsSelected");
     }
+    console.log(type.subset(0,"_\\before"));
     if (type.subset(0,"_\\before") == "show_zone") {
         let zoneType = type.subset("_\\after","end");
         if (zoneType == "player") userClickedZonePlayer = !userClickedZonePlayer;
