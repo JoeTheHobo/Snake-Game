@@ -2807,7 +2807,7 @@ function specialZone_timer(lobby,zone,time) {
         setTimeout(function() {
             console.log(8)
             specialZone_timer(lobby,zone,time-1);
-        },1000);
+        },500);
     }
 
 }
@@ -2821,7 +2821,7 @@ function specialZone_startTimer(lobby,zone) {
 
     zone.startTimeStamp = true;
 
-    specialZone_timer(lobby,zone,zone.giveStatusDelay);
+    specialZone_timer(lobby,zone,zone.giveStatusDelay*2);
 }
 function specialZone_testOccupied(lobby,zone) {
     let type = zone.giveStatusWhenOccupiedBy;
