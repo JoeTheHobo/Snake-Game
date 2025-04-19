@@ -2871,6 +2871,11 @@ function triggerWinningCondition(lobby,condition,player) {
                 winningPlayers.push(lobby.inGamePlayers[i])
             }
         }
+    } else if (condition.whoWins == "Everyone") {
+        winningTitle = "Everyone Won";
+        for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+            winningPlayers.push(lobby.inGamePlayers[i])
+        }
     } else if (condition.whoWins !== false) {
         winningTitle = (condition.whoWins.charAt(0).toUpperCase() + condition.whoWins.slice(1)) + " Team Won";
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
