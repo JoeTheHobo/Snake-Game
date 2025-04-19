@@ -1980,9 +1980,9 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
             }
         });
         if (type == "special") {
-            b = createGamemodeSetting("Give Status On Enter","toggle","giveStatusOnEnter",{background: "#57B9FF"},"When a snake enters this zone follow zone giving settings.",1,1);
-            f = createGamemodeSetting("Give Status","status","giveStatus",{background: "#57B9FF", readAs: "color",statusMenuOptions: ["status","playerStatus","submit"]},"Which status to give when snake enters zone",2,1,{
-                valueFromFamily: 1,
+            b = createGamemodeSetting("Give Status On Enter","toggle","giveStatusOnEnter",{background: "#57B9FF"},"When a snake enters this zone follow zone giving settings.",5,1);
+            f = createGamemodeSetting("Give Status","status","giveStatus",{background: "#57B9FF", readAs: "color",statusMenuOptions: ["status","playerStatus","submit"]},"Which status to give when snake enters zone",6,1,{
+                valueFromFamily: 5,
                 valueFromId: 1,
                 equals: true,
             });
@@ -1991,22 +1991,22 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
                 equals: "*P",
             });
             c = createGamemodeSetting("Give Status When Occupied By","list","giveStatusWhenOccupiedBy",{background: "#57B9FF", options: ["Solo Player","Solo Team","Everyone","No One"]},"Only give the status when this zone is occupied by these people",false,false,{
-                valueFromFamily: 1,
+                valueFromFamily: 5,
                 valueFromId: 1,
                 equals: true,
             });
             g = createGamemodeSetting("Give Status Type","list","giveStatusType",{background: "#57B9FF", options: ["set","add","remove"]},"How does the zone give the status?",false,false,{
-                valueFromFamily: 1,
+                valueFromFamily: 5,
                 valueFromId: 1,
                 equals: true,
             });
             s = createGamemodeSetting("Give Status Delay","number","giveStatusDelay",{background: "#57B9FF"},"When snake enters how long do they need to stay in zone to have the zone give status",false,false,{
-                valueFromFamily: 1,
+                valueFromFamily: 5,
                 valueFromId: 1,
                 equals: true,
             });
             d = createGamemodeSetting("Repeat Status Type","list","repeatStatusType",{background: "#57B9FF", options: ["Repeat While On","Repeat When Enter","Single Use"]},"How does this zone give another status after it already gave one",false,false,{
-                valueFromFamily: 1,
+                valueFromFamily: 5,
                 valueFromId: 1,
                 equals: true,
             });
