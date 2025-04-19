@@ -394,14 +394,14 @@ io.on('connection', (socket) => {
         }
 
         try {
-            const countQuery = "SELECT COUNT(*) AS total FROM credentials";
-            db.query(countQuery, async(err,results) => {
+            const maxTagQuery = "SELECT MAX(tag) AS highestTag FROM credentials";
+            db.query(maxTagQuery, async(err,results) => {
                 if (err) {
                     io.to(socket.id).emit("signup_error", "An error occurred, please try again later.");
                     return;
                 }
 
-                let tag = results[0].total + 1;
+                let tag = results[0].highestTag + 1;
 
                 const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -452,8 +452,9 @@ io.on('connection', (socket) => {
                     });
     
                     //Add To Inventory Database
+                    account.serverSnake.chatNameColor = 1;
                     const invQuery = "INSERT INTO inventory (tag, board_limit, coins, battle_pass_points, server_snake, name_color, challenge_limit, music_volume, sfx_volume) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    db.query(invQuery, [tag,account.boardLimit,account.coins,account.battlePassPoints, JSON.stringify(account.serverSnake), "white", account.challengeLimit,account.musicVolume,account.sfxVolume], (err,results) => {
+                    db.query(invQuery, [tag,account.boardLimit,account.coins,account.battlePassPoints, JSON.stringify(account.serverSnake), 0, account.challengeLimit,account.musicVolume,account.sfxVolume], (err,results) => {
                         if (err) {
                             console.log(err);
                         }
@@ -3940,6 +3941,7 @@ function newPlayer(socketID,accountName,accountTag) {
         longestTail: 0,
         turboDuration: 0,
         turboActive: false,
+        colorID: 0,
         equiped: {
             head: false,
             body: false,
