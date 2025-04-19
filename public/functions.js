@@ -2370,6 +2370,7 @@ function loadSnakeCustomizationPopup() {
     }
 
     $(".customizeSnakePopupV2").setKeyBind = function(key,where) {
+        console.log(key,where,player[where])
         player[where] = key;
         saveServerSnake(player);
     }
