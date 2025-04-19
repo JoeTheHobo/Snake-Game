@@ -1986,7 +1986,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
                 valueFromId: 1,
                 equals: true,
             });
-            r = createGamemodeSetting("Give Status From","list","giveStatusFrom",{background: "#517891", options: ["All Players","Random Player","Random Team","All Teams","Largest Team"]},"When zone gives players status who within zone should it pull from?",2,2,{
+            r = createGamemodeSetting("Give Status From","list","giveStatusFrom",{background: "#517891", options: ["All Players","Random Player","Random Team","All Teams","Largest Team"]},"When zone gives players status who within zone should it pull from?",6,2,{
                 valueFromId: 1,
                 equals: "*P",
             });
