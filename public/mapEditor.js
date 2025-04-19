@@ -2253,13 +2253,13 @@ function setObjectTab(type) {
         deselectAllShowingZones();
     }
     if (type == "Spawn Zones") {
-        runTool("showZones",true);
         $(".me_sz_zoneList").innerHTML = "";
-        $(".me_sz_zoneList").classRemove("me_ob_sz_tr_tab_selected");
+        $(".me_ob_sz_tr_tab").classRemove("me_ob_sz_tr_tab_selected");
         $("player_zone").classAdd("me_ob_sz_tr_tab_selected");
         generateZoneListings("player",0,currentBoard.spawnZones.players);
         $(".me_s_holder_tools").hide();
         $(".me_s_holder_subtool").hide();
+        onlyShowZone("player");
     }
 }
 function loadTagsList(allowedIds,itemList,tagList) {
