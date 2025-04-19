@@ -43,7 +43,7 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,serv
     localAccount.allowedItemIds = account.allowedItemIds;
     localAccount.allowedTileIds = account.allowedTileIds;
     localAccount.allowedNameColors = account.allowedNameColors;
-    localAccount.allowedSnakeColors = account.snakeColors;
+    localAccount.allowedSnakeColors = account.allowedSnakeColors;
     localAccount.battlePassPoints = account.battlePassPoints;
     localAccount.battlePasses = account.battlePasses;
     localAccount.coins = account.coins;
