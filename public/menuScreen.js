@@ -1116,7 +1116,10 @@ function loadGamemodeTabWinning() {
         let b = createGamemodeSetting(pullFromCondition.settingsTitle,pullFromCondition.settingsType,"x",{},pullFromCondition.settingsDescription,false,false,false,() => {
             loadWinningConditions();
         })
-        let c = createGamemodeSetting("Pull Team Stats","toggle","pullTeamStatus",{default: false},"Pull players team stats when testing condition. (EX: Kill 4 Snakes, will grab all snakes killed from players team")
+        let c = false;
+        if (["Kill X Snakes","Reach Snake Size"].includes(pullFromCondition.settingsTitle)) {
+            c = createGamemodeSetting("Pull Team Stats","toggle","pullTeamStats",{default: false},"Pull players team stats when testing condition. (EX: Kill 4 Snakes, will grab all snakes killed from players team)")
+        }
 
         if (pullFromCondition.settingsTitle === false) b = false;
 

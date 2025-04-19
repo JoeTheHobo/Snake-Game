@@ -1355,6 +1355,11 @@ io.on('connection', (socket) => {
         if (!lobby.gameMode.winningConditions) {
             lobby.gameMode.winningConditions = [false,false,false,false,false];
         }
+        for (let i = 0; i < lobby.gameMode.winningConditions.length; i++) {
+            let condition = lobby.gameMode.winningConditions[i];
+            if (!condition) continue;
+            if (!condition.pullTeamStatus) condition.pullTeamStats = false;
+        }
         //Setting Up Quick Cheat For Conditions
 
         lobby.condition_size = [];
@@ -2352,9 +2357,21 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
             if (lobby.condition_kill.length > 0) {
                 for (let i = 0; i < lobby.condition_kill.length; i++) {
                     let condition = lobby.condition_kill[i];
-                    if (playerWhoKilled.playerKills >= condition.x) {
-                        triggerWinningCondition(lobby,condition,playerWhoKilled);
+                    if (condition.pullTeamStats) {
+                        let teamKills = 0;
+                        let team = playerWhoKilled.team;
+                        for (let j = 0; j < activePlayers.length; j++) {
+                            if (activePlayers[j].team == team) teamKills += activePlayers[j].playerKills;
+                        }
+                        if (teamKills >= condition.x) {
+                            triggerWinningCondition(lobby,condition,playerWhoKilled);
+                        }
+                    } else {
+                        if (playerWhoKilled.playerKills >= condition.x) {
+                            triggerWinningCondition(lobby,condition,playerWhoKilled);
+                        }
                     }
+                    
                 }
             }
         }
@@ -3856,8 +3873,19 @@ function server_movePlayers(lobby,socketID) {
                 if (lobby.condition_size.length > 0) {
                     for (let cs = 0; cs < lobby.condition_size.length; cs++) {
                         let condition = lobby.condition_size[cs];
-                        if (player.tail.length + 1 >= condition.x) {
-                            triggerWinningCondition(lobby,condition,player);
+                        if (condition.pullTeamStats) {
+                            let teamSnakeSize = 0;
+                            let team = player.team;
+                            for (let j = 0; j < activePlayers.length; j++) {
+                                if (activePlayers[j].team === team) teamSnakeSize += (activePlayers[j].tail.length + 1);
+                            }
+                            if (teamSnakeSize >= condition.x) {
+                                triggerWinningCondition(lobby,condition,player);
+                            }
+                        } else {
+                            if (player.tail.length + 1 >= condition.x) {
+                                triggerWinningCondition(lobby,condition,player);
+                            }
                         }
                     }
                 }

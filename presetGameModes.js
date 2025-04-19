@@ -20,13 +20,13 @@ presetGameModes.push({
         x: false,
         whoWins: "Player",
         type: false,
-        pullTeamStatus: false,
+        pullTeamStats: false,
     },{
         condition: "Touch Item X",
         x: 25,
         whoWins: "Player",
         type: "item",
-        pullTeamStatus: false,
+        pullTeamStats: false,
     },false,false,false],
 })
 

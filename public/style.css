@@ -4952,7 +4952,7 @@ cursor: url('./img/pointer.cur'), auto;
   }
   .gamemodePopup_conditionSettings_list {
     display: flex;
-    height: 25%;
+    height: 45%;
     width: 80%;
     flex-direction: row;
     align-items: center;
