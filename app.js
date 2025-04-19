@@ -1891,7 +1891,7 @@ function setNestedValue(obj, path, value, toReturn = false) {
 function getRealItem(id,type) {
     let list = type == "item" ? items : tiles;
     for (let i = 0; i < list.length; i++) {
-        if (tiles[i].id == id) {
+        if (list[i].id == id) {
             return structuredClone(list[i]);
         }
     }
