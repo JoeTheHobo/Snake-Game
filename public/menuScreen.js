@@ -1247,6 +1247,7 @@ function loadGamemodeTabWinning() {
                         x: sendX,
                         whoWins: whoWins,
                         type: sendType,
+                        highestValue: "kills",
                         pullTeamStats: false,
                     }
                     loadWinningConditions();
