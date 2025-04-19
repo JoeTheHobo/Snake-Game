@@ -4757,10 +4757,9 @@ cursor: url('./img/pointer.cur'), auto;
     gap: 5px;
     width: 90%;
     justify-content: space-evenly;
-    height: 17%;
   }
   .gmGroup_list_option {
-    height: 100%;
+    height: 30px;
     font-size: 0.9em;
     background: #727272;
     border-radius: 5px;
