@@ -2730,6 +2730,7 @@ function specialZone_timer(lobby,zone,time) {
 
         let status = [];
         if (zone.giveStatus === "*P") {
+            console.log(10.5,zone.giveStatusFrom)
             if (zone.giveStatusFrom == "All Players") {
                 for (let i = 0; i < zone.occupiedBy.length; i++) {
                     status.push(zone.occupiedBy.team);
@@ -2795,7 +2796,7 @@ function specialZone_timer(lobby,zone,time) {
             zone.statusGave++;
         }
 
-        if (zone.repeatStatusType == "Repeat") {
+        if (zone.repeatStatusType == "repeat") {
             specialZone_endTimer(lobby,zone);
             specialZone_startTimer(lobby,zone);
         }
@@ -2827,10 +2828,10 @@ function specialZone_startTimer(lobby,zone) {
 function specialZone_testOccupied(lobby,zone) {
     let type = zone.giveStatusWhenOccupiedBy;
 
-    console.log(3.5,type,zone.occupiedBy)
-    if (type == "Everyone" && zone.occupiedBy.length > 0) return true;
-    if (type == "Solo Player" && zone.occupiedBy.length == 1) return true;
-    if (type == "Solo Team") {
+    console.log(3.5,type)
+    if (type == "everyone" && zone.occupiedBy.length > 0) return true;
+    if (type == "solo player" && zone.occupiedBy.length == 1) return true;
+    if (type == "solo team") {
         let teams = [];
         for (let i = 0; i < zone.occupiedBy.length; i++) {
             if (!teams.includes(zone.occupiedBy[i].team)) teams.push(zone.occupiedBy[i].team);
