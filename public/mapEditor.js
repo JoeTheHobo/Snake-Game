@@ -1985,6 +1985,9 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
                 valueFromFamily: 7,
                 valueFromId: 1,
                 equals: true,
+            },() => {
+                renderZoneCanvas();
+                generateZoneListings("special",savedSelectingZoneSpecial,currentBoard.spawnZones.special);
             });
             r = createGamemodeSetting("Give Status From","list","giveStatusFrom",{background: "#070738", options: ["All Players","Random Player","Random Team","All Teams","Largest Team"]},"When zone gives players status who within zone should it pull from?",6,2,{
                 valueFromId: 1,
