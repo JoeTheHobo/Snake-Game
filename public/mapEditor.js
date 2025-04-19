@@ -51,12 +51,14 @@ let selectedItemTags = [];
 let selectedTileTags = [];
 let savedSelectingItem = 1;
 let savedSelectingTile = 1;
-let showingZones = false;
-let showingZones_PlayerTurnedMeOn = false;
+let userClickedZonePlayer = false;
+let userClickedZoneItem = false;
+let userClickedZoneSpecial = false;
 let savedSelectingZonePlayer = 0;
 let savedSelectingZoneItem = 0;
 let savedSelectingZoneSpecial = 0;
 let currentTab = "Items";
+let showingZoneTypes = [];
 
 let oldMap = [];
 
@@ -118,9 +120,10 @@ function openMapEditor(boardComingIn) {
     showGrid = false;
     selectedZone = false;
     selectedItemTags = [];
-    showingZones = false;
     me_ctx_zones.globalAlpha = 0.4;
-    showingZones_PlayerTurnedMeOn = false;
+    userClickedZonePlayer = false;
+    userClickedZoneItem = false;
+    userClickedZoneSpecial = false;
 
     //PARITY
     if (!currentBoard.spawnZones.special) currentBoard.spawnZones.special = [];    
@@ -209,15 +212,24 @@ function renderZoneCanvas() {
     me_ctx_zones.globalAlpha = 0.3;
     me_ctx_zones.clearRect(0,0,me_canvas_zones.width,me_canvas_zones.height);
 
-    if (!showingZones) return;
-
-    for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
-        let zone = currentBoard.spawnZones.players[i];
-        drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color(zone.team).ogColor,zone.id);
+    if (showingZoneTypes.includes("player")) {
+        for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
+            let zone = currentBoard.spawnZones.players[i];
+            drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color(zone.team).ogColor,zone.id);
+        }
     }
-    for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
-        let zone = currentBoard.spawnZones.items[i];
-        drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color("white").ogColor,zone.id);
+
+    if (showingZoneTypes.includes("item")) {
+        for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
+            let zone = currentBoard.spawnZones.items[i];
+            drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color("white").ogColor,zone.id);
+        }
+    }
+    if (showingZoneTypes.includes("special")) {
+        for (let i = 0; i < currentBoard.spawnZones.special.length; i++) {
+            let zone = currentBoard.spawnZones.items[i];
+            drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color("white").ogColor,zone.id);
+        }
     }
 }
 function renderTopCanvas() {
@@ -436,7 +448,7 @@ mousemovemethod = function (e) {
         yChange += mouseDirection.y;
         adjustCanvasPosition();
     }
-    if (currentTab == "Spawn Zones" && showingZones && !mouseDown) {
+    if (currentTab == "Spawn Zones" && showingZoneTypes.includes(selectedZone.type) && !mouseDown) {
         let zone = selectedZone.zone;
         if (mouseX < zone.pos2.x && mouseX > zone.pos1.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
             $(".me_canvasHolder").classAdd("moveCursor");
@@ -496,7 +508,7 @@ mousemovemethod = function (e) {
 
         
     }
-    if (currentTab == "Spawn Zones" && showingZones && mouseDown && zoneMouseMode) {
+    if (currentTab == "Spawn Zones" && showingZoneTypes.includes(selectedZone.type) && mouseDown && zoneMouseMode) {
         if (zoneMouseMode == "resizeLeft") {
             selectedZone.zone.pos1.x = mouseX;
         }
@@ -554,7 +566,7 @@ $(".me_canvasHolder").on("click",function() {
 
 $(".me_canvasHolder").on("mousedown",function(e) {
     mouseDown = e.which == 2 ? "wheel" : true;
-    if (currentTab == "Spawn Zones" && showingZones) {
+    if (currentTab == "Spawn Zones" && showingZoneTypes.includes(selectedZone.type)) {
         let zone = selectedZone.zone;
         if (mouseX < zone.pos2.x && mouseX > zone.pos1.x && mouseY < zone.pos2.y && mouseY > zone.pos1.y) {
             $(".me_canvasHolder").classAdd("grabCursor");  
@@ -609,7 +621,7 @@ $(".me_canvasHolder").on("mousedown",function(e) {
 $(".me_canvasHolder").on("mouseup",function() {
     mouseDown = false;
     zoneMouseMode = false;
-    if (currentTab == "Spawn Zones" && showingZones) {
+    if (currentTab == "Spawn Zones" && showingZoneTypes.includes(selectedZone.type)) {
         $(".me_canvasHolder").classRemove("grabCursor");
     }
 })
@@ -1547,30 +1559,70 @@ function runTool(type,desiredValue) {
         renderMapEditorCanvas(true)
     }
     if (type == "show_grid") {
-        showGrid = showGrid == false ? true : false;
+        showGrid = !showGrid;
         renderTopCanvas();
 
         if (showGrid) $(".show_grid_tool").classAdd("toolIsSelected");
         else $(".show_grid_tool").classRemove("toolIsSelected");
     }
     if (type == "show_grid2") {
-        showFullGrid = showFullGrid == false ? true : false;
+        showFullGrid = !showFullGrid;
         renderTopCanvas();
 
         if (showFullGrid) $(".show_grid_tool2").classAdd("toolIsSelected");
         else $(".show_grid_tool2").classRemove("toolIsSelected");
     }
-    if (type == "showZones") {
-        if (desiredValue !== undefined) showingZones = desiredValue;
-        else {
-            showingZones = showingZones == false ? true : false;
-            showingZones_PlayerTurnedMeOn = showingZones;
-        }
-        renderZoneCanvas();
-        
-        if (showingZones) $(".show_zones_tool").classAdd("toolIsSelected");
-        else $(".show_zones_tool").classRemove("toolIsSelected");
+    if (type.subset(0,"_\\before") == "show_zone") {
+        let zoneType = type.subset("_\\after","end");
+        if (zoneType == "player") userClickedZonePlayer = !userClickedZonePlayer;
+        if (zoneType == "item") userClickedZoneItem = !userClickedZoneItem;
+        if (zoneType == "special") userClickedZoneSpecial = !userClickedZoneSpecial;
+        let toggle;
+        if (zoneType == "player") toggle = userClickedZonePlayer;
+        if (zoneType == "item") toggle = userClickedZoneItem;
+        if (zoneType == "special") toggle = userClickedZoneSpecial;
+        if (toggle) addShowingZone(zoneType);
+        else removeShowingZone(zoneType);
+        fixClassOnShowZoneTools();
     }
+}
+function fixClassOnShowZoneTools() {
+    $(".show_zone_icon").classRemove("toolIsSelected");
+    for (let i = 0; i < showingZoneTypes.length; i++) {
+        $(".show_zone_" + showingZoneTypes[i] + "_tool").classAdd("toolIsSelected");
+    }
+    renderZoneCanvas();
+}
+function onlyShowZone(type) {
+    showingZoneTypes = [type];
+    if (userClickedZonePlayer) addShowingZone("player");
+    if (userClickedZoneItem) addShowingZone("item");
+    if (userClickedZoneSpecial) addShowingZone("special");
+
+    fixClassOnShowZoneTools();
+}
+function deselectAllShowingZones() {
+    showingZoneTypes = [];
+    if (userClickedZonePlayer) addShowingZone("player");
+    if (userClickedZoneItem) addShowingZone("item");
+    if (userClickedZoneSpecial) addShowingZone("special");
+
+    fixClassOnShowZoneTools();
+}
+function addShowingZone(type) {
+    for (let i = 0; i < showingZoneTypes.length; i++) {
+        if (showingZoneTypes[i] == type) return
+    }
+    showingZoneTypes.push(type);
+    fixClassOnShowZoneTools();
+}
+function removeShowingZone(type) {
+    let newZones = [];
+    for (let i = 0; i < showingZoneTypes.length; i++) {
+        if (showingZoneTypes[i] !== type) newZones.push(showingZoneTypes[i]); 
+    }
+    showingZoneTypes = newZones;
+    fixClassOnShowZoneTools();
 }
 function rotateArrayLeft(matrix) {
     return matrix[0].map((val, index) => matrix.map(row => row[row.length-1-index]));
@@ -1914,12 +1966,17 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
         let a = false, b= false, c = false, d = false, e = false,f = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false,q = false, r = false, s = false;
         a = createGamemodeSetting("Zone Name","input","id",{profanityClean: true,maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.",false,false,false,(value) => {
             renderZoneCanvas();
-            if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {
+            if (selectedZone.type == "player") {
                 $(".modernPopup_topRow_title_zones").innerHTML = "Player Zone: " + value;
                 generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
-            } else {
+            }
+            if (selectedZone.type == "item") {
                 $(".modernPopup_topRow_title_zones").innerHTML = "Item Zone: " + value;
                 generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
+            }
+            if (selectedZone.type == "special") {
+                $(".modernPopup_topRow_title_zones").innerHTML = "Special Zone: " + value;
+                generateZoneListings("special",savedSelectingZoneSpecial,currentBoard.spawnZones.special);
             }
         });
         if (type == "special") {
@@ -1964,11 +2021,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
             
             b = createGamemodeSetting("Zone Team","status","team",{readAs: "color",statusMenuOptions: ["remove","status","submit"]},"Give team status to people who spawn here.",false,false,false,() => {
                 renderZoneCanvas();
-                if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {
-                    generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
-                } else {
-                    generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
-                }
+                generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
             });
             c = createGamemodeSetting("Allow Respawning","toggle","respawnHere",{},"Can players respawn here if they're on the zones team?");
             d = createGamemodeSetting("Limit Spawning","toggle","spawnCap",{setTrueIfValueIsNumber: true,whenCheckedSet: {
@@ -2073,8 +2126,19 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
     let deleteIcon = rightIcons.create("img.spawnZoneImg");
     deleteIcon.src = "img/tool_delete.png";
     deleteIcon.on("click",function() {
-        if (zoneList.length == 1) return;
+        if (zoneList.length == 1 && (type == "player" || type == "item")) return;
         zoneList.splice(i,1);
+        if (zoneList.length == 0) {
+            selectingZoneIndex = false;
+            selectedZone = {
+                type: type,
+                zoneIndex: false,
+                zone: false,
+            }
+            generateZoneListings(type,selectingZoneIndex,zoneList);
+            renderZoneCanvas();
+            return;
+        }
         selectingZoneIndex = 0;
         selectedZone = {
             type: type,
@@ -2112,6 +2176,8 @@ $(".me_ob_sz_tr_tab").on("click",function() { //Player Zones / Item Zones Tabs O
     this.classAdd("me_ob_sz_tr_tab_selected");
     let zone = this.id.subset(0,"_\\before");
 
+    onlyShowZone(zone);
+
     if (zone == "item") generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
     if (zone == "player") generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
     if (zone == "special") generateZoneListings("special",savedSelectingZoneSpecial,currentBoard.spawnZones.special);
@@ -2119,10 +2185,18 @@ $(".me_ob_sz_tr_tab").on("click",function() { //Player Zones / Item Zones Tabs O
 })
 function generateZoneListings(type,selectingIndex,zoneList) {
     $(".me_sz_zoneList").innerHTML = "";
-    selectedZone = {
-        type: type,
-        zoneIndex: selectingIndex,
-        zone: zoneList[selectingIndex],
+    if (zoneList.length > 0) {
+        selectedZone = {
+            type: type,
+            zoneIndex: selectingIndex,
+            zone: zoneList[selectingIndex],
+        }
+    } else {
+        selectedZone = {
+            type: type,
+            zoneIndex: false,
+            zone: false,
+        }
     }
     for (let i = 0; i < zoneList.length; i++) {
         makeSpawnZoneListing(type,selectingIndex,zoneList,$(".me_sz_zoneList"),zoneList[i],i);
@@ -2155,7 +2229,7 @@ function setObjectTab(type) {
         $(".me_s_holder_tools").show("flex");
         if (tool !== "select" || selectedCells.selecting)
             $(".me_s_holder_subtool").show("flex");
-        if (!showingZones_PlayerTurnedMeOn) runTool("showZones",false);
+        deselectAllShowingZones();
     }
     if (type == "Tiles") {
         loadTagsList(localAccount.allowedTileIds,tiles,selectedTileTags);
@@ -2176,16 +2250,14 @@ function setObjectTab(type) {
         $(".me_s_holder_tools").show("flex");
         if (tool !== "select" || selectedCells.selecting)
             $(".me_s_holder_subtool").show("flex");
-        if (!showingZones_PlayerTurnedMeOn) runTool("showZones",false);
+        deselectAllShowingZones();
     }
     if (type == "Spawn Zones") {
         runTool("showZones",true);
         $(".me_sz_zoneList").innerHTML = "";
-        if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {
-            generateZoneListings("player",0,currentBoard.spawnZones.players);
-        } else {
-            generateZoneListings("item",0,currentBoard.spawnZones.items);
-        }
+        $(".me_sz_zoneList").classRemove("me_ob_sz_tr_tab_selected");
+        $("player_zone").classAdd("me_ob_sz_tr_tab_selected");
+        generateZoneListings("player",0,currentBoard.spawnZones.players);
         $(".me_s_holder_tools").hide();
         $(".me_s_holder_subtool").hide();
     }
