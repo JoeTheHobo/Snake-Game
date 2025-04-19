@@ -476,6 +476,11 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
             holder.css({
                 height: heightValue,
             })
+            if (g.typeSettings.background) {
+                holder.css({
+                    background: g.typeSettings.background,
+                })
+            }
             holder.showCases = [];
             holder.activateList = function() {
                 for (let i = 0; i < this.showCases.length; i++) {
@@ -527,7 +532,10 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
             }
 
             if (g.showWhen) {
-                $(gridName + "family" + g.familyID + "my" + g.showWhen.valueFromId).showCases.push({
+                let id = g.showWhen.valueFromId;
+                let familyID = g.showWhen.valueFromFamily || g.familyID;
+
+                $(gridName + "family" + familyID + "my" + id).showCases.push({
                     element: holder,
                     equals: g.showWhen.equals,
                     isNumber: g.showWhen.isNumber,
@@ -535,7 +543,7 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
                     onActiveSetValue: g.showWhen.onActiveSetValue,
                 })
 
-                let value = $(gridName + "family" + g.familyID + "my" + g.showWhen.valueFromId).gmValue;
+                let value = $(gridName + "family" + familyID + "my" + id).gmValue;
                 if ( g.showWhen.equals) {
 
                     if (g.showWhen.equals == value) {

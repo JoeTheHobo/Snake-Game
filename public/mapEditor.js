@@ -55,6 +55,7 @@ let showingZones = false;
 let showingZones_PlayerTurnedMeOn = false;
 let savedSelectingZonePlayer = 0;
 let savedSelectingZoneItem = 0;
+let savedSelectingZoneSpecial = 0;
 let currentTab = "Items";
 
 let oldMap = [];
@@ -120,6 +121,11 @@ function openMapEditor(boardComingIn) {
     showingZones = false;
     me_ctx_zones.globalAlpha = 0.4;
     showingZones_PlayerTurnedMeOn = false;
+
+    //PARITY
+    if (!currentBoard.spawnZones.special) currentBoard.spawnZones.special = [];    
+    //END
+
     $(".show_zones_tool").classRemove("toolIsSelected");
     $(".redo_tool").style.opacity = "0.5";
     $(".undo_tool").style.opacity = "0.5";
@@ -1881,7 +1887,8 @@ function loadBackgroundContent(parent) {
 }
 function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
     let color = "#ffffff";
-    if (zone.team) color = _color(zone.team).ogColor;
+    if (type == "player") color = _color(zone.team).ogColor;
+    if (type == "special") color = _color(zone.giveStatus).ogColor;
 
     let spawnZoneHolder = holder.create("div");
     spawnZoneHolder.className = "spawnZoneHolder playButtonSounds hover";
@@ -1904,7 +1911,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
         $(".editZonePopup").show("flex");
         $(".modernPopup_topRow_title_zones").innerHTML = type.format("A") + " Zone: " + zone.id;
 
-        let a = false, b= false, c = false, d = false, e = false,f = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false;
+        let a = false, b= false, c = false, d = false, e = false,f = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false,q = false, r = false, s = false;
         a = createGamemodeSetting("Zone Name","input","id",{profanityClean: true,maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.",false,false,false,(value) => {
             renderZoneCanvas();
             if ($(".playerZonesMEE").classList.contains("me_ob_sz_tr_tab_selected")) {
@@ -1915,6 +1922,39 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
                 generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
             }
         });
+        if (type == "special") {
+            b = createGamemodeSetting("Give Status On Enter","toggle","giveStatusOnEnter",{background: "#57B9FF"},"When a snake enters this zone follow zone giving settings.",1,1);
+            f = createGamemodeSetting("Give Status","status","giveStatus",{background: "#57B9FF", readAs: "color",statusMenuOptions: ["status","playerStatus","submit"]},"Which status to give when snake enters zone",2,1,{
+                valueFromFamily: 1,
+                valueFromId: 1,
+                equals: true,
+            });
+            r = createGamemodeSetting("Give Status From","list","giveStatusFrom",{background: "#57B9FF", options: ["All Players","Random Player","Random Team","All Teams","Largest Team"]},"When zone gives players status who within zone should it pull from?",2,2,{
+                valueFromId: 1,
+                equals: "*P",
+            });
+            c = createGamemodeSetting("Give Status When Occupied By","list","giveStatusWhenOccupiedBy",{background: "#57B9FF", options: ["Solo Player","Solo Team","Everyone","No One"]},"Only give the status when this zone is occupied by these people",false,false,{
+                valueFromFamily: 1,
+                valueFromId: 1,
+                equals: true,
+            });
+            g = createGamemodeSetting("Give Status Type","list","giveStatusType",{background: "#57B9FF", options: ["set","add","remove"]},"How does the zone give the status?",false,false,{
+                valueFromFamily: 1,
+                valueFromId: 1,
+                equals: true,
+            });
+            s = createGamemodeSetting("Give Status Delay","number","giveStatusDelay",{background: "#57B9FF"},"When snake enters how long do they need to stay in zone to have the zone give status",false,false,{
+                valueFromFamily: 1,
+                valueFromId: 1,
+                equals: true,
+            });
+            d = createGamemodeSetting("Repeat Status Type","list","repeatStatusType",{background: "#57B9FF", options: ["Repeat While On","Repeat When Enter","Single Use"]},"How does this zone give another status after it already gave one",false,false,{
+                valueFromFamily: 1,
+                valueFromId: 1,
+                equals: true,
+            });
+            h = createGamemodeSetting("Display Status Stats","toggle","displayStatusStats",{},"Should we show the status stats in game?",false,false);
+        }
         if (type == "item") {
             b = createGamemodeSetting("Manage Item Spawning","button",false,{text: "Manage",func: () => {
                 loadItemSpawning();
@@ -2021,12 +2061,13 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
 
         let grid = [
             [a,b,c,d],
-            [e,f,g,h],
+            [q,f,g,h],
+            [e,r,s,t],
             [i,j,k,l],
             [m,n,o,p]
         ]
 
-        createGamemodeGrid(content,4,4,grid,zone,"zones");
+        createGamemodeGrid(content,4,5,grid,zone,"zones");
     })
 
     let deleteIcon = rightIcons.create("img.spawnZoneImg");
@@ -2069,9 +2110,11 @@ $(".me_ob_tab").on("click",function() {
 $(".me_ob_sz_tr_tab").on("click",function() { //Player Zones / Item Zones Tabs On Click
     $(".me_ob_sz_tr_tab").classRemove("me_ob_sz_tr_tab_selected");
     this.classAdd("me_ob_sz_tr_tab_selected");
+    let zone = this.id.subset(0,"_\\before");
 
-    if (this.innerHTML == "Item Zones") generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
-    if (this.innerHTML == "Player Zones") generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
+    if (zone == "item") generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
+    if (zone == "player") generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
+    if (zone == "special") generateZoneListings("special",savedSelectingZoneSpecial,currentBoard.spawnZones.special);
 
 })
 function generateZoneListings(type,selectingIndex,zoneList) {
@@ -2300,9 +2343,45 @@ function showStatusMenu(showing,funcs,defaults = {}) {
     $(".statusSelectionScreen").show("flex");
 }
 $(".me_sz_addButton").on("click",function() {
+    if (selectedZone.type == "special") {
+        currentBoard.spawnZones.special.push({
+            id: "special" + (currentBoard.spawnZones.special.length+1),
+            pos1: {
+                x: Math.round(currentBoard.width/4),
+                y: Math.round(currentBoard.height/4),
+            },
+            pos2: {
+                x: Math.round(currentBoard.width/4) + Math.round(currentBoard.width/4),
+                y: Math.round(currentBoard.height/4) + Math.round(currentBoard.height/4),
+            },
+            giveStatusOnEnter: true,
+            giveStatus: "red",
+            giveStatusFrom: "Largest Team",
+            giveStatusType: "set",
+            giveStatusDelay: 5,
+            repeatStatusType: "Repeat While On",
+            giveStatusWhenOccupiedBy: "Solo Team",
+            displayStatusStats: true,
+
+            visible: true,
+            active: true,
+            activateWhenBoardStatus: false,
+            deactivateWhenBoardStatus: false,
+            activateWhenTimePassed: false, //Seconds
+            deactivateWhenTimePassed: false, //Seconds
+        })
+
+        savedSelectingZoneSpecial = currentBoard.spawnZones.special.length-1;
+        selectedZone = {
+            type: "special",
+            zoneIndex: savedSelectingZoneSpecial,
+            zone: currentBoard.spawnZones.special[savedSelectingZoneSpecial],
+        }
+        generateZoneListings("special",savedSelectingZoneSpecial,currentBoard.spawnZones.special);
+    }
     if (selectedZone.type == "player") {
         currentBoard.spawnZones.players.push({
-                id: "player" + rnd(100),
+                id: "player" + (currentBoard.spawnZones.players.length+1),
                 pos1: {
                     x: Math.round(currentBoard.width/4),
                     y: Math.round(currentBoard.height/4),
@@ -2315,6 +2394,7 @@ $(".me_sz_addButton").on("click",function() {
                 spawnCap: false,
                 respawnHere: true,
 
+                visible: false,
                 active: true,
                 activateWhenBoardStatus: false,
                 deactivateWhenBoardStatus: false,
@@ -2332,7 +2412,7 @@ $(".me_sz_addButton").on("click",function() {
     }
     if (selectedZone.type == "item") {
         currentBoard.spawnZones.items.push({
-            id: "item" + rnd(100),
+            id: "item" + (currentBoard.spawnZones.items+1),
             pos1: {
                 x: Math.round(currentBoard.width/4),
                 y: Math.round(currentBoard.height/4),
@@ -2343,6 +2423,7 @@ $(".me_sz_addButton").on("click",function() {
             },
             itemsThatCantSpawnHere: [],
 
+            visible: false,
             active: true,
             activateWhenBoardStatus: false,
             deactivateWhenBoardStatus: false,

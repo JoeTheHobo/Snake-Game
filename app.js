@@ -887,6 +887,7 @@ io.on('connection', (socket) => {
                         activateWhenTimePassed: false, //Seconds
                         deactivateWhenTimePassed: false, //Seconds
                     }],
+                    special: [],
                 },
             };
     
