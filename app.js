@@ -2842,7 +2842,7 @@ function specialZone_onEnter(lobby,zone) {
     console.log(1)
     if (!zone.giveStatusOnEnter) return;
     console.log(2,zone.repeatStatusType,zone.statusGave)
-    if (zone.repeatStatusType == "Single Use" && zone.statusGave > 0) return;
+    if (zone.repeatStatusType == "single use" && zone.statusGave > 0) return;
     console.log(3)
     let correctOccupied = specialZone_testOccupied(lobby,zone);
     if (!correctOccupied) specialZone_endTimer(lobby,zone);
