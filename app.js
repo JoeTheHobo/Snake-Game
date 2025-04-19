@@ -2720,9 +2720,12 @@ function removePlayerStatus(lobby,player,itemName) {
 //From App.js
 
 function specialZone_timer(lobby,zone,time) {
+    console.log(6)
     if (time <= 0 && zone.startTimeStamp) {
+        console.log(8)
         let correctOccupied = specialZone_testOccupied(lobby,zone);
         if (!correctOccupied) return;
+        console.log(10)
 
         let status = [];
         if (zone.giveStatus === "*P") {
@@ -2757,7 +2760,7 @@ function specialZone_timer(lobby,zone,time) {
                 status.push(findMostFrequent(teams));
             }
         } else status.push(zone.giveStatus);
-
+        console.log(11,status)
 
 
         if (zone.giveStatusType == "add") {
@@ -2800,7 +2803,9 @@ function specialZone_timer(lobby,zone,time) {
     }
 
     if (zone.startTimeStamp) {
+        console.log(7)
         setTimeout(function() {
+            console.log(8)
             specialZone_timer(lobby,zone,time-1);
         },1000);
     }
@@ -2810,7 +2815,9 @@ function specialZone_endTimer(lobby,zone) {
     zone.startTimeStamp = false;
 }
 function specialZone_startTimer(lobby,zone) {
+    console.log(4)
     if (zone.startTimeStamp !== false) return;
+    console.log(5)
 
     zone.startTimeStamp = true;
 
@@ -2832,8 +2839,11 @@ function specialZone_testOccupied(lobby,zone) {
     return false;
 }
 function specialZone_onEnter(lobby,zone) {
+    console.log(1)
     if (!zone.giveStatusOnEnter) return;
+    console.log(2)
     if (zone.repeatStatusType == "Single Use" && zone.statusGave > 0) return;
+    console.log(3)
     let correctOccupied = specialZone_testOccupied(lobby,zone);
     if (!correctOccupied) specialZone_endTimer(lobby,zone);
     else specialZone_startTimer(lobby,zone);
