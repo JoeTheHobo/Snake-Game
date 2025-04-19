@@ -1569,6 +1569,7 @@ function logGameModeChanges(holder,gameMode) {
 
     for (let i = 0; i < useArr.length; i++) {
         let key = useArr[i];
+        if (gameMode[key] === undefined) gameMode[key] = basedGameMode[key];
         if (basedGameMode[key] !== gameMode[key]) alterations.push({
             key: formatString(key),
             oldValue: basedGameMode[key],
