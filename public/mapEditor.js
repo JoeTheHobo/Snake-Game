@@ -2428,7 +2428,7 @@ $(".me_sz_addButton").on("click",function() {
                 y: Math.round(currentBoard.height/4) + Math.round(currentBoard.height/4),
             },
             giveStatusOnEnter: true,
-            giveStatus: "red",
+            giveStatus: "*P",
             giveStatusFrom: "Largest Team",
             giveStatusType: "set",
             giveStatusDelay: 5,

@@ -534,7 +534,6 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
             if (g.showWhen) {
                 let id = g.showWhen.valueFromId;
                 let familyID = g.showWhen.valueFromFamily || g.familyID;
-                console.log(gridName + "family" + familyID + "my" + id)
                 $(gridName + "family" + familyID + "my" + id).showCases.push({
                     element: holder,
                     equals: g.showWhen.equals,

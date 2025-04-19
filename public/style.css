@@ -4770,6 +4770,7 @@ cursor: url('./img/pointer.cur'), auto;
     display: flex;
     width: 30%;
     max-width: 30%;
+    text-align: center;
     align-items: center;
     justify-content: center;
     color: white;
