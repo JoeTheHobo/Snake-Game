@@ -1530,35 +1530,35 @@ function logAllWinningConditions(holder,gamemode) {
         }
 
         if (condition.condition == "All Dead") {
-            howToWin = "All Dead";
+            howToWin = "Everyones Dead";
         }
         if (condition.condition == "Last One Standing") {
-            howToWin = "Are The Last One Standing";
+            howToWin = "They Are The Last One Standing";
         }
         if (condition.condition == "Last Team Standing") {
-            howToWin = "Are The Last Team Standing";
+            howToWin = "They  Are The Last Team Standing";
         }
         if (condition.condition == "Survive X Minutes") {
-            howToWin = `Survive ${condition.x} Minutes`;
+            howToWin = `They  Survive ${condition.x} Minutes`;
         }
         if (condition.condition == "Kill X Snakes") {
-            howToWin = `Kill ${condition.x} Snakes`;
+            howToWin = `They  Kill ${condition.x} Snakes`;
         }
         if (condition.condition == "Reach Snake Size Of X") {
-            howToWin = `Reach A Snake Size Of ${condition.x}`;
+            howToWin = `They  Reach A Snake Size Of ${condition.x}`;
         }
         if (condition.condition == "Touch Zone X") {
-            howToWin = `Touch Zone ${condition.x}`;
+            howToWin = `They Touch Zone ${condition.x}`;
         }
         if (condition.condition == "Touch Item X") {
-            howToWin = `Touch Item  <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
+            howToWin = `They Touch Item  <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
         }
         if (condition.condition == "Touch Tile X") {
-            howToWin = `Touch Tile  <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
+            howToWin = `They Touch Tile  <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
         }
 
 
-        div.innerHTML = whoWins + " Wins When They " + howToWin;
+        div.innerHTML = whoWins + " Wins When " + howToWin;
 
         
     }
