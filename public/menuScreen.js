@@ -446,6 +446,7 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
     let familyDivs = [];
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[0].length; j++) {
+            console.log(grid[i],j)
             let g = grid[i][j];
             if (!g) {
                 let holder = columns[j].create("div.gmGroup_invisible");
@@ -925,7 +926,7 @@ function loadGamemodeTabSettings() {
         valueFromId: 1,
         equals: true,
     });
-    let q = createGamemodeSetting("Limit Respawns","number","respawnCount",{min: -1,max: 100},"Limit how many times a player is allowed to respawn. (-1 means infinite)",4,5,{
+    let q = createGamemodeSetting("Limit Respawns","number","respawnCount",{min: -1,max: 100, default: -1},"Limit how many times a player is allowed to respawn. (-1 means infinite)",4,5,{
         valueFromId: 1,
         equals: true,
     });
