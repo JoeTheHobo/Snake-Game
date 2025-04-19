@@ -1246,6 +1246,9 @@ function updateLobbyPage(lobby,type = "all",extra,extra2,extra3) {
                 let snakeName = holder.create("div");
                 snakeName.className = "lobbySnakeName";
                 snakeName.innerHTML = isYou ? "You" : reference[i].accountName + reference[i].accountTag;
+                let nameColor = local_snakeColors[reference[i].chatNameColor];
+                if (!nameColor) nameColor = "white";
+                snakeName.style.color = nameColor;
                 if (extra == reference[i].accountID) snakeName.innerHTML += " (Host)";
         
                 if (isYou) continue;
