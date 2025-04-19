@@ -2348,11 +2348,11 @@ function loadSnakeCustomizationPopup() {
         let colorDiv = colorHolder.create("div.snc_color_color");
 
         if (type == "filter") {
-            colorDiv.style.color = "green";
+            colorDiv.style.background = "green";
             colorDiv.style.filter = color;
         }
         if (type == "set") {
-            colorDiv.style.color = color;
+            colorDiv.style.background = color;
         }
 
         colorHolder.on("click",()=> {
