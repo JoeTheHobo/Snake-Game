@@ -3422,7 +3422,6 @@ function formatNumber(num) {
     return num.toString().padStart(4, '0');
 }
 function checkBoard(board,account) {
-    return true;
     try {
 
         /*

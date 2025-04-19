@@ -1234,6 +1234,7 @@ function loadGamemodeTabWinning() {
                         x: sendX,
                         whoWins: whoWins,
                         type: sendType,
+                        pullTeamStats: false,
                     }
                     loadWinningConditions();
                     selectSlot(i);
