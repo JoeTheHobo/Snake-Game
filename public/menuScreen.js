@@ -1106,7 +1106,7 @@ function loadGamemodeTabWinning() {
             }
         }
 
-        let a = createGamemodeSetting("Who Wins","list","whoWins",{options: ["Player","Players Team","Specific Team","Everyone","Highest Value"],caseSensitive: true},"When winning condition is met who wins?",1,1,false,(value) => {
+        let a = createGamemodeSetting("Who Wins","list","whoWins",{options: ["Player","Players Team","Specific Team","Everyone","Highest Value","No One"],caseSensitive: true},"When winning condition is met who wins?",1,1,false,(value) => {
             loadWinningConditions();
             if (value.toLowerCase() == "specific team") {
                 showStatusMenu(["status"],{status: function(status) {
@@ -1199,6 +1199,9 @@ function loadGamemodeTabWinning() {
             } else if (condition.whoWins === "Players Team") {
                 slot.$(".gmp_slot_foreground_team").show();
                 slot.$(".gmp_slot_foreground_team").src = "img/items/item_flag_basic_white.png";
+            } else if (condition.whoWins == "No One") {
+                slot.$(".gmp_slot_foreground_team").show();
+                slot.$(".gmp_slot_foreground_team").src = "img/menuIcons/skull.png";
             } else {
                 slot.$(".gmp_slot_foreground_team").show();
                 slot.$(".gmp_slot_foreground_team").src = "img/items/item_flag_basic_" + condition.whoWins + ".png";
@@ -1257,6 +1260,7 @@ function loadGamemodeTabWinning() {
 
         })
     }
+    addAvailableCondition("All Dead",false,false,"No One",false);
     addAvailableCondition("Last One Standing",false,false,"Player",false);
     addAvailableCondition("Last Team Standing",false, false, "Players Team",false);
     addAvailableCondition("Survive X Minutes","X",5,"Player","Survive X Minutes","number","Survive this long to win the game!");

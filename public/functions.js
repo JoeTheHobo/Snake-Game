@@ -1521,11 +1521,17 @@ function logAllWinningConditions(holder,gamemode) {
         if (whoWins == "Everyone") {
             whoWins = `<img class="gm_alt_team" src="img/menuIcons/publish.png"> Everyone`;
         }
-        console.log(whoWins)
+        if (whoWins == "No One") {
+            whoWins = `<img class="gm_alt_team" src="img/menuIcons/skull.png"> No One`;
+        }
+
         if (whoWins == "Highest Value") {
             whoWins = "Player With Highest " + condition.highestValue.format("A");
         }
 
+        if (condition.condition == "All Dead") {
+            howToWin = "All Dead";
+        }
         if (condition.condition == "Last One Standing") {
             howToWin = "Are The Last One Standing";
         }
