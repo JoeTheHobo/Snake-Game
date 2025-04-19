@@ -446,7 +446,6 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
     let familyDivs = [];
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[0].length; j++) {
-            console.log(grid[i],j)
             let g = grid[i][j];
             if (!g) {
                 let holder = columns[j].create("div.gmGroup_invisible");
@@ -935,7 +934,7 @@ function loadGamemodeTabSettings() {
         [a,e,i,m],
         [b,f,j,n],
         [c,false,false,o],
-        [false,false,false,p]
+        [false,false,false,p],
         [false,false,false,q],
     ]
 
