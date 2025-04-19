@@ -2396,7 +2396,7 @@ function showStatusMenu(showing,funcs,defaults = {}) {
         $(".popup_status_number").value = defaults.number;
     }
     if (defaults.status) {
-        if (defaults.status === "white") {
+        if (defaults.status === "white" || defaults.status == "*P") {
 
         } else {
             $(".statusOption_" + defaults.status).style.border = "2px solid blue";
