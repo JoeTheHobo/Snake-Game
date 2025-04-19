@@ -1652,36 +1652,28 @@ io.on('connection', (socket) => {
         onlineAccounts[socket.id].players.push(newPlayer(socket.id,onlineAccounts[socket.id].username),onlineAccounts[socket.id].tag);
         io.emit("playersBeenMade",onlineAccounts[socket.id].players);
     })
-    socket.on("localSendingPlayers",(players,serverSnake,updateLobby = false) => {
-        if (!players) {
-            console.log("Tried Sending: " + players)
-            return;
-        }
-        let checksOut = true;
-        for (let i = 0; i < players.length; i++) {
-            if (checkPlayer(players[i],socket.id) !== true) checksOut = checkPlayer(players[i],socket.id);
-        }
+    socket.on("localSendingPlayers",(serverSnake) => {
+        let account = onlineAccounts[socket.id];
         if (checkPlayer(serverSnake,socket.id) !== true) checksOut = checkPlayer(serverSnake,socket.id);
+
         if (checksOut === true) {
-            onlineAccounts[socket.id].players = players;
-            onlineAccounts[socket.id].serverSnake = serverSnake;
-            if (updateLobby) {
-                let account = onlineAccounts[socket.id];
+            account.serverSnake = serverSnake;
+            let lobby = lobbies[account.lobby];
+            if (lobby) {
                 let lobby = lobbies[account.lobby];
                 if (!account) return;
                 if (!lobby) return;
 
-                onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].serverSnake);
+                account.player = structuredClone(account.serverSnake);
                 lobby.activePlayers = getPlayersList(lobby.players);
 
                 io.to(lobby.id).emit("updateLobbyPage", lobby);
-                
             }
 
-            if (onlineAccounts[socket.id].loggedIn) {
-                onlineAccounts[socket.id].serverSnake.tag = Number(onlineAccounts[socket.id].tag);
+            if (account.loggedIn) {
+                account.serverSnake.tag = Number(account.tag);
                 let query = "UPDATE inventory SET server_snake = ? WHERE tag = ?";
-                db.query(query,[JSON.stringify(onlineAccounts[socket.id].serverSnake),Number(onlineAccounts[socket.id].tag)],(err) => {
+                db.query(query,[JSON.stringify(account.serverSnake),Number(account.tag)],(err) => {
                     if (err) console.log(err);
                 })
             }

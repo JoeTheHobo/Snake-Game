@@ -630,8 +630,8 @@ socket.on("playersBeenMade",(players) => {
     localAccount.players = players;
     loadCustomizeSnakeScreen(players.length-1);
 })
-function savePlayers(updateLobby = false) {
-    socket.emit("localSendingPlayers",localAccount.players,localAccount.serverSnake,updateLobby);
+function saveServerSnake() {
+    socket.emit("localSendingPlayers",localAccount.serverSnake);
     $(".sc_bb_snakeImg").css({
         filter: getPlayerFilter(localAccount.serverSnake),
     });

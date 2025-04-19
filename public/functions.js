@@ -2302,6 +2302,22 @@ function createGamemodeSetting(title,type,valueString,typeSettings,description,f
         editFunc: editFunc,
     }
 }
+$(".snc_keyBindInput").on("keydown",function(e) {
+    e.preventDefault(); // Prevent default key action like tabbing away
+    let key = e.key; // Or use e.code for physical key
+    if (e.key == " ") key = "Spacebar";
+    this.value = key;
+    this.prevValue = key;
+    this.blur(); // Optional: blur to finalize the selection
+    $(".customizeSnakePopupV2").setKeyBind(e.key,this.id.subset("_\\after","end"));
+})
+$(".snc_keyBindInput").on("click",function() {
+    this.prevValue = this.value;
+    this.value = "";
+})
+$(".snc_keyBindInput").on("blur",function() {
+    this.value = this.prevValue;
+})
 function loadSnakeCustomizationPopup() {
     let html_snakeImage = $(".snc_snakeImage");
     let html_snakeName = $(".snc_snakeName");
@@ -2311,10 +2327,10 @@ function loadSnakeCustomizationPopup() {
     let html_keyBindRight = $("keyBind_moveRight");
     let html_keyBindUp = $("keyBind_moveUp");
     let html_keyBindDown = $("keyBind_moveDown");
-    let html_keyBindUseItem = $("keyBind_useItem");
+    let html_keyBindUseItem = $("keyBind_fireItem");
     let html_keyBindDropItem = $("keyBind_dropItem");
-    let html_keyBindToggleTeams = $("keyBind_toggleTeams");
-    let html_keyBindToggleNames = $("keyBind_toggleNames");
+    let html_keyBindToggleTeams = $("keyBind_toggleTeamsKey");
+    let html_keyBindToggleNames = $("keyBind_toggleNamesKey");
 
     let player = localAccount.serverSnake;
 
@@ -2329,13 +2345,21 @@ function loadSnakeCustomizationPopup() {
     if (!nameColor) nameColor = "white"; 
     html_snakeName.style.color = nameColor;
     html_keyBindLeft.value = player.leftKey || "a";
+    if (html_keyBindLeft.value == " ") html_keyBindLeft.value = "Spacebar";
     html_keyBindRight.value = player.rightKey || "d";
+    if (html_keyBindRight.value == " ") html_keyBindRight.value = "Spacebar";
     html_keyBindUp.value = player.upKey || "w";
+    if (html_keyBindUp.value == " ") html_keyBindUp.value = "Spacebar";
     html_keyBindDown.value = player.downKey || "s";
+    if (html_keyBindDown.value == " ") html_keyBindDown.value = "Spacebar";
     html_keyBindUseItem.value = player.fireItem || "r";
+    if (html_keyBindUseItem.value == " ") html_keyBindUseItem.value = "Spacebar";
     html_keyBindDropItem.value = player.dropItem || "f";
+    if (html_keyBindDropItem.value == " ") html_keyBindDropItem.value = "Spacebar";
     html_keyBindToggleNames.value = player.toggleNamesKey || "Tab";
+    if (html_keyBindToggleNames.value == " ") html_keyBindToggleNames.value = "Spacebar";
     html_keyBindToggleTeams.value = player.toggleTeamsKey || "Shift";
+    if (html_keyBindToggleTeams.value == " ") html_keyBindToggleTeams.value = "Spacebar";
 
     function generateColor(holder) {
 
@@ -2345,7 +2369,10 @@ function loadSnakeCustomizationPopup() {
         
     }
 
-
+    $(".customizeSnakePopupV2").setKeyBind = function(key,where) {
+        player[where] = key;
+        saveServerSnake(player);
+    }
     $(".customizeSnakePopupV2").show("flex");
     return;
     
