@@ -2369,7 +2369,7 @@ function loadSnakeCustomizationPopup() {
         });
     }
     for (let i = 0; i < localAccount.allowedNameColors.length; i++) {
-        generateColor(html_snakeColorList,"set",local_nameColors(localAccount.allowedNameColors[i]),localAccount.allowedNameColors[i],player.chatNameColor,function(id) {
+        generateColor(html_snakeColorList,"set",local_nameColors[localAccount.allowedNameColors[i]],localAccount.allowedNameColors[i],player.chatNameColor,function(id) {
             localAccount.serverSnake.chatNameColor = id;
             saveServerSnake();
             loadSnakeCustomizationPopup();
