@@ -4754,6 +4754,7 @@ cursor: url('./img/pointer.cur'), auto;
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap: 5px;
     width: 90%;
     justify-content: space-evenly;
     height: 17%;

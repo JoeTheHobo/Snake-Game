@@ -1174,7 +1174,11 @@ function loadGamemodeTabWinning() {
             slot.$(".gmp_slot_foreground_text").innerHTML = htmlText;
 
             if (condition.whoWins === "Player") slot.$(".gmp_slot_foreground_team").hide();
-            else if (condition.whoWins === "Players Team") {
+            else if (condition.whoWins == "Everyone") {
+                slot.$(".gmp_slot_foreground_team").show();
+                slot.$(".gmp_slot_foreground_team").src = "img/menuIcons/publish.png";
+
+            } else if (condition.whoWins === "Players Team") {
                 slot.$(".gmp_slot_foreground_team").show();
                 slot.$(".gmp_slot_foreground_team").src = "img/items/item_flag_basic_white.png";
             } else {
