@@ -2324,7 +2324,7 @@ function loadSnakeCustomizationPopup() {
 
     //Set Menu
     html_snakeImage.style.filter = getPlayerFilter(player);
-    html_snakeName = localAccount.username;
+    html_snakeName.innerHTML = localAccount.username;
     let nameColor = local_nameColors[localAccount.chatNameColor];
     if (!nameColor) nameColor = "white"; 
     html_snakeName.style.color = nameColor;
