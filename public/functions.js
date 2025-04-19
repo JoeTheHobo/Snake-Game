@@ -2344,14 +2344,14 @@ function loadSnakeCustomizationPopup() {
 
     function generateColor(holder,type,color,index,playerColorID,func) {
         let colorHolder = holder.create("div.snc_colorHolder");
-        let color = colorHolder.create("div.snc_color");
+        let colorDiv = colorHolder.create("div.snc_color");
 
         if (type == "filter") {
-            color.style.color = "green";
-            color.style.filter = color;
+            colorDiv.style.color = "green";
+            colorDiv.style.filter = color;
         }
         if (type == "set") {
-            color.style.color = color;
+            colorDiv.style.color = color;
         }
 
         colorHolder.on("click",()=> {
