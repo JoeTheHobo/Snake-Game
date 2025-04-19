@@ -1708,25 +1708,33 @@ function selectAllPlayerBoardsPopUp(sendTo) {
 
     $(".allPlayerBoardsPopup").show("flex");
 }
-function setNestedValue(obj, path, value, toReturn = false) {
+function setNestedValue(obj, path, value, toReturn = false, forceSet = false) {
     let usePath = structuredClone(path);
-    let lastKey = usePath.pop(); // Remove and store the last key
-    if (value === "_LAST_") {
-        value = lastKey; // If value is "_LAST_", use the last key as the value
-        lastKey = usePath.pop(); // Get the new last key
-    }
-    
-    let target = usePath.reduce((acc, key) => {
-        if (acc && acc.hasOwnProperty(key)) return acc[key];
-        return undefined; // Exit early if the path doesn't exist
-    }, obj);
+    let lastKey = usePath.pop();
 
-    if (target === undefined || !target.hasOwnProperty(lastKey)) return; // Do nothing if path is invalid
+    if (value === "_LAST_") {
+        value = lastKey;
+        lastKey = usePath.pop();
+    }
+
+    let target = obj;
+    for (let key of usePath) {
+        if (!Object.prototype.hasOwnProperty.call(target, key)) {
+            if (forceSet) {
+                target[key] = {};
+            } else {
+                return undefined; // Exit early if path doesn't exist
+            }
+        }
+        target = target[key];
+    }
 
     if (toReturn) {
-        return target[lastKey]; // Return the value instead of setting it
+        return target?.[lastKey];
     } else {
-        target[lastKey] = value; // Set the value if not in return mode
+        if (forceSet || Object.prototype.hasOwnProperty.call(target, lastKey)) {
+            target[lastKey] = value;
+        }
     }
 }
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();

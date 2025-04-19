@@ -668,7 +668,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             }
             valueInput.value = value;
 
-            setNestedValue(pullFrom,settings.valueString.split("."),Number(value));
+            setNestedValue(pullFrom,settings.valueString.split("."),Number(value),false,true);
             holder.gmValue = Number(value);
             holder.activateList();
             if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
