@@ -2318,7 +2318,7 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
     let currentGameMode = lobby.gameMode;
     let activePlayers = lobby.inGamePlayers;
     let playerCanRespawn = false;
-    if (lobby.currentGameMode.respawn) {
+    if (currentGameMode.respawn) {
         playerCanRespawn = true;
         if (player.respawnCount !== -1) {
             if (player.respawnCount < 1)
