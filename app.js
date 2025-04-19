@@ -2821,7 +2821,7 @@ function specialZone_startTimer(lobby,zone) {
 
     zone.startTimeStamp = true;
 
-    specialZone_timer(lobby,zone,this.giveStatusDelay);
+    specialZone_timer(lobby,zone,zone.giveStatusDelay);
 }
 function specialZone_testOccupied(lobby,zone) {
     let type = zone.giveStatusWhenOccupiedBy;
