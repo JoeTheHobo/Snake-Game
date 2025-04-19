@@ -588,7 +588,6 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
     if (settings.type == "input") {
         valueInput = holder.create("input.gmGroup_input");
         let nestedValue = getNestedValue(pullFrom,settings.valueString)
-        console.log(nestedValue)
         if (nestedValue === undefined && typeSettings.default) {
             nestedValue = typeSettings.default;
         }
@@ -649,8 +648,12 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
     }
     if (settings.type == "number") {
         valueInput = holder.create("input.gmGroup_number");
-        valueInput.value = getNestedValue(pullFrom,settings.valueString);
-        holder.gmValue = getNestedValue(pullFrom,settings.valueString);
+        let nestedValue = getNestedValue(pullFrom,settings.valueString)
+        if (nestedValue === undefined && typeSettings.default) {
+            nestedValue = typeSettings.default;
+        }
+        valueInput.value = nestedValue;
+        holder.gmValue = nestedValue;
         valueInput.type = "number";
 
         valueInput.on("change",function() {
