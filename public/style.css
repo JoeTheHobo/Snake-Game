@@ -4756,6 +4756,7 @@ cursor: url('./img/pointer.cur'), auto;
     align-items: center;
     gap: 5px;
     width: 90%;
+    flex-wrap: wrap;
     justify-content: space-evenly;
   }
   .gmGroup_list_option {

@@ -1515,11 +1515,14 @@ function logAllWinningConditions(holder,gamemode) {
         let whoWins = condition.whoWins;
         let howToWin;
 
-        if (whoWins !== "Players Team" && whoWins !== "Player") {
+        if (whoWins !== "Players Team" && whoWins !== "Player" && whoWins !== "Everyone" && whoWins !== "Highest Value") {
             whoWins =  `<img class="gm_alt_team" src="img/items/item_flag_basic_${whoWins}.png"> ${whoWins.format("A")} Team`;
         }
-        if (whoWins !== "Everyone") {
-            whoWins =  `<img class="gm_alt_team" src="img/menuIcons/publish.png"> Everyone`;
+        if (whoWins == "Everyone") {
+            whoWins = `<img class="gm_alt_team" src="img/menuIcons/publish.png"> Everyone`;
+        }
+        if (whoWins == "Highest Value") {
+            whoWins = "Player With Highest " + condition.highestValue.format("A");
         }
 
         if (condition.condition == "Last One Standing") {
