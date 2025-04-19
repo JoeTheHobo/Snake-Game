@@ -52,7 +52,6 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,serv
     localAccount.status = account.status;
     localAccount.dateCreated = account.dateCreated;
     localAccount.boards = [];
-    localAccount.chatNameColor = account.chatNameColor;
     accessedBattlePasses = server_accessedBattlePasses;
 
     global_musicVolume = account.musicVolume;

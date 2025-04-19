@@ -2323,7 +2323,7 @@ function loadSnakeCustomizationPopup() {
     //Set Menu
     html_snakeImage.style.filter = getColorFilter(player.colorID);
     html_snakeName.innerHTML = localAccount.username;
-    let nameColor = local_nameColors[localAccount.chatNameColor];
+    let nameColor = local_nameColors[player.chatNameColor];
     if (!nameColor) nameColor = "white";
     html_snakeName.style.color = nameColor;
     html_keyBindLeft.value = player.leftKey || "a";
@@ -2362,9 +2362,15 @@ function loadSnakeCustomizationPopup() {
     }
 
     for (let i = 0; i < localAccount.allowedSnakeColors.length; i++) {
-        generateColor(html_snakeColorList,"filter",getColorFilter(localAccount.allowedSnakeColors[i]),i,player.colorID,function(id) {
+        generateColor(html_snakeColorList,"filter",getColorFilter(localAccount.allowedSnakeColors[i]),localAccount.allowedSnakeColors[i],player.colorID,function(id) {
             localAccount.serverSnake.colorID = id;
-            html_snakeImage.style.filter = getColorFilter(id);
+            saveServerSnake();
+            loadSnakeCustomizationPopup();
+        });
+    }
+    for (let i = 0; i < localAccount.allowedNameColors.length; i++) {
+        generateColor(html_snakeColorList,"set",local_nameColors(localAccount.allowedNameColors[i]),localAccount.allowedNameColors[i],player.chatNameColor,function(id) {
+            localAccount.serverSnake.chatNameColor = id;
             saveServerSnake();
             loadSnakeCustomizationPopup();
         });

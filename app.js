@@ -1045,19 +1045,20 @@ io.on('connection', (socket) => {
         if (message == "") return;
         message = profanity.clean(message,true,["swear_soft"]);
 
-        let account;
+        let username;
+        let color;
         for (let i = 0; i < lobby.players.length; i++) {
             if (lobby.players[i] == socket.id) {
-                account = onlineAccounts[lobby.players[i]].username;
+                username = onlineAccounts[lobby.players[i]].username;
+                color = server_nameColors[lobby.players[i].chatNameColor];
             }
         }
 
-        let color = server_nameColors[onlineAccounts[socket.id].chatNameColor];
         if (!color) color = "#a3a3a3";
 
         lobby.chats.push({
             message: message,
-            account: account,
+            account: username,
             color: color,
         })
 
@@ -1650,8 +1651,9 @@ io.on('connection', (socket) => {
     //Menu
     socket.on("saveServerSnake",(serverSnake) => {
         let account = onlineAccounts[socket.id];
-        if (checkPlayer(serverSnake,socket.id) !== true) {
-            io.to(socket.id).emit("popup","Couldn't Save Snake");
+        let playerCheck = checkPlayer(serverSnake,socket.id,account.allowedNameColors,account.allowedSnakeColors,account) 
+        if (playerCheck !== true) {
+            io.to(socket.id).emit("popup","Couldn't Save Snake: " + playerCheck);
             return;
         }
         account.serverSnake = serverSnake;
@@ -2953,7 +2955,6 @@ function setGuestAccount(socketID,full = false,sendHome = false) {
         lobby: false,
         username: username,
         tag: tag,
-        chatNameColor: 0,
         status: "Guest",
         dateCreated: formattedDate,
         coins: 0,
@@ -3049,7 +3050,6 @@ function setSocketToUser(account,user,dbObj) {
     account.battlePassPoints = dbObj.inventory.battle_pass_points;
     account.serverSnake = JSON.parse(dbObj.inventory.server_snake);
     account.serverSnake.accountID = account.id;
-    account.chatNameColor = dbObj.inventory.name_color;
     account.challengeLimit = dbObj.inventory.challenge_limit;
     account.musicVolume = dbObj.inventory.music_volume;
     account.sfxVolume = dbObj.inventory.sfx_volume;
@@ -3917,11 +3917,10 @@ function newPlayer(socketID,accountName,accountTag) {
         fireItem: "r",
         dropItem: "f",
         toggleTeamsKey: "Shift",
+        toggleNamesKey: "Tab",
+        chatNameColor: 0,
         type: "player",
         name: simple.rnd(playerNames1) + simple.rnd(playerNames2),
-        hue: simple.rnd(360), //Hue[{hue: 360, saturation: 300, brightness: 116},
-        saturation: simple.rnd(300), //Saturation
-        brightness: simple.rnd(20,200), //Brightness
         moving: false,
         growTail: 0,
         isDead: false,
@@ -3956,18 +3955,11 @@ function newPlayer(socketID,accountName,accountTag) {
         snakeSkin: "classic",
     }
 }
-function checkPlayer(player,socketID) {
-    if (player.name == "") return "name-1";
-    if (player.name.length > 20) return "name-2";
-    
-    if (Number(player.hue) < 0) return "color-1";
-    if (Number(player.hue) > 360) return "color-2";
-    if (Number(player.saturation) < 0) return "saturation-1";
-    if (Number(player.saturation) > 300) return "saturation-2";
-    if (Number(player.brightness) < 20) return "brightness-1";
-    if (Number(player.brightness) > 200) return "brightness-2";
-
+function checkPlayer(player,socketID,allowedNameColors,allowedSnakeColors,account) {
+    if (account.status == "Admin") return true;
     if (player.accountID !== socketID) return "socketId-1" + player.accountID + "," + socketID;
+    if (!allowedNameColors.includes(player.chatNameColor)) return "Bad Name Color";
+    if (!allowedSnakeColors.includes(player.colorID)) return "Bad Snake Color";
 
     return true;
 }

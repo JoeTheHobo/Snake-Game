@@ -5122,7 +5122,7 @@ cursor: url('./img/pointer.cur'), auto;
     height: 31px;
     border: 3px solid black;
     border-radius: 50px;
-    margin: 5px;
+    margin: 2px;
     cursor: url(./img/pointer.cur), auto;
     transition: opacity .2s ease-in-out;
     opacity: 1;
