@@ -679,6 +679,9 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
     if (settings.type == "toggle") {
         valueInput = holder.create("div.gmGroup_toggle");
         let isTrue = getNestedValue(pullFrom,settings.valueString);
+        if (isTrue === undefined && typeSettings.default !== undefined) {
+            isTrue = typeSettings.default;
+        }
         if (typeSettings.setTrueIfValueIsNumber) {
             if (_type(isTrue).type == "number") isTrue = true;
             else isTrue = false;
@@ -726,7 +729,7 @@ function generateGamemodeSetting(holder,settings,pullFrom) {
             }
 
             holder.gmValue = value;
-            setNestedValue(pullFrom,source,value);
+            setNestedValue(pullFrom,source,value,false,true);
 
             holder.activateList();
             if (settings.setItemAlteration) setItemAlteration(gamemode,pullFrom);
@@ -1113,14 +1116,16 @@ function loadGamemodeTabWinning() {
         let b = createGamemodeSetting(pullFromCondition.settingsTitle,pullFromCondition.settingsType,"x",{},pullFromCondition.settingsDescription,false,false,false,() => {
             loadWinningConditions();
         })
+        let c = createGamemodeSetting("Pull Team Stats","toggle","pullTeamStatus",{default: false},"Pull players team stats when testing condition. (EX: Kill 4 Snakes, will grab all snakes killed from players team")
 
         if (pullFromCondition.settingsTitle === false) b = false;
 
         let grid = [
             [a,b],
+            [c,false]
         ]
 
-        createGamemodeGrid(html_settings,2,1,grid,condition,"winning")
+        createGamemodeGrid(html_settings,2,2,grid,condition,"winning")
     }
     function loadWinningConditions() {
         for (let i = 0; i < 5; i++) {
