@@ -1529,32 +1529,34 @@ function logAllWinningConditions(holder,gamemode) {
             whoWins = "Player With Highest " + condition.highestValue.format("A");
         }
 
+        let teamPrefix = condition.pullTeamStats ? "Their Team" : "They";
+
         if (condition.condition == "All Dead") {
             howToWin = "Everyones Dead";
         }
         if (condition.condition == "Last One Standing") {
-            howToWin = "They Are The Last One Standing";
+            howToWin = teamPrefix + " Are The Last One Standing";
         }
         if (condition.condition == "Last Team Standing") {
-            howToWin = "They  Are The Last Team Standing";
+            howToWin = teamPrefix + " Are The Last Team Standing";
         }
         if (condition.condition == "Survive X Minutes") {
-            howToWin = `They  Survive ${condition.x} Minutes`;
+            howToWin = teamPrefix + ` Survive ${condition.x} Minutes`;
         }
         if (condition.condition == "Kill X Snakes") {
-            howToWin = `They  Kill ${condition.x} Snakes`;
+            howToWin = teamPrefix + ` Kill ${condition.x} Snakes`;
         }
         if (condition.condition == "Reach Snake Size Of X") {
-            howToWin = `They  Reach A Snake Size Of ${condition.x}`;
+            howToWin = teamPrefix + ` Reach A Snake Size Of ${condition.x}`;
         }
         if (condition.condition == "Touch Zone X") {
-            howToWin = `They Touch Zone ${condition.x}`;
+            howToWin = teamPrefix + ` Touch Zone ${condition.x}`;
         }
         if (condition.condition == "Touch Item X") {
-            howToWin = `They Touch Item  <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
+            howToWin = teamPrefix + ` Touch Item  <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
         }
         if (condition.condition == "Touch Tile X") {
-            howToWin = `They Touch Tile  <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
+            howToWin = teamPrefix + ` Touch Tile  <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
         }
 
 
