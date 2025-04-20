@@ -275,6 +275,11 @@ function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
             // Check if the click is inside the image bounds
             if (mouseX >= point.x && mouseX <= point.x + (squareSize) && mouseY >= point.y && mouseY <= point.y + (squareSize)) {
                 selectedNodeId = point.id;
+
+                if (startConnection !== false) {
+                    setNodeConnection(selectedNodeId,startConnection);
+                    startConnection = false;
+                }
     
                 // Redraw images (or adjust their appearance based on selection)
                 renderRadialPass2(canvas,selectedPass,[]);
@@ -388,47 +393,34 @@ function pass_drawSet(canvas, i, set) {
     const squareSize = thickness*0.75;
     const total = set.length;
 
-    if (i === 0) {
-        const totalHeight = total * squareSize + (total - 1) * 5;
-        const startY = centerY - totalHeight / 2;
-
-        for (let j = 0; j < total; j++) {
-            const x = centerX - squareSize / 2;
-            const y = startY + j * (squareSize + 5);
-            const element = set[j];
-
-            element.index = nodeIndex;
-
-            if (element?.type !== false) {
-                drawNodeImage(ctx,nodeImages[element.type],x,y,squareSize,nodeIndex,element);
-            } else {
-                ctx.fillStyle = 'gray';
-                ctx.fillRect(x, y, squareSize, squareSize);
-            }
-            nodeIndex++;
-        }
-    } else {
-        const radius = (thickness / 2) + (i * thickness);
-
-        for (let j = 0; j < total; j++) {
+    for (let j = 0; j < total; j++) {
+        let x, y;
+    
+        if (i === 0) {
+            const totalHeight = total * squareSize + (total - 1) * 5;
+            const startY = centerY - totalHeight / 2;
+            x = centerX - squareSize / 2;
+            y = startY + j * (squareSize + 5);
+        } else {
+            const radius = (thickness / 2) + (i * thickness);
             const angle = (-Math.PI / 2) + (j * (2 * Math.PI / total));
-            const x = centerX + Math.cos(angle) * radius;
-            const y = centerY + Math.sin(angle) * radius;
-            const element = set[j];
-
-            element.index = nodeIndex;
-
-            if (element?.type !== false) {
-                canvas.points.push({ x: x - squareSize / 2, y: y - squareSize / 2, id: nodeIndex });
-
-                drawNodeImage(ctx,nodeImages[element.type],x - squareSize / 2,y - squareSize / 2,squareSize,nodeIndex,element);
-
-            } else {
-                ctx.fillStyle = 'gray';
-                ctx.fillRect(x - squareSize / 2, y - squareSize / 2, squareSize, squareSize);
-            }
-            nodeIndex++;
+            x = centerX + Math.cos(angle) * radius - squareSize / 2;
+            y = centerY + Math.sin(angle) * radius - squareSize / 2;
+    
+            canvas.points.push({ x, y, id: nodeIndex });
         }
+    
+        const element = set[j];
+        element.index = nodeIndex;
+    
+        if (element?.type !== false) {
+            drawNodeImage(ctx, nodeImages[element.type], x, y, squareSize, nodeIndex, element);
+        } else {
+            ctx.fillStyle = 'gray';
+            ctx.fillRect(x, y, squareSize, squareSize);
+        }
+    
+        nodeIndex++;
     }
 }
 function drawNodeImage(ctx,image,x,y,nodeSize,nodeIndex,element) {
@@ -482,6 +474,18 @@ function pass_drawRing(canvas, i) {
     ctx.lineWidth = thickness;
     ctx.stroke();
 }
+function setNodeConnection(mainNodeID,connectFromNodeID) {
+    for (let i = 0; i < selectedPass.set.length; i++) {
+        for (let j = 0; j < selectedPass.set[i].length; j++) {
+            let node = selectedPass.set[i][j];
+            if (node.index == mainNodeID) {
+                node.connectFrom.push(connectFromNodeID);
+                renderRadialPass2(selectedPass.canvas,selectedPass);
+            }
+        }
+    }
+
+}
 function setIdOfNode(nodeID,givenID) {
     for (let i = 0; i < selectedPass.set.length; i++) {
         for (let j = 0; j < selectedPass.set[i].length; j++) {
@@ -497,11 +501,14 @@ let selectedRing = false;
 let startWritingNumbers = false;
 let writingNumber;
 let writeType = false;
+let startConnection = false;
 
 document.body.on("keydown",function(e) {
     if (global_scene !== "adminTools") return;
     if ($("at_battlepassTab").style.background !== 'rgb(137, 69, 192)') return;
     if (!selectedPass) return;
+
+    if (e.key !== "F5") e.preventDefault();
 
     
     let controlDown = e.ctrlKey;
@@ -546,6 +553,9 @@ document.body.on("keydown",function(e) {
     if (e.key == "R") {
         selectedPass.set.push([]);
         renderRadialPass2(selectedPass.canvas,selectedPass);
+    }
+    if (e.key == " " && selectedNodeId !== false) {
+        startConnection = selectedNodeId;
     }
     if (e.key == "Enter" && selectedNodeId !== false && startWritingNumbers) {
         console.log("ID SUBMITTED")
@@ -643,6 +653,7 @@ document.body.on("keydown",function(e) {
         selectedPass.set[selectedRing].push({
             type: "item",
             id: false,
+            connectFrom: [],
         })
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
@@ -652,6 +663,7 @@ document.body.on("keydown",function(e) {
         selectedPass.set[selectedRing].push({
             type: "tile",
             id: false,
+            connectFrom: [],
 
         })
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
@@ -662,6 +674,7 @@ document.body.on("keydown",function(e) {
         selectedPass.set[selectedRing].push({
             type: "super_tile",
             id: false,
+            connectFrom: [],
 
         })
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
@@ -672,6 +685,7 @@ document.body.on("keydown",function(e) {
         selectedPass.set[selectedRing].push({
             type: "reward",
             id: false,
+            connectFrom: [],
 
         })
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
@@ -682,6 +696,7 @@ document.body.on("keydown",function(e) {
         selectedPass.set[selectedRing].push({
             type: "skin",
             id: false,
+            connectFrom: [],
         })
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
@@ -691,6 +706,7 @@ document.body.on("keydown",function(e) {
         selectedPass.set[selectedRing].push({
             type: "chest",
             id: false,
+            connectFrom: [],
         })
         renderRadialPass2(selectedPass.canvas,selectedPass,[]);
     }
