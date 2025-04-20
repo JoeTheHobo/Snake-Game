@@ -3204,7 +3204,6 @@ function triggerWinningCondition(lobby,condition,player) {
 
         }
     } else if (condition.whoWins !== false) {
-        console.log(condition)
         winningTitle = (condition.whoWins.charAt(0).toUpperCase() + condition.whoWins.slice(1)) + " Team Won";
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
             if (lobby.inGamePlayers[i].team === condition.whoWins) {
@@ -3246,12 +3245,14 @@ function checkWinningCondition(lobby,condition,value,player) {
             }
         }
         if (condition == "All Dead") {
+            console.log("NO HERE DUMMY")
             triggerWinningCondition(lobby,winningConditions[i],player);
             return;
         }
     }
 
     if (condition == "All Dead") {
+        console.log("SENT HERE")
         triggerWinningCondition(lobby,{
             condition: "All Dead",
             x: false,
