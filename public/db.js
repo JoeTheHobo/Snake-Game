@@ -382,8 +382,11 @@ function renderRadialPass2(canvas,pass,unlocked = []) {
         pass_drawSet(canvas,i,pass.set[i]);
     }
 
-    console.log("EYO");
-    socket.emit("adminTools_saveBattlePass",passIndex,JSON.stringify(selectedPass));
+    socket.emit("adminTools_saveBattlePass",passIndex,{
+        background: selectedPass.background,
+        set: selectedPass.set,
+        name: selectedPass.name,
+    });
 }
 let selectedNodeId = false;
 let nodeImages = {}
