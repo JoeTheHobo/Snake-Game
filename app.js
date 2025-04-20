@@ -1885,10 +1885,12 @@ io.on('connection', (socket) => {
     socket.on("adminTools_getBattlePass",() => {
         let account = onlineAccounts[socket.id];
         if (account.status !== "Admin") return;
-        
+
         let passQuery = "SELECT * FROM battle_pass_templates";
         db.query(passQuery, [], (err, results) => {
             if (err) throw err;
+
+            console.log(results);
 
             io.to(socket.id).emit("adminTools_giveBattlesPasses", results);
         });
