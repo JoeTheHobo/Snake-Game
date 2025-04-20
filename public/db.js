@@ -434,7 +434,7 @@ function pass_drawSet(canvas, i, set) {
 
                 ctx.save();
                 ctx.translate(fromX, fromY);
-                ctx.rotate(angle + Math.PI / 2);
+                ctx.rotate(angle);
 
                 const arrowWidth = 20;
                 const arrowHeight = 10;
