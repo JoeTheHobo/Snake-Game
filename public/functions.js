@@ -62,7 +62,7 @@ function getColorFromTeam(color) {
 let gridSize;
 function setResolution(gridx, gridy) {
     let height = $(".game_cc_game").getBoundingClientRect().height-10;
-    gridSize = Math.floor(height/gridY);
+    gridSize = Math.floor(height/gridy);
 
     //setGridSize(cameraFollowPlayer === false ? .17 : .32);
     adjustCanvasSize(gridx,gridy,1);
