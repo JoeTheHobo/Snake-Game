@@ -189,6 +189,9 @@ socket.on("adminTools_giveTableData",(table) => {
 
 let battlePasses = [];
 let selectedPass = false;
+const arrowUnlockedImage = new Image();
+arrowUnlockedImage.src = "img/techTree/arrow_locked.png";
+
 $(".addPassButton").on("click",function() {
     battlePasses.push({
         set: [],
@@ -407,12 +410,44 @@ function pass_drawSet(canvas, i, set) {
             x = centerX + Math.cos(angle) * radius - squareSize / 2;
             y = centerY + Math.sin(angle) * radius - squareSize / 2;
     
-            canvas.points.push({ x, y, id: nodeIndex });
         }
+        canvas.points.push({ x, y, id: nodeIndex });
     
         const element = set[j];
+        element.x = x;
+        element.y = y;
         element.index = nodeIndex;
+
+        // 🔽 DRAW CONNECTIONS
+        if (Array.isArray(element.connectFrom)) {
+            element.connectFrom.forEach(fromId => {
+                const fromPos = getPositionOfIndex(fromId);
+                if (!fromPos) return;
+
+                const toX = x + squareSize / 2;
+                const toY = y + squareSize / 2;
+                const fromX = fromPos.x + squareSize / 2;
+                const fromY = fromPos.y + squareSize / 2;
+
+                const angle = Math.atan2(toY - fromY, toX - fromX);
+                const dist = Math.hypot(toX - fromX, toY - fromY);
+
+                ctx.save();
+                ctx.translate(fromX, fromY);
+                ctx.rotate(angle);
+
+                const arrowWidth = 20;
+                const arrowHeight = 10;
+
+                for (let offset = 0; offset < dist - 10; offset += arrowWidth + 5) {
+                    ctx.drawImage(arrowUnlockedImage, offset, -arrowHeight / 2, arrowWidth, arrowHeight);
+                }
+
+                ctx.restore();
+            });
+        }
     
+        // 🔽 DRAW NODE
         if (element?.type !== false) {
             drawNodeImage(ctx, nodeImages[element.type], x, y, squareSize, nodeIndex, element);
         } else {
@@ -473,6 +508,20 @@ function pass_drawRing(canvas, i) {
     ctx.strokeStyle = ringColor;
     ctx.lineWidth = thickness;
     ctx.stroke();
+}
+function getPositionOfIndex(index) {
+    for (let i = 0; i < selectedPass.set.length; i++) {
+        for (let j = 0; j < selectedPass.set[i].length; j++) {
+            let node = selectedPass.set[i][j];
+            if (node.index == index) {
+                return {
+                    x: node.x,
+                    y: node.y,
+                }
+            }
+        }
+    }
+    
 }
 function setNodeConnection(mainNodeID,connectFromNodeID) {
     for (let i = 0; i < selectedPass.set.length; i++) {
