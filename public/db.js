@@ -136,6 +136,22 @@ function at_loadDatabaseTable(rows) {
 
 
 
+socket.on("adminTools_giveDatabaseData",(data) => {
+    console.log("WHY WONT THIS WORK?")
+    at_loadDataBaseTab(data);
+})
+socket.on("adminTools_giveTableData",(table) => {
+    at_loadDatabaseTable(table);
+})
+socket.on("adminTools_giveBattlesPasses",(data) => {
+    console.log(data)
+    battlePasses = [];
+    for (let i = 0; i < data.length; i++) {
+        battlePasses.push(JSON.parse(data.pass))
+    }
+    loadPasses(battlePasses.length - 1);
+});
+
 
 
 
@@ -791,19 +807,3 @@ function drawStars(canvas) {
 }
 
 
-
-
-socket.on("adminTools_giveDatabaseData",(data) => {
-    at_loadDataBaseTab(data);
-})
-socket.on("adminTools_giveTableData",(table) => {
-    at_loadDatabaseTable(table);
-})
-socket.on("adminTools_giveBattlesPasses",(data) => {
-    console.log(data)
-    battlePasses = [];
-    for (let i = 0; i < data.length; i++) {
-        battlePasses.push(JSON.parse(data.pass))
-    }
-    loadPasses(battlePasses.length - 1);
-});
