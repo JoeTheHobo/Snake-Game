@@ -109,7 +109,6 @@ io.on('connection', (socket) => {
     socket.join(socket.id);
     socket.join("menuScreen");
     setGuestAccount(socket.id,true);
-    io.to(socket.id).emit("consolelog",1);
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
@@ -3430,7 +3429,6 @@ function setSocketToUser(account,user,dbObj) {
     }
     updateLobbies();
 
-    io.to(account.id).emit("consolelog",2);
     io.to(account.id).emit('setPlayer', account.id, account,accessedBattlePasses);
     io.to(account.id).emit("setScene","newMenu");
     sendBoardStats(account.id,"Set Player");
