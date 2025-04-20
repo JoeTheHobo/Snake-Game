@@ -1895,7 +1895,10 @@ io.on('connection', (socket) => {
     socket.on("adminTools_saveBattlePass",(id,passString) => { 
         let query = "UPDATE battle_pass_templates SET pass = ? WHERE id = ?";
         db.query(query,[passString,id],(err) => {
-            if (err) throw err;
+            if (err) {
+                io.to(socket.id).emit("popup","Failed To Save Battle Pass");
+                return;
+            }
         })
     })
 });
