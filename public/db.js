@@ -137,7 +137,6 @@ function at_loadDatabaseTable(rows) {
 
 
 socket.on("adminTools_giveDatabaseData",(data) => {
-    console.log("WHY WONT THIS WORK?")
     at_loadDataBaseTab(data);
 })
 socket.on("adminTools_giveTableData",(table) => {
@@ -225,6 +224,7 @@ function loadPasses(index) {
     }
 }
 function savePass() {
+    console.log("local Sending Save")
     socket.emit("adminTools_saveBattlePass",passIndex,JSON.stringify(selectedPass));
 }
 function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
@@ -387,7 +387,6 @@ function renderRadialPass2(canvas,pass,unlocked = []) {
     }
 
     savePass();
-
 }
 let selectedNodeId = false;
 let nodeImages = {}
