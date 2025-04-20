@@ -540,6 +540,7 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
                     familyID: familyID,
                     g: g,
                     holder: holder,
+                    gridName: gridName,
                 })
             }
 
@@ -556,6 +557,7 @@ function handleVisiblities(visibilityConflict) {
     let g = visibilityConflict.g;
     let familyID = visibilityConflict.familyID;
     let id = visibilityConflict.id;
+    let gridName = visibilityConflict.gridName;
     console.log(holder,g,familyID,id)
     $(gridName + "family" + familyID + "my" + id).showCases.push({
         element: holder,
