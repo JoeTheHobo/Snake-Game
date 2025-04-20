@@ -442,6 +442,7 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
         })
         columns.push(column);
     }
+    let visibilityConflicts = [];
 
     let familyDivs = [];
     for (let i = 0; i < grid.length; i++) {
@@ -534,53 +535,69 @@ function createGamemodeGrid(holder,width,height,grid,pullFrom,gridName = "") {
             if (g.showWhen) {
                 let id = g.showWhen.valueFromId;
                 let familyID = g.showWhen.valueFromFamily || g.familyID;
-                $(gridName + "family" + familyID + "my" + id).showCases.push({
-                    element: holder,
-                    equals: g.showWhen.equals,
-                    isNumber: g.showWhen.isNumber,
-                    isObject: g.showWhen.isObject,
-                    onActiveSetValue: g.showWhen.onActiveSetValue,
+                visibilityConflicts.push({
+                    id: id,
+                    familyID: familyID,
+                    g: g,
+                    holder: holder,
                 })
-
-                let value = $(gridName + "family" + familyID + "my" + id).gmValue;
-                if ( g.showWhen.equals) {
-
-                    if (g.showWhen.equals == value) {
-                        holder.css({
-                            visibility: "visible",
-                        });
-                    } else {
-                        holder.css({
-                            visibility: "hidden",
-                        });
-                    }
-                }
-                if (g.showWhen.isNumber) {
-                    if (_type(value).type == "number") {
-                        holder.css({
-                            visibility: "visible",
-                        });
-                    } else {
-                        holder.css({
-                            visibility: "hidden",
-                        });
-                    }
-                }
-                if (g.showWhen.isObject) {
-                    if (_type(value).type == "object") {
-                        holder.css({
-                            visibility: "visible",
-                        });
-                    } else {
-                        holder.css({
-                            visibility: "hidden",
-                        });
-                    }
-                }
             }
 
             generateGamemodeSetting(holder,g,pullFrom);
 
+        }
+    }
+    for (let i = 0; i < visibilityConflicts.length; i++) {
+        handleVisiblities(visibilityConflicts[i]);
+    }
+}
+function handleVisiblities(visibilityConflict) {
+    let holder = visibilityConflict.holder;
+    let g = visibilityConflict.g;
+    let familyID = visibilityConflict.familyID;
+    let id = visibilityConflict.id;
+    
+    $(gridName + "family" + familyID + "my" + id).showCases.push({
+        element: holder,
+        equals: g.showWhen.equals,
+        isNumber: g.showWhen.isNumber,
+        isObject: g.showWhen.isObject,
+        onActiveSetValue: g.showWhen.onActiveSetValue,
+    })
+
+    let value = $(gridName + "family" + familyID + "my" + id).gmValue;
+    if ( g.showWhen.equals) {
+
+        if (g.showWhen.equals == value) {
+            holder.css({
+                visibility: "visible",
+            });
+        } else {
+            holder.css({
+                visibility: "hidden",
+            });
+        }
+    }
+    if (g.showWhen.isNumber) {
+        if (_type(value).type == "number") {
+            holder.css({
+                visibility: "visible",
+            });
+        } else {
+            holder.css({
+                visibility: "hidden",
+            });
+        }
+    }
+    if (g.showWhen.isObject) {
+        if (_type(value).type == "object") {
+            holder.css({
+                visibility: "visible",
+            });
+        } else {
+            holder.css({
+                visibility: "hidden",
+            });
         }
     }
 }
