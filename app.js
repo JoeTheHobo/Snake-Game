@@ -1505,11 +1505,26 @@ io.on('connection', (socket) => {
             lobby.specialZones[i].startTimeStamp = false;
             lobby.specialZones[i].statusGave = 0;
             lobby.specialZones[i].statusGiven = [];
+            let zone = lobby.specialZones[i];
+            let sendArr = [zone.pos1,zone.pos2,zone.giveStatus];
+            if (zone.visible_name) sendArr.push(zone.id);
+            lobby.updateZones.push(sendArr)
         }
 
         for (let i = 0; i < lobby.spawnZones.players.length; i++) {
             if (lobby.spawnZones.players[i].visible) {
-                lobby.updateZones.push({})
+                let zone = lobby.spawnZones.players[i];
+                let sendArr = [zone.pos1,zone.pos2,zone.team];
+                if (zone.visible_name) sendArr.push(zone.id);
+                lobby.updateZones.push(sendArr)
+            }
+        }
+        for (let i = 0; i < lobby.spawnZones.items.length; i++) {
+            if (lobby.spawnZones.items[i].visible) {
+                let zone = lobby.spawnZones.items[i];
+                let sendArr = [zone.pos1,zone.pos2,"white"];
+                if (zone.visible_name) sendArr.push(zone.id);
+                lobby.updateZones.push(sendArr)
             }
         }
 
