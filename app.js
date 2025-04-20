@@ -3266,26 +3266,35 @@ function sendBoardStats(socketID,sentFrom = null) {
         });
     })
 }
-function decompressBoardsFromDB(dbBoards,func, index = 0,sendBackBoards = []) {
-    if (index === dbBoards.length) {
-        func(sendBackBoards);
-        return;
+function decompressBoardsFromDB(dbBoards, func, sendBackBoards = []) {
+    let promises = [];
+
+    // Collect all promises for decompressing the boards
+    for (let i = 0; i < dbBoards.length; i++) {
+        let promise = new Promise((resolve, reject) => {
+            decompressObject(dbBoards[i].board, (err, result) => {
+                if (err) {
+                    console.log(8321, err);
+                    reject(err);
+                } else {
+                    let obj = dbBoards[i];
+                    obj.board = result;
+                    sendBackBoards.push(obj);
+                    resolve();
+                }
+            });
+        });
+        promises.push(promise);
     }
 
-    decompressObject(dbBoards[index].board,(err,result) => {
-        if (err) {
-            console.log(8321,err);
-            return;
-        }
-
-        let obj = dbBoards[index];
-        obj.board = result;
-
-        sendBackBoards.push(obj);
-
-        decompressBoardsFromDB(dbBoards,func,index+1,sendBackBoards);
-
-    })
+    // Wait for all promises to resolve and then return the result
+    Promise.all(promises)
+        .then(() => {
+            func(sendBackBoards);
+        })
+        .catch((err) => {
+            console.error("Error decompressing boards:", err);
+        });
 }
 function setGuestAccount(socketID,full = false,sendHome = false) {
     let username = "GuestSnake";//simple.rnd(playerNames1) + simple.rnd(playerNames2);
