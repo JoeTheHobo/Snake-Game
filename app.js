@@ -1892,6 +1892,12 @@ io.on('connection', (socket) => {
             io.to(socket.id).emit("adminTools_giveBattlesPasses", results);
         });
     });
+    socket.on("adminTools_saveBattlePass",(id,passString) => { 
+        let query = "UPDATE battle_pass_templates SET pass = ? WHERE id = ?";
+        db.query(query,[passString,id],(err) => {
+            if (err) throw err;
+        })
+    })
 });
 
 

@@ -199,6 +199,7 @@ socket.on("adminTools_giveBattlesPasses",(data) => {
 
 let battlePasses = [];
 let selectedPass = false;
+let passIndex = false;
 const arrowUnlockedImage = new Image();
 arrowUnlockedImage.src = "img/techTrees/arrow_locked.png";
 
@@ -216,11 +217,15 @@ function loadPasses(index) {
             loadPasses(i);
         })
         if (index === i) {
+            passIndex = index + 1;
             div.classAdd("battlePassDivSelected");
             selectedPass = battlePasses[i];
             loadRadialPass($(".at_bp_canvas"),selectedPass,[],true);
         }
     }
+}
+function savePass() {
+    socket.emit("adminTools_saveBattlePass",passIndex,JSON.stringify(selectedPass));
 }
 function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
     holder.innerHTML = "";
@@ -380,6 +385,8 @@ function renderRadialPass2(canvas,pass,unlocked = []) {
         if (showingRings) pass_drawRing(canvas,i);
         pass_drawSet(canvas,i,pass.set[i]);
     }
+
+
 
 }
 let selectedNodeId = false;
