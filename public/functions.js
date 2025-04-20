@@ -93,7 +93,6 @@ let canvas_background = $("render_background");
 let ctx_background = canvas_background.getContext("2d");
 let canvas_zones = $("render_zones");
 let ctx_zones = canvas_zones.getContext("2d");
-ctx_zones.globalAlpha = 0.3;
 let canvas_tiles = $("render_tiles");
 let ctx_tiles = canvas_tiles.getContext("2d");
 let canvas_items = $("render_items");

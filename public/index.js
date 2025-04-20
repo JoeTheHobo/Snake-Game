@@ -258,6 +258,7 @@ socket.on("startingGame", (lobby) => {
     isActiveGame = true;
     gameEnd = false;
     gameType = "server";
+    ctx_zones.globalAlpha = 0.4;
     localAccount.firstRound = true;
 
     setResolution(lobby.board.map[0].length,lobby.board.map.length);

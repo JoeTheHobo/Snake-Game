@@ -132,10 +132,12 @@ function renderZonesCanvas(canvas) {
         let zone = existingZones[i];
 
         ctx.fillStyle = _color(zone.color).ogColor;
+        console.log(zone.color);
         ctx.strokeStyle = _color(zone.color).darken(10).ogColor;
+        ctx.lineWidth = 5;
 
-        let width = (zone.pos2.x-zone.pos1.x)*gridSize;
-        let height = (zone.pos2.y-zone.pos1.y)*gridSize;
+        let width = (zone.pos2.x-zone.pos1.x+1)*gridSize;
+        let height = (zone.pos2.y-zone.pos1.y+1)*gridSize;
 
         ctx.fillRect(zone.pos1.x*gridSize,zone.pos1.y*gridSize,width,height);
         ctx.strokeRect(zone.pos1.x*gridSize,zone.pos1.y*gridSize,width,height);
@@ -144,11 +146,15 @@ function renderZonesCanvas(canvas) {
             
             // Reset opacity for text
             ctx.fillStyle = "black"; // Change as needed for contrast
-            ctx.font = `16px VT323`; // Adjust font size as needed
+            ctx.font = `20px VT323`; // Adjust font size as needed
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
 
             // Draw the zoneID in the center
+            ctx.fillText(zone.id, (zone.pos1.x*gridSize) + width / 2, (zone.pos1.y*gridSize) + height / 2);
+            ctx.fillText(zone.id, (zone.pos1.x*gridSize) + width / 2, (zone.pos1.y*gridSize) + height / 2);
+            ctx.fillText(zone.id, (zone.pos1.x*gridSize) + width / 2, (zone.pos1.y*gridSize) + height / 2);
+            ctx.fillText(zone.id, (zone.pos1.x*gridSize) + width / 2, (zone.pos1.y*gridSize) + height / 2);
             ctx.fillText(zone.id, (zone.pos1.x*gridSize) + width / 2, (zone.pos1.y*gridSize) + height / 2);
 
         }
