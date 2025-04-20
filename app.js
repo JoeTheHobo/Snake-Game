@@ -800,7 +800,6 @@ io.on('connection', (socket) => {
             io.to(socket.id).emit("updatePlayersBoards",account.boards,sentFrom,board)
             compressObject(account.boards,(err,compressed) => {
                 if (err) {
-                    console.log(11,err)
                     return;
                 }
                 account.boards = compressed;
@@ -2808,7 +2807,6 @@ function specialZone_timer(lobby,zone,time) {
                 status.push(findMostFrequent(teams));
             }
         } else status.push(zone.giveStatus);
-        console.log(11,status)
 
 
         if (zone.giveStatusType == "add") {
