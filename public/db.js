@@ -224,7 +224,6 @@ function loadPasses(index) {
     }
 }
 function savePass() {
-    console.log("local Sending Save")
     socket.emit("adminTools_saveBattlePass",passIndex,JSON.stringify(selectedPass));
 }
 function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
@@ -386,6 +385,7 @@ function renderRadialPass2(canvas,pass,unlocked = []) {
         pass_drawSet(canvas,i,pass.set[i]);
     }
 
+    console.log("EYO");
     savePass();
 }
 let selectedNodeId = false;

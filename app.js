@@ -1893,6 +1893,7 @@ io.on('connection', (socket) => {
         });
     });
     socket.on("adminTools_saveBattlePass",(id,passString) => { 
+        console.log("Hole UYP")
         let account = onlineAccounts[socket.id];
         if (account.status !== "Admin") return;
 
@@ -1903,7 +1904,7 @@ io.on('connection', (socket) => {
                 io.to(socket.id).emit("popup","Failed To Save Battle Pass");
                 return;
             }
-            
+
             console.log("Battle Pass Saved")
         })
     })
