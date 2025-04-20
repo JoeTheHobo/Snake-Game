@@ -459,7 +459,7 @@ function pass_drawSet(canvas, i, set) {
                 const arrowWidth = 30;
                 const arrowHeight = 30;
 
-                for (let offset = 0; offset < dist - 10; offset += arrowWidth + 5) {
+                for (let offset = 0; offset < dist - testingConstant1; offset += arrowWidth + testingConstant2) {
                     ctx.drawImage(arrowUnlockedImage, offset, -arrowHeight / 2, arrowWidth, arrowHeight);
                 }
 
@@ -478,6 +478,8 @@ function pass_drawSet(canvas, i, set) {
         nodeIndex++;
     }
 }
+let testingConstant1 = 10;
+let testingConstant2 = 5;
 function drawNodeImage(ctx,image,x,y,nodeSize,nodeIndex,element) {
     ctx.drawImage(image, x, y, nodeSize, nodeSize);
     if (selectedNodeId === nodeIndex) {
