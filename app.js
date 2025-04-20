@@ -1329,7 +1329,7 @@ io.on('connection', (socket) => {
         if (lobby.hostID !== socket.id) return;
         if (!lobby.isInGame) return;
 
-        triggerWinningCondition(lobby,"All Dead",false);
+        checkWinningCondition(lobby,"All Dead",false);
     })
     socket.on("changeLobbyName",(value) => {
         let account = onlineAccounts[socket.id];
@@ -3245,14 +3245,12 @@ function checkWinningCondition(lobby,condition,value,player) {
             }
         }
         if (condition == "All Dead") {
-            console.log("NO HERE DUMMY")
             triggerWinningCondition(lobby,winningConditions[i],player);
             return;
         }
     }
 
     if (condition == "All Dead") {
-        console.log("SENT HERE")
         triggerWinningCondition(lobby,{
             condition: "All Dead",
             x: false,
