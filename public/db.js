@@ -17,6 +17,7 @@ function at_setTab(tabName) {
     $("at_" + tabName + "Content").show("flex");
     
     if (tabName == "database") socket.emit("adminTools_loadDatabase");
+    if (tabName == "battlepass") socket.emit("adminTools_getBattlePass");
 }
 
 function at_loadDataBaseTab(data) {
@@ -135,12 +136,6 @@ function at_loadDatabaseTable(rows) {
 
 
 
-socket.on("adminTools_giveDatabaseData",(data) => {
-    at_loadDataBaseTab(data);
-})
-socket.on("adminTools_giveTableData",(table) => {
-    at_loadDatabaseTable(table);
-})
 
 
 
@@ -193,13 +188,7 @@ const arrowUnlockedImage = new Image();
 arrowUnlockedImage.src = "img/techTrees/arrow_locked.png";
 
 $(".addPassButton").on("click",function() {
-    battlePasses.push({
-        set: [],
-        background: "space",
-        name: "untitled",
-
-    })
-    loadPasses(battlePasses.length - 1);
+    socket.emit("adminTools_addBattlePass");
 
 })
 function loadPasses(index) {
@@ -436,7 +425,7 @@ function pass_drawSet(canvas, i, set) {
                 ctx.translate(fromX, fromY);
                 ctx.rotate(angle);
 
-                const arrowWidth = 20;
+                const arrowWidth = 30;
                 const arrowHeight = 10;
 
                 for (let offset = 0; offset < dist - 10; offset += arrowWidth + 5) {
@@ -800,3 +789,17 @@ function drawStars(canvas) {
         }
     }
 }
+
+
+
+
+socket.on("adminTools_giveDatabaseData",(data) => {
+    at_loadDataBaseTab(data);
+})
+socket.on("adminTools_giveTableData",(table) => {
+    at_loadDatabaseTable(table);
+})
+socket.on("adminTools_giveBattlesPasses",(data) => {
+    battlePasses = data;
+    loadPasses(battlePasses.length - 1);
+});
