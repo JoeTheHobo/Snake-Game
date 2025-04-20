@@ -558,7 +558,6 @@ function handleVisiblities(visibilityConflict) {
     let familyID = visibilityConflict.familyID;
     let id = visibilityConflict.id;
     let gridName = visibilityConflict.gridName;
-    console.log(holder,g,familyID,id)
     $(gridName + "family" + familyID + "my" + id).showCases.push({
         element: holder,
         equals: g.showWhen.equals,

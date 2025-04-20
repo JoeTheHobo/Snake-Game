@@ -1549,6 +1549,7 @@ io.on('connection', (socket) => {
             }
         }
 
+        console.log(lobby.updateZones);
 
         getLocations(lobby);
         fixBoardDifferences(lobby.board.map,lobby.board.itemDifferences,"item");
