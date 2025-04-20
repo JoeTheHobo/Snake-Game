@@ -108,7 +108,7 @@ const onlineAccounts = {};
 io.on('connection', (socket) => { 
     socket.join(socket.id);
     socket.join("menuScreen");
-    socket.emit(socket.id);
+    socket.emit("popup",socket.id);
     setGuestAccount(socket.id,true);
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
