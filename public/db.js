@@ -386,7 +386,7 @@ function renderRadialPass2(canvas,pass,unlocked = []) {
         pass_drawSet(canvas,i,pass.set[i]);
     }
 
-
+    savePass();
 
 }
 let selectedNodeId = false;

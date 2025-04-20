@@ -1899,6 +1899,7 @@ io.on('connection', (socket) => {
                 io.to(socket.id).emit("popup","Failed To Save Battle Pass");
                 return;
             }
+            console.log("Battle Pass Saved")
         })
     })
 });
