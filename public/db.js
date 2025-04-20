@@ -800,8 +800,9 @@ socket.on("adminTools_giveTableData",(table) => {
     at_loadDatabaseTable(table);
 })
 socket.on("adminTools_giveBattlesPasses",(data) => {
-    console.log(data);
-    return;
-    battlePasses = data;
+    battlePasses = [];
+    for (let i = 0; i < data.length; i++) {
+        battlePasses.push(JSON.parse(data.pass))
+    }
     loadPasses(battlePasses.length - 1);
 });
