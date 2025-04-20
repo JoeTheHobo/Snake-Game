@@ -190,7 +190,7 @@ socket.on("adminTools_giveTableData",(table) => {
 let battlePasses = [];
 let selectedPass = false;
 const arrowUnlockedImage = new Image();
-arrowUnlockedImage.src = "img/techTree/arrow_locked.png";
+arrowUnlockedImage.src = "img/techTrees/arrow_locked.png";
 
 $(".addPassButton").on("click",function() {
     battlePasses.push({
