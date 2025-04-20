@@ -57,12 +57,12 @@ z-index: 1;
 #render_background {
 z-index: 401;
 }
-#render_zones {
-  z-index: 402;
-}
 #render_tiles {
   transition: filter .2s ease-in-out;
-z-index: 403;
+z-index: 402;
+}
+#render_zones {
+  z-index: 403;
 }
 #render_items {
   transition: filter .2s ease-in-out;
