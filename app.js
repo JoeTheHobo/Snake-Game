@@ -1892,20 +1892,16 @@ io.on('connection', (socket) => {
             io.to(socket.id).emit("adminTools_giveBattlesPasses", results);
         });
     });
-    socket.on("adminTools_saveBattlePass",(id,passString) => { 
-        console.log("Hole UYP")
+    socket.on("adminTools_saveBattlePass",(id,pass) => { 
         let account = onlineAccounts[socket.id];
         if (account.status !== "Admin") return;
 
-        console.log("Attempting Save");
         let query = "UPDATE battle_pass_templates SET pass = ? WHERE id = ?";
-        db.query(query,[passString,id],(err) => {
+        db.query(query,[JSON.stringify(pass),id],(err) => {
             if (err) {
                 io.to(socket.id).emit("popup","Failed To Save Battle Pass");
                 return;
             }
-
-            console.log("Battle Pass Saved")
         })
     })
 });
