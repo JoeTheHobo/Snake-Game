@@ -434,12 +434,22 @@ function pass_drawSet(canvas, i, set) {
                 const fromPos = getPositionOfIndex(fromId);
                 if (!fromPos) return;
 
-                const toX = x + squareSize / 2;
-                const toY = y + squareSize / 2;
-                const fromX = fromPos.x + squareSize / 2;
-                const fromY = fromPos.y + squareSize / 2;
+                const centerToX = x + squareSize / 2;
+                const centerToY = y + squareSize / 2;
+                const centerFromX = fromPos.x + squareSize / 2;
+                const centerFromY = fromPos.y + squareSize / 2;
+                
+                const angle = Math.atan2(centerToY - centerFromY, centerToX - centerFromX);
+                
+                // how far to "pull back" from center to hit the box edge
+                const edgeOffset = squareSize / 2;
+                
+                // final start/end points on box edges
+                const fromX = centerFromX + Math.cos(angle) * edgeOffset;
+                const fromY = centerFromY + Math.sin(angle) * edgeOffset;
+                const toX = centerToX - Math.cos(angle) * edgeOffset;
+                const toY = centerToY - Math.sin(angle) * edgeOffset;
 
-                const angle = Math.atan2(toY - fromY, toX - fromX);
                 const dist = Math.hypot(toX - fromX, toY - fromY);
 
                 ctx.save();
