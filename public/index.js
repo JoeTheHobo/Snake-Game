@@ -612,6 +612,9 @@ function server_movePlayers() {
 function getAndLoadNewPlayer() {
     socket.emit("createNewPlayer");
 }
+socket.on("consolelog",(log) => {
+    console.log(log);
+})
 socket.on("popup",(text) => {
     genericPopup(text);
 })

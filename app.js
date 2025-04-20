@@ -109,6 +109,7 @@ io.on('connection', (socket) => {
     socket.join(socket.id);
     socket.join("menuScreen");
     setGuestAccount(socket.id,true);
+    socket.emit("consolelog",1);
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
     socket.on('disconnect', (reason) => {
@@ -1777,8 +1778,6 @@ io.on('connection', (socket) => {
                         completed++;
                         if (completed === tableNames.length) {
                             // Step 4: Send result back
-                            console.log(socket.id);
-                            socket.emit("popup","HMM")
                             io.to(socket.id).emit("adminTools_giveDatabaseData", {
                                 columnNames: Array.from(allColumns),
                                 tableNames: tableNames,
@@ -1893,7 +1892,7 @@ io.on('connection', (socket) => {
 
             io.to(socket.id).emit("adminTools_giveBattlesPasses", results);
         });
-    })
+    });
 });
 
 
