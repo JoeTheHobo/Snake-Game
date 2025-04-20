@@ -223,9 +223,6 @@ function loadPasses(index) {
         }
     }
 }
-function savePass() {
-    socket.emit("adminTools_saveBattlePass",passIndex,JSON.stringify(selectedPass));
-}
 function loadRadialPass(holder,pass,unlocked = [],adminTools = false) {
     holder.innerHTML = "";
     let canvas = holder.create("canvas.battlePassCanvas");
@@ -386,7 +383,7 @@ function renderRadialPass2(canvas,pass,unlocked = []) {
     }
 
     console.log("EYO");
-    savePass();
+    socket.emit("adminTools_saveBattlePass",passIndex,JSON.stringify(selectedPass));
 }
 let selectedNodeId = false;
 let nodeImages = {}
