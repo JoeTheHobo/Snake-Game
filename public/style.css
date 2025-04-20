@@ -57,25 +57,28 @@ z-index: 1;
 #render_background {
 z-index: 401;
 }
-#render_tiles {
-  transition: filter .2s ease-in-out;
-z-index: 402;
+#render_zones {
+  z-index: 402;
 }
-#render_items {
+#render_tiles {
   transition: filter .2s ease-in-out;
 z-index: 403;
 }
-#render_players {
+#render_items {
   transition: filter .2s ease-in-out;
 z-index: 404;
 }
-#render_overhanges {
+#render_players {
   transition: filter .2s ease-in-out;
 z-index: 405;
 }
-#render_top {
+#render_overhanges {
   transition: filter .2s ease-in-out;
 z-index: 406;
+}
+#render_top {
+  transition: filter .2s ease-in-out;
+z-index: 407;
 }
 #gameTitle {
   color: white;
