@@ -126,15 +126,17 @@ function renderZonesCanvas(canvas) {
     let ctx = canvas.getContext("2d");
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
+    
+    if (ctx_zones.globalAlpha !== 0.4) ctx_zones.globalAlpha = 0.4;
+
     handleZoneUpdates();
 
     for (let i = 0; i < existingZones.length; i++) {
         let zone = existingZones[i];
 
         ctx.fillStyle = _color(zone.color).ogColor;
-        console.log(zone.color);
         ctx.strokeStyle = _color(zone.color).darken(10).ogColor;
-        ctx.lineWidth = 5;
+        ctx.lineWidth = 6;
 
         let width = (zone.pos2.x-zone.pos1.x+1)*gridSize;
         let height = (zone.pos2.y-zone.pos1.y+1)*gridSize;
@@ -151,7 +153,6 @@ function renderZonesCanvas(canvas) {
             ctx.textBaseline = "middle";
 
             // Draw the zoneID in the center
-            ctx.fillText(zone.id, (zone.pos1.x*gridSize) + width / 2, (zone.pos1.y*gridSize) + height / 2);
             ctx.fillText(zone.id, (zone.pos1.x*gridSize) + width / 2, (zone.pos1.y*gridSize) + height / 2);
             ctx.fillText(zone.id, (zone.pos1.x*gridSize) + width / 2, (zone.pos1.y*gridSize) + height / 2);
             ctx.fillText(zone.id, (zone.pos1.x*gridSize) + width / 2, (zone.pos1.y*gridSize) + height / 2);
