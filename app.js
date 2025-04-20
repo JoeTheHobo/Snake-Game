@@ -1777,8 +1777,6 @@ io.on('connection', (socket) => {
                         completed++;
                         if (completed === tableNames.length) {
                             // Step 4: Send result back
-                            console.log("EYO")
-                            io.to(socket.id).emit("popup","HMM")
                             io.to(socket.id).emit("adminTools_giveDatabaseData", {
                                 columnNames: Array.from(allColumns),
                                 tableNames: tableNames,
@@ -1846,6 +1844,57 @@ io.on('connection', (socket) => {
                 io.to(socket.id).emit("adminTools_giveTableData", []);
             });
     });
+    socket.on("adminTools_addBattlePass", () => {
+        let account = onlineAccounts[socket.id];
+        if (account.status !== "Admin") return;
+    
+        let pass = {
+            set: [],
+            background: "space",
+            name: "untitled",
+        };
+    
+        // First get the max ID to increment it manually
+        let getMaxIdQuery = "SELECT MAX(id) AS maxId FROM battle_pass_templates";
+        db.query(getMaxIdQuery, [], (err, results) => {
+            if (err) throw err;
+    
+            let newId = (results[0].maxId || 0) + 1;
+    
+            let addPassQuery = `
+                INSERT INTO battle_pass_templates (id, pass)
+                VALUES (?, ?)
+            `;
+            db.query(
+                addPassQuery,
+                [newId, JSON.stringify(pass)],
+                (err, results) => {
+                    if (err) throw err;
+    
+                    // Get all passes after insert
+                    let passQuery = "SELECT * FROM battle_pass_templates";
+                    db.query(passQuery, [], (err, results) => {
+                        if (err) throw err;
+    
+                        io.to(socket.id).emit("adminTools_giveBattlesPasses", results);
+                    });
+                }
+            );
+        });
+    });
+    socket.on("adminTools_getBattlePass",() => {
+        let account = onlineAccounts[socket.id];
+        if (account.status !== "Admin") return;
+
+        let passQuery = "SELECT * FROM battle_pass_templates";
+        db.query(passQuery, [], (err, results) => {
+            if (err) throw err;
+
+            console.log(results);
+
+            io.to(socket.id).emit("adminTools_giveBattlesPasses", results);
+        });
+    })
 });
 
 
