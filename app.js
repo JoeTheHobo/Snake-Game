@@ -1777,8 +1777,7 @@ io.on('connection', (socket) => {
                         completed++;
                         if (completed === tableNames.length) {
                             // Step 4: Send result back
-                            console.log("EYOWAZZUP")
-                            io.emit("adminTools_giveDatabaseData", {
+                            io.to(socket.id).emit("adminTools_giveDatabaseData", {
                                 columnNames: Array.from(allColumns),
                                 tableNames: tableNames,
                             });
