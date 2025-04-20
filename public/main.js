@@ -375,6 +375,12 @@ document.body.on("wheel",function(e) {
     
 })
 document.body.onkeydown = function(e) {
+    if (e.ctrlKey && e.key === 'q') {
+        showPerformance = showPerformance ? false : true;
+        
+        if (showPerformance) $(".production").show("flex");
+        else $(".production").hide();
+    }
     let controlDown = e.ctrlKey;
     let shiftDown = e.shiftKey;
     let metaDown = e.metaKey;
@@ -405,12 +411,6 @@ document.body.onkeydown = function(e) {
         if (document.activeElement.classList.contains('goSignup')) {
             signupFunction();
         }
-    }
-    if (e.ctrlKey && e.key === 'q') {
-        showPerformance = showPerformance ? false : true;
-        
-        if (showPerformance) $(".production").show("flex");
-        else $(".production").hide();
     }
     let preventDefault = true;
 
