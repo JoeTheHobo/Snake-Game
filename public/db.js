@@ -456,8 +456,8 @@ function pass_drawSet(canvas, i, set) {
                 ctx.translate(fromX, fromY);
                 ctx.rotate(angle);
 
-                const arrowWidth = 20;
-                const arrowHeight = 20;
+                const arrowWidth = 30;
+                const arrowHeight = 30;
 
                 for (let offset = 0; offset < dist - 10; offset += arrowWidth + 5) {
                     ctx.drawImage(arrowUnlockedImage, offset, -arrowHeight / 2, arrowWidth, arrowHeight);
