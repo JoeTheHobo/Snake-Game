@@ -16,6 +16,7 @@ function at_setTab(tabName) {
     })
     $("at_" + tabName + "Content").show("flex");
     
+    console.log(tabName)
     if (tabName == "database") socket.emit("adminTools_loadDatabase");
     if (tabName == "battlepass") socket.emit("adminTools_getBattlePass");
 }
