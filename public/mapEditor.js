@@ -1979,9 +1979,14 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
                 generateZoneListings("special",savedSelectingZoneSpecial,currentBoard.spawnZones.special);
             }
         });
+        d = createGamemodeSetting("Visible","toggle","visible",{default: false},"Is this zone visible during gameplay",10,1);
+        h = createGamemodeSetting("Name Visiblity","toggle","visible_name",{default: false},"Is the zone name visible",10,2,{
+            valueFromId: 1,
+            equals: true,
+        });
         if (type == "special") {
-            b = createGamemodeSetting("Give Status On Enter","toggle","giveStatusOnEnter",{background: "#070738"},"When a snake enters this zone follow zone giving settings.",7,1);
-            f = createGamemodeSetting("Give Status","status","giveStatus",{background: "#070738", readAs: "color",statusMenuOptions: ["status","playerStatus","submit"]},"Which status to give when snake enters zone",6,1,{
+            q = createGamemodeSetting("Give Status On Enter","toggle","giveStatusOnEnter",{background: "#070738"},"When a snake enters this zone follow zone giving settings.",7,1);
+            b = createGamemodeSetting("Give Status","status","giveStatus",{background: "#070738", readAs: "color",statusMenuOptions: ["status","playerStatus","submit"]},"Which status to give when snake enters zone",6,1,{
                 valueFromFamily: 7,
                 valueFromId: 1,
                 equals: true,
@@ -1993,7 +1998,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
                 valueFromId: 1,
                 equals: "*P",
             });
-            c = createGamemodeSetting("Give Status When Occupied By","list","giveStatusWhenOccupiedBy",{background: "#070738", options: ["Solo Player","Solo Team","Everyone"]},"Only give the status when this zone is occupied by these people",false,false,{
+            f = createGamemodeSetting("Give Status When Occupied By","list","giveStatusWhenOccupiedBy",{background: "#070738", options: ["Solo Player","Solo Team","Everyone"]},"Only give the status when this zone is occupied by these people",false,false,{
                 valueFromFamily: 7,
                 valueFromId: 1,
                 equals: true,
@@ -2008,12 +2013,15 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
                 valueFromId: 1,
                 equals: true,
             });
-            d = createGamemodeSetting("Repeat Status Type","list","repeatStatusType",{background: "#070738", options: ["Repeat","Single Use"]},"How does this zone give another status after it already gave one",false,false,{
+            c = createGamemodeSetting("Repeat Status Type","list","repeatStatusType",{background: "#070738", options: ["Repeat","Single Use"]},"How does this zone give another status after it already gave one",false,false,{
                 valueFromFamily: 7,
                 valueFromId: 1,
                 equals: true,
             });
-            h = createGamemodeSetting("Display Status Stats","toggle","displayStatusStats",{},"Should we show the status stats in game?",false,false);
+            t = createGamemodeSetting("Display Status Stats","toggle","displayStatusStats",{},"Should we show the status stats in game?",10,3,{
+                valueFromId: 1,
+                equals: true,
+            });
         }
         if (type == "item") {
             b = createGamemodeSetting("Manage Item Spawning","button",false,{text: "Manage",func: () => {
@@ -2022,30 +2030,30 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
         }
         if (type == "player") {
             
-            b = createGamemodeSetting("Zone Team","status","team",{readAs: "color",statusMenuOptions: ["remove","status","submit"]},"Give team status to people who spawn here.",false,false,false,() => {
+            q = createGamemodeSetting("Zone Team","status","team",{readAs: "color",statusMenuOptions: ["remove","status","submit"]},"Give team status to people who spawn here.",false,false,false,() => {
                 renderZoneCanvas();
                 generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
             });
-            c = createGamemodeSetting("Allow Respawning","toggle","respawnHere",{},"Can players respawn here if they're on the zones team?");
-            d = createGamemodeSetting("Limit Spawning","toggle","spawnCap",{setTrueIfValueIsNumber: true,whenCheckedSet: {
+            b = createGamemodeSetting("Allow Respawning","toggle","respawnHere",{},"Can players respawn here if they're on the zones team?");
+            c = createGamemodeSetting("Limit Spawning","toggle","spawnCap",{setTrueIfValueIsNumber: true,whenCheckedSet: {
                 source: "spawnCap",
                 value: 3,
             }, whenUncheckedSet: {
                 source: "spawnCap",
                 value: false,
             }},"Control how many snakes can spawn in this zone.",1,1);
-            h = createGamemodeSetting("Spawn Cap","number","spawnCap",{min: 0, max: 100},"Amount of snakes allowed to spawn here. (Can be 0)",1,2,{
+            g = createGamemodeSetting("Spawn Cap","number","spawnCap",{min: 0, max: 100},"Amount of snakes allowed to spawn here. (Can be 0)",1,2,{
                 valueFromId: 1,
                 isNumber: true,
                 onActiveSetValue: {
                     value: 3,
                 },
             })
-            f = createGamemodeSetting("Spawn Priority","number","priority",{min: 0, max: 100},"Should snakes spawn here first or last? (Higher Number = Higher Priority");
-            g = createGamemodeSetting("Alternate Spawning","toggle","alternate",{},"When spawning at the start of the game, should we alternate between this zone and others?");
+            r = createGamemodeSetting("Spawn Priority","number","priority",{min: 0, max: 100},"Should snakes spawn here first or last? (Higher Number = Higher Priority");
+            f = createGamemodeSetting("Alternate Spawning","toggle","alternate",{},"When spawning at the start of the game, should we alternate between this zone and others?");
         }
 
-        e = createGamemodeSetting("Active","toggle","active",{},"Is the zone active at the start of the game? Can things spawn here");
+        e = createGamemodeSetting("Active","toggle","active",{},"Is this zone active at the start of the game");
         i = createGamemodeSetting("Active On Board Status","toggle","activateWhenBoardStatus",{setTrueIfValueIsObject: true,whenCheckedSet: {
             source: "activateWhenBoardStatus",
             value: {

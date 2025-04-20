@@ -859,6 +859,7 @@ function serverGameLoop() {
     if (!isActiveGame) return;
     renderCells(updateTiles,ctx_tiles,"tile")
     renderCells(updateCells,ctx_items,"item");
+    renderTopCanvas();
     updateTiles = [];
     updateCells = [];
     //movePlayers();

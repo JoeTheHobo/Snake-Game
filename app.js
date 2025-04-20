@@ -863,6 +863,8 @@ io.on('connection', (socket) => {
                         priority: 0,
                         alternate: true,
     
+                        visible: false,
+                        visible_name: false,
                         active: true,
                         activateWhenBoardStatus: false,
                         deactivateWhenBoardStatus: false,
@@ -881,6 +883,8 @@ io.on('connection', (socket) => {
                         },
                         itemsThatCantSpawnHere: [],
     
+                        visible: false,
+                        visible_name: false,
                         active: true,
                         activateWhenBoardStatus: false,
                         deactivateWhenBoardStatus: false,
@@ -1393,6 +1397,7 @@ io.on('connection', (socket) => {
         lobby.board.isActiveGame = true; 
         lobby.updateCells = [];
         lobby.updateTiles = [];
+        lobby.updateZones = [];
         lobby.updateSnakeCells = [];
         lobby.updatePoints = [];
         lobby.spawnZones = structuredClone(lobby.board.spawnZones);
@@ -1500,6 +1505,12 @@ io.on('connection', (socket) => {
             lobby.specialZones[i].startTimeStamp = false;
             lobby.specialZones[i].statusGave = 0;
             lobby.specialZones[i].statusGiven = [];
+        }
+
+        for (let i = 0; i < lobby.spawnZones.players.length; i++) {
+            if (lobby.spawnZones.players[i].visible) {
+                lobby.updateZones.push({})
+            }
         }
 
 
@@ -2721,16 +2732,12 @@ function removePlayerStatus(lobby,player,itemName) {
 //From App.js
 
 function specialZone_timer(lobby,zone,time) {
-    console.log(6,time,zone.startTimeStamp)
     if (time <= 0 && zone.startTimeStamp) {
-        console.log(9)
         let correctOccupied = specialZone_testOccupied(lobby,zone);
         if (!correctOccupied) return;
-        console.log(10)
 
         let status = [];
         if (zone.giveStatus.toLowerCase() === "*p") {
-            console.log(10.5,zone.giveStatusFrom)
             if (zone.giveStatusFrom == "All Players") {
                 for (let i = 0; i < zone.occupiedBy.length; i++) {
                     status.push(zone.occupiedBy.team);
@@ -2805,9 +2812,7 @@ function specialZone_timer(lobby,zone,time) {
     }
 
     if (zone.startTimeStamp) {
-        console.log(7)
         setTimeout(function() {
-            console.log(8)
             if (lobby.gameEnd) return;
             specialZone_timer(lobby,zone,time-1);
         },500);
@@ -2818,9 +2823,7 @@ function specialZone_endTimer(lobby,zone) {
     zone.startTimeStamp = false;
 }
 function specialZone_startTimer(lobby,zone) {
-    console.log(4)
     if (zone.startTimeStamp !== false) return;
-    console.log(5)
 
     zone.startTimeStamp = true;
 
@@ -2829,7 +2832,6 @@ function specialZone_startTimer(lobby,zone) {
 function specialZone_testOccupied(lobby,zone) {
     let type = zone.giveStatusWhenOccupiedBy;
 
-    console.log(3.5,type)
     if (type == "everyone" && zone.occupiedBy.length > 0) return true;
     if (type == "solo player" && zone.occupiedBy.length == 1) return true;
     if (type == "solo team") {
@@ -2843,11 +2845,8 @@ function specialZone_testOccupied(lobby,zone) {
     return false;
 }
 function specialZone_onEnter(lobby,zone) {
-    console.log(1)
     if (!zone.giveStatusOnEnter) return;
-    console.log(2,zone.repeatStatusType,zone.statusGave)
     if (zone.repeatStatusType == "single use" && zone.statusGave > 0) return;
-    console.log(3)
     let correctOccupied = specialZone_testOccupied(lobby,zone);
     if (!correctOccupied) specialZone_endTimer(lobby,zone);
     else specialZone_startTimer(lobby,zone);
