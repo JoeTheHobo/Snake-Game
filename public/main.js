@@ -376,6 +376,7 @@ document.body.on("wheel",function(e) {
 })
 document.body.onkeydown = function(e) {
     if (e.ctrlKey && e.key === 'q') {
+        e.preventDefault();
         showPerformance = showPerformance ? false : true;
         
         if (showPerformance) $(".production").show("flex");
