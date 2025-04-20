@@ -108,7 +108,6 @@ const onlineAccounts = {};
 io.on('connection', (socket) => { 
     socket.join(socket.id);
     socket.join("menuScreen");
-    socket.emit("popup",socket.id);
     setGuestAccount(socket.id,true);
 
     //socket.emit communicates with the player that just connected, io.emit communicates with the whole lobby
@@ -1845,57 +1844,6 @@ io.on('connection', (socket) => {
                 io.to(socket.id).emit("adminTools_giveTableData", []);
             });
     });
-    socket.on("adminTools_addBattlePass", () => {
-        let account = onlineAccounts[socket.id];
-        if (account.status !== "Admin") return;
-    
-        let pass = {
-            set: [],
-            background: "space",
-            name: "untitled",
-        };
-    
-        // First get the max ID to increment it manually
-        let getMaxIdQuery = "SELECT MAX(id) AS maxId FROM battle_pass_templates";
-        db.query(getMaxIdQuery, [], (err, results) => {
-            if (err) throw err;
-    
-            let newId = (results[0].maxId || 0) + 1;
-    
-            let addPassQuery = `
-                INSERT INTO battle_pass_templates (id, pass)
-                VALUES (?, ?)
-            `;
-            db.query(
-                addPassQuery,
-                [newId, JSON.stringify(pass)],
-                (err, results) => {
-                    if (err) throw err;
-    
-                    // Get all passes after insert
-                    let passQuery = "SELECT * FROM battle_pass_templates";
-                    db.query(passQuery, [], (err, results) => {
-                        if (err) throw err;
-    
-                        io.to(socket.id).emit("adminTools_giveBattlesPasses", results);
-                    });
-                }
-            );
-        });
-    });
-    socket.on("adminTools_getBattlePass",() => {
-        let account = onlineAccounts[socket.id];
-        if (account.status !== "Admin") return;
-
-        let passQuery = "SELECT * FROM battle_pass_templates";
-        db.query(passQuery, [], (err, results) => {
-            if (err) throw err;
-
-            console.log(results);
-
-            io.to(socket.id).emit("adminTools_giveBattlesPasses", results);
-        });
-    })
 });
 
 
