@@ -1506,24 +1506,45 @@ io.on('connection', (socket) => {
             lobby.specialZones[i].statusGave = 0;
             lobby.specialZones[i].statusGiven = [];
             let zone = lobby.specialZones[i];
-            let sendArr = [zone.pos1,zone.pos2,zone.giveStatus];
-            if (zone.visible_name) sendArr.push(zone.id);
+            let sendArr = {
+                pos1: zone.pos1,
+                pos2: zone.pos2,
+                color: zone.giveStatus,
+                id: false,
+                type: "special",
+                function: "new",
+            }
+            if (zone.visible_name) sendArr.id = zone.id;
             lobby.updateZones.push(sendArr)
         }
 
         for (let i = 0; i < lobby.spawnZones.players.length; i++) {
             if (lobby.spawnZones.players[i].visible) {
                 let zone = lobby.spawnZones.players[i];
-                let sendArr = [zone.pos1,zone.pos2,zone.team];
-                if (zone.visible_name) sendArr.push(zone.id);
+                let sendArr = {
+                    pos1: zone.pos1,
+                    pos2: zone.pos2,
+                    color: zone.team,
+                    id: false,
+                    type: "player",
+                    function: "new",
+                }
+                if (zone.visible_name) sendArr.id = zone.id;
                 lobby.updateZones.push(sendArr)
             }
         }
         for (let i = 0; i < lobby.spawnZones.items.length; i++) {
             if (lobby.spawnZones.items[i].visible) {
                 let zone = lobby.spawnZones.items[i];
-                let sendArr = [zone.pos1,zone.pos2,"white"];
-                if (zone.visible_name) sendArr.push(zone.id);
+                let sendArr = {
+                    pos1: zone.pos1,
+                    pos2: zone.pos2,
+                    color: "white",
+                    type: "item",
+                    function: "new",
+                    id: false,
+                }
+                if (zone.visible_name) sendArr.id = zone.id;
                 lobby.updateZones.push(sendArr)
             }
         }
@@ -1568,6 +1589,10 @@ io.on('connection', (socket) => {
         io.to(lobby.id).emit("startingGame", lobby,onlineAccounts[socket.id].player);
         
         updateClientPositions(lobby)
+        lobby.updateCells = [];
+        lobby.updateTiles = [];
+        lobby.updateZones = [];
+        lobby.updateZones = [];
         lobby.checkingSpawnTimers = true;
         lobby.gameStartedAt = false;
         lobby.gameLoop = function() {
@@ -3577,6 +3602,7 @@ function updateClientPositions(lobby) {
         b: lobby.boardStatus,
         g: Date.now() - lobby_gameLoop_start,
         f: lobby.canvasFilters,
+        z: lobby.updateZones,
     };
 
     // Compare with previous object

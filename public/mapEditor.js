@@ -201,7 +201,7 @@ function drawZone(x1, y1, x2, y2, color, zoneID) {
 
     // Reset opacity for text
     me_ctx_zones.fillStyle = "black"; // Change as needed for contrast
-    me_ctx_zones.font = `${16 * zoom}px Arial`; // Adjust font size as needed
+    me_ctx_zones.font = `${16 * zoom}px VT323`; // Adjust font size as needed
     me_ctx_zones.textAlign = "center";
     me_ctx_zones.textBaseline = "middle";
 

@@ -254,6 +254,7 @@ socket.on("startingGame", (lobby) => {
 
     activePlayers = lobby.activePlayers;
     currentBoard = lobby.board;
+    existingZones = [];
     isActiveGame = true;
     gameEnd = false;
     gameType = "server";
@@ -511,6 +512,7 @@ socket.on("updatePositions",(obj) => {
     }
     if (obj.c) updateCells = updateCells.concat(obj.c);
     if (obj.t) updateTiles = updateTiles.concat(obj.t);
+    if (obj.z) updateZones = updateZones.concat(obj.z);
 
     if (obj.p) {
         for (let i = 0; i < obj.p.length; i++) {

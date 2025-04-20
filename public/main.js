@@ -122,6 +122,51 @@ function renderCells(list,ctx,type) {
         document.body.style.background = color;
     }
 }
+function renderZonesCanvas(canvas) {
+    let ctx = canvas.getContext("2d");
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    handleZoneUpdates();
+
+    for (let i = 0; i < existingZones.length; i++) {
+        let zone = existingZones[i];
+
+        ctx.fillStyle = _color(zone.color).ogColor;
+        ctx.strokeStyle = _color(zone.color).darken(10).ogColor;
+
+        let width = (zone.pos2.x-zone.pos1.x)*gridSize;
+        let height = (zone.pos2.y-zone.pos1.y)*gridSize;
+
+        ctx.fillRect(zone.pos1.x*gridSize,zone.pos1.y*gridSize,width,height);
+        ctx.strokeRect(zone.pos1.x*gridSize,zone.pos1.y*gridSize,width,height);
+
+        if (zone.id) {
+            
+            // Reset opacity for text
+            ctx.fillStyle = "black"; // Change as needed for contrast
+            ctx.font = `16px VT323`; // Adjust font size as needed
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            // Draw the zoneID in the center
+            ctx.fillText(zone.id, (zone.pos1.x*gridSize) + width / 2, (zone.pos1.y*gridSize) + height / 2);
+
+        }
+    }
+}
+function handleZoneUpdates() {
+    for (let i = 0; i < updateZones.length; i++) {
+        let zone = updateZones[i];
+        if (zone.function == "new") {
+            existingZones.push({
+                pos1: zone.pos1,
+                pos2: zone.pos2,
+                id: zone.id,
+                type: zone.type,
+            })
+        }
+    }
+}
 function drawImage(image, direction, xPos, yPos, width, height,cnvs = canvas_players) {
     if (direction == false) direction = "up";
     let diCtx = cnvs.getContext("2d"); 
@@ -859,9 +904,10 @@ function serverGameLoop() {
     if (!isActiveGame) return;
     renderCells(updateTiles,ctx_tiles,"tile")
     renderCells(updateCells,ctx_items,"item");
-    renderTopCanvas();
+    renderZonesCanvas(canvas_zones);
     updateTiles = [];
     updateCells = [];
+    updateZones = [];
     //movePlayers();
     //deleteSnakeCells();
     //renderPlayers();
