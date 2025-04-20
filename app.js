@@ -3204,6 +3204,7 @@ function triggerWinningCondition(lobby,condition,player) {
 
         }
     } else if (condition.whoWins !== false) {
+        console.log(condition)
         winningTitle = (condition.whoWins.charAt(0).toUpperCase() + condition.whoWins.slice(1)) + " Team Won";
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
             if (lobby.inGamePlayers[i].team === condition.whoWins) {
