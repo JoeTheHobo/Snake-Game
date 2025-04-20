@@ -952,7 +952,7 @@ function loadGamemodeTabSettings() {
         valueFromId: 1,
         equals: "become food",
     });
-    let m = createGamemodeSetting("Repsawn","toggle","respawn",{},"Do players respawn when they die.",4,1);
+    let m = createGamemodeSetting("Respawn","toggle","respawn",{},"Do players respawn when they die.",4,1);
     let n = createGamemodeSetting("Respawn Timer","number","respawnTimer",{min: 0, max: 60},"How long it takes to respawn in seconds.",4,2,{
         valueFromId: 1,
         equals: true,

@@ -479,7 +479,7 @@ function pass_drawSet(canvas, i, set) {
     }
 }
 let testingConstant1 = 10;
-let testingConstant2 = 5;
+let testingConstant2 = -1;
 function drawNodeImage(ctx,image,x,y,nodeSize,nodeIndex,element) {
     ctx.drawImage(image, x, y, nodeSize, nodeSize);
     if (selectedNodeId === nodeIndex) {

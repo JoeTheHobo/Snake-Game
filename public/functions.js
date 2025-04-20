@@ -60,6 +60,14 @@ function getColorFromTeam(color) {
 
 
 let gridSize;
+function setResolution(gridx, gridy) {
+    let height = $(".game_cc_game").getBoundingClientRect().height-10;
+    gridSize = Math.floor(height/gridY);
+
+    //setGridSize(cameraFollowPlayer === false ? .17 : .32);
+    adjustCanvasSize(gridx,gridy,1);
+}
+
 function setGridSize(size) {
     const getPPI = () => {
         // Screen dimensions in inches (calculated using screen width and height in pixels and the screen diagonal in inches)
@@ -326,11 +334,6 @@ for (let i = 0; i < global_gameColors.length; i++) {
 
 
 
-
-function setResolution(gridx, gridy) {
-    setGridSize(cameraFollowPlayer === false ? .17 : .32);
-    adjustCanvasSize(gridx,gridy,1);
-}
 
 
 
