@@ -1995,8 +1995,9 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
                 generateZoneListings("special",savedSelectingZoneSpecial,currentBoard.spawnZones.special);
             });
             r = createGamemodeSetting("Give Status From","list","giveStatusFrom",{background: "#070738", options: ["All Players","Random Player","Random Team","All Teams","Largest Team"]},"When zone gives players status who within zone should it pull from?",6,2,{
+                valueFromFamily: 7,
                 valueFromId: 1,
-                equals: "*P",
+                equals: true,
             });
             f = createGamemodeSetting("Give Status When Occupied By","list","giveStatusWhenOccupiedBy",{background: "#070738", options: ["Solo Player","Solo Team","Everyone"]},"Only give the status when this zone is occupied by these people",false,false,{
                 valueFromFamily: 7,
