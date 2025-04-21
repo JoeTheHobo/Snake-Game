@@ -2895,22 +2895,6 @@ function checkEndGameBoardStatus(lobby) {
         allStatus[statusList[i]]++;
     }
 
-    for (let i = 0; i < spawnList.length; i++) {
-        let zone = spawnList[i];
-        if (zone.activateWhenBoardStatus !== false) {
-            if (allStatus[zone.activateWhenBoardStatus.status] >= zone.activateWhenBoardStatus.count) {
-                zone.activateWhenBoardStatus = false;
-                zone.active = true;
-            }
-        }
-        if (zone.deactivateWhenBoardStatus !== false) {
-            if (allStatus[zone.deactivateWhenBoardStatus.status] >= zone.deactivateWhenBoardStatus.count) {
-                zone.deactivateWhenBoardStatus = false;
-                zone.active = false;
-            }
-        }
-    }
-
     for (let i = 0; i < lobby.condition_status.length; i++) {
         let condition = lobby.condition_status[i];
 
