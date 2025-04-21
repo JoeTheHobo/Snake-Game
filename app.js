@@ -2868,6 +2868,7 @@ function specialZone_timer(lobby,zone,time) {
             }
         } else status.push(zone.giveStatus);
 
+        console.log(status,zone.giveStatusType)
 
         if (zone.giveStatusType == "add") {
             for (let i = 0; i < status.length; i++) {
@@ -2909,6 +2910,7 @@ function specialZone_timer(lobby,zone,time) {
     }
 
     if (zone.startTimeStamp) {
+        console.log("CHECK")
         setTimeout(function() {
             if (lobby.gameEnd) return;
             specialZone_timer(lobby,zone,time-1);
@@ -2923,7 +2925,7 @@ function specialZone_startTimer(lobby,zone) {
     if (zone.startTimeStamp !== false) return;
 
     zone.startTimeStamp = true;
-
+    console.log("YUP")
     specialZone_timer(lobby,zone,zone.giveStatusDelay*2);
 }
 function specialZone_testOccupied(lobby,zone) {

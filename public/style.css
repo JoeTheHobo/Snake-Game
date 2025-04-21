@@ -1148,7 +1148,7 @@ border-top-left-radius: 5px;
 background: rgb(165, 165, 165);
 margin-left: 1px;
 color: black;
-font-size: 1.2em;
+font-size: 1.5em;
 cursor: url('./img/pointer.cur'), auto;
 transition: all .1s ease;
 user-select: none;
@@ -1226,7 +1226,7 @@ height: 44px;
 text-align: center;
 line-height: 44px;
 background: #D9D9D9;
-font-size: 30px;
+font-size: 2em;
 }
 .servers_button:hover {
 background: #a0a0a0;
@@ -3319,9 +3319,6 @@ margin-top: 15px;
 
 .spawnZoneSelected {
   border: 3px solid rgb(60, 60, 255) !important;
-}
-.spawnZoneSelected > .spawnZoneID {
-  color: rgb(60, 60, 255) !important;
 }
 .moveCursor {
   cursor: grab;

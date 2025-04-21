@@ -2475,6 +2475,8 @@ $(".me_sz_addButton").on("click",function() {
                 team: "white",
                 spawnCap: false,
                 respawnHere: true,
+                priority: 0,
+                alternate: true,
 
                 visible: false,
                 active: true,
@@ -2494,7 +2496,7 @@ $(".me_sz_addButton").on("click",function() {
     }
     if (selectedZone.type == "item") {
         currentBoard.spawnZones.items.push({
-            id: "item" + (currentBoard.spawnZones.items+1),
+            id: "item" + (currentBoard.spawnZones.items.length+1),
             pos1: {
                 x: Math.round(currentBoard.width/4),
                 y: Math.round(currentBoard.height/4),
