@@ -2868,7 +2868,6 @@ function specialZone_timer(lobby,zone,time) {
             }
         } else status.push(zone.giveStatus);
 
-        console.log(status,zone.giveStatusType)
 
         if (zone.giveStatusType == "add") {
             for (let i = 0; i < status.length; i++) {
@@ -2901,7 +2900,7 @@ function specialZone_timer(lobby,zone,time) {
             zone.statusGave++;
         }
 
-        if (zone.repeatStatusType == "repeat") {
+        if (zone.repeatStatusType.toLowerCase() == "repeat") {
             specialZone_endTimer(lobby,zone);
             specialZone_startTimer(lobby,zone);
         }
@@ -2910,7 +2909,6 @@ function specialZone_timer(lobby,zone,time) {
     }
 
     if (zone.startTimeStamp) {
-        console.log("CHECK")
         setTimeout(function() {
             if (lobby.gameEnd) return;
             specialZone_timer(lobby,zone,time-1);
@@ -2938,7 +2936,6 @@ function specialZone_testOccupied(lobby,zone) {
         for (let i = 0; i < zone.occupiedBy.length; i++) {
             if (!teams.includes(zone.occupiedBy[i].team)) teams.push(zone.occupiedBy[i].team);
         }
-        console.log(teams);
         if (teams.length == 1) return true;
     }
         
