@@ -1568,6 +1568,9 @@ function logAllWinningConditions(holder,gamemode) {
         if (condition.condition == "X Minutes Pass") {
             howToWin = `The Game Ends In ${condition.x} Minutes`;
         }
+        if (condition.condition == "Board Status") {
+            howToWin = `The The Board Reach ${condition.x.count} ${condition.x.status} Status'`;
+        }
 
 
         div.innerHTML = whoWins + " Wins When " + howToWin;
