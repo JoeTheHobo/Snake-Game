@@ -2835,7 +2835,7 @@ function checkEndGametimers(lobby) {
     for (let i = 0; i < lobby.condition_time.length; i++) {
         let condition = lobby.condition_time[i];
         let endTime = (condition.condition.x*60*1000)+condition.timeStart;
-
+        console.log(endTime,Date.now())
         if (Date.now() >= endTime) {
             triggerWinningCondition(lobby,condition.condition);
         }
