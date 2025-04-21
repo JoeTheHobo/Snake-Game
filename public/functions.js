@@ -1569,7 +1569,9 @@ function logAllWinningConditions(holder,gamemode) {
             howToWin = `The Game Ends In ${condition.x} Minutes`;
         }
         if (condition.condition == "Board Status") {
-            howToWin = `The The Board Reach ${condition.x.count} ${condition.x.status} Status'`;
+            let status = condition.x.status;
+            if (status == "*P") status = "Any";
+            howToWin = `The The Board Reaches ${condition.x.count} ${status.format("A")} Status'`;
         }
 
 
