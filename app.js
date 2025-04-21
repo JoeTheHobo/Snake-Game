@@ -2931,9 +2931,9 @@ function specialZone_startTimer(lobby,zone) {
 function specialZone_testOccupied(lobby,zone) {
     let type = zone.giveStatusWhenOccupiedBy;
 
-    if (type == "everyone" && zone.occupiedBy.length > 0) return true;
-    if (type == "solo player" && zone.occupiedBy.length == 1) return true;
-    if (type == "solo team") {
+    if (type.toLowerCase() == "everyone" && zone.occupiedBy.length > 0) return true;
+    if (type.toLowerCase() == "solo player" && zone.occupiedBy.length == 1) return true;
+    if (type.toLowerCase() == "solo team") {
         let teams = [];
         for (let i = 0; i < zone.occupiedBy.length; i++) {
             if (!teams.includes(zone.occupiedBy[i].team)) teams.push(zone.occupiedBy[i].team);
@@ -2946,8 +2946,7 @@ function specialZone_testOccupied(lobby,zone) {
 }
 function specialZone_onEnter(lobby,zone) {
     if (!zone.giveStatusOnEnter) return;
-    console.log("Entering",zone.repeatStatusType)
-    if (zone.repeatStatusType == "single use" && zone.statusGave > 0) return;
+    if (zone.repeatStatusType.toLowerCase() == "single use" && zone.statusGave > 0) return;
     let correctOccupied = specialZone_testOccupied(lobby,zone);
     if (!correctOccupied) specialZone_endTimer(lobby,zone);
     else specialZone_startTimer(lobby,zone);
