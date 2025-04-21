@@ -1295,6 +1295,7 @@ function loadGamemodeTabWinning() {
     addAvailableCondition("Touch Zone X","X","0000","Player","Touch Zone","input","Touch this zone to win the game!");
     addAvailableCondition("Touch Item X","X","item.25","Player","Touch Item","item","Touch this item to win the game!");
     addAvailableCondition("Touch Tile X","X","tile.1","Player","Touch Tile","tile","Touch this tile to win the game!");
+    addAvailableCondition("X Minutes Pass","X",3,"Highest Value","Game Ends In (Minutes)","number","Game will end after time ends.");
 
     loadWinningConditions();
 }
