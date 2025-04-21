@@ -2938,12 +2938,14 @@ function specialZone_testOccupied(lobby,zone) {
         for (let i = 0; i < zone.occupiedBy.length; i++) {
             if (!teams.includes(zone.occupiedBy[i].team)) teams.push(zone.occupiedBy[i].team);
         }
+        console.log(teams);
         if (teams.length == 1) return true;
     }
         
     return false;
 }
 function specialZone_onEnter(lobby,zone) {
+    console.log("Entering",zone.giveStatusOnEnter)
     if (!zone.giveStatusOnEnter) return;
     if (zone.repeatStatusType == "single use" && zone.statusGave > 0) return;
     let correctOccupied = specialZone_testOccupied(lobby,zone);
