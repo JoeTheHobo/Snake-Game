@@ -1371,6 +1371,7 @@ io.on('connection', (socket) => {
         lobby.condition_size = [];
         lobby.condition_time = [];
         lobby.condition_kill = [];
+        lobby.condition_status = [];
         
         for (let i = 0; i < lobby.gameMode.winningConditions.length; i++) {
             let condition = lobby.gameMode.winningConditions[i];
@@ -1380,6 +1381,7 @@ io.on('connection', (socket) => {
             if (condition.condition == "Survive X Minutes") lobby.condition_time.push(condition);
             if (condition.condition == "Kill X Snakes") lobby.condition_kill.push(condition);
             if (condition.condition == "X Minutes Pass") lobby.condition_time.push({condition: condition,startTime: false});
+            if (condition.condition == "Board Status") lobby.condition_status.push(condition);
         }
 
         //Winning Condition Check End
@@ -1605,6 +1607,7 @@ io.on('connection', (socket) => {
                 
                 checkEndGametimers(this);
                 if (this.checkingSpawnTimers) checkSpawnStatusTimers(this);
+                checkEndGameBoardStatus(this);
     
                 updateClientPositions(this);
     
@@ -2831,6 +2834,99 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function findTeamWithHighestBoardStatus(lobby) {
+    let statusList = lobby.boardStatus;
+    let count = false;
+    let team = false;
+
+    let allStatus = {
+        aquamarine: 0,
+        blue: 0,
+        buff: 0,
+        coral: 0,
+        crimsonpurple: 0,
+        gold: 0,
+        green: 0,
+        lemon: 0,
+        lime: 0,
+        magenta: 0,
+        orange: 0,
+        pink: 0,
+        red: 0,
+        skyblue: 0,
+        slateblue: 0,
+        venom: 0,
+    }
+
+    for (let i = 0; i < statusList.length; i++) {
+        const color = statusList[i];
+        allStatus[color]++;
+        if (count === false || allStatus[color] > count) {
+            count = allStatus[color];
+            team = color;
+        }
+    }
+
+    return team;
+}
+function checkEndGameBoardStatus(lobby) {
+    let statusList = lobby.boardStatus;
+
+    let allStatus = {
+        aquamarine: 0,
+        blue: 0,
+        buff: 0,
+        coral: 0,
+        crimsonpurple: 0,
+        gold: 0,
+        green: 0,
+        lemon: 0,
+        lime: 0,
+        magenta: 0,
+        orange: 0,
+        pink: 0,
+        red: 0,
+        skyblue: 0,
+        slateblue: 0,
+        venom: 0,
+    }
+
+    for (let i = 0; i < statusList.length; i++) {
+        allStatus[statusList[i]]++;
+    }
+
+    for (let i = 0; i < spawnList.length; i++) {
+        let zone = spawnList[i];
+        if (zone.activateWhenBoardStatus !== false) {
+            if (allStatus[zone.activateWhenBoardStatus.status] >= zone.activateWhenBoardStatus.count) {
+                zone.activateWhenBoardStatus = false;
+                zone.active = true;
+            }
+        }
+        if (zone.deactivateWhenBoardStatus !== false) {
+            if (allStatus[zone.deactivateWhenBoardStatus.status] >= zone.deactivateWhenBoardStatus.count) {
+                zone.deactivateWhenBoardStatus = false;
+                zone.active = false;
+            }
+        }
+    }
+
+    for (let i = 0; i < lobby.condition_status.length; i++) {
+        let condition = lobby.condition_status[i];
+
+        let status = condition.x.status;
+
+        if (status == "*P") {
+            const firstHighStatus = Object.entries(allStatus).find(([_, v]) => v >= condition.x.count)?.[0];
+            if (firstHighStatus !== undefined)
+                triggerWinningCondition(lobby,condition,firstHighStatus);
+        } else {
+            if (allStatus[condition.x.status] >= condition.x.count) {
+                triggerWinningCondition(lobby,condition);
+            }
+        }
+    }
+}
 function checkEndGametimers(lobby) {
     for (let i = 0; i < lobby.condition_time.length; i++) {
         let condition = lobby.condition_time[i];
@@ -3171,10 +3267,24 @@ function triggerWinningCondition(lobby,condition,player) {
     if (condition.condition == "X Minutes Pass") {
         conditionTitle = "Game Ended After " + condition.x + " Minutes.";
     }
+    if (condition.condition == "Board Status") {
+        let status = condition.condition.x.status;
+        if (status == "*P") status = "Of Any";
+        conditionTitle = `The Board Reaches ${condition.condition.x.count} ${status.format("A")} Status'`;
+    }
 
     if (condition.whoWins == "Player") {
         winningTitle = player.accountName + " Won";
         winningPlayers.push(player);
+    } else if (condition.whoWins == "Board Status") {
+        //Find Team With Highest Board Status
+        let teamColor = findTeamWithHighestBoardStatus(lobby);
+        winningTitle = (teamColor.charAt(0).toUpperCase() + teamColor.slice(1)) + " Team Won";
+        for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+            if (lobby.inGamePlayers[i].team === teamColor) {
+                winningPlayers.push(lobby.inGamePlayers[i])
+            }
+        }
     } else if (condition.whoWins == "Players Team") {
         winningTitle = (player.team.charAt(0).toUpperCase() + player.team.slice(1)) + " Team Won";
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {

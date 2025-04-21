@@ -1522,7 +1522,7 @@ function logAllWinningConditions(holder,gamemode) {
         let whoWins = condition.whoWins;
         let howToWin;
 
-        if (whoWins !== "Players Team" && whoWins !== "Player" && whoWins !== "Everyone" && whoWins !== "Highest Value" && whoWins !== "No One") {
+        if (whoWins !== "Players Team" && whoWins !== "Player" && whoWins !== "Everyone" && whoWins !== "Highest Value" && whoWins !== "No One"&& whoWins !== "Board Status") {
             whoWins =  `<img class="gm_alt_team" src="img/items/item_flag_basic_${whoWins}.png"> ${whoWins.format("A")} Team`;
         }
         if (whoWins == "Everyone") {
@@ -1570,8 +1570,8 @@ function logAllWinningConditions(holder,gamemode) {
         }
         if (condition.condition == "Board Status") {
             let status = condition.x.status;
-            if (status == "*P") status = "Any";
-            howToWin = `The The Board Reaches ${condition.x.count} ${status.format("A")} Status'`;
+            if (status == "*P") status = "Of Any";
+            howToWin = `The Board Reaches ${condition.x.count} ${status.format("A")} Status'`;
         }
 
 
