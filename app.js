@@ -1367,6 +1367,7 @@ io.on('connection', (socket) => {
         }
         //Setting Up Quick Cheat For Conditions
 
+        lobby.condition_time = [];
         lobby.condition_size = [];
         lobby.condition_time = [];
         lobby.condition_kill = [];
@@ -1378,6 +1379,7 @@ io.on('connection', (socket) => {
             if (condition.condition == "Reach Snake Size Of X") lobby.condition_size.push(condition);
             if (condition.condition == "Survive X Minutes") lobby.condition_time.push(condition);
             if (condition.condition == "Kill X Snakes") lobby.condition_kill.push(condition);
+            if (condition.condition == "X Minutes Pass") lobby.condition_time.push({condition: condition,startTime: false});
         }
 
         //Winning Condition Check End
@@ -1600,7 +1602,8 @@ io.on('connection', (socket) => {
                 }
                 lobby.lobby_gameLoop_start = Date.now();
                 server_movePlayers(this,socket.id)
-    
+                
+                checkEndGametimers(this);
                 if (this.checkingSpawnTimers) checkSpawnStatusTimers(this);
     
                 updateClientPositions(this);
@@ -2828,7 +2831,16 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function checkEndGametimers(lobby) {
+    for (let i = 0; i < lobby.condition_time.length; i++) {
+        let condition = lobby.condition_time[i];
+        let endTime = (condition.condition.x*60*1000)+condition.timeStart;
 
+        if (Date.now() >= endTime) {
+            triggerWinningCondition(lobby,condition.condition);
+        }
+    }
+}
 function specialZone_timer(lobby,zone,time) {
     if (time <= 0 && zone.startTimeStamp) {
         let correctOccupied = specialZone_testOccupied(lobby,zone);
@@ -2923,7 +2935,6 @@ function specialZone_startTimer(lobby,zone) {
     if (zone.startTimeStamp !== false) return;
 
     zone.startTimeStamp = true;
-    console.log("YUP")
     specialZone_timer(lobby,zone,zone.giveStatusDelay*2);
 }
 function specialZone_testOccupied(lobby,zone) {
@@ -3577,6 +3588,10 @@ function startGameLoop(lobby) {
 
     for (let i = 0; i < lobby.inGamePlayers.length; i++) {
         lobby.inGamePlayers[i].timeCameAlive = Date.now();
+    }
+
+    for (let i = 0; i < lobby.condition_time.length; i++) {
+        lobby.condition_time[i].startTime = Date.now();
     }
 
 }

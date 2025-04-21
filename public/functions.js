@@ -1566,7 +1566,7 @@ function logAllWinningConditions(holder,gamemode) {
             howToWin = teamPrefix + ` Touch Tile  <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
         }
         if (condition.condition == "X Minutes Pass") {
-            howToWin = teamPrefix + ` The Game Ends In ${condition.x} Minutes`;
+            howToWin = `The Game Ends In ${condition.x} Minutes`;
         }
 
 
