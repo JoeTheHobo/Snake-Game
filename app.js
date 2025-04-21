@@ -3252,9 +3252,9 @@ function triggerWinningCondition(lobby,condition,player) {
         conditionTitle = "Game Ended After " + condition.x + " Minutes.";
     }
     if (condition.condition == "Board Status") {
-        let status = condition.condition.x.status;
+        let status = condition.x.status;
         if (status == "*P") status = "Of Any";
-        conditionTitle = `The Board Reaches ${condition.condition.x.count} ${status.format("A")} Status'`;
+        conditionTitle = `The Board Reaches ${condition.x.count} ${status.format("A")} Status'`;
     }
 
     if (condition.whoWins == "Player") {
