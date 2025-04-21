@@ -3168,6 +3168,9 @@ function triggerWinningCondition(lobby,condition,player) {
     if (condition.condition == "All Dead") {
         winningTitle = "No Winners";
     }
+    if (condition.condition == "X Minutes Pass") {
+        conditionTitle = "Game Ended After " + condition.x + " Minutes.";
+    }
 
     if (condition.whoWins == "Player") {
         winningTitle = player.accountName + " Won";

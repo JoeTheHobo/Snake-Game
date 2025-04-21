@@ -1142,7 +1142,7 @@ function loadGamemodeTabWinning() {
             }
 
         });
-        let b = createGamemodeSetting(pullFromCondition.settingsTitle,pullFromCondition.settingsType,"x",{},pullFromCondition.settingsDescription,false,false,false,() => {
+        let b = createGamemodeSetting(pullFromCondition.settingsTitle,pullFromCondition.settingsType,"x",pullFromCondition.typeSettings,pullFromCondition.settingsDescription,false,false,false,() => {
             loadWinningConditions();
         })
         let c = createGamemodeSetting("Highest Value","list","highestValue",{options: ["kills","size","time"], default: "kills"},"Whoever has the highest value of this will win.",1,2,{
@@ -1150,7 +1150,7 @@ function loadGamemodeTabWinning() {
             equals: "Highest Value",
         })
         let d = false;
-        if (["Kill X Snakes","Reach Snake Size"].includes(pullFromCondition.settingsTitle)) {
+        if (["Kill X Snakes","Reach Snake Size","Game Ends In (Minutes)"].includes(pullFromCondition.settingsTitle)) {
             d = createGamemodeSetting("Pull Team Stats","toggle","pullTeamStats",{default: false},"Pull players team stats when testing condition. (EX: Kill 4 Snakes, will grab all snakes killed from players team)")
         }
 
@@ -1238,7 +1238,7 @@ function loadGamemodeTabWinning() {
     }
 
     let conditions = [];
-    function addAvailableCondition(title,whereToModify,value,whoWins,settingsTitle,settingsType,settingsDescription) {
+    function addAvailableCondition(title,whereToModify,value,whoWins,settingsTitle,settingsType,settingsDescription,typeSettings) {
         let div = html_availableConditions.create("div.gmp_slot");
         div.innerHTML = title;
         let plus = div.create("img.gmp_plus")
@@ -1249,6 +1249,7 @@ function loadGamemodeTabWinning() {
             settingsTitle: settingsTitle,
             settingsType: settingsType,
             settingsDescription: settingsDescription,
+            typeSettings: typeSettings || {},
         })
 
         plus.on("click",function() {
@@ -1296,6 +1297,7 @@ function loadGamemodeTabWinning() {
     addAvailableCondition("Touch Item X","X","item.25","Player","Touch Item","item","Touch this item to win the game!");
     addAvailableCondition("Touch Tile X","X","tile.1","Player","Touch Tile","tile","Touch this tile to win the game!");
     addAvailableCondition("X Minutes Pass","X",3,"Highest Value","Game Ends In (Minutes)","number","Game will end after time ends.");
+    addAvailableCondition("Board Status",false,false,"Highest Value","Board Status Is","status","Game ends when board status is met.",{showNumber: true,readAs: "object",statusMenuOptions: ["status","count","submit"]});
 
     loadWinningConditions();
 }
