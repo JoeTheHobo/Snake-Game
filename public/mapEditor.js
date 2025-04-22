@@ -620,7 +620,7 @@ function adjustMousePos(e) {
     mouseX = Math.floor(x/(gridSize*zoom));
     mouseY = Math.floor(y/(gridSize*zoom));
 }
-$("me_canvas").on("mousemove",function(e) {
+$("me_canvas_top").on("mousemove",function(e) {
     adjustMousePos(e);
 
     for (const row of board.originalMap) {
@@ -687,7 +687,7 @@ $("me_canvas").on("mousemove",function(e) {
     if (mouseDown !== "wheel") renderZoneCanvas()
     renderTopCanvas();
 })
-$("me_canvas").on("mousedown",function(e) {
+$("me_canvas_top").on("mousedown",function(e) {
     var isRightMB;
     e = e || window.event;
 
@@ -751,7 +751,7 @@ $("me_canvas").on("mousedown",function(e) {
     
     checkRenderThenRender();
 })
-$("me_canvas").on("mouseup",function(e) {
+$("me_canvas_top").on("mouseup",function(e) {
 
     if (mouseDown === true && (tool == "draw" || tool == "eraser") && currentTab !== "Spawn Zones") {
         if (subTool == "shape") {
@@ -876,14 +876,11 @@ function moveCanvasToStayInPosition(e,originalX,originalY) {
 
 }
 function adjustCanvasPosition() {
-    $("me_canvas").style.marginLeft = xChange + "px";
-    $("me_canvas").style.marginTop = yChange + "px";
-    $("me_canvas2").style.marginLeft = xChange + "px";
-    $("me_canvas2").style.marginTop = yChange + "px";
-    $("me_canvas_background").style.marginLeft = xChange + "px";
-    $("me_canvas_background").style.marginTop = yChange + "px";
-    $("me_canvas_zones").style.marginLeft = xChange + "px";
-    $("me_canvas_zones").style.marginTop = yChange + "px";
+    let canvasList = ["me_canvas_background","me_canvas_tiles","me_canvas_emote_background","me_canvas_items","me_canvas_emote_foreground","me_canvas_top"];
+    for (let i = 0; i < canvasList.length; i++) {
+        $(canvasList[i]).style.marginLeft = xChange + "px";
+        $(canvasList[i]).style.marginTop = yChange + "px";
+    }
 }
 function changeZoom(delta) {
     if (delta < 0) zoom += 0.1;
@@ -899,11 +896,11 @@ function changeZoom(delta) {
     renderMapEditorCanvas(true);
     renderBackgroundCanvas();
 }
-$("me_canvas").on("mouseleave",function(e) {
+$("me_canvas_top").on("mouseleave",function(e) {
     //mouseDown = false;
     //rightMouse = false;
 })
-$("me_canvas").on("contextmenu",function(e) {
+$("me_canvas_top").on("contextmenu",function(e) {
     e.preventDefault();
 })
 document.on('keydown', (e) => {
