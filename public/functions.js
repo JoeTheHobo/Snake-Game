@@ -2465,7 +2465,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
             ctx.lineWidth = settings.border.width;
 
             // Ensure radius doesn’t exceed half the width/height
-            radius = Math.min(radius, width / 2, height / 2);
+            radius = Math.min(settings.border.radius, width / 2, height / 2);
 
             ctx.beginPath();
             ctx.moveTo(x + radius, y);

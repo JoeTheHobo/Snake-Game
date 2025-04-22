@@ -390,7 +390,7 @@ function me_updateCell(type,ctx,x,y,opacity) {
     
                 let textWidth = ctx.measureText(cell.item.boardDestructibleCountRequired).width;
                 xPos = (x*(gridSize*zoom)) + ((gridSize*zoom)/2) - (textWidth/2);
-                yPos = (y*(gridSize*zoom)) + ((gridSize*zoom)/2)+5;
+                yPos = (y*(gridSize*zoom)) + ((gridSize*zoom)/2);
     
                 ctx.strokeText(cell.item.boardDestructibleCountRequired,xPos,yPos);
                 ctx.fillText(cell.item.boardDestructibleCountRequired,xPos,yPos);
@@ -406,7 +406,7 @@ function me_updateCell(type,ctx,x,y,opacity) {
     
                 let textWidth = ctx.measureText(value).width;
                 xPos = (x*(gridSize*zoom)) + ((gridSize*zoom)/2) - (textWidth/2);
-                yPos = (y*(gridSize*zoom)) + ((gridSize*zoom)/2)+5;
+                yPos = (y*(gridSize*zoom)) + ((gridSize*zoom)/2);
     
                 ctx.strokeText(value,xPos,yPos);
                 ctx.fillText(value,xPos,yPos);
