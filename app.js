@@ -1568,49 +1568,8 @@ io.on('connection', (socket) => {
             lobby.specialZones[i].startTimeStamp = false;
             lobby.specialZones[i].statusGave = 0;
             lobby.specialZones[i].statusGiven = [];
-            let zone = lobby.specialZones[i];
-            let sendArr = {
-                pos1: zone.pos1,
-                pos2: zone.pos2,
-                color: zone.giveStatus,
-                id: false,
-                type: "special",
-                function: "new",
-            }
-            if (zone.visible_name) sendArr.id = zone.id;
-            lobby.updateZones.push(sendArr)
         }
 
-        for (let i = 0; i < lobby.spawnZones.players.length; i++) {
-            if (lobby.spawnZones.players[i].visible) {
-                let zone = lobby.spawnZones.players[i];
-                let sendArr = {
-                    pos1: zone.pos1,
-                    pos2: zone.pos2,
-                    color: zone.team,
-                    id: false,
-                    type: "player",
-                    function: "new",
-                }
-                if (zone.visible_name) sendArr.id = zone.id;
-                lobby.updateZones.push(sendArr)
-            }
-        }
-        for (let i = 0; i < lobby.spawnZones.items.length; i++) {
-            if (lobby.spawnZones.items[i].visible) {
-                let zone = lobby.spawnZones.items[i];
-                let sendArr = {
-                    pos1: zone.pos1,
-                    pos2: zone.pos2,
-                    color: "white",
-                    type: "item",
-                    function: "new",
-                    id: false,
-                }
-                if (zone.visible_name) sendArr.id = zone.id;
-                lobby.updateZones.push(sendArr)
-            }
-        }
 
         getLocations(lobby);
         fixBoardDifferences(lobby.board.map,lobby.board.itemDifferences,"item");

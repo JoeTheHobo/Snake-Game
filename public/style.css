@@ -69,7 +69,7 @@ z-index: 401;
   transition: filter .2s ease-in-out;
 z-index: 402;
 }
-#render_zones {
+#render_emote_background {
   z-index: 403;
 }
 #render_items {

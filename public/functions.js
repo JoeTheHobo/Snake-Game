@@ -99,8 +99,8 @@ $(".local_bottom_canvas").width = 142;
 $(".local_bottom_canvas").height = 80;
 let canvas_background = $("render_background");
 let ctx_background = canvas_background.getContext("2d");
-let canvas_zones = $("render_zones");
-let ctx_zones = canvas_zones.getContext("2d");
+let canvas_emote_background = $("render_emote_background");
+let ctx_emote_background = canvas_emote_background.getContext("2d");
 let canvas_tiles = $("render_tiles");
 let ctx_tiles = canvas_tiles.getContext("2d");
 let canvas_items = $("render_items");
@@ -144,7 +144,7 @@ let ctx_firstPerson_br = canvas_firstPerson_br.getContext("2d");
 let canvas_firstPerson_master = $(".firstPersonCanvas_master");
 let ctx_firstPerson_master = canvas_firstPerson_master.getContext("2d");
 
-let allCanvas = [me_canvas_background,me_canvas_tiles,me_canvas_emote_background,me_canvas_emote_foreground,me_canvas_items,me_canvas_top,canvas_zones,canvas_tiles,canvas_items,canvas_players,canvas_overhangs,canvas_top,canvas_firstPerson_tl,
+let allCanvas = [me_canvas_background,me_canvas_tiles,me_canvas_emote_background,me_canvas_emote_foreground,me_canvas_items,me_canvas_top,canvas_emote_background,canvas_tiles,canvas_items,canvas_players,canvas_overhangs,canvas_top,canvas_firstPerson_tl,
     canvas_firstPerson_tm,canvas_firstPerson_tr,canvas_firstPerson_lm,canvas_firstPerson_rm,canvas_firstPerson_bl,canvas_firstPerson_bm,canvas_firstPerson_br,canvas_firstPerson_master,
 ]
 
@@ -2579,4 +2579,33 @@ function renderZone_checkForValue(zone,value) {
         return zone[value.subset(1,"end")];
     }
     return value;
+}
+function addZonesToRender(zoneList) {
+    for (let i = 0; i < zoneList.players.length; i++) {
+        if (zoneList.players[i].visible) {
+            zone = zoneList.players[i];
+            zone.render = function() {
+                renderZone(canvas_emote_background,canvas_top,this);
+            }
+            emotesToRender.push(zone);
+        }
+    }
+    for (let i = 0; i < zoneList.items.length; i++) {
+        if (zoneList.items[i].visible) {
+            zone = zoneList.items[i];
+            zone.render = function() {
+                renderZone(canvas_emote_background,canvas_top,this);
+            }
+            emotesToRender.push(zone);
+        }
+    }
+    for (let i = 0; i < zoneList.special.length; i++) {
+        if (zoneList.special[i].visible) {
+            zone = zoneList.special[i];
+            zone.render = function() {
+                renderZone(canvas_emote_background,canvas_top,this);
+            }
+            emotesToRender.push(zone);
+        }
+    }
 }

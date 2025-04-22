@@ -254,11 +254,13 @@ socket.on("startingGame", (lobby) => {
 
     activePlayers = lobby.activePlayers;
     currentBoard = lobby.board;
-    existingZones = [];
+    emotesToRender = [];
     isActiveGame = true;
     gameEnd = false;
     gameType = "server";
     localAccount.firstRound = true;
+
+    addZonesToRender(lobby.board.spawnZones);
 
     setResolution(lobby.board.map[0].length,lobby.board.map.length);
     setUpPlayerCanvas();

@@ -122,56 +122,17 @@ function renderCells(list,ctx,type) {
         document.body.style.background = color;
     }
 }
-function renderZonesCanvas(canvas) {
-    let ctx = canvas.getContext("2d");
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    
-    if (ctx_zones.globalAlpha !== 0.4) ctx_zones.globalAlpha = 0.4;
-
-    handleZoneUpdates();
-
-    for (let i = 0; i < existingZones.length; i++) {
-        let zone = existingZones[i];
-
-        ctx.fillStyle = _color(zone.color).ogColor;
-        ctx.strokeStyle = _color(zone.color).darken(10).ogColor;
-        ctx.lineWidth = 6;
-
-        let width = (zone.pos2.x-zone.pos1.x+1)*gridSize;
-        let height = (zone.pos2.y-zone.pos1.y+1)*gridSize;
-
-        ctx.fillRect(zone.pos1.x*gridSize,zone.pos1.y*gridSize,width,height);
-        ctx.strokeRect(zone.pos1.x*gridSize,zone.pos1.y*gridSize,width,height);
-
-        if (zone.id) {
-            
-            // Reset opacity for text
-            ctx.fillStyle = "black"; // Change as needed for contrast
-            ctx.font = `20px VT323`; // Adjust font size as needed
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-
-            // Draw the zoneID in the center
-            ctx.fillText(zone.id, (zone.pos1.x*gridSize) + width / 2, (zone.pos1.y*gridSize) + height / 2);
-            ctx.fillText(zone.id, (zone.pos1.x*gridSize) + width / 2, (zone.pos1.y*gridSize) + height / 2);
-            ctx.fillText(zone.id, (zone.pos1.x*gridSize) + width / 2, (zone.pos1.y*gridSize) + height / 2);
-            ctx.fillText(zone.id, (zone.pos1.x*gridSize) + width / 2, (zone.pos1.y*gridSize) + height / 2);
-
-        }
+function renderEmotes() {
+    ctx_emote_background.clearRect(0,0,canvas_emote_background.width,canvas_emote_background.height);
+    ctx_top.clearRect(0,0,canvas_top.width,canvas_top.height);
+    for (let i = 0; i < emotesToRender.length; i++) {
+        emotesToRender[i].render();
     }
 }
 function handleZoneUpdates() {
     for (let i = 0; i < updateZones.length; i++) {
         let zone = updateZones[i];
-        if (zone.function == "new") {
-            existingZones.push({
-                pos1: zone.pos1,
-                pos2: zone.pos2,
-                id: zone.id,
-                type: zone.type,
-            })
-        }
+
     }
 }
 function drawImage(image, direction, xPos, yPos, width, height,cnvs = canvas_players) {
@@ -912,7 +873,8 @@ function serverGameLoop() {
     if (!isActiveGame) return;
     renderCells(updateTiles,ctx_tiles,"tile")
     renderCells(updateCells,ctx_items,"item");
-    renderZonesCanvas(canvas_zones);
+    handleZoneUpdates();
+    renderEmotes();
     updateTiles = [];
     updateCells = [];
     updateZones = [];
