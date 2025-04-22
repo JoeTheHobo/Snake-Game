@@ -1942,10 +1942,17 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
     if (selectingZoneIndex === i) spawnZoneHolder.classAdd("spawnZoneSelected")
 
     let rightIcons = spawnZoneHolder.create("div.spawnZoneRight");
+    
     let editIcon = rightIcons.create("img.spawnZoneImg");
     editIcon.src = "img/menuIcons/edit.png";
     editIcon.on("click",function() {
         editZonePopup(type,zone);
+    })
+
+    let artIcon = rightIcons.create("img.spawnZoneImg");
+    artIcon.src = "img/menuIcons/paint.png";
+    artIcon.on("click",function() {
+        loadCustomizeZonePopup();
     })
 
     let deleteIcon = rightIcons.create("img.spawnZoneImg");
@@ -2975,7 +2982,7 @@ function loadCustomizeZoneSettings(settings,index) {
     //Generic
     settingHolder = holder.create("div.zcp_customizeHolder");
     if (listOptions.includes("display")) {
-        console.log(getNestedValue(settingHolder,"display"));
+        console.log(getNestedValue(settings,"display"));
         addSetting(settingHolder,"display","list",["foreground","background"]);
     }
     if (listOptions.includes("position")) {
