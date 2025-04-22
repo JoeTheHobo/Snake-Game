@@ -2975,6 +2975,7 @@ function loadCustomizeZoneSettings(settings,index) {
     //Generic
     settingHolder = holder.create("div.zcp_customizeHolder");
     if (listOptions.includes("display")) {
+        console.log(getNestedValue(settingHolder,"display"));
         addSetting(settingHolder,"display","list",["foreground","background"]);
     }
     if (listOptions.includes("position")) {
