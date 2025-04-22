@@ -2516,6 +2516,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
 }
 function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings) {
     let x, y;
+    console.log(settings.location,settings)
 
     if (settings.location == "topLeft") {
         x = zoneX;
