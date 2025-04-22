@@ -2432,6 +2432,38 @@ $(".me_sz_addButton").on("click",function() {
             repeatStatusType: "Repeat",
             giveStatusWhenOccupiedBy: "Solo Team",
             displayStatusStats: true,
+            display: [
+                {
+                    type: "background",
+                    display: "background", 
+                    backgroundColor: ".giveStatus",
+                    border: {
+                        color: ".giveStatus.darken(20)",
+                        width: 3,
+                        radius: 0,
+                    },
+                },
+                {
+                    type: "textbox",
+                    display: "background",
+                    text: ".id",
+                    font: {
+                        family: "VT323",
+                        color: "black",
+                        size: 20,
+                        textAlign: "center",
+                        textBaseline: "middle",
+                    },
+                    position: {
+                        offSetX: 0,
+                        offSetY: 0,
+                        rotation: 0,
+                        location: "center",
+                    }
+                }
+            ],
+
+            
 
             visible: true,
             active: true,
@@ -2465,6 +2497,37 @@ $(".me_sz_addButton").on("click",function() {
                 respawnHere: true,
                 priority: 0,
                 alternate: true,
+                display: [
+                    {
+                        type: "background",
+                        display: "background", 
+                        backgroundColor: ".team",
+                        border: {
+                            color: ".team.darken(20)",
+                            width: 3,
+                            radius: 0,
+                        },
+                    },
+                    {
+                        type: "textbox",
+                        display: "background",
+                        text: ".id",
+                        font: {
+                            family: "VT323",
+                            color: "black",
+                            size: 20,
+                            textAlign: "center",
+                            textBaseline: "middle",
+                        },
+                        position: {
+                            offSetX: 0,
+                            offSetY: 0,
+                            rotation: 0,
+                            location: "center",
+                        }
+                    }
+                ],
+
 
                 visible: false,
                 active: true,
@@ -2494,6 +2557,36 @@ $(".me_sz_addButton").on("click",function() {
                 y: Math.round(currentBoard.height/4) + Math.round(currentBoard.height/4),
             },
             itemsThatCantSpawnHere: [],
+            display: [
+                {
+                    type: "background",
+                    display: "background", 
+                    backgroundColor: "white",
+                    border: {
+                        color: "#bfbfbf",
+                        width: 3,
+                        radius: 0,
+                    },
+                },
+                {
+                    type: "textbox",
+                    display: "background",
+                    text: ".id",
+                    font: {
+                        family: "VT323",
+                        color: "black",
+                        size: 20,
+                        textAlign: "center",
+                        textBaseline: "middle",
+                    },
+                    position: {
+                        offSetX: 0,
+                        offSetY: 0,
+                        rotation: 0,
+                        location: "center",
+                    }
+                }
+            ],
 
             visible: false,
             active: true,

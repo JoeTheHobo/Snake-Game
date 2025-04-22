@@ -2487,7 +2487,6 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
             // Reset opacity for text
             ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.font.color)).ogColor; // Change as needed for contrast
             ctx.font = `${settings.font.size * zoom}px ${settings.font.family}`; // Adjust font size as needed
-            console.log(settings.font);
             ctx.textAlign = settings.font.textAlign || "center";
             ctx.textBaseline = settings.font.textBaseline || "middle";
 
@@ -2517,7 +2516,6 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
 }
 function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings) {
     let x, y;
-    console.log(settings.location,settings)
 
     if (settings.location == "topLeft") {
         x = zoneX;
