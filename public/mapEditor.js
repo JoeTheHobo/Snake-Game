@@ -312,7 +312,7 @@ function renderMapEditorCanvas(renderEverything = false) {
             let tileIsDifferent = JSON.stringify(board.originalMap[i][j].tile) !== JSON.stringify(oldMap[i][j].tile);
             let itemIsDifferent = JSON.stringify(board.originalMap[i][j].item) !== JSON.stringify(oldMap[i][j].item);
             if (tileIsDifferent || renderEverything) me_updateCell("tile",me_ctx_tiles,j,i); 
-            if (itemIsDifferent || renderEverything) me_updateCell("item",me_ctx_tiles,j,i);
+            if (itemIsDifferent || renderEverything) me_updateCell("item",me_ctx_items,j,i);
         }
     }
     oldMap = structuredClone(currentBoard.originalMap);
@@ -365,7 +365,6 @@ function me_updateCell(type,ctx,x,y,opacity) {
     ctx.clearRect(Xpos,Ypos,(gridSize*zoom),(gridSize*zoom))
 
     if (type == "tile" || type == "all") {
-        console.log(cell)
         if (cell.tile) {
             itemCounts.push("tile_" + cell.tile.name);
             let filter = checkItemFilter(cell.tile);
