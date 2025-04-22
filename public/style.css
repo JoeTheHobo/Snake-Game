@@ -5198,6 +5198,9 @@ cursor: url('./img/pointer.cur'), auto;
     overflow-y: auto; /* scroll if content exceeds */
     padding: 8px;
   }
+  .zcp_list > :last-child {
+    border-bottom: none !important;
+  }
 .zcp_displayOption {
   cursor: url(./img/pointer.cur), auto;
   border: 2px solid white;
@@ -5331,8 +5334,8 @@ cursor: url('./img/pointer.cur'), auto;
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding-bottom: 5px;
-  border-bottom: 1px solid white;
+  padding-bottom: 10px;
+  border-bottom: 2px solid white;
 }
 .zcp_addOption {
   cursor: url(./img/pointer.cur), auto;

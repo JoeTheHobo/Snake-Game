@@ -2783,6 +2783,8 @@ function loadCustomizeZonePopup() {
         }
     }
 
+    if (displayList.length > 10) return;
+
     let addNewOption = holder.create("div.zcp_displayOption");
     let leftHolder = addNewOption.create("div.zcp_displayOption_leftHolder"); 
     let addNewImage = leftHolder.create("img.zcp_displayOption_add");
@@ -2879,43 +2881,48 @@ function loadCustomizeZoneSettings(settings,index) {
         }
     }
 
+    let settingHolder
     //Generic
-    let genericHolder = holder.create("div.zcp_customizeHolder");
+    settingHolder = holder.create("div.zcp_customizeHolder");
     if (listOptions.includes("display")) {
-        addSetting(genericHolder,"display","list",["foreground","background"]);
+        addSetting(settingHolder,"display","list",["foreground","background"]);
     }
     if (listOptions.includes("position")) {
-        addSetting(genericHolder,"position.location","list",["topLeft","topCenter","topRight","leftCenter","center","rightCenter","bottomLeft","bottomCenter","bottomRight"]);
-        addSetting(genericHolder,"position.offSetX","number");
-        addSetting(genericHolder,"position.offsetY","number");
-        addSetting(genericHolder,"position.rotation","slider",{min: 0, max: 360});
+        addSetting(settingHolder,"position.location","list",["topLeft","topCenter","topRight","leftCenter","center","rightCenter","bottomLeft","bottomCenter","bottomRight"]);
+        addSetting(settingHolder,"position.offSetX","number");
+        addSetting(settingHolder,"position.offsetY","number");
+        addSetting(settingHolder,"position.rotation","slider",{min: 0, max: 360});
     }
     //Element Specific
-    let specificHolder = holder.create("div.zcp_customizeHolder")
     if (listOptions.includes("border")) {
-        addSetting(specificHolder,"border.color","text");
-        addSetting(specificHolder,"border.width","number");
-        addSetting(specificHolder,"border.radius","slider",{min: 0, max: 200});
+        settingHolder = holder.create("div.zcp_customizeHolder")
+        addSetting(settingHolder,"border.color","text");
+        addSetting(settingHolder,"border.width","number");
+        addSetting(settingHolder,"border.radius","slider",{min: 0, max: 200});
     }
-    if (listOptions.includes("color")) {
-        addSetting(specificHolder,"color","text");
-    }
+
+    if (listOptions.includes("text") || listOptions.includes("font"))
+        settingHolder = holder.create("div.zcp_customizeHolder")
     if (listOptions.includes("text")) {
-        addSetting(specificHolder,"text","text");
+        addSetting(settingHolder,"text","text");
     }
     if (listOptions.includes("font")) {
-        addSetting(specificHolder,"font.family","text");
-        addSetting(specificHolder,"font.color","text");
-        addSetting(specificHolder,"font.fontSize","number",{mix: 0, max: 100});
+        addSetting(settingHolder,"font.family","text");
+        addSetting(settingHolder,"font.color","text");
+        addSetting(settingHolder,"font.fontSize","number",{mix: 0, max: 100});
     }
     if (listOptions.includes("timerFormat")) {
-        addSetting(specificHolder,"timerFormat","text");
+        settingHolder = holder.create("div.zcp_customizeHolder")
+        addSetting(settingHolder,"timerFormat","text");
     }
+    
+    if (listOptions.includes("backgroundColor") || listOptions.includes("foregroundColor"))
+        settingHolder = holder.create("div.zcp_customizeHolder")
     if (listOptions.includes("backgroundColor")) {
-        addSetting(specificHolder,"backgroundColor","text");
+        addSetting(settingHolder,"backgroundColor","text");
     }
     if (listOptions.includes("foregroundColor")) {
-        addSetting(specificHolder,"foregroundColor","text");
+        addSetting(settingHolder,"foregroundColor","text");
     }
 
 }
@@ -2957,7 +2964,7 @@ function getZoneDisplayObject(text) {
         case "background": return {
             type: "background",
             display: "background", 
-            color: ".team",
+            backgroundColor: ".team",
             border: {
                 color: ".team.darken(20)",
                 width: 3,
