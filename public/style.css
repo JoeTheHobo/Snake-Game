@@ -5224,7 +5224,7 @@ cursor: url('./img/pointer.cur'), auto;
   filter: invert(100%);
   margin-right: 10px;
   aspect-ratio: 1/1;
-  height: 75%;
+  height: 70%;
   cursor: url(./img/pointer.cur), auto;
   transition: all .2s ease-in-out;
 }
@@ -5235,7 +5235,7 @@ cursor: url('./img/pointer.cur'), auto;
   display: flex;
   flex-direction: row;
   align-items: center;
-  
+  height: 100%;
 }
 .zcp_displayOption_add {
   aspect-ratio: 1/1;
