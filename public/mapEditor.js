@@ -2022,6 +2022,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
             t = createGamemodeSetting("Advanced Display Editor","button",false,{text: "Open Editor", func: function() {
                 $(".editZonePopup").hide();
                 $(".zoneCustomizePopup").show("flex");
+                loadCustomizeZonePopup();
             }},"Open our more advanced tool for customization!",10,3,{
                 valueFromId: 1,
                 equals: true,
@@ -2721,10 +2722,12 @@ function loadBoardGameModes(gameModesHolder,gameModes,sentFrom) {
 
 
 
+
+
 let customizeZone_isDragging = false;
 let customizeZone_offsetX = 0;
 let customizeZone_offsetY = 0;
-$(".zcp_moveIcon").on('mousedown', (e) => {
+$(".zcp_topRow").on('mousedown', (e) => {
     customizeZone_isDragging = true;
     const rect = $(".zoneCustomizePopup").getBoundingClientRect();
     customizeZone_offsetX = e.clientX - rect.left;
@@ -2738,3 +2741,292 @@ document.on('mousemove', (e) => {
 document.addEventListener('mouseup', () => {
     customizeZone_isDragging = false;
 });
+$(".zcp_closeIcon").on("click",function() {
+    $(".zoneCustomizePopup").hide();
+})
+function loadCustomizeZonePopup() {
+    if (!selectedZone.zone.display) {
+        selectedZone.zone.display = [
+            getZoneDisplayObject("background"),
+            getZoneDisplayObject("textBox")
+        ];
+    }
+
+    let holder = $(".zcp_list");
+    holder.innerHTML = "";
+    $(".zcp_tr_title").innerHTML = "Zone Elements";
+
+    let displayList = selectedZone.zone.display;
+    for (let i = 0; i < displayList.length; i++) {
+        let addNewOption = holder.create("div.zcp_displayOption");
+        let addNewText = addNewOption.create("div.zcp_displayOption_text");
+        addNewText.innerHTML = displayList[i].type;
+
+        addNewOption.on("click",function() {
+            loadCustomizeZoneSettings(displayList[i],i);
+        })
+    }
+
+    let addNewOption = holder.create("div.zcp_displayOption");
+    let addNewImage = addNewOption.create("img.zcp_displayOption_add");
+    addNewImage.src = "img/menuIcons/add.png";
+    let addNewText = addNewOption.create("div.zcp_displayOption_text");
+    addNewText.innerHTML = "Add New";
+    addNewOption.on("click",function() {
+        addNewCustomizeZoneOption();
+    })
+}
+function loadCustomizeZoneSettings(settings,index) {
+    $(".zcp_tr_title").innerHTML = "Customize Element";
+    let holder = $(".zcp_list");
+    holder.innerHTML = "";
+
+    let listOptions = Object.keys(settings);
+
+    function addSetting(holder,title,type,extra) {
+        let settingHolder = holder.create("div.zcp_customizeHolder_settingHolder");
+        let settingTitle = settingHolder.create("div.zcp_customizeHolder_settingHolder_title");
+        settingTitle.innerHTML = standardizeText(title) + ":";
+
+        let input, value = getNestedValue(settings,title);
+
+        if (type == "list") {
+            input = settingHolder.create("select.zcp_customizeHolder_settingHolder_" + type);
+            input.value = value;
+            
+            extra.forEach(optionText => {
+                const option = document.createElement('option');
+                option.value = optionText.toLowerCase();
+                option.text = optionText;
+                select.appendChild(option);
+            });
+        }
+        if (type == "number") {
+            input = settingHolder.create("input.zcp_customizeHolder_settingHolder_" + type);
+            input.type = "number";
+            input.value = value;
+            input.storedValue;
+            input.on("click",function() {
+                this.storedValue = this.value;
+                this.value = "";
+            })
+            input.on("blur",function() {
+                this.value = this.storedValue;
+            })
+            input.on("change",function() {
+                let value = Number(this.value);
+                if (extra?.min) if (value < extra.min) value = extra.min;
+                if (extra?.max) if (value > extra.max) value = extra.max;
+                this.storedValue = value;
+                setNestedValue(settings,title,value);
+            })
+
+        }
+        if (type == "text") {
+            input = settingHolder.create("input.zcp_customizeHolder_settingHolder_" + type);
+            input.value = value;
+            input.storedValue;
+            input.on("click",function() {
+                this.storedValue = this.value;
+                this.value = "";
+            })
+            input.on("blur",function() {
+                this.value = this.storedValue;
+            })
+            input.on("change",function() {
+                let value = profanity.clean(this.value);
+                this.storedValue = value;
+                setNestedValue(settings,title,value);
+            })
+        }
+        if (type == "slider") {
+            input = settingHolder.create("input.zcp_customizeHolder_settingHolder_" + type);
+            input.type = "range";
+            input.min = extra.min;
+            input.max = extra.max;
+            input.value = value;
+            input.on("change",function() {
+                setNestedValue(settings,title,this.value);
+            })
+        }
+    }
+
+    //Generic
+    let genericHolder = holder.create("zcp_customizeHolder");
+    if (listOptions.includes("display")) {
+        addSetting(genericHolder,"display","list",["foreground","background"]);
+    }
+    if (listOptions.includes("position")) {
+        addSetting(genericHolder,"position.location","list",["topLeft","topCenter","topRight","leftCenter","center","rightCenter","bottomLeft","bottomCenter","bottomRight"]);
+        addSetting(genericHolder,"position.offSetX","number");
+        addSetting(genericHolder,"position.offsetY","number");
+        addSetting(genericHolder,"position.rotation","number",{min: 0, max: 360});
+    }
+    //Element Specific
+    let specificHolder = holder.create("zcp_customizeHolder")
+    if (listOptions.includes("border")) {
+        addSetting(specificHolder,"border.color","text");
+        addSetting(specificHolder,"border.width","number");
+        addSetting(specificHolder,"border.radius","slider",{min: 0, max: 200});
+    }
+    if (listOptions.includes("color")) {
+        addSetting(specificHolder,"color","text");
+    }
+    if (listOptions.includes("text")) {
+        addSetting(specificHolder,"text","text");
+    }
+    if (listOptions.includes("font")) {
+        addSetting(specificHolder,"font.family","text");
+        addSetting(specificHolder,"font.color","text");
+        addSetting(specificHolder,"font.fontSize","number",{mix: 0, max: 100});
+    }
+    if (listOptions.includes("timerFormat")) {
+        addSetting(specificHolder,"timerFormat","text");
+    }
+    if (listOptions.includes("backgroundColor")) {
+        addSetting(specificHolder,"backgroundColor","text");
+    }
+    if (listOptions.includes("foregroundColor")) {
+        addSetting(specificHolder,"foregroundColor","text");
+    }
+
+}
+function addNewCustomizeZoneOption() {
+    let type = selectedZone.type;
+
+    let availableOptions = ["background","textBox"];
+
+    if (type == "special") {
+        availableOptions = availableOptions.concat(["textTimer","barTimer","circleTimer","statusList"]);
+    }
+    if (type == "player") {
+        availableOptions = availableOptions.concat([]);
+    }
+    if (type == "item") {
+        availableOptions = availableOptions.concat(["allowedItems","notAllowedItems"]);
+    }
+
+    let holder = $(".zcp_list");
+    holder.innerHTML = "";
+
+    $(".zcp_tr_title").innerHTML = "Add Zone Element";
+
+    for (let i = 0; i < availableOptions.length; i++) {
+        let container = holder.create("div.zcp_addOption");
+        container.innerHTML = availableOptions[i];
+        container.on("click",function() {
+            selectedZone.zone.display.push(getZoneDisplayObject(this.innerHTML));
+            loadCustomizeZoneSettings(selectedZone.zone.display[selectedZone.zone.display.length-1],selectedZone.zone.display.length-1);
+        })
+    }
+}
+function getZoneDisplayObject(text) {
+    switch (text) {
+        case "background": return {
+            type: "background",
+            display: "background", 
+            color: ".team",
+            border: {
+                color: ".team.darken(20)",
+                width: 3,
+                radius: 0,
+            },
+        }
+        case "textBox": return {
+            type: "textbox",
+            display: "background",
+            text: ".id",
+            font: {
+                family: "VT323",
+                color: "black",
+                fontSize: 20,
+            },
+            position: {
+                offSetX: 0,
+                offSetY: 0,
+                rotation: 0,
+                location: "center",
+            }
+        }
+        case "textTimer": return {
+            type: "textTimer",
+            display: "foreground",
+            timerFormat: "MM:SS",
+            font: {
+                family: "VT323",
+                color: "black",
+                fontSize: 20,
+            },
+            position: {
+                offSetX: 0,
+                offSetY: 0,
+                rotation: 0,
+                location: "topCenter",
+            }
+        }
+        case "barTimer": return {
+            type: "barTimer",
+            display: "foreground",
+            position: {
+                offSetX: 0,
+                offSetY: 0,
+                rotation: 0,
+                location: "topCenter",
+            },
+            backgroundColor: "white",
+            foregroundColor: "lightblue",
+            border: {
+                color: "black",
+                width: 2,
+                radius: 0,
+            },
+        }
+        case "circleTimer": return {
+            type: "circleTimer",
+            display: "foreground",
+            position: {
+                offSetX: 0,
+                offSetY: 0,
+                rotation: 0,
+                location: "topCenter",
+            },
+            backgroundColor: "white",
+            foregroundColor: "lightblue",
+            border: {
+                color: "black",
+                width: 2,
+                radius: 0,
+            },
+        }
+        case "statusList": return {
+            type: "circleTimer",
+            display: "foreground",
+            position: {
+                offSetX: 0,
+                offSetY: 0,
+                rotation: 0,
+                location: "topCenter",
+            },
+        }
+        case "allowedItems": return {
+            type: "allowedItems",
+            display: "foreground",
+            position: {
+                offSetX: 0,
+                offSetY: 0,
+                rotation: 0,
+                location: "topCenter",
+            },
+        }
+        case "notAllowedItems": return {
+            type: "notAllowedItems",
+            display: "foreground",
+            position: {
+                offSetX: 0,
+                offSetY: 0,
+                rotation: 0,
+                location: "topCenter",
+            },
+        }
+    }
+}

@@ -861,6 +861,20 @@ io.on('connection', (socket) => {
                         respawnHere: true,
                         priority: 0,
                         alternate: true,
+                        display: [
+                            {
+                                type: "background",
+                                color: ".team",
+                                borderColor: ".team.darken(20)",
+                                borderWidth: 3,
+                                display: "background",  
+                            },
+                            {
+                                type: "textbox",
+                                color: "black",
+                                text: ".id",
+                            }
+                        ],
     
                         visible: false,
                         visible_name: false,
@@ -880,6 +894,21 @@ io.on('connection', (socket) => {
                             x: width-1,
                             y: height-1,
                         },
+                        display: [
+                            {
+                                type: "background",
+                                color: ".team",
+                                borderColor: ".team.darken(20)",
+                                borderWidth: 3,
+                                display: "background",  
+                            },
+                            {
+                                type: "textbox",
+                                color: "black",
+                                text: ".id",
+                                display: "background",
+                            }
+                        ],
                         itemsThatCantSpawnHere: [],
     
                         visible: false,

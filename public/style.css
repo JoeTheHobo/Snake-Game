@@ -5152,8 +5152,8 @@ cursor: url('./img/pointer.cur'), auto;
   .zoneCustomizePopup {
     display: none;
     flex-direction: column;
-    width: 300px;
-    height: 600px;
+    width: 350px;
+    height: 550px;
     background: #1A1A1A;
     border: 3px solid white;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -5170,21 +5170,123 @@ cursor: url('./img/pointer.cur'), auto;
     flex-shrink: 0; /* ensures it stays the size it needs */
 
   }
+  .zcp_moveIcon {
+    filter: "" !important;
+  }
   .zcp_tr_image {
     filter: invert(100%);
     cursor: url(./img/pointer.cur), auto;
     width: 25px;
     height: 25px;
+    transition: opacity 0.2s ease-in-out;
+  }
+  .zcp_tr_image:hover {
+    opacity: 0.5;
   }
   .zcp_tr_title {
     flex-grow: 1;
     text-align: center;
-    font-weight: bold;
     color: white;
-    font-size: 1em;
+    font-size: 1.6em;
   }
   .zcp_list {
     flex-grow: 1; /* fill the remaining space */
     overflow-y: auto; /* scroll if content exceeds */
     padding: 8px;
   }
+.zcp_displayOption {
+  border: 2px solid white;
+  box-sizing: border-box;
+  margin-top: 2px;
+  padding: 5px;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.zcp_displayOption_text {
+  color: white;
+  font-size: 1.6em;
+}
+.zcp_displayOption_add {
+  aspect-ratio: 1/1;
+  height: 25%;
+  margin-right: 10px;
+}
+.zcp_customizeHolder_settingHolder {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.zcp_customizeHolder_settingHolder_title {
+  color: white;
+  font-size: 1.6em;
+}
+.zcp_customizeHolder_settingHolder_list {
+  cursor: url(./img/pointer.cur), auto;
+  border: 2px solid white;
+  font-family: VT323;
+  color: white;
+  background: none;
+  outline: none;
+  font-size: 1.2em;
+  height: 25px;
+  flex: 1;
+}
+.zcp_customizeHolder_settingHolder_number {
+  cursor: url(./img/pointer.cur), auto;
+  border: 2px solid white;
+  font-family: VT323;
+  color: white;
+  background: none;
+  outline: none;
+  font-size: 1.2em;
+  height: 25px;
+  width: 60px;
+}
+.zcp_customizeHolder_settingHolder_text {
+  cursor: url(./img/pointer.cur), auto;
+  border: 2px solid white;
+  font-family: VT323;
+  color: white;
+  background: none;
+  outline: none;
+  font-size: 1.2em;
+  height: 25px;
+  flex: 1;
+}
+.zcp_customizeHolder_settingHolder_slider {
+  cursor: url(./img/pointer.cur), auto;
+  -webkit-appearance: none;
+  flex: 1;
+  height: 12px;
+  background: #434343;
+  outline: none;
+}
+.zcp_customizeHolder_settingHolder_slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: white;
+  border-radius: 50px;
+  cursor: pointer;
+}
+.zcp_customizeHolder {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 5px;
+  border-bottom: 1px solid white;
+}
+.zcp_addOption {
+  cursor: url(./img/pointer.cur), auto;
+  width: 100%;
+  height: 50px;
+  color: white;
+  font-size: 1.6em;
+}

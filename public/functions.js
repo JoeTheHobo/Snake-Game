@@ -1741,6 +1741,8 @@ function selectAllPlayerBoardsPopUp(sendTo) {
     $(".allPlayerBoardsPopup").show("flex");
 }
 function setNestedValue(obj, path, value, toReturn = false, forceSet = false) {
+    if (_type(path).type == "string") path = path.valueString.split(".");
+
     let usePath = structuredClone(path);
     let lastKey = usePath.pop();
 
@@ -2425,55 +2427,11 @@ function loadSnakeCustomizationPopup() {
         saveServerSnake();
     }
     $(".customizeSnakePopupV2").show("flex");
-    return;
-    
-    generateHTMLContent($(".customizeSnakePopup"),[
-        {type: "title",text: "Appearance"},
-        [
-            [{type: "image", src: ".snakeSkinHead",class: "snakeHeadYEE",filter: "player",tag:"image",width: "200px",height: "200px",background: "none",borderRadius: "5px",}],
-            {type: "div",class: "colorOptions"},
-        ],
-        {type: "title",text: "Key Binds"},
-        {type: "close"},
-        [
-            [
-                {type: "label",text: "Move Left"},
-                {type: "label",text: "Move Down"},
-                {type: "label",text: "Move Right"},
-                {type: "label",text: "Move Up"},
-            ],
-            [
-                {type: "keyBind",value: ".leftKey",bind: {key: "leftKey",type: "set"}},
-                {type: "keyBind",value: ".downKey",bind: {key: "downKey",type: "set"}},
-                {type: "keyBind",value: ".rightKey",bind: {key: "rightKey",type: "set"}},
-                {type: "keyBind", value: ".upKey",bind: {key: "upKey",type: "set"}},
-            ],
-            [
-                {type: "label",text: "Scroll Left"},
-                {type: "label",text: "Scroll Right"},
-                {type: "label",text: "Use Item"},
-                {type: "label",text: "Drop Item"},
-                {type: "label",text: "Toggle Teams"},
-
-            ],
-            [
-                {type: "keyBind", value: ".useItem1",bind: {key: "useItem1",type: "set"}},
-                {type: "keyBind", value: ".useItem2",bind: {key: "useItem2",type: "set"}},
-                {type: "keyBind", value: ".fireItem",bind: {key: "fireItem",type: "set"}},
-                {type: "keyBind", value: ".dropItem",bind: {key: "dropItem",type: "set"}},
-                {type: "keyBind", value: ".toggleTeamsKey",bind: {key: "toggleTeamsKey",type: "set"}},
-
-            ]
-        ],
-    ],localAccount.serverSnake,false,localAccount.isInLobby);
-    generateAllowedSnakeColors($(".colorOptions"),function(color) {
-        $(".snakeHeadYEE").style.filter = getPlayerFilter(color);
-        localAccount.serverSnake.hue = color.hue;
-        localAccount.serverSnake.saturation = color.saturation;
-        localAccount.serverSnake.brightness = color.brightness;
-        savePlayers(localAccount.isInLobby);
-    });
-
-
-
+}
+function standardizeText(text) {
+    return text
+        .replace(/([a-z])([A-Z])/g, '$1 $2')          // camelCase → camel Case
+        .replace(/[_\.]/g, ' ')                       // underscores/dots → spaces
+        .toLowerCase()                                // make everything lowercase first
+        .replace(/\b\w/g, char => char.toUpperCase()); // capitalize first letter of each word
 }
