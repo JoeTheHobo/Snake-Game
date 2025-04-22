@@ -2503,8 +2503,8 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
             ctx.rotate(rotation * Math.PI / 180); 
 
             // Draw the text (note: the text is drawn relative to the origin after translation and rotation)
-            console.log(settings)
-            let text = renderZone_checkForValue(settings.text || ".id");
+
+            let text = renderZone_checkForValue(zone,settings.text || ".id");
             ctx.fillText(text, 0, 0); // (0, 0) is the new origin after translation
             ctx.fillText(text, 0, 0); // (0, 0) is the new origin after translation
             ctx.fillText(text, 0, 0); // (0, 0) is the new origin after translation
