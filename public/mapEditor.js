@@ -2794,6 +2794,8 @@ function loadCustomizeZonePopup() {
     addNewOption.on("click",function() {
         addNewCustomizeZoneOption();
     })
+
+    holder.create("div");
 }
 function loadCustomizeZoneSettings(settings,index) {
     $(".zcp_tr_title").innerHTML = "Customize Element";
