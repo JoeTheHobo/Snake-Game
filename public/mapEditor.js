@@ -2025,7 +2025,11 @@ function editZonePopup(type,zone) {
         }
     });
     d = createGamemodeSetting("Visible","toggle","visible",{default: false},"Is this zone visible during gameplay",10,1);
-    h = createGamemodeSetting("Name Visiblity","toggle","visible_name",{default: false},"Is the zone name visible",10,2,{
+    h = createGamemodeSetting("Advanced Display Editor","button",false,{text: "Open Editor", func: function() {
+        $(".editZonePopup").hide();
+        $(".zoneCustomizePopup").show("flex");
+        loadCustomizeZonePopup();
+    }},"Open our more advanced tool for customization!",10,2,{
         valueFromId: 1,
         equals: true,
     });
@@ -2061,14 +2065,6 @@ function editZonePopup(type,zone) {
         });
         c = createGamemodeSetting("Repeat Status Type","list","repeatStatusType",{background: "#070738", options: ["Repeat","Single Use"]},"How does this zone give another status after it already gave one",false,false,{
             valueFromFamily: 7,
-            valueFromId: 1,
-            equals: true,
-        });
-        t = createGamemodeSetting("Advanced Display Editor","button",false,{text: "Open Editor", func: function() {
-            $(".editZonePopup").hide();
-            $(".zoneCustomizePopup").show("flex");
-            loadCustomizeZonePopup();
-        }},"Open our more advanced tool for customization!",10,3,{
             valueFromId: 1,
             equals: true,
         });
@@ -2782,6 +2778,7 @@ function loadCustomizeZonePopup() {
             deleteElement.on("click",function() {
                 selectedZone.zone.display.splice(i,1);
                 loadCustomizeZonePopup();
+                $("saveStatus").innerHTML = "Board Is Not Saved";
             })
         }
     }
@@ -2823,6 +2820,9 @@ function loadCustomizeZoneSettings(settings,index) {
                 option.text = standardizeText(optionText);
                 input.appendChild(option);
             });
+            input.on("change",function() {
+                $("saveStatus").innerHTML = "Board Is Not Saved";
+            })
         }
         if (type == "number") {
             input = settingHolder.create("input.zcp_customizeHolder_settingHolder_" + type);
@@ -2843,6 +2843,7 @@ function loadCustomizeZoneSettings(settings,index) {
                 if (extra?.max) if (value > extra.max) value = extra.max;
                 this.storedValue = value;
                 setNestedValue(settings,title,value);
+                $("saveStatus").innerHTML = "Board Is Not Saved";
             })
 
         }
@@ -2862,6 +2863,7 @@ function loadCustomizeZoneSettings(settings,index) {
                 let value = profanity.clean(this.value);
                 this.storedValue = value;
                 setNestedValue(settings,title,value);
+                $("saveStatus").innerHTML = "Board Is Not Saved";
             })
         }
         if (type == "slider") {
@@ -2872,6 +2874,7 @@ function loadCustomizeZoneSettings(settings,index) {
             input.value = value;
             input.on("change",function() {
                 setNestedValue(settings,title,this.value);
+                $("saveStatus").innerHTML = "Board Is Not Saved";
             })
         }
     }
@@ -2944,6 +2947,7 @@ function addNewCustomizeZoneOption() {
         container.innerHTML = standardizeText(availableOptions[i]);
         container.on("click",function() {
             selectedZone.zone.display.push(getZoneDisplayObject(availableOptions[i]));
+            $("saveStatus").innerHTML = "Board Is Not Saved";
             loadCustomizeZoneSettings(selectedZone.zone.display[selectedZone.zone.display.length-1],selectedZone.zone.display.length-1);
         })
     }
