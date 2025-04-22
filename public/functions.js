@@ -2460,6 +2460,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
         let type = settings.type;
 
         if (type == "background") {
+            console.log(settings)
             ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.color)).ogColor;
             ctx.strokeStyle = _color(renderZone_checkForValue(zone,settings.border.color)).ogColor;
             ctx.lineWidth = settings.border.width;
@@ -2565,7 +2566,6 @@ function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings) 
     return { x, y };
 }
 function renderZone_checkForValue(zone,value) {
-    console.log(value)
     if (value.charAt(0) == ".") {
         if (value.split("").includes(".")) {
             let color = zone[value.subset(1,".\\before")];
