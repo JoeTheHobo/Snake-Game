@@ -311,8 +311,10 @@ function renderMapEditorCanvas(renderEverything = false) {
         for (let j = 0; j < board.originalMap[i].length; j++) {
             let tileIsDifferent = JSON.stringify(board.originalMap[i][j].tile) !== JSON.stringify(oldMap[i][j].tile);
             let itemIsDifferent = JSON.stringify(board.originalMap[i][j].item) !== JSON.stringify(oldMap[i][j].item);
-            if (tileIsDifferent || renderEverything) me_updateCell("tile",me_ctx_tiles,j,i); 
-            if (itemIsDifferent || renderEverything) me_updateCell("item",me_ctx_items,j,i);
+            if (tileIsDifferent || renderEverything || itemIsDifferent) {
+                me_updateCell("tile",me_ctx_tiles,j,i); 
+                me_updateCell("item",me_ctx_items,j,i);
+            }
         }
     }
     oldMap = structuredClone(currentBoard.originalMap);

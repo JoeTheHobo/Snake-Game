@@ -2457,7 +2457,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
     for (let i = 0; i < elementList.length; i++) {
         let settings = elementList[i];
         let ctx = settings.display == "background" ? backgroundCtx : foregroundCtx;
-
+        let type = settings.type;
 
         if (type == "background") {
             ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.color)).ogColor;
