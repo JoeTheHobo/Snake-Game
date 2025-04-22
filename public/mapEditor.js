@@ -2907,8 +2907,8 @@ function loadCustomizeZoneSettings(settings,index) {
 
         if (type == "list") {
             input = settingHolder.create("select.zcp_customizeHolder_settingHolder_" + type);
-            console.log(value)
             input.value = value;
+            input.innerHTML = value;
             
             extra.forEach(optionText => {
                 const option = document.createElement('option');
