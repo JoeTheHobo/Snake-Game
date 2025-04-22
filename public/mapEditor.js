@@ -2776,7 +2776,7 @@ function loadCustomizeZonePopup() {
             loadCustomizeZoneSettings(displayList[i],i);
         })
 
-        let deleteElement = holder.create("img.zcp_displayOption_deleteIcon");
+        let deleteElement = addNewOption.create("img.zcp_displayOption_deleteIcon");
         deleteElement.src = "img/tool_delete.png";
         deleteElement.on("click",function() {
             selectedZone.zone.display.splice(i,1);
