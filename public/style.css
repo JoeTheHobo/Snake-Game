@@ -5210,7 +5210,7 @@ cursor: url('./img/pointer.cur'), auto;
   display: flex;
   flex-direction: row;
   align-items: center;
-  transition: background .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 .zcp_displayOption:hover {
   border: 2px solid rgb(164, 47, 211);
@@ -5231,6 +5231,8 @@ cursor: url('./img/pointer.cur'), auto;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  margin-top: 10px;
+
 }
 .zcp_customizeHolder_settingHolder_title {
   color: white;
@@ -5244,8 +5246,13 @@ cursor: url('./img/pointer.cur'), auto;
   background: none;
   outline: none;
   font-size: 1.2em;
-  height: 25px;
+  height: 30px;
   flex: 1;
+  padding-left: 8px;
+}
+.zcp_customizeHolder_settingHolder_list option {
+  background-color: #2e2e2e;
+  color: rgb(255, 255, 255);
 }
 .zcp_customizeHolder_settingHolder_number {
   cursor: url(./img/pointer.cur), auto;
@@ -5257,6 +5264,13 @@ cursor: url('./img/pointer.cur'), auto;
   font-size: 1.2em;
   height: 25px;
   width: 60px;
+  padding-left: 8px;
+  -moz-appearance: textfield;
+}
+.zcp_customizeHolder_settingHolder_number::-webkit-inner-spin-button,
+.zcp_customizeHolder_settingHolder_number::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 .zcp_customizeHolder_settingHolder_text {
   cursor: url(./img/pointer.cur), auto;
@@ -5266,6 +5280,7 @@ cursor: url('./img/pointer.cur'), auto;
   background: none;
   outline: none;
   font-size: 1.2em;
+  padding-left: 8px;
   height: 25px;
   flex: 1;
 }
@@ -5299,4 +5314,11 @@ cursor: url('./img/pointer.cur'), auto;
   height: 50px;
   color: white;
   font-size: 1.6em;
+  padding: 10px;
+  box-sizing: border-box;
+  background: #1A1A1A;
+  transition: all .2s ease-in-out;
+}
+.zcp_addOption:hover {
+  background: #2e2e2e;
 }

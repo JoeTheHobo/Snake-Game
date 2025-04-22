@@ -1741,7 +1741,7 @@ function selectAllPlayerBoardsPopUp(sendTo) {
     $(".allPlayerBoardsPopup").show("flex");
 }
 function setNestedValue(obj, path, value, toReturn = false, forceSet = false) {
-    if (_type(path).type == "string") path = path.valueString.split(".");
+    if (_type(path).type == "string") path = path.split(".");
 
     let usePath = structuredClone(path);
     let lastKey = usePath.pop();
