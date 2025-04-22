@@ -2460,8 +2460,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
         let type = settings.type;
 
         if (type == "background") {
-            console.log(settings)
-            ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.color)).ogColor;
+            ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.backgroundColor)).ogColor;
             ctx.strokeStyle = _color(renderZone_checkForValue(zone,settings.border.color)).ogColor;
             ctx.lineWidth = settings.border.width;
 
