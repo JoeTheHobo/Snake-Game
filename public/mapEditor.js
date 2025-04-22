@@ -1952,6 +1952,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
     let artIcon = rightIcons.create("img.spawnZoneImg");
     artIcon.src = "img/menuIcons/paint.png";
     artIcon.on("click",function() {
+        $(".zoneCustomizePopup").show("flex");
         loadCustomizeZonePopup();
     })
 
@@ -2906,6 +2907,7 @@ function loadCustomizeZoneSettings(settings,index) {
 
         if (type == "list") {
             input = settingHolder.create("select.zcp_customizeHolder_settingHolder_" + type);
+            console.log(value)
             input.value = value;
             
             extra.forEach(optionText => {
@@ -2982,7 +2984,6 @@ function loadCustomizeZoneSettings(settings,index) {
     //Generic
     settingHolder = holder.create("div.zcp_customizeHolder");
     if (listOptions.includes("display")) {
-        console.log(getNestedValue(settings,"display"));
         addSetting(settingHolder,"display","list",["foreground","background"]);
     }
     if (listOptions.includes("position")) {
