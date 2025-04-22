@@ -2737,6 +2737,10 @@ function loadCustomizeZonePopup() {
             getZoneDisplayObject("background"),
             getZoneDisplayObject("textBox")
         ];
+        if (selectedZone.type == "item") {
+            selectedZone.zone.display[0].backgroundColor = "white";
+            selectedZone.zone.display[0].border.color = "#bfbfbf";
+        }
     }
 
     let holder = $(".zcp_list");

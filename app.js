@@ -914,9 +914,9 @@ io.on('connection', (socket) => {
                             {
                                 type: "background",
                                 display: "background", 
-                                backgroundColor: ".team",
+                                backgroundColor: "white",
                                 border: {
-                                    color: ".team.darken(20)",
+                                    color: "#bfbfbf",
                                     width: 3,
                                     radius: 0,
                                 },
