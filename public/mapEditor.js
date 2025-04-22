@@ -2815,6 +2815,7 @@ function loadCustomizeZoneSettings(settings,index) {
                 input.appendChild(option);
             });
             input.addEventListener("change",function() {
+                setNestedValue(settings,title,this.value);
                 $("saveStatus").innerHTML = "Board Is Not Saved";
                 renderZoneCanvas();
             })
