@@ -1959,184 +1959,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
     let editIcon = rightIcons.create("img.spawnZoneImg");
     editIcon.src = "img/menuIcons/edit.png";
     editIcon.on("click",function() {
-        let content = $("spawn_zones_content");
-        $(".editZonePopup").show("flex");
-        $(".modernPopup_topRow_title_zones").innerHTML = type.format("A") + " Zone: " + zone.id;
-
-        let a = false, b= false, c = false, d = false, e = false,f = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false,q = false, r = false, s = false, t = false;
-        a = createGamemodeSetting("Zone Name","input","id",{profanityClean: true,maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.",false,false,false,(value) => {
-            renderZoneCanvas();
-            if (selectedZone.type == "player") {
-                $(".modernPopup_topRow_title_zones").innerHTML = "Player Zone: " + value;
-                generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
-            }
-            if (selectedZone.type == "item") {
-                $(".modernPopup_topRow_title_zones").innerHTML = "Item Zone: " + value;
-                generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
-            }
-            if (selectedZone.type == "special") {
-                $(".modernPopup_topRow_title_zones").innerHTML = "Special Zone: " + value;
-                generateZoneListings("special",savedSelectingZoneSpecial,currentBoard.spawnZones.special);
-            }
-        });
-        d = createGamemodeSetting("Visible","toggle","visible",{default: false},"Is this zone visible during gameplay",10,1);
-        h = createGamemodeSetting("Name Visiblity","toggle","visible_name",{default: false},"Is the zone name visible",10,2,{
-            valueFromId: 1,
-            equals: true,
-        });
-        if (type == "special") {
-            q = createGamemodeSetting("Give Status On Enter","toggle","giveStatusOnEnter",{background: "#070738"},"When a snake enters this zone follow zone giving settings.",7,1);
-            b = createGamemodeSetting("Give Status","status","giveStatus",{background: "#070738", readAs: "color",statusMenuOptions: ["status","playerStatus","submit"]},"Which status to give when snake enters zone",6,1,{
-                valueFromFamily: 7,
-                valueFromId: 1,
-                equals: true,
-            },() => {
-                renderZoneCanvas();
-                generateZoneListings("special",savedSelectingZoneSpecial,currentBoard.spawnZones.special);
-            });
-            r = createGamemodeSetting("Give Status From","list","giveStatusFrom",{background: "#070738", options: ["All Players","Random Player","Random Team","All Teams","Largest Team"]},"When zone gives players status who within zone should it pull from?",6,2,{
-                valueFromFamily: 7,
-                valueFromId: 1,
-                equals: true,
-            });
-            f = createGamemodeSetting("Give Status When Occupied By","list","giveStatusWhenOccupiedBy",{background: "#070738", options: ["Solo Player","Solo Team","Everyone"]},"Only give the status when this zone is occupied by these people",false,false,{
-                valueFromFamily: 7,
-                valueFromId: 1,
-                equals: true,
-            });
-            g = createGamemodeSetting("Give Status Type","list","giveStatusType",{background: "#070738", options: ["set","add","remove"]},"How does the zone give the status?",false,false,{
-                valueFromFamily: 7,
-                valueFromId: 1,
-                equals: true,
-            });
-            s = createGamemodeSetting("Give Status Delay (Seconds)","number","giveStatusDelay",{background: "#070738"},"When snake enters how long do they need to stay in zone to have the zone give status",false,false,{
-                valueFromFamily: 7,
-                valueFromId: 1,
-                equals: true,
-            });
-            c = createGamemodeSetting("Repeat Status Type","list","repeatStatusType",{background: "#070738", options: ["Repeat","Single Use"]},"How does this zone give another status after it already gave one",false,false,{
-                valueFromFamily: 7,
-                valueFromId: 1,
-                equals: true,
-            });
-            t = createGamemodeSetting("Advanced Display Editor","button",false,{text: "Open Editor", func: function() {
-                $(".editZonePopup").hide();
-                $(".zoneCustomizePopup").show("flex");
-                loadCustomizeZonePopup();
-            }},"Open our more advanced tool for customization!",10,3,{
-                valueFromId: 1,
-                equals: true,
-            });
-        }
-        if (type == "item") {
-            b = createGamemodeSetting("Manage Item Spawning","button",false,{text: "Manage",func: () => {
-                loadItemSpawning();
-            }},"Control which items are allowed to spawn here.");
-        }
-        if (type == "player") {
-            
-            q = createGamemodeSetting("Zone Team","status","team",{readAs: "color",statusMenuOptions: ["remove","status","submit"]},"Give team status to people who spawn here.",false,false,false,() => {
-                renderZoneCanvas();
-                generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
-            });
-            b = createGamemodeSetting("Allow Respawning","toggle","respawnHere",{},"Can players respawn here if they're on the zones team?");
-            c = createGamemodeSetting("Limit Spawning","toggle","spawnCap",{setTrueIfValueIsNumber: true,whenCheckedSet: {
-                source: "spawnCap",
-                value: 3,
-            }, whenUncheckedSet: {
-                source: "spawnCap",
-                value: false,
-            }},"Control how many snakes can spawn in this zone.",1,1);
-            g = createGamemodeSetting("Spawn Cap","number","spawnCap",{min: 0, max: 100},"Amount of snakes allowed to spawn here. (Can be 0)",1,2,{
-                valueFromId: 1,
-                isNumber: true,
-                onActiveSetValue: {
-                    value: 3,
-                },
-            })
-            r = createGamemodeSetting("Spawn Priority","number","priority",{min: 0, max: 100},"Should snakes spawn here first or last? (Higher Number = Higher Priority");
-            f = createGamemodeSetting("Alternate Spawning","toggle","alternate",{},"When spawning at the start of the game, should we alternate between this zone and others?");
-        }
-
-        e = createGamemodeSetting("Active","toggle","active",{},"Is this zone active at the start of the game");
-        i = createGamemodeSetting("Active On Board Status","toggle","activateWhenBoardStatus",{setTrueIfValueIsObject: true,whenCheckedSet: {
-            source: "activateWhenBoardStatus",
-            value: {
-                status: "red",
-                count: 1,
-            },
-        }, whenUncheckedSet: {
-            source: "activateWhenBoardStatus",
-            value: false,
-        }},"Allow a status to actiate this board.",2,1);
-        m = createGamemodeSetting("Activation Status","status","activateWhenBoardStatus",{showNumber: true,readAs: "object",statusMenuOptions: ["status","count","submit"]},"Activate zone when board status is met",2,2,{
-            valueFromId: 1,
-            isObject: true,
-            onActiveSetValue: {
-                value: {
-                    status: "red",
-                    count: 1,
-                },
-            },
-        })
-        j = createGamemodeSetting("Deactive On Board Status","toggle","deactivateWhenBoardStatus",{setTrueIfValueIsObject: true,whenCheckedSet: {
-            source: "deactivateWhenBoardStatus",
-            value: {
-                status: "red",
-                count: 1,
-            },
-        }, whenUncheckedSet: {
-            source: "deactivateWhenBoardStatus",
-            value: false,
-        }},"Allow a status to deactiate this board.",3,1);
-        n = createGamemodeSetting("Deactivation Status","status","deactivateWhenBoardStatus",{showNumber: true,readAs: "object",statusMenuOptions: ["status","count","submit"]},"Deactivate zone when board status is met",3,2,{
-            valueFromId: 1,
-            isObject: true,
-            onActiveSetValue: {
-                value: {
-                    status: "red",
-                    count: 1,
-                },
-            },
-        })
-        k = createGamemodeSetting("Activate When Time Passes","toggle","activateWhenTimePassed",{setTrueIfValueIsNumber: true,whenCheckedSet: {
-            source: "activateWhenTimePassed",
-            value: 60,
-        }, whenUncheckedSet: {
-            source: "activateWhenTimePassed",
-            value: false,
-        }},"Allow a status to deactiate this board.",4,1);
-        o = createGamemodeSetting("Time (Seconds)","number","activateWhenTimePassed",{},"Activate zone after this many seconds.",4,2,{
-            valueFromId: 1,
-            isNumber: true,
-            onActiveSetValue: {
-                value: 60,
-            },
-        })
-        l = createGamemodeSetting("Deactivate When Time Passes","toggle","deactivateWhenTimePassed",{setTrueIfValueIsNumber: true,whenCheckedSet: {
-            source: "deactivateWhenTimePassed",
-            value: 60,
-        }, whenUncheckedSet: {
-            source: "deactivateWhenTimePassed",
-            value: false,
-        }},"Allow a status to deactiate this board.",5,1);
-        p = createGamemodeSetting("Time (Seconds)","number","deactivateWhenTimePassed",{},"Deactivate zone after this many seconds.",5,2,{
-            valueFromId: 1,
-            isNumber: true,
-            onActiveSetValue: {
-                value: 60,
-            },
-        })
-
-        let grid = [
-            [a,b,c,d],
-            [q,f,g,h],
-            [e,r,s,t],
-            [i,j,k,l],
-            [m,n,o,p]
-        ]
-
-        createGamemodeGrid(content,4,5,grid,zone,"zones");
+        editZonePopup(type,zone);
     })
 
     let deleteIcon = rightIcons.create("img.spawnZoneImg");
@@ -2180,7 +2003,186 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
     })
 
 }
+function editZonePopup(type,zone) {
+    let content = $("spawn_zones_content");
+    $(".editZonePopup").show("flex");
+    $(".modernPopup_topRow_title_zones").innerHTML = type.format("A") + " Zone: " + zone.id;
 
+    let a = false, b= false, c = false, d = false, e = false,f = false, g = false, h = false, i = false, j = false, k = false, l = false, m = false, n = false, o = false, p = false,q = false, r = false, s = false, t = false;
+    a = createGamemodeSetting("Zone Name","input","id",{profanityClean: true,maxLength: 30,default: "player",placeholder: "Zone name..."},"What to reference the zone as.",false,false,false,(value) => {
+        renderZoneCanvas();
+        if (selectedZone.type == "player") {
+            $(".modernPopup_topRow_title_zones").innerHTML = "Player Zone: " + value;
+            generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
+        }
+        if (selectedZone.type == "item") {
+            $(".modernPopup_topRow_title_zones").innerHTML = "Item Zone: " + value;
+            generateZoneListings("item",savedSelectingZoneItem,currentBoard.spawnZones.items);
+        }
+        if (selectedZone.type == "special") {
+            $(".modernPopup_topRow_title_zones").innerHTML = "Special Zone: " + value;
+            generateZoneListings("special",savedSelectingZoneSpecial,currentBoard.spawnZones.special);
+        }
+    });
+    d = createGamemodeSetting("Visible","toggle","visible",{default: false},"Is this zone visible during gameplay",10,1);
+    h = createGamemodeSetting("Name Visiblity","toggle","visible_name",{default: false},"Is the zone name visible",10,2,{
+        valueFromId: 1,
+        equals: true,
+    });
+    if (type == "special") {
+        q = createGamemodeSetting("Give Status On Enter","toggle","giveStatusOnEnter",{background: "#070738"},"When a snake enters this zone follow zone giving settings.",7,1);
+        b = createGamemodeSetting("Give Status","status","giveStatus",{background: "#070738", readAs: "color",statusMenuOptions: ["status","playerStatus","submit"]},"Which status to give when snake enters zone",6,1,{
+            valueFromFamily: 7,
+            valueFromId: 1,
+            equals: true,
+        },() => {
+            renderZoneCanvas();
+            generateZoneListings("special",savedSelectingZoneSpecial,currentBoard.spawnZones.special);
+        });
+        r = createGamemodeSetting("Give Status From","list","giveStatusFrom",{background: "#070738", options: ["All Players","Random Player","Random Team","All Teams","Largest Team"]},"When zone gives players status who within zone should it pull from?",6,2,{
+            valueFromFamily: 7,
+            valueFromId: 1,
+            equals: true,
+        });
+        f = createGamemodeSetting("Give Status When Occupied By","list","giveStatusWhenOccupiedBy",{background: "#070738", options: ["Solo Player","Solo Team","Everyone"]},"Only give the status when this zone is occupied by these people",false,false,{
+            valueFromFamily: 7,
+            valueFromId: 1,
+            equals: true,
+        });
+        g = createGamemodeSetting("Give Status Type","list","giveStatusType",{background: "#070738", options: ["set","add","remove"]},"How does the zone give the status?",false,false,{
+            valueFromFamily: 7,
+            valueFromId: 1,
+            equals: true,
+        });
+        s = createGamemodeSetting("Give Status Delay (Seconds)","number","giveStatusDelay",{background: "#070738"},"When snake enters how long do they need to stay in zone to have the zone give status",false,false,{
+            valueFromFamily: 7,
+            valueFromId: 1,
+            equals: true,
+        });
+        c = createGamemodeSetting("Repeat Status Type","list","repeatStatusType",{background: "#070738", options: ["Repeat","Single Use"]},"How does this zone give another status after it already gave one",false,false,{
+            valueFromFamily: 7,
+            valueFromId: 1,
+            equals: true,
+        });
+        t = createGamemodeSetting("Advanced Display Editor","button",false,{text: "Open Editor", func: function() {
+            $(".editZonePopup").hide();
+            $(".zoneCustomizePopup").show("flex");
+            loadCustomizeZonePopup();
+        }},"Open our more advanced tool for customization!",10,3,{
+            valueFromId: 1,
+            equals: true,
+        });
+    }
+    if (type == "item") {
+        b = createGamemodeSetting("Manage Item Spawning","button",false,{text: "Manage",func: () => {
+            loadItemSpawning();
+        }},"Control which items are allowed to spawn here.");
+    }
+    if (type == "player") {
+        
+        q = createGamemodeSetting("Zone Team","status","team",{readAs: "color",statusMenuOptions: ["remove","status","submit"]},"Give team status to people who spawn here.",false,false,false,() => {
+            renderZoneCanvas();
+            generateZoneListings("player",savedSelectingZonePlayer,currentBoard.spawnZones.players);
+        });
+        b = createGamemodeSetting("Allow Respawning","toggle","respawnHere",{},"Can players respawn here if they're on the zones team?");
+        c = createGamemodeSetting("Limit Spawning","toggle","spawnCap",{setTrueIfValueIsNumber: true,whenCheckedSet: {
+            source: "spawnCap",
+            value: 3,
+        }, whenUncheckedSet: {
+            source: "spawnCap",
+            value: false,
+        }},"Control how many snakes can spawn in this zone.",1,1);
+        g = createGamemodeSetting("Spawn Cap","number","spawnCap",{min: 0, max: 100},"Amount of snakes allowed to spawn here. (Can be 0)",1,2,{
+            valueFromId: 1,
+            isNumber: true,
+            onActiveSetValue: {
+                value: 3,
+            },
+        })
+        r = createGamemodeSetting("Spawn Priority","number","priority",{min: 0, max: 100},"Should snakes spawn here first or last? (Higher Number = Higher Priority");
+        f = createGamemodeSetting("Alternate Spawning","toggle","alternate",{},"When spawning at the start of the game, should we alternate between this zone and others?");
+    }
+
+    e = createGamemodeSetting("Active","toggle","active",{},"Is this zone active at the start of the game");
+    i = createGamemodeSetting("Active On Board Status","toggle","activateWhenBoardStatus",{setTrueIfValueIsObject: true,whenCheckedSet: {
+        source: "activateWhenBoardStatus",
+        value: {
+            status: "red",
+            count: 1,
+        },
+    }, whenUncheckedSet: {
+        source: "activateWhenBoardStatus",
+        value: false,
+    }},"Allow a status to actiate this board.",2,1);
+    m = createGamemodeSetting("Activation Status","status","activateWhenBoardStatus",{showNumber: true,readAs: "object",statusMenuOptions: ["status","count","submit"]},"Activate zone when board status is met",2,2,{
+        valueFromId: 1,
+        isObject: true,
+        onActiveSetValue: {
+            value: {
+                status: "red",
+                count: 1,
+            },
+        },
+    })
+    j = createGamemodeSetting("Deactive On Board Status","toggle","deactivateWhenBoardStatus",{setTrueIfValueIsObject: true,whenCheckedSet: {
+        source: "deactivateWhenBoardStatus",
+        value: {
+            status: "red",
+            count: 1,
+        },
+    }, whenUncheckedSet: {
+        source: "deactivateWhenBoardStatus",
+        value: false,
+    }},"Allow a status to deactiate this board.",3,1);
+    n = createGamemodeSetting("Deactivation Status","status","deactivateWhenBoardStatus",{showNumber: true,readAs: "object",statusMenuOptions: ["status","count","submit"]},"Deactivate zone when board status is met",3,2,{
+        valueFromId: 1,
+        isObject: true,
+        onActiveSetValue: {
+            value: {
+                status: "red",
+                count: 1,
+            },
+        },
+    })
+    k = createGamemodeSetting("Activate When Time Passes","toggle","activateWhenTimePassed",{setTrueIfValueIsNumber: true,whenCheckedSet: {
+        source: "activateWhenTimePassed",
+        value: 60,
+    }, whenUncheckedSet: {
+        source: "activateWhenTimePassed",
+        value: false,
+    }},"Allow a status to deactiate this board.",4,1);
+    o = createGamemodeSetting("Time (Seconds)","number","activateWhenTimePassed",{},"Activate zone after this many seconds.",4,2,{
+        valueFromId: 1,
+        isNumber: true,
+        onActiveSetValue: {
+            value: 60,
+        },
+    })
+    l = createGamemodeSetting("Deactivate When Time Passes","toggle","deactivateWhenTimePassed",{setTrueIfValueIsNumber: true,whenCheckedSet: {
+        source: "deactivateWhenTimePassed",
+        value: 60,
+    }, whenUncheckedSet: {
+        source: "deactivateWhenTimePassed",
+        value: false,
+    }},"Allow a status to deactiate this board.",5,1);
+    p = createGamemodeSetting("Time (Seconds)","number","deactivateWhenTimePassed",{},"Deactivate zone after this many seconds.",5,2,{
+        valueFromId: 1,
+        isNumber: true,
+        onActiveSetValue: {
+            value: 60,
+        },
+    })
+
+    let grid = [
+        [a,b,c,d],
+        [q,f,g,h],
+        [e,r,s,t],
+        [i,j,k,l],
+        [m,n,o,p]
+    ]
+
+    createGamemodeGrid(content,4,5,grid,zone,"zones");
+}
 
 $(".me_ob_tab").on("click",function() {
     setObjectTab(this.innerHTML);
@@ -2744,6 +2746,9 @@ document.addEventListener('mouseup', () => {
 $(".zcp_closeIcon").on("click",function() {
     $(".zoneCustomizePopup").hide();
 })
+$(".zcp_backIcon").on("click",function() {
+    this.goBack();
+})
 function loadCustomizeZonePopup() {
     if (!selectedZone.zone.display) {
         selectedZone.zone.display = [
@@ -2755,6 +2760,10 @@ function loadCustomizeZonePopup() {
     let holder = $(".zcp_list");
     holder.innerHTML = "";
     $(".zcp_tr_title").innerHTML = "Zone Elements";
+    $(".zcp_backIcon").goBack = function() {
+        $(".zoneCustomizePopup").hide();
+        editZonePopup(selectedZone.type,selectedZone.zone);
+    }
 
     let displayList = selectedZone.zone.display;
     for (let i = 0; i < displayList.length; i++) {
@@ -2780,6 +2789,9 @@ function loadCustomizeZoneSettings(settings,index) {
     $(".zcp_tr_title").innerHTML = "Customize Element";
     let holder = $(".zcp_list");
     holder.innerHTML = "";
+    $(".zcp_backIcon").goBack = function() {
+        loadCustomizeZonePopup();
+    }
 
     let listOptions = Object.keys(settings);
 
@@ -2796,8 +2808,8 @@ function loadCustomizeZoneSettings(settings,index) {
             
             extra.forEach(optionText => {
                 const option = document.createElement('option');
-                option.value = optionText.toLowerCase();
-                option.text = optionText;
+                option.value = optionText;
+                option.text = standardizeText(optionText);
                 input.appendChild(option);
             });
         }
@@ -2809,6 +2821,7 @@ function loadCustomizeZoneSettings(settings,index) {
             input.on("click",function() {
                 this.storedValue = this.value;
                 this.value = "";
+                this.placeholder = this.value;
             })
             input.on("blur",function() {
                 this.value = this.storedValue;
@@ -2829,6 +2842,7 @@ function loadCustomizeZoneSettings(settings,index) {
             input.on("click",function() {
                 this.storedValue = this.value;
                 this.value = "";
+                this.placeholder = this.value;
             })
             input.on("blur",function() {
                 this.value = this.storedValue;
@@ -2860,7 +2874,7 @@ function loadCustomizeZoneSettings(settings,index) {
         addSetting(genericHolder,"position.location","list",["topLeft","topCenter","topRight","leftCenter","center","rightCenter","bottomLeft","bottomCenter","bottomRight"]);
         addSetting(genericHolder,"position.offSetX","number");
         addSetting(genericHolder,"position.offsetY","number");
-        addSetting(genericHolder,"position.rotation","number",{min: 0, max: 360});
+        addSetting(genericHolder,"position.rotation","slider",{min: 0, max: 360});
     }
     //Element Specific
     let specificHolder = holder.create("zcp_customizeHolder")
@@ -2908,6 +2922,9 @@ function addNewCustomizeZoneOption() {
 
     let holder = $(".zcp_list");
     holder.innerHTML = "";
+    $(".zcp_backIcon").goBack = function() {
+        loadCustomizeZonePopup();
+    }
 
     $(".zcp_tr_title").innerHTML = "Add Zone Element";
 
