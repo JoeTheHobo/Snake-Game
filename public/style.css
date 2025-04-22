@@ -60,11 +60,7 @@ html {
   z-index: 6;
 }
 #me_canvas_top {
-  pointer-events: none;
   z-index: 7;
-}
-#me_canvas {
-  z-index: 2;
 }
 #render_background {
 z-index: 401;
