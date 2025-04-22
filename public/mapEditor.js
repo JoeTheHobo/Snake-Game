@@ -2021,6 +2021,7 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
             });
             t = createGamemodeSetting("Advanced Display Editor","button",false,{text: "Open Editor", func: function() {
                 $(".editZonePopup").hide();
+                $(".zoneCustomizePopup").show("flex");
             }},"Open our more advanced tool for customization!",10,3,{
                 valueFromId: 1,
                 equals: true,
@@ -2717,3 +2718,23 @@ function loadBoardGameModes(gameModesHolder,gameModes,sentFrom) {
     }
 
 } 
+
+
+
+let customizeZone_isDragging = false;
+let customizeZone_offsetX = 0;
+let customizeZone_offsetY = 0;
+$(".zcp_moveIcon").on('mousedown', (e) => {
+    customizeZone_isDragging = true;
+    const rect = $(".zoneCustomizePopup").getBoundingClientRect();
+    customizeZone_offsetX = e.clientX - rect.left;
+    customizeZone_offsetY = e.clientY - rect.top;
+});
+document.on('mousemove', (e) => {
+    if (!customizeZone_isDragging) return;
+    $(".zoneCustomizePopup").style.left = `${e.clientX - customizeZone_offsetX}px`;
+    $(".zoneCustomizePopup").style.top = `${e.clientY - customizeZone_offsetY}px`;
+});
+document.addEventListener('mouseup', () => {
+    customizeZone_isDragging = false;
+});
