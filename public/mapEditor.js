@@ -2798,7 +2798,7 @@ function loadCustomizeZoneSettings(settings,index) {
                 const option = document.createElement('option');
                 option.value = optionText.toLowerCase();
                 option.text = optionText;
-                select.appendChild(option);
+                input.appendChild(option);
             });
         }
         if (type == "number") {
@@ -2913,9 +2913,9 @@ function addNewCustomizeZoneOption() {
 
     for (let i = 0; i < availableOptions.length; i++) {
         let container = holder.create("div.zcp_addOption");
-        container.innerHTML = availableOptions[i];
+        container.innerHTML = standardizeText(availableOptions[i]);
         container.on("click",function() {
-            selectedZone.zone.display.push(getZoneDisplayObject(this.innerHTML));
+            selectedZone.zone.display.push(getZoneDisplayObject(availableOptions[i]));
             loadCustomizeZoneSettings(selectedZone.zone.display[selectedZone.zone.display.length-1],selectedZone.zone.display.length-1);
         })
     }

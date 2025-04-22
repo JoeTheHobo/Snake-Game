@@ -5149,6 +5149,10 @@ cursor: url('./img/pointer.cur'), auto;
 
 
 
+
+
+
+
   .zoneCustomizePopup {
     display: none;
     flex-direction: column;
@@ -5170,11 +5174,11 @@ cursor: url('./img/pointer.cur'), auto;
     flex-shrink: 0; /* ensures it stays the size it needs */
 
   }
-  .zcp_moveIcon {
-    filter: "" !important;
+  .zcp_closeIcon {
+    filter: invert(100%);
+
   }
   .zcp_tr_image {
-    filter: invert(100%);
     cursor: url(./img/pointer.cur), auto;
     width: 25px;
     height: 25px;
@@ -5195,6 +5199,7 @@ cursor: url('./img/pointer.cur'), auto;
     padding: 8px;
   }
 .zcp_displayOption {
+  cursor: url(./img/pointer.cur), auto;
   border: 2px solid white;
   box-sizing: border-box;
   margin-top: 2px;
@@ -5205,6 +5210,10 @@ cursor: url('./img/pointer.cur'), auto;
   display: flex;
   flex-direction: row;
   align-items: center;
+  transition: background .2s ease-in-out;
+}
+.zcp_displayOption:hover {
+  border: 2px solid rgb(164, 47, 211);
 }
 .zcp_displayOption_text {
   color: white;
@@ -5212,8 +5221,9 @@ cursor: url('./img/pointer.cur'), auto;
 }
 .zcp_displayOption_add {
   aspect-ratio: 1/1;
-  height: 25%;
+  height: 50%;
   margin-right: 10px;
+  filter: invert(100%);
 }
 .zcp_customizeHolder_settingHolder {
   display: flex;
