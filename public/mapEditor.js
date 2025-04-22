@@ -365,45 +365,50 @@ function me_updateCell(type,ctx,x,y,opacity) {
     ctx.clearRect(Xpos,Ypos,(gridSize*zoom),(gridSize*zoom))
 
     if (type == "tile" || type == "all") {
-        itemCounts.push("tile_" + cell.tile.name);
-        let filter = checkItemFilter(cell.tile);
-        if (filter) ctx.filter = filter;
-        ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
-        if (filter) ctx.filter = "none";
+        if (cell.tile) {
+            itemCounts.push("tile_" + cell.tile.name);
+            let filter = checkItemFilter(cell.tile);
+            if (filter) ctx.filter = filter;
+            ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
+            if (filter) ctx.filter = "none";
+        }
     }
     if (type == "item" || type == "all") {
-        itemCounts.push("item_" + cell.item.name);
-        let image = getImage(cell.item,"canvas",true);
-        ctx.drawImage(image,Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
+        if (cell.item) {
 
-        if (cell.item.boardDestructibleCountRequired > 1) {
-            ctx.font = "16px VT323";
-            ctx.strokeStyle = "black";
-            ctx.fillStyle = "white";
-            ctx.lineWidth = 4;
-
-            let textWidth = ctx.measureText(cell.item.boardDestructibleCountRequired).width;
-            xPos = (x*(gridSize*zoom)) + ((gridSize*zoom)/2) - (textWidth/2);
-            yPos = (y*(gridSize*zoom)) + ((gridSize*zoom)/2)+5;
-
-            ctx.strokeText(cell.item.boardDestructibleCountRequired,xPos,yPos);
-            ctx.fillText(cell.item.boardDestructibleCountRequired,xPos,yPos);
-        }
-
-        if (cell.item.renderStatusNumber) {
-            let value = getBaseImgFromTag(cell.item,cell.item.renderStatusNumber.value);
-
-            ctx.font = "16px VT323";
-            ctx.strokeStyle = "black";
-            ctx.fillStyle = cell.item.renderStatusColor ?? "white";
-            ctx.lineWidth = 4;
-
-            let textWidth = ctx.measureText(value).width;
-            xPos = (x*(gridSize*zoom)) + ((gridSize*zoom)/2) - (textWidth/2);
-            yPos = (y*(gridSize*zoom)) + ((gridSize*zoom)/2)+5;
-
-            ctx.strokeText(value,xPos,yPos);
-            ctx.fillText(value,xPos,yPos);
+            itemCounts.push("item_" + cell.item.name);
+            let image = getImage(cell.item,"canvas",true);
+            ctx.drawImage(image,Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
+    
+            if (cell.item.boardDestructibleCountRequired > 1) {
+                ctx.font = "16px VT323";
+                ctx.strokeStyle = "black";
+                ctx.fillStyle = "white";
+                ctx.lineWidth = 4;
+    
+                let textWidth = ctx.measureText(cell.item.boardDestructibleCountRequired).width;
+                xPos = (x*(gridSize*zoom)) + ((gridSize*zoom)/2) - (textWidth/2);
+                yPos = (y*(gridSize*zoom)) + ((gridSize*zoom)/2)+5;
+    
+                ctx.strokeText(cell.item.boardDestructibleCountRequired,xPos,yPos);
+                ctx.fillText(cell.item.boardDestructibleCountRequired,xPos,yPos);
+            }
+    
+            if (cell.item.renderStatusNumber) {
+                let value = getBaseImgFromTag(cell.item,cell.item.renderStatusNumber.value);
+    
+                ctx.font = "16px VT323";
+                ctx.strokeStyle = "black";
+                ctx.fillStyle = cell.item.renderStatusColor ?? "white";
+                ctx.lineWidth = 4;
+    
+                let textWidth = ctx.measureText(value).width;
+                xPos = (x*(gridSize*zoom)) + ((gridSize*zoom)/2) - (textWidth/2);
+                yPos = (y*(gridSize*zoom)) + ((gridSize*zoom)/2)+5;
+    
+                ctx.strokeText(value,xPos,yPos);
+                ctx.fillText(value,xPos,yPos);
+            }
         }
     }
 
