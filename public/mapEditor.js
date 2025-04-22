@@ -2776,12 +2776,14 @@ function loadCustomizeZonePopup() {
             loadCustomizeZoneSettings(displayList[i],i);
         })
 
-        let deleteElement = addNewOption.create("img.zcp_displayOption_deleteIcon");
-        deleteElement.src = "img/tool_delete.png";
-        deleteElement.on("click",function() {
-            selectedZone.zone.display.splice(i,1);
-            loadCustomizeZonePopup();
-        })
+        if (displayList[i].type !== "background") {
+            let deleteElement = addNewOption.create("img.zcp_displayOption_deleteIcon");
+            deleteElement.src = "img/tool_delete.png";
+            deleteElement.on("click",function() {
+                selectedZone.zone.display.splice(i,1);
+                loadCustomizeZonePopup();
+            })
+        }
     }
 
     let addNewOption = holder.create("div.zcp_displayOption");
