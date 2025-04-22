@@ -365,6 +365,7 @@ function me_updateCell(type,ctx,x,y,opacity) {
     ctx.clearRect(Xpos,Ypos,(gridSize*zoom),(gridSize*zoom))
 
     if (type == "tile" || type == "all") {
+        console.log(cell)
         if (cell.tile) {
             itemCounts.push("tile_" + cell.tile.name);
             let filter = checkItemFilter(cell.tile);
