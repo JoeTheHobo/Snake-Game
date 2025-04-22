@@ -2563,7 +2563,10 @@ function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings) 
         y = zoneY + zoneHeight;
     }
 
-    return { x, y };
+    return { 
+        x: x + settings.offSetX,
+        y: y + settings.offSetY
+    };
 }
 function renderZone_checkForValue(zone,value) {
     if (value.charAt(0) == ".") {
