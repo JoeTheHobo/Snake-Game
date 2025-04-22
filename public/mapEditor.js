@@ -2880,7 +2880,7 @@ function loadCustomizeZoneSettings(settings,index) {
     }
 
     //Generic
-    let genericHolder = holder.create("zcp_customizeHolder");
+    let genericHolder = holder.create("div.zcp_customizeHolder");
     if (listOptions.includes("display")) {
         addSetting(genericHolder,"display","list",["foreground","background"]);
     }
@@ -2891,7 +2891,7 @@ function loadCustomizeZoneSettings(settings,index) {
         addSetting(genericHolder,"position.rotation","slider",{min: 0, max: 360});
     }
     //Element Specific
-    let specificHolder = holder.create("zcp_customizeHolder")
+    let specificHolder = holder.create("div.zcp_customizeHolder")
     if (listOptions.includes("border")) {
         addSetting(specificHolder,"border.color","text");
         addSetting(specificHolder,"border.width","number");
