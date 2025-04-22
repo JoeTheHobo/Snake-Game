@@ -2838,6 +2838,7 @@ function loadCustomizeZoneSettings(settings,index) {
                 if (extra?.min) if (value < extra.min) value = extra.min;
                 if (extra?.max) if (value > extra.max) value = extra.max;
                 this.storedValue = value;
+                console.log(settings,title,value)
                 setNestedValue(settings,title,value);
                 $("saveStatus").innerHTML = "Board Is Not Saved";
                 renderZoneCanvas();
