@@ -2907,8 +2907,6 @@ function loadCustomizeZoneSettings(settings,index) {
 
         if (type == "list") {
             input = settingHolder.create("select.zcp_customizeHolder_settingHolder_" + type);
-            input.value = value;
-            input.innerHTML = value;
             
             extra.forEach(optionText => {
                 const option = document.createElement('option');
@@ -2916,6 +2914,7 @@ function loadCustomizeZoneSettings(settings,index) {
                 option.text = standardizeText(optionText);
                 input.appendChild(option);
             });
+            input.value = value;
             input.addEventListener("change",function() {
                 setNestedValue(settings,title,this.value,false,true);
                 $("saveStatus").innerHTML = "Board Is Not Saved";
