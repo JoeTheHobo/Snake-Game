@@ -2815,7 +2815,7 @@ function loadCustomizeZoneSettings(settings,index) {
                 input.appendChild(option);
             });
             input.addEventListener("change",function() {
-                setNestedValue(settings,title,this.value);
+                setNestedValue(settings,title,this.value,false,true);
                 $("saveStatus").innerHTML = "Board Is Not Saved";
                 renderZoneCanvas();
             })
@@ -2838,8 +2838,7 @@ function loadCustomizeZoneSettings(settings,index) {
                 if (extra?.min) if (value < extra.min) value = extra.min;
                 if (extra?.max) if (value > extra.max) value = extra.max;
                 this.storedValue = value;
-                console.log(settings,title,value)
-                setNestedValue(settings,title,value);
+                setNestedValue(settings,title,value,false,true);
                 $("saveStatus").innerHTML = "Board Is Not Saved";
                 renderZoneCanvas();
             })
@@ -2860,7 +2859,7 @@ function loadCustomizeZoneSettings(settings,index) {
             input.on("change",function() {
                 let value = profanity.clean(this.value);
                 this.storedValue = value;
-                setNestedValue(settings,title,value);
+                setNestedValue(settings,title,value,false,true);
                 $("saveStatus").innerHTML = "Board Is Not Saved";
                 renderZoneCanvas();
             })
@@ -2872,7 +2871,7 @@ function loadCustomizeZoneSettings(settings,index) {
             input.max = extra.max;
             input.value = value;
             input.on("change",function() {
-                setNestedValue(settings,title,this.value);
+                setNestedValue(settings,title,this.value,false,true);
                 $("saveStatus").innerHTML = "Board Is Not Saved";
                 renderZoneCanvas();
             })
@@ -2888,7 +2887,7 @@ function loadCustomizeZoneSettings(settings,index) {
     if (listOptions.includes("position")) {
         addSetting(settingHolder,"position.location","list",["topLeft","topCenter","topRight","leftCenter","center","rightCenter","bottomLeft","bottomCenter","bottomRight"]);
         addSetting(settingHolder,"position.offSetX","number");
-        addSetting(settingHolder,"position.offsetY","number");
+        addSetting(settingHolder,"position.offSetY","number");
         addSetting(settingHolder,"position.rotation","slider",{min: 0, max: 360});
     }
     //Element Specific
