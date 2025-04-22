@@ -120,7 +120,6 @@ function openMapEditor(boardComingIn) {
     showGrid = false;
     selectedZone = false;
     selectedItemTags = [];
-    me_ctx_zones.globalAlpha = 0.4;
     userClickedZonePlayer = false;
     userClickedZoneItem = false;
     userClickedZoneSpecial = false;
@@ -160,6 +159,8 @@ function openMapEditor(boardComingIn) {
     saveBoard(true);
     tool = false;
     setTool("draw");
+    me_ctx_emote_background.globalAlpha = 0.4;
+    me_ctx_emote_foreground.globalAlpha = 0.4;
 
     xChange = ($(".me_canvasHolder").offsetWidth - $(".edit_canvas")[0].offsetWidth)/2;
     yChange = ($(".me_canvasHolder").offsetHeight - $(".edit_canvas")[0].offsetHeight)/2;
@@ -187,59 +188,41 @@ function openMapEditor(boardComingIn) {
     },60000)
     addHistory();
 }
-function drawZone(x1, y1, x2, y2, color, zoneID) {
-    me_ctx_zones.fillStyle = color;
-    me_ctx_zones.strokeStyle = _color(color).darken(10).ogColor;
-
-    let x = x1 * gridSize * zoom;
-    let y = y1 * gridSize * zoom;
-    let width = ((x2 + 1) * gridSize * zoom) - x;
-    let height = ((y2 + 1) * gridSize * zoom) - y;
-
-    me_ctx_zones.fillRect(x, y, width, height);
-    me_ctx_zones.strokeRect(x, y, width, height);
-
-    // Reset opacity for text
-    me_ctx_zones.fillStyle = "black"; // Change as needed for contrast
-    me_ctx_zones.font = `${16 * zoom}px VT323`; // Adjust font size as needed
-    me_ctx_zones.textAlign = "center";
-    me_ctx_zones.textBaseline = "middle";
-
-    // Draw the zoneID in the center
-    me_ctx_zones.fillText(zoneID, x + width / 2, y + height / 2);
-}
 function renderZoneCanvas() {
-    me_ctx_zones.globalAlpha = 0.3;
-    me_ctx_zones.clearRect(0,0,me_canvas_zones.width,me_canvas_zones.height);
+    if (me_ctx_emote_background.globalAlpha !== 0.4) me_ctx_emote_background.globalAlpha = 0.4;
+    if (me_ctx_emote_foreground.globalAlpha !== 0.4) me_ctx_emote_foreground.globalAlpha = 0.4;
+
+    me_ctx_emote_background.clearRect(0,0,me_canvas_emote_background.width,me_canvas_emote_background.height);
+    me_ctx_emote_foreground.clearRect(0,0,me_canvas_emote_foreground.width,me_canvas_emote_foreground.height);
 
     if (showingZoneTypes.includes("player")) {
         for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
             let zone = currentBoard.spawnZones.players[i];
-            drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color(zone.team).ogColor,zone.id);
+            renderZone(me_canvas_emote_background,me_canvas_emote_foreground,zone,zoom)
         }
     }
 
     if (showingZoneTypes.includes("item")) {
         for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
             let zone = currentBoard.spawnZones.items[i];
-            drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color("white").ogColor,zone.id);
+            renderZone(me_canvas_emote_background,me_canvas_emote_foreground,zone,zoom)
         }
     }
     if (showingZoneTypes.includes("special")) {
         for (let i = 0; i < currentBoard.spawnZones.special.length; i++) {
             let zone = currentBoard.spawnZones.special[i];
-            drawZone(zone.pos1.x,zone.pos1.y,zone.pos2.x,zone.pos2.y,_color(zone.giveStatus).ogColor,zone.id);
+            renderZone(me_canvas_emote_background,me_canvas_emote_foreground,zone,zoom)
         }
     }
 }
 function renderTopCanvas() {
-    me2_ctx.clearRect(0,0,me2_canvas.width,me2_canvas.height)
+    me_ctx_top.clearRect(0,0,me_canvas_top.width,me_canvas_top.height)
 
     if (selectedCells.selecting || selectedCells.shape) {
-        me2_ctx.lineWidth = 1;
+        me_ctx_top.lineWidth = 1;
         let obj = getRectPos(selectedCells.start,selectedCells.end);
-        me2_ctx.strokeStyle = "blue";
-        me2_ctx.strokeRect(obj.startX,obj.startY,obj.width,obj.height);
+        me_ctx_top.strokeStyle = "blue";
+        me_ctx_top.strokeRect(obj.startX,obj.startY,obj.width,obj.height);
     }
 
     if (selectedCells.shape) {
@@ -252,47 +235,47 @@ function renderTopCanvas() {
                 array = generatePointsInRect(selectedCells.start,selectedCells.end);
             }
             for (let i = 0; i < array.length; i++) {
-                me_updateCell(me2_ctx,array[i].x,array[i].y,0.5)
+                me_updateCell("all",me_ctx_top,array[i].x,array[i].y,0.5)
             }
         }
     }
 
     if (showFullGrid) {
-        me2_ctx.strokeStyle = "black";
-        me2_ctx.lineWidth = 1;
+        me_ctx_top.strokeStyle = "black";
+        me_ctx_top.lineWidth = 1;
         for (let i = 0; i < currentBoard.originalMap.length; i++) {
-            me2_ctx.beginPath();
-            me2_ctx.moveTo(0, i*gridSize*zoom);
-            me2_ctx.lineTo(me_canvas.width, i*gridSize*zoom);
-            me2_ctx.stroke();
+            me_ctx_top.beginPath();
+            me_ctx_top.moveTo(0, i*gridSize*zoom);
+            me_ctx_top.lineTo(me_canvas_top.width, i*gridSize*zoom);
+            me_ctx_top.stroke();
         }
         for (let i = 0; i < currentBoard.originalMap[0].length; i++) {
-            me2_ctx.beginPath();
-            me2_ctx.moveTo(i*gridSize*zoom, 0);
-            me2_ctx.lineTo(i*gridSize*zoom, me_canvas.height);
-            me2_ctx.stroke();
+            me_ctx_top.beginPath();
+            me_ctx_top.moveTo(i*gridSize*zoom, 0);
+            me_ctx_top.lineTo(i*gridSize*zoom, me_canvas_top.height);
+            me_ctx_top.stroke();
         }
     }
 
 
 
     if (showGrid) {
-        me2_ctx.lineWidth = 2;
+        me_ctx_top.lineWidth = 2;
 
         function drawLine(type,color,pos) {
             pos = ((gridSize*zoom)*pos)
             
             let x1 = type == "x" ? 0 : pos;
-            let x2 = type == "x" ? me_canvas.width : pos;
+            let x2 = type == "x" ? me_canvas_top.width : pos;
             let y1 = type == "y" ? 0 : pos;
-            let y2 = type == "y" ? me_canvas.height : pos;
+            let y2 = type == "y" ? me_canvas_top.height : pos;
 
-            me2_ctx.strokeStyle = color;
+            me_ctx_top.strokeStyle = color;
     
-            me2_ctx.beginPath();
-            me2_ctx.moveTo(x1, y1);
-            me2_ctx.lineTo(x2, y2);
-            me2_ctx.stroke();
+            me_ctx_top.beginPath();
+            me_ctx_top.moveTo(x1, y1);
+            me_ctx_top.lineTo(x2, y2);
+            me_ctx_top.stroke();
         }
         //Draw Extra Lines
         drawLine("y","gray",board.originalMap[0].length / 4);
@@ -306,9 +289,9 @@ function renderTopCanvas() {
 
     }
 
-    me2_ctx.lineWidth = 1;
-    me2_ctx.strokeStyle = "blue"; 
-    me2_ctx.strokeRect((gridSize*zoom)*mouseX,(gridSize*zoom)*mouseY,(gridSize*zoom),(gridSize*zoom));
+    me_ctx_top.lineWidth = 1;
+    me_ctx_top.strokeStyle = "blue"; 
+    me_ctx_top.strokeRect((gridSize*zoom)*mouseX,(gridSize*zoom)*mouseY,(gridSize*zoom),(gridSize*zoom));
 }
 function checkRenderThenRender() {
      renderMapEditorCanvas();
@@ -328,9 +311,8 @@ function renderMapEditorCanvas(renderEverything = false) {
         for (let j = 0; j < board.originalMap[i].length; j++) {
             let tileIsDifferent = JSON.stringify(board.originalMap[i][j].tile) !== JSON.stringify(oldMap[i][j].tile);
             let itemIsDifferent = JSON.stringify(board.originalMap[i][j].item) !== JSON.stringify(oldMap[i][j].item);
-            if (tileIsDifferent || itemIsDifferent || renderEverything) {
-                me_updateCell(me_ctx,j,i)
-            }
+            if (tileIsDifferent || renderEverything) me_updateCell("tile",me_ctx_tiles,j,i); 
+            if (itemIsDifferent || renderEverything) me_updateCell("item",me_ctx_tiles,j,i);
         }
     }
     oldMap = structuredClone(currentBoard.originalMap);
@@ -363,7 +345,7 @@ function getRectPos(pos1,pos2) {
         height: height,
     };
 }
-function me_updateCell(ctx,x,y,opacity) {
+function me_updateCell(type,ctx,x,y,opacity) {
     let cell = structuredClone(board.originalMap[y][x]);
 
     if (opacity) cell[selectedItem.type] = selectedItem.cell;
@@ -382,14 +364,14 @@ function me_updateCell(ctx,x,y,opacity) {
 
     ctx.clearRect(Xpos,Ypos,(gridSize*zoom),(gridSize*zoom))
 
-    if (cell.tile) {
+    if (type == "tile" || type == "all") {
         itemCounts.push("tile_" + cell.tile.name);
         let filter = checkItemFilter(cell.tile);
         if (filter) ctx.filter = filter;
         ctx.drawImage(getImage(cell.tile,"canvas"),Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
         if (filter) ctx.filter = "none";
     }
-    if (cell.item) {
+    if (type == "item" || type == "all") {
         itemCounts.push("item_" + cell.item.name);
         let image = getImage(cell.item,"canvas",true);
         ctx.drawImage(image,Xpos,Ypos,(gridSize*zoom)+xDif,(gridSize*zoom)+yDif);
@@ -2826,6 +2808,7 @@ function loadCustomizeZoneSettings(settings,index) {
             });
             input.on("change",function() {
                 $("saveStatus").innerHTML = "Board Is Not Saved";
+                renderZoneCanvas();
             })
         }
         if (type == "number") {
@@ -2848,6 +2831,7 @@ function loadCustomizeZoneSettings(settings,index) {
                 this.storedValue = value;
                 setNestedValue(settings,title,value);
                 $("saveStatus").innerHTML = "Board Is Not Saved";
+                renderZoneCanvas();
             })
 
         }
@@ -2868,6 +2852,7 @@ function loadCustomizeZoneSettings(settings,index) {
                 this.storedValue = value;
                 setNestedValue(settings,title,value);
                 $("saveStatus").innerHTML = "Board Is Not Saved";
+                renderZoneCanvas();
             })
         }
         if (type == "slider") {
@@ -2879,6 +2864,7 @@ function loadCustomizeZoneSettings(settings,index) {
             input.on("change",function() {
                 setNestedValue(settings,title,this.value);
                 $("saveStatus").innerHTML = "Board Is Not Saved";
+                renderZoneCanvas();
             })
         }
     }
@@ -2911,7 +2897,9 @@ function loadCustomizeZoneSettings(settings,index) {
     if (listOptions.includes("font")) {
         addSetting(settingHolder,"font.family","text");
         addSetting(settingHolder,"font.color","text");
-        addSetting(settingHolder,"font.fontSize","number",{mix: 0, max: 100});
+        addSetting(settingHolder,"font.size","number",{mix: 0, max: 100});
+        addSetting(settingHolder,"font.textAlign","list",["center","left","right"]);
+        addSetting(settingHolder,"font.textBaseline","list",["top","middle","bottom","alphabetic","hanging"]);
     }
     if (listOptions.includes("timerFormat")) {
         settingHolder = holder.create("div.zcp_customizeHolder")
@@ -2980,7 +2968,9 @@ function getZoneDisplayObject(text) {
             font: {
                 family: "VT323",
                 color: "black",
-                fontSize: 20,
+                size: 20,
+                textAlign: "center",
+                textBaseline: "middle",
             },
             position: {
                 offSetX: 0,
@@ -2996,7 +2986,9 @@ function getZoneDisplayObject(text) {
             font: {
                 family: "VT323",
                 color: "black",
-                fontSize: 20,
+                size: 20,
+                textAlign: "center",
+                textBaseline: "middle",
             },
             position: {
                 offSetX: 0,

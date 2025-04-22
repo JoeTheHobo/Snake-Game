@@ -112,14 +112,18 @@ let ctx_overhangs = canvas_overhangs.getContext("2d");
 let canvas_top = $("render_top");
 let ctx_top = canvas_top.getContext("2d");
 
-let me_canvas = $("me_canvas");
-let me_ctx = me_canvas.getContext("2d");
-let me2_canvas = $("me_canvas2");
-let me2_ctx = me2_canvas.getContext("2d");
 let me_canvas_background = $("me_canvas_background");
 let me_ctx_background = me_canvas_background.getContext("2d");
-let me_canvas_zones = $("me_canvas_zones");
-let me_ctx_zones = me_canvas_zones.getContext("2d");
+let me_canvas_tiles = $("me_canvas_tiles");
+let me_ctx_tiles = me_canvas_tiles.getContext("2d");
+let me_canvas_emote_background = $("me_canvas_emote_background");
+let me_ctx_emote_background = me_canvas_emote_background.getContext("2d");
+let me_canvas_items = $("me_canvas_items");
+let me_ctx_items = me_canvas_items.getContext("2d");
+let me_canvas_emote_foreground = $("me_canvas_emote_foreground");
+let me_ctx_emote_foreground = me_canvas_emote_foreground.getContext("2d");
+let me_canvas_top = $("me_canvas_top");
+let me_ctx_top = me_canvas_top.getContext("2d");
 
 let canvas_firstPerson_tl = $(".firstPersonCanvas_tl");
 let ctx_firstPerson_tl = canvas_firstPerson_tl.getContext("2d");
@@ -140,8 +144,8 @@ let ctx_firstPerson_br = canvas_firstPerson_br.getContext("2d");
 let canvas_firstPerson_master = $(".firstPersonCanvas_master");
 let ctx_firstPerson_master = canvas_firstPerson_master.getContext("2d");
 
-let allCanvas = [me_canvas_zones,canvas_background,canvas_zones,canvas_tiles,canvas_items,canvas_players,canvas_overhangs,canvas_top,me_canvas,me2_canvas,canvas_firstPerson_tl,
-    canvas_firstPerson_tm,canvas_firstPerson_tr,canvas_firstPerson_lm,canvas_firstPerson_rm,canvas_firstPerson_bl,canvas_firstPerson_bm,canvas_firstPerson_br,canvas_firstPerson_master,me_canvas_background
+let allCanvas = [me_canvas_background,me_canvas_emote_background,me_canvas_emote_foreground,me_canvas_emote_foreground,me_canvas_items,me_canvas_tiles,me_canvas_topcanvas_background,canvas_zones,canvas_tiles,canvas_items,canvas_players,canvas_overhangs,canvas_top,canvas_firstPerson_tl,
+    canvas_firstPerson_tm,canvas_firstPerson_tr,canvas_firstPerson_lm,canvas_firstPerson_rm,canvas_firstPerson_bl,canvas_firstPerson_bm,canvas_firstPerson_br,canvas_firstPerson_master,
 ]
 
 function adjustCanvasSize(gridx,gridy,zoom = 1) {
@@ -2434,4 +2438,141 @@ function standardizeText(text) {
         .replace(/[_\.]/g, ' ')                       // underscores/dots → spaces
         .toLowerCase()                                // make everything lowercase first
         .replace(/\b\w/g, char => char.toUpperCase()); // capitalize first letter of each word
+}
+
+
+
+function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
+    let elementList = zone.display;
+    if (!elementList) return;
+
+    let backgroundCtx = backgroundCanvas.getContext("2d");
+    let foregroundCtx = foregroundCanvas.getContext("2d");
+
+    let x = zone.pos1.x * gridSize * zoom;
+    let y = zone.pos1.y * gridSize * zoom;
+    let width = ((zone.pos2.x + 1) * gridSize * zoom) - x;
+    let height = ((zone.pos2.y + 1) * gridSize * zoom) - y;
+
+    for (let i = 0; i < elementList.length; i++) {
+        let settings = elementList[i];
+        let ctx = settings.display == "background" ? backgroundCtx : foregroundCtx;
+
+
+        if (type == "background") {
+            ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.color)).ogColor;
+            ctx.strokeStyle = _color(renderZone_checkForValue(zone,settings.border.color)).ogColor;
+            ctx.lineWidth = settings.border.width;
+
+            // Ensure radius doesn’t exceed half the width/height
+            radius = Math.min(radius, width / 2, height / 2);
+
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+
+            ctx.fill();
+            ctx.stroke();
+
+        }
+        if (type == "textbox") {
+            // Reset opacity for text
+            ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.font.color)).ogColor; // Change as needed for contrast
+            ctx.font = `${settings.font.size * zoom}px ${settings.font.family}`; // Adjust font size as needed
+            ctx.textAlign = settings.font.textAlign || "center";
+            ctx.textBaseline = settings.font.textBaseline || "middle";
+
+            let xy = renderZone_findPosition(x,y,width,height,settings.position);
+
+            let rotation = Number(settings.position.rotation);
+            // Save current context state to restore later
+            ctx.save();
+
+            // Move the context to the text position (so the rotation happens around the text center)
+            ctx.translate(xy.x, xy.y); // Move to the center point
+
+            // Rotate the canvas (convert rotation angle from degrees to radians)
+            ctx.rotate(rotation * Math.PI / 180); 
+
+            // Draw the text (note: the text is drawn relative to the origin after translation and rotation)
+            let text = renderZone_checkForValue(settings.text);
+            ctx.fillText(text, 0, 0); // (0, 0) is the new origin after translation
+            ctx.fillText(text, 0, 0); // (0, 0) is the new origin after translation
+            ctx.fillText(text, 0, 0); // (0, 0) is the new origin after translation
+
+            // Restore the context to the original state (no rotation or translation)
+            ctx.restore();
+        }
+    }
+}
+function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings) {
+    let x, y;
+
+    if (settings.location == "topLeft") {
+        x = zoneX;
+        y = zoneY;
+    }
+
+    if (settings.location == "topCenter") {
+        x = zoneX + zoneWidth / 2;
+        y = zoneY;
+    }
+
+    if (settings.location == "topRight") {
+        x = zoneX + zoneWidth;
+        y = zoneY;
+    }
+
+    if (settings.location == "leftCenter") {
+        x = zoneX;
+        y = zoneY + zoneHeight / 2;
+    }
+
+    if (settings.location == "center") {
+        x = zoneX + zoneWidth / 2;
+        y = zoneY + zoneHeight / 2;
+    }
+
+    if (settings.location == "rightCenter") {
+        x = zoneX + zoneWidth;
+        y = zoneY + zoneHeight / 2;
+    }
+
+    if (settings.location == "bottomLeft") {
+        x = zoneX;
+        y = zoneY + zoneHeight;
+    }
+
+    if (settings.location == "bottomCenter") {
+        x = zoneX + zoneWidth / 2;
+        y = zoneY + zoneHeight;
+    }
+
+    if (settings.location == "bottomRight") {
+        x = zoneX + zoneWidth;
+        y = zoneY + zoneHeight;
+    }
+
+    return { x, y };
+}
+function renderZone_checkForValue(zone,value) {
+    if (value.charAt(0) == ".") {
+        if (value.split("").includes(".")) {
+            let color = zone[value.subset(1,".\\before")];
+            let secondOption = value.split(".")[1];
+            if (secondOption.subset(0,5) == "darken") {
+                return _color(color).darken(Number(secondOption.subset("(\\after",")\\before"))).ogColor;
+            }
+        }
+        return zone[value.subset(1,"end")];
+    }
+    return value;
 }

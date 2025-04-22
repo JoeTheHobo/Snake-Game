@@ -39,20 +39,32 @@ html {
   margin: auto;
   z-index: 1;
 }
-#me_canvas {
-z-index: 2;
-}
-#me_canvas2 {
-pointer-events: none;
-z-index: 3;
-}
 #me_canvas_background {
-pointer-events: none;
-z-index: 1;
+  pointer-events: none;
+  z-index: 2;
 }
-#me_canvas_zones {
+#me_canvas_tiles {
+  pointer-events: none;
+  z-index: 3;
+}
+#me_canvas_emote_background {
   pointer-events: none;
   z-index: 4;
+}
+#me_canvas_items {
+  pointer-events: none;
+  z-index: 5;
+}
+#me_canvas_emote_foreground {
+  pointer-events: none;
+  z-index: 6;
+}
+#me_canvas_top {
+  pointer-events: none;
+  z-index: 7;
+}
+#me_canvas {
+  z-index: 2;
 }
 #render_background {
 z-index: 401;
@@ -5258,6 +5270,7 @@ cursor: url('./img/pointer.cur'), auto;
 .zcp_customizeHolder_settingHolder_title {
   color: white;
   font-size: 1.6em;
+  margin-right: 5px;
 }
 .zcp_customizeHolder_settingHolder_list {
   cursor: url(./img/pointer.cur), auto;

@@ -864,15 +864,31 @@ io.on('connection', (socket) => {
                         display: [
                             {
                                 type: "background",
-                                color: ".team",
-                                borderColor: ".team.darken(20)",
-                                borderWidth: 3,
-                                display: "background",  
+                                display: "background", 
+                                backgroundColor: ".team",
+                                border: {
+                                    color: ".team.darken(20)",
+                                    width: 3,
+                                    radius: 0,
+                                },
                             },
                             {
                                 type: "textbox",
-                                color: "black",
+                                display: "background",
                                 text: ".id",
+                                font: {
+                                    family: "VT323",
+                                    color: "black",
+                                    size: 20,
+                                    textAlign: "center",
+                                    textBaseline: "middle",
+                                },
+                                position: {
+                                    offSetX: 0,
+                                    offSetY: 0,
+                                    rotation: 0,
+                                    location: "center",
+                                }
                             }
                         ],
     
@@ -897,16 +913,31 @@ io.on('connection', (socket) => {
                         display: [
                             {
                                 type: "background",
-                                color: ".team",
-                                borderColor: ".team.darken(20)",
-                                borderWidth: 3,
-                                display: "background",  
+                                display: "background", 
+                                backgroundColor: ".team",
+                                border: {
+                                    color: ".team.darken(20)",
+                                    width: 3,
+                                    radius: 0,
+                                },
                             },
                             {
                                 type: "textbox",
-                                color: "black",
-                                text: ".id",
                                 display: "background",
+                                text: ".id",
+                                font: {
+                                    family: "VT323",
+                                    color: "black",
+                                    size: 20,
+                                    textAlign: "center",
+                                    textBaseline: "middle",
+                                },
+                                position: {
+                                    offSetX: 0,
+                                    offSetY: 0,
+                                    rotation: 0,
+                                    location: "center",
+                                }
                             }
                         ],
                         itemsThatCantSpawnHere: [],
