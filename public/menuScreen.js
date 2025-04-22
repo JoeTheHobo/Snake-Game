@@ -1290,14 +1290,14 @@ function loadGamemodeTabWinning() {
     }
     addAvailableCondition("All Dead",false,false,"No One",false,false,false,{},["Specific Team","Everyone","Highest Value","No One","Board Status"]);
     addAvailableCondition("Last One Standing",false,false,"Player",false,false,false,{},["Player","Players Team","Specific Team","Everyone","Highest Value","No One","Board Status"]);
-    addAvailableCondition("Last Team Standing",false, false, "Players Team",false,false,false,{},["Player","Players Team","Specific Team","Everyone","Highest Value","No One","Board Status"]);
+    addAvailableCondition("Last Team Standing",false, false, "Players Team",false,false,false,{},["Players Team","Specific Team","Everyone","Highest Value","No One","Board Status"]);
     addAvailableCondition("Survive X Minutes","X",5,"Player","Survive X Minutes","number","Survive this long to win the game!",{},["Player","Players Team","Specific Team","Everyone","Highest Value","No One","Board Status"]);
     addAvailableCondition("Kill X Snakes","X",3,"Player","Kill X Snakes","number","Kill this many snakes to win the game!",{},["Player","Players Team","Specific Team","Everyone","Highest Value","No One","Board Status"]);
     addAvailableCondition("Reach Snake Size Of X","X",200,"Player","Reach Snake Size","number","Get this long to win the game!",{},["Player","Players Team","Specific Team","Everyone","Highest Value","No One","Board Status"]);
     addAvailableCondition("Touch Zone X","X","0000","Player","Touch Zone","input","Touch this zone to win the game!",{},["Player","Players Team","Specific Team","Everyone","Highest Value","No One","Board Status"]);
     addAvailableCondition("Touch Item X","X","item.25","Player","Touch Item","item","Touch this item to win the game!",{},["Player","Players Team","Specific Team","Everyone","Highest Value","No One","Board Status"]);
     addAvailableCondition("Touch Tile X","X","tile.1","Player","Touch Tile","tile","Touch this tile to win the game!",{},["Player","Players Team","Specific Team","Everyone","Highest Value","No One","Board Status"]);
-    addAvailableCondition("X Minutes Pass","X",3,"Highest Value","Game Ends In (Minutes)","number","Game will end after time ends.",{},["Player","Players Team","Specific Team","Everyone","Highest Value","No One","Board Status"]);
+    addAvailableCondition("X Minutes Pass","X",3,"Highest Value","Game Ends In (Minutes)","number","Game will end after time ends.",{},["Specific Team","Everyone","Highest Value","No One","Board Status"]);
     addAvailableCondition("Board Status",false,{status: "*P",count: 5},"Board Status","Board Status Is","status","Game ends when board status is met.",{showNumber: true,readAs: "object",statusMenuOptions: ["status","playerStatus","count","submit"]},
         ["Specific Team","Everyone","Highest Value","No One","Board Status"]
     );

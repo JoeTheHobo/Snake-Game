@@ -2019,7 +2019,9 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
                 valueFromId: 1,
                 equals: true,
             });
-            t = createGamemodeSetting("Display Status Stats","toggle","displayStatusStats",{},"Should we show the status stats in game?",10,3,{
+            t = createGamemodeSetting("Advanced Display Editor","button",false,{text: "Open Editor", func: function() {
+                $(".editZonePopup").hide();
+            }},"Open our more advanced tool for customization!",10,3,{
                 valueFromId: 1,
                 equals: true,
             });
