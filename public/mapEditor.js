@@ -613,7 +613,7 @@ $(".me_canvasHolder").on("mouseup",function() {
     }
 })
 function adjustMousePos(e) {
-    let rect = me_canvas.getBoundingClientRect();
+    let rect = me_canvas_top.getBoundingClientRect();
     let x = e.clientX - rect.left;
     let y = e.clientY - rect.top;
 
