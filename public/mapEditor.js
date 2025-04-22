@@ -2769,17 +2769,26 @@ function loadCustomizeZonePopup() {
     for (let i = 0; i < displayList.length; i++) {
         let addNewOption = holder.create("div.zcp_displayOption");
         let addNewText = addNewOption.create("div.zcp_displayOption_text");
-        addNewText.innerHTML = displayList[i].type;
+        addNewText.innerHTML = standardizeText(displayList[i].type);
 
-        addNewOption.on("click",function() {
+        addNewOption.on("click",function(e) {
+            if (e.target.classList.contains("zcp_displayOption_deleteIcon")) return;
             loadCustomizeZoneSettings(displayList[i],i);
+        })
+
+        let deleteElement = holder.create("img.zcp_displayOption_deleteIcon");
+        deleteElement.src = "img/tool_delete.png";
+        deleteElement.on("click",function() {
+            selectedZone.zone.display.splice(i,1);
+            loadCustomizeZonePopup();
         })
     }
 
     let addNewOption = holder.create("div.zcp_displayOption");
-    let addNewImage = addNewOption.create("img.zcp_displayOption_add");
+    let leftHolder = addNewOption.create("div.zcp_displayOption_leftHolder"); 
+    let addNewImage = leftHolder.create("img.zcp_displayOption_add");
     addNewImage.src = "img/menuIcons/add.png";
-    let addNewText = addNewOption.create("div.zcp_displayOption_text");
+    let addNewText = leftHolder.create("div.zcp_displayOption_text");
     addNewText.innerHTML = "Add New";
     addNewOption.on("click",function() {
         addNewCustomizeZoneOption();

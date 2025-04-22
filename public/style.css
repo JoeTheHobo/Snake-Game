@@ -5209,6 +5209,7 @@ cursor: url('./img/pointer.cur'), auto;
   line-height: 50px;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   transition: all .2s ease-in-out;
 }
@@ -5218,6 +5219,23 @@ cursor: url('./img/pointer.cur'), auto;
 .zcp_displayOption_text {
   color: white;
   font-size: 1.6em;
+}
+.zcp_displayOption_deleteIcon {
+  filter: invert(100%);
+  margin-right: 10px;
+  aspect-ratio: 1/1;
+  height: 75%;
+  cursor: url(./img/pointer.cur), auto;
+  transition: all .2s ease-in-out;
+}
+.zcp_displayOption_deleteIcon:hover {
+  opacity: 0.7;
+}
+.zcp_displayOption_leftHolder {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
 }
 .zcp_displayOption_add {
   aspect-ratio: 1/1;
@@ -5267,6 +5285,10 @@ cursor: url('./img/pointer.cur'), auto;
   padding-left: 8px;
   -moz-appearance: textfield;
 }
+.zcp_customizeHolder_settingHolder_number::placeholder { 
+  color: white;
+  opacity: 0.6;
+}
 .zcp_customizeHolder_settingHolder_number::-webkit-inner-spin-button,
 .zcp_customizeHolder_settingHolder_number::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -5284,6 +5306,10 @@ cursor: url('./img/pointer.cur'), auto;
   height: 25px;
   flex: 1;
 }
+.zcp_customizeHolder_settingHolder_text::placeholder { 
+  color: white;
+  opacity: 0.6;
+}
 .zcp_customizeHolder_settingHolder_slider {
   cursor: url(./img/pointer.cur), auto;
   -webkit-appearance: none;
@@ -5295,8 +5321,8 @@ cursor: url('./img/pointer.cur'), auto;
 .zcp_customizeHolder_settingHolder_slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   background: white;
   border-radius: 50px;
   cursor: pointer;
