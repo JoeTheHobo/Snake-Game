@@ -3029,6 +3029,8 @@ function specialZone_timer(lobby,zone,time,secondCap) {
             })
             specialZone_timer(lobby,zone,time-1,secondCap);
         },500);
+    } else {
+        specialZone_endTimer(lobby,zone);
     }
 
 }
