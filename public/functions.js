@@ -2479,9 +2479,11 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1,boardWidth,b
             let max = zone.max;
             let min = zone.min;
     
+            console.log(max,min)
             if (_type(min).type !== "number" || _type(max).type !== "number") {
                 continue;
             }
+            console.log("hmm")
 
             let percentage = min/max;
 
@@ -2653,8 +2655,6 @@ function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings,b
     let location = settings?.location || "center";
     let offSetX = settings?.offSetX || 0;
     let offSetY = settings?.offSetY || 0;
-
-    console.log(renderFrom,location,offSetX,offSetY);
 
     if (renderFrom == "board") {
         zoneX = 0;
