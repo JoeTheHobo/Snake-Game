@@ -286,9 +286,8 @@ function generatePreGamePlayerInfo(players) {
 
         const rect = canvas_background.getBoundingClientRect();
 
-        console.log(player.pos.x,gridSize,rect.left,);
         holder.css({
-            left: ((0)+rect.left-50+(gridSize/2)) + "px",
+            left: (rect.left) + "px",
             top: ((player.pos.y*gridSize)+rect.top-50+(gridSize/2)) + "px",
         })
 

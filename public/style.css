@@ -3022,6 +3022,7 @@ height: 100%;
   position: absolute;
   width: 100px;
   height: 100px;
+  z-index: 800;
 }
 .pgpi_title {
   color: white;
@@ -3039,7 +3040,6 @@ height: 100%;
   width: 55px;
   height: 55px;
   border-radius: 100px;
-  z-index: 800;
   border: 3px solid white;
   animation: shrinkAndExpand 1.7s infinite;
 }
