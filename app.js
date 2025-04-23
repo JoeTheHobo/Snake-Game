@@ -873,6 +873,17 @@ io.on('connection', (socket) => {
                                     opacity: 1,
                                 },
                                 opacity: 0.4,
+                                position: {
+                                    offSetX: 0,
+                                    offSetY: 0,
+                                    rotation: 0,
+                                    location: "center",
+                                    renderFrom: "zone",
+                                },
+                                xAlign: "center",
+                                yAlign: "middle",
+                                width: "100%",
+                                height: "100%",
                             },
                             {
                                 type: "textBox",
@@ -892,6 +903,7 @@ io.on('connection', (socket) => {
                                     offSetY: 0,
                                     rotation: 0,
                                     location: "center",
+                                    renderFrom: "zone",
                                 },
                                 opacity: 1,
                             }
@@ -927,6 +939,17 @@ io.on('connection', (socket) => {
                                     opacity: 1,
                                 },
                                 opacity: 0.4,
+                                position: {
+                                    offSetX: 0,
+                                    offSetY: 0,
+                                    rotation: 0,
+                                    location: "center",
+                                    renderFrom: "zone",
+                                },
+                                xAlign: "center",
+                                yAlign: "middle",
+                                width: "100%",
+                                height: "100%",
                             },
                             {
                                 type: "textBox",
@@ -946,6 +969,7 @@ io.on('connection', (socket) => {
                                     offSetY: 0,
                                     rotation: 0,
                                     location: "center",
+                                    renderFrom: "zone",
                                 },
                                 opacity: 1,
                             }

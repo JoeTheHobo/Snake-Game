@@ -2442,7 +2442,7 @@ function standardizeText(text) {
 
 
 
-function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
+function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1,boardWidth,boardHeight) {
     let elementList = zone.display;
     if (!elementList) return;
 
@@ -2453,6 +2453,8 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
     let y = zone.pos1.y * gridSize * zoom;
     let width = ((zone.pos2.x + 1) * gridSize * zoom) - x;
     let height = ((zone.pos2.y + 1) * gridSize * zoom) - y;
+    boardWidth = (boardWidth*gridSize*zoom);
+    boardHeight = boardHeight*gridSize*zone;
 
     for (let i = 0; i < elementList.length; i++) {
 
@@ -2484,7 +2486,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
             let percentage = min/max;
 
             let direction = settings?.direction?.toLowerCase() || "horizontal";
-            let xy = renderZone_findPosition(x,y,width,height,settings.position);
+            let xy = renderZone_findPosition(x,y,width,height,settings.position,boardWidth,boardHeight);
 
             let barWidth = settings?.width || "100%";
             barWidth = parseSize(barWidth,width);
@@ -2526,21 +2528,22 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
                 continue;
             }
 
-            let xy = renderZone_findPosition(x,y,width,height,settings.position);
+            let xy = renderZone_findPosition(x,y,width,height,settings.position,boardWidth,boardHeight);
             let text = new _time((max-min)*1000,"duration").format(timerFormat);
             renderZone_drawText(zone,settings,text,ctx,xy);
         }
         if (type.toLowerCase() == "background") {
+            let xy = renderZone_findPosition(x,y,width,height,settings.position,boardWidth,boardHeight);
 
             renderZone_drawBox(ctx,zone,settings,{
-                x: x,
-                y: y,
+                x: xy.x,
+                y: xy.y,
                 width: width,
                 height: height,
             },renderZone_color(zone,settings.backgroundColor || "white",settings),settings.border,0)
         }
         if (type.toLowerCase() == "textbox") {
-            let xy = renderZone_findPosition(x,y,width,height,settings.position);
+            let xy = renderZone_findPosition(x,y,width,height,settings.position,boardWidth,boardHeight);
             let text = renderZone_checkForValue(zone,settings.text || ".id");
             renderZone_drawText(zone,settings,text,ctx,xy);
         }
@@ -2639,7 +2642,17 @@ function renderZone_drawText(zone, settings, text, ctx, pos) {
     // Reset transform to identity matrix for following drawing calls
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
-function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings) {
+function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings,boardWidth,boardHeight) {
+    let renderFrom = settings?.renderFrom.toLowerCase() || "zone";
+
+    if (renderFrom == "board") {
+        zoneX = 0;
+        zoneY = 0;
+        zoneWidth = boardWidth;
+        zoneHeight = boardHeight;
+    }
+
+
     let x, y;
 
     if (settings.location == "topLeft") {
@@ -2718,7 +2731,7 @@ function addZonesToRender(zoneList) {
         if (zoneList.players[i].visible) {
             zone = zoneList.players[i];
             zone.render = function() {
-                renderZone(canvas_emote_background,canvas_top,this);
+                renderZone(canvas_emote_background,canvas_top,this,1,currentBoard.width,currentBoard.height);
             }
             zone.type = "zone";
             zone.min = false;
@@ -2729,7 +2742,7 @@ function addZonesToRender(zoneList) {
         if (zoneList.items[i].visible) {
             zone = zoneList.items[i];
             zone.render = function() {
-                renderZone(canvas_emote_background,canvas_top,this);
+                renderZone(canvas_emote_background,canvas_top,this,1,currentBoard.width,currentBoard.height);
             }
             zone.type = "zone";
             zone.min = false;
@@ -2740,7 +2753,7 @@ function addZonesToRender(zoneList) {
         if (zoneList.special[i].visible) {
             zone = zoneList.special[i];
             zone.render = function() {
-                renderZone(canvas_emote_background,canvas_top,this);
+                renderZone(canvas_emote_background,canvas_top,this,1,currentBoard.width,currentBoard.height);
             }
             zone.type = "zone";
             zone.min = false;

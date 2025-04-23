@@ -194,14 +194,14 @@ function renderZoneCanvas() {
     if (showingZoneTypes.includes("player")) {
         for (let i = 0; i < currentBoard.spawnZones.players.length; i++) {
             let zone = currentBoard.spawnZones.players[i];
-            renderZone(me_canvas_emote_background,me_canvas_emote_foreground,zone,zoom)
+            renderZone(me_canvas_emote_background,me_canvas_emote_foreground,zone,zoom,currentBoard.width,currentBoard.height)
         }
     }
 
     if (showingZoneTypes.includes("item")) {
         for (let i = 0; i < currentBoard.spawnZones.items.length; i++) {
             let zone = currentBoard.spawnZones.items[i];
-            renderZone(me_canvas_emote_background,me_canvas_emote_foreground,zone,zoom)
+            renderZone(me_canvas_emote_background,me_canvas_emote_foreground,zone,zoom,currentBoard.width,currentBoard.height)
         }
     }
     if (showingZoneTypes.includes("special")) {
@@ -209,7 +209,7 @@ function renderZoneCanvas() {
             let zone = currentBoard.spawnZones.special[i];
             zone.min = 3;
             zone.max = 5;
-            renderZone(me_canvas_emote_background,me_canvas_emote_foreground,zone,zoom)
+            renderZone(me_canvas_emote_background,me_canvas_emote_foreground,zone,zoom,currentBoard.width,currentBoard.height)
         }
     }
 }
@@ -2457,6 +2457,17 @@ $(".me_sz_addButton").on("click",function() {
                         opacity: 1,
                     },
                     opacity: 0.4,
+                    position: {
+                        offSetX: 0,
+                        offSetY: 0,
+                        rotation: 0,
+                        location: "center",
+                        renderFrom: "zone",
+                    },
+                    xAlign: "center",
+                    yAlign: "middle",
+                    width: "100%",
+                    height: "100%",
                 },
                 {
                     type: "textBox",
@@ -2476,6 +2487,7 @@ $(".me_sz_addButton").on("click",function() {
                         offSetY: 0,
                         rotation: 0,
                         location: "center",
+                        renderFrom: "zone",
                     },
                     opacity: 1,
                 }
@@ -2527,6 +2539,17 @@ $(".me_sz_addButton").on("click",function() {
                             opacity: 1,
                         },
                         opacity: 0.4,
+                        position: {
+                            offSetX: 0,
+                            offSetY: 0,
+                            rotation: 0,
+                            location: "center",
+                            renderFrom: "zone",
+                        },
+                        xAlign: "center",
+                        yAlign: "middle",
+                        width: "100%",
+                        height: "100%",
                     },
                     {
                         type: "textBox",
@@ -2546,6 +2569,7 @@ $(".me_sz_addButton").on("click",function() {
                             offSetY: 0,
                             rotation: 0,
                             location: "center",
+                            renderFrom: "zone",
                         },
                         opacity: 1,
                     }
@@ -2592,6 +2616,17 @@ $(".me_sz_addButton").on("click",function() {
                         opacity: 1,
                     },
                     opacity: 0.4,
+                    position: {
+                        offSetX: 0,
+                        offSetY: 0,
+                        rotation: 0,
+                        location: "center",
+                        renderFrom: "zone",
+                    },
+                    xAlign: "center",
+                    yAlign: "middle",
+                    width: "100%",
+                    height: "100%",
                 },
                 {
                     type: "textBox",
@@ -2611,6 +2646,7 @@ $(".me_sz_addButton").on("click",function() {
                         offSetY: 0,
                         rotation: 0,
                         location: "center",
+                        renderFrom: "zone",
                     },
                     opacity: 1,
                 }
@@ -3028,6 +3064,7 @@ function loadCustomizeZoneSettings(settings,index) {
         addSetting(settingHolder,"opacity","slider",{min: 0, max: 1,step: 0.05});
     }
     if (listOptions.includes("position")) {
+        addSetting(settingHolder,"position.renderFrom","list",["zone","board"]);
         addSetting(settingHolder,"position.location","list",["topLeft","topCenter","topRight","leftCenter","center","rightCenter","bottomLeft","bottomCenter","bottomRight"]);
         addSetting(settingHolder,"position.offSetX","number");
         addSetting(settingHolder,"position.offSetY","number");
@@ -3140,6 +3177,17 @@ function getZoneDisplayObject(text) {
                 radius: 0,
                 opacity: 1,
             },
+            position: {
+                offSetX: 0,
+                offSetY: 0,
+                rotation: 0,
+                location: "center",
+                renderFrom: "zone",
+            },
+            width: "100%",
+            height: "100%",
+            xAlign: "center",
+            yAlign: "middle",
             opacity: 0.4,
         }
         case "textBox": return {
@@ -3160,6 +3208,7 @@ function getZoneDisplayObject(text) {
                 offSetY: 0,
                 rotation: 0,
                 location: "center",
+                renderFrom: "zone",
             },
             opacity: 1,
         }
@@ -3181,6 +3230,7 @@ function getZoneDisplayObject(text) {
                 offSetY: 0,
                 rotation: 0,
                 location: "topCenter",
+                renderFrom: "zone",
             },
             opacity: 1,
         }
@@ -3192,6 +3242,7 @@ function getZoneDisplayObject(text) {
                 offSetY: 0,
                 rotation: 0,
                 location: "topCenter",
+                renderFrom: "zone",
             },
             width: "100%",
             height: "25px",
@@ -3215,6 +3266,7 @@ function getZoneDisplayObject(text) {
                 offSetY: 0,
                 rotation: 0,
                 location: "topCenter",
+                renderFrom: "zone",
             },
             backgroundColor: "white",
             foregroundColor: "lightblue",
@@ -3237,6 +3289,7 @@ function getZoneDisplayObject(text) {
                 offSetY: 0,
                 rotation: 0,
                 location: "topCenter",
+                renderFrom: "zone",
             },
             opacity: 1,
         }
@@ -3248,6 +3301,7 @@ function getZoneDisplayObject(text) {
                 offSetY: 0,
                 rotation: 0,
                 location: "topCenter",
+                renderFrom: "zone",
             },
             opacity: 1,
         }
@@ -3259,6 +3313,7 @@ function getZoneDisplayObject(text) {
                 offSetY: 0,
                 rotation: 0,
                 location: "topCenter",
+                renderFrom: "zone",
             },
             opacity: 1,
         }
