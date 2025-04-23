@@ -128,7 +128,7 @@ function handleZoneUpdates() {
         for (let j = 0; j < emotesToRender.length; j++) {
             let emote = emotesToRender[j];
             if (emote.type !== "zone" || emote?.id !== zone.id) continue;
-            
+
             if (zone.max !== undefined) emote.max = zone.max;
             if (zone.min !== undefined) emote.min = zone.min;
         }
@@ -137,9 +137,6 @@ function handleZoneUpdates() {
 function renderEmotes() {
     ctx_emote_background.clearRect(0,0,canvas_emote_background.width,canvas_emote_background.height);
     ctx_top.clearRect(0,0,canvas_top.width,canvas_top.height);
-
-    if (ctx_emote_background.globalAlpha !== 0.4) ctx_emote_background.globalAlpha = 0.4;
-    if (ctx_top.globalAlpha !== 0.4) ctx_top.globalAlpha = 0.4;
 
     for (let i = 0; i < emotesToRender.length; i++) {
         emotesToRender[i].render();
