@@ -2465,7 +2465,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
             let min = zone.min;
 
 
-            if (_type(min).type !== "number" || _type(max).type !== "number") {
+            if (min !== undefined || max != undefined) {
                 console.log("No Min Or Max");
                 continue;
             }

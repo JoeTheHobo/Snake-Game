@@ -2948,7 +2948,9 @@ function specialZone_timer(lobby,zone,time,secondCap) {
         if (!correctOccupied) return;
 
         let status = [];
+        console.log(zone.giveStatus.toLowerCase());
         if (zone.giveStatus.toLowerCase() === "*p") {
+            console.log(zone.giveStatusFrom)
             if (zone.giveStatusFrom == "All Players") {
                 for (let i = 0; i < zone.occupiedBy.length; i++) {
                     status.push(zone.occupiedBy.team);
