@@ -292,8 +292,7 @@ function generatePreGamePlayerInfo(players) {
         })
 
         if (localAccount.id === player.accountID) {
-            let ring = holder.create("div");
-            ring.className = "pgpi_ring";
+            let ring = holder.create("div.pgpi_ring");
         } else {
             let title = holder.create("div");
             title.className = "pgpi_title";
@@ -542,8 +541,10 @@ socket.on("updatePositions",(obj) => {
     for (let i = 0; i < localAccount.boardFilters.length; i++) {
         filterString += localAccount.boardFilters[i].filter + " ";
     }
+    canvas_background.style.filter = filterString;
     canvas_tiles.style.filter = filterString;
     canvas_items.style.filter = filterString;
+    canvas_emote_background.style.filer = filterString;
     canvas_players.style.filter = filterString;
     canvas_overhangs.style.filter = filterString;
     canvas_top.style.filter = filterString;

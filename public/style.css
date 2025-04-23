@@ -3039,6 +3039,7 @@ height: 100%;
   width: 55px;
   height: 55px;
   border-radius: 100px;
+  z-index: 800;
   border: 3px solid white;
   animation: shrinkAndExpand 1.7s infinite;
 }

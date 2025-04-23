@@ -2584,7 +2584,6 @@ function addZonesToRender(zoneList) {
     for (let i = 0; i < zoneList.players.length; i++) {
         if (zoneList.players[i].visible) {
             zone = zoneList.players[i];
-            console.log(zone.display)
             zone.render = function() {
                 renderZone(canvas_emote_background,canvas_top,this);
             }
