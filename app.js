@@ -3022,6 +3022,7 @@ function specialZone_timer(lobby,zone,time,secondCap) {
     }
 
     if (zone.startTimeStamp) {
+        console.log(time)
         setTimeout(function() {
             if (lobby.gameEnd) return;
             specialZone_timer(lobby,zone,time-1,secondCap);
@@ -3039,6 +3040,7 @@ function specialZone_endTimer(lobby,zone) {
 function specialZone_startTimer(lobby,zone) {
     if (zone.startTimeStamp !== false) return;
 
+    console.log("sending")
     lobby.updateZones.push({
         id: zone.id,
         min: 0,
