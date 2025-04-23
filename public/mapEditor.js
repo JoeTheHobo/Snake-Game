@@ -2468,6 +2468,8 @@ $(".me_sz_addButton").on("click",function() {
                         size: 20,
                         textAlign: "center",
                         textBaseline: "middle",
+                        bold: false,
+                        italic: false,
                     },
                     position: {
                         offSetX: 0,
@@ -2536,6 +2538,8 @@ $(".me_sz_addButton").on("click",function() {
                             size: 20,
                             textAlign: "center",
                             textBaseline: "middle",
+                            bold: false,
+                            italic: false,
                         },
                         position: {
                             offSetX: 0,
@@ -2599,6 +2603,8 @@ $(".me_sz_addButton").on("click",function() {
                         size: 20,
                         textAlign: "center",
                         textBaseline: "middle",
+                        bold: false,
+                        italic: false,
                     },
                     position: {
                         offSetX: 0,
@@ -2943,6 +2949,16 @@ function loadCustomizeZoneSettings(settings,index) {
                 renderZoneCanvas();
             })
         }
+        if (type == "checkbox") {
+            input = settingHolder.create("select.zcp_customizeHolder_settingHolder_" + type);
+            input.type = "checkbox";
+            input.checked = value;
+            input.on("change",function() {
+                setNestedValue(settings,title,this.checked,false,true);
+                $("saveStatus").innerHTML = "Board Is Not Saved";
+                renderZoneCanvas();
+            })
+        }
         if (type == "number") {
             input = settingHolder.create("input.zcp_customizeHolder_settingHolder_" + type);
             input.type = "number";
@@ -2961,6 +2977,7 @@ function loadCustomizeZoneSettings(settings,index) {
                 if (extra?.min) if (value < extra.min) value = extra.min;
                 if (extra?.max) if (value > extra.max) value = extra.max;
                 this.storedValue = value;
+                console.log(value);
                 setNestedValue(settings,title,value,false,true);
                 $("saveStatus").innerHTML = "Board Is Not Saved";
                 renderZoneCanvas();
@@ -3054,6 +3071,7 @@ function loadCustomizeZoneSettings(settings,index) {
         addSetting(settingHolder,"font.size","number",{mix: 0, max: 100});
         addSetting(settingHolder,"font.textAlign","list",["center","left","right"]);
         addSetting(settingHolder,"font.textBaseline","list",["top","middle","bottom","alphabetic","hanging"]);
+        addSetting(settingHolder,"font.bold","checkbox");
     }
     if (listOptions.includes("timerFormat")) {
         settingHolder = holder.create("div.zcp_customizeHolder")
@@ -3131,6 +3149,8 @@ function getZoneDisplayObject(text) {
                 size: 20,
                 textAlign: "center",
                 textBaseline: "middle",
+                bold: false,
+                italic: false,
             },
             position: {
                 offSetX: 0,
@@ -3149,7 +3169,9 @@ function getZoneDisplayObject(text) {
                 color: "black",
                 size: 20,
                 textAlign: "center",
-                textBaseline: "middle",
+                textBaseline: "Top",
+                bold: false,
+                italic: false,
             },
             position: {
                 offSetX: 0,

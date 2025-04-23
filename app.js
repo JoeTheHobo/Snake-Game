@@ -884,6 +884,8 @@ io.on('connection', (socket) => {
                                     size: 20,
                                     textAlign: "center",
                                     textBaseline: "middle",
+                                    bold: false,
+                                    italic: false,
                                 },
                                 position: {
                                     offSetX: 0,
@@ -936,6 +938,8 @@ io.on('connection', (socket) => {
                                     size: 20,
                                     textAlign: "center",
                                     textBaseline: "middle",
+                                    bold: false,
+                                    italic: false,
                                 },
                                 position: {
                                     offSetX: 0,

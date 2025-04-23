@@ -5264,6 +5264,21 @@ cursor: url('./img/pointer.cur'), auto;
   margin-top: 10px;
 
 }
+.zcp_customizeHolder_settingHolder_checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid white;
+  border-radius: 2px; /* tiny border radius */
+  width: 25px;
+  height: 25px;
+  cursor: url(./img/pointer.cur), auto;
+  transition: background-color 0.2s ease;
+}
+.zcp_customizeHolder_settingHolder_checkbox:checked {
+  background-color: white;
+}
+
 .zcp_customizeHolder_settingHolder_title {
   color: white;
   font-size: 1.6em;
