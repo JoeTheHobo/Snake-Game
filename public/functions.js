@@ -2459,6 +2459,19 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
         let ctx = settings.display == "background" ? backgroundCtx : foregroundCtx;
         let type = settings.type;
 
+        if (type == "textTimer") {
+            let timerFormat = settings.timerFormat || "MM:SS";
+            let max = zone.max;
+            let min = zone.min;
+
+            if (!min || !max) {
+                console.log("No Min Or Max");
+                continue;
+            }
+
+            let text = new _time(max-min).format(timerFormat);
+            renderZone_drawText(zone,settings,text);
+        }
         if (type == "background") {
             ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.backgroundColor || "white")).ogColor;
             ctx.strokeStyle = _color(renderZone_checkForValue(zone,settings.border.color)).ogColor;
@@ -2484,35 +2497,39 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
 
         }
         if (type == "textbox") {
-            // Reset opacity for text
-            ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.font.color)).ogColor; // Change as needed for contrast
-            ctx.font = `${settings.font.size * zoom}px ${settings.font.family}`; // Adjust font size as needed
-            ctx.textAlign = settings.font.textAlign || "center";
-            ctx.textBaseline = settings.font.textBaseline || "middle";
-
-            let xy = renderZone_findPosition(x,y,width,height,settings.position);
-
-            let rotation = Number(settings.position.rotation);
-            // Save current context state to restore later
-            ctx.save();
-
-            // Move the context to the text position (so the rotation happens around the text center)
-            ctx.translate(xy.x, xy.y); // Move to the center point
-
-            // Rotate the canvas (convert rotation angle from degrees to radians)
-            ctx.rotate(rotation * Math.PI / 180); 
-
-            // Draw the text (note: the text is drawn relative to the origin after translation and rotation)
-
             let text = renderZone_checkForValue(zone,settings.text || ".id");
-            ctx.fillText(text, 0, 0); // (0, 0) is the new origin after translation
-            ctx.fillText(text, 0, 0); // (0, 0) is the new origin after translation
-            ctx.fillText(text, 0, 0); // (0, 0) is the new origin after translation
-
-            // Restore the context to the original state (no rotation or translation)
-            ctx.restore();
+            renderZone_drawText(zone,settings,text);
         }
     }
+}
+function renderZone_drawText() {
+    // Reset opacity for text
+    ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.font.color)).ogColor; // Change as needed for contrast
+    ctx.font = `${settings.font.size * zoom}px ${settings.font.family}`; // Adjust font size as needed
+    ctx.textAlign = settings.font.textAlign || "center";
+    ctx.textBaseline = settings.font.textBaseline || "middle";
+
+    let xy = renderZone_findPosition(x,y,width,height,settings.position);
+
+    let rotation = Number(settings.position.rotation);
+    // Save current context state to restore later
+    ctx.save();
+
+    // Move the context to the text position (so the rotation happens around the text center)
+    ctx.translate(xy.x, xy.y); // Move to the center point
+
+    // Rotate the canvas (convert rotation angle from degrees to radians)
+    ctx.rotate(rotation * Math.PI / 180); 
+
+    // Draw the text (note: the text is drawn relative to the origin after translation and rotation)
+
+    ctx.fillText(text, 0, 0); // (0, 0) is the new origin after translation
+    ctx.fillText(text, 0, 0); // (0, 0) is the new origin after translation
+    ctx.fillText(text, 0, 0); // (0, 0) is the new origin after translation
+
+    // Restore the context to the original state (no rotation or translation)
+    ctx.restore();
+
 }
 function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings) {
     let x, y;
@@ -2587,6 +2604,8 @@ function addZonesToRender(zoneList) {
             zone.render = function() {
                 renderZone(canvas_emote_background,canvas_top,this);
             }
+            zone.type = "zone";
+            zone.min = false;
             emotesToRender.push(zone);
         }
     }
@@ -2596,6 +2615,8 @@ function addZonesToRender(zoneList) {
             zone.render = function() {
                 renderZone(canvas_emote_background,canvas_top,this);
             }
+            zone.type = "zone";
+            zone.min = false;
             emotesToRender.push(zone);
         }
     }
@@ -2605,6 +2626,8 @@ function addZonesToRender(zoneList) {
             zone.render = function() {
                 renderZone(canvas_emote_background,canvas_top,this);
             }
+            zone.type = "zone";
+            zone.min = false;
             emotesToRender.push(zone);
         }
     }

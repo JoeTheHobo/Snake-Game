@@ -1612,8 +1612,6 @@ io.on('connection', (socket) => {
         updateClientPositions(lobby)
         lobby.updateCells = [];
         lobby.updateTiles = [];
-        lobby.updateZones = [];
-        lobby.updateZones = [];
         lobby.checkingSpawnTimers = true;
         lobby.gameStartedAt = false;
         lobby.gameLoop = function() {
@@ -1634,6 +1632,7 @@ io.on('connection', (socket) => {
                 this.updateSnakeCells = [];
                 this.updateCells = [];
                 this.updateTiles = [];
+                this.updateZones = [];
                 this.playSounds = [];
                 this.canvasFilters = [];
                 
@@ -2939,7 +2938,11 @@ function checkEndGametimers(lobby) {
         }
     }
 }
-function specialZone_timer(lobby,zone,time) {
+function specialZone_timer(lobby,zone,time,secondCap) {
+    lobby.updateZones.push({
+        id: zone.id,
+        min: secondCap-time/2,
+    })
     if (time <= 0 && zone.startTimeStamp) {
         let correctOccupied = specialZone_testOccupied(lobby,zone);
         if (!correctOccupied) return;
@@ -3021,17 +3024,26 @@ function specialZone_timer(lobby,zone,time) {
     if (zone.startTimeStamp) {
         setTimeout(function() {
             if (lobby.gameEnd) return;
-            specialZone_timer(lobby,zone,time-1);
+            specialZone_timer(lobby,zone,time-1,secondCap);
         },500);
     }
 
 }
 function specialZone_endTimer(lobby,zone) {
     zone.startTimeStamp = false;
+    lobby.updateZones.push({
+        id: zone.id,
+        min: false,
+    })
 }
 function specialZone_startTimer(lobby,zone) {
     if (zone.startTimeStamp !== false) return;
 
+    lobby.updateZones.push({
+        id: zone.id,
+        min: 0,
+        max: zone.giveStatusDelay,
+    })
     zone.startTimeStamp = true;
     specialZone_timer(lobby,zone,zone.giveStatusDelay*2);
 }

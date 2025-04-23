@@ -211,6 +211,8 @@ function renderZoneCanvas() {
     if (showingZoneTypes.includes("special")) {
         for (let i = 0; i < currentBoard.spawnZones.special.length; i++) {
             let zone = currentBoard.spawnZones.special[i];
+            zone.min = 3;
+            zone.max = 5;
             renderZone(me_canvas_emote_background,me_canvas_emote_foreground,zone,zoom)
         }
     }

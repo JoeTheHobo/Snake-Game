@@ -122,6 +122,18 @@ function renderCells(list,ctx,type) {
         document.body.style.background = color;
     }
 }
+function handleZoneUpdates() {
+    for (let i = 0; i < updateZones.length; i++) {
+        let zone = updateZones[i];
+        for (let j = 0; j < emotesToRender.length; j++) {
+            let emote = emotesToRender[j];
+            if (emote.type !== "zone" || emote?.id !== zone.id) continue;
+
+            if (zone.max) emote.max = zone.max;
+            if (zone.min) emote.min = zone.min;
+        }
+    }
+}
 function renderEmotes() {
     ctx_emote_background.clearRect(0,0,canvas_emote_background.width,canvas_emote_background.height);
     ctx_top.clearRect(0,0,canvas_top.width,canvas_top.height);
@@ -131,12 +143,6 @@ function renderEmotes() {
 
     for (let i = 0; i < emotesToRender.length; i++) {
         emotesToRender[i].render();
-    }
-}
-function handleZoneUpdates() {
-    for (let i = 0; i < updateZones.length; i++) {
-        let zone = updateZones[i];
-
     }
 }
 function drawImage(image, direction, xPos, yPos, width, height,cnvs = canvas_players) {

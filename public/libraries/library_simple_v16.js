@@ -4553,6 +4553,7 @@ pluginsIncludes("subset",1);
 
 class _time {
     constructor(date = new Date()) {
+        if (_type(date).type == "number") date = new Date(date);
         this.time = date;
         this.months = ["Janurary","February","March","April","May","June","July","August","September","October","November","December"];
         this.days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
