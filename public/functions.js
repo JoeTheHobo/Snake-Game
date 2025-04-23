@@ -2654,7 +2654,7 @@ function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings) 
         y: y + settings.offSetY
     };
 }
-function renderZone_color(zone,value,opacity = 1) {
+function renderZone_color(zone,value) {
     let colorResults = renderZone_checkForValue(zone,value);
     if (!colorResults) colorResults = "white";
     if (colorResults.toLowerCase() == "none") colorResults = "#00000000";
