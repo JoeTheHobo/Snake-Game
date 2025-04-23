@@ -2651,6 +2651,7 @@ function renderZone_checkForValue(zone,value) {
             let color = zone[value.subset(1,".\\before")];
             let secondOption = value.split(".")[1];
             if (secondOption.subset(0,5) == "darken") {
+                console.log(color)
                 return _color(color).darken(Number(secondOption.subset("(\\after",")\\before"))).ogColor;
             }
         }
