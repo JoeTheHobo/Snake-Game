@@ -2527,31 +2527,34 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
         }
     }
 }
-function renderZone_drawBox(ctx, zone, settings, pos, color, borderSettings, rotation = 0,align = "left") {
+function renderZone_drawBox(ctx, zone, settings, pos, color, borderSettings, rotation = 0, align = "left") {
     align = align.toLowerCase();
     let x = pos.x;
     let y = pos.y;
     const width = pos.width;
     const height = pos.height;
 
-    if (align == "center") {
-        x -= width/2;
-    }
-    if (align == "right") {
+    if (align === "center") {
+        x -= width / 2;
+    } else if (align === "right") {
         x -= width;
     }
 
     const centerX = x + width / 2;
     const centerY = y + height / 2;
-
     const radius = Math.min(settings.border.radius, width / 2, height / 2);
 
-    ctx.save(); // Save the current context state
+    // Reset the transform and apply the rotation around the center point
+    const cos = Math.cos(rotation);
+    const sin = Math.sin(rotation);
+    ctx.setTransform(
+        cos,  sin,
+       -sin,  cos,
+        centerX - cos * width / 2 + sin * height / 2,
+        centerY - sin * width / 2 - cos * height / 2
+    );
 
-    ctx.translate(centerX, centerY);       // Move to center of box
-    ctx.rotate(rotation);                  // Rotate around center
-    ctx.translate(-width / 2, -height / 2); // Move origin to top-left of box for drawing
-
+    // Draw the rounded box as usual
     ctx.beginPath();
     ctx.moveTo(radius, 0);
     ctx.lineTo(width - radius, 0);
@@ -2568,13 +2571,13 @@ function renderZone_drawBox(ctx, zone, settings, pos, color, borderSettings, rot
     ctx.fill();
 
     if (borderSettings) {
-        ctx.strokeStyle = renderZone_color(zone, borderSettings.color,settings);
-        let lineWidth = borderSettings.width ?? 3;
-        ctx.lineWidth = lineWidth;
+        ctx.strokeStyle = renderZone_color(zone, borderSettings.color, settings);
+        ctx.lineWidth = borderSettings.width ?? 3;
         ctx.stroke();
     }
 
-    ctx.restore(); // Restore original state
+    // Reset transform for future drawing
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
 function renderZone_drawText(zone,settings,text,ctx,pos) {
     // Reset opacity for text
