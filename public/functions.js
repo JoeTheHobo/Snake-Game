@@ -2762,7 +2762,7 @@ function addZonesToRender(zoneList) {
         if (zoneList.special[i].visible) {
             zone = zoneList.special[i];
             zone.render = function() {
-                renderZone(canvas_emote_background,canvas_top,this,1,currentBoard.width,currentBoard.height);
+                renderZone(canvas_emote_background,canvas_top,this,1,currentBoard.width,currentBoard.height-1);
             }
             zone.type = "zone";
             zone.min = false;
