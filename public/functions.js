@@ -2534,13 +2534,19 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1,boardWidth,b
         }
         if (type.toLowerCase() == "background") {
             let xy = renderZone_findPosition(x,y,width,height,settings.position,boardWidth,boardHeight);
+            let backgroundWidth = settings?.width || "100%";
+            backgroundWidth = parseSize(backgroundWidth,width);
+            let backgroundHeight = settings?.height || "100%";
+            backgroundHeight = parseSize(backgroundHeight,height);
+            let xAlign = settings?.xAlign || "center";
+            let yAlign = settings?.yAlign || "middle";
 
             renderZone_drawBox(ctx,zone,settings,{
                 x: xy.x,
                 y: xy.y,
-                width: width,
-                height: height,
-            },renderZone_color(zone,settings.backgroundColor || "white",settings),settings.border,0)
+                width: backgroundWidth,
+                height: backgroundHeight,
+            },renderZone_color(zone,settings.backgroundColor || "white",settings),settings.border,0,xAlign,yAlign)
         }
         if (type.toLowerCase() == "textbox") {
             let xy = renderZone_findPosition(x,y,width,height,settings.position,boardWidth,boardHeight);
@@ -2644,6 +2650,9 @@ function renderZone_drawText(zone, settings, text, ctx, pos) {
 }
 function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings,boardWidth,boardHeight) {
     let renderFrom = settings?.renderFrom.toLowerCase() || "zone";
+    let location = settings?.location || "center";
+    let offSetX = settings?.offSetX || 0;
+    let offSetY = settings?.offSetY || 0;
 
     if (renderFrom == "board") {
         zoneX = 0;
@@ -2655,54 +2664,54 @@ function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings,b
 
     let x, y;
 
-    if (settings.location == "topLeft") {
+    if (location == "topLeft") {
         x = zoneX;
         y = zoneY;
     }
 
-    if (settings.location == "topCenter") {
+    if (location == "topCenter") {
         x = zoneX + zoneWidth / 2;
         y = zoneY;
     }
 
-    if (settings.location == "topRight") {
+    if (location == "topRight") {
         x = zoneX + zoneWidth;
         y = zoneY;
     }
 
-    if (settings.location == "leftCenter") {
+    if (location == "leftCenter") {
         x = zoneX;
         y = zoneY + zoneHeight / 2;
     }
 
-    if (settings.location == "center") {
+    if (location == "center") {
         x = zoneX + zoneWidth / 2;
         y = zoneY + zoneHeight / 2;
     }
 
-    if (settings.location == "rightCenter") {
+    if (location == "rightCenter") {
         x = zoneX + zoneWidth;
         y = zoneY + zoneHeight / 2;
     }
 
-    if (settings.location == "bottomLeft") {
+    if (location == "bottomLeft") {
         x = zoneX;
         y = zoneY + zoneHeight;
     }
 
-    if (settings.location == "bottomCenter") {
+    if (location == "bottomCenter") {
         x = zoneX + zoneWidth / 2;
         y = zoneY + zoneHeight;
     }
 
-    if (settings.location == "bottomRight") {
+    if (location == "bottomRight") {
         x = zoneX + zoneWidth;
         y = zoneY + zoneHeight;
     }
 
     return { 
-        x: x + settings.offSetX,
-        y: y + settings.offSetY
+        x: x + offSetX,
+        y: y + offSetY
     };
 }
 function renderZone_color(zone,value,settings) {
