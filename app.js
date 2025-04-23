@@ -875,7 +875,7 @@ io.on('connection', (socket) => {
                                 opacity: 0.4,
                             },
                             {
-                                type: "textbox",
+                                type: "textBox",
                                 display: "background",
                                 text: ".id",
                                 font: {
@@ -927,7 +927,7 @@ io.on('connection', (socket) => {
                                 opacity: 0.4,
                             },
                             {
-                                type: "textbox",
+                                type: "textBox",
                                 display: "background",
                                 text: ".id",
                                 font: {

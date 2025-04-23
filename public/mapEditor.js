@@ -2459,7 +2459,7 @@ $(".me_sz_addButton").on("click",function() {
                     opacity: 0.4,
                 },
                 {
-                    type: "textbox",
+                    type: "textBox",
                     display: "background",
                     text: ".id",
                     font: {
@@ -2527,7 +2527,7 @@ $(".me_sz_addButton").on("click",function() {
                         opacity: 0.4,
                     },
                     {
-                        type: "textbox",
+                        type: "textBox",
                         display: "background",
                         text: ".id",
                         font: {
@@ -2590,7 +2590,7 @@ $(".me_sz_addButton").on("click",function() {
                     opacity: 0.4,
                 },
                 {
-                    type: "textbox",
+                    type: "textBox",
                     display: "background",
                     text: ".id",
                     font: {
@@ -3122,7 +3122,7 @@ function getZoneDisplayObject(text) {
             opacity: 0.4,
         }
         case "textBox": return {
-            type: "textbox",
+            type: "textBox",
             display: "background",
             text: ".id",
             font: {
