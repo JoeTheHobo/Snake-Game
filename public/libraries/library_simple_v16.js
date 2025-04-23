@@ -4552,8 +4552,8 @@ pluginsIncludes("subset",1);
 
 
 class _time {
-    constructor(date = new Date()) {
-        if (_type(date).type == "number") date = new Date(date);
+    constructor(date = new Date(),type) {
+        if (type == "duration") date = timeObject(date);
         this.time = date;
         this.months = ["Janurary","February","March","April","May","June","July","August","September","October","November","December"];
         this.days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
@@ -4777,7 +4777,38 @@ class _time {
 
 
 */
+function timeObject(ms) {
+    const MS_PER_SECOND = 1000;
+    const MS_PER_MINUTE = 60 * MS_PER_SECOND;
+    const MS_PER_HOUR = 60 * MS_PER_MINUTE;
+    const MS_PER_DAY = 24 * MS_PER_HOUR;
+    const MS_PER_YEAR = 365.25 * MS_PER_DAY; // Approximate leap years
+    const MS_PER_MONTH = MS_PER_YEAR / 12;
 
+    return {
+        getFullYear: function () {
+            return Math.floor(ms / MS_PER_YEAR);
+        },
+        getMonth: function () {
+            return Math.floor((ms % MS_PER_YEAR) / MS_PER_MONTH); // 0-11
+        },
+        getDate: function () {
+            return Math.floor((ms % MS_PER_MONTH) / MS_PER_DAY) + 1; // 1-31
+        },
+        getHours: function () {
+            return String(Math.floor((ms % MS_PER_DAY) / MS_PER_HOUR)).padStart(2, '0');
+        },
+        getMinutes: function () {
+            return String(Math.floor((ms % MS_PER_HOUR) / MS_PER_MINUTE)).padStart(2, '0');
+        },
+        getSeconds: function () {
+            return String(Math.floor((ms % MS_PER_MINUTE) / MS_PER_SECOND)).padStart(2, '0');
+        },
+        getMilliseconds: function () {
+            return ms % 1000;
+        }
+    };
+}
 pluginsIncludes("_time",1);
 
 
