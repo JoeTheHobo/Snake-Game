@@ -2646,14 +2646,13 @@ function renderZone_color(zone,value) {
     return _color(colorResults).color;
 }
 function renderZone_checkForValue(zone,value) {
-    console.log(3,zone,value)
+    console.log(2,zone,value)
     if (value.charAt(0) == ".") {
-        console.log(4)
-        if (value.split("").includes(".")) {
-            console.log(5)
+        if (value.subset(1,"end").split("").includes(".")) {
+            console.log(3,value.subset(1,".\\before"))
             let color = zone[value.subset(1,".\\before")];
-            let secondOption = value.split(".")[1];
-            console.log(6,secondOption)
+            let secondOption = value.split(".")[2];
+            console.log(456,secondOption)
             if (secondOption.subset(0,5) == "darken") {
                 return _color(color).darken(Number(secondOption.subset("(\\after",")\\before"))).ogColor;
             }
