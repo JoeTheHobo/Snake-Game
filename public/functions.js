@@ -1771,6 +1771,7 @@ function setNestedValue(obj, path, value, toReturn = false, forceSet = false) {
         return target?.[lastKey];
     } else {
         if (forceSet || Object.prototype.hasOwnProperty.call(target, lastKey)) {
+            console.log(value)
             target[lastKey] = value;
         }
     }
@@ -2535,7 +2536,6 @@ function renderZone_drawBox(ctx,zone,settings,pos,color,borderSettings) {
 
     ctx.fillStyle = color;
     if (borderSettings) {
-        console.log(1,zone,borderSettings.color)
         ctx.strokeStyle = renderZone_color(zone,borderSettings.color);
         ctx.lineWidth = borderSettings.width || 3;
     }

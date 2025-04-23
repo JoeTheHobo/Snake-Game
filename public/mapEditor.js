@@ -3030,7 +3030,7 @@ function loadCustomizeZoneSettings(settings,index) {
         addSetting(settingHolder,"width","text");
     }
     if (listOptions.includes("height")) {
-        addSetting(settingHolder,"width","text");
+        addSetting(settingHolder,"height","text");
     }
 
     if (listOptions.includes("text") || listOptions.includes("font"))
