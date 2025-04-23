@@ -3225,7 +3225,7 @@ function getZoneDisplayObject(text) {
             border: {
                 color: "black",
                 width: 2,
-                radius: 0,
+                radius: 100,
             },
             opacity: 1,
         }

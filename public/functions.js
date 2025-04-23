@@ -2460,6 +2460,19 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
         let ctx = settings.display == "background" ? backgroundCtx : foregroundCtx;
         let type = settings.type;
 
+        if (type.toLowerCase() == "circletimer") {
+            let max = zone.max;
+            let min = zone.min;
+    
+            if (_type(min).type !== "number" || _type(max).type !== "number") {
+                continue;
+            }
+
+            let percentage = min/max;
+            
+            
+
+        }
         if (type.toLowerCase() == "bartimer") {
             let max = zone.max;
             let min = zone.min;
