@@ -2470,7 +2470,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
             }
 
             let text = new _time(max-min).format(timerFormat);
-            renderZone_drawText(zone,settings,text);
+            renderZone_drawText(zone,settings,text,ctx);
         }
         if (type == "background") {
             ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.backgroundColor || "white")).ogColor;
@@ -2498,11 +2498,11 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
         }
         if (type == "textbox") {
             let text = renderZone_checkForValue(zone,settings.text || ".id");
-            renderZone_drawText(zone,settings,text);
+            renderZone_drawText(zone,settings,text,ctx);
         }
     }
 }
-function renderZone_drawText() {
+function renderZone_drawText(zone,settings,text,ctx) {
     // Reset opacity for text
     ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.font.color)).ogColor; // Change as needed for contrast
     ctx.font = `${settings.font.size * zoom}px ${settings.font.family}`; // Adjust font size as needed
