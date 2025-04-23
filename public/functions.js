@@ -2580,31 +2580,32 @@ function renderZone_drawBox(ctx, zone, settings, pos, color, borderSettings, rot
     // Reset transform for future drawing
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
-function renderZone_drawText(zone,settings,text,ctx,pos) {
-    // Reset opacity for text
-    ctx.fillStyle = renderZone_color(zone,settings.font.color,settings); // Change as needed for contrast
-    ctx.font = `${settings.font.size * zoom}px ${settings.font.family}`; // Adjust font size as needed
+function renderZone_drawText(zone, settings, text, ctx, pos) {
+    // Set font and styles
+    ctx.fillStyle = renderZone_color(zone, settings.font.color, settings);
+    ctx.font = `${settings.font.size * zoom}px ${settings.font.family}`;
     ctx.textAlign = settings.font.textAlign || "center";
     ctx.textBaseline = settings.font.textBaseline || "middle";
 
+    const rotation = Number(settings.position.rotation) || 0;
+    const radians = rotation * Math.PI / 180;
 
-    let rotation = Number(settings.position.rotation);
-    // Save current context state to restore later
-    ctx.save();
+    // Compute rotation matrix components
+    const cos = Math.cos(radians);
+    const sin = Math.sin(radians);
 
-    // Move the context to the text position (so the rotation happens around the text center)
-    ctx.translate(pos.x, pos.y); // Move to the center point
+    // Apply transform to rotate around (pos.x, pos.y)
+    ctx.setTransform(
+        cos, sin,         // a, b
+       -sin, cos,         // c, d
+        pos.x, pos.y      // e, f (translation)
+    );
 
-    // Rotate the canvas (convert rotation angle from degrees to radians)
-    ctx.rotate(rotation * Math.PI / 180); 
+    // Draw the text at the new origin
+    ctx.fillText(text, 0, 0);
 
-    // Draw the text (note: the text is drawn relative to the origin after translation and rotation)
-
-    ctx.fillText(text, 0, 0); // (0, 0) is the new origin after translation
-
-    // Restore the context to the original state (no rotation or translation)
-    ctx.restore();
-
+    // Reset transform to identity matrix for following drawing calls
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
 function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings) {
     let x, y;
