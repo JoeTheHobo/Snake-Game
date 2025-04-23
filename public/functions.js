@@ -2454,8 +2454,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1,boardWidth,b
     let width = ((zone.pos2.x + 1) * gridSize * zoom) - x;
     let height = ((zone.pos2.y + 1) * gridSize * zoom) - y;
     boardWidth = (boardWidth*gridSize*zoom);
-    boardHeight = boardHeight*gridSize*zone;
-    console.log(boardWidth,boardHeight)
+    boardHeight = boardHeight*gridSize*zoom;
 
     for (let i = 0; i < elementList.length; i++) {
 
