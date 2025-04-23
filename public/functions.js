@@ -2456,6 +2456,8 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1,boardWidth,b
     boardWidth = (boardWidth*gridSize*zoom);
     boardHeight = boardHeight*gridSize*zoom;
 
+    console.log(elementList)
+
     for (let i = 0; i < elementList.length; i++) {
 
         let settings = elementList[i];
@@ -2479,11 +2481,9 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1,boardWidth,b
             let max = zone.max;
             let min = zone.min;
     
-            console.log(max,min)
             if (_type(min).type !== "number" || _type(max).type !== "number") {
                 continue;
             }
-            console.log("hmm")
 
             let percentage = min/max;
 
