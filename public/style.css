@@ -5273,7 +5273,7 @@ cursor: url('./img/pointer.cur'), auto;
   border: 2px solid white;
   width: 25px;
   height: 25px;
-  cursor: pointer;
+  cursor: url(./img/pointer.cur), auto;
   transition: background-color 0.2s ease;
 }
 
