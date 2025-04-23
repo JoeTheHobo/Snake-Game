@@ -288,7 +288,7 @@ function generatePreGamePlayerInfo(players) {
 
         console.log(player.pos.x,gridSize,rect.left,);
         holder.css({
-            left: ((player.pos.x*gridSize)+rect.left-50+(gridSize/2)) + "px",
+            left: ((player.pos.x*17)+rect.left-50+(gridSize/2)) + "px",
             top: ((player.pos.y*gridSize)+rect.top-50+(gridSize/2)) + "px",
         })
 
