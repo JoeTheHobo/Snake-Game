@@ -2455,17 +2455,51 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
     let height = ((zone.pos2.y + 1) * gridSize * zoom) - y;
 
     for (let i = 0; i < elementList.length; i++) {
+
         let settings = elementList[i];
         let ctx = settings.display == "background" ? backgroundCtx : foregroundCtx;
         let type = settings.type;
 
+        if (type == "barTimer") {
+            let max = zone.max;
+            let min = zone.min;
+    
+            if (_type(min).type !== "number" || _type(max).type !== "number") {
+                continue;
+            }
+
+            let percentage = min/max;
+
+            let direction = settings?.direction?.toLowerCase() || "horizontal";
+            let barWidth = settings?.width || "100%";
+            barWidth = parseSize(barWidth,width);
+            let barHeight = settings?.height || "25px";
+            barHeight = parseSize(barHeight,height);
+
+            let xy = renderZone_findPosition(x,y,width,height,settings.position);
+
+            let statusWidth = direction == "horizontal" ? percentage * barWidth : barWidth;
+            let statusHeight = direction == "horizontal" ? barHeight : barHeight * percentage;
+
+            renderZone_drawBox(ctx,zone,settings,{
+                x: xy.x,
+                y: xy.y,
+                width: statusWidth,
+                height: statusHeight,
+            })
+            renderZone_drawBox(ctx,zone,settings,{
+                x: xy.x,
+                y: xy.y,
+                width: barWidth,
+                height: barHeight,
+            })
+        }
         if (type == "textTimer") {
             let timerFormat = settings.timerFormat || "MM:SS";
             let max = zone.max;
             let min = zone.min;
-            console.log(min,max)
+
             if (_type(min).type !== "number" || _type(max).type !== "number") {
-                console.log("No Min Or Max");
                 continue;
             }
 
@@ -2474,28 +2508,13 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
             renderZone_drawText(zone,settings,text,ctx,xy);
         }
         if (type == "background") {
-            ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.backgroundColor || "white")).ogColor;
-            ctx.strokeStyle = _color(renderZone_checkForValue(zone,settings.border.color)).ogColor;
-            ctx.lineWidth = settings.border.width;
 
-            // Ensure radius doesn’t exceed half the width/height
-            radius = Math.min(settings.border.radius, width / 2, height / 2);
-
-            ctx.beginPath();
-            ctx.moveTo(x + radius, y);
-            ctx.lineTo(x + width - radius, y);
-            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-            ctx.lineTo(x + width, y + height - radius);
-            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-            ctx.lineTo(x + radius, y + height);
-            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-            ctx.lineTo(x, y + radius);
-            ctx.quadraticCurveTo(x, y, x + radius, y);
-            ctx.closePath();
-
-            ctx.fill();
-            ctx.stroke();
-
+            renderZone_drawBox(ctx,zone,settings,{
+                x: x,
+                y: y,
+                width: width,
+                height: height,
+            })
         }
         if (type == "textbox") {
             let xy = renderZone_findPosition(x,y,width,height,settings.position);
@@ -2503,6 +2522,34 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
             renderZone_drawText(zone,settings,text,ctx,xy);
         }
     }
+}
+function renderZone_drawBox(ctx,zone,settings,pos) {
+    let x = pos.x;
+    let y = pos.y;
+    let width = pos.width;
+    let height = pos.height;
+
+    ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.backgroundColor || "white")).ogColor;
+    ctx.strokeStyle = _color(renderZone_checkForValue(zone,settings.border.color)).ogColor;
+    ctx.lineWidth = settings?.border?.width || 3;
+
+    // Ensure radius doesn’t exceed half the width/height
+    radius = Math.min(settings.border.radius, width / 2, height / 2);
+
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+
+    ctx.fill();
+    ctx.stroke();
 }
 function renderZone_drawText(zone,settings,text,ctx,xy) {
     // Reset opacity for text
@@ -2633,3 +2680,41 @@ function addZonesToRender(zoneList) {
         }
     }
 }
+function parseSize(value, size) {
+    if (typeof value === 'number') return value;
+  
+    if (typeof value !== 'string') return 0;
+  
+    value = value.trim();
+  
+    // Handle calc() expression
+    if (value.startsWith('calc(') && value.endsWith(')')) {
+      const expr = value.slice(5, -1);
+      return evaluateCalc(expr, size);
+    }
+  
+    if (value.endsWith('%')) {
+      const percent = parseFloat(value.slice(0, -1));
+      return (percent / 100) * size;
+    }
+  
+    if (value.endsWith('px')) {
+      return parseFloat(value.slice(0, -2));
+    }
+  
+    const num = parseFloat(value);
+    return isNaN(num) ? 0 : num;
+  }
+  
+  function evaluateCalc(expr, size) {
+    // Very basic parser that replaces `100%` and `50px` with values and evaluates math
+    const safeExpr = expr
+      .replace(/([0-9.]+)%/g, (_, p) => ((parseFloat(p) / 100) * size))
+      .replace(/([0-9.]+)px/g, (_, p) => parseFloat(p));
+  
+    try {
+      return new Function(`return ${safeExpr}`)();
+    } catch (e) {
+      return 0;
+    }
+  }

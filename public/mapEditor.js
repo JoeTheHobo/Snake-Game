@@ -2907,7 +2907,7 @@ function loadCustomizeZoneSettings(settings,index) {
     let realObject = getZoneDisplayObject(settings.type);
     let listOptions = Object.keys(realObject);
 
-    function addSetting(holder,title,type,extra) {
+    function addSetting(holder,title,type,extra,func) {
         let settingHolder = holder.create("div.zcp_customizeHolder_settingHolder");
         let settingTitle = settingHolder.create("div.zcp_customizeHolder_settingHolder_title");
         settingTitle.innerHTML = standardizeText(title) + ":";
@@ -2934,6 +2934,7 @@ function loadCustomizeZoneSettings(settings,index) {
                 setNestedValue(settings,title,this.value,false,true);
                 $("saveStatus").innerHTML = "Board Is Not Saved";
                 renderZoneCanvas();
+                if (func) func();
             })
         }
         if (type == "number") {
@@ -3006,12 +3007,30 @@ function loadCustomizeZoneSettings(settings,index) {
         addSetting(settingHolder,"position.offSetY","number");
         addSetting(settingHolder,"position.rotation","slider",{min: 0, max: 360});
     }
+    if (listOptions.includes("direction")) {
+        addSetting(settingHolder,"direction","list",["Horizontal","Vertical"],() =>{
+            let height = getNestedValue(settings,"height");
+            let width = getNestedValue(settings,"width");
+            if (_type(height).type !== "string" || _type(width).type !== "string") return;
+            setNestedValue(settings,"height",width);
+            setNestedValue(settings,"width",height);
+        });
+    }
     //Element Specific
     if (listOptions.includes("border")) {
         settingHolder = holder.create("div.zcp_customizeHolder")
         addSetting(settingHolder,"border.color","text");
         addSetting(settingHolder,"border.width","number");
         addSetting(settingHolder,"border.radius","slider",{min: 0, max: 200});
+    }
+
+    if (listOptions.includes("width") || listOptions.includes("height"))
+        settingHolder = holder.create("div.zcp_customizeHolder")
+    if (listOptions.includes("width")) {
+        addSetting(settingHolder,"width","text");
+    }
+    if (listOptions.includes("height")) {
+        addSetting(settingHolder,"width","text");
     }
 
     if (listOptions.includes("text") || listOptions.includes("font"))
@@ -3131,6 +3150,9 @@ function getZoneDisplayObject(text) {
                 rotation: 0,
                 location: "topCenter",
             },
+            width: "100%",
+            height: "25px",
+            direction: "Horizontal",
             backgroundColor: "white",
             foregroundColor: "lightblue",
             border: {
