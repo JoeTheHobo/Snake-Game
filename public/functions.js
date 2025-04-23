@@ -2471,28 +2471,32 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
             let percentage = min/max;
 
             let direction = settings?.direction?.toLowerCase() || "horizontal";
+            let xy = renderZone_findPosition(x,y,width,height,settings.position);
+
             let barWidth = settings?.width || "100%";
             barWidth = parseSize(barWidth,width);
             let barHeight = settings?.height || "25px";
             barHeight = parseSize(barHeight,height);
+            let barColor = renderZone_color(zone,settings.backgroundColor);
 
-            let xy = renderZone_findPosition(x,y,width,height,settings.position);
 
             let statusWidth = direction == "horizontal" ? percentage * barWidth : barWidth;
             let statusHeight = direction == "horizontal" ? barHeight : barHeight * percentage;
+            let statusColor = renderZone_color(zone,settings.foregroundColor);
+
 
             renderZone_drawBox(ctx,zone,settings,{
                 x: xy.x,
                 y: xy.y,
                 width: statusWidth,
                 height: statusHeight,
-            })
+            },statusColor)
             renderZone_drawBox(ctx,zone,settings,{
                 x: xy.x,
                 y: xy.y,
                 width: barWidth,
                 height: barHeight,
-            })
+            },barColor,settings.border)
         }
         if (type == "textTimer") {
             let timerFormat = settings.timerFormat || "MM:SS";
@@ -2514,7 +2518,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
                 y: y,
                 width: width,
                 height: height,
-            })
+            },renderZone_color(zone,settings.backgroundColor || "white"),settings.border)
         }
         if (type == "textbox") {
             let xy = renderZone_findPosition(x,y,width,height,settings.position);
@@ -2523,15 +2527,17 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
         }
     }
 }
-function renderZone_drawBox(ctx,zone,settings,pos) {
+function renderZone_drawBox(ctx,zone,settings,pos,color,borderSettings) {
     let x = pos.x;
     let y = pos.y;
     let width = pos.width;
     let height = pos.height;
 
-    ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.backgroundColor || "white")).ogColor;
-    ctx.strokeStyle = _color(renderZone_checkForValue(zone,settings.border.color)).ogColor;
-    ctx.lineWidth = settings?.border?.width || 3;
+    ctx.fillStyle = color;
+    if (borderSettings) {
+        ctx.strokeStyle = renderZone_color(zone,borderSettings.color);
+        ctx.lineWidth = borderSettings.width || 3;
+    }
 
     // Ensure radius doesn’t exceed half the width/height
     radius = Math.min(settings.border.radius, width / 2, height / 2);
@@ -2549,11 +2555,11 @@ function renderZone_drawBox(ctx,zone,settings,pos) {
     ctx.closePath();
 
     ctx.fill();
-    ctx.stroke();
+    if (borderSettings) ctx.stroke();
 }
 function renderZone_drawText(zone,settings,text,ctx,xy) {
     // Reset opacity for text
-    ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.font.color)).ogColor; // Change as needed for contrast
+    ctx.fillStyle = renderZone_color(zone,settings.font.color); // Change as needed for contrast
     ctx.font = `${settings.font.size * zoom}px ${settings.font.family}`; // Adjust font size as needed
     ctx.textAlign = settings.font.textAlign || "center";
     ctx.textBaseline = settings.font.textBaseline || "middle";
@@ -2631,6 +2637,11 @@ function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings) 
         x: x + settings.offSetX,
         y: y + settings.offSetY
     };
+}
+function renderZone_color(zone,value) {
+    let colorResults = renderZone_checkForValue(zone,value);
+    if (colorResults.toLowerCase() == "none") colorResults = "#00000000";
+    return _color(colorResults).color;
 }
 function renderZone_checkForValue(zone,value) {
     if (value.charAt(0) == ".") {
