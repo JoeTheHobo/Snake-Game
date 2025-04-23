@@ -2490,13 +2490,19 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
                 y: xy.y,
                 width: barWidth,
                 height: barHeight,
-            },barColor,settings.border,settings.position.rotation,settings.barAlign)
+            },barColor,false,settings.position.rotation,settings.barAlign)
             renderZone_drawBox(ctx,zone,settings,{
                 x: xy.x,
                 y: xy.y,
                 width: statusWidth,
                 height: statusHeight,
             },statusColor,false,settings.position.rotation,settings.barAlign)
+            renderZone_drawBox(ctx,zone,settings,{
+                x: xy.x,
+                y: xy.y,
+                width: barWidth,
+                height: barHeight,
+            },"#00000000",settings.border,settings.position.rotation,settings.barAlign)
         }
         if (type.toLowerCase() == "texttimer") {
             let timerFormat = settings.timerFormat || "MM:SS";
@@ -2574,9 +2580,9 @@ function renderZone_drawBox(ctx, zone, settings, pos, color, borderSettings, rot
     if (borderSettings) {
         ctx.strokeStyle = renderZone_color(zone, borderSettings.color, settings);
         let lineWidth = borderSettings.width ?? 3;
-        console.log(lineWidth,borderSettings.width,borderSettings)
         ctx.lineWidth = lineWidth;
-        ctx.stroke();
+        if (lineWidth > 0)
+            ctx.stroke();
     }
 
     // Reset transform for future drawing
