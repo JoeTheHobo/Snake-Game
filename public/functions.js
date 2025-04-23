@@ -2477,12 +2477,12 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
             barWidth = parseSize(barWidth,width);
             let barHeight = settings?.height || "25px";
             barHeight = parseSize(barHeight,height);
-            let barColor = renderZone_color(zone,settings.backgroundColor);
+            let barColor = renderZone_color(zone,settings.backgroundColor,settings);
 
 
             let statusWidth = direction == "horizontal" ? percentage * barWidth : barWidth;
             let statusHeight = direction == "horizontal" ? barHeight : barHeight * percentage;
-            let statusColor = renderZone_color(zone,settings.foregroundColor);
+            let statusColor = renderZone_color(zone,settings.foregroundColor,settings);
 
 
             renderZone_drawBox(ctx,zone,settings,{
@@ -2518,7 +2518,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
                 y: y,
                 width: width,
                 height: height,
-            },renderZone_color(zone,settings.backgroundColor || "white"),settings.border,0)
+            },renderZone_color(zone,settings.backgroundColor || "white",settings),settings.border,0)
         }
         if (type == "textbox") {
             let xy = renderZone_findPosition(x,y,width,height,settings.position);
@@ -2568,7 +2568,7 @@ function renderZone_drawBox(ctx, zone, settings, pos, color, borderSettings, rot
     ctx.fill();
 
     if (borderSettings) {
-        ctx.strokeStyle = renderZone_color(zone, borderSettings.color);
+        ctx.strokeStyle = renderZone_color(zone, borderSettings.color,settings);
         let lineWidth = borderSettings.width ?? 3;
         ctx.lineWidth = lineWidth;
         ctx.stroke();
@@ -2578,7 +2578,7 @@ function renderZone_drawBox(ctx, zone, settings, pos, color, borderSettings, rot
 }
 function renderZone_drawText(zone,settings,text,ctx,pos) {
     // Reset opacity for text
-    ctx.fillStyle = renderZone_color(zone,settings.font.color); // Change as needed for contrast
+    ctx.fillStyle = renderZone_color(zone,settings.font.color,settings); // Change as needed for contrast
     ctx.font = `${settings.font.size * zoom}px ${settings.font.family}`; // Adjust font size as needed
     ctx.textAlign = settings.font.textAlign || "center";
     ctx.textBaseline = settings.font.textBaseline || "middle";
@@ -2655,13 +2655,12 @@ function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings) 
         y: y + settings.offSetY
     };
 }
-function renderZone_color(zone,value) {
+function renderZone_color(zone,value,settings) {
     let colorResults = renderZone_checkForValue(zone,value);
     if (!colorResults) colorResults = "white";
     if (colorResults.toLowerCase() == "none") colorResults = "#00000000";
 
-    let opacity = zone.opacity || 1;
-    console.log(zone)
+    let opacity = Number(settings.opacity) || 1;
     return _color(colorResults,opacity).color;
 }
 function renderZone_checkForValue(zone,value) {
