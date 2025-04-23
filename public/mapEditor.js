@@ -3001,6 +3001,9 @@ function loadCustomizeZoneSettings(settings,index) {
     if (listOptions.includes("display")) {
         addSetting(settingHolder,"display","list",["foreground","background"]);
     }
+    if (listOptions.includes("opacity")) {
+        addSetting(settingHolder,"opacity","slider",{min: 0, max: 1});
+    }
     if (listOptions.includes("position")) {
         addSetting(settingHolder,"position.location","list",["topLeft","topCenter","topRight","leftCenter","center","rightCenter","bottomLeft","bottomCenter","bottomRight"]);
         addSetting(settingHolder,"position.offSetX","number");
@@ -3009,6 +3012,7 @@ function loadCustomizeZoneSettings(settings,index) {
     }
     if (listOptions.includes("direction")) {
         addSetting(settingHolder,"direction","list",["Horizontal","Vertical"],() =>{
+            return;
             let height = getNestedValue(settings,"height");
             let width = getNestedValue(settings,"width");
             if (_type(height).type !== "string" || _type(width).type !== "string") return;
@@ -3022,6 +3026,7 @@ function loadCustomizeZoneSettings(settings,index) {
         addSetting(settingHolder,"border.color","text");
         addSetting(settingHolder,"border.width","number");
         addSetting(settingHolder,"border.radius","slider",{min: 0, max: 200});
+        addSetting(settingHolder,"border.opacity","slider",{min: 0, max: 1});
     }
 
     if (listOptions.includes("width") || listOptions.includes("height"))
@@ -3050,13 +3055,16 @@ function loadCustomizeZoneSettings(settings,index) {
         addSetting(settingHolder,"timerFormat","text");
     }
     
-    if (listOptions.includes("backgroundColor") || listOptions.includes("foregroundColor"))
+    if (listOptions.includes("backgroundColor") || listOptions.includes("foregroundColor") || listOptions.includes("barAlign"))
         settingHolder = holder.create("div.zcp_customizeHolder")
     if (listOptions.includes("backgroundColor")) {
         addSetting(settingHolder,"backgroundColor","text");
     }
     if (listOptions.includes("foregroundColor")) {
         addSetting(settingHolder,"foregroundColor","text");
+    }
+    if (listOptions.includes("barAlign")) {
+        addSetting(settingHolder,"barAlign","list",["topLeft","topCenter","topRight","leftCenter","center","rightCenter","bottomLeft","bottomCenter","bottomRight"]);
     }
 
 }
@@ -3103,7 +3111,9 @@ function getZoneDisplayObject(text) {
                 color: ".team.darken(20)",
                 width: 3,
                 radius: 0,
+                opacity: 1,
             },
+            opacity: 1,
         }
         case "textBox": return {
             type: "textbox",
@@ -3121,7 +3131,8 @@ function getZoneDisplayObject(text) {
                 offSetY: 0,
                 rotation: 0,
                 location: "center",
-            }
+            },
+            opacity: 1,
         }
         case "textTimer": return {
             type: "textTimer",
@@ -3139,7 +3150,8 @@ function getZoneDisplayObject(text) {
                 offSetY: 0,
                 rotation: 0,
                 location: "topCenter",
-            }
+            },
+            opacity: 1,
         }
         case "barTimer": return {
             type: "barTimer",
@@ -3155,11 +3167,14 @@ function getZoneDisplayObject(text) {
             direction: "Horizontal",
             backgroundColor: "white",
             foregroundColor: "lightblue",
+            barAlign: "center",
             border: {
                 color: "black",
                 width: 2,
                 radius: 0,
+                opacity: 1,
             },
+            opacity: 1,
         }
         case "circleTimer": return {
             type: "circleTimer",
@@ -3177,6 +3192,7 @@ function getZoneDisplayObject(text) {
                 width: 2,
                 radius: 0,
             },
+            opacity: 1,
         }
         case "statusList": return {
             type: "circleTimer",
@@ -3187,6 +3203,7 @@ function getZoneDisplayObject(text) {
                 rotation: 0,
                 location: "topCenter",
             },
+            opacity: 1,
         }
         case "allowedItems": return {
             type: "allowedItems",
@@ -3197,6 +3214,7 @@ function getZoneDisplayObject(text) {
                 rotation: 0,
                 location: "topCenter",
             },
+            opacity: 1,
         }
         case "notAllowedItems": return {
             type: "notAllowedItems",
@@ -3207,6 +3225,7 @@ function getZoneDisplayObject(text) {
                 rotation: 0,
                 location: "topCenter",
             },
+            opacity: 1,
         }
     }
 }
