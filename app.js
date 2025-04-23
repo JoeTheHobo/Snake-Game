@@ -2939,10 +2939,6 @@ function checkEndGametimers(lobby) {
     }
 }
 function specialZone_timer(lobby,zone,time,secondCap) {
-    lobby.updateZones.push({
-        id: zone.id,
-        min: secondCap-time/2,
-    })
     if (time <= 0 && zone.startTimeStamp) {
         let correctOccupied = specialZone_testOccupied(lobby,zone);
         if (!correctOccupied) return;
@@ -3027,6 +3023,10 @@ function specialZone_timer(lobby,zone,time,secondCap) {
     if (zone.startTimeStamp) {
         setTimeout(function() {
             if (lobby.gameEnd) return;
+            lobby.updateZones.push({
+                id: zone.id,
+                min: secondCap-time/2,
+            })
             specialZone_timer(lobby,zone,time-1,secondCap);
         },500);
     }

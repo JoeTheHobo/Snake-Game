@@ -2463,7 +2463,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
             let timerFormat = settings.timerFormat || "MM:SS";
             let max = zone.max;
             let min = zone.min;
-            
+            console.log(min,max)
             if (min == undefined || max == undefined) {
                 console.log("No Min Or Max");
                 continue;
