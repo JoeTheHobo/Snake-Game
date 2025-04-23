@@ -2460,7 +2460,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
         let ctx = settings.display == "background" ? backgroundCtx : foregroundCtx;
         let type = settings.type;
 
-        if (type == "barTimer") {
+        if (type.toLowerCase() == "bartimer") {
             let max = zone.max;
             let min = zone.min;
     
@@ -2498,7 +2498,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
                 height: statusHeight,
             },statusColor,false,settings.position.rotation,settings.barAlign)
         }
-        if (type == "textTimer") {
+        if (type.toLowerCase() == "texttimer") {
             let timerFormat = settings.timerFormat || "MM:SS";
             let max = zone.max;
             let min = zone.min;
@@ -2511,7 +2511,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
             let text = new _time((max-min)*1000,"duration").format(timerFormat);
             renderZone_drawText(zone,settings,text,ctx,xy);
         }
-        if (type == "background") {
+        if (type.toLowerCase() == "background") {
 
             renderZone_drawBox(ctx,zone,settings,{
                 x: x,
@@ -2520,7 +2520,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
                 height: height,
             },renderZone_color(zone,settings.backgroundColor || "white",settings),settings.border,0)
         }
-        if (type == "textbox") {
+        if (type.toLowerCase() == "textbox") {
             let xy = renderZone_findPosition(x,y,width,height,settings.position);
             let text = renderZone_checkForValue(zone,settings.text || ".id");
             renderZone_drawText(zone,settings,text,ctx,xy);
