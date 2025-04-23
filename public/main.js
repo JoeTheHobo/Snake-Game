@@ -125,14 +125,12 @@ function renderCells(list,ctx,type) {
 function handleZoneUpdates() {
     for (let i = 0; i < updateZones.length; i++) {
         let zone = updateZones[i];
-        console.log("Recieved")
         for (let j = 0; j < emotesToRender.length; j++) {
             let emote = emotesToRender[j];
             if (emote.type !== "zone" || emote?.id !== zone.id) continue;
-            console.log("loaded",zone);
-
-            if (zone.max) emote.max = zone.max;
-            if (zone.min) emote.min = zone.min;
+            
+            if (zone.max !== undefined) emote.max = zone.max;
+            if (zone.min !== undefined) emote.min = zone.min;
         }
     }
 }
