@@ -2454,7 +2454,9 @@ $(".me_sz_addButton").on("click",function() {
                         color: ".giveStatus.darken(20)",
                         width: 3,
                         radius: 0,
+                        opacity: 1,
                     },
+                    opacity: 0.4,
                 },
                 {
                     type: "textbox",
@@ -2472,7 +2474,8 @@ $(".me_sz_addButton").on("click",function() {
                         offSetY: 0,
                         rotation: 0,
                         location: "center",
-                    }
+                    },
+                    opacity: 1,
                 }
             ],
 
@@ -2519,7 +2522,9 @@ $(".me_sz_addButton").on("click",function() {
                             color: ".team.darken(20)",
                             width: 3,
                             radius: 0,
+                            opacity: 1,
                         },
+                        opacity: 0.4,
                     },
                     {
                         type: "textbox",
@@ -2537,7 +2542,8 @@ $(".me_sz_addButton").on("click",function() {
                             offSetY: 0,
                             rotation: 0,
                             location: "center",
-                        }
+                        },
+                        opacity: 1,
                     }
                 ],
 
@@ -2579,7 +2585,9 @@ $(".me_sz_addButton").on("click",function() {
                         color: "#bfbfbf",
                         width: 3,
                         radius: 0,
+                        opacity: 1,
                     },
+                    opacity: 0.4,
                 },
                 {
                     type: "textbox",
@@ -2597,7 +2605,8 @@ $(".me_sz_addButton").on("click",function() {
                         offSetY: 0,
                         rotation: 0,
                         location: "center",
-                    }
+                    },
+                    opacity: 1,
                 }
             ],
 

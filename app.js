@@ -870,7 +870,9 @@ io.on('connection', (socket) => {
                                     color: ".team.darken(20)",
                                     width: 3,
                                     radius: 0,
+                                    opacity: 1,
                                 },
+                                opacity: 0.4,
                             },
                             {
                                 type: "textbox",
@@ -888,7 +890,8 @@ io.on('connection', (socket) => {
                                     offSetY: 0,
                                     rotation: 0,
                                     location: "center",
-                                }
+                                },
+                                opacity: 1,
                             }
                         ],
     
@@ -919,7 +922,9 @@ io.on('connection', (socket) => {
                                     color: "#bfbfbf",
                                     width: 3,
                                     radius: 0,
+                                    opacity: 1,
                                 },
+                                opacity: 0.4,
                             },
                             {
                                 type: "textbox",
@@ -937,7 +942,8 @@ io.on('connection', (socket) => {
                                     offSetY: 0,
                                     rotation: 0,
                                     location: "center",
-                                }
+                                },
+                                opacity: 1,
                             }
                         ],
                         itemsThatCantSpawnHere: [],

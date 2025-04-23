@@ -2661,7 +2661,6 @@ function renderZone_color(zone,value,settings) {
     if (colorResults.toLowerCase() == "none") colorResults = "#00000000";
 
     let opacity = Number(settings.opacity) || 1;
-    console.log(settings.opacity)
     return _color(colorResults,opacity).color;
 }
 function renderZone_checkForValue(zone,value) {
