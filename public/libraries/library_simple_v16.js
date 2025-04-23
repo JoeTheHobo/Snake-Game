@@ -4796,13 +4796,13 @@ function timeObject(ms) {
             return Math.floor((ms % MS_PER_MONTH) / MS_PER_DAY) + 1; // 1-31
         },
         getHours: function () {
-            return String(Math.floor((ms % MS_PER_DAY) / MS_PER_HOUR)).padStart(2, '0');
+            return String(Math.floor((ms % MS_PER_DAY) / MS_PER_HOUR));
         },
         getMinutes: function () {
-            return String(Math.floor((ms % MS_PER_HOUR) / MS_PER_MINUTE)).padStart(2, '0');
+            return String(Math.floor((ms % MS_PER_HOUR) / MS_PER_MINUTE));
         },
         getSeconds: function () {
-            return String(Math.floor((ms % MS_PER_MINUTE) / MS_PER_SECOND)).padStart(2, '0');
+            return String(Math.floor((ms % MS_PER_MINUTE) / MS_PER_SECOND));
         },
         getMilliseconds: function () {
             return ms % 1000;
