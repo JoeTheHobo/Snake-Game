@@ -2583,11 +2583,10 @@ function renderZone_drawBox(ctx, zone, settings, pos, color, borderSettings, rot
 function renderZone_drawText(zone, settings, text, ctx, pos) {
     // Set font and styles
     ctx.fillStyle = renderZone_color(zone, settings.font.color, settings);
-    let italic = settings.font.bold || false;
+    let italic = settings.font.italic || false;
     italic = italic === true ? "italic" : "";
     let bold = settings.font.bold || false;
     bold = bold === true ? "bold" : "";
-    console.log(bold,italic)
     ctx.font = `${italic} ${bold} ${settings.font.size * zoom}px ${settings.font.family}`;
     ctx.textAlign = settings.font.textAlign || "center";
     ctx.textBaseline = settings.font.textBaseline || "middle";
