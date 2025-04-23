@@ -3072,6 +3072,7 @@ function loadCustomizeZoneSettings(settings,index) {
         addSetting(settingHolder,"font.textAlign","list",["center","left","right"]);
         addSetting(settingHolder,"font.textBaseline","list",["top","middle","bottom","alphabetic","hanging"]);
         addSetting(settingHolder,"font.bold","checkbox");
+        addSetting(settingHolder,"font.italic","checkbox");
     }
     if (listOptions.includes("timerFormat")) {
         settingHolder = holder.create("div.zcp_customizeHolder")
