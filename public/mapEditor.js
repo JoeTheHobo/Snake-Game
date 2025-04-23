@@ -159,8 +159,6 @@ function openMapEditor(boardComingIn) {
     saveBoard(true);
     tool = false;
     setTool("draw");
-    me_ctx_emote_background.globalAlpha = 0.4;
-    me_ctx_emote_foreground.globalAlpha = 0.4;
 
     xChange = ($(".me_canvasHolder").offsetWidth - $(".edit_canvas")[0].offsetWidth)/2;
     yChange = ($(".me_canvasHolder").offsetHeight - $(".edit_canvas")[0].offsetHeight)/2;
@@ -189,8 +187,6 @@ function openMapEditor(boardComingIn) {
     addHistory();
 }
 function renderZoneCanvas() {
-    if (me_ctx_emote_background.globalAlpha !== 0.4) me_ctx_emote_background.globalAlpha = 0.4;
-    if (me_ctx_emote_foreground.globalAlpha !== 0.4) me_ctx_emote_foreground.globalAlpha = 0.4;
 
     me_ctx_emote_background.clearRect(0,0,me_canvas_emote_background.width,me_canvas_emote_background.height);
     me_ctx_emote_foreground.clearRect(0,0,me_canvas_emote_foreground.width,me_canvas_emote_foreground.height);
@@ -3026,7 +3022,6 @@ function loadCustomizeZoneSettings(settings,index) {
         addSetting(settingHolder,"border.color","text");
         addSetting(settingHolder,"border.width","number");
         addSetting(settingHolder,"border.radius","slider",{min: 0, max: 200});
-        addSetting(settingHolder,"border.opacity","slider",{min: 0, max: 1});
     }
 
     if (listOptions.includes("width") || listOptions.includes("height"))
@@ -3098,6 +3093,7 @@ function addNewCustomizeZoneOption() {
             selectedZone.zone.display.push(getZoneDisplayObject(availableOptions[i]));
             $("saveStatus").innerHTML = "Board Is Not Saved";
             loadCustomizeZoneSettings(selectedZone.zone.display[selectedZone.zone.display.length-1],selectedZone.zone.display.length-1);
+            renderZoneCanvas();
         })
     }
 }
@@ -3113,7 +3109,7 @@ function getZoneDisplayObject(text) {
                 radius: 0,
                 opacity: 1,
             },
-            opacity: 1,
+            opacity: 0.4,
         }
         case "textBox": return {
             type: "textbox",
@@ -3172,7 +3168,6 @@ function getZoneDisplayObject(text) {
                 color: "black",
                 width: 2,
                 radius: 0,
-                opacity: 1,
             },
             opacity: 1,
         }

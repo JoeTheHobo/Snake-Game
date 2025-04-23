@@ -2535,7 +2535,7 @@ function renderZone_drawBox(ctx, zone, settings, pos, color, borderSettings, rot
     const height = pos.height;
 
     if (align == "center") {
-        x -= (x+width)/2;
+        x -= width/2;
     }
     if (align == "right") {
         x -= width;
@@ -2596,8 +2596,6 @@ function renderZone_drawText(zone,settings,text,ctx,pos) {
     // Draw the text (note: the text is drawn relative to the origin after translation and rotation)
 
     ctx.fillText(text, 0, 0); // (0, 0) is the new origin after translation
-    ctx.fillText(text, 0, 0); // (0, 0) is the new origin after translation
-    ctx.fillText(text, 0, 0); // (0, 0) is the new origin after translation
 
     // Restore the context to the original state (no rotation or translation)
     ctx.restore();
@@ -2656,12 +2654,13 @@ function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings) 
         y: y + settings.offSetY
     };
 }
-function renderZone_color(zone,value) {
+function renderZone_color(zone,value,opacity = 1) {
     let colorResults = renderZone_checkForValue(zone,value);
     if (!colorResults) colorResults = "white";
     if (colorResults.toLowerCase() == "none") colorResults = "#00000000";
 
     let opacity = zone.opacity || 1;
+    console.log(zone.opacity)
     return _color(colorResults,opacity).color;
 }
 function renderZone_checkForValue(zone,value) {
