@@ -284,8 +284,9 @@ function generatePreGamePlayerInfo(players) {
         holder.className = "pgpi_card";
         holder.id = "pgpi_" + player.index;
 
-        const rect = $("render_background").getBoundingClientRect();
+        const rect = canvas_background.getBoundingClientRect();
 
+        console.log(player.pos.x,gridSize,rect.left,);
         holder.css({
             left: ((player.pos.x*gridSize)+rect.left-50+(gridSize/2)) + "px",
             top: ((player.pos.y*gridSize)+rect.top-50+(gridSize/2)) + "px",
