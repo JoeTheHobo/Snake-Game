@@ -2545,11 +2545,12 @@ function renderZone_drawBox(ctx, zone, settings, pos, color, borderSettings, rot
     const radius = Math.min(settings.border.radius, width / 2, height / 2);
 
     // Reset the transform and apply the rotation around the center point
-    const cos = Math.cos(rotation);
-    const sin = Math.sin(rotation);
+    const radians = rotation * (Math.PI / 180);
+    const cos = Math.cos(radians);
+    const sin = Math.sin(radians);
     ctx.setTransform(
         cos,  sin,
-       -sin,  cos,
+    -sin,  cos,
         centerX - cos * width / 2 + sin * height / 2,
         centerY - sin * width / 2 - cos * height / 2
     );
