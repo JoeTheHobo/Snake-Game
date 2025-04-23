@@ -2649,7 +2649,7 @@ function renderZone_drawText(zone, settings, text, ctx, pos) {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
 function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings,boardWidth,boardHeight) {
-    let renderFrom = settings?.renderFrom.toLowerCase() || "zone";
+    let renderFrom = settings?.renderFrom?.toLowerCase() || "zone";
     let location = settings?.location || "center";
     let offSetX = settings?.offSetX || 0;
     let offSetY = settings?.offSetY || 0;
