@@ -2535,7 +2535,7 @@ function renderZone_drawBox(ctx,zone,settings,pos,color,borderSettings) {
 
     ctx.fillStyle = color;
     if (borderSettings) {
-        console.log(zone,borderSettings)
+        console.log(1,zone,borderSettings.color)
         ctx.strokeStyle = renderZone_color(zone,borderSettings.color);
         ctx.lineWidth = borderSettings.width || 3;
     }
@@ -2641,17 +2641,20 @@ function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings) 
 }
 function renderZone_color(zone,value) {
     let colorResults = renderZone_checkForValue(zone,value);
-    console.log(colorResults)
+    console.log(4,colorResults)
     if (colorResults.toLowerCase() == "none") colorResults = "#00000000";
     return _color(colorResults).color;
 }
 function renderZone_checkForValue(zone,value) {
+    console.log(3,zone,value)
     if (value.charAt(0) == ".") {
+        console.log(4)
         if (value.split("").includes(".")) {
+            console.log(5)
             let color = zone[value.subset(1,".\\before")];
             let secondOption = value.split(".")[1];
+            console.log(secondOption)
             if (secondOption.subset(0,5) == "darken") {
-                console.log(color)
                 return _color(color).darken(Number(secondOption.subset("(\\after",")\\before"))).ogColor;
             }
         }
