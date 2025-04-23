@@ -2573,7 +2573,9 @@ function renderZone_drawBox(ctx, zone, settings, pos, color, borderSettings, rot
 
     if (borderSettings) {
         ctx.strokeStyle = renderZone_color(zone, borderSettings.color, settings);
-        ctx.lineWidth = borderSettings.width ?? 3;
+        let lineWidth = borderSettings.width ?? 3;
+        console.log(lineWidth,borderSettings.width,borderSettings)
+        ctx.lineWidth = lineWidth;
         ctx.stroke();
     }
 
