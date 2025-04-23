@@ -2950,7 +2950,7 @@ function loadCustomizeZoneSettings(settings,index) {
             })
         }
         if (type == "checkbox") {
-            input = settingHolder.create("select.zcp_customizeHolder_settingHolder_" + type);
+            input = settingHolder.create("input.zcp_customizeHolder_settingHolder_" + type);
             input.type = "checkbox";
             input.checked = value;
             input.on("change",function() {
