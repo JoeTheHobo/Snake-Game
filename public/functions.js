@@ -2465,11 +2465,11 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
             let min = zone.min;
 
 
-            if (!min || !max) {
+            if (_type(min).type !== "number" || _type(max).type !== "number") {
                 console.log("No Min Or Max");
                 continue;
             }
-            
+
             let xy = renderZone_findPosition(x,y,width,height,settings.position);
             let text = new _time((max-min)*1000,"duration").format(timerFormat);
             renderZone_drawText(zone,settings,text,ctx,xy);
