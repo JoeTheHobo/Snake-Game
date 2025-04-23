@@ -2654,6 +2654,8 @@ function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings,b
     let offSetX = settings?.offSetX || 0;
     let offSetY = settings?.offSetY || 0;
 
+    console.log(renderFrom,location,offSetX,offSetY);
+
     if (renderFrom == "board") {
         zoneX = 0;
         zoneY = 0;
@@ -2762,7 +2764,7 @@ function addZonesToRender(zoneList) {
         if (zoneList.special[i].visible) {
             zone = zoneList.special[i];
             zone.render = function() {
-                renderZone(canvas_emote_background,canvas_top,this,1,currentBoard.width,currentBoard.height-1);
+                renderZone(canvas_emote_background,canvas_top,this,1,currentBoard.width,currentBoard.height);
             }
             zone.type = "zone";
             zone.min = false;
