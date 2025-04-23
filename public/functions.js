@@ -2641,7 +2641,7 @@ function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings) 
 }
 function renderZone_color(zone,value) {
     let colorResults = renderZone_checkForValue(zone,value);
-    console.log(4,colorResults)
+    console.log(7,colorResults)
     if (colorResults.toLowerCase() == "none") colorResults = "#00000000";
     return _color(colorResults).color;
 }
@@ -2653,7 +2653,7 @@ function renderZone_checkForValue(zone,value) {
             console.log(5)
             let color = zone[value.subset(1,".\\before")];
             let secondOption = value.split(".")[1];
-            console.log(secondOption)
+            console.log(6,secondOption)
             if (secondOption.subset(0,5) == "darken") {
                 return _color(color).darken(Number(secondOption.subset("(\\after",")\\before"))).ogColor;
             }
