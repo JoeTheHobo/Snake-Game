@@ -2979,6 +2979,7 @@ function loadCustomizeZoneSettings(settings,index) {
                 this.storedValue = value;
                 console.log(value);
                 setNestedValue(settings,title,value,false,true);
+                console.log(getNestedValue(settings,title))
                 $("saveStatus").innerHTML = "Board Is Not Saved";
                 renderZoneCanvas();
             })
@@ -3164,7 +3165,7 @@ function getZoneDisplayObject(text) {
         case "textTimer": return {
             type: "textTimer",
             display: "foreground",
-            timerFormat: "MM:SS",
+            timerFormat: "S",
             font: {
                 family: "VT323",
                 color: "black",
