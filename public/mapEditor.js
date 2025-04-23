@@ -2909,6 +2909,7 @@ function loadCustomizeZoneSettings(settings,index) {
         loadCustomizeZonePopup();
     }
 
+    console.log(settings,settings.type)
     let realObject = getZoneDisplayObject(settings.type);
     let listOptions = Object.keys(realObject);
 
