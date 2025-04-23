@@ -2469,8 +2469,9 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
                 continue;
             }
 
+            let xy = renderZone_findPosition(x,y,width,height,settings.position);
             let text = new _time(max-min).format(timerFormat);
-            renderZone_drawText(zone,settings,text,ctx);
+            renderZone_drawText(zone,settings,text,ctx,xy);
         }
         if (type == "background") {
             ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.backgroundColor || "white")).ogColor;
@@ -2497,19 +2498,19 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
 
         }
         if (type == "textbox") {
+            let xy = renderZone_findPosition(x,y,width,height,settings.position);
             let text = renderZone_checkForValue(zone,settings.text || ".id");
-            renderZone_drawText(zone,settings,text,ctx);
+            renderZone_drawText(zone,settings,text,ctx,xy);
         }
     }
 }
-function renderZone_drawText(zone,settings,text,ctx) {
+function renderZone_drawText(zone,settings,text,ctx,xy) {
     // Reset opacity for text
     ctx.fillStyle = _color(renderZone_checkForValue(zone,settings.font.color)).ogColor; // Change as needed for contrast
     ctx.font = `${settings.font.size * zoom}px ${settings.font.family}`; // Adjust font size as needed
     ctx.textAlign = settings.font.textAlign || "center";
     ctx.textBaseline = settings.font.textBaseline || "middle";
 
-    let xy = renderZone_findPosition(x,y,width,height,settings.position);
 
     let rotation = Number(settings.position.rotation);
     // Save current context state to restore later
