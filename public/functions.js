@@ -2587,6 +2587,7 @@ function renderZone_drawText(zone, settings, text, ctx, pos) {
     italic = italic === true ? "italic" : "";
     let bold = settings.font.bold || false;
     bold = bold === true ? "bold" : "";
+    console.log(bold,italic)
     ctx.font = `${italic} ${bold} ${settings.font.size * zoom}px ${settings.font.family}`;
     ctx.textAlign = settings.font.textAlign || "center";
     ctx.textBaseline = settings.font.textBaseline || "middle";
