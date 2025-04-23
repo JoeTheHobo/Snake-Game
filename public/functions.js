@@ -2535,6 +2535,7 @@ function renderZone_drawBox(ctx,zone,settings,pos,color,borderSettings) {
 
     ctx.fillStyle = color;
     if (borderSettings) {
+        console.log(zone,borderSettings)
         ctx.strokeStyle = renderZone_color(zone,borderSettings.color);
         ctx.lineWidth = borderSettings.width || 3;
     }
@@ -2640,6 +2641,7 @@ function renderZone_findPosition(zoneX, zoneY, zoneWidth, zoneHeight, settings) 
 }
 function renderZone_color(zone,value) {
     let colorResults = renderZone_checkForValue(zone,value);
+    console.log(colorResults)
     if (colorResults.toLowerCase() == "none") colorResults = "#00000000";
     return _color(colorResults).color;
 }
