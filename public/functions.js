@@ -2488,15 +2488,15 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
             renderZone_drawBox(ctx,zone,settings,{
                 x: xy.x,
                 y: xy.y,
-                width: statusWidth,
-                height: statusHeight,
-            },statusColor,false,settings.position.rotation,settings.barAlign)
-            renderZone_drawBox(ctx,zone,settings,{
-                x: xy.x,
-                y: xy.y,
                 width: barWidth,
                 height: barHeight,
             },barColor,settings.border,settings.position.rotation,settings.barAlign)
+            renderZone_drawBox(ctx,zone,settings,{
+                x: xy.x,
+                y: xy.y,
+                width: statusWidth,
+                height: statusHeight,
+            },statusColor,false,settings.position.rotation,settings.barAlign)
         }
         if (type == "textTimer") {
             let timerFormat = settings.timerFormat || "MM:SS";
@@ -2569,7 +2569,8 @@ function renderZone_drawBox(ctx, zone, settings, pos, color, borderSettings, rot
 
     if (borderSettings) {
         ctx.strokeStyle = renderZone_color(zone, borderSettings.color);
-        ctx.lineWidth = borderSettings.width || 3;
+        let lineWidth = borderSettings.width ?? 3;
+        ctx.lineWidth = lineWidth;
         ctx.stroke();
     }
 
@@ -2660,7 +2661,7 @@ function renderZone_color(zone,value) {
     if (colorResults.toLowerCase() == "none") colorResults = "#00000000";
 
     let opacity = zone.opacity || 1;
-    console.log(zone.opacity)
+    console.log(zone)
     return _color(colorResults,opacity).color;
 }
 function renderZone_checkForValue(zone,value) {
