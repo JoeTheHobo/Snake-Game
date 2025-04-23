@@ -2469,7 +2469,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
                 console.log("No Min Or Max");
                 continue;
             }
-            console.log((max-min)*1000)
+            
             let xy = renderZone_findPosition(x,y,width,height,settings.position);
             let text = new _time((max-min)*1000,"duration").format(timerFormat);
             renderZone_drawText(zone,settings,text,ctx,xy);
