@@ -2934,7 +2934,7 @@ function loadCustomizeZoneSettings(settings,index) {
                 setNestedValue(settings,title,this.value,false,true);
                 $("saveStatus").innerHTML = "Board Is Not Saved";
                 renderZoneCanvas();
-                if (func) func();
+                if (func) func(this.value);
             })
         }
         if (type == "number") {
@@ -2986,6 +2986,7 @@ function loadCustomizeZoneSettings(settings,index) {
             input.type = "range";
             input.min = extra.min;
             input.max = extra.max;
+            if (extra.step) input.step = extra.step;
             input.value = value;
             input.on("change",function() {
                 setNestedValue(settings,title,this.value,false,true);
@@ -3002,7 +3003,7 @@ function loadCustomizeZoneSettings(settings,index) {
         addSetting(settingHolder,"display","list",["foreground","background"]);
     }
     if (listOptions.includes("opacity")) {
-        addSetting(settingHolder,"opacity","slider",{min: 0, max: 1});
+        addSetting(settingHolder,"opacity","slider",{min: 0, max: 1,step: 0.05});
     }
     if (listOptions.includes("position")) {
         addSetting(settingHolder,"position.location","list",["topLeft","topCenter","topRight","leftCenter","center","rightCenter","bottomLeft","bottomCenter","bottomRight"]);
@@ -3011,8 +3012,7 @@ function loadCustomizeZoneSettings(settings,index) {
         addSetting(settingHolder,"position.rotation","slider",{min: 0, max: 360});
     }
     if (listOptions.includes("direction")) {
-        addSetting(settingHolder,"direction","list",["Horizontal","Vertical"],() =>{
-            return;
+        addSetting(settingHolder,"direction","list",["Horizontal","Vertical"],(value) =>{
             let height = getNestedValue(settings,"height");
             let width = getNestedValue(settings,"width");
             if (_type(height).type !== "string" || _type(width).type !== "string") return;
@@ -3064,7 +3064,7 @@ function loadCustomizeZoneSettings(settings,index) {
         addSetting(settingHolder,"foregroundColor","text");
     }
     if (listOptions.includes("barAlign")) {
-        addSetting(settingHolder,"barAlign","list",["topLeft","topCenter","topRight","leftCenter","center","rightCenter","bottomLeft","bottomCenter","bottomRight"]);
+        addSetting(settingHolder,"barAlign","list",["center","left","right"]);
     }
 
 }

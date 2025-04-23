@@ -1771,7 +1771,6 @@ function setNestedValue(obj, path, value, toReturn = false, forceSet = false) {
         return target?.[lastKey];
     } else {
         if (forceSet || Object.prototype.hasOwnProperty.call(target, lastKey)) {
-            console.log(value)
             target[lastKey] = value;
         }
     }
@@ -2491,13 +2490,13 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
                 y: xy.y,
                 width: statusWidth,
                 height: statusHeight,
-            },statusColor)
+            },statusColor,false,settings.position.rotation,settings.barAlign)
             renderZone_drawBox(ctx,zone,settings,{
                 x: xy.x,
                 y: xy.y,
                 width: barWidth,
                 height: barHeight,
-            },barColor,settings.border)
+            },barColor,settings.border,settings.position.rotation,settings.barAlign)
         }
         if (type == "textTimer") {
             let timerFormat = settings.timerFormat || "MM:SS";
@@ -2519,7 +2518,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
                 y: y,
                 width: width,
                 height: height,
-            },renderZone_color(zone,settings.backgroundColor || "white"),settings.border)
+            },renderZone_color(zone,settings.backgroundColor || "white"),settings.border,0)
         }
         if (type == "textbox") {
             let xy = renderZone_findPosition(x,y,width,height,settings.position);
@@ -2528,37 +2527,55 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
         }
     }
 }
-function renderZone_drawBox(ctx,zone,settings,pos,color,borderSettings) {
+function renderZone_drawBox(ctx, zone, settings, pos, color, borderSettings, rotation = 0,align = "left") {
+    align = align.toLowerCase();
     let x = pos.x;
     let y = pos.y;
-    let width = pos.width;
-    let height = pos.height;
+    const width = pos.width;
+    const height = pos.height;
 
-    ctx.fillStyle = color;
-    if (borderSettings) {
-        ctx.strokeStyle = renderZone_color(zone,borderSettings.color);
-        ctx.lineWidth = borderSettings.width || 3;
+    if (align == "center") {
+        x -= (x+width)/2;
+    }
+    if (align == "right") {
+        x -= width;
     }
 
-    // Ensure radius doesn’t exceed half the width/height
-    radius = Math.min(settings.border.radius, width / 2, height / 2);
+    const centerX = x + width / 2;
+    const centerY = y + height / 2;
+
+    const radius = Math.min(settings.border.radius, width / 2, height / 2);
+
+    ctx.save(); // Save the current context state
+
+    ctx.translate(centerX, centerY);       // Move to center of box
+    ctx.rotate(rotation);                  // Rotate around center
+    ctx.translate(-width / 2, -height / 2); // Move origin to top-left of box for drawing
 
     ctx.beginPath();
-    ctx.moveTo(x + radius, y);
-    ctx.lineTo(x + width - radius, y);
-    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-    ctx.lineTo(x + width, y + height - radius);
-    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-    ctx.lineTo(x + radius, y + height);
-    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-    ctx.lineTo(x, y + radius);
-    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.moveTo(radius, 0);
+    ctx.lineTo(width - radius, 0);
+    ctx.quadraticCurveTo(width, 0, width, radius);
+    ctx.lineTo(width, height - radius);
+    ctx.quadraticCurveTo(width, height, width - radius, height);
+    ctx.lineTo(radius, height);
+    ctx.quadraticCurveTo(0, height, 0, height - radius);
+    ctx.lineTo(0, radius);
+    ctx.quadraticCurveTo(0, 0, radius, 0);
     ctx.closePath();
 
+    ctx.fillStyle = color;
     ctx.fill();
-    if (borderSettings) ctx.stroke();
+
+    if (borderSettings) {
+        ctx.strokeStyle = renderZone_color(zone, borderSettings.color);
+        ctx.lineWidth = borderSettings.width || 3;
+        ctx.stroke();
+    }
+
+    ctx.restore(); // Restore original state
 }
-function renderZone_drawText(zone,settings,text,ctx,xy) {
+function renderZone_drawText(zone,settings,text,ctx,pos) {
     // Reset opacity for text
     ctx.fillStyle = renderZone_color(zone,settings.font.color); // Change as needed for contrast
     ctx.font = `${settings.font.size * zoom}px ${settings.font.family}`; // Adjust font size as needed
@@ -2571,7 +2588,7 @@ function renderZone_drawText(zone,settings,text,ctx,xy) {
     ctx.save();
 
     // Move the context to the text position (so the rotation happens around the text center)
-    ctx.translate(xy.x, xy.y); // Move to the center point
+    ctx.translate(pos.x, pos.y); // Move to the center point
 
     // Rotate the canvas (convert rotation angle from degrees to radians)
     ctx.rotate(rotation * Math.PI / 180); 
@@ -2643,7 +2660,9 @@ function renderZone_color(zone,value) {
     let colorResults = renderZone_checkForValue(zone,value);
     if (!colorResults) colorResults = "white";
     if (colorResults.toLowerCase() == "none") colorResults = "#00000000";
-    return _color(colorResults).color;
+
+    let opacity = zone.opacity || 1;
+    return _color(colorResults,opacity).color;
 }
 function renderZone_checkForValue(zone,value) {
     if (value.charAt(0) == ".") {
