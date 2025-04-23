@@ -2951,15 +2951,15 @@ function specialZone_timer(lobby,zone,time,secondCap) {
         console.log(zone.giveStatus.toLowerCase());
         if (zone.giveStatus.toLowerCase() === "*p") {
             console.log(zone.giveStatusFrom)
-            if (zone.giveStatusFrom == "All Players") {
+            if (zone.giveStatusFrom.toLowerCase() == "all players") {
                 for (let i = 0; i < zone.occupiedBy.length; i++) {
                     status.push(zone.occupiedBy.team);
                 }
             }
-            if (zone.giveStatusFrom == "Random Player") {
+            if (zone.giveStatusFrom.toLowerCase() == "random player") {
                 status.push(simple.rnd(zone.occupiedBy).team);
             }
-            if (zone.giveStatusFrom == "Random Ream") {
+            if (zone.giveStatusFrom.toLowerCase() == "random team") {
                 let teams = [];
                 for (let i = 0; i < zone.occupiedBy.length; i++) {
                     if (!teams.includes(zone.occupiedBy[i].team)) teams.push(zone.occupiedBy[i].team);
@@ -2967,14 +2967,14 @@ function specialZone_timer(lobby,zone,time,secondCap) {
                 status.push(simple.rnd(teams));
 
             }
-            if (zone.giveStatusFrom == "All Reams") {
+            if (zone.giveStatusFrom.toLowerCase() == "all teams") {
                 let teams = [];
                 for (let i = 0; i < zone.occupiedBy.length; i++) {
                     if (!teams.includes(zone.occupiedBy[i].team)) teams.push(zone.occupiedBy[i].team);
                 }
                 status = teams;
             }
-            if (zone.giveStatusFrom == "Largest Team") {
+            if (zone.giveStatusFrom.toLowerCase() == "largest team") {
                 let teams = [];
                 for (let i = 0; i < zone.occupiedBy.length; i++) {
                     teams.push(zone.occupiedBy[i].team);
