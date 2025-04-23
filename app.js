@@ -2989,8 +2989,6 @@ function specialZone_timer(lobby,zone,time,secondCap) {
             }
         } else status.push(zone.giveStatus);
 
-        console.log(status,zone.giveStatusType)
-
         if (zone.giveStatusType == "add") {
             for (let i = 0; i < status.length; i++) {
                 addBoardStatus(lobby,status[i]);

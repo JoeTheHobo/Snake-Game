@@ -2490,19 +2490,19 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
                 y: xy.y,
                 width: barWidth,
                 height: barHeight,
-            },barColor,false,settings.position.rotation,settings.barAlign)
+            },barColor,false,settings.position.rotation,settings.xAlign,settings.yAlign)
             renderZone_drawBox(ctx,zone,settings,{
                 x: xy.x,
                 y: xy.y,
                 width: statusWidth,
                 height: statusHeight,
-            },statusColor,false,settings.position.rotation,settings.barAlign)
+            },statusColor,false,settings.position.rotation,settings.xAlign,settings.yAlign)
             renderZone_drawBox(ctx,zone,settings,{
                 x: xy.x,
                 y: xy.y,
                 width: barWidth,
                 height: barHeight,
-            },"#00000000",settings.border,settings.position.rotation,settings.barAlign)
+            },"#00000000",settings.border,settings.position.rotation,settings.xAlign,settings.yAlign)
         }
         if (type.toLowerCase() == "texttimer") {
             let timerFormat = settings.timerFormat || "MM:SS";
@@ -2533,17 +2533,24 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1) {
         }
     }
 }
-function renderZone_drawBox(ctx, zone, settings, pos, color, borderSettings, rotation = 0, align = "left") {
-    align = align.toLowerCase();
+function renderZone_drawBox(ctx, zone, settings, pos, color, borderSettings, rotation = 0, xAlign = "left",yAlign = "top") {
+    xAlign = xAlign.toLowerCase();
+    yAlign = yAlign.toLowerCase();
     let x = pos.x;
     let y = pos.y;
     const width = pos.width;
     const height = pos.height;
 
-    if (align === "center") {
+    if (xAlign === "center") {
         x -= width / 2;
-    } else if (align === "right") {
+    } else if (xAlign === "right") {
         x -= width;
+    }
+    if (yAlign == "middle") {
+        y -= height / 2;
+    }
+    if (yAlign == "bottom") {
+        y -= height;
     }
 
     const centerX = x + width / 2;

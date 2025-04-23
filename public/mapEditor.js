@@ -3086,8 +3086,11 @@ function loadCustomizeZoneSettings(settings,index) {
     if (listOptions.includes("foregroundColor")) {
         addSetting(settingHolder,"foregroundColor","text");
     }
-    if (listOptions.includes("barAlign")) {
-        addSetting(settingHolder,"barAlign","list",["center","left","right"]);
+    if (listOptions.includes("xAlign")) {
+        addSetting(settingHolder,"xAlign","list",["center","left","right"]);
+    }
+    if (listOptions.includes("yAlign")) {
+        addSetting(settingHolder,"yAlign","list",["top","middle","bottom"]);
     }
 
 }
@@ -3195,7 +3198,8 @@ function getZoneDisplayObject(text) {
             direction: "Horizontal",
             backgroundColor: "white",
             foregroundColor: "lightblue",
-            barAlign: "center",
+            xAlign: "center",
+            yAlign: "middle",
             border: {
                 color: "black",
                 width: 2,
@@ -3214,6 +3218,10 @@ function getZoneDisplayObject(text) {
             },
             backgroundColor: "white",
             foregroundColor: "lightblue",
+            width: "100px",
+            height: "100px",
+            xAlign: "center",
+            yAlign: "middle",
             border: {
                 color: "black",
                 width: 2,
@@ -3222,7 +3230,7 @@ function getZoneDisplayObject(text) {
             opacity: 1,
         }
         case "statusList": return {
-            type: "circleTimer",
+            type: "statusList",
             display: "foreground",
             position: {
                 offSetX: 0,
