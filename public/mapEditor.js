@@ -1952,6 +1952,13 @@ function makeSpawnZoneListing(type,selectingZoneIndex,zoneList,holder,zone,i) {
     let artIcon = rightIcons.create("img.spawnZoneImg");
     artIcon.src = "img/menuIcons/paint.png";
     artIcon.on("click",function() {
+        selectedZone = {
+            type: type,
+            zoneIndex: i,
+            zone: zone,
+        }
+        selectingZoneIndex = i;
+        
         $(".zoneCustomizePopup").show("flex");
         loadCustomizeZonePopup();
     })
@@ -2863,15 +2870,14 @@ function loadCustomizeZonePopup() {
             loadCustomizeZoneSettings(displayList[i],i);
         })
 
-        if (displayList[i].type !== "background") {
-            let deleteElement = addNewOption.create("img.zcp_displayOption_deleteIcon");
-            deleteElement.src = "img/tool_delete.png";
-            deleteElement.on("click",function() {
-                selectedZone.zone.display.splice(i,1);
-                loadCustomizeZonePopup();
-                $("saveStatus").innerHTML = "Board Is Not Saved";
-            })
-        }
+        let deleteElement = addNewOption.create("img.zcp_displayOption_deleteIcon");
+        deleteElement.src = "img/tool_delete.png";
+        deleteElement.on("click",function() {
+            selectedZone.zone.display.splice(i,1);
+            loadCustomizeZonePopup();
+            $("saveStatus").innerHTML = "Board Is Not Saved";
+            renderZoneCanvas();
+        })
     }
 
     if (displayList.length > 10) return;
@@ -2896,7 +2902,8 @@ function loadCustomizeZoneSettings(settings,index) {
         loadCustomizeZonePopup();
     }
 
-    let listOptions = Object.keys(settings);
+    let realObject = getZoneDisplayObject(settings.type);
+    let listOptions = Object.keys(realObject);
 
     function addSetting(holder,title,type,extra) {
         let settingHolder = holder.create("div.zcp_customizeHolder_settingHolder");
@@ -2904,6 +2911,12 @@ function loadCustomizeZoneSettings(settings,index) {
         settingTitle.innerHTML = standardizeText(title) + ":";
 
         let input, value = getNestedValue(settings,title);
+        if (value == undefined) {
+            value = getNestedValue(realObject,title);
+            if (value !== undefined) {
+                setNestedValue(settings,title,value,false,true);
+            }
+        }
 
         if (type == "list") {
             input = settingHolder.create("select.zcp_customizeHolder_settingHolder_" + type);
