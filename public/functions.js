@@ -2455,6 +2455,7 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1,boardWidth,b
     let height = ((zone.pos2.y + 1) * gridSize * zoom) - y;
     boardWidth = (boardWidth*gridSize*zoom);
     boardHeight = boardHeight*gridSize*zone;
+    console.log(boardWidth,boardHeight)
 
     for (let i = 0; i < elementList.length; i++) {
 
@@ -2489,9 +2490,9 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1,boardWidth,b
             let xy = renderZone_findPosition(x,y,width,height,settings.position,boardWidth,boardHeight);
 
             let barWidth = settings?.width || "100%";
-            barWidth = parseSize(barWidth,width);
+            barWidth = parseSize(barWidth,width,boardWidth,settings?.position?.renderFrom || "zone");
             let barHeight = settings?.height || "25px";
-            barHeight = parseSize(barHeight,height);
+            barHeight = parseSize(barHeight,height,boardHeight,settings?.position?.renderFrom || "zone");
             let barColor = renderZone_color(zone,settings.backgroundColor,settings);
 
 
@@ -2535,9 +2536,9 @@ function renderZone(backgroundCanvas,foregroundCanvas,zone,zoom = 1,boardWidth,b
         if (type.toLowerCase() == "background") {
             let xy = renderZone_findPosition(x,y,width,height,settings.position,boardWidth,boardHeight);
             let backgroundWidth = settings?.width || "100%";
-            backgroundWidth = parseSize(backgroundWidth,width);
+            backgroundWidth = parseSize(backgroundWidth,width,boardWidth,settings?.position?.renderFrom || "zone");
             let backgroundHeight = settings?.height || "100%";
-            backgroundHeight = parseSize(backgroundHeight,height);
+            backgroundHeight = parseSize(backgroundHeight,height,boardHeight,settings?.position?.renderFrom || "zone");
             let xAlign = settings?.xAlign || "center";
             let yAlign = settings?.yAlign || "middle";
 
@@ -2770,7 +2771,8 @@ function addZonesToRender(zoneList) {
         }
     }
 }
-function parseSize(value, size) {
+function parseSize(value, size,boardSize,renderFrom = "zone") {
+    if (renderFrom.toLowerCase() == "board") size = boardSize;
     if (typeof value === 'number') return value;
   
     if (typeof value !== 'string') return 0;
