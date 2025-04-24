@@ -7,6 +7,7 @@ const express = require('express');
 const app = express();
 const pako = require('pako');
 const profanity = require("./profanity.js");
+const sanitize = require("./sanitize.js");
 //                         Guest   Account AdminPurple
 let server_nameColors = ["#a3a3a3","white","#C92FFD"];
 
@@ -235,7 +236,10 @@ io.on('connection', (socket) => {
                 console.log(52394,"No User Found");
                 return;
             }
-            
+            if (results.length > 1) {
+                console.log(5623,"Duplicate Accounts Found");
+                return;
+            }
             const user = results[0];
 
             
@@ -305,7 +309,7 @@ io.on('connection', (socket) => {
         if (onlineAccounts[socket.id].status == "Guest") return;
 
         let query = "UPDATE credentials SET sign_in_token = ? WHERE tag = ?";
-        db.query(query,[null, onlineAccounts[socket.id].tag],(err) => {if (err) console.log(7543,err);});
+        db.query(query,[null, Number(onlineAccounts[socket.id].tag)],(err) => {if (err) console.log(7543,err);});
         setGuestAccount(socket.id,false,true);
     })
     socket.on("user_login", (email,password,staySignedIn = false) =>{
@@ -331,6 +335,10 @@ io.on('connection', (socket) => {
             // If no user found
             if (results.length === 0) {
                 io.to(socket.id).emit("login_error", "No accounts found.");
+                return;
+            }
+            if (results.length > 1) {
+                console.log(423,"Duplicate Accounts Found");
                 return;
             }
 
