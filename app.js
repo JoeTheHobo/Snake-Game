@@ -2611,19 +2611,20 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         })
     }
     if (on.pickUp && player) {
+        console.log(1,currentGameMode.howManyItemsCanPlayersUse)
         for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
-            if (player.items[k] == "empty") {
-                player.items[k] = structuredClone(item);
-                if (item.type == "item") {
-                    currentBoard.map[player.pos.y][player.pos.x].item = false;
-                    lobby.updateCells.push({
-                        x: player.pos.x,
-                        y: player.pos.y,
-                        item: false,
-                    })
-                }
-                break;
+            if (player.items[k] !== "empty") continue;
+            console.log(2,item)
+            player.items[k] = structuredClone(item);
+            if (item.type == "item") {
+                currentBoard.map[player.pos.y][player.pos.x].item = false;
+                lobby.updateCells.push({
+                    x: player.pos.x,
+                    y: player.pos.y,
+                    item: false,
+                })
             }
+            break;
         }
     }
     if (on.dealDamage && player) {
@@ -2706,7 +2707,6 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
 
 
         //Finish Checking
-        console.log(on.checkStatus.pass);
         if (passedCheck) runItemFunction(lobby,player,item,on.checkStatus.pass,itemPos,settings);
         else runItemFunction(lobby,player,item,on.checkStatus.fail,itemPos,settings);
     }
