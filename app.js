@@ -4312,7 +4312,7 @@ function server_movePlayers(lobby,socketID) {
             if (mapTile.onCollision) runItemFunction(lobby,player,mapTile,"onCollision",{x: player.pos.x,y: player.pos.y});
 
             //Testing While On Tile Properties
-            player.allowedToMove = mapTile.whileOn.playerCanMove; //If the tile prevents the player from being able to move. (I.E. Ice)
+            player.allowedToMove = mapTile?.whileOn?.playerCanMove || true; //If the tile prevents the player from being able to move. (I.E. Ice)
         }
 
         //If Player died then reset player and move to the next.

@@ -226,3 +226,16 @@ setBaseImgTag - Object like {index: number, value: string} - Sets the items/tile
     })
 </pre>
 If you are confused on any of these properties and what they mean read [Item and Tile Properties](#documentation-on-how-to-read-items-and-tiles-in-code)
+
+* Now lets add some functionality. I know I want it to change to colors when the player collides with it. To change the color I'll change the baseImgTags first index, where the "white" is written. So lets add a onCollision event with the setBaseImgTag key.
+
+<pre>
+    onCollision: {
+        setBaseImgTag: {
+            index: 0,
+            value: "*P",
+        }
+    }
+</pre>
+
+Note value: "*P" just means the players color.
