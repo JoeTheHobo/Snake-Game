@@ -2610,7 +2610,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             item: false,
         })
     }
-    console.log(2,on.pickUp,!player);
+    console.log(2,on,on.pickUp,!player);
     if (on.pickUp && player) {
         for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
             if (player.items[k] !== "empty") continue;
