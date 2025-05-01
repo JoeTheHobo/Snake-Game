@@ -1,3 +1,24 @@
+/* BLANK TILE
+
+tiles.push({
+    displayName: "",
+    description: "",
+    type: "tile",
+    name: "",
+    skin: "basic",
+    availableSkins: ["basic"],
+    baseImgTags: [],
+    renderImages: [],
+    changePlayerSpeed: 1,
+    id: ##,
+    visible: true,
+    showInEditor: true,
+    tags: [""],
+})
+
+
+*/
+
 let tiles = [];
 /*
     Save Names Of Tile And Items Like
@@ -196,7 +217,7 @@ tiles.push({
     showInEditor: true,
     soundFolder: "piano",
     playSounds: true, //If Item should be muted or not;
-    tags: ["Normal Speed"],
+    tags: ["Special"],
 })
 
 tiles.push({
@@ -215,7 +236,7 @@ tiles.push({
     },
     id: 10,
     visible: true,
-    tags: ["Normal Speed"],
+    tags: ["Special"],
 })
 
 tiles.push({
@@ -237,8 +258,33 @@ tiles.push({
     },
     id: 11,
     visible: true,
-    tags: ["Normal Speed"],
+    tags: ["Special"],
 })
 
 
+tiles.push({
+    displayName: "Canvas",
+    description: "Walk accross this tile to make art!",
+    type: "tile",
+    name: "canvas",
+    skin: "basic",
+    availableSkins: ["basic"],
+    baseImgTags: ["white"],
+    renderImages: [["*colors2"]],
+    changePlayerSpeed: 1,
+    id: 12,
+    visible: true,
+    showInEditor: true,
+    tags: ["Special"],
+
+    onCollision: {
+        setBaseImgTag: {
+            index: 0,
+            value: "*P",
+        }
+    }
+})
+
+
+//Paste New Items Above this line of code
 module.exports = { tiles };

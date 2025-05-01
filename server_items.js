@@ -754,7 +754,6 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     onCollision: { //When collisionType collides do these
-        switchImage: false, //Switch Between these images
         switchBoardStatus: false, //Switch Between giving these status
         removeBoardStatus: "red", //Add a status To the Board;
     },
@@ -785,7 +784,6 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
 
     onCollision: { //When collisionType collides do these
-        switchImage: false, //Switch Between these images
         switchBoardStatus: false, //Switch Between giving these status
         addBoardStatus: "red", //Add a status To the Board;
     },
@@ -857,10 +855,6 @@ items.push({
 
     soundFolder: "flag",
     onCollision: { //When collisionType collides do these
-        switchImage: false, //Switch Between these images
-        switchBoardStatus: false, //Switch Between giving these status
-        addBoardStatus: false, //Add a status To the Board;
-        removeBoardStatus: false, //Remove a status To the Board;
         setBoardStatus: "*P", //Sets its world status to this, can only send out one status
         setBaseImgTag: {
             index: 0,
@@ -897,12 +891,7 @@ items.push({
     tie: [[".onCollision.addBoardStatus",".offCollision.removeBoardStatus"]],
 
     onCollision: { //When snake collides do these
-        switchImage: false, //Switch Between these images
-        switchBoardStatus: false, //Switch Between giving these status
         addBoardStatus: "red", //Add a status To the Board;
-        removeBoardStatus: false, //Remove a status To the Board;
-        setBoardStatus: false, //Sets its world status to this, can only send out one status
-        changeHue: false, //Change hue to this.
         
     },
     offCollision: { //When snake leaves item

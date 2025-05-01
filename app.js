@@ -2447,20 +2447,20 @@ function growPlayer(player,grow) {
     player.growTail += grow;
     
 }
-function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: true},socketID) {
-    let returnItem = "empty";
+function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: true}) {
+    let returnItem = "empty"; //Only used when player activates an item from their inventory
     let currentBoard = lobby.board;
     let currentGameMode = lobby.gameMode;
     if (!type) return returnItem;
 
-    let collision;
+    let on;
     if (simple.type(type) == "object") collision = type; 
     else {
         if (item[type])
-            collision = item[type];
+            on = item[type];
     }
 
-    if (!collision) return returnItem;
+    if (!on) return returnItem;
 
     if (item.switchStatus == false || item.switchStatus == undefined) {
         item.switchStatus = true;
@@ -2468,27 +2468,27 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         item.switchStatus = false;
     }
 
-    if (collision.forcePlayerMove && player) {
+    if (on.forcePlayerMove && player) {
         let playerMoving = player.moving;
-        let direction = collision.forcePlayerMove;
+        let direction = on.forcePlayerMove;
 
         let upSet = ["up","down"];
         let leftSet = ["left","right"];
 
-        if (collision.forcePlayerMove == "right" && playerMoving == "left") direction = simple.rnd(upSet);
-        if (collision.forcePlayerMove == "left" && playerMoving == "right") direction = simple.rnd(upSet);
-        if (collision.forcePlayerMove == "down" && playerMoving == "up") direction = simple.rnd(leftSet);
-        if (collision.forcePlayerMove == "up" && playerMoving == "down") direction = simple.rnd(leftSet);
+        if (on.forcePlayerMove == "right" && playerMoving == "left") direction = simple.rnd(upSet);
+        if (on.forcePlayerMove == "left" && playerMoving == "right") direction = simple.rnd(upSet);
+        if (on.forcePlayerMove == "down" && playerMoving == "up") direction = simple.rnd(leftSet);
+        if (on.forcePlayerMove == "up" && playerMoving == "down") direction = simple.rnd(leftSet);
 
         player.moveQueue = [direction];
     }
-    if (collision.setPlayerProperty && player) {
-        let path = collision.setPlayerProperty[0];
-        let value = collision.setPlayerProperty[1];
+    if (on.setPlayerProperty && player) {
+        let path = on.setPlayerProperty[0];
+        let value = on.setPlayerProperty[1];
         setNestedValue(player,path,value);
     }
-    if (collision.switchBaseImgTag) {
-        item.baseImgTags[collision.switchBaseImgTag.index] = item.baseImgTags[collision.switchBaseImgTag.index] == collision.switchBaseImgTag.switch[0] ? collision.switchBaseImgTag.switch[1] : collision.switchBaseImgTag.switch[0];
+    if (on.switchBaseImgTag) {
+        item.baseImgTags[on.switchBaseImgTag.index] = item.baseImgTags[on.switchBaseImgTag.index] == on.switchBaseImgTag.switch[0] ? on.switchBaseImgTag.switch[1] : on.switchBaseImgTag.switch[0];
         if (item.type == "item") {
             lobby.updateCells.push({
                 x: itemPos.x,
@@ -2505,22 +2505,22 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         }
         
     }
-    if (collision.switchBoardStatus && player) {
+    if (on.switchBoardStatus && player) {
         if (item.switchStatus === true) {
-            addBoardStatus(lobby,collision.switchBoardStatus,player);
+            addBoardStatus(lobby,on.switchBoardStatus,player);
         } else {
-            removeBoardStatus(lobby,collision.switchBoardStatus,player);
+            removeBoardStatus(lobby,on.switchBoardStatus,player);
         }
     }
-    if (collision.addBoardStatus && player) {
-        addBoardStatus(lobby,collision.addBoardStatus,player);
+    if (on.addBoardStatus && player) {
+        addBoardStatus(lobby,on.addBoardStatus,player);
     }
-    if (collision.removeBoardStatus && player) {
-        removeBoardStatus(lobby,collision.removeBoardStatus,player);
+    if (on.removeBoardStatus && player) {
+        removeBoardStatus(lobby,on.removeBoardStatus,player);
     }
-    if (collision.setBoardStatus && player) {
-        let status = collision.setBoardStatus;
-        if (collision.setBoardStatus == "*P") status = player.team;
+    if (on.setBoardStatus && player) {
+        let status = on.setBoardStatus;
+        if (on.setBoardStatus == "*P") status = player.team;
         if (item.sendingBoardStatus === status) return;
 
         if (item.sendingBoardStatus !== false) {
@@ -2530,17 +2530,17 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         item.sendingBoardStatus = status;
         addBoardStatus(lobby,status,player);
     }
-    if (collision.equip && player) {
-        let oldItem = structuredClone(player.equiped[collision.equip]);
-        player.equiped[collision.equip] = structuredClone(item);
+    if (on.equip && player) {
+        let oldItem = structuredClone(player.equiped[on.equip]);
+        player.equiped[on.equip] = structuredClone(item);
         if (oldItem) {
             returnItem = oldItem;
         }
     }
-    if (collision.setBaseImgTag) {
-        let value = collision.setBaseImgTag.value;
+    if (on.setBaseImgTag) {
+        let value = on.setBaseImgTag.value;
         if (value == "*P" && player) value = player.team;
-        item.baseImgTags[collision.setBaseImgTag.index] = value;
+        item.baseImgTags[on.setBaseImgTag.index] = value;
         
         if (item.type == "item") {
             lobby.updateCells.push({
@@ -2557,62 +2557,60 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             })
         }
     }
-    if (collision.growPlayer > 0 && player) {
-        growPlayer(player,collision.growPlayer);
+    if (on.growPlayer > 0 && player) {
+        growPlayer(player,on.growPlayer);
     }
-    if (collision.spawn) {
-        for (let i = 0; i < collision.spawn.length; i++) {
-            for (let j = 0; j < collision.spawn[i].count; j++) {
-                spawn(lobby,collision.spawn[i].id);
+    if (on.spawn) {
+        for (let i = 0; i < on.spawn.length; i++) {
+            for (let j = 0; j < on.spawn[i].count; j++) {
+                spawn(lobby,on.spawn[i].id);
             }
         }
     }
-    if (collision.giveTurbo && player) {
+    if (on.giveTurbo && player) {
         player.turboActive = true;
-        player.turboDuration = Number(collision.giveTurbo.duration);
-        player.moveSpeed = Number(collision.giveTurbo.moveSpeed);
+        player.turboDuration = Number(on.giveTurbo.duration);
+        player.moveSpeed = Number(on.giveTurbo.moveSpeed);
     }
-    if (collision.addStatus && player) {
-        for (let i = 0; i < collision.addStatus.length; i++) {
-            addPlayerStatus(lobby,player,collision.addStatus[i])
+    if (on.addStatus && player) {
+        for (let i = 0; i < on.addStatus.length; i++) {
+            addPlayerStatus(lobby,player,on.addStatus[i])
         }
     }
-    if (collision.removeStatus && player) {
-        for (let i = 0; i < collision.removeStatus.length; i++) {
-            removePlayerStatus(lobby,player,collision.removeStatus[i])
+    if (on.removeStatus && player) {
+        for (let i = 0; i < on.removeStatus.length; i++) {
+            removePlayerStatus(lobby,player,on.removeStatus[i])
         }
     }
-    if (collision.winGame === true && player) {
+    if (on.winGame === true && player) {
         player.winGame = true;
     }
-    if (collision.canvasFilter) {
-        lobby.canvasFilters.push(collision.canvasFilter);
+    if (on.canvasFilter) {
+        lobby.canvasFilters.push(on.canvasFilter);
     }
-    if (collision.playSound && item.playSounds && settings?.playAudio && lobby.playSounds) {
+    if (on.playSound && item.playSounds && settings?.playAudio && lobby.playSounds) {
         let type = "sfx";
-        if (collision.playSound[2]) type = collision.playSound[2];
+        if (on.playSound[2]) type = on.playSound[2];
         lobby.playSounds.push({
-            src: "sounds/" + item.soundFolder + "/" + item.soundFolder + "_" + collision.playSound[0] + "_" + simple.rnd(collision.playSound[1]) + ".mp3",
+            src: "sounds/" + item.soundFolder + "/" + item.soundFolder + "_" + on.playSound[0] + "_" + simple.rnd(on.playSound[1]) + ".mp3",
             type: type,
         });
     }
-    if (collision.killPlayer && player) {
+    if (on.killPlayer && player) {
         deletePlayer(lobby,player,false,false,true);
     }
-    if (collision.spawnRandomItem) {
+    if (on.spawnRandomItem) {
         specialItemManager(lobby);
     }
-    if (collision.deleteMe && player) {
-        if (item.type == "item") {
-            currentBoard.map[player.pos.y][player.pos.x].item = false;
-            lobby.updateCells.push({
-                x: player.pos.x,
-                y: player.pos.y,
-                item: false,
-            })
-        }
+    if (on.deleteMe && player && item.type == "item") {
+        currentBoard.map[player.pos.y][player.pos.x].item = false;
+        lobby.updateCells.push({
+            x: player.pos.x,
+            y: player.pos.y,
+            item: false,
+        })
     }
-    if (collision.pickUp && player) {
+    if (on.pickUp && player) {
         for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
             if (player.items[k] == "empty") {
                 player.items[k] = structuredClone(item);
@@ -2628,17 +2626,17 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             }
         }
     }
-    if (collision.dealDamage && player) {
-        deletePlayer(lobby,player,false,collision.dealDamage);
+    if (on.dealDamage && player) {
+        deletePlayer(lobby,player,false,on.dealDamage);
     }
-    if (collision.removePlayerItem && player) {
-        for (let j = 0; j < collision.removePlayerItem.length; j++) {
-            let count = collision.removePlayerItem[j].count;
+    if (on.removePlayerItem && player) {
+        for (let j = 0; j < on.removePlayerItem.length; j++) {
+            let count = on.removePlayerItem[j].count;
             for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
                 if (count == 0) continue;
                 let playerSlot = player.items[k];
                 if (playerSlot == "empty") continue;
-                if (playerSlot.name == collision.removePlayerItem[j].name) {
+                if (playerSlot.name == on.removePlayerItem[j].name) {
                     player.items[k] = "empty";
                     count--;
                 }
@@ -2646,13 +2644,13 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         }
         
     }
-    if (collision.teleport && player) {
+    if (on.teleport && player) {
         if (!player.justTeleported) {
             findingPortal: for (let z = 0; z < currentBoard.map.length; z++) {
                 for (let h = 0; h < currentBoard.map[z].length; h++) {
                     if (!currentBoard.map[z][h].item) continue;
                     if (player.pos.x == h && player.pos.y == z) continue;
-                    if (currentBoard.map[z][h].item.id === collision.teleport) {
+                    if (currentBoard.map[z][h].item.id === on.teleport) {
                         player.justTeleported = {
                             x: h,
                             y: z,
@@ -2665,8 +2663,8 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             player.justTeleported = false;
         }
     }
-    if (collision.checkStatus && player) {
-        let check = collision.checkStatus.check;
+    if (on.checkStatus && player) {
+        let check = on.checkStatus.check;
         let passedCheck = true;
         if (check.playerHasEmptySlot === true) {
             let pass = false;
@@ -2708,8 +2706,8 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
 
 
         //Finish Checking
-        if (passedCheck) runItemFunction(lobby,player,item,collision.checkStatus.pass,itemPos,settings);
-        else runItemFunction(lobby,player,item,collision.checkStatus.fail,itemPos,settings);
+        if (passedCheck) runItemFunction(lobby,player,item,on.checkStatus.pass,itemPos,settings);
+        else runItemFunction(lobby,player,item,on.checkStatus.fail,itemPos,settings);
     }
 
     return returnItem;
