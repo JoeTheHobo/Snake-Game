@@ -1452,28 +1452,17 @@ io.on('connection', (socket) => {
     socket.on("startGame", () =>{
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
         if (!lobby) return;
-        if (lobby.hostID !== socket.id) {
-            onlineAccounts[socket.id].kickPlayer = true;
-            io.to(socket.id).emit("kickPlayer","Caught Hacking [Code: 001]");
-            return;
-        }
+        if (lobby.hostID !== socket.id) return;
 
         helper_resetLobby(lobby);
 
-        let playerZones = organizeZones(lobby.spawnZones.players);
-        let allPlayersSpawned = true;
-        for (let i = 0; i < lobby.players.length; i++) {
-            let player = onlineAccounts[lobby.players[i]].player;
-            let playerSpawned = spawn(lobby,player,true,playerZones);
-            if (playerSpawned === false) allPlayersSpawned = false;
-        }
-
+        let allPlayersSpawned = helper_spawnPlayers(lobby);
         if (!allPlayersSpawned) {
             io.to(socket.id).emit("popup","Not All Players Can Spawn On This Board");
             return;
         }
 
-        //Spawn On Items
+        //Spawn All Items
         for (let i = 0; i < lobby.items.length; i++) {
             let item = lobby.items[i];
             for (let j = 0; j < Number(item.onStartSpawn); j++) {
@@ -1483,18 +1472,18 @@ io.on('connection', (socket) => {
 
         lobby.updatePositionTimeStamp = Date.now();
         lobby.gameTimeStart = Date.now();
-        io.to(lobby.id).emit("startingGame", lobby,onlineAccounts[socket.id].player);
+        io.to(lobby.id).emit("startingGame", lobby);
         
         updateClientPositions(lobby)
-        lobby.updateCells = [];
-        lobby.updateTiles = [];
         lobby.checkingSpawnTimers = true;
         lobby.gameLoop = function() {
             try {
                 if (this.gameStartedAt === false) {
                     startGameLoop(lobby);
                 }
-                lobby.lobby_gameLoop_start = Date.now();
+
+                lobby.lobby_gameLoop_start = Date.now(); //For Stats
+
                 server_movePlayers(this,socket.id)
                 
                 checkEndGametimers(this);
@@ -1504,12 +1493,6 @@ io.on('connection', (socket) => {
                 updateClientPositions(this);
     
                 this.updatePositionTimeStamp = Date.now();
-                this.updateSnakeCells = [];
-                this.updateCells = [];
-                this.updateTiles = [];
-                this.updateZones = [];
-                this.playSounds = [];
-                this.canvasFilters = [];
                 
                 if (!this.gameEnd) {
                     setTimeout(() => this.gameLoop(), 16);
@@ -2724,6 +2707,16 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function helper_spawnPlayers(lobby) {
+    let playerZones = organizeZones(lobby.spawnZones.players);
+    for (let i = 0; i < lobby.players.length; i++) {
+        let player = onlineAccounts[lobby.players[i]].player;
+        let playerSpawned = spawn(lobby,player,true,playerZones);
+        if (playerSpawned === false) return false;
+    }
+
+    return true;
+}
 function helper_resetLobby(lobby) {
     //Making Sure We Have Correct Winning Conditions
     if (!lobby.gameMode.winningConditions) {
@@ -3880,6 +3873,13 @@ function updateClientPositions(lobby) {
 
     // Store the new state for next comparison
     lobby.oldObj = newObj;
+    
+    lobby.updateSnakeCells = [];
+    lobby.updateCells = [];
+    lobby.updateTiles = [];
+    lobby.updateZones = [];
+    lobby.playSounds = [];
+    lobby.canvasFilters = [];
 }
 function getChangedValues(oldObj, newObj) {
     if (!oldObj) return newObj; // If no old state, send everything
@@ -4600,3 +4600,6 @@ function getByID(id,type) {
         }
     }
 }
+
+
+//GAME LOGIC

@@ -249,3 +249,7 @@ Note value: "*P" just means the players color.
 <pre>
     setBoardStatus: "*P",
 </pre>
+
+**It's Really That Simple!**
+
+**Now adding more complex items/tiles takes more work and engineering. You may have to change how the whole game engine runs to add the functionality you want. If that's the case, make sure whatever you add to the engine is repeatable. So we can use it again for other items/tiles we come up with.**
