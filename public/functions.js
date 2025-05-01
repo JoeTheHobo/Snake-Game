@@ -1539,6 +1539,9 @@ function logAllWinningConditions(holder,gamemode) {
         if (whoWins == "Highest Value") {
             whoWins = "Player With Highest " + condition.highestValue.format("A");
         }
+        if (whoWins == "Board Status") {
+            whoWins = "Highest Board Status Team"
+        }
 
         let teamPrefix = condition.pullTeamStats ? "Their Team" : "They";
 
