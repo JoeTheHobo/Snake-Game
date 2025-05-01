@@ -4318,6 +4318,7 @@ function server_movePlayers(lobby,socketID) {
             //Test Tile UnderPlayer
             let mapTile = currentBoard.map[player.pos.y][player.pos.x].tile;
             checkWinningCondition(lobby,"Touch Tile X",mapTile,player);
+            console.log(mapTile.onCollision);
             if (mapTile.onCollision) runItemFunction(lobby,player,mapTile,"onCollision",{x: player.pos.x,y: player.pos.y});
 
             //Testing While On Tile Properties
