@@ -1484,7 +1484,7 @@ io.on('connection', (socket) => {
 
                 lobby.lobby_gameLoop_start = Date.now(); //For Stats
 
-                server_movePlayers(this,socket.id)
+                server_movePlayers(this,socket.id);
                 
                 checkEndGametimers(this);
                 if (this.checkingSpawnTimers) checkSpawnStatusTimers(this);
