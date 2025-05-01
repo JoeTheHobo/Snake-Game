@@ -7,7 +7,7 @@ const express = require('express');
 const app = express();
 const pako = require('pako');
 const profanity = require("./profanity.js");
-const sanitize = require("./sanitize.js");
+const sanitize = require("./sanatize.js");
 //                         Guest   Account AdminPurple
 let server_nameColors = ["#a3a3a3","white","#C92FFD"];
 
