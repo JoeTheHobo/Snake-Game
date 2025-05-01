@@ -2519,6 +2519,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         removeBoardStatus(lobby,on.removeBoardStatus,player);
     }
     if (on.setBoardStatus && player) {
+        console.log("YASS")
         let status = on.setBoardStatus;
         if (on.setBoardStatus == "*P") status = player.team;
         if (item.sendingBoardStatus === status) return;
@@ -3342,11 +3343,14 @@ function triggerWinningCondition(lobby,condition,player) {
     } else if (condition.whoWins == "Board Status") {
         //Find Team With Highest Board Status
         let teamColor = findTeamWithHighestBoardStatus(lobby);
-        console.log(2,teamColor)
-        winningTitle = (teamColor.charAt(0).toUpperCase() + teamColor.slice(1)) + " Team Won";
-        for (let i = 0; i < lobby.inGamePlayers.length; i++) {
-            if (lobby.inGamePlayers[i].team === teamColor) {
-                winningPlayers.push(lobby.inGamePlayers[i])
+        if (!teamColor) {
+            winningTitle = "No One Won";
+        } else {
+            winningTitle = (teamColor.charAt(0).toUpperCase() + teamColor.slice(1)) + " Team Won";
+            for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+                if (lobby.inGamePlayers[i].team === teamColor) {
+                    winningPlayers.push(lobby.inGamePlayers[i])
+                }
             }
         }
     } else if (condition.whoWins == "Players Team") {
