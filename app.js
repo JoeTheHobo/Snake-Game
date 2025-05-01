@@ -2666,12 +2666,14 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     if (on.checkStatus && player) {
         let check = on.checkStatus.check;
         let passedCheck = true;
+        console.log(1)
         if (check.playerHasEmptySlot === true) {
             let pass = false;
             for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
                 if (player.items[k] === "empty") pass = true;
             }
             if (!pass) passedCheck = false;
+            console.log(2,passedCheck)
         }
         if (check.playerHasItem) {
             let pass = true;
@@ -2704,6 +2706,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             if (player.tail.length + 1 < check.snakeSize) passedCheck = false;
         }
 
+        console.log(3,passedCheck)
 
         //Finish Checking
         if (passedCheck) runItemFunction(lobby,player,item,on.checkStatus.pass,itemPos,settings);
