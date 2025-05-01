@@ -1457,167 +1457,8 @@ io.on('connection', (socket) => {
             io.to(socket.id).emit("kickPlayer","Caught Hacking [Code: 001]");
             return;
         }
-        
-        //Making Sure We Have Correct Winning Conditions
-        if (!lobby.gameMode.winningConditions) {
-            lobby.gameMode.winningConditions = [false,false,false,false,false];
-        }
-        for (let i = 0; i < lobby.gameMode.winningConditions.length; i++) {
-            let condition = lobby.gameMode.winningConditions[i];
-            if (!condition) continue;
-            if (!condition.pullTeamStatus) condition.pullTeamStats = false;
-        }
-        //Setting Up Quick Cheat For Conditions
 
-        lobby.condition_time = [];
-        lobby.condition_size = [];
-        lobby.condition_time = [];
-        lobby.condition_kill = [];
-        lobby.condition_status = [];
-        
-        for (let i = 0; i < lobby.gameMode.winningConditions.length; i++) {
-            let condition = lobby.gameMode.winningConditions[i];
-            if (!condition) continue;
-
-            if (condition.condition == "Reach Snake Size Of X") lobby.condition_size.push(condition);
-            if (condition.condition == "Survive X Minutes") lobby.condition_time.push(condition);
-            if (condition.condition == "Kill X Snakes") lobby.condition_kill.push(condition);
-            if (condition.condition == "X Minutes Pass") lobby.condition_time.push({condition: condition,startTime: false});
-            if (condition.condition == "Board Status") lobby.condition_status.push(condition);
-        }
-
-        //Winning Condition Check End
-
-
-        lobby.board.map = structuredClone(lobby.board.originalMap);
-
-        lobby.oldObj = false;
-        lobby.isInGame = true;
-        lobby.readyPlayers = [];
-        lobby.board.doColorRender = false;
-        lobby.specialItemIteration = 0;
-        lobby.specialItemActiveChance = 4;
-        lobby.specialItemLowChance = 1;
-        lobby.specialItemHighChance = 6;
-        lobby.board.isActiveGame = true; 
-        lobby.updateCells = [];
-        lobby.updateTiles = [];
-        lobby.updateZones = [];
-        lobby.updateSnakeCells = [];
-        lobby.updatePoints = [];
-        lobby.spawnZones = structuredClone(lobby.board.spawnZones);
-        lobby.board.renderEmotesList = [];
-        lobby.board.location_tunnels = [];
-        lobby.board.location_status = [];
-        lobby.board.playerGrow_status = [];
-        lobby.timeEvents = [];
-        lobby.snakeMap = [];
-        for (let i = 0; i < lobby.board.map.length; i++) {
-            let toPush = [];
-            for (let j = 0; j < lobby.board.map[i].length; j++) {
-                toPush.push([{
-                    x: j,
-                    y: i,
-                }])
-            }
-            lobby.snakeMap.push(toPush);
-        }
-
-        lobby.items = structuredClone(items);
-        lobby.tiles = structuredClone(tiles);
-        
-        for (let i = 0; i < lobby.gameMode.itemAlterations.length; i++) {
-            let alterationGroup = lobby.gameMode.itemAlterations[i];
-            for (let k = 0; k < lobby.items.length; k++) {
-                let item = lobby.items[k];
-                if (item.name !== alterationGroup.name) continue;
-
-                for (let j = 0; j < alterationGroup.alterations.length; j++) {
-                    let alteration = alterationGroup.alterations[j];
-                    setNestedValue(item,alteration,"_LAST_");
-                }
-            }
-        }
-
-
-        //Resetting Players
-        lobby.inGamePlayers = getPlayersList(lobby.players);
-
-        for (let i = 0; i < lobby.inGamePlayers.length; i++) {
-            let player = lobby.inGamePlayers[i];
-            player.index = i;
-            player.isPlayer = true;
-            //Ressurect Player
-            player.isDead = false;
-            player.justDied = false;
-            player.bodyArmor = 1;
-            //Set Player Selecting Item To 1
-            player.selectingItem = 0;
-            player.justTeleported = false;
-            //Set Player Item Usage
-            player.howManyItemsCanIUse = lobby.gameMode.howManyItemsCanPlayersUse;
-            player.whenInventoryIsFullInsertItemsAt = 0;
-            player.status = [];
-            //Set All Player Items To Empty
-            player.items = [];
-            for (let j = 0; j < lobby.gameMode.howManyItemsCanPlayersUse; j++) {
-                player.items.push("empty");
-            }
-            //Draw Player's Card
-            //drawPlayerBox(player);  add later
-            //_________________________________________
-
-            player.longestTail = 0;
-            player.moving = "right";
-            player.growTail = 0;
-            player.tail = [];
-            player.moveQueue = [];
-            player.prevMove = "start";
-            player.moveTik = 0;
-            player.moveSpeed = 6;
-            player.turboDuration = 0;
-            player.turboActive = false;
-            player.winGame = false;
-            player.equiped = {
-                head: false,
-                body: false,
-                tail: false,
-            };
-            
-            player.playerKills = 0;
-            player.index = i;
-            player.preGameStatus = "waiting";
-            player.respawnCount = lobby.gameMode.respawnCount || basedGameMode.respawnCount;
-            player.pos = {
-                x: false,
-                y: false,
-            }
-            player.team = "white";
-            player.invinsibleBodyEffect = false;
-
-            player.timeAlive = [0];
-            player.timeCameAlive = false;
-            player.allowedToMove = true;
-
-            player.zones = [];
-        }
-
-        lobby.specialZones = [];
-        if (!lobby.spawnZones.special) lobby.spawnZones.special = [];
-        else lobby.specialZones = structuredClone(lobby.spawnZones.special)
-        for (let i = 0; i < lobby.specialZones.length; i++) {
-            lobby.specialZones[i].occupiedBy = [];
-            lobby.specialZones[i].startTimeStamp = false;
-            lobby.specialZones[i].statusGave = 0;
-            lobby.specialZones[i].statusGiven = [];
-        }
-
-
-        getLocations(lobby);
-        fixBoardDifferences(lobby.board.map,lobby.board.itemDifferences,"item");
-        fixBoardDifferences(lobby.board.map,lobby.board.tileDifferences,"tile");
-        updateAllCells(lobby);
-
+        helper_resetLobby(lobby);
 
         let playerZones = organizeZones(lobby.spawnZones.players);
         let allPlayersSpawned = true;
@@ -1632,6 +1473,7 @@ io.on('connection', (socket) => {
             return;
         }
 
+        //Spawn On Items
         for (let i = 0; i < lobby.items.length; i++) {
             let item = lobby.items[i];
             for (let j = 0; j < Number(item.onStartSpawn); j++) {
@@ -1639,23 +1481,14 @@ io.on('connection', (socket) => {
             }
         }
 
-
-        lobby.gameEnd = false;
         lobby.updatePositionTimeStamp = Date.now();
         lobby.gameTimeStart = Date.now();
-        lobby.boardStatusCount = 0;
-        lobby.playSounds = [];
-        lobby.canvasFilters = [];
-        lobby.boardStatus = [];
-        lobby.lobby_gameLoop_start = false;
-
         io.to(lobby.id).emit("startingGame", lobby,onlineAccounts[socket.id].player);
         
         updateClientPositions(lobby)
         lobby.updateCells = [];
         lobby.updateTiles = [];
         lobby.checkingSpawnTimers = true;
-        lobby.gameStartedAt = false;
         lobby.gameLoop = function() {
             try {
                 if (this.gameStartedAt === false) {
@@ -2894,6 +2727,174 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function helper_resetLobby(lobby) {
+    //Making Sure We Have Correct Winning Conditions
+    if (!lobby.gameMode.winningConditions) {
+        lobby.gameMode.winningConditions = [false,false,false,false,false];
+    }
+    for (let i = 0; i < lobby.gameMode.winningConditions.length; i++) {
+        let condition = lobby.gameMode.winningConditions[i];
+        if (!condition) continue;
+        if (!condition.pullTeamStatus) condition.pullTeamStats = false;
+    }
+    //Setting Up Quick Cheat For Conditions
+
+    lobby.condition_time = [];
+    lobby.condition_size = [];
+    lobby.condition_time = [];
+    lobby.condition_kill = [];
+    lobby.condition_status = [];
+    
+    for (let i = 0; i < lobby.gameMode.winningConditions.length; i++) {
+        let condition = lobby.gameMode.winningConditions[i];
+        if (!condition) continue;
+
+        if (condition.condition == "Reach Snake Size Of X") lobby.condition_size.push(condition);
+        if (condition.condition == "Survive X Minutes") lobby.condition_time.push(condition);
+        if (condition.condition == "Kill X Snakes") lobby.condition_kill.push(condition);
+        if (condition.condition == "X Minutes Pass") lobby.condition_time.push({condition: condition,startTime: false});
+        if (condition.condition == "Board Status") lobby.condition_status.push(condition);
+    }
+
+    //Winning Condition Check End
+
+
+    lobby.gameEnd = false;
+    lobby.boardStatusCount = 0;
+    lobby.playSounds = [];
+    lobby.canvasFilters = [];
+    lobby.boardStatus = [];
+    lobby.lobby_gameLoop_start = false;
+    lobby.gameStartedAt = false;
+
+    lobby.board.map = structuredClone(lobby.board.originalMap);
+
+    lobby.oldObj = false;
+    lobby.isInGame = true;
+    lobby.readyPlayers = [];
+    lobby.board.doColorRender = false;
+    lobby.specialItemIteration = 0;
+    lobby.specialItemActiveChance = 4;
+    lobby.specialItemLowChance = 1;
+    lobby.specialItemHighChance = 6;
+    lobby.board.isActiveGame = true; 
+    lobby.updateCells = [];
+    lobby.updateTiles = [];
+    lobby.updateZones = [];
+    lobby.updateSnakeCells = [];
+    lobby.updatePoints = [];
+    lobby.spawnZones = structuredClone(lobby.board.spawnZones);
+    lobby.board.renderEmotesList = [];
+    lobby.board.location_tunnels = [];
+    lobby.board.location_status = [];
+    lobby.board.playerGrow_status = [];
+    lobby.timeEvents = [];
+    lobby.snakeMap = [];
+    for (let i = 0; i < lobby.board.map.length; i++) {
+        let toPush = [];
+        for (let j = 0; j < lobby.board.map[i].length; j++) {
+            toPush.push([{
+                x: j,
+                y: i,
+            }])
+        }
+        lobby.snakeMap.push(toPush);
+    }
+
+    lobby.items = structuredClone(items);
+    lobby.tiles = structuredClone(tiles);
+    
+    for (let i = 0; i < lobby.gameMode.itemAlterations.length; i++) {
+        let alterationGroup = lobby.gameMode.itemAlterations[i];
+        for (let k = 0; k < lobby.items.length; k++) {
+            let item = lobby.items[k];
+            if (item.name !== alterationGroup.name) continue;
+
+            for (let j = 0; j < alterationGroup.alterations.length; j++) {
+                let alteration = alterationGroup.alterations[j];
+                setNestedValue(item,alteration,"_LAST_");
+            }
+        }
+    }
+
+    //Resetting Players
+    lobby.inGamePlayers = getPlayersList(lobby.players);
+
+    for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+        let player = lobby.inGamePlayers[i];
+        player.index = i;
+        player.isPlayer = true;
+        //Ressurect Player
+        player.isDead = false;
+        player.justDied = false;
+        player.bodyArmor = 1;
+        //Set Player Selecting Item To 1
+        player.selectingItem = 0;
+        player.justTeleported = false;
+        //Set Player Item Usage
+        player.howManyItemsCanIUse = lobby.gameMode.howManyItemsCanPlayersUse;
+        player.whenInventoryIsFullInsertItemsAt = 0;
+        player.status = [];
+        //Set All Player Items To Empty
+        player.items = [];
+        for (let j = 0; j < lobby.gameMode.howManyItemsCanPlayersUse; j++) {
+            player.items.push("empty");
+        }
+        //Draw Player's Card
+        //drawPlayerBox(player);  add later
+        //_________________________________________
+
+        player.longestTail = 0;
+        player.moving = "right";
+        player.growTail = 0;
+        player.tail = [];
+        player.moveQueue = [];
+        player.prevMove = "start";
+        player.moveTik = 0;
+        player.moveSpeed = 6;
+        player.turboDuration = 0;
+        player.turboActive = false;
+        player.winGame = false;
+        player.equiped = {
+            head: false,
+            body: false,
+            tail: false,
+        };
+        
+        player.playerKills = 0;
+        player.index = i;
+        player.preGameStatus = "waiting";
+        player.respawnCount = lobby.gameMode.respawnCount || basedGameMode.respawnCount;
+        player.pos = {
+            x: false,
+            y: false,
+        }
+        player.team = "white";
+        player.invinsibleBodyEffect = false;
+
+        player.timeAlive = [0];
+        player.timeCameAlive = false;
+        player.allowedToMove = true;
+
+        player.zones = [];
+    }
+
+    lobby.specialZones = [];
+    if (!lobby.spawnZones.special) lobby.spawnZones.special = [];
+    else lobby.specialZones = structuredClone(lobby.spawnZones.special)
+    for (let i = 0; i < lobby.specialZones.length; i++) {
+        lobby.specialZones[i].occupiedBy = [];
+        lobby.specialZones[i].startTimeStamp = false;
+        lobby.specialZones[i].statusGave = 0;
+        lobby.specialZones[i].statusGiven = [];
+    }
+
+
+    getLocations(lobby);
+    fixBoardDifferences(lobby.board.map,lobby.board.itemDifferences,"item");
+    fixBoardDifferences(lobby.board.map,lobby.board.tileDifferences,"tile");
+    updateAllCells(lobby);
+}
 function findTeamWithHighestBoardStatus(lobby) {
     let statusList = lobby.boardStatus;
     let count = false;
