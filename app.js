@@ -2519,7 +2519,6 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         removeBoardStatus(lobby,on.removeBoardStatus,player);
     }
     if (on.setBoardStatus && player) {
-        console.log("YASS")
         let status = on.setBoardStatus;
         if (on.setBoardStatus == "*P") status = player.team;
         if (item.sendingBoardStatus === status) return;
@@ -2985,9 +2984,7 @@ function specialZone_timer(lobby,zone,time,secondCap) {
         if (!correctOccupied) return;
 
         let status = [];
-        console.log(zone.giveStatus.toLowerCase());
         if (zone.giveStatus.toLowerCase() === "*p") {
-            console.log(zone.giveStatusFrom)
             if (zone.giveStatusFrom.toLowerCase() == "all players") {
                 for (let i = 0; i < zone.occupiedBy.length; i++) {
                     status.push(zone.occupiedBy.team);
@@ -4313,7 +4310,6 @@ function server_movePlayers(lobby,socketID) {
             //Test Tile UnderPlayer
             let mapTile = currentBoard.map[player.pos.y][player.pos.x].tile;
             checkWinningCondition(lobby,"Touch Tile X",mapTile,player);
-            console.log(mapTile.onCollision);
             if (mapTile.onCollision) runItemFunction(lobby,player,mapTile,"onCollision",{x: player.pos.x,y: player.pos.y});
 
             //Testing While On Tile Properties
