@@ -235,7 +235,17 @@ If you are confused on any of these properties and what they mean read [Item and
             index: 0,
             value: "*P",
         }
-    }
+    },
 </pre>
 
 Note value: "*P" just means the players color.
+
+**And thats it! we Created a new tile!**
+
+**But what if we want to give it more specialty functions rather than just being a art peice. I'm thinking I'd like to see it used in a game where whoevers team gets the most tiles colored wins by the end of some time**
+
+* Not too bad, all we do is add this key in our onCollision Event.
+
+<pre>
+    setBoardStatus: "*P",
+</pre>

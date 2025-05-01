@@ -281,7 +281,8 @@ tiles.push({
         setBaseImgTag: {
             index: 0,
             value: "*P",
-        }
+        },
+        setBoardStatus: "*P",
     }
 })
 
