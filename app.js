@@ -2893,6 +2893,7 @@ function helper_resetLobby(lobby) {
     updateAllCells(lobby);
 }
 function findTeamWithHighestBoardStatus(lobby) {
+    console.log(1)
     let statusList = lobby.boardStatus;
     let count = false;
     let team = false;
@@ -2916,6 +2917,8 @@ function findTeamWithHighestBoardStatus(lobby) {
         venom: 0,
     }
 
+    console.log(1.2,statusList)
+
     for (let i = 0; i < statusList.length; i++) {
         const color = statusList[i];
         allStatus[color]++;
@@ -2924,6 +2927,8 @@ function findTeamWithHighestBoardStatus(lobby) {
             team = color;
         }
     }
+    console.log(1.25,allStatus)
+    console.log(1.3,tean)
 
     return team;
 }
@@ -3337,6 +3342,7 @@ function triggerWinningCondition(lobby,condition,player) {
     } else if (condition.whoWins == "Board Status") {
         //Find Team With Highest Board Status
         let teamColor = findTeamWithHighestBoardStatus(lobby);
+        console.log(2,teamColor)
         winningTitle = (teamColor.charAt(0).toUpperCase() + teamColor.slice(1)) + " Team Won";
         for (let i = 0; i < lobby.inGamePlayers.length; i++) {
             if (lobby.inGamePlayers[i].team === teamColor) {
