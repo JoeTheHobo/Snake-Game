@@ -2454,7 +2454,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     if (!type) return returnItem;
 
     let on;
-    if (simple.type(type) == "object") collision = type; 
+    if (simple.type(type) == "object") on = type; 
     else {
         if (item[type])
             on = item[type];
@@ -2610,7 +2610,6 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             item: false,
         })
     }
-    console.log(2,on,on.pickUp,!player);
     if (on.pickUp && player) {
         for (let k = 0; k < currentGameMode.howManyItemsCanPlayersUse; k++) {
             if (player.items[k] !== "empty") continue;
@@ -2706,7 +2705,6 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
 
 
         //Finish Checking
-        console.log(1,on.checkStatus.pass)
         if (passedCheck) runItemFunction(lobby,player,item,on.checkStatus.pass,itemPos,settings);
         else runItemFunction(lobby,player,item,on.checkStatus.fail,itemPos,settings);
     }
