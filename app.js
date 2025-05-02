@@ -1478,10 +1478,10 @@ io.on('connection', (socket) => {
         lobby.checkingSpawnTimers = true;
         lobby.gameLoop = function() {
             try {
+
                 if (this.gameStartedAt === false) {
                     startGameLoop(lobby);
                 }
-
                 lobby.lobby_gameLoop_start = Date.now(); //For Stats
 
                 server_movePlayers(this,socket.id);
@@ -3861,6 +3861,7 @@ function updateClientPositions(lobby) {
         g: Date.now() - lobby_gameLoop_start,
         f: lobby.canvasFilters,
         z: lobby.updateZones,
+        
     };
 
     // Compare with previous object
