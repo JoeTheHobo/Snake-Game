@@ -267,7 +267,6 @@ io.on('connection', (socket) => {
     })
     socket.on("signInUsingToken",(token,email) => {
         const query = "SELECT * FROM credentials WHERE email = ?";
-        console.log("EYO")
         db.query(query,[email],(err,results) => {
             if (err) {
                 console.log(1452,err);
@@ -296,6 +295,7 @@ io.on('connection', (socket) => {
                 }
 
                 if (!isMatch) {
+                    socket.to(socket.id).emit("setScene","newMenu");
                     return;
                 }
 
