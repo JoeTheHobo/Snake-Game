@@ -287,8 +287,10 @@ io.on('connection', (socket) => {
                 return;
             }
 
+            console.log("Eyo")
             // If passwords are hashed, use bcrypt to compare
             bcrypt.compare(token, user.sign_in_token, (err, isMatch) => {
+                console.log("HMM")
                 if (err) {
                     console.error(25436,"Bcrypt error:", err);
                     return;
