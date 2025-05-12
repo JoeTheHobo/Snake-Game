@@ -2623,7 +2623,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
                 rerenderSnake(lobby,player);
                 updateClientPositions(lobby)
             }
-        },invincibilityDuration*1000);
+        },lobby.gameMode.respawnProtection*1000);
     }
 
     if (on.dealDamage && player) {
