@@ -1299,7 +1299,7 @@ items.push({
     soundFolder: false,
     playSounds: false, //If Item should be muted or not;
     onActivate: {
-        giveInvincibility,
+        giveInvincibility: true,
     },
     onCollision: {
         checkStatus: {
