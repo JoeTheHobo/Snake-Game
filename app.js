@@ -2610,6 +2610,8 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         }
     }
     if (on.giveInvincibility) {
+        player.invincibilityDuration = Number(on.giveInvincibility.duration);
+
         player.invinsibleBodyEffect = 0;
 
         let onGoingRespawnProtectedCode = simple.rnd(1000);
@@ -2621,7 +2623,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
                 rerenderSnake(lobby,player);
                 updateClientPositions(lobby)
             }
-        },lobby.gameMode.respawnProtection*1000);
+        },invincibilityDuration*1000);
     }
 
     if (on.dealDamage && player) {
@@ -3854,6 +3856,7 @@ function updateClientPositions(lobby) {
         equiped,
         team,
         invinsibleBodyEffect,
+        invincibleDuration,
         timeAlive,
     }) => ({
         i: index,  
@@ -3865,6 +3868,7 @@ function updateClientPositions(lobby) {
         e: equiped,
         te: team,
         ibe: invinsibleBodyEffect,
+        id: invincibleDuration,
         ta: timeAlive[timeAlive.length-1],
     }));
     let newObj = {
@@ -4557,6 +4561,7 @@ function newPlayer(socketID,accountName,accountTag) {
         accountTag: accountTag,
         team: "white",
         invinsibleBodyEffect: false,
+        invincibleDuration: false,
         snakeSkin: "classic",
     }
 }
