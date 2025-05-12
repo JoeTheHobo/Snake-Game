@@ -2609,6 +2609,21 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             break;
         }
     }
+    if (on.giveInvincibility) {
+        player.invinsibleBodyEffect = 0;
+
+        let onGoingRespawnProtectedCode = simple.rnd(1000);
+        player.onGoingRespawnProtectedTimer = onGoingRespawnProtectedCode;
+        setTimeout(function() {
+            if (player.onGoingRespawnProtectedTimer === onGoingRespawnProtectedCode) {
+                player.respawnProtected = false;
+                player.invinsibleBodyEffect = false;
+                rerenderSnake(lobby,player);
+                updateClientPositions(lobby)
+            }
+        },lobby.gameMode.respawnProtection*1000);
+    }
+
     if (on.dealDamage && player) {
         deletePlayer(lobby,player,false,on.dealDamage);
     }

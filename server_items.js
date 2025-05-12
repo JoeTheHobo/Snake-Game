@@ -1278,5 +1278,42 @@ items.push({
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: [],
 })
+items.push({
+    id: 36,
+    displayName: "Invulnerability",
+    description: "Entirely original idea...",
+    name: "star",
+    skin: "basic",
+    availableSkins: ["basic"],
+    baseImgTags: [],
+    renderImages: [],
+    type: "item",
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+    soundFolder: false,
+    playSounds: false, //If Item should be muted or not;
+    onActivate: {
+        giveInvincibility,
+    },
+    onCollision: {
+        checkStatus: {
+            check: {
+                playerHasEmptySlot: true,
+            },
+            pass: {
+                pickUp: true,
+            },
+        },
+    },
+
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    tags: [],
+})
 
 module.exports = { items };
