@@ -2072,7 +2072,7 @@ function sortBoardsByPopularity(boards) {
         else
             board.score = board.plays + ((board.likeCount/board.plays)*board.plays);
     }
-    boards.sort((a, b) => a.score - b.score);
+    boards.sort((a, b) => b.score - a.score);
     return boards;
 }
 function showBoardMenu(allBoards) {
