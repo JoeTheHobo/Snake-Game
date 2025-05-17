@@ -2067,10 +2067,13 @@ let beenAdjusted = false;
 function sortBoardsByPopularity(boards) {
     for (let i = 0; i < boards.length; i++) {
         let board = boards[i];
-        board.score = board.plays + ((board.likeCount/board.plays)*board.plays);
-        console.log(board.score,board.plays,board.likeCount)
+        if (board.plays === 0)
+            board.score = 0;
+        else
+            board.score = board.plays + ((board.likeCount/board.plays)*board.plays);
     }
     boards.sort((a, b) => a.score - b.score);
+    return boards;
 }
 function showBoardMenu(allBoards) {
     $(".chooseBoardPopup").show("flex");
@@ -2091,7 +2094,7 @@ function showBoardMenu(allBoards) {
     }
     //Declare HTML Variables
     if (allBoards.published)
-        sortBoardsByPopularity(allBoards.published)
+        allBoards.published = sortBoardsByPopularity(allBoards.published)
 
     let html_search_input = $(".cbp_tr_mc_input");
     let html_search_button = $(".cbp_tr_mc_searchHolder");
