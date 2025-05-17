@@ -2076,7 +2076,8 @@ function sortBoardsByPopularity(boards) {
     return boards;
 }
 function updateBoardMenu() {
-    showBoardMenu();
+    if ($(".chooseBoardPopup").style.display == "flex")
+        showBoardMenu();
 }
 function showBoardMenu(allBoards) {
     allBoards = localAccount.selectionBoards;
