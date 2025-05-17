@@ -2082,7 +2082,7 @@ function updateBoardMenu() {
 let viewingBoards = "published";
 let sortingBoardsBy = "Popular";
 $(".cpb_br_sortType").on("click",function() {
-    sortingBoardsBy = this.innerHTML.toLowerCase();
+    sortingBoardsBy = this.innerHTML;
     updateBoardMenu();
 })
 function showBoardMenu(allBoards) {
