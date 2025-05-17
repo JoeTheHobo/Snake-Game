@@ -2064,6 +2064,13 @@ function adminTools() {
 }
 
 let beenAdjusted = false;
+function sortBoardsByPopularity(boards) {
+    for (let i = 0; i < boards.length; i++) {
+        let board = boards[i];
+        board.score = board.plays + ((board.likeCount/board.plays)*board.plays);
+    }
+    boards.sort((a, b) => a.score - b.score);
+}
 function showBoardMenu(allBoards) {
     $(".chooseBoardPopup").show("flex");
     //boardVariables
@@ -2082,6 +2089,7 @@ function showBoardMenu(allBoards) {
         allBoards.liked = likedList;
     }
     //Declare HTML Variables
+    sortBoardsByPopularity(allBoards.published)
 
     let html_search_input = $(".cbp_tr_mc_input");
     let html_search_button = $(".cbp_tr_mc_searchHolder");
