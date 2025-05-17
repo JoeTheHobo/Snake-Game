@@ -2246,7 +2246,7 @@ function showBoardMenu(allBoards) {
 
         for (let i = 0; i < boardList.length; i++) {
             if (i < ((page-1)*displayOnScreen)) continue;
-            if (i > ((page-1)*displayOnScreen)+displayOnScreen) continue;
+            if (i > ((page-1)*displayOnScreen)+displayOnScreen-1) continue;
 
             let adjust = false;
             if (i == 0 && adjustSize) adjust = true;
