@@ -113,6 +113,7 @@ socket.on("updatePlayersBoards",(board,sentFrom) => {
 })
 socket.on("serverSending_publishedBoards",(boardStats) => {
     localAccount.selectionBoards = boardStats;
+    updateBoardMenu();
     //showBoardMenu(boardStats);
 })
 socket.on("serverSending_boardStats",(boardStats,sentFrom) => {

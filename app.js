@@ -2721,7 +2721,7 @@ function gatherBoardsForUser(socketID,sendType) {
 
                     decompressBoardsFromDB(results,(publishedBoards) => {
                         returningBoards.published = publishedBoards.slice().reverse();
-                        io.to(socket.id).emit("serverSending_publishedBoards",returningBoards,sendType);
+                        io.to(socketID).emit("serverSending_publishedBoards",returningBoards,sendType);
                     });
                 })
             });

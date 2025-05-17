@@ -2075,7 +2075,11 @@ function sortBoardsByPopularity(boards) {
     boards.sort((a, b) => b.score - a.score);
     return boards;
 }
+function updateBoardMenu() {
+    showBoardMenu();
+}
 function showBoardMenu(allBoards) {
+    allBoards = localAccount.selectionBoards;
     $(".chooseBoardPopup").show("flex");
     //boardVariables
     let type;
