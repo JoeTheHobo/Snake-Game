@@ -20,6 +20,7 @@ const localAccount = {
     startTime: false,
     isInLobby: false,
     lobbyBoards: [],
+    selectionBoards: false,
 };
 let gameType = "local";
 socket.on("kickPlayer",(message) => {
@@ -111,7 +112,8 @@ socket.on("updatePlayersBoards",(board,sentFrom) => {
     }
 })
 socket.on("serverSending_publishedBoards",(boardStats) => {
-    showBoardMenu(boardStats);
+    localAccount.selectionBoards = boardStats;
+    //showBoardMenu(boardStats);
 })
 socket.on("serverSending_boardStats",(boardStats,sentFrom) => {
     localAccount.boards = boardStats;

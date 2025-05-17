@@ -2082,7 +2082,7 @@ function showBoardMenu(allBoards) {
     let page;
     let displayOnScreen = 10;
     let likedList = [];
-    if (allBoards !== false) {
+    if (allBoards) {
         for (let i = 0; i < allBoards.liked.length; i++) {
             for (let j = 0; j < allBoards.published.length; j++) {
                 if (allBoards.published[j].id === allBoards.liked[i].id) {
@@ -2093,7 +2093,7 @@ function showBoardMenu(allBoards) {
         allBoards.liked = likedList;
     }
     //Declare HTML Variables
-    if (allBoards.published)
+    if (allBoards?.published)
         allBoards.published = sortBoardsByPopularity(allBoards.published)
 
     let html_search_input = $(".cbp_tr_mc_input");

@@ -131,8 +131,8 @@ $(".sc_chat_input").on("keydown",function(e) {
     }
 })
 $(".sc_chooseboard").on("click",function() {
-    showBoardMenu(false);
-    socket.emit("gatherBoardsForBoardMenu");
+    showBoardMenu();
+    //socket.emit("gatherBoardsForBoardMenu");
 })
 $(".servers_invite_button").on("click",function() {
     socket.emit("searchingHiddenServer",$(".servers_invite_input").value);

@@ -524,81 +524,7 @@ io.on('connection', (socket) => {
         })
     })
     socket.on("gatherBoardsForBoardMenu",() => {
-        let account = onlineAccounts[socket.id];
-        let lobby = lobbies[account.lobby];
-        if (!lobby) return;
-        if (lobby.hostID !== socket.id) return;
-
-        let returningBoards = {
-            personal: [],
-            published: [],
-            liked: [],
-        };
-        const likedQuery = `SELECT id FROM favorites WHERE tag = ${Number(account.tag)} AND type = "board"`;
-        db.query(likedQuery,[],(err,likedList) => {
-            if (err) throw err;
-
-            returningBoards.liked = likedList;
-
-
-            const personalQuery = `
-                SELECT 
-                    b.board, 
-                    b.id, 
-                    c.username,
-                    IFNULL(f.likeCount, 0) AS likeCount
-                FROM boards b
-                JOIN credentials c ON b.tag = c.tag
-                LEFT JOIN (
-                    SELECT id, COUNT(*) AS likeCount 
-                    FROM favorites 
-                    WHERE type = 'board' 
-                    GROUP BY id
-                ) f ON b.id = f.id
-                WHERE b.tag = ?
-            `;
-            db.query(personalQuery,[Number(account.tag)],(err,results) => {
-                if (err) {
-                    console.log(735,err);
-                    return;
-                }
-
-                decompressBoardsFromDB(results,(personalBoards) => {
-                    returningBoards.personal = personalBoards;
-
-                    const publishedQuery = `
-                        SELECT 
-                            b.board, 
-                            b.id, 
-                            c.username,
-                            IFNULL(f.likeCount, 0) AS likeCount,
-                            IFNULL(b.plays, 0) AS plays
-                        FROM boards b
-                        JOIN credentials c ON b.tag = c.tag
-                        LEFT JOIN (
-                            SELECT id, COUNT(*) AS likeCount 
-                            FROM favorites 
-                            WHERE type = 'board' 
-                            GROUP BY id
-                        ) f ON b.id = f.id
-                        WHERE b.published = 1
-                    `;
-                    db.query(publishedQuery,(err,results) => {
-                        if (err) {
-                            console.log(73,err);
-                            return;
-                        }
-
-                        decompressBoardsFromDB(results,(publishedBoards) => {
-                            returningBoards.published = publishedBoards.slice().reverse();
-                            io.to(socket.id).emit("serverSending_publishedBoards",returningBoards);
-                        });
-                    })
-                });
-
-            })
-
-        })
+        gatherBoardsForUser(socket.id,"RefreshBoards");
     })
     socket.on("db_getAccountBoardStats",(sentFrom) => {
         sendBoardStats(socket.id,sentFrom);
@@ -1065,6 +991,8 @@ io.on('connection', (socket) => {
                 socket.leave("menuScreen")
                 io.to(socket.id).emit("setClientLobby",lobbies[id])
                 updateLobbies();
+                gatherBoardsForUser(socket.id,"SetBoards")
+                
             })
 
         })
@@ -2725,6 +2653,83 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function gatherBoardsForUser(socketID,sendType) {
+    let account = onlineAccounts[socketID];
+    let lobby = lobbies[account.lobby];
+    if (!lobby) return;
+    if (lobby.hostID !== socketID) return;
+
+    let returningBoards = {
+        personal: [],
+        published: [],
+        liked: [],
+    };
+    const likedQuery = `SELECT id FROM favorites WHERE tag = ${Number(account.tag)} AND type = "board"`;
+    db.query(likedQuery,[],(err,likedList) => {
+        if (err) throw err;
+
+        returningBoards.liked = likedList;
+
+
+        const personalQuery = `
+            SELECT 
+                b.board, 
+                b.id, 
+                c.username,
+                IFNULL(f.likeCount, 0) AS likeCount
+            FROM boards b
+            JOIN credentials c ON b.tag = c.tag
+            LEFT JOIN (
+                SELECT id, COUNT(*) AS likeCount 
+                FROM favorites 
+                WHERE type = 'board' 
+                GROUP BY id
+            ) f ON b.id = f.id
+            WHERE b.tag = ?
+        `;
+        db.query(personalQuery,[Number(account.tag)],(err,results) => {
+            if (err) {
+                console.log(735,err);
+                return;
+            }
+
+            decompressBoardsFromDB(results,(personalBoards) => {
+                returningBoards.personal = personalBoards;
+
+                const publishedQuery = `
+                    SELECT 
+                        b.board, 
+                        b.id, 
+                        c.username,
+                        IFNULL(f.likeCount, 0) AS likeCount,
+                        IFNULL(b.plays, 0) AS plays
+                    FROM boards b
+                    JOIN credentials c ON b.tag = c.tag
+                    LEFT JOIN (
+                        SELECT id, COUNT(*) AS likeCount 
+                        FROM favorites 
+                        WHERE type = 'board' 
+                        GROUP BY id
+                    ) f ON b.id = f.id
+                    WHERE b.published = 1
+                `;
+                db.query(publishedQuery,(err,results) => {
+                    if (err) {
+                        console.log(73,err);
+                        return;
+                    }
+
+                    decompressBoardsFromDB(results,(publishedBoards) => {
+                        returningBoards.published = publishedBoards.slice().reverse();
+                        io.to(socket.id).emit("serverSending_publishedBoards",returningBoards,sendType);
+                    });
+                })
+            });
+
+        })
+
+    })
+}
 function helper_spawnPlayers(lobby) {
     let playerZones = organizeZones(lobby.spawnZones.players);
     for (let i = 0; i < lobby.players.length; i++) {
