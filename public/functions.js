@@ -2079,6 +2079,12 @@ function updateBoardMenu() {
     if ($(".chooseBoardPopup").style.display == "flex")
         showBoardMenu();
 }
+let viewingBoards = "published";
+let sortingBoardsBy = "Popular";
+$(".cpb_br_sortType").on("click",function() {
+    sortingBoardsBy = this.innerHTML.toLowerCase();
+    updateBoardMenu();
+})
 function showBoardMenu(allBoards) {
     allBoards = localAccount.selectionBoards;
     $(".chooseBoardPopup").show("flex");
@@ -2098,8 +2104,14 @@ function showBoardMenu(allBoards) {
         allBoards.liked = likedList;
     }
     //Declare HTML Variables
-    if (allBoards?.published)
-        allBoards.published = sortBoardsByPopularity(allBoards.published)
+    if (allBoards?.published) {
+        if (sortingBoardsBy == "Popular")
+            allBoards.published = sortBoardsByPopularity(allBoards.published)
+        if (sortingBoardsBy == "Plays")
+            allBoards.published = allBoards.published.sort((a, b) => b.plays - a.plays);
+        if (sortingBoardsBy == "Likes")
+            allBoards.published = allBoards.published.sort((a, b) => b.likeCount - a.likeCount);
+    }
 
     let html_search_input = $(".cbp_tr_mc_input");
     let html_search_button = $(".cbp_tr_mc_searchHolder");
@@ -2116,6 +2128,8 @@ function showBoardMenu(allBoards) {
     html_search_input = removeAllEventListeners(html_search_input);
 
     //Reset Top Row
+    $(".cpb_br_sortType").classRemove("cpb_br_sortType_selected");
+    $("cbp_br_sort_" + sortingBoardsBy).classAdd("cpb_br_sortType_selected");
     $(".board_tab").classRemove("modernPopup_topRow_image_selected");
     $(".board_tab").on("click",function() {
         selectFilter(this.id.subset("_\\after","end"));
@@ -2161,6 +2175,7 @@ function showBoardMenu(allBoards) {
         $(".board_tab").classRemove("modernPopup_topRow_image_selected")
         $("boardMenu_" + name).classAdd("modernPopup_topRow_image_selected");
         type = name;
+        viewingBoards = type;
         page = 1;
         dispalyBoards(adjustSize);
     }
@@ -2280,7 +2295,7 @@ function showBoardMenu(allBoards) {
         spinner.src = "img/loading.png";
     } else {
         setLikedList();
-        selectFilter("published",true)
+        selectFilter(viewingBoards,true)
     }
 }
 function removeAllEventListeners(el) {
