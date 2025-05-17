@@ -2068,6 +2068,7 @@ function sortBoardsByPopularity(boards) {
     for (let i = 0; i < boards.length; i++) {
         let board = boards[i];
         board.score = board.plays + ((board.likeCount/board.plays)*board.plays);
+        console.log(board.score)
     }
     boards.sort((a, b) => a.score - b.score);
 }
