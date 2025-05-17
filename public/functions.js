@@ -2089,7 +2089,8 @@ function showBoardMenu(allBoards) {
         allBoards.liked = likedList;
     }
     //Declare HTML Variables
-    sortBoardsByPopularity(allBoards.published)
+    if (allBoards.published)
+        sortBoardsByPopularity(allBoards.published)
 
     let html_search_input = $(".cbp_tr_mc_input");
     let html_search_button = $(".cbp_tr_mc_searchHolder");
