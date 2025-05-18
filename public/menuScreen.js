@@ -285,9 +285,20 @@ function generatePlayerBoardsScreen(boardStats) {
             }
             if (content.published === 1) {
                 addSetting("img/menuIcons/published.png",function() {
-                    socket.emit("depublishBoard",content.id);
-                    localAccount.boards[index].published = 0;
-                    generatePlayerBoardsScreen(localAccount.boards);
+                    makePopUp([
+                        {type: "text",text: "Unpublish board?"},
+                        {type: "title",text: "All likes/plays this board has will be reset to 0."},
+                        [
+                            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"Camcel"},
+                            {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Unpublish",onClick: (ids,param) => {
+                                socket.emit("depublishBoard",content.id);
+                                localAccount.boards[index].published = 0;
+                                generatePlayerBoardsScreen(localAccount.boards);
+                            }},
+                        ],
+                    ],{
+                        id: "depublsh",
+                    })
                 });
             }
             if (localAccount.status === "Admin") {

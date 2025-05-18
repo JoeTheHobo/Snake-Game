@@ -589,22 +589,46 @@ io.on('connection', (socket) => {
             if (err) throw err;
         });
     });
-    socket.on("depublishBoard",(boardID) => {
+    socket.on("depublishBoard", (boardID) => {
         try {
             let account = onlineAccounts[socket.id];
             if (!account.loggedIn) return;
-            
-            let query = "UPDATE boards SET published = 0 WHERE id = ? AND tag = ?";
-            db.query(query,[boardID,Number(account.tag)],(err,results) => {
+
+            // Check ownership
+            let checkOwnershipQuery = "SELECT id FROM boards WHERE id = ? AND tag = ?";
+            db.query(checkOwnershipQuery, [boardID, Number(account.tag)], (err, results) => {
                 if (err) {
-                    console.log(8324,err);
+                    console.log("Ownership check error:", err);
                     return;
                 }
-            })
-        } catch {
-            console.log("Publish error");
+
+                if (results.length === 0) {
+                    // No board found matching the id and tag, user doesn't own the board
+                    console.log("Unauthorized depublish attempt");
+                    return;
+                }
+
+                // User owns the board – proceed with depublishing
+                let updateQuery = "UPDATE boards SET published = 0, plays = 0, total_plays = 0 WHERE id = ? AND tag = ?";
+                db.query(updateQuery, [boardID, Number(account.tag)], (err, results) => {
+                    if (err) {
+                        console.log("Update error:", err);
+                        return;
+                    }
+                });
+
+                let deleteFavoriteQuery = "DELETE FROM favorites WHERE type = 'board' AND id = ?";
+                db.query(deleteFavoriteQuery, [boardID], (err, results) => {
+                    if (err) {
+                        console.log("Delete favorites error:", err);
+                        return;
+                    }
+                });
+            });
+        } catch (e) {
+            console.log("Depublish error:", e);
         }
-    })
+    });
     socket.on("publishBoard",(boardID) => {
         try {
             let account = onlineAccounts[socket.id];
