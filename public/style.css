@@ -23,13 +23,6 @@ html {
   bottom: -1000px;
   visibility: hidden;
 }
-.scene {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  align-items: center;
-}
 .edit_canvas {
   position: absolute;
   left: 0;
@@ -1094,49 +1087,6 @@ font-size: 30px;
 }
 
 
-
-
-#scene_newMenu, #scene_lobby, #scene_login {
-justify-content: flex-start !important;
-}
-.menu_background {
-position: absolute;
-left: 0;
-top: 0;
-width: 100%;
-height: 100%;
-filter: blur(2px);
--webkit-filter: blur(2px);
-z-index: 0;
-object-fit: cover;
-
-}
-.logo_image {
-width: 30%;
-height: auto;
-position: relative;
-
-/* Create the blur effect using a mask */
-mask-image: radial-gradient(circle, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
--webkit-mask-image: radial-gradient(circle, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
-
-/* Optional: Clip the image so it doesn't overflow the blurred mask */
-overflow: hidden;
-}
-
-.menu_holder {
-margin-top: -1%;
-z-index: 1;
-width: 70%;
-height: 60%;
-border-radius: 5px;
-background: rgb(19, 19, 19);
-box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-display: flex;
-flex-direction: column;
-justify-content: flex-start;
-overflow: hidden;
-}
 .menu_top {
 width: 100%;
 height: 45px;
