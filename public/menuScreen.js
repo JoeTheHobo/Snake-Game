@@ -289,7 +289,7 @@ function generatePlayerBoardsScreen(boardStats) {
                         {type: "text",text: "Unpublish board?"},
                         {type: "title",text: "All likes/plays this board has will be reset to 0."},
                         [
-                            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"Camcel"},
+                            {type: "button",close: true,cursor: "url('./img/pointer.cur'), auto", width: "100px",  background: "black",text:"Cancel"},
                             {type: "button",close: true, cursor: "url('./img/pointer.cur'), auto",width: "100px", background: "red",text:"Unpublish",onClick: (ids,param) => {
                                 socket.emit("depublishBoard",content.id);
                                 localAccount.boards[index].published = 0;
