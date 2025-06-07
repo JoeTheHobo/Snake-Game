@@ -2699,11 +2699,11 @@ function createProjectile(lobby,player,item,mode) {
     }
     if (direction == "up") {
         x = player.pos.x;
-        y = player.pos.y + 1;
+        y = player.pos.y - 1;
     }
     if (direction == "down") {
         x = player.pos.x;
-        y = player.pos.y - 1;
+        y = player.pos.y + 1;
     }
     let size = mode.throw.startSize;
 
@@ -2739,11 +2739,11 @@ function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distanc
             }
             if (direction == "up") {
                 x = lobby.projectiles[i].pos.x;
-                y = lobby.projectiles[i].pos.y + 1;
+                y = lobby.projectiles[i].pos.y - 1;
             }
             if (direction == "down") {
                 x = lobby.projectiles[i].pos.x;
-                y = lobby.projectiles[i].pos.y - 1;
+                y = lobby.projectiles[i].pos.y + 1;
             }
 
             lobby.projectiles[i].pos.x = x;
