@@ -2719,14 +2719,12 @@ function createProjectile(lobby,player,item,mode) {
         size: size,
         itemID: itemID,
     })
-    console.log("Projectile",0)
 
     setTimeout(function() {
         moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,1);
     },mode.throw.timeOut);
 }
 function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distance) {
-    console.log("Projectile",1)
     for (let i = 0; i < lobby.projectiles.length; i++) {
         if (lobby.projectiles[i].id === id) {
             if (direction == "right") {
@@ -4001,6 +3999,8 @@ function updateClientPositions(lobby) {
         z: lobby.updateZones,
         
     };
+
+    console.log(lobby.projectiles)
 
     // Compare with previous object
     let changedList = getChangedValues(lobby.oldObj, newObj);
