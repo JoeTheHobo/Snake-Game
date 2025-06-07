@@ -4002,7 +4002,6 @@ function updateClientPositions(lobby) {
         
     };
 
-    console.log(lobby.projectiles)
 
     // Compare with previous object
     let changedList = getChangedValues(lobby.oldObj, newObj);

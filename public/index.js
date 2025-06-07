@@ -513,7 +513,6 @@ socket.on("updatePositions",(obj) => {
     }
 
     if (obj.pr) {
-        console.log(obj.pr)
         activeProjectiles = obj.pr;
     }
     if (obj.s) {
