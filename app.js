@@ -2680,7 +2680,7 @@ function removePlayerStatus(lobby,player,itemName) {
 
 //From App.js
 function createProjectile(lobby,player,item,mode) {
-    let id = item.id + player.accountID + rnd(10000);
+    let id = item.id + player.accountID + simple.rnd(10000);
 
     let x;
     let y;
