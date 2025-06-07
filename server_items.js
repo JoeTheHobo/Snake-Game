@@ -1316,4 +1316,89 @@ items.push({
     tags: [],
 })
 
+items.push({
+    id: 37,
+    displayName: "Bomb",
+    description: "Grab the bomb and throw it on your friends!",
+    name: "bomb",
+    skin: "basic",
+    availableSkins: ["basic"],
+    baseImgTags: ["unset"],
+    renderImages: [["unset","set1","set2","set3","set4","set5"]],
+    type: "item",
+    showInEditor: true,
+    onStartSpawn: 0,
+    gameModeMenu_selectedItem: false,
+    specialSpawnWeight: 0,
+    visible: true, //If show when playing
+    spawnCount: 1, //How Many To Spawn In When Spawning
+    spawnLimit: false, //How many times can spawn durring session
+    spawnPlayerHere: false, //Spawn players on this tile
+    soundFolder: false,
+    playSounds: false, //If Item should be muted or not;
+    onActivate: {
+        projectile: {
+            throw: {
+                startSize: .20,
+                endSize: 1.4,
+                speed: 3,
+                direction: "*P",
+                distance: 5,
+            },
+            impact: {
+                steps: [
+                    {
+                        repeatEvent: {
+                            count: 5,
+                            event: "aboutToExplodeAnimation",
+                            time: 0.5,
+                        }
+                    },
+                    {
+                        showOverlay: {
+                            type: "radius",
+                            color: "red",
+                            size: 5,
+                            time: 2, //In Seconds
+                        },
+                        projectileDamage: {
+                            who: "@e",
+                            damage: {
+                                type: "radius",
+                                size: 5,
+                                damage: 5,
+                                radiusDamageFallOff: 1,
+                            }
+                        }
+                    },
+                ],
+            },
+            finish: {
+                deleteMe: true,
+            }
+        }
+    },
+    events: {
+        aboutToExplodeAnimation: {
+            switchBaseImgTag: { //Switch Between these images using Base Img
+                index: 0,
+                switch: ["set1","set2","set3","set4","set5"],
+            },
+        }
+    },
+    onCollision: {
+        checkStatus: {
+            check: {
+                playerHasEmptySlot: true,
+            },
+            pass: {
+                pickUp: true,
+            },
+        },
+    },
+
+    renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    tags: [],
+})
+
 module.exports = { items };
