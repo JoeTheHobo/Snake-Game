@@ -2687,7 +2687,7 @@ function createProjectile(lobby,player,item,mode) {
 
 
     let direction = mode.throw.direction ? mode.throw.direction : "*p";
-    if (direction == "*p") direction = player.moving;
+    if (direction.toLowerCase() == "*p") direction = player.moving;
 
     if (direction == "right") {
         x = player.pos.x + 1;
@@ -2729,7 +2729,6 @@ function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distanc
     for (let i = 0; i < lobby.projectiles.length; i++) {
         if (lobby.projectiles[i].id === id) {
             let x,y;
-            console.log(direction);
             if (direction == "right") {
                 x = lobby.projectiles[i].pos.x + 1;
                 y = lobby.projectiles[i].pos.y;
@@ -2746,7 +2745,6 @@ function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distanc
                 x = lobby.projectiles[i].pos.x;
                 y = lobby.projectiles[i].pos.y - 1;
             }
-            console.log(x,y);
 
             lobby.projectiles[i].pos.x = x;
             lobby.projectiles[i].pos.y = y;
