@@ -7,7 +7,7 @@ let showPerformance = false;
 
 let updateCells = [];
 let updateSnakeCells = [];
-let renderProjectiles = [];
+let activeProjectiles = [];
 let updateZones = [];
 let existingZones = [];
 

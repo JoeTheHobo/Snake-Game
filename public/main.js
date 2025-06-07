@@ -900,7 +900,7 @@ function serverGameLoop() {
     updateCells = [];
     updateZones = [];
 
-    renderProjectiles(renderProjectiles);
+    renderProjectiles(activeProjectiles);
 
     if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 120);//requestAnimationFrame(gameLoop);
 }

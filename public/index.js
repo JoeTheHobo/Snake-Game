@@ -166,7 +166,7 @@ socket.on("startingGame", (lobby) => {
     updateSnakeCells = [];
     updateCells = [];
     updateTiles = [];
-    renderProjectiles = [];
+    activeProjectiles = [];
     currentGameMode = lobby.gameMode;
     oldBoardStatus = {
         aquamarine: {
@@ -513,7 +513,7 @@ socket.on("updatePositions",(obj) => {
     }
 
     if (obj.pr) {
-        renderProjectiles = obj.pr;
+        activeProjectiles = obj.pr;
     }
     if (obj.s) {
         updateSnakeCells = updateSnakeCells.concat(obj.s);
