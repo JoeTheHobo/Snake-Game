@@ -1339,8 +1339,8 @@ items.push({
     onActivate: {
         projectile: {
             throw: {
-                startSize: .20,
-                endSize: 1.4,
+                startSize: .30,
+                endSize: 1.6,
                 timeOut: 50, //MS
                 direction: "*P",
                 distance: 5,
