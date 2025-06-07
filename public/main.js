@@ -7,7 +7,6 @@ function renderProjectiles(projectiles) {
         let x = projectiles[i].pos.x;
         let y = projectiles[i].pos.y;
         
-        console.log(item)
         let image = getImage(item,"canvas");
         ctx_projectiles.drawImage(image,x*gridSize,y*gridSize,gridSize,gridSize);
     }
