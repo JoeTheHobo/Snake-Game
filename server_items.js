@@ -1341,7 +1341,7 @@ items.push({
             throw: {
                 startSize: .20,
                 endSize: 1.4,
-                speed: 3,
+                timeOut: 200, //MS
                 direction: "*P",
                 distance: 5,
             },

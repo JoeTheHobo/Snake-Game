@@ -80,13 +80,18 @@ z-index: 404;
   transition: filter .2s ease-in-out;
 z-index: 405;
 }
+#render_projectiles {
+  transition: filter .2s ease-in-out;
+  z-index: 406;
+
+}
 #render_overhanges {
   transition: filter .2s ease-in-out;
-z-index: 406;
+z-index: 407;
 }
 #render_top {
   transition: filter .2s ease-in-out;
-z-index: 407;
+z-index: 408;
 }
 #gameTitle {
   color: white;

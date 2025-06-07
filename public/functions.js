@@ -7,6 +7,7 @@ let showPerformance = false;
 
 let updateCells = [];
 let updateSnakeCells = [];
+let renderProjectiles = [];
 let updateZones = [];
 let existingZones = [];
 
@@ -107,6 +108,8 @@ let canvas_items = $("render_items");
 let ctx_items = canvas_items.getContext("2d");
 let canvas_players = $("render_players");
 let ctx_players = canvas_players.getContext("2d");
+let canvas_projectiles = $("render_projectiles");
+let ctx_projectiles = canvas_projectiles.getContext("2d");
 let canvas_overhangs = $("render_overhangs");
 let ctx_overhangs = canvas_overhangs.getContext("2d");
 let canvas_top = $("render_top");
@@ -144,7 +147,7 @@ let ctx_firstPerson_br = canvas_firstPerson_br.getContext("2d");
 let canvas_firstPerson_master = $(".firstPersonCanvas_master");
 let ctx_firstPerson_master = canvas_firstPerson_master.getContext("2d");
 
-let allCanvas = [me_canvas_background,me_canvas_tiles,me_canvas_emote_background,me_canvas_emote_foreground,me_canvas_items,me_canvas_top,canvas_emote_background,canvas_background,canvas_tiles,canvas_items,canvas_players,canvas_overhangs,canvas_top,canvas_firstPerson_tl,
+let allCanvas = [canvas_projectiles,me_canvas_background,me_canvas_tiles,me_canvas_emote_background,me_canvas_emote_foreground,me_canvas_items,me_canvas_top,canvas_emote_background,canvas_background,canvas_tiles,canvas_items,canvas_players,canvas_overhangs,canvas_top,canvas_firstPerson_tl,
     canvas_firstPerson_tm,canvas_firstPerson_tr,canvas_firstPerson_lm,canvas_firstPerson_rm,canvas_firstPerson_bl,canvas_firstPerson_bm,canvas_firstPerson_br,canvas_firstPerson_master,
 ]
 

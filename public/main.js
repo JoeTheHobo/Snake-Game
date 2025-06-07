@@ -1,3 +1,17 @@
+function renderProjectiles(projectiles) {
+    ctx_projectiles.clearRect(0,0,canvas_projectiles.width,canvas_projectiles.height);
+
+    for (let i = 0; i < projectiles.length; i++) {
+        let item = getById("items",projectiles[i].itemID);
+
+        let x = projectiles[i].pos.x;
+        let y = projectiles[i].pos.y;
+        
+        let image = getImage(item,"canvas");
+        ctx.drawImage(image,x*gridSize,y*gridSize,gridSize,gridSize);
+    }
+
+}
 function renderCells(list,ctx,type) {
     let doColorBackground = false;
     if (type == "tile" && list.length > 0) doColorBackground = true;
@@ -885,9 +899,8 @@ function serverGameLoop() {
     updateTiles = [];
     updateCells = [];
     updateZones = [];
-    //movePlayers();
-    //deleteSnakeCells();
-    //renderPlayers();
+
+    renderProjectiles(renderProjectiles);
 
     if (!gameEnd && !killSwitch) setTimeout(() => serverGameLoop(), 120);//requestAnimationFrame(gameLoop);
 }

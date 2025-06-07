@@ -2661,7 +2661,9 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         if (passedCheck) runItemFunction(lobby,player,item,on.checkStatus.pass,itemPos,settings);
         else runItemFunction(lobby,player,item,on.checkStatus.fail,itemPos,settings);
     }
-
+    if (on.projectile) {
+        createProjectile(lobby,player,item,on.projectile);
+    }
     return returnItem;
 }
 function addPlayerStatus(lobby,player,itemName) {
@@ -2677,6 +2679,89 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function createProjectile(lobby,player,item,mode) {
+    let id = item.id + player.accountID + rnd(10000);
+
+    let x;
+    let y;
+
+    let direction = mode.throw.direction ? mode.throw.direction : "*p";
+    if (direction == "*p") direction = player.moving;
+
+    if (direction == "right") {
+        x = player.pos.x + 1;
+        y = player.pos.y;
+    }
+    if (direction == "left") {
+        x = player.pos.x - 1;
+        y = player.pos.y;
+    }
+    if (direction == "up") {
+        x = player.pos.x;
+        y = player.pos.y + 1;
+    }
+    if (direction == "down") {
+        x = player.pos.x;
+        y = player.pos.y - 1;
+    }
+    let size = mode.throw.startSize;
+
+    let sizeProgression = (mode.throw.endSize - mode.throw.startSize) / mode.throw.distance;
+
+    let itemID = item.id;
+
+    lobby.projectiles.push({
+        id: id,
+        pos: {
+            x: x,
+            y: y,
+        },
+        size: size,
+        itemID: itemID,
+    })
+
+    setTimeout(function() {
+        moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,1);
+    },mode.throw.timeOut);
+}
+function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distance) {
+    for (let i = 0; i < lobby.projectiles.length; i++) {
+        if (lobby.projectiles[i].id === id) {
+            if (direction == "right") {
+                x = player.pos.x + 1;
+                y = player.pos.y;
+            }
+            if (direction == "left") {
+                x = player.pos.x - 1;
+                y = player.pos.y;
+            }
+            if (direction == "up") {
+                x = player.pos.x;
+                y = player.pos.y + 1;
+            }
+            if (direction == "down") {
+                x = player.pos.x;
+                y = player.pos.y - 1;
+            }
+
+            lobby.projectiles[i].x = x;
+            lobby.projectiles[i].y = y;
+            lobby.projectiles[i].size += sizeProgression;
+
+            if (distance >= mode.throw.distance) {
+                impactProjectile(lobby,item,mode,id);
+            } else {
+                setTimeout(function() {
+                    moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distance+1);
+                },mode.throw.timeOut);
+            }
+        }
+    }
+}
+function impactProjectile(lobby,item,mode,id) {
+
+}
+
 function gatherBoardsForUser(socketID,sendType) {
     let account = onlineAccounts[socketID];
     let lobby = lobbies[account.lobby];
@@ -2817,6 +2902,7 @@ function helper_resetLobby(lobby) {
     lobby.board.isActiveGame = true; 
     lobby.updateCells = [];
     lobby.updateTiles = [];
+    lobby.projectiles = [];
     lobby.updateZones = [];
     lobby.updateSnakeCells = [];
     lobby.updatePoints = [];
@@ -3904,6 +3990,7 @@ function updateClientPositions(lobby) {
         a: emitingActivePlayers,  
         s: lobby.updateSnakeCells,
         c: lobby.updateCells,
+        pr: lobby.projectiles,
         t: lobby.updateTiles,
         p: lobby.playSounds,
         b: lobby.boardStatus,
