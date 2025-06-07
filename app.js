@@ -2685,7 +2685,6 @@ function createProjectile(lobby,player,item,mode) {
     let x;
     let y;
 
-    console.log(player.pos)
 
     let direction = mode.throw.direction ? mode.throw.direction : "*p";
     if (direction == "*p") direction = player.moving;
@@ -2730,24 +2729,24 @@ function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distanc
     for (let i = 0; i < lobby.projectiles.length; i++) {
         if (lobby.projectiles[i].id === id) {
             if (direction == "right") {
-                x = player.pos.x + 1;
-                y = player.pos.y;
+                x = lobby.projectiles[i].pos.x + 1;
+                y = lobby.projectiles[i].pos.y;
             }
             if (direction == "left") {
-                x = player.pos.x - 1;
-                y = player.pos.y;
+                x = lobby.projectiles[i].pos.x - 1;
+                y = lobby.projectiles[i].pos.y;
             }
             if (direction == "up") {
-                x = player.pos.x;
-                y = player.pos.y + 1;
+                x = lobby.projectiles[i].pos.x;
+                y = lobby.projectiles[i].pos.y + 1;
             }
             if (direction == "down") {
-                x = player.pos.x;
-                y = player.pos.y - 1;
+                x = lobby.projectiles[i].pos.x;
+                y = lobby.projectiles[i].pos.y - 1;
             }
 
-            lobby.projectiles[i].x = x;
-            lobby.projectiles[i].y = y;
+            lobby.projectiles[i].pos.x = x;
+            lobby.projectiles[i].pos.y = y;
             lobby.projectiles[i].size += sizeProgression;
 
             if (distance >= mode.throw.distance) {
@@ -4002,6 +4001,8 @@ function updateClientPositions(lobby) {
         
     };
 
+    console.log(lobby.projectiles)
+
     // Compare with previous object
     let changedList = getChangedValues(lobby.oldObj, newObj);
     let changes = pako.deflate(JSON.stringify(changedList), { to: 'string' });
@@ -4026,7 +4027,7 @@ function getChangedValues(oldObj, newObj) {
     let changes = {};
 
     for (let key in newObj) {
-        if (key == "a" || key == "b" || key == "s")
+        if (key == "a" || key == "b" || key == "s" || key == "pr")
             changes[key] = newObj[key]; // Only store changed values
         else if (JSON.stringify(newObj[key]) !== JSON.stringify(oldObj[key])) {
             changes[key] = newObj[key]; // Only store changed values
