@@ -2,7 +2,7 @@ function renderProjectiles(projectiles) {
     ctx_projectiles.clearRect(0,0,canvas_projectiles.width,canvas_projectiles.height);
 
     for (let i = 0; i < projectiles.length; i++) {
-        let item = getById("items",projectiles[i].itemID);
+        let item = getById("item",projectiles[i].itemID);
 
         let x = projectiles[i].pos.x;
         let y = projectiles[i].pos.y;
