@@ -2685,6 +2685,8 @@ function createProjectile(lobby,player,item,mode) {
     let x;
     let y;
 
+    console.log(player.pos)
+
     let direction = mode.throw.direction ? mode.throw.direction : "*p";
     if (direction == "*p") direction = player.moving;
 
@@ -3999,8 +4001,6 @@ function updateClientPositions(lobby) {
         z: lobby.updateZones,
         
     };
-
-    console.log(lobby.projectiles)
 
     // Compare with previous object
     let changedList = getChangedValues(lobby.oldObj, newObj);
