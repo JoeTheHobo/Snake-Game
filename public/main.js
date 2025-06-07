@@ -6,9 +6,21 @@ function renderProjectiles(projectiles) {
 
         let x = projectiles[i].pos.x;
         let y = projectiles[i].pos.y;
-        
-        let image = getImage(item,"canvas");
-        ctx_projectiles.drawImage(image,x*gridSize,y*gridSize,gridSize,gridSize);
+
+        let image = getImage(item, "canvas");
+        let sizeMultiplier = projectiles[i].size;
+        let drawSize = gridSize * sizeMultiplier;
+
+        // Calculate center offset so image stays centered in the tile
+        let offset = (drawSize - gridSize) / 2;
+
+        ctx_projectiles.drawImage(
+                image,
+                x * gridSize - offset,
+                y * gridSize - offset,
+                drawSize,
+                drawSize
+        );
     }
 
 }
