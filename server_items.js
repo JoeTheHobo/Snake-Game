@@ -1349,12 +1349,12 @@ items.push({
                 steps: [
                     {
                         repeatEvent: {
-                            count: 5,
+                            count: 4,
                             event: "aboutToExplodeAnimation",
                             delay: 0.5, //Seconds
                         }
                     },
-                    2.5,//Seconds
+                    2,//Seconds
                     {
                         showOverlay: {
                             type: "radius",
