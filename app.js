@@ -2779,6 +2779,7 @@ function createProjectile(lobby,player,item,mode) {
         },
         size: size,
         itemID: itemID,
+        impact: false,
     })
 
     setTimeout(function() {
@@ -2812,9 +2813,14 @@ function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distanc
 
             runProjectilePosition(lobby,{x,y},id,mode.throw.height);
 
-            lobby.projectiles[i].pos.x = x;
-            lobby.projectiles[i].pos.y = y;
-            lobby.projectiles[i].size += sizeProgression;
+            if (lobby.projectiles[i].impact) {
+                lobby.projectiles[i].size = mode.throw.endSize;
+                distance = mode.throw.distance;
+            } else {
+                lobby.projectiles[i].pos.x = x;
+                lobby.projectiles[i].pos.y = y;
+                lobby.projectiles[i].size += sizeProgression;
+            }
 
             if (distance >= mode.throw.distance) {
                 impactProjectile(lobby,item,mode,id);
@@ -2860,7 +2866,7 @@ function runProjectilePosition(lobby,pos,id,height) {
 function deleteProjectile(lobby,id) {
     for (let i = 0; i < lobby.projectiles.length; i++) {
         if (lobby.projectiles[i].id === id) {
-            lobby.projectiles.splice(i,1);
+            lobby.projectiles[i].impact = true;
         }
     }
 }
