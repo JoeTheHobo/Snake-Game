@@ -2818,13 +2818,18 @@ function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distanc
 
             runProjectilePosition(lobby,{x,y},id,mode.throw.height);
 
-            if (lobby.projectiles[i].impact) {
+            if (lobby.projectiles[i].impact === true) {
                 lobby.projectiles[i].size = mode.throw.endSize;
                 distance = mode.throw.distance;
             } else {
                 lobby.projectiles[i].pos.x = x;
                 lobby.projectiles[i].pos.y = y;
-                lobby.projectiles[i].size += sizeProgression;
+                if (lobby.projectiles[i].impact === 1) {
+                    distance = mode.throw.distance;
+                    lobby.projectiles[i].size = mode.throw.endSize;
+                } else {
+                    lobby.projectiles[i].size += sizeProgression;
+                }
             }
 
             if (distance >= mode.throw.distance) {
@@ -2878,7 +2883,7 @@ function deleteProjectile(lobby,id) {
 function projectileDealDamage(lobby,id,damage) {
     for (let i = 0; i < lobby.projectiles.length; i++) {
         if (lobby.projectiles[i].id === id) {
-            lobby.projectiles[i].impact = true;
+            lobby.projectiles[i].impact = 1;
             lobby.projectiles[i].subtractDamage += damage;
         }
     }
