@@ -2793,7 +2793,7 @@ function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distanc
         }
     }
 }
-function impactProjectile(lobby,item,mode,id) {
+async function impactProjectile(lobby,item,mode,id) {
     let impact = mode.impact;
     let itemStats;
     for (let i = 0; i < lobby.projectiles.length; i++) {
@@ -2804,7 +2804,7 @@ function impactProjectile(lobby,item,mode,id) {
 
     if (!impact || !itemStats) return;
 
-    runItemFunction(lobby,false,item,impact,itemStats.pos,{affectProjectile: id});
+    await runItemFunction(lobby,false,item,impact,itemStats.pos,{affectProjectile: id});
 
     //Delete Projectile
     for (let i = 0; i < lobby.projectiles.length; i++) {
