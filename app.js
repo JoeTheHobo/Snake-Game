@@ -2833,7 +2833,6 @@ function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distanc
     }
 }
 function impactProjectile(lobby,item,mode,id) {
-    console.log("HIT")
     let impact = mode.impact;
     let itemStats;
     for (let i = 0; i < lobby.projectiles.length; i++) {
@@ -2867,6 +2866,7 @@ function runProjectilePosition(lobby,pos,id,height) {
 function deleteProjectile(lobby,id) {
     for (let i = 0; i < lobby.projectiles.length; i++) {
         if (lobby.projectiles[i].id === id) {
+            console.log("YIKES")
             lobby.projectiles[i].impact = true;
         }
     }
