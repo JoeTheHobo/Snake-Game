@@ -2560,6 +2560,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         specialItemManager(lobby);
     }
     if (on.deleteMe && itemPos && item.type == "item") {
+        console.log("Yass")
         currentBoard.map[itemPos.y][itemPos.x].item = false;
         lobby.updateCells.push({
             x: itemPos.x,
