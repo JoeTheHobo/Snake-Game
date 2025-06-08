@@ -2424,7 +2424,20 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         setNestedValue(player,path,value);
     }
     if (on.switchBaseImgTag) {
-        item.baseImgTags[on.switchBaseImgTag.index] = item.baseImgTags[on.switchBaseImgTag.index] == on.switchBaseImgTag.switch[0] ? on.switchBaseImgTag.switch[1] : on.switchBaseImgTag.switch[0];
+        //Find out which index we are on
+        let index = -1;
+        for (let i = 0; i < on.switchBaseImgTag.switch.length; i++) {
+            if (on.switchBaseImgTag.switch[i] === item.baseImgTags[on.switchBaseImgTag.index]) index = i;
+        }
+        //Find what to switch to
+        let whatToSwitchTo;
+        index += 1;
+        if (index > on.switchBaseImgTag.switch.length-1) index = 0;
+        whatToSwitchTo = on.switchBaseImgTag.switch[index];
+
+        //Switch the image;
+        item.baseImgTags[on.switchBaseImgTag.index] = whatToSwitchTo;
+
         if (settings.affectProjectile) {
             affectProjectile(lobby,settings.affectProjectile,["baseImgTags",item.baseImgTags]);
         } else {
