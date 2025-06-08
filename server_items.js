@@ -35,6 +35,8 @@ items.push({
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
+    
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 2,
@@ -63,8 +65,7 @@ items.push({
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
-    onDelete: { //Ran when item is destroyed
-    },
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 3,
@@ -104,6 +105,7 @@ items.push({
             }
         },
     },
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 4,
@@ -124,6 +126,7 @@ items.push({
     spawnCount: 1, //How Many To Spawn In When Spawning
     spawnLimit: false, //How many times can spawn durring session
     spawnPlayerHere: false, //Spawn players on this tile
+    height: 2, //How tall the item is. For projectiles if they interact with this item.
 
     soundFolder: "rock",
     onSpawn: { //When item spawns run these
@@ -168,6 +171,7 @@ items.push({
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: ["Barriers"],
+    height: 2, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 6,
@@ -207,6 +211,7 @@ items.push({
         },
     },
     tags: ["Shields","Collectables"],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 7,
@@ -246,6 +251,7 @@ items.push({
         },
     },
     tags: ["Shields","Collectables"],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 8,
@@ -285,6 +291,7 @@ items.push({
         },
     },
     tags: ["Shields","Collectables"],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 9,
@@ -315,6 +322,7 @@ items.push({
         }
     },
     tags: [],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 10,
@@ -340,6 +348,7 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: ["Tunnels"],
+    height: 0, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 11,
@@ -366,6 +375,7 @@ items.push({
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: ["Tunnels"],
+    height: 0, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 12,
@@ -391,6 +401,7 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: ["Tunnels"],
+    height: 0, //How tall the item is. For projectiles if they interact with this item.
 })
 
 items.push({
@@ -415,6 +426,7 @@ items.push({
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: ["Mechanics"],
+    height: 0, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 15,
@@ -453,6 +465,7 @@ items.push({
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: ["Mechanics"],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 16,
@@ -491,6 +504,7 @@ items.push({
     
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: ["Mechanics"],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 17,
@@ -528,6 +542,7 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: ["Mechanics"],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 18,
@@ -575,6 +590,7 @@ items.push({
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     playSounds: true, //If Item should be muted or not;
     tags: ["Mechanics","Barriers"],
+    height: 2, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 19,
@@ -623,6 +639,7 @@ items.push({
     playSounds: true, //If Item should be muted or not;
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: ["Mechanics","Barriers"],
+    height: 2, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 20,
@@ -672,6 +689,7 @@ items.push({
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: ["Mechanics","Barriers"],
+    height: 2, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 21,
@@ -699,6 +717,7 @@ items.push({
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: ["Barriers"],
+    height: 2, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 22,
@@ -731,6 +750,7 @@ items.push({
     renderStatusPath: ["onCollision","switchBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need 
     renderStatusColor: "white", //Type To Render Color;
     tags: ["Mechanics"],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 23,
@@ -761,6 +781,7 @@ items.push({
     renderStatusPath: ["onCollision","removeBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
     renderStatusColor: "white", //Type To Render Color;
     tags: ["Mechanics"],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 24,
@@ -791,6 +812,7 @@ items.push({
     renderStatusPath: ["onCollision","addBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
     renderStatusColor: "white", //Type To Render Color;
     tags: ["Mechanics"],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 
 items.push({
@@ -830,6 +852,7 @@ items.push({
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
     boardDestructibleCountRequired: 1, //How many of these world status does it need
     tags: ["Mechanics"],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 
 items.push({
@@ -867,6 +890,7 @@ items.push({
     renderStatusPath: ["onCollision","setBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
     renderStatusColor: "white", //Type To Render Color;
     tags: ["Mechanics"],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 
 items.push({
@@ -901,6 +925,7 @@ items.push({
     renderStatusPath: ["onCollision","addBoardStatus"], //Path to which status to render on top of item, leave blank if no render
     renderStatusColor: "white", //Type To Render Color;
     tags: ["Mechanics"],
+    height: 0, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 28,
@@ -952,6 +977,7 @@ items.push({
 
     renderStatusPath: ["onCollision","checkStatus","check","playerTeamStatus"], //Path to which status to render on top of item, leave blank if no render
     tags: ["Mechanics","Barriers"],
+    height: 2, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 29,
@@ -1009,6 +1035,7 @@ items.push({
     },
     updateOn: ["boardStatus"],
     tags: ["Mechanics","Barriers"],
+    height: 2, //How tall the item is. For projectiles if they interact with this item.
 })
 
 items.push({
@@ -1049,6 +1076,7 @@ items.push({
         },
     },
     tags: ["Mechanics"],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 31,
@@ -1096,6 +1124,7 @@ items.push({
         },
     },
     tags: ["Mechanics","Barriers"],
+    height: 2, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 32,
@@ -1149,6 +1178,7 @@ items.push({
     },
     updateOn: ["playerGrows"],
     tags: ["Mechanics","Barriers"],
+    height: 2, //How tall the item is. For projectiles if they interact with this item.
 })
 
 items.push({
@@ -1219,6 +1249,7 @@ items.push({
     updateOn: ["playerGrows"],
     renderStatusColor: "red", //Type To Render Color;
     tags: ["Mechanics"],
+    height: 0, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 34,
@@ -1250,6 +1281,7 @@ items.push({
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: ["Food"],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 35,
@@ -1277,6 +1309,7 @@ items.push({
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: [],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 items.push({
     id: 36,
@@ -1314,6 +1347,7 @@ items.push({
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: [],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 
 items.push({
@@ -1344,6 +1378,7 @@ items.push({
                 timeOut: 50, //MS
                 direction: "*P",
                 distance: 5,
+                height: 2, //How high does this item throw?
             },
             impact: {
                 steps: [
@@ -1401,6 +1436,7 @@ items.push({
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     tags: [],
+    height: 1, //How tall the item is. For projectiles if they interact with this item.
 })
 
 module.exports = { items };

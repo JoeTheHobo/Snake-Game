@@ -41,6 +41,7 @@ tiles.push({
     visible: true,
     showInEditor: true,
     tags: ["Normal Speed"],
+    height: 0,
 })
 tiles.push({
     displayName: "Sand",
@@ -59,6 +60,7 @@ tiles.push({
     visible: true,
     showInEditor: true,
     tags: ["Slow Speed"],
+    height: 0,
 })
 tiles.push({
     displayName: "Clear",
@@ -77,6 +79,7 @@ tiles.push({
     visible: true,
     showInEditor: true,
     tags: ["Normal Speed"],
+    height: 0,
 })
 tiles.push({
     displayName: "Pathway",
@@ -95,6 +98,7 @@ tiles.push({
     showInEditor: true,
     visible: true,
     tags: ["Fast Speed"],
+    height: 0,
 })
 tiles.push({
     displayName: "Planks",
@@ -113,6 +117,7 @@ tiles.push({
     visible: true,
     showInEditor: true,
     tags: ["Normal Speed"],
+    height: 0,
 })
 tiles.push({
     displayName: "Water",
@@ -143,7 +148,8 @@ tiles.push({
         time: 1, //In Seconds
         repeat: true, //Repeat or finish this time event
         event: "animateBackground",
-    }]
+    }],
+    height: 0,
 })
 tiles.push({
     displayName: "Flower",
@@ -162,6 +168,7 @@ tiles.push({
     visible: true,
     showInEditor: true,
     tags: ["Normal Speed"],
+    height: 0,
 })
 tiles.push({
     displayName: "Dirt",
@@ -180,6 +187,7 @@ tiles.push({
     visible: true,
     showInEditor: true,
     tags: ["Normal Speed"],
+    height: 0,
 })
 
 tiles.push({
@@ -218,6 +226,7 @@ tiles.push({
     soundFolder: "piano",
     playSounds: true, //If Item should be muted or not;
     tags: ["Special"],
+    height: 0,
 })
 
 tiles.push({
@@ -237,6 +246,7 @@ tiles.push({
     id: 10,
     visible: true,
     tags: ["Special"],
+    height: 0,
 })
 
 tiles.push({
@@ -259,6 +269,7 @@ tiles.push({
     id: 11,
     visible: true,
     tags: ["Special"],
+    height: 0,
 })
 
 
@@ -283,7 +294,8 @@ tiles.push({
             value: "*P",
         },
         setBoardStatus: "*P",
-    }
+    },
+    height: 0,
 })
 
 

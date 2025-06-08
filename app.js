@@ -2549,8 +2549,12 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             type: type,
         });
     }
-    if (on.killPlayer && player) {
-        deletePlayer(lobby,player,false,false,true);
+    if (on.killPlayer) {
+        if (player)
+            deletePlayer(lobby,player,false,false,true);
+        else if (settings.projectile) {
+            deleteProjectile(lobby,settings.projectile);
+        }
     }
     if (on.spawnRandomItem) {
         specialItemManager(lobby);
@@ -2784,6 +2788,10 @@ function createProjectile(lobby,player,item,mode) {
 function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distance) {
     for (let i = 0; i < lobby.projectiles.length; i++) {
         if (lobby.projectiles[i].id === id) {
+
+            let oldX = lobby.projectiles[i].pos.x;
+            let oldY = lobby.projectiles[i].pos.y;
+
             let x,y;
             if (direction == "right") {
                 x = lobby.projectiles[i].pos.x + 1;
@@ -2801,6 +2809,8 @@ function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distanc
                 x = lobby.projectiles[i].pos.x;
                 y = lobby.projectiles[i].pos.y + 1;
             }
+
+            runProjectilePosition(lobby,{x,y},id,mode.throw.height);
 
             lobby.projectiles[i].pos.x = x;
             lobby.projectiles[i].pos.y = y;
@@ -2833,6 +2843,24 @@ function affectProjectile(lobby,id,change) {
     for (let i = 0; i < lobby.projectiles.length; i++) {
         if (lobby.projectiles[i].id === id) {
             lobby.projectiles[i].change = change;
+        }
+    }
+}
+function runProjectilePosition(lobby,pos,id,height) {
+    let currentBoard = lobby.board;
+    let mapItem = currentBoard.map[pos.y][pos.x].item;
+    let mapTile = currentBoard.map[pos.y][pos.x].tile;
+
+    let itemHeight = mapItem.height ?? 0;
+    let tileHeight = mapTile.height ?? 0;
+
+    if (itemHeight >= height) runItemFunction(lobby,false,mapItem,"onCollision",pos,{projectile: id});
+    if (tileHeight >= height) runItemFunction(lobby,false,mapTile,"onCollision",pos,{projectile: id});
+}
+function deleteProjectile(lobby,id) {
+    for (let i = 0; i < lobby.projectiles.length; i++) {
+        if (lobby.projectiles[i].id === id) {
+            lobby.projectiles.splice(i,1);
         }
     }
 }
