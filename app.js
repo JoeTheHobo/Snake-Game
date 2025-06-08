@@ -2833,6 +2833,7 @@ function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distanc
     }
 }
 function impactProjectile(lobby,item,mode,id) {
+    console.log("HIT")
     let impact = mode.impact;
     let itemStats;
     for (let i = 0; i < lobby.projectiles.length; i++) {
