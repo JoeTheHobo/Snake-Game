@@ -2559,11 +2559,11 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     if (on.spawnRandomItem) {
         specialItemManager(lobby);
     }
-    if (on.deleteMe && player && item.type == "item") {
-        currentBoard.map[player.pos.y][player.pos.x].item = false;
+    if (on.deleteMe && itemPos && item.type == "item") {
+        currentBoard.map[itemPos.y][itemPos.x].item = false;
         lobby.updateCells.push({
-            x: player.pos.x,
-            y: player.pos.y,
+            x: itemPos.x,
+            y: itemPos.y,
             item: false,
         })
     }
@@ -2866,7 +2866,6 @@ function runProjectilePosition(lobby,pos,id,height) {
 function deleteProjectile(lobby,id) {
     for (let i = 0; i < lobby.projectiles.length; i++) {
         if (lobby.projectiles[i].id === id) {
-            console.log("YIKES")
             lobby.projectiles[i].impact = true;
         }
     }
