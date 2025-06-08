@@ -2560,7 +2560,6 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         specialItemManager(lobby);
     }
     if (on.deleteMe && itemPos && item.type == "item") {
-        console.log("Yass")
         currentBoard.map[itemPos.y][itemPos.x].item = false;
         lobby.updateCells.push({
             x: itemPos.x,
@@ -2600,8 +2599,12 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         },lobby.gameMode.respawnProtection*1000);
     }
 
-    if (on.dealDamage && player) {
-        deletePlayer(lobby,player,false,on.dealDamage);
+    if (on.dealDamage) {
+        if (player)
+            deletePlayer(lobby,player,false,on.dealDamage);
+        else if (settings.projectile) {
+            projectileDealDamage(lobby,settings.projectile,on.dealDamage);
+        }
     }
     if (on.removePlayerItem && player) {
         for (let j = 0; j < on.removePlayerItem.length; j++) {
@@ -2781,6 +2784,7 @@ function createProjectile(lobby,player,item,mode) {
         size: size,
         itemID: itemID,
         impact: false,
+        subtractDamage: 0,
     })
 
     setTimeout(function() {
@@ -2870,6 +2874,15 @@ function deleteProjectile(lobby,id) {
             lobby.projectiles[i].impact = true;
         }
     }
+}
+function projectileDealDamage(lobby,id,damage) {
+    for (let i = 0; i < lobby.projectiles.length; i++) {
+        if (lobby.projectiles[i].id === id) {
+            lobby.projectiles[i].impact = true;
+            lobby.projectiles[i].subtractDamage += damage;
+        }
+    }
+
 }
 
 function gatherBoardsForUser(socketID,sendType) {
