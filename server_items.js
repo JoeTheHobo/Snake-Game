@@ -1372,6 +1372,10 @@ items.push({
                             }
                         }
                     },
+                    1,
+                    {
+                        deleteProjectile: true,
+                    }
                 ],
             },
         }

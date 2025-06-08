@@ -2674,6 +2674,16 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     if (on.repeatEvent) {
         runRepeatEvent(on.repeatEvent,lobby,player,item,itemPos,settings);
     }
+    if (on.deleteProjectile) {
+        if (settings.affectProjectile) {
+            //Delete Projectile
+            for (let i = 0; i < lobby.projectiles.length; i++) {
+                if (lobby.projectiles[i].id === settings.affectProjectile) {
+                    lobby.projectiles.splice(i,1);
+                }
+            }
+        } 
+    }
 
     if (settings.returnFunc) settings.returnFunc();
     return returnItem;
@@ -2793,7 +2803,7 @@ function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distanc
         }
     }
 }
-async function impactProjectile(lobby,item,mode,id) {
+function impactProjectile(lobby,item,mode,id) {
     let impact = mode.impact;
     let itemStats;
     for (let i = 0; i < lobby.projectiles.length; i++) {
@@ -2804,14 +2814,7 @@ async function impactProjectile(lobby,item,mode,id) {
 
     if (!impact || !itemStats) return;
 
-    await runItemFunction(lobby,false,item,impact,itemStats.pos,{affectProjectile: id});
-
-    //Delete Projectile
-    for (let i = 0; i < lobby.projectiles.length; i++) {
-        if (lobby.projectiles[i].id === id) {
-            lobby.projectiles.splice(i,1);
-        }
-    }
+    runItemFunction(lobby,false,item,impact,itemStats.pos,{affectProjectile: id});
 }
 function affectProjectile(lobby,id,change) {
     for (let i = 0; i < lobby.projectiles.length; i++) {
