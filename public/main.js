@@ -3,6 +3,9 @@ function renderProjectiles(projectiles) {
 
     for (let i = 0; i < projectiles.length; i++) {
         let item = getById("item",projectiles[i].itemID);
+        if (projectiles[i].change) {
+            item[projectiles[i].change[0]] = projectiles[i].change[1];
+        }
 
         let x = projectiles[i].pos.x;
         let y = projectiles[i].pos.y;

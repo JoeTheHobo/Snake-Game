@@ -1351,9 +1351,10 @@ items.push({
                         repeatEvent: {
                             count: 5,
                             event: "aboutToExplodeAnimation",
-                            time: 0.5,
+                            delay: 0.5, //Seconds
                         }
                     },
+                    2.5,//Seconds
                     {
                         showOverlay: {
                             type: "radius",
@@ -1373,9 +1374,6 @@ items.push({
                     },
                 ],
             },
-            finish: {
-                deleteMe: true,
-            }
         }
     },
     events: {

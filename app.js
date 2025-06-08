@@ -2425,19 +2425,23 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     }
     if (on.switchBaseImgTag) {
         item.baseImgTags[on.switchBaseImgTag.index] = item.baseImgTags[on.switchBaseImgTag.index] == on.switchBaseImgTag.switch[0] ? on.switchBaseImgTag.switch[1] : on.switchBaseImgTag.switch[0];
-        if (item.type == "item") {
-            lobby.updateCells.push({
-                x: itemPos.x,
-                y: itemPos.y,
-                changes: [["baseImgTags"],item.baseImgTags],
-            })
-        }
-        if (item.type == "tile") {
-            lobby.updateTiles.push({
-                x: itemPos.x,
-                y: itemPos.y,
-                changes: [["baseImgTags"],item.baseImgTags],
-            })
+        if (settings.affectProjectile) {
+            affectProjectile(lobby,settings.affectProjectile,["baseImgTags",item.baseImgTags]);
+        } else {
+            if (item.type == "item") {
+                lobby.updateCells.push({
+                    x: itemPos.x,
+                    y: itemPos.y,
+                    changes: [["baseImgTags"],item.baseImgTags],
+                })
+            }
+            if (item.type == "tile") {
+                lobby.updateTiles.push({
+                    x: itemPos.x,
+                    y: itemPos.y,
+                    changes: [["baseImgTags"],item.baseImgTags],
+                })
+            }
         }
         
     }
@@ -2664,7 +2668,36 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     if (on.projectile) {
         createProjectile(lobby,player,item,on.projectile);
     }
+    if (on.steps) {
+        runSteps(on, lobby, player, item, itemPos,settings);
+    }
+    if (on.repeatEvent) {
+        runRepeatEvent(on.repeatEvent,lobby,player,item,itemPos,settings);
+    }
+
+    if (settings.returnFunc) settings.returnFunc();
     return returnItem;
+}
+function runRepeatEvent(repeatEvent,lobby,player,item,itemPos,settings,count = 0) {
+
+    runItemFunction(lobby,player,item,item.events[repeatEvent.event],itemPos,settings);
+
+    if (count >= repeatEvent.count) return;
+
+    setTimeout(function() {
+        runRepeatEvent(repeatEvent,lobby,player,item,itemPos,settings,count+1);
+    },repeatEvent.delay*1000);
+}
+async function runSteps(on, lobby, player, item, itemPos, settings) {
+    for (let i = 0; i < on.steps.length; i++) {
+        let step = on.steps[i];
+
+        if (!isNaN(step)) {
+            await new Promise(resolve => setTimeout(resolve, step * 1000));
+        } else {
+            runItemFunction(lobby, player, item, step, itemPos, settings);
+        }
+    }
 }
 function addPlayerStatus(lobby,player,itemName) {
     player.status.push(getItem(lobby,itemName).name);
@@ -2761,7 +2794,31 @@ function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distanc
     }
 }
 function impactProjectile(lobby,item,mode,id) {
+    let impact = mode.impact;
+    let itemStats;
+    for (let i = 0; i < lobby.projectiles.length; i++) {
+        if (lobby.projectiles[i].id === id) {
+            itemStats = lobby.projectiles[i];
+        }
+    }
 
+    if (!impact || !itemStats) return;
+
+    runItemFunction(lobby,false,item,impact,itemStats.pos,{affectProjectile: id});
+
+    //Delete Projectile
+    for (let i = 0; i < lobby.projectiles.length; i++) {
+        if (lobby.projectiles[i].id === id) {
+            lobby.projectiles.splice(i,1);
+        }
+    }
+}
+function affectProjectile(lobby,id,change) {
+    for (let i = 0; i < lobby.projectiles.length; i++) {
+        if (lobby.projectiles[i].id === id) {
+            lobby.projectiles[i].change = change;
+        }
+    }
 }
 
 function gatherBoardsForUser(socketID,sendType) {
