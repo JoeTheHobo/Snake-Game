@@ -2775,10 +2775,11 @@ function  helper_fallOffDamage(lobby,player,itemPos,mode) {
 
             if (mapItem && damage > 0) {
                 damage -= runItemFunction(lobby,false,mapItem,"onCollision",{y,x}).damageGiven;
-
+                runItemFunction(lobby,false,mapItem,"offCollision",{y,x});
             }
             if (mapTile && damage > 0) {
                 damage -= runItemFunction(lobby,false,mapTile,"onCollision",{y,x}).damageGiven;
+                runItemFunction(lobby,false,mapItem,"offCollision",{y,x});
 
             }
 
@@ -2931,7 +2932,7 @@ function runProjectilePosition(lobby,pos,id,height,ignorePlayers) {
     if (ignorePlayers) return;
 
     let snakeMap = lobby.snakeMap[pos.y][pos.x];
-    
+
     if (snakeMap.length > 1) {
         deleteProjectile(lobby,id);
     }
