@@ -1375,10 +1375,11 @@ items.push({
             throw: {
                 startSize: .30,
                 endSize: 1.6,
-                timeOut: 50, //MS
+                timeOut: 50,
                 direction: "*P",
                 distance: 5,
                 height: 2, //How high does this item throw?
+                ignorePlayers: true,
             },
             impact: {
                 steps: [

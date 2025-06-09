@@ -2871,7 +2871,7 @@ function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distanc
                 y = lobby.projectiles[i].pos.y + 1;
             }
 
-            runProjectilePosition(lobby,{x,y},id,mode.throw.height,player);
+            runProjectilePosition(lobby,{x,y},id,mode.throw.height,mode.ignorePlayers ?? true);
 
             if (lobby.projectiles[i].impact === true) {
                 lobby.projectiles[i].size = mode.throw.endSize;
@@ -2917,7 +2917,7 @@ function affectProjectile(lobby,id,change) {
         }
     }
 }
-function runProjectilePosition(lobby,pos,id,height,player) {
+function runProjectilePosition(lobby,pos,id,height,ignorePlayers) {
     let currentBoard = lobby.board;
     let mapItem = currentBoard.map[pos.y][pos.x].item;
     let mapTile = currentBoard.map[pos.y][pos.x].tile;
@@ -2928,8 +2928,8 @@ function runProjectilePosition(lobby,pos,id,height,player) {
     if (itemHeight >= height) runItemFunction(lobby,false,mapItem,"onCollision",pos,{projectile: id});
     if (tileHeight >= height) runItemFunction(lobby,false,mapTile,"onCollision",pos,{projectile: id});
 
-    if (player) return;
-    
+    if (ignorePlayers) return;
+
     let snakeMap = lobby.snakeMap[pos.y][pos.x];
     if (snakeMap.length) {
         deleteProjectile(lobby,id);
