@@ -1401,12 +1401,9 @@ items.push({
                             who: "@e",
                             damage: 4,
                             damageFallOff: 1,
-                        }
-                    },
-                    1,
-                    {
+                        },
                         deleteProjectile: true,
-                    }
+                    },
                 ],
             },
         }

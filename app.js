@@ -2770,7 +2770,6 @@ function  helper_fallOffDamage(lobby,player,itemPos,mode) {
 
         // Handle effect at this tile
         if (mode.who == "@e") {
-            console.log(y,damage);
             let mapItem = currentBoard.map[y][x].item;
             let mapTile = currentBoard.map[y][x].tile;
 
@@ -2797,24 +2796,6 @@ function  helper_fallOffDamage(lobby,player,itemPos,mode) {
             queue.push({ x, y: y - 1, damage });
         }
     }
-}
-function getPointsWithinRadius(center, radius) {
-    let points = [];
-    let { x: cx, y: cy } = center;
-
-    for (let x = cx - radius; x <= cx + radius; x++) {
-        for (let y = cy - radius; y <= cy + radius; y++) {
-            let dx = x - cx;
-            let dy = y - cy;
-            let distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance <= radius) {
-                points.push({ x, y, distance });
-            }
-        }
-    }
-
-    return points;
 }
 
 function createProjectile(lobby,player,item,mode) {
@@ -2946,6 +2927,13 @@ function runProjectilePosition(lobby,pos,id,height) {
 
     if (itemHeight >= height) runItemFunction(lobby,false,mapItem,"onCollision",pos,{projectile: id});
     if (tileHeight >= height) runItemFunction(lobby,false,mapTile,"onCollision",pos,{projectile: id});
+
+    let snakeMap = lobby.snakeMap[pos.y][pos.x];
+    if (snakeMap.length) {
+        deleteProjectile(lobby,id);
+    }
+
+
 }
 function deleteProjectile(lobby,id) {
     for (let i = 0; i < lobby.projectiles.length; i++) {
