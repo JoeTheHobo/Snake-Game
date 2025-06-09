@@ -2775,11 +2775,15 @@ function  helper_fallOffDamage(lobby,player,itemPos,mode) {
 
             if (mapItem && damage > 0) {
                 damage -= runItemFunction(lobby,false,mapItem,"onCollision",{y,x}).damageGiven;
-                runItemFunction(lobby,false,mapItem,"offCollision",{y,x});
+                setTimeout(function() {
+                    runItemFunction(lobby,false,mapItem,"offCollision",{y,x});
+                },50)
             }
             if (mapTile && damage > 0) {
                 damage -= runItemFunction(lobby,false,mapTile,"onCollision",{y,x}).damageGiven;
-                runItemFunction(lobby,false,mapTile,"offCollision",{y,x});
+                setTimeout(function() {
+                    runItemFunction(lobby,false,mapTile,"offCollision",{y,x});
+                },50)
 
             }
 
