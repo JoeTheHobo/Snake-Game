@@ -2770,8 +2770,7 @@ function  helper_fallOffDamage(lobby,player,itemPos,mode) {
 
         // Handle effect at this tile
         if (mode.who == "@e") {
-            console.log(currentBoard.map);
-            console.log(currentBoard.map[y]);
+            console.log(currentBoard.map[y],y);
             console.log(currentBoard.map[y][x]);
             let mapItem = currentBoard.map[y][x].item;
             let mapTile = currentBoard.map[y][x].tile;
