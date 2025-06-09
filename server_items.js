@@ -1379,7 +1379,7 @@ items.push({
                 direction: "*P",
                 distance: 5,
                 height: 2, //How high does this item throw?
-                ignorePlayers: true,
+                ignorePlayers: false,
             },
             impact: {
                 steps: [

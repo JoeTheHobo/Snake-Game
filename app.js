@@ -2770,14 +2770,14 @@ function  helper_fallOffDamage(lobby,player,itemPos,mode) {
 
         // Handle effect at this tile
         if (mode.who == "@e") {
-            let mapItem = currentBoard.map[y][x].item;
-            let mapTile = currentBoard.map[y][x].tile;
+            let mapItem = currentBoard.map[y] ? currentBoard.map[y][x] ? currentBoard.map[y][x].item : false : false;
+            let mapTile = currentBoard.map[y] ? currentBoard.map[y][x] ? currentBoard.map[y][x].tile : false : false;
 
             if (mapItem && damage > 0) {
                 damage -= runItemFunction(lobby,false,mapItem,"onCollision",{y,x}).damageGiven;
 
             }
-            if (damage > 0) {
+            if (mapTile && damage > 0) {
                 damage -= runItemFunction(lobby,false,mapTile,"onCollision",{y,x}).damageGiven;
 
             }
@@ -2871,7 +2871,7 @@ function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distanc
                 y = lobby.projectiles[i].pos.y + 1;
             }
 
-            runProjectilePosition(lobby,{x,y},id,mode.throw.height,mode.ignorePlayers ?? true);
+            runProjectilePosition(lobby,{x,y},id,mode.throw.height,mode.ignorePlayers ?? false);
 
             if (lobby.projectiles[i].impact === true) {
                 lobby.projectiles[i].size = mode.throw.endSize;
