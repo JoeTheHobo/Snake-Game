@@ -2786,6 +2786,8 @@ function  helper_fallOffDamage(lobby,player,itemPos,mode) {
 
         }
 
+        damage -= mode.damageFallOff;
+
 
         // If there's still damage left, spread to neighbors
         if (damage > 0) {
