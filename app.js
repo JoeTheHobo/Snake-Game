@@ -2931,7 +2931,8 @@ function runProjectilePosition(lobby,pos,id,height,ignorePlayers) {
     if (ignorePlayers) return;
 
     let snakeMap = lobby.snakeMap[pos.y][pos.x];
-    if (snakeMap.length) {
+    
+    if (snakeMap.length > 1) {
         deleteProjectile(lobby,id);
     }
 
