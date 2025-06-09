@@ -2398,7 +2398,6 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         if (item[type])
             on = item[type];
         
-        if (type == "offColision") console.log("YO",on)
     }
 
     if (!on) return toReturn;
@@ -2780,7 +2779,7 @@ function  helper_fallOffDamage(lobby,player,itemPos,mode) {
             }
             if (mapTile && damage > 0) {
                 damage -= runItemFunction(lobby,false,mapTile,"onCollision",{y,x}).damageGiven;
-                runItemFunction(lobby,false,mapItem,"offCollision",{y,x});
+                runItemFunction(lobby,false,mapTile,"offCollision",{y,x});
 
             }
 
