@@ -2397,6 +2397,8 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     else {
         if (item[type])
             on = item[type];
+        
+        if (type == "offColision") console.log("YO",on)
     }
 
     if (!on) return toReturn;
@@ -2497,7 +2499,6 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         let value = on.setBaseImgTag.value;
         if (value == "*P" && player) value = player.team;
         item.baseImgTags[on.setBaseImgTag.index] = value;
-        console.log(value)
         if (item.type == "item") {
             lobby.updateCells.push({
                 x: itemPos.x,
