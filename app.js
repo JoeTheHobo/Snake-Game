@@ -2843,10 +2843,10 @@ function createProjectile(lobby,player,item,mode) {
     })
 
     setTimeout(function() {
-        moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,1);
+        moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,1,player);
     },mode.throw.timeOut);
 }
-function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distance) {
+function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distance,player) {
     for (let i = 0; i < lobby.projectiles.length; i++) {
         if (lobby.projectiles[i].id === id) {
 
@@ -2871,7 +2871,7 @@ function moveProjectile(lobby,item,mode,x,y,direction,sizeProgression,id,distanc
                 y = lobby.projectiles[i].pos.y + 1;
             }
 
-            runProjectilePosition(lobby,{x,y},id,mode.throw.height);
+            runProjectilePosition(lobby,{x,y},id,mode.throw.height,player);
 
             if (lobby.projectiles[i].impact === true) {
                 lobby.projectiles[i].size = mode.throw.endSize;
@@ -2917,7 +2917,7 @@ function affectProjectile(lobby,id,change) {
         }
     }
 }
-function runProjectilePosition(lobby,pos,id,height) {
+function runProjectilePosition(lobby,pos,id,height,player) {
     let currentBoard = lobby.board;
     let mapItem = currentBoard.map[pos.y][pos.x].item;
     let mapTile = currentBoard.map[pos.y][pos.x].tile;
@@ -2928,6 +2928,8 @@ function runProjectilePosition(lobby,pos,id,height) {
     if (itemHeight >= height) runItemFunction(lobby,false,mapItem,"onCollision",pos,{projectile: id});
     if (tileHeight >= height) runItemFunction(lobby,false,mapTile,"onCollision",pos,{projectile: id});
 
+    if (player) return;
+    
     let snakeMap = lobby.snakeMap[pos.y][pos.x];
     if (snakeMap.length) {
         deleteProjectile(lobby,id);
