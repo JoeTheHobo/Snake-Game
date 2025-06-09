@@ -2783,7 +2783,7 @@ function  helper_fallOffDamage(lobby,player,itemPos,mode) {
                 damage -= runItemFunction(lobby,false,mapTile,"onCollision",{y,x}).damageGiven;
                 setTimeout(function() {
                     runItemFunction(lobby,false,mapTile,"offCollision",{y,x});
-                },50)
+                },100)
 
             }
 
