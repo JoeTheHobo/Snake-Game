@@ -2497,7 +2497,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         let value = on.setBaseImgTag.value;
         if (value == "*P" && player) value = player.team;
         item.baseImgTags[on.setBaseImgTag.index] = value;
-        
+        console.log(value)
         if (item.type == "item") {
             lobby.updateCells.push({
                 x: itemPos.x,
