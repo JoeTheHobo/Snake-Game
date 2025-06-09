@@ -2609,7 +2609,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         else if (settings.projectile) {
             projectileDealDamage(lobby,settings.projectile,on.dealDamage);
         }
-        toReturn.damageGiven += dealDamage;
+        toReturn.damageGiven += on.dealDamage;
     }
     if (on.removePlayerItem && player) {
         for (let j = 0; j < on.removePlayerItem.length; j++) {
