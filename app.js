@@ -2245,7 +2245,7 @@ function useItem(lobby,player) {
     let item = player.items[player.selectingItem];
     if (item == "empty") return;
     if (!item.onActivate) return;
-    let returnItem = runItemFunction(lobby,player,player.items[player.selectingItem],"onActivate",player.pos);
+    let returnItem = runItemFunction(lobby,player,player.items[player.selectingItem],"onActivate",player.pos).returnItem;
     player.items[player.selectingItem] = returnItem;
 }
 function specialItemManager(lobby) {
@@ -2384,10 +2384,13 @@ function growPlayer(player,grow) {
     
 }
 function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: true}) {
-    let returnItem = "empty"; //Only used when player activates an item from their inventory
+    let toReturn = {
+        returnItem: "empty",
+        damageGiven: 0,
+    }
     let currentBoard = lobby.board;
     let currentGameMode = lobby.gameMode;
-    if (!type) return returnItem;
+    if (!type) return toReturn;
 
     let on;
     if (simple.type(type) == "object") on = type; 
@@ -2396,7 +2399,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             on = item[type];
     }
 
-    if (!on) return returnItem;
+    if (!on) return toReturn;
 
     if (item.switchStatus == false || item.switchStatus == undefined) {
         item.switchStatus = true;
@@ -2471,10 +2474,10 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     if (on.removeBoardStatus && player) {
         removeBoardStatus(lobby,on.removeBoardStatus,player);
     }
-    if (on.setBoardStatus && player) {
+    setBoardStatus: if (on.setBoardStatus && player) {
         let status = on.setBoardStatus;
         if (on.setBoardStatus == "*P") status = player.team;
-        if (item.sendingBoardStatus === status) return;
+        if (item.sendingBoardStatus === status) break setBoardStatus;
 
         if (item.sendingBoardStatus !== false) {
             removeBoardStatus(lobby,item.sendingBoardStatus,player);
@@ -2487,7 +2490,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         let oldItem = structuredClone(player.equiped[on.equip]);
         player.equiped[on.equip] = structuredClone(item);
         if (oldItem) {
-            returnItem = oldItem;
+            toReturn.returnItem = oldItem;
         }
     }
     if (on.setBaseImgTag) {
@@ -2555,6 +2558,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         else if (settings.projectile) {
             deleteProjectile(lobby,settings.projectile);
         }
+        toReturn.damageGiven += 99999;
     }
     if (on.spawnRandomItem) {
         specialItemManager(lobby);
@@ -2605,6 +2609,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         else if (settings.projectile) {
             projectileDealDamage(lobby,settings.projectile,on.dealDamage);
         }
+        toReturn.damageGiven += dealDamage;
     }
     if (on.removePlayerItem && player) {
         for (let j = 0; j < on.removePlayerItem.length; j++) {
@@ -2705,9 +2710,12 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             }
         } 
     }
+    if (on.fallOffDamage) {
+        helper_fallOffDamage(lobby,player,itemPos,on.fallOffDamage);
+    }
 
     if (settings.returnFunc) settings.returnFunc();
-    return returnItem;
+    return toReturn;
 }
 function runRepeatEvent(repeatEvent,lobby,player,item,itemPos,settings,count = 0) {
 
@@ -2743,6 +2751,69 @@ function removePlayerStatus(lobby,player,itemName) {
 }
 
 //From App.js
+function  helper_fallOffDamage(lobby,player,itemPos,mode) {
+    let currentBoard = lobby.board;
+    let queue = [{ x: itemPos.x, y: itemPos.y, damage: mode.damage }];
+    let visited = new Set();
+
+    function key(x, y) {
+        return `${x},${y}`;
+    }
+
+    while (queue.length > 0) {
+        let { x, y, damage } = queue.shift();
+        let posKey = key(x, y);
+
+        // Skip already visited
+        if (visited.has(posKey) || damage <= 0) continue;
+        visited.add(posKey);
+
+        // Handle effect at this tile
+        if (mode.who == "@e") {
+            let mapItem = currentBoard.map[y][x].item;
+            let mapTile = currentBoard.map[y][x].tile;
+
+            if (mapItem && damage > 0) {
+                damage -= runItemFunction(lobby,false,mapItem,"onCollision",{y,x}).damageGiven;
+
+            }
+            if (damage > 0) {
+                damage -= runItemFunction(lobby,false,mapTile,"onCollision",{y,x}).damageGiven;
+
+            }
+
+
+        }
+
+
+        // If there's still damage left, spread to neighbors
+        if (damage > 0) {
+            queue.push({ x: x + 1, y, damage });
+            queue.push({ x: x - 1, y, damage });
+            queue.push({ x, y: y + 1, damage });
+            queue.push({ x, y: y - 1, damage });
+        }
+    }
+}
+function getPointsWithinRadius(center, radius) {
+    let points = [];
+    let { x: cx, y: cy } = center;
+
+    for (let x = cx - radius; x <= cx + radius; x++) {
+        for (let y = cy - radius; y <= cy + radius; y++) {
+            let dx = x - cx;
+            let dy = y - cy;
+            let distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance <= radius) {
+                points.push({ x, y, distance });
+            }
+        }
+    }
+
+    return points;
+}
+
 function createProjectile(lobby,player,item,mode) {
     let id = item.id + player.accountID + simple.rnd(10000);
 

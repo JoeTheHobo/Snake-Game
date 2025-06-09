@@ -1394,17 +1394,13 @@ items.push({
                         showOverlay: {
                             type: "radius",
                             color: "red",
-                            size: 5,
-                            time: 2, //In Seconds
+                            size: 4,
+                            time: 1, //In Seconds
                         },
-                        projectileDamage: {
+                        fallOffDamage: {
                             who: "@e",
-                            damage: {
-                                type: "radius",
-                                size: 5,
-                                damage: 5,
-                                radiusDamageFallOff: 1,
-                            }
+                            damage: 4,
+                            damageFallOff: 1,
                         }
                     },
                     1,
