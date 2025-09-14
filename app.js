@@ -2769,15 +2769,15 @@ function  helper_fallOffDamage(lobby,player,itemPos,mode) {
         visited.add(posKey);
 
         // Handle effect at this tile
+        let mapItem = currentBoard.map[y] ? currentBoard.map[y][x] ? currentBoard.map[y][x].item : false : false;
+        let mapTile = currentBoard.map[y] ? currentBoard.map[y][x] ? currentBoard.map[y][x].tile : false : false;
         if (mode.who == "@e") {
-            let mapItem = currentBoard.map[y] ? currentBoard.map[y][x] ? currentBoard.map[y][x].item : false : false;
-            let mapTile = currentBoard.map[y] ? currentBoard.map[y][x] ? currentBoard.map[y][x].tile : false : false;
 
             if (mapItem && damage > 0) {
                 damage -= runItemFunction(lobby,false,mapItem,"onCollision",{y,x}).damageGiven;
                 setTimeout(function() {
                     runItemFunction(lobby,false,mapItem,"offCollision",{y,x});
-                },50)
+                },100)
             }
             if (mapTile && damage > 0) {
                 damage -= runItemFunction(lobby,false,mapTile,"onCollision",{y,x}).damageGiven;
@@ -2786,7 +2786,14 @@ function  helper_fallOffDamage(lobby,player,itemPos,mode) {
                 },100)
 
             }
-
+        }
+        if (mapTile) {
+            let mapSnakes = lobby.snakeMap[y][x];
+            if (mapSnakes.length > 1) {
+                for (let i = 1; i < mapSnakes.length; i++) {
+                    
+                }
+            }
 
         }
 
