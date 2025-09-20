@@ -3267,7 +3267,7 @@ function checkRespawnPlayers(lobby) {
     for (let i = 0; i < lobby.playerRespawns.length; i++) {
         let incident = lobby.playerRespawns[i];
         let timeDif = now - incident.death;
-
+        console.log(lobby.gameMode.respawnTimer,timeDif);
         if ((lobby.gameMode.respawnTimer * 1000) >= timeDif) {
             respawnPlayer(lobby,incident.player,lobby.gameMode.respawnGrowth);
             lobby.playerRespawns.splice(i,1);
