@@ -1442,6 +1442,7 @@ io.on('connection', (socket) => {
                 checkEndGametimers(this);
                 if (this.checkingSpawnTimers) checkSpawnStatusTimers(this);
                 checkEndGameBoardStatus(this);
+                checkRespawnPlayers(this);
     
                 updateClientPositions(this);
     
@@ -2372,9 +2373,10 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
                 return;
             }
         } else {
-            setTimeout(function() {
-                respawnPlayer(lobby,player,currentGameMode.respawnGrowth);
-            },currentGameMode.respawnTimer * 1000);
+            lobby.playerRespawns.push({
+                player: player,
+                death: Date.now(),
+            })
         }
         return;
     }
@@ -3071,6 +3073,8 @@ function helper_resetLobby(lobby) {
     lobby.condition_time = [];
     lobby.condition_kill = [];
     lobby.condition_status = [];
+
+    lobby.playerRespawns = [];
     
     for (let i = 0; i < lobby.gameMode.winningConditions.length; i++) {
         let condition = lobby.gameMode.winningConditions[i];
@@ -3257,6 +3261,19 @@ function findTeamWithHighestBoardStatus(lobby) {
     }
 
     return team;
+}
+function checkRespawnPlayers(lobby) {
+    let now = Date.now();
+    for (let i = 0; i < lobby.playerRespawns.length; i++) {
+        let incident = lobby.playerRespawns[i];
+        let timeDif = now - incident.death;
+
+        if ((currentGameMode.respawnTimer * 1000) >= timeDif) {
+            respawnPlayer(lobby,incident.player,lobby.gameMode.respawnGrowth);
+            lobby.playerRespawns.splice(i,1);
+            i--;
+        }
+    }
 }
 function checkEndGameBoardStatus(lobby) {
     let statusList = lobby.boardStatus;
