@@ -2775,6 +2775,7 @@ function renderZone_checkForValue(zone,value) {
     return value;
 }
 function addZonesToRender(zoneList) {
+    console.log(zoneList)
     for (let i = 0; i < zoneList.players.length; i++) {
         if (zoneList.players[i].visible) {
             zone = zoneList.players[i];
