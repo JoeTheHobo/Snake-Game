@@ -753,7 +753,7 @@ function handelRespawnTimer(time,deathPoint) {
     }
 
     let seconds = time-Math.ceil(miliseconds/1000);
-    $(".whiteTextAtTopOfGame").innerHTML = `Respawn In ${seconds} Seconds`;
+    $(".whiteTextAtTopOfGame").innerHTML = `Respawn In ${seconds+1} Seconds`;
 
 
     $(".whiteTextAtTopOfGame").show("flex");
