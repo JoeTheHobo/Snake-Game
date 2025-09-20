@@ -2775,38 +2775,43 @@ function renderZone_checkForValue(zone,value) {
     return value;
 }
 function addZonesToRender(zoneList) {
-    console.log(zoneList)
-    for (let i = 0; i < zoneList.players.length; i++) {
-        if (zoneList.players[i].visible) {
-            zone = zoneList.players[i];
-            zone.render = function() {
-                renderZone(canvas_emote_background,canvas_top,this,1,currentBoard.width,currentBoard.height);
+    if (zoneList.players) {
+        for (let i = 0; i < zoneList.players.length; i++) {
+            if (zoneList.players[i].visible) {
+                zone = zoneList.players[i];
+                zone.render = function() {
+                    renderZone(canvas_emote_background,canvas_top,this,1,currentBoard.width,currentBoard.height);
+                }
+                zone.type = "zone";
+                zone.min = false;
+                emotesToRender.push(zone);
             }
-            zone.type = "zone";
-            zone.min = false;
-            emotesToRender.push(zone);
         }
     }
-    for (let i = 0; i < zoneList.items.length; i++) {
-        if (zoneList.items[i].visible) {
-            zone = zoneList.items[i];
-            zone.render = function() {
-                renderZone(canvas_emote_background,canvas_top,this,1,currentBoard.width,currentBoard.height);
+    if (zoneList.items) {
+        for (let i = 0; i < zoneList.items.length; i++) {
+            if (zoneList.items[i].visible) {
+                zone = zoneList.items[i];
+                zone.render = function() {
+                    renderZone(canvas_emote_background,canvas_top,this,1,currentBoard.width,currentBoard.height);
+                }
+                zone.type = "zone";
+                zone.min = false;
+                emotesToRender.push(zone);
             }
-            zone.type = "zone";
-            zone.min = false;
-            emotesToRender.push(zone);
         }
     }
-    for (let i = 0; i < zoneList.special.length; i++) {
-        if (zoneList.special[i].visible) {
-            zone = zoneList.special[i];
-            zone.render = function() {
-                renderZone(canvas_emote_background,canvas_top,this,1,currentBoard.width,currentBoard.height);
+    if (zoneList.special) {
+        for (let i = 0; i < zoneList.special.length; i++) {
+            if (zoneList.special[i].visible) {
+                zone = zoneList.special[i];
+                zone.render = function() {
+                    renderZone(canvas_emote_background,canvas_top,this,1,currentBoard.width,currentBoard.height);
+                }
+                zone.type = "zone";
+                zone.min = false;
+                emotesToRender.push(zone);
             }
-            zone.type = "zone";
-            zone.min = false;
-            emotesToRender.push(zone);
         }
     }
 }
