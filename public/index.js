@@ -447,7 +447,6 @@ socket.on("endGame",(obj) => {
 })
 socket.on("preparingGame",() => {
     $(".gameInfoWaiting").hide();
-    $(".whiteTextAtTopOfGame").innerHTML = "Game Starts In";
     $(".gameInfoNumbers").show("flex");
     showNumber(3);
 })
