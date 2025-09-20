@@ -2378,6 +2378,7 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
                 player: player,
                 death: deathPoint,
             })
+            player.canMove = false;
             io.to(player.accountID).emit("startRespawnTimer",lobby.gameMode.respawnTimer,deathPoint);
         }
         return;
@@ -3274,6 +3275,7 @@ function checkRespawnPlayers(lobby) {
             respawnPlayer(lobby,incident.player,lobby.gameMode.respawnGrowth);
         }
         if (timeDif >= ((lobby.gameMode.respawnTimer) * 1000)) {
+            player.canMove = true;
             lobby.playerRespawns.splice(i,1);
             i--;
         }
@@ -4515,7 +4517,7 @@ function respawnPlayer(lobby,player,growthPercentage) {
             rerenderSnake(lobby,player);
             updateClientPositions(lobby)
         }
-    },lobby.gameMode.respawnProtection*1000);
+    },(lobby.gameMode.respawnProtection+1)*1000);
 
 
     spawn(lobby,player);
@@ -4802,12 +4804,14 @@ function helper_movePlayer(lobby,player,currentBoard,activePlayers,currentGameMo
     
 
     //Move Player and make sure he can't go back on himself
-    switch (player.moving) {
-        case "left": player.pos.x--; break;
-        case "right": player.pos.x++; break;
-        case "up": player.pos.y--; break;
-        case "down": player.pos.y++; break;
-    }            
+    if (player.canMove) {
+        switch (player.moving) {
+            case "left": player.pos.x--; break;
+            case "right": player.pos.x++; break;
+            case "up": player.pos.y--; break;
+            case "down": player.pos.y++; break;
+        }        
+    }    
 
     //Teleport Player If Needed
     if (simple.type(player.justTeleported) == "object") {
