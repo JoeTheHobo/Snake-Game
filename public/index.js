@@ -447,6 +447,7 @@ socket.on("endGame",(obj) => {
 })
 socket.on("preparingGame",() => {
     $(".gameInfoWaiting").hide();
+    $(".gameInfoNumbers").innerHTML = "Game Starts In";
     $(".gameInfoNumbers").show("flex");
     showNumber(3);
 })
@@ -741,8 +742,26 @@ window.onload = function() {
     
 };
 
-socket.on("startRespawnTimer",function(time) {
-    console.log("Respawn in " + time)
+socket.on("startRespawnTimer",function(time,deathPoint) {
+    handelRespawnTimer(time,deathPoint)
 })
+function handelRespawnTimer(time,deathPoint) {
+
+    let miliseconds = Date.now()-deathPoint; 
+    if (miliseconds >= (time*1000)) {
+        $(".gameInfoNumbers").hide();
+        return;
+    }
+
+    let seconds = Math.round(miliseconds);
+    $(".gameInfoNumbers").innerHTML = `Respawn In ${seconds} Seconds`;
+
+
+    $(".gameInfoNumbers").show("flex");
+    setTimeout(function() {
+        handelRespawnTimer(time,deathPoint);
+    },100);
+
+}
 
 setScene("loading");

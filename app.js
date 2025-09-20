@@ -2373,11 +2373,12 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
                 return;
             }
         } else {
+            let deathPoint = Date.now();
             lobby.playerRespawns.push({
                 player: player,
-                death: Date.now(),
+                death: deathPoint,
             })
-            io.to(player.accountID).emit("startRespawnTimer",lobby.gameMode.respawnTimer);
+            io.to(player.accountID).emit("startRespawnTimer",lobby.gameMode.respawnTimer,deathPoint);
         }
         return;
     }
