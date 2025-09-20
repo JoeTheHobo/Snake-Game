@@ -2377,8 +2377,7 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
                 player: player,
                 death: Date.now(),
             })
-            console.log(player)
-            //io.to().emit("startRespawnTimer",lobby.gameMode.);
+            io.to(player.accountID).emit("startRespawnTimer",lobby.gameMode.respawnTimer);
         }
         return;
     }

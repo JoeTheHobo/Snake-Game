@@ -741,4 +741,8 @@ window.onload = function() {
     
 };
 
+socket.on("startRespawnTimer",function(time) {
+    console.log("Respawn in " + time)
+})
+
 setScene("loading");
