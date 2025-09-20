@@ -447,7 +447,7 @@ socket.on("endGame",(obj) => {
 })
 socket.on("preparingGame",() => {
     $(".gameInfoWaiting").hide();
-    $(".gameInfoNumbers").innerHTML = "Game Starts In";
+    $(".whiteTextAtTopOfGame").innerHTML = "Game Starts In";
     $(".gameInfoNumbers").show("flex");
     showNumber(3);
 })
@@ -749,15 +749,15 @@ function handelRespawnTimer(time,deathPoint) {
 
     let miliseconds = Date.now()-deathPoint; 
     if (miliseconds >= (time*1000)) {
-        $(".gameInfoNumbers").hide();
+        $(".whiteTextAtTopOfGame").hide();
         return;
     }
 
-    let seconds = Math.round(miliseconds);
-    $(".gameInfoNumbers").innerHTML = `Respawn In ${seconds} Seconds`;
+    let seconds = Math.round(miliseconds/1000);
+    $(".whiteTextAtTopOfGame").innerHTML = `Respawn In ${seconds} Seconds`;
 
 
-    $(".gameInfoNumbers").show("flex");
+    $(".whiteTextAtTopOfGame").show("flex");
     setTimeout(function() {
         handelRespawnTimer(time,deathPoint);
     },100);
