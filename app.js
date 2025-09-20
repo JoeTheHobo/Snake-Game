@@ -2377,6 +2377,8 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
                 player: player,
                 death: Date.now(),
             })
+            console.log(player)
+            //io.to().emit("startRespawnTimer",lobby.gameMode.);
         }
         return;
     }
@@ -3267,7 +3269,6 @@ function checkRespawnPlayers(lobby) {
     for (let i = 0; i < lobby.playerRespawns.length; i++) {
         let incident = lobby.playerRespawns[i];
         let timeDif = now - incident.death;
-        console.log(lobby.gameMode.respawnTimer,timeDif);
         if (timeDif >= (lobby.gameMode.respawnTimer * 1000)) {
             respawnPlayer(lobby,incident.player,lobby.gameMode.respawnGrowth);
             lobby.playerRespawns.splice(i,1);
