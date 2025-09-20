@@ -3635,14 +3635,14 @@ function triggerWinningCondition(lobby,condition,player) {
         conditionTitle = "Condition: Touch Zone " + condition.x;
     }
     if (condition.condition == "Touch Item X") {
-        conditionTitle = "Condition: Touch Item ";
+        conditionTitle = "Condition: Touch ";
         conditionImage = {
             type: "item",
             id: condition.x,
         }
     }
     if (condition.condition == "Touch Tile X") {
-        conditionTitle = "Condition: Touch Tile ";
+        conditionTitle = "Condition: Touch ";
         conditionImage = {
             type: "tile",
             id: condition.x,

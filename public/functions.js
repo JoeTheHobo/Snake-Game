@@ -1570,10 +1570,10 @@ function logAllWinningConditions(holder,gamemode) {
             howToWin = teamPrefix + ` Touch Zone ${condition.x}`;
         }
         if (condition.condition == "Touch Item X") {
-            howToWin = teamPrefix + ` Touch Item  <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
+            howToWin = teamPrefix + ` Touch  <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
         }
         if (condition.condition == "Touch Tile X") {
-            howToWin = teamPrefix + ` Touch Tile  <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
+            howToWin = teamPrefix + ` Touch  <img src="${getImage(getById(condition.type,condition.x),"src")}" class="gm_alt_team">`;
         }
         if (condition.condition == "X Minutes Pass") {
             howToWin = `The Game Ends In ${condition.x} Minutes`;
