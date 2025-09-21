@@ -3280,6 +3280,11 @@ function checkRespawnPlayers(lobby) {
             incident.player.canMove = true;
             incident.player.canGrow = true;
             incident.player.ghost = false;
+            player.justDied = false;
+            player.moveTik = 0;
+            player.timeAlive.push(0);
+            player.timeCameAlive = Date.now();
+
             lobby.playerRespawns.splice(i,1);
             i--;
         }
@@ -4488,7 +4493,6 @@ function respawnPlayer(lobby,player,growthPercentage,respawnTimer) {
     //Delete Old Tail
     snakeMapRemoveAll(lobby,player);
 
-    player.isDead = false;
     player.tail = [];
     player.items = [];
     for (let j = 0; j < lobby.gameMode.howManyItemsCanPlayersUse; j++) {
@@ -4499,8 +4503,8 @@ function respawnPlayer(lobby,player,growthPercentage,respawnTimer) {
     player.ghost = true;
     let team = player.team;
     player.status = ["status_" + team];
-    player.justDied = false;
     player.bodyArmor = 1;
+    player.isDead = false;
     player.justTeleported = false;
     player.moveQueue = [];
     player.moveTik = 0;
@@ -4508,8 +4512,6 @@ function respawnPlayer(lobby,player,growthPercentage,respawnTimer) {
     player.turboDuration = 0;
     player.turboActive = false;
     player.respawnProtected = true;
-    player.timeAlive.push(0);
-    player.timeCameAlive = Date.now();
     player.equiped = {
         head: false,
         body: false,
@@ -4639,7 +4641,7 @@ function server_movePlayers(lobby,socketID) {
         let player = activePlayers[i];
         if (player.isDead) continue;
 
-        player.timeAlive[player.timeAlive.length-1] = Date.now() - player.timeCameAlive; //Setting their time alive stat
+        if (player.ghost) player.timeAlive[player.timeAlive.length-1] = Date.now() - player.timeCameAlive; //Setting their time alive stat
         checkWinningCondition(lobby,"Time Alive",player.timeAlive[player.timeAlive.length-1],player); //Check player time survived winning condition
         
         //Check Players Move Tik, if it's too short skip player.
