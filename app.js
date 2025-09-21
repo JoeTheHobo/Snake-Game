@@ -3276,7 +3276,7 @@ function checkRespawnPlayers(lobby) {
             respawnPlayer(lobby,incident.player,lobby.gameMode.respawnGrowth);
         }
         if (timeDif >= ((lobby.gameMode.respawnTimer) * 1000)) {
-            player.canMove = true;
+            incident.player.canMove = true;
             lobby.playerRespawns.splice(i,1);
             i--;
         }
