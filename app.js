@@ -4641,8 +4641,10 @@ function server_movePlayers(lobby,socketID) {
         let player = activePlayers[i];
         if (player.isDead) continue;
 
-        if (player.ghost) player.timeAlive[player.timeAlive.length-1] = Date.now() - player.timeCameAlive; //Setting their time alive stat
-        checkWinningCondition(lobby,"Time Alive",player.timeAlive[player.timeAlive.length-1],player); //Check player time survived winning condition
+        if (!player.ghost) {
+            player.timeAlive[player.timeAlive.length-1] = Date.now() - player.timeCameAlive; //Setting their time alive stat
+            checkWinningCondition(lobby,"Time Alive",player.timeAlive[player.timeAlive.length-1],player); //Check player time survived winning condition
+        }
         
         //Check Players Move Tik, if it's too short skip player.
         if ((player.moveTik) < (player.moveSpeed/currentBoard.map[player.pos.y][player.pos.x].tile.changePlayerSpeed)) {   
@@ -4846,12 +4848,13 @@ function helper_movePlayer(lobby,player,currentBoard,activePlayers,currentGameMo
     }
 
     //Check for Player Collisions
-    if (currentGameMode.snakeCollision) {
+    if (currentGameMode.snakeCollision && !player.ghost) {
         let occupiedPositions = new Map();
     
         // Step 1: Populate occupiedPositions with all players' tails & positions
         for (let a = 0; a < activePlayers.length; a++) {
             let checkedPlayer = activePlayers[a];
+            if (checkedPlayer.ghost) continue;
             if (checkedPlayer.isDead && currentGameMode.whenSnakesDie !== "remain") continue;
             if (checkedPlayer.team === player.team && !currentGameMode.teamCollision && player.team !== "white") continue;
     
