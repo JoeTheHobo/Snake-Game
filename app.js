@@ -3280,10 +3280,10 @@ function checkRespawnPlayers(lobby) {
             incident.player.canMove = true;
             incident.player.canGrow = true;
             incident.player.ghost = false;
-            player.justDied = false;
-            player.moveTik = 0;
-            player.timeAlive.push(0);
-            player.timeCameAlive = Date.now();
+            incident.player.justDied = false;
+            incident.player.moveTik = 0;
+            incident.player.timeAlive.push(0);
+            incident.player.timeCameAlive = Date.now();
 
             lobby.playerRespawns.splice(i,1);
             i--;
