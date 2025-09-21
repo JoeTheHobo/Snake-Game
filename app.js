@@ -3158,6 +3158,7 @@ function helper_resetLobby(lobby) {
     for (let i = 0; i < lobby.inGamePlayers.length; i++) {
         let player = lobby.inGamePlayers[i];
         player.index = i;
+        player.canMove = true;
         player.isPlayer = true;
         //Ressurect Player
         player.isDead = false;
