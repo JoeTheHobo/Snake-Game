@@ -3271,9 +3271,9 @@ function checkRespawnPlayers(lobby) {
     for (let i = 0; i < lobby.playerRespawns.length; i++) {
         let incident = lobby.playerRespawns[i];
         let timeDif = now - incident.death;
-        if (timeDif >= ((lobby.gameMode.respawnTimer-1) * 1000) && !incident.spawned) {
+        if (!incident.spawned) {
             incident.spawned = true;
-            respawnPlayer(lobby,incident.player,lobby.gameMode.respawnGrowth);
+            respawnPlayer(lobby,incident.player,lobby.gameMode.respawnGrowth,lobby.gameMode.respawnTimer);
         }
         if (timeDif >= ((lobby.gameMode.respawnTimer) * 1000)) {
             incident.player.canMove = true;
@@ -4477,7 +4477,7 @@ let basedGameMode = {
     teamCollision: true,
     setFoodRate: 50,
 }
-function respawnPlayer(lobby,player,growthPercentage) {
+function respawnPlayer(lobby,player,growthPercentage,respawnTimer) {
     let length = Math.round((growthPercentage/100) * player.tail.length);
 
     //Delete Old Tail
@@ -4518,7 +4518,7 @@ function respawnPlayer(lobby,player,growthPercentage) {
             rerenderSnake(lobby,player);
             updateClientPositions(lobby)
         }
-    },(lobby.gameMode.respawnProtection+1)*1000);
+    },(lobby.gameMode.respawnProtection+respawnTimer)*1000);
 
 
     spawn(lobby,player);
