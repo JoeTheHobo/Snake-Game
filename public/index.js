@@ -501,6 +501,7 @@ socket.on("updatePositions",(obj) => {
                 local_player.playerKills = server_player.k;
                 local_player.invinsibleBodyEffect = server_player.ibe;
                 local_player.timeAlive = server_player.ta;
+                local_player.ghost = server_player.gh;
     
                 if (local_player.accountID === localAccount.id) {
                     localAccount.player  = local_player;

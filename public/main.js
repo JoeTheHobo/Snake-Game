@@ -210,10 +210,14 @@ function drawImage(image, direction, xPos, yPos, width, height,cnvs = canvas_pla
     // Restore the canvas state
     diCtx.restore();
 }
-function drawRotated(list,direction,xPos, yPos, width, height) {
+function drawRotated(list,direction,xPos, yPos, width, height,ghost) {
     if (!direction) direction = "up";
     let image = list[direction];
+    if (ghost)
+        ctx_players.globalAlpha = 0.5;
     ctx_players.drawImage(image,xPos,yPos,width,height);
+    if (ghost)
+        ctx_players.globalAlpha = 1;
 }
 function server_renderPlayers() {
     for (let i = 0; i < updateSnakeCells.length; i++) {
@@ -234,7 +238,7 @@ function server_renderPlayers() {
             if (obj.type == "head") {
                 let headObject = player.canvas.head;
                 if (_type(player.invinsibleBodyEffect).type == "number") headObject = snakeSkinCanvasObj[player.snakeSkin].head.colors[player.invinsibleBodyEffect];
-                drawRotated(headObject,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize);
+                drawRotated(headObject,player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,player.ghost);
                 
                 if (player.equiped.head) {
                     drawImage(getImage(player.equiped.head,"canvas"),player.moving,obj.x*gridSize,obj.y*gridSize,gridSize,gridSize,canvas_players);

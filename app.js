@@ -2378,7 +2378,6 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
                 player: player,
                 death: deathPoint,
             })
-            player.canMove = false;
             io.to(player.accountID).emit("startRespawnTimer",lobby.gameMode.respawnTimer,deathPoint);
         }
         return;
@@ -3159,6 +3158,8 @@ function helper_resetLobby(lobby) {
         let player = lobby.inGamePlayers[i];
         player.index = i;
         player.canMove = true;
+        player.canGrow = true;
+        player.ghost = false;
         player.isPlayer = true;
         //Ressurect Player
         player.isDead = false;
@@ -3277,6 +3278,8 @@ function checkRespawnPlayers(lobby) {
         }
         if (timeDif >= ((lobby.gameMode.respawnTimer) * 1000)) {
             incident.player.canMove = true;
+            incident.player.canGrow = true;
+            incident.player.ghost = false;
             lobby.playerRespawns.splice(i,1);
             i--;
         }
@@ -4202,6 +4205,7 @@ function updateClientPositions(lobby) {
         invinsibleBodyEffect,
         invincibleDuration,
         timeAlive,
+        ghost
     }) => ({
         i: index,  
         s: selectingItem, 
@@ -4214,6 +4218,7 @@ function updateClientPositions(lobby) {
         ibe: invinsibleBodyEffect,
         id: invincibleDuration,
         ta: timeAlive[timeAlive.length-1],
+        gh: ghost,
     }));
     let newObj = {
         a: emitingActivePlayers,  
@@ -4489,6 +4494,9 @@ function respawnPlayer(lobby,player,growthPercentage,respawnTimer) {
     for (let j = 0; j < lobby.gameMode.howManyItemsCanPlayersUse; j++) {
         player.items.push("empty");
     }
+    player.canGrow = false;
+    player.canMove = false;
+    player.ghost = true;
     let team = player.team;
     player.status = ["status_" + team];
     player.justDied = false;
@@ -4691,7 +4699,7 @@ function server_movePlayers(lobby,socketID) {
         }
 
         //Growing/Moving Tail
-        helper_manageTail(lobby,player,playerOldPos,currentBoard);
+        if (player.canMove) helper_manageTail(lobby,player,playerOldPos,currentBoard);
 
         //Set Players Zones
         setPlayersZones(lobby,player);
@@ -4701,7 +4709,7 @@ function helper_manageTail(lobby,player,playerOldPos,currentBoard) {
     let playerX = playerOldPos.x;
     let playerY = playerOldPos.y;
 
-    if (player.growTail > 0) {
+    if (player.growTail > 0 && player.canGrow) {
         player.tail.unshift({
             x: playerX,
             y: playerY,
