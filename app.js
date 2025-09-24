@@ -2360,7 +2360,7 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
                 }
             }
             setPlayersZones(lobby,player);
-            
+
             if (playersDead == activePlayers.length) {
                 checkWinningCondition(lobby,"All Dead",false,player);
                 return;
@@ -2379,7 +2379,8 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
                 player: player,
                 death: deathPoint,
             })
-            io.to(player.accountID).emit("startRespawnTimer",lobby.gameMode.respawnTimer,deathPoint);
+            if (!lobby.gameEnd)
+                io.to(player.accountID).emit("startRespawnTimer",lobby.gameMode.respawnTimer,deathPoint);
         }
         return;
     }
