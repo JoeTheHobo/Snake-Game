@@ -289,9 +289,9 @@ function generatePlayerHTMLOverlays(players) {
         holder.id = "pgpi_" + player.index;
 
         holder.ring = holder.create("div.pgpi_ring");
-        holder.title = holder.create("div");
-        holder.title.className = "pgpi_title";
-        holder.title.id = "pgpi_title_" + player.index;  
+        holder.text = holder.create("div");
+        holder.text.className = "pgpi_title";
+        holder.text.id = "pgpi_title_" + player.index;  
     }
 }
 function updatePlayerHTMLOverlayPositions(players) {
@@ -312,7 +312,7 @@ function hidePlayerHTMLOverlays() {
     for (let i = 0; i < query.length; i++) {
         let child = query[i];
         child.ring.hide();
-        child.title.hide();
+        child.text.hide();
     }
 }
 function generatePreGamePlayerInfo(players) {
@@ -323,21 +323,21 @@ function generatePreGamePlayerInfo(players) {
 
         if (localAccount.id === player.accountID) {
             holder.ring.show();
-            holder.title.hide();
+            holder.text.hide();
         } else {
-            holder.title.show();
+            holder.text.show();
             holder.ring.hide();
             if (player.preGameStatus == "waiting") {
-                holder.title.innerHTML = "Loading";
-                holder.title.style.color = "blue";
+                holder.text.innerHTML = "Loading";
+                holder.text.style.color = "blue";
             }
             if (player.preGameStatus == "ready") {
-                holder.title.innerHTML = player.accountName;
-                holder.title.style.color = "white";
+                holder.text.innerHTML = player.accountName;
+                holder.text.style.color = "white";
             }
             if (player.preGameStatus == "disconnected") {
-                holder.title.innerHTML = "Disconnected";
-                holder.title.style.color = "red";
+                holder.text.innerHTML = "Disconnected";
+                holder.text.style.color = "red";
             }
         }
         
