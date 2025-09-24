@@ -3808,7 +3808,9 @@ function checkWinningCondition(lobby,condition,value,player) {
         }
     }
 
+    /*
     if (condition == "All Dead") {
+
         triggerWinningCondition(lobby,{
             condition: "All Dead",
             x: false,
@@ -3817,8 +3819,8 @@ function checkWinningCondition(lobby,condition,value,player) {
             pullTeamStats: false,
             highestValue: "kills",
         },player);
-
     }
+        */
 
 }
 function sendBoardStats(socketID,sentFrom = null) {
