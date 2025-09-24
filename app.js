@@ -2372,6 +2372,7 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
                 checkWinningCondition(lobby,"Last Team Standing",activeTeams[0],livingPlayers[0]);
                 return;
             }
+            setPlayersZones(lobby,player);
         } else {
             let deathPoint = Date.now();
             lobby.playerRespawns.push({
@@ -3551,7 +3552,6 @@ function setPlayersZones(lobby,player) {
             if (!zone.active && (type == "item" || type == "player")) continue;
 
             let inZone = false;
-            console.log(player.isDead,player);
             if (!player.isDead) {
                 if (x >= zone.pos1.x && x <= zone.pos2.x) {
                     if (y >= zone.pos1.y && y <= zone.pos2.y) {
