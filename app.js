@@ -3350,8 +3350,7 @@ function specialZone_timer(lobby,zone,time,secondCap) {
         if (zone.giveStatus.toLowerCase() === "*p") {
             if (zone.giveStatusFrom.toLowerCase() == "all players") {
                 for (let i = 0; i < zone.occupiedBy.length; i++) {
-                    console.log(zone.occupiedBy.team);
-                    status.push(zone.occupiedBy.team);
+                    status.push(zone.occupiedBy[i].team);
                 }
             }
             if (zone.giveStatusFrom.toLowerCase() == "random player") {
