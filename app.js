@@ -3552,6 +3552,7 @@ function setPlayersZones(lobby,player) {
             if (!zone.active && (type == "item" || type == "player")) continue;
 
             let inZone = false;
+            console.log(player.isDead)
             if (!player.isDead) {
                 if (x >= zone.pos1.x && x <= zone.pos2.x) {
                     if (y >= zone.pos1.y && y <= zone.pos2.y) {
