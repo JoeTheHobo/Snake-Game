@@ -517,7 +517,7 @@ socket.on("updatePositions",(obj) => {
     if (obj.a) {
         updatePlayerHTMLOverlayPositions(
             obj.a.map(o => ({
-                pos: o.p,
+                pos: o.po,
                 index: o.i
             }))
         );
