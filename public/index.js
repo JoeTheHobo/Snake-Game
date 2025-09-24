@@ -297,7 +297,7 @@ function generatePlayerHTMLOverlays(players) {
 function updatePlayerHTMLOverlayPositions(players) {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
-        let holder = $(".pgpi_" + player.index);
+        let holder = $("pgpi_" + player.index);
 
         const rect = $("render_background").getBoundingClientRect();
         holder.css({
@@ -319,7 +319,7 @@ function generatePreGamePlayerInfo(players) {
     updatePlayerHTMLOverlayPositions(players);
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
-        let holder = $(".pgpi_" + player.index);
+        let holder = $("pgpi_" + player.index);
 
         if (localAccount.id === player.accountID) {
             holder.ring.show();
