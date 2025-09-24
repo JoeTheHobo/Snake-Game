@@ -4210,7 +4210,8 @@ function updateClientPositions(lobby) {
         invinsibleBodyEffect,
         invincibleDuration,
         timeAlive,
-        ghost
+        ghost,
+        pos,
     }) => ({
         i: index,  
         s: selectingItem, 
@@ -4224,6 +4225,7 @@ function updateClientPositions(lobby) {
         id: invincibleDuration,
         ta: timeAlive[timeAlive.length-1],
         gh: ghost,
+        po: pos,
     }));
     let newObj = {
         a: emitingActivePlayers,  

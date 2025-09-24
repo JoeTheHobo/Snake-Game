@@ -272,52 +272,79 @@ socket.on("startingGame", (lobby) => {
     ctx_tiles.clearRect(0,0,canvas_tiles.width,canvas_tiles.height);
     setGameScene(activePlayers);
     serverGameLoop();
+    generatePlayerHTMLOverlays();
     generatePreGamePlayerInfo(activePlayers);
     
     socket.emit("snakeIsReady");
     setAllCanvasToRightSize();
 
 })
-function generatePreGamePlayerInfo(players) {
+function generatePlayerHTMLOverlays(players) {
     $(".preGamePlayerInfo").innerHTML = "";
-    $(".preGamePlayerInfo").show();
-
+    
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
         let holder = $(".preGamePlayerInfo").create("div");
         holder.className = "pgpi_card";
         holder.id = "pgpi_" + player.index;
 
-        const rect = $("render_background").getBoundingClientRect();
+        holder.ring = holder.create("div.pgpi_ring");
+        holder.title = holder.create("div");
+        holder.title.className = "pgpi_title";
+        holder.title.id = "pgpi_title_" + player.index;  
+    }
+}
+function updatePlayerHTMLOverlayPositions(players) {
+    for (let i = 0; i < players.length; i++) {
+        let player = players[i];
+        let holder = "pgpi_" + player.index;
 
+        const rect = $("render_background").getBoundingClientRect();
         holder.css({
             left: ((player.pos.x*gridSize)+rect.left-50+(gridSize/2)) + "px",
             top: ((player.pos.y*gridSize)+rect.top-50+(gridSize/2)) + "px",
         })
+    }
+
+}
+function hidePlayerHTMLOverlays() {
+    let query = querySelectorAll(".pgpi_card");
+    for (let i = 0; i < query.length; i++) {
+        let child = query[i];
+        child.ring.hide();
+        child.title.hide();
+    }
+}
+function generatePreGamePlayerInfo(players) {
+    updatePlayerHTMLOverlayPositions(players);
+    for (let i = 0; i < players.length; i++) {
+        let player = players[i];
+        let holder = "pgpi_" + player.index;
 
         if (localAccount.id === player.accountID) {
-            let ring = holder.create("div.pgpi_ring");
+            holder.ring.show();
+            holder.title.hide();
         } else {
-            let title = holder.create("div");
-            title.className = "pgpi_title";
-            title.id = "pgpi_title_" + player.index;
-            
+            holder.title.show();
+            holder.ring.hide();
             if (player.preGameStatus == "waiting") {
-                title.innerHTML = "Loading";
-                title.style.color = "blue";
+                holder.title.innerHTML = "Loading";
+                holder.title.style.color = "blue";
             }
             if (player.preGameStatus == "ready") {
-                title.innerHTML = player.accountName;
-                title.style.color = "white";
+                holder.title.innerHTML = player.accountName;
+                holder.title.style.color = "white";
             }
             if (player.preGameStatus == "disconnected") {
-                title.innerHTML = "Disconnected";
-                title.style.color = "red";
+                holder.title.innerHTML = "Disconnected";
+                holder.title.style.color = "red";
             }
         }
         
     }
+
 }
+
 socket.on("updatePreGamePlayerInfo",(players) => {
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
@@ -459,7 +486,7 @@ function showNumber(index) {
         setTimeout(function() {
             $(".game_c2_info").hide();
             $(".game_c2_extra").show();
-            $(".preGamePlayerInfo").hide();
+            hidePlayerHTMLOverlays();
         },250);
         return;
     }
@@ -487,6 +514,7 @@ socket.on("updatePositions",(obj) => {
     if (_type(obj.g).type == "number") production.lobby_gameLoop.times.push(obj.g);
 
     if (obj.a) {
+        updatePlayerHTMLOverlayPositions(obj.a);
         for (let i = 0; i < obj.a.length; i++) {
             for (let j = 0; j < activePlayers.length; j++) {
                 let local_player = activePlayers[j];
