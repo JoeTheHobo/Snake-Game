@@ -2347,7 +2347,7 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
         //Delete Player
         player.isDead = true;
         player.justDied = true;
-        if (!playerCanRespawn) {
+        if (!playerCanRespawn || lobby.gameEnd) {
             let playersDead = 0;
             let activeTeams = [];
             let livingPlayers = [];
@@ -2379,7 +2379,6 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
                 player: player,
                 death: deathPoint,
             })
-            if (!lobby.gameEnd)
                 io.to(player.accountID).emit("startRespawnTimer",lobby.gameMode.respawnTimer,deathPoint);
         }
         return;
