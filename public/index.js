@@ -300,7 +300,6 @@ function updatePlayerHTMLOverlayPositions(players) {
         let holder = $("pgpi_" + player.index);
 
         const rect = $("render_background").getBoundingClientRect();
-        console.log(player.pos,player)
         holder.css({
             left: ((player.pos.x*gridSize)+rect.left-50+(gridSize/2)) + "px",
             top: ((player.pos.y*gridSize)+rect.top-50+(gridSize/2)) + "px",
@@ -515,7 +514,12 @@ socket.on("updatePositions",(obj) => {
     if (_type(obj.g).type == "number") production.lobby_gameLoop.times.push(obj.g);
 
     if (obj.a) {
-        updatePlayerHTMLOverlayPositions(obj.a);
+        updatePlayerHTMLOverlayPositions(
+            obj.a.map(o => ({
+                pos: o.p,
+                index: o.i
+            }))
+        );
         for (let i = 0; i < obj.a.length; i++) {
             for (let j = 0; j < activePlayers.length; j++) {
                 let local_player = activePlayers[j];
