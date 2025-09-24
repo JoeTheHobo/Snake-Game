@@ -315,7 +315,7 @@ function hidePlayerHTMLOverlays() {
         child.text.hide();
     }
 }
-io.on("showPlayerRing",(index,timer) => {
+socket.on("showPlayerRing",(index,timer) => {
     let holder = $("pgpi_" + index);
     holder.ring.show();
 
