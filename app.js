@@ -2347,7 +2347,7 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
         //Delete Player
         player.isDead = true;
         player.justDied = true;
-
+        console.log(1);
         if (!playerCanRespawn) {
             let playersDead = 0;
             let activeTeams = [];
@@ -2372,6 +2372,7 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
                 checkWinningCondition(lobby,"Last Team Standing",activeTeams[0],livingPlayers[0]);
                 return;
             }
+            console.log(2);
             setPlayersZones(lobby,player);
         } else {
             let deathPoint = Date.now();
@@ -3536,6 +3537,7 @@ function database_addPlaysToBoard(boardID, amount) {
     });
 }
 function setPlayersZones(lobby,player) {
+    console.log(3);
     let playerZones = lobby.spawnZones.players;
     let itemZones = lobby.spawnZones.items;
     let specialZones = lobby.specialZones;
@@ -3552,7 +3554,6 @@ function setPlayersZones(lobby,player) {
             if (!zone.active && (type == "item" || type == "player")) continue;
 
             let inZone = false;
-            console.log(player.isDead)
             if (!player.isDead) {
                 if (x >= zone.pos1.x && x <= zone.pos2.x) {
                     if (y >= zone.pos1.y && y <= zone.pos2.y) {
@@ -3590,7 +3591,8 @@ function setPlayersZones(lobby,player) {
     addPlayerZones(player,itemZones,playerX,playerY,"item");
     addPlayerZones(player,specialZones,playerX,playerY,"special");
 
-    checkWinningCondition(lobby,"Touch Zone X",false,player);
+    if (!player.isDead)
+        checkWinningCondition(lobby,"Touch Zone X",false,player);
 
 }
 function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,conditionImage) {
