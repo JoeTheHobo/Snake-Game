@@ -272,7 +272,7 @@ socket.on("startingGame", (lobby) => {
     ctx_tiles.clearRect(0,0,canvas_tiles.width,canvas_tiles.height);
     setGameScene(activePlayers);
     serverGameLoop();
-    generatePlayerHTMLOverlays();
+    generatePlayerHTMLOverlays(activePlayers);
     generatePreGamePlayerInfo(activePlayers);
     
     socket.emit("snakeIsReady");
