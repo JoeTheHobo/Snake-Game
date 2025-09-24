@@ -3551,20 +3551,23 @@ function setPlayersZones(lobby,player) {
             if (!zone.active && (type == "item" || type == "player")) continue;
 
             let inZone = false;
-            if (x >= zone.pos1.x && x <= zone.pos2.x) {
-                if (y >= zone.pos1.y && y <= zone.pos2.y) {
-                    inZone = true;
-                    player.zones.push(zone.id)
+            if (!player.isDead) {
+                if (x >= zone.pos1.x && x <= zone.pos2.x) {
+                    if (y >= zone.pos1.y && y <= zone.pos2.y) {
+                        inZone = true;
+                        player.zones.push(zone.id)
 
-                    if (type == "special") {
-                        //On Enter
-                        if (!oldZones.includes(zone.id)) {
-                            zone.occupiedBy.push(player);
-                            specialZone_onEnter(lobby,zone);
+                        if (type == "special") {
+                            //On Enter
+                            if (!oldZones.includes(zone.id)) {
+                                zone.occupiedBy.push(player);
+                                specialZone_onEnter(lobby,zone);
+                            }
                         }
                     }
                 }
             }
+            
             if (!inZone) {
                 if (type == "special") {
                     //On Leave
