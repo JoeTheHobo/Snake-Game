@@ -4532,7 +4532,7 @@ function respawnPlayer(lobby,player,growthPercentage,respawnTimer) {
         }
     },(lobby.gameMode.respawnProtection+respawnTimer)*1000);
 
-
+    io.to(player.accountID).emit("showPlayerRing",player.index,respawnTimer)
     spawn(lobby,player);
     growPlayer(player,length);
 }

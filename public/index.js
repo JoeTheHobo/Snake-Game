@@ -300,7 +300,6 @@ function updatePlayerHTMLOverlayPositions(players) {
         let holder = $("pgpi_" + player.index);
 
         const rect = $("render_background").getBoundingClientRect();
-        console.log(player)
         holder.css({
             left: ((player.pos.x*gridSize)+rect.left-50+(gridSize/2)) + "px",
             top: ((player.pos.y*gridSize)+rect.top-50+(gridSize/2)) + "px",
@@ -316,6 +315,15 @@ function hidePlayerHTMLOverlays() {
         child.text.hide();
     }
 }
+io.on("showPlayerRing",(index,timer) => {
+    let holder = $("pgpi_" + index);
+    holder.ring.show();
+
+    setTimeout(function() {
+        holder.ring.hide();
+    },timer * 1000);
+
+})
 function generatePreGamePlayerInfo(players) {
     updatePlayerHTMLOverlayPositions(players);
     for (let i = 0; i < players.length; i++) {
