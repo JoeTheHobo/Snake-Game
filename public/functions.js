@@ -1001,7 +1001,6 @@ function updateBoardStatusTracker(statusList) {
     }
 
     for (let i = 0; i < statusList.length; i++) {
-        console.log(statusList[i]);
         allStatus[statusList[i]].count++;
     }
     localAccount.boardStatus = allStatus;
