@@ -300,6 +300,7 @@ function updatePlayerHTMLOverlayPositions(players) {
         let holder = $("pgpi_" + player.index);
 
         const rect = $("render_background").getBoundingClientRect();
+        console.log(player.pos,player)
         holder.css({
             left: ((player.pos.x*gridSize)+rect.left-50+(gridSize/2)) + "px",
             top: ((player.pos.y*gridSize)+rect.top-50+(gridSize/2)) + "px",
