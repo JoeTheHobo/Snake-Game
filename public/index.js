@@ -295,6 +295,7 @@ function generatePlayerHTMLOverlays(players) {
     }
 }
 function updatePlayerHTMLOverlayPositions(players) {
+    console.log(players)
     for (let i = 0; i < players.length; i++) {
         let player = players[i];
         let holder = "pgpi_" + player.index;
@@ -308,7 +309,7 @@ function updatePlayerHTMLOverlayPositions(players) {
 
 }
 function hidePlayerHTMLOverlays() {
-    let query = querySelectorAll(".pgpi_card");
+    let query = document.querySelectorAll(".pgpi_card");
     for (let i = 0; i < query.length; i++) {
         let child = query[i];
         child.ring.hide();
