@@ -4247,7 +4247,6 @@ function updateClientPositions(lobby) {
         z: lobby.updateZones,
         
     };
-    console.log(lobby.updateSnakeCells)
 
     // Compare with previous object
     let changedList = getChangedValues(lobby.oldObj, newObj);
