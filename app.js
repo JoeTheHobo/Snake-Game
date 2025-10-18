@@ -1384,9 +1384,7 @@ io.on('connection', (socket) => {
         if (lobby.hostID !== socket.id) return;
         if (!lobby.isInGame) return;
 
-        console.log("Yeo")
-
-        checkWinningCondition(lobby,"All Dead",false,true);
+        checkWinningCondition(lobby,"All Dead",false,undefined,true);
     })
     socket.on("changeLobbyName",(value) => {
         let account = onlineAccounts[socket.id];
