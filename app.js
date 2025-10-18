@@ -3563,6 +3563,7 @@ function setPlayersZones(lobby,player) {
                             if (!oldZones.includes(zone.id)) {
                                 zone.occupiedBy.push(player);
                                 specialZone_onEnter(lobby,zone);
+                                console.log("Entered")
                             }
                         }
                     }
@@ -3577,7 +3578,7 @@ function setPlayersZones(lobby,player) {
                             if (zone.occupiedBy[i].index == player.index) {
                                 zone.occupiedBy.splice(i,1);
                                 specialZone_onLeave(lobby,zone);
-                                console.log("leftZone");
+                                console.log("left");
                             }
                         }
                     }
