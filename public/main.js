@@ -233,7 +233,7 @@ function server_renderPlayers() {
                     break;
                 } 
             }
-            if (player.ghost && (localAccount.id !== player.accountID)) return;
+            if (player.ghost && (localAccount.id !== player.accountID)) break;
             if (!player) break;
     
             if (obj.type == "head") {

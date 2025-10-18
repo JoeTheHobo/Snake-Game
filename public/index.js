@@ -560,7 +560,6 @@ socket.on("updatePositions",(obj) => {
     }
     if (obj.s) {
         updateSnakeCells = updateSnakeCells.concat(obj.s);
-        console.log(updateSnakeCells)
     }
     if (obj.c) updateCells = updateCells.concat(obj.c);
     if (obj.t) updateTiles = updateTiles.concat(obj.t);
