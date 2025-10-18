@@ -3576,9 +3576,9 @@ function setPlayersZones(lobby) {
             }
         }
 
-        addPlayerZones(player,playerZones,playerX,playerY,"player");
-        addPlayerZones(player,itemZones,playerX,playerY,"item");
-        addPlayerZones(player,specialZones,playerX,playerY,"special");
+        addPlayerZones(player,playerZones,player.pos.x,player.pos.y,"player");
+        addPlayerZones(player,itemZones,player.pos.x,player.pos.y,"item");
+        addPlayerZones(player,specialZones,player.pos.x,player.pos.y,"special");
 
         checkWinningCondition(lobby,"Touch Zone X",false,player);
     }
