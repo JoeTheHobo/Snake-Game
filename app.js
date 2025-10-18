@@ -3577,6 +3577,7 @@ function setPlayersZones(lobby,player) {
                             if (zone.occupiedBy[i].index == player.index) {
                                 zone.occupiedBy.splice(i,1);
                                 specialZone_onLeave(lobby,zone);
+                                console.log("leftZone");
                             }
                         }
                     }
