@@ -1445,6 +1445,8 @@ io.on('connection', (socket) => {
                 checkRespawnPlayers(this);
     
                 updateClientPositions(this);
+                
+                setPlayersZones(this);
     
                 this.updatePositionTimeStamp = Date.now();
                 
@@ -1972,7 +1974,6 @@ function spawnPlayer(lobby,player,gameStart = false,setZones) {
     
     player.pos.x = spot.x;
     player.pos.y = spot.y;
-    setPlayersZones(lobby,player);
     player.team = spot.team;
     lobby.snakeMap[spot.y][spot.x].push({
         index: player.index,
@@ -2359,7 +2360,6 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
                     livingPlayers.push(activePlayers[i])
                 }
             }
-            setPlayersZones(lobby,player);
 
             if (playersDead == activePlayers.length) {
                 checkWinningCondition(lobby,"All Dead",false,player);
@@ -3342,6 +3342,19 @@ function checkEndGametimers(lobby) {
         }
     }
 }
+function specialZones_recheck(lobby) {
+    let specialZones = lobby.specialZones;
+
+    for (let i = 0; i < specialZones.length; i++) {
+        let zone = specialZones[i];
+        if (!zone.giveStatusOnEnter) continue;
+        if (zone.repeatStatusType.toLowerCase() == "single use" && zone.statusGave > 0) continue;
+
+        let correctOccupied = specialZone_testOccupied(lobby,zone);
+        if (correctOccupied) specialZone_startTimer(lobby,zone);
+        else specialZone_endTimer(lobby,zone);
+    }
+}
 function specialZone_timer(lobby,zone,time,secondCap) {
     if (time <= 0 && zone.startTimeStamp) {
         let correctOccupied = specialZone_testOccupied(lobby,zone);
@@ -3467,18 +3480,6 @@ function specialZone_testOccupied(lobby,zone) {
         
     return false;
 }
-function specialZone_onEnter(lobby,zone) {
-    if (!zone.giveStatusOnEnter) return;
-    if (zone.repeatStatusType.toLowerCase() == "single use" && zone.statusGave > 0) return;
-    let correctOccupied = specialZone_testOccupied(lobby,zone);
-    if (!correctOccupied) specialZone_endTimer(lobby,zone);
-    else specialZone_startTimer(lobby,zone);
-}
-function specialZone_onLeave(lobby,zone) {
-    if (!zone.giveStatusOnEnter) return;
-    let correctOccupied = specialZone_testOccupied(lobby,zone);
-    if (!correctOccupied) specialZone_endTimer(lobby,zone);
-}
 
 
 
@@ -3535,65 +3536,55 @@ function database_addPlaysToBoard(boardID, amount) {
         if (err) throw err;
     });
 }
-function setPlayersZones(lobby,player) {
+function setPlayersZones(lobby) {
+    //Define Vars
+    let activePlayers = lobby.inGamePlayers;
     let playerZones = lobby.spawnZones.players;
     let itemZones = lobby.spawnZones.items;
     let specialZones = lobby.specialZones;
 
-    let playerX = player.pos.x;
-    let playerY = player.pos.y;
+    //Clear All Zones Occupied
+    function clearZone(zones) {
+        for (let i = 0; i < zones.length;i++) {
+            zones[i].occupiedBy = [];
+        }
+    }
+    clearZone(playerZones);
+    clearZone(itemZones);
+    clearZone(specialZones);
 
-    let oldZones = player.zones;
-    player.zones = [];
+    //Reset All Players
+    for (let i = 0; i < activePlayers.length; i++) {
+        let player = activePlayers[i];
+        //Clear Zone
+        player.zones = [];
 
-    function addPlayerZones(player,zones,x,y,type) {
-        for (let i = 0; i < zones.length; i++) {
-            let zone = zones[i];
-            if (!zone.active && (type == "item" || type == "player")) continue;
+        //Find Zones
+        if (player.isDead) continue;
 
-            let inZone = false;
-            if (!player.isDead) {
+        function addPlayerZones(player,zones,x,y,type) {
+            for (let i = 0; i < zones.length; i++) {
+                let zone = zones[i];
+                if (!zone.active && (type == "item" || type == "player")) continue;
+
                 if (x >= zone.pos1.x && x <= zone.pos2.x) {
                     if (y >= zone.pos1.y && y <= zone.pos2.y) {
-                        inZone = true;
                         player.zones.push(zone.id)
-
-                        if (type == "special") {
-                            //On Enter
-                            if (!oldZones.includes(zone.id)) {
-                                zone.occupiedBy.push(player);
-                                specialZone_onEnter(lobby,zone);
-                                console.log("Entered")
-                            }
-                        }
-                    }
-                }
-            }
-            
-            if (!inZone) {
-                if (type == "special") {
-                    //On Leave
-                    if (oldZones.includes(zone.id)) {
-                        for (let j = 0; j < zone.occupiedBy.length; j++) {
-                            if (zone.occupiedBy[i].index == player.index) {
-                                zone.occupiedBy.splice(i,1);
-                                specialZone_onLeave(lobby,zone);
-                                console.log("left");
-                            }
-                        }
+                        zone.occupiedBy.push(player);
                     }
                 }
             }
         }
+
+        addPlayerZones(player,playerZones,playerX,playerY,"player");
+        addPlayerZones(player,itemZones,playerX,playerY,"item");
+        addPlayerZones(player,specialZones,playerX,playerY,"special");
+
+        checkWinningCondition(lobby,"Touch Zone X",false,player);
     }
 
-    addPlayerZones(player,playerZones,playerX,playerY,"player");
-    addPlayerZones(player,itemZones,playerX,playerY,"item");
-    addPlayerZones(player,specialZones,playerX,playerY,"special");
-
-    if (!player.isDead)
-        checkWinningCondition(lobby,"Touch Zone X",false,player);
-
+    //Check Zones
+    specialZones_recheck(lobby);
 }
 function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,conditionImage) {
     if (lobby.gameEnd === true) return;
@@ -4715,8 +4706,6 @@ function server_movePlayers(lobby,socketID) {
         //Growing/Moving Tail
         if (player.canMove) helper_manageTail(lobby,player,playerOldPos,currentBoard);
 
-        //Set Players Zones
-        setPlayersZones(lobby,player);
     }
 }
 function helper_manageTail(lobby,player,playerOldPos,currentBoard) {
