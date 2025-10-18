@@ -108,6 +108,12 @@ function replaceAllBadWords(string, type,allowType = []) {
         return wordsToAllow.has(match.toLowerCase()) ? match : funnyWords[Math.floor(Math.random() * funnyWords.length)];
     });
 
+    // Special rule for "fuck" - catch it anywhere, even inside longer words
+    let fuckPattern = /[fph]+[\s\.\-\_]*[uüv]+[\s\.\-\_]*[ck]+[a-z]*/gi;
+    censoredString = censoredString.replace(fuckPattern, () => {
+        return funnyWords[Math.floor(Math.random() * funnyWords.length)];
+    });
+
     return censoredString;
 }
 
