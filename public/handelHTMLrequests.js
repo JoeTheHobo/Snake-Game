@@ -76,7 +76,8 @@ $("hostServer").on("click",function() {
 $("refreshServers").on("click",function() {
     server_refreshLobby();
 })
-$("joinServer").on("click",function() {
+function clickJoinServer() {
+
     if (!serverSelected) return;
 
     if (serverSelected.players.length === serverSelected.playerMax) {
@@ -112,6 +113,9 @@ $("joinServer").on("click",function() {
 
 
     server_joinLobby(serverSelected.id);
+}
+$("joinServer").on("click",function() {
+    clickJoinServer();
     
 })
 $("quitServerButton").on("click",function() {

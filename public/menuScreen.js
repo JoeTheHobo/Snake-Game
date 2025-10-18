@@ -76,6 +76,9 @@ function loadServersHTML() {
             serverSelected = this.server;
             $("joinServer").classRemove("playButtonSounds_inactive");
         })
+        server_holder.on("dblclick",function() {
+            clickJoinServer();
+        })
     }
     if (!foundSelectedServer) {
         serverSelected = false;
