@@ -1384,7 +1384,7 @@ io.on('connection', (socket) => {
         if (lobby.hostID !== socket.id) return;
         if (!lobby.isInGame) return;
 
-        checkWinningCondition(lobby,"All Dead",false);
+        checkWinningCondition(lobby,"All Dead",false,true);
     })
     socket.on("changeLobbyName",(value) => {
         let account = onlineAccounts[socket.id];
@@ -3760,7 +3760,7 @@ function triggerWinningCondition(lobby,condition,player) {
 
 
 }
-function checkWinningCondition(lobby,condition,value,player) {
+function checkWinningCondition(lobby,condition,value,player,forceEnd) {
     let winningConditions = lobby.gameMode.winningConditions;
     if (lobby.gameEnd === true) return;
 
@@ -3806,8 +3806,8 @@ function checkWinningCondition(lobby,condition,value,player) {
         }
     }
 
-    /*
-    if (condition == "All Dead") {
+    
+    if (forceEnd) {
 
         triggerWinningCondition(lobby,{
             condition: "All Dead",
@@ -3818,7 +3818,6 @@ function checkWinningCondition(lobby,condition,value,player) {
             highestValue: "kills",
         },player);
     }
-        */
 
 }
 function sendBoardStats(socketID,sentFrom = null) {
