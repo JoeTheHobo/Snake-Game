@@ -3995,6 +3995,7 @@ function gatherDBInventory(account,user) {
         }
 
         dbObj.inventory = results[0];
+        console.log(dbObj.inventory);
 
         gatherDBallowed(account,user,dbObj);
 
