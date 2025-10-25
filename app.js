@@ -3102,6 +3102,7 @@ function attemptCoinSpawn(lobby) {
         //Spawn Coin
         lobby.coin.readyTime = false;
         let spot = spawnItem(lobby,35);
+        console.log(1,spot)
         if (!spot) return;
 
         lobby.coin.locations.push({x: spot.x,y: spot.y});
