@@ -1449,10 +1449,14 @@ io.on('connection', (socket) => {
                 setPlayersZones(this);
     
                 this.updatePositionTimeStamp = Date.now();
+
+                attemptCoinSpawn(lobby);
                 
                 if (!this.gameEnd) {
                     setTimeout(() => this.gameLoop(), 16);
                 }
+
+
 
             } catch (err) {
                 console.log("SERVER CRASHED",err);
@@ -1902,7 +1906,7 @@ function fixBoardDifferences(map,differences,type) {
     }
 }
 function spawn(lobby,thingToSpawn,gameStart = false,setZones) {
-    if (simple.type(thingToSpawn) == "number") spawnItem(lobby,thingToSpawn,gameStart)
+    if (simple.type(thingToSpawn) == "number") return spawnItem(lobby,thingToSpawn,gameStart)
     if (thingToSpawn?.type == "player") return spawnPlayer(lobby,thingToSpawn,gameStart,setZones);
 }
 function spawnItem(lobby,itemID,gameStart = false) {
@@ -1915,13 +1919,13 @@ function spawnItem(lobby,itemID,gameStart = false) {
     }
     if (!item) {
         console.log("Couldn't Find Item",537)
-        return;
+        return false;
     }
 
     //Check That Item Can Spawn
     if (item.spawnLimit !== false && item.spawnLimit === 0) {
         console.log("Item Spawned To Much");
-        return;
+        return false;
     } 
 
     //Spawn Item
@@ -1929,7 +1933,7 @@ function spawnItem(lobby,itemID,gameStart = false) {
         let spot = findEmptySpotInZones(lobby,lobby.spawnZones.items,"item",item);
         if (!spot) {
             console.log("No Available Spots For Items")
-            return;
+            return false;
         }
 
         runItemFunction(lobby,false,item,"onSpawn",{x:spot.x,y:spot.y},{playAudio: gameStart === false});
@@ -1955,6 +1959,8 @@ function spawnItem(lobby,itemID,gameStart = false) {
     }
 
     if (item.spawnLimit !== false) item.spawnLimit--;
+
+    return spot;
 }
 function spawnPlayer(lobby,player,gameStart = false,setZones) {
     let spot = findEmptySpotInZones(lobby,lobby.spawnZones.players,"player",gameStart,player,setZones);
@@ -3059,6 +3065,23 @@ function helper_spawnPlayers(lobby) {
 
     return true;
 }
+function attemptCoinSpawn(lobby) {
+    let now = Date.now();
+
+    if (lobby.coin.readyTime === false) {
+        lobby.coin.readyTime = simple.rnd(10000,30000);
+        return;
+    }
+
+    if (now >= lobby.coin.readyTime) {
+        //Spawn Coin
+        lobby.coin.readyTime = false;
+        let spot = spawnItem(lobby,35);
+        if (!spot) return;
+
+        lobby.coin.locations.push({x: spot.x,y: spot.y});
+    }
+}
 function helper_resetLobby(lobby) {
     //Making Sure We Have Correct Winning Conditions
     if (!lobby.gameMode.winningConditions) {
@@ -3100,6 +3123,11 @@ function helper_resetLobby(lobby) {
     lobby.boardStatus = [];
     lobby.lobby_gameLoop_start = false;
     lobby.gameStartedAt = false;
+
+    lobby.coin = {
+        locations: [],
+        readyTime: false,
+    }
 
     lobby.board.map = structuredClone(lobby.board.originalMap);
 
