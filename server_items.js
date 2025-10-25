@@ -1305,6 +1305,7 @@ items.push({
     playSounds: false, //If Item should be muted or not;
     onCollision: {
         serverGiveCoin: true,
+        deleteMe: true,
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render

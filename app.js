@@ -2487,6 +2487,10 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     if (on.removeBoardStatus && player) {
         removeBoardStatus(lobby,on.removeBoardStatus,player);
     }
+    if (on.serverGiveCoin && player) {
+        attempGiveCoin(lobby,player,itemPos);
+
+    }
     setBoardStatus: if (on.setBoardStatus && player) {
         let status = on.setBoardStatus;
         if (on.setBoardStatus == "*P") status = player.team;
@@ -3066,11 +3070,30 @@ function helper_spawnPlayers(lobby) {
 
     return true;
 }
+function attempGiveCoin(lobby,player,itemPos) {
+    let allowed = false;
+    for (let i = 0; i < lobby.coin.locations; i++) {
+        let loc = lobby.coin.locations;
+        if (loc.x == itemPos.x && loc.y == itemPos.y) allowed = true;
+    }
+
+    if (!allowed) return;
+    console.log(player)
+    return;
+    addCoinsToUser(1,);
+
+}
+function addCoinsToUser(amt,userID) {
+    const sql = `UPDATE inventory SET coins = coins + ${amt} WHERE user_id = ?`;
+    db.query(sql, [userID], (err, result) => {
+        
+    });
+}
 function attemptCoinSpawn(lobby) {
     let now = Date.now();
 
     if (lobby.coin.readyTime === false) {
-        lobby.coin.readyTime = simple.rnd(10000,30000);
+        lobby.coin.readyTime = now + simple.rnd(10000,30000);
         return;
     }
 
