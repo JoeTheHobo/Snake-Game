@@ -810,4 +810,5 @@ setScene("loading");
 
 socket.on("updateCoins",(amt) => {
     localAccount.coins = amt;
+    $(".newMenu_statGold").innerHTML = localAccount.coins;
 })
