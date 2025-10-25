@@ -1928,9 +1928,10 @@ function spawnItem(lobby,itemID,gameStart = false) {
         return false;
     } 
 
+    let spot;
     //Spawn Item
     for (let i = 0; i < item.spawnCount; i++) {
-        let spot = findEmptySpotInZones(lobby,lobby.spawnZones.items,"item",item);
+        spot = findEmptySpotInZones(lobby,lobby.spawnZones.items,"item",item);
         if (!spot) {
             console.log("No Available Spots For Items")
             return false;
