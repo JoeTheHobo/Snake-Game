@@ -3083,18 +3083,30 @@ function attempGiveCoin(lobby,player,itemPos) {
 
     if (!allowed) return;
     let account = onlineAccounts[player.accountID];
-    addCoinsToUser(1,Number(account.tag));
+    addCoinsToUser(1,Number(account.tag),player.accountID);
 
 }
-function addCoinsToUser(amt,userID) {
-    const sql = `UPDATE inventory SET coins = coins + ${amt} WHERE tag = ?`;
-    db.query(sql, [userID], (err, result) => {
+function addCoinsToUser(amt,userID,socket) {
+     // Add coins first
+    const updateSql = `UPDATE inventory SET coins = coins + ? WHERE tag = ?`;
+
+    db.query(updateSql, [amt, userID], (err, result) => {
         if (err) {
-            console.log("Coudln't Give Coin",err);
+            console.log("Couldn't Give Coin", err);
             return;
         }
 
-        console.log("COIN GIVEN BIYATCH")
+        // Now fetch the updated coin count
+        const selectSql = `SELECT coins FROM inventory WHERE tag = ?`;
+        db.query(selectSql, [userID], (err, rows) => {
+            if (err) {
+                console.log("Couldn't fetch updated coins", err);
+                return;
+            }
+
+            const coins = rows[0]?.coins || 0;
+            io.to(socket).emit("updateCoins", coins);
+        });
     });
 }
 function attemptCoinSpawn(lobby) {

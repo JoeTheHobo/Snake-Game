@@ -807,3 +807,7 @@ function handelRespawnTimer(time,deathPoint) {
 }
 
 setScene("loading");
+
+socket.on("updateCoins",(amt) => {
+    localAccount.coins = amt;
+})
