@@ -3074,6 +3074,7 @@ function attempGiveCoin(lobby,player,itemPos) {
     let allowed = false;
     findingCoin: for (let i = 0; i < lobby.coin.locations.length; i++) {
         let loc = lobby.coin.locations;
+        console.log(loc,itemPos);
         if (loc.x == itemPos.x && loc.y == itemPos.y) {
             allowed = true;
             lobby.coin.locations.splice(i,1);
@@ -3097,7 +3098,7 @@ function attemptCoinSpawn(lobby) {
     let now = Date.now();
 
     if (lobby.coin.readyTime === false) {
-        lobby.coin.readyTime = now + simple.rnd(1000,5000);
+        lobby.coin.readyTime = now + simple.rnd(10000,20000);
         return;
     }
 
