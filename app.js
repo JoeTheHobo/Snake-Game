@@ -3082,14 +3082,14 @@ function attempGiveCoin(lobby,player,itemPos) {
     }
 
     if (!allowed) return;
-    addCoinsToUser(1,player.accountTag);
+    addCoinsToUser(1,Number(player.accountTag));
 
 }
 function addCoinsToUser(amt,userID) {
     const sql = `UPDATE inventory SET coins = coins + ${amt} WHERE user_id = ?`;
     db.query(sql, [userID], (err, result) => {
         if (err) {
-            console.log("Coudln't Give Coin");
+            console.log("Coudln't Give Coin",err);
             return;
         }
 
