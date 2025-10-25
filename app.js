@@ -3086,7 +3086,7 @@ function attempGiveCoin(lobby,player,itemPos) {
 
 }
 function addCoinsToUser(amt,userID) {
-    const sql = `UPDATE inventory SET coins = coins + ${amt} WHERE user_id = ?`;
+    const sql = `UPDATE inventory SET coins = coins + ${amt} WHERE tag = ?`;
     db.query(sql, [userID], (err, result) => {
         if (err) {
             console.log("Coudln't Give Coin",err);
