@@ -3082,7 +3082,7 @@ function attempGiveCoin(lobby,player,itemPos) {
     }
 
     if (!allowed) return;
-    addCoinsToUser(1,player.account.tag);
+    addCoinsToUser(1,player.accountTag);
 
 }
 function addCoinsToUser(amt,userID) {
