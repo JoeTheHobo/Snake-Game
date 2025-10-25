@@ -3082,15 +3082,18 @@ function attempGiveCoin(lobby,player,itemPos) {
     }
 
     if (!allowed) return;
-    console.log(player)
-    return;
-    addCoinsToUser(1,);
+    addCoinsToUser(1,player.account.tag);
 
 }
 function addCoinsToUser(amt,userID) {
     const sql = `UPDATE inventory SET coins = coins + ${amt} WHERE user_id = ?`;
     db.query(sql, [userID], (err, result) => {
-        
+        if (err) {
+            console.log("Coudln't Give Coin");
+            return;
+        }
+
+        console.log("COIN GIVEN BIYATCH")
     });
 }
 function attemptCoinSpawn(lobby) {
