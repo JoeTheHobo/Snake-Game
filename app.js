@@ -3072,6 +3072,7 @@ function helper_spawnPlayers(lobby) {
 }
 function attempGiveCoin(lobby,player,itemPos) {
     let allowed = false;
+    console.log(2,lobby.coin.locations)
     for (let i = 0; i < lobby.coin.locations; i++) {
         let loc = lobby.coin.locations;
         console.log(lobby.coin.locations,itemPos);
@@ -3094,7 +3095,7 @@ function attemptCoinSpawn(lobby) {
     let now = Date.now();
 
     if (lobby.coin.readyTime === false) {
-        lobby.coin.readyTime = now + simple.rnd(10000,30000);
+        lobby.coin.readyTime = now + simple.rnd(1000,5000);
         return;
     }
 
@@ -3102,10 +3103,10 @@ function attemptCoinSpawn(lobby) {
         //Spawn Coin
         lobby.coin.readyTime = false;
         let spot = spawnItem(lobby,35);
-        console.log(1,spot)
         if (!spot) return;
 
         lobby.coin.locations.push({x: spot.x,y: spot.y});
+        console.log(1,lobby.coin.locations)
     }
 }
 function helper_resetLobby(lobby) {
