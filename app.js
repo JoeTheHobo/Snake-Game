@@ -3074,6 +3074,7 @@ function attempGiveCoin(lobby,player,itemPos) {
     let allowed = false;
     for (let i = 0; i < lobby.coin.locations; i++) {
         let loc = lobby.coin.locations;
+        console.log(lobby.coin.locations,itemPos);
         if (loc.x == itemPos.x && loc.y == itemPos.y) allowed = true;
     }
 
