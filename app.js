@@ -3113,7 +3113,7 @@ function attemptCoinSpawn(lobby) {
     let now = Date.now();
 
     if (lobby.coin.readyTime === false) {
-        lobby.coin.readyTime = now + simple.rnd(10000,20000);
+        lobby.coin.readyTime = now + simple.rnd(60000,180000);
         return;
     }
 
