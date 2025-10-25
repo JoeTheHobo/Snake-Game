@@ -3072,11 +3072,13 @@ function helper_spawnPlayers(lobby) {
 }
 function attempGiveCoin(lobby,player,itemPos) {
     let allowed = false;
-    console.log(2,lobby.coin.locations)
-    for (let i = 0; i < lobby.coin.locations; i++) {
+    findingCoin: for (let i = 0; i < lobby.coin.locations.length; i++) {
         let loc = lobby.coin.locations;
-        console.log(lobby.coin.locations,itemPos);
-        if (loc.x == itemPos.x && loc.y == itemPos.y) allowed = true;
+        if (loc.x == itemPos.x && loc.y == itemPos.y) {
+            allowed = true;
+            lobby.coin.locations.splice(i,1);
+            break findingCoin;
+        }
     }
 
     if (!allowed) return;
@@ -3106,7 +3108,6 @@ function attemptCoinSpawn(lobby) {
         if (!spot) return;
 
         lobby.coin.locations.push({x: spot.x,y: spot.y});
-        console.log(1,lobby.coin.locations)
     }
 }
 function helper_resetLobby(lobby) {
