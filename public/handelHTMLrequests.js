@@ -63,13 +63,20 @@ $("button_mapEditor").on("click",function() {
 
 $(".menu_tab").on("click",function() {
     let value = this.id.subset(0,"_\\before");
-
-    if (value == "servers") {
+    selectMenuTab(value)
+})
+function selectMenuTab(tab) {
+    if (tab == "servers") {
         serverSelected = false;
         $(".server_holder").className = "server_holder";
         $("joinServer").classAdd("playButtonSounds_inactive");
     }
-})
+
+    if (tab == "servers") loadServersHTML();
+    if (tab == "boards") loadBoardMenu();
+    if (tab == "shop") loadShopMenu();
+    if (tab == "profile") loadProfileMenu();
+}
 $("hostServer").on("click",function() {
     loadServerCreation();
 })
@@ -241,4 +248,7 @@ function adjustVolumeSliders() {
 $(".signinLink").on("click",function() {
     setScene("login")
     loginLoad("login");
+})
+$(".statHolderGold").on("click",function() {
+    selectMenuTab("shop");
 })
