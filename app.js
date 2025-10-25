@@ -3082,7 +3082,8 @@ function attempGiveCoin(lobby,player,itemPos) {
     }
 
     if (!allowed) return;
-    addCoinsToUser(1,Number(player.accountTag));
+    let account = onlineAccounts[player.accountID];
+    addCoinsToUser(1,Number(account.tag));
 
 }
 function addCoinsToUser(amt,userID) {
@@ -3995,7 +3996,6 @@ function gatherDBInventory(account,user) {
         }
 
         dbObj.inventory = results[0];
-        console.log(dbObj.inventory);
 
         gatherDBallowed(account,user,dbObj);
 
