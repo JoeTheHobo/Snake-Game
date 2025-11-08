@@ -5109,9 +5109,9 @@ function addPlayerStatus(stat,amt,player) {
     })
 }
 function updateServerStats(lobby) {
-    console.log(lobby.official)
-    if (!lobby.offcial) return;
+    if (lobby.official !== 1) return;
 
+    console.log(lobby.inGamePlayers)
     for (let i = 0; i < lobby.inGamePlayers.length; i++) {
         let player = lobby.inGamePlayers[i];
         console.log(player)
