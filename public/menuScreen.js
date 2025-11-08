@@ -389,9 +389,9 @@ function loadProfileMenu() {
     if (localAccount.status == "Guest") $(".cp_accountSettings").hide();
     else $(".cp_accountSettings").show("flex");
 
-    io.emit("gatherUserStats");
+    socket.emit("gatherUserStats");
 }
-io.on("returningUserStats",(stats) => {
+socket.on("returningUserStats",(stats) => {
     console.log(stats)
 })
 $(".cp_changeUsername").on("click",function() {

@@ -1,4 +1,3 @@
-const socket = io({transports: ["websocket"],reconnection: false});
 
 function uint8ArrayToObject(uint8Array) {
     return uint8Array;

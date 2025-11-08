@@ -1,3 +1,4 @@
+const socket = io({transports: ["websocket"],reconnection: false});
 let items = [];
 let basedGameMode;
 let itemList;
