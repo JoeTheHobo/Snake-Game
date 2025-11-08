@@ -2208,11 +2208,12 @@ function showBoardMenu(allBoards) {
             socket.emit("changeServerBoard",card.id);
         })
 
-        if (localAccount.status === "Admin") {
-            let official = cardImageHolder.create("div.bc_officialButton>Official");
+        console.log(card)
+        let official = cardImageHolder.create("div.bc_officialButton>Official");
+        official.on("click",function() {
+            if (localAccount.status !== "Admin") return;
 
-
-        }
+        })
         if (type !== "personal") {
             let likedImage = cardImageHolder.create("img.bc_likedImage");
             likedImage.src = "img/menuIcons/star_active.png";
