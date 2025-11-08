@@ -5471,6 +5471,7 @@ cursor: url('./img/pointer.cur'), auto;
   height: 100%;
 }
 .statTitle {
+  margin-left: 5px;
 }
 .statValue {
 
