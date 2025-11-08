@@ -392,7 +392,43 @@ function loadProfileMenu() {
     socket.emit("gatherUserStats");
 }
 socket.on("returningUserStats",(stats) => {
-    console.log(stats)
+    let correctStatList = [];
+    for (let i = 0; i < stats.length; i++) {
+        let stat = stats[i];
+        if (stat.includes("_")) {
+            let type = stat.stat_name.format("<").subset("_\\after",true).subset(0,"_\\before").format("<");
+            let id = Number(stat.stat_name).format("<").subset(0,"_\\before");
+            let item = getById(type,id);
+            let name = stat.stat_name.format("<").subset("_\\after",true).format("<") + "_" + item.displayName;
+            correctStatList.push({
+                stat_name: name,
+                stat_value: stat_value,
+                item: item,
+            })
+        } else {
+            correctStatList.push(stat);
+        }
+    }
+
+    //Organize stats accordinly
+
+    //Display stats
+    let holder = $(".statDisplay");
+    holder.innerHTML = "";
+    for (let i = 0; i < correctStatList.length; i++) {
+        let stat = correctStatList[i];
+        let row = holder.create("div.statRow");
+        let group = row.create("div.statGroup");
+        if (stat.item) {
+            let itemImgHolder = group.create("div.statImgHolder");
+            let itemImg = itemImgHolder.create("img.statImg")
+            itemImg.src = getImage(stat.item,"src");
+
+        }
+        let title = group.create("div.statTitle>" + stat.stat_name);
+        let value = row.create("div.statValue>" + stat.stat_value);
+
+    }
 })
 $(".cp_changeUsername").on("click",function() {
 

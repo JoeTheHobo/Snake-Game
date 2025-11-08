@@ -5437,3 +5437,42 @@ cursor: url('./img/pointer.cur'), auto;
 .zcp_addOption:hover {
   background: #2e2e2e;
 }
+
+.cp_col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.statDisplay {
+  width: 50%;
+  height: 100%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+}
+.statRow {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.statGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.statImgHolder {
+  width: 50px;
+  height: 50px;
+}
+.statImg {
+  width: 100%;
+  height: 100%;
+}
+.statTitle {
+  font-weight: bold;
+}
+.statValue {
+  
+}
