@@ -574,6 +574,20 @@ io.on('connection', (socket) => {
             if (err) throw err;
         });
     });
+    socket.on("setOfficial",(value,boardID) => {
+        let account = onlineAccounts[socket.id];
+        if (!account?.loggedIn) return;
+        if (account.status !== "Admin") return;
+
+        const query = `
+            UPDATE boards
+            SET is_official = ?
+            WHERE id = ?
+        `
+        db.query(query,[value ? 1 : 0, boardID],(err) => {
+            if (err) throw err;
+        })
+    })
     socket.on("userDislikesBoard", (boardID) => {
         let account = onlineAccounts[socket.id];
         if (!account?.loggedIn) return;

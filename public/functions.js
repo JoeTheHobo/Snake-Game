@@ -2214,8 +2214,10 @@ function showBoardMenu(allBoards) {
             if (localAccount.status !== "Admin") return;
             if (this.classList.contains("bc_officialButton_selected")) {
                 this.classRemove("bc_officialButton_selected");
+                socket.emit("setOfficial",0,card.id);
             } else {
                 this.classAdd("bc_officialButton_selected");
+                socket.emit("setOfficial",1,card.id);
             }
 
         })
