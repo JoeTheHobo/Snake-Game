@@ -581,7 +581,7 @@ io.on('connection', (socket) => {
 
         const query = `
             UPDATE boards
-            SET is_official = ?
+            SET official = ?
             WHERE id = ?
         `
         db.query(query,[value ? 1 : 0, boardID],(err) => {
