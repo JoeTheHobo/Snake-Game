@@ -1002,6 +1002,7 @@ io.on('connection', (socket) => {
                 lobbies[id].hostName = onlineAccounts[socket.id].username;
                 lobbies[id].hostTag = onlineAccounts[socket.id].tag;
                 lobbies[id].players = [socket.id];
+                lobbies[id].official = 1;
                 lobbies[id].chats = [{
                     account: null,
                     message: "Lobby Created",
@@ -2439,6 +2440,16 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         item.switchStatus = false;
     }
 
+    if (on.addStat && player) {
+        if (typeof on.addStat === "string") on.addStat = [on.addStat];
+        for (let u = 0; u < on.addStat.length; u++) {
+            let stat = on.addStat[u];
+            let type = item.type;
+            let id = item.id;
+            let name = `${stat}_${type}_${id}`;
+            addPlayerStatus(name,1,player);
+        }
+    }
     if (on.forcePlayerMove && player) {
         let playerMoving = player.moving;
         let direction = on.forcePlayerMove;

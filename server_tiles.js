@@ -38,6 +38,9 @@ tiles.push({
     whileOn: {
         playerCanMove: true,
     },
+    onCollision: {
+        addStat: "traverse",
+    },
     visible: true,
     showInEditor: true,
     tags: ["Normal Speed"],
@@ -56,6 +59,9 @@ tiles.push({
     id: 2,
     whileOn: {
         playerCanMove: true,
+    },
+    onCollision: {
+        addStat: "traverse",
     },
     visible: true,
     showInEditor: true,
@@ -76,6 +82,9 @@ tiles.push({
     whileOn: {
         playerCanMove: true,
     },
+    onCollision: {
+        addStat: "traverse",
+    },
     visible: true,
     showInEditor: true,
     tags: ["Normal Speed"],
@@ -95,6 +104,9 @@ tiles.push({
     whileOn: {
         playerCanMove: true,
     },
+    onCollision: {
+        addStat: "traverse",
+    },
     showInEditor: true,
     visible: true,
     tags: ["Fast Speed"],
@@ -113,6 +125,9 @@ tiles.push({
     id: 5,
     whileOn: {
         playerCanMove: true,
+    },
+    onCollision: {
+        addStat: "traverse",
     },
     visible: true,
     showInEditor: true,
@@ -143,6 +158,9 @@ tiles.push({
     whileOn: {
         playerCanMove: true,
     },
+    onCollision: {
+        addStat: "traverse",
+    },
     showInEditor: true,
     timeEvents: [{
         time: 1, //In Seconds
@@ -165,6 +183,9 @@ tiles.push({
     whileOn: {
         playerCanMove: true,
     },
+    onCollision: {
+        addStat: "traverse",
+    },
     visible: true,
     showInEditor: true,
     tags: ["Normal Speed"],
@@ -183,6 +204,9 @@ tiles.push({
     id: 8,
     whileOn: {
         playerCanMove: true,
+    },
+    onCollision: {
+        addStat: "traverse",
     },
     visible: true,
     showInEditor: true,
@@ -211,6 +235,7 @@ tiles.push({
             value: "lit",
         }, //Change base image tag.
         playSound: ["A3",1,"music"],
+        addStat: ["activate","traverse"],
     },
     offCollision: {
         setBaseImgTag: {
@@ -243,6 +268,9 @@ tiles.push({
     whileOn: {
         playerCanMove: false,
     },
+    onCollision: {
+        addStat: "traverse",
+    },
     id: 10,
     visible: true,
     tags: ["Special"],
@@ -265,6 +293,7 @@ tiles.push({
     },
     onCollision: {
         forcePlayerMove: "right",
+        addStat: "traverse",
     },
     id: 11,
     visible: true,
@@ -294,6 +323,7 @@ tiles.push({
             value: "*P",
         },
         setBoardStatus: "*P",
+        addStat: ["traverse","paint"],
     },
     height: 0,
 })

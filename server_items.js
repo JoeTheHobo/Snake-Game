@@ -30,6 +30,7 @@ items.push({
             id: 1,
             count: 1,
         }],
+        addStat: "eat",
         playSound: ["die",2], //Write the name of sound, and how many different Files there are.
         spawnRandomItem: true, //When eaten will it attempt to spawn in from item pool?
     },
@@ -62,6 +63,7 @@ items.push({
     onCollision: {
         deleteMe: true,
         growPlayer: 5,
+        addStat: "eat",
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
@@ -94,6 +96,7 @@ items.push({
             duration: 35,
             moveSpeed: 1.5,
         },
+        addStat: "use",
     },
     onCollision: {
         checkStatus: {
@@ -102,6 +105,7 @@ items.push({
             },
             pass: {
                 pickUp: true,
+                addStat: "collect",
             }
         },
     },
@@ -136,6 +140,7 @@ items.push({
     onCollision: {
         deleteMe: true,
         dealDamage: 1,
+        addStat: "destroy",
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
@@ -167,6 +172,7 @@ items.push({
     onCollision: {
         deleteMe: true,
         dealDamage: 2,
+        addStat: "destroy",
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
@@ -199,6 +205,7 @@ items.push({
     },
     onActivate: {
         equip: "head",
+        addStat: "use",
     },
     onCollision: {
         checkStatus: {
@@ -207,6 +214,7 @@ items.push({
             },
             pass: {
                 pickUp: true,
+                addStat: "collect",
             },
         },
     },
@@ -239,6 +247,7 @@ items.push({
     },
     onActivate: {
         equip: "head",
+        addStat: "use",
     },
     onCollision: {
         checkStatus: {
@@ -247,6 +256,7 @@ items.push({
             },
             pass: {
                 pickUp: true,
+                addStat: "collect",
             },
         },
     },
@@ -279,6 +289,7 @@ items.push({
     },
     onActivate: {
         equip: "head",
+        addStat: "use",
     },
     onCollision: {
         checkStatus: {
@@ -287,6 +298,7 @@ items.push({
             },
             pass: {
                 pickUp: true,
+                addStat: "collect",
             },
         },
     },
@@ -314,6 +326,7 @@ items.push({
     spawnPlayerHere: false, //Spawn players on this tile
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
     onCollision: {
+        addStat: "activate",
         deleteMe: true,
         canvasFilter: {
             filter: "invert(100%)",
@@ -448,6 +461,7 @@ items.push({
             },
             pass: {
                 pickUp: true,
+                addStat: "collect",
             },
             fail: {
             }
@@ -487,6 +501,7 @@ items.push({
             },
             pass: {
                 pickUp: true,
+                addStat: "collect",
             },
             fail: {
             }
@@ -526,6 +541,7 @@ items.push({
             },
             pass: {
                 pickUp: true,
+                addStat: "collect",
             },
             fail: {
             }
@@ -579,10 +595,12 @@ items.push({
                 removePlayerItem: [{
                     name: "bluekey",
                     count: 1,
-                }]
+                }],
+                addStat: "unlock",
             },
             fail: {
                 killPlayer: true,
+                addStat: "died_by",
             }
         },
     },
@@ -628,10 +646,12 @@ items.push({
                 removePlayerItem: [{
                     name: "redkey",
                     count: 1,
-                }]
+                }],
+                addStat: "unlock",
             },
             fail: {
                 killPlayer: true,
+                addStat: "died_by",
             }
         },
     },
@@ -679,10 +699,12 @@ items.push({
                 removePlayerItem: [{
                     name: "greenkey",
                     count: 1,
-                }]
+                }],
+                addStat: "unlock",
             },
             fail: {
                 killPlayer: true,
+                addStat: "died_by",
             }
         },
     },
@@ -713,6 +735,7 @@ items.push({
     
     onCollision: {
         killPlayer: true,
+        addStat: "died_by",
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
@@ -744,6 +767,7 @@ items.push({
             index: 1,
             switch: ["on","off"],
         },
+        addStat: "activate",
         switchBoardStatus: "red", //Switch Between giving these status'
     },
 
@@ -776,6 +800,7 @@ items.push({
     onCollision: { //When collisionType collides do these
         switchBoardStatus: false, //Switch Between giving these status
         removeBoardStatus: "red", //Add a status To the Board;
+        addStat: "activate",
     },
 
     renderStatusPath: ["onCollision","removeBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
@@ -807,6 +832,7 @@ items.push({
     onCollision: { //When collisionType collides do these
         switchBoardStatus: false, //Switch Between giving these status
         addBoardStatus: "red", //Add a status To the Board;
+        addStat: "activate",
     },
 
     renderStatusPath: ["onCollision","addBoardStatus"], //Path to which status to render on top of item, leave blank if no render    boardDestructibleCountRequired: 1, //How many of these world status does it need
@@ -837,6 +863,7 @@ items.push({
 
     onActivate: {
         equip: "head",
+        addStat: "use",
     },
     onCollision: {
         checkStatus: {
@@ -845,6 +872,7 @@ items.push({
             },
             pass: {
                 pickUp: true,
+                addStat: "collect",
             },
         },
     },
@@ -884,6 +912,7 @@ items.push({
             value: "*P",
         }, //Change base image tag.
         playSound: ["set",1],
+        addStat: "activate",
         
     },
 
@@ -916,6 +945,7 @@ items.push({
 
     onCollision: { //When snake collides do these
         addBoardStatus: "red", //Add a status To the Board;
+        addStat: "activate",
         
     },
     offCollision: { //When snake leaves item
@@ -968,6 +998,7 @@ items.push({
             },
             fail: {
                 killPlayer: true,
+                addStat: "died_by",
             }
         },
     },
@@ -1024,6 +1055,7 @@ items.push({
             },
             fail: {
                 killPlayer: true,
+                addStat: "died_by",
             }
         },
     },
@@ -1070,6 +1102,7 @@ items.push({
             },
             pass: {
                 pickUp: true,
+                addStat: "collect",
             },
             fail: {
             }
@@ -1116,10 +1149,12 @@ items.push({
                 removePlayerItem: [{
                     name: "yellowkey",
                     count: 1,
-                }]
+                }],
+                addStat: "unlock",
             },
             fail: {
                 killPlayer: true,
+                addStat: "died_by",
             }
         },
     },
@@ -1166,6 +1201,7 @@ items.push({
             },
             fail: {
                 killPlayer: true,
+                addStat: "died_by",
             }
         },
     },
@@ -1216,6 +1252,7 @@ items.push({
             },
             pass: {
                 addBoardStatus: "blue",
+                addStat: "activate",
             },
             fail: {
                 
@@ -1277,6 +1314,7 @@ items.push({
     onCollision: {
         deleteMe: true,
         growPlayer: 1,
+        addStat: "eat",
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
@@ -1306,6 +1344,7 @@ items.push({
     onCollision: {
         serverGiveCoin: true,
         deleteMe: true,
+        addStat: "collect",
     },
 
     renderStatusPath: [], //Path to which status to render on top of item, leave blank if no render
@@ -1334,6 +1373,7 @@ items.push({
     playSounds: false, //If Item should be muted or not;
     onActivate: {
         giveInvincibility: 5,
+        addStat: "activate",
     },
     onCollision: {
         checkStatus: {
@@ -1342,6 +1382,7 @@ items.push({
             },
             pass: {
                 pickUp: true,
+                addStat: "collect",
             },
         },
     },
@@ -1425,6 +1466,7 @@ items.push({
             },
             pass: {
                 pickUp: true,
+                addStat: "collect",
             },
         },
     },
