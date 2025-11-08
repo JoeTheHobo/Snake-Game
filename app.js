@@ -3690,6 +3690,7 @@ function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,condition
     lobby.gameEnd = true;
     lobby.isActiveGame = false;
     lobby.isInGame = false;
+    updateServerStats(lobby);
 
     //Kill Any Non Dead Snakes
     for (let i = 0; i < lobby.inGamePlayers.length; i++) {
@@ -5111,10 +5112,10 @@ function addPlayerStatus(stat,amt,player) {
 function updateServerStats(lobby) {
     if (lobby.official !== 1) return;
 
-    console.log(lobby.inGamePlayers)
     for (let i = 0; i < lobby.inGamePlayers.length; i++) {
         let player = lobby.inGamePlayers[i];
-        console.log(player)
+        let account = onlineAccounts[player.accountID];
+        let tag = Number(account.tag);
         for (let j = 0; j < player.stats.length; j++) {
             /*
                 player.stat = {
@@ -5122,6 +5123,16 @@ function updateServerStats(lobby) {
                     amt: number
                 }
             */
+           let stat = player.stats[j];
+
+            const query = `
+                INSERT INTO stats (tag, stat_name, stat_value)
+                VALUES (?, ?, ?)
+                ON DUPLICATE KEY UPDATE stat_value = stat_value + VALUES(stat_value)
+            `;
+            db.query(query,[tag,stat.stat,stat.amt],(err) => {
+                if (err) throw err;
+            })
 
         }
     }   
