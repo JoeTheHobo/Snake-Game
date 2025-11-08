@@ -2208,19 +2208,23 @@ function showBoardMenu(allBoards) {
             socket.emit("changeServerBoard",card.id);
         })
 
-        let official = cardImageHolder.create("div.bc_officialButton>Official");
-        if (card.official) official.classAdd("bc_officialButton_selected");
-        official.on("click",function() {
-            if (localAccount.status !== "Admin") return;
-            if (this.classList.contains("bc_officialButton_selected")) {
-                this.classRemove("bc_officialButton_selected");
-                socket.emit("setOfficial",0,card.id);
-            } else {
-                this.classAdd("bc_officialButton_selected");
-                socket.emit("setOfficial",1,card.id);
-            }
+        if (card.official || localAccount.status === "Admin") {
+            let official = cardImageHolder.create("div.bc_officialButton>Official");
+            if (card.official) official.classAdd("bc_officialButton_selected");
+            official.on("click",function() {
+                if (localAccount.status !== "Admin") return;
+                if (this.classList.contains("bc_officialButton_selected")) {
+                    this.classRemove("bc_officialButton_selected");
+                    socket.emit("setOfficial",0,card.id);
+                } else {
+                    this.classAdd("bc_officialButton_selected");
+                    socket.emit("setOfficial",1,card.id);
+                }
 
-        })
+            })
+        }
+
+        
         if (type !== "personal") {
             let likedImage = cardImageHolder.create("img.bc_likedImage");
             likedImage.src = "img/menuIcons/star_active.png";

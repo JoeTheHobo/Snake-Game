@@ -1293,7 +1293,7 @@ io.on('connection', (socket) => {
 
             if (results.length == 0) return;
 
-            board = results[0];
+            let board = results[0];
 
             let pass = false;
             if (Number(account.tag) == Number(board.tag)) pass = true;
@@ -1309,6 +1309,7 @@ io.on('connection', (socket) => {
 
                 lobby.board = goodBoard;
                 lobby.boardID = boardID;
+                lobby.official = board.official;
                 lobby.gameMode = lobby.board.gameModes[0]; 
                 io.to(lobby.id).emit("updateLobbyPage", lobby.board,"board",lobby.hostID);
                 io.to(lobby.id).emit("updateLobbyPage", lobby.gameMode,"gameMode",lobby.hostID);
@@ -1445,7 +1446,11 @@ io.on('connection', (socket) => {
         lobby.checkingSpawnTimers = true;
         lobby.gameLoop = function() {
             try {
-
+                if (!this.updateStatsTime) this.updateStatsTime = Date.now() + 30000;
+                else if (Date.now() >= this.updateStatsTime) {
+                    this.updateStatsTime = Date.now() + 30000;
+                    updateServerStats(lobby);
+                }
                 if (this.gameStartedAt === false) {
                     startGameLoop(lobby);
                 }
@@ -2545,6 +2550,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     }
     if (on.growPlayer > 0 && player) {
         growPlayer(player,on.growPlayer);
+        addPlayerStatus("grow",on.growPlayer,player);
     }
     if (on.spawn) {
         for (let i = 0; i < on.spawn.length; i++) {
@@ -2557,6 +2563,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         player.turboActive = true;
         player.turboDuration = Number(on.giveTurbo.duration);
         player.moveSpeed = Number(on.giveTurbo.moveSpeed);
+        addPlayerStatus("turbo_activated",1,player);
     }
     if (on.addStatus && player) {
         for (let i = 0; i < on.addStatus.length; i++) {
@@ -2631,6 +2638,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
                 updateClientPositions(lobby)
             }
         },lobby.gameMode.respawnProtection*1000);
+        addPlayerStatus("invincibility_activated",1,player);
     }
 
     if (on.dealDamage) {
@@ -2667,6 +2675,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
                             x: h,
                             y: z,
                         }
+                        addPlayerStatus("teleport",1,player);
                         break findingPortal;
                     } 
                 }
@@ -3159,6 +3168,7 @@ function helper_resetLobby(lobby) {
     lobby.condition_kill = [];
     lobby.condition_status = [];
 
+
     lobby.playerRespawns = [];
     
     for (let i = 0; i < lobby.gameMode.winningConditions.length; i++) {
@@ -3245,6 +3255,7 @@ function helper_resetLobby(lobby) {
     for (let i = 0; i < lobby.inGamePlayers.length; i++) {
         let player = lobby.inGamePlayers[i];
         player.index = i;
+        player.stats = [];
         player.canMove = true;
         player.canGrow = true;
         player.ghost = false;
@@ -4978,6 +4989,7 @@ function newPlayer(socketID,accountName,accountTag) {
         moving: false,
         growTail: 0,
         isDead: false,
+        stats: [],
         pos: {
             x: 0,
             y: 0, 
@@ -5080,7 +5092,37 @@ let objectives = {
 }
 
 objectives.one.push({
-    type: "collect",
-    item: 1,
+    type: "grow",
     amount: 15,
+    title: "Grow your snake 15",
 });
+function addPlayerStatus(stat,amt,player) {
+    for (let i = 0; i < player.stats.length; i++) {
+        if (player.stats[i].stat == stat) {
+            player.stats[i].amt += amt;
+            return;
+        } 
+    }
+    player.stats.push({
+        stat: stat,
+        amt: amt
+    })
+}
+function updateServerStats(lobby) {
+    console.log(lobby.official)
+    if (!lobby.offcial) return;
+
+    for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+        let player = lobby.inGamePlayers[i];
+        console.log(player)
+        for (let j = 0; j < player.stats.length; j++) {
+            /*
+                player.stat = {
+                    stat: string,
+                    amt: number
+                }
+            */
+
+        }
+    }   
+}
