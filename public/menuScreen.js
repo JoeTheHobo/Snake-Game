@@ -402,7 +402,7 @@ socket.on("returningUserStats",(stats) => {
             let name = stat.stat_name.format("<").subset("_\\after",true).format("<") + "_" + item.displayName;
             correctStatList.push({
                 stat_name: name,
-                stat_value: stat_value,
+                stat_value: stat.stat_value,
                 item: item,
             })
         } else {
