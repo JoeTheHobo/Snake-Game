@@ -2208,7 +2208,7 @@ function showBoardMenu(allBoards) {
             socket.emit("changeServerBoard",card.id);
         })
 
-        console.log(card)
+        console.log(card.offical)
         let official = cardImageHolder.create("div.bc_officialButton>Official");
         official.on("click",function() {
             if (localAccount.status !== "Admin") return;
