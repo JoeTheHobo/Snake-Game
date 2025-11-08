@@ -780,6 +780,28 @@ io.on('connection', (socket) => {
         })
 
     });
+    socket.on("gatherUserStats",() => {
+        let account = onlineAccounts[socket.id];
+        if (!account.loggedIn) return;
+        let tag = Number(account.tag);
+        //Compile all of the stats into an array using the tag
+        
+        const query = `
+            SELECT stat_name, stat_value
+            FROM stats
+            WHERE tag = ?
+        `;
+
+        db.query(query, [tag], (err, results) => {
+            if (err) {
+                console.error("Error fetching stats:", err);
+                return;
+            }
+
+            // Send the results back to the client
+            socket.emit("returningUserStats", results);
+        });
+    })
     socket.on("createNewBoard",(boardName,width,height,sentFrom) => {
         let account = onlineAccounts[socket.id];
         if (!account.loggedIn) return;
