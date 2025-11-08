@@ -400,13 +400,22 @@ socket.on("returningUserStats",(stats) => {
             let id = Number(stat.stat_name.format("<").subset(0,"_\\before"));
             let item = getById(type,id);
             let name = stat.stat_name.format("<").subset("_\\after",true).format("<") + "_" + item.displayName;
+            name = name.split("_")
+  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+  .join(" ");
             correctStatList.push({
                 stat_name: name,
                 stat_value: stat.stat_value,
                 item: item,
             })
         } else {
-            correctStatList.push(stat);
+            let name = stat.stat_name.split("_")
+  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+  .join(" ");
+            correctStatList.push({
+                stat_name: name,
+                stat_value: stat.stat_value,
+            });
         }
     }
 
