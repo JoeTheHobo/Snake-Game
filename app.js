@@ -5055,4 +5055,17 @@ function getByID(id,type) {
 }
 
 
-//GAME LOGIC
+//Objective Logic
+let objectives = {
+    one: [],
+    two: [],
+    three: [],
+    four: [],
+    five: [], 
+}
+
+objectives.one.push({
+    type: "collect",
+    item: 1,
+    amount: 15,
+});

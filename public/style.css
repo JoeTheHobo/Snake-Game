@@ -4560,6 +4560,16 @@ cursor: url('./img/pointer.cur'), auto;
     filter: grayscale(100%);
 
   }
+  .bc_officialButton {
+    position: absolute;
+    left: 5px;
+    bottom: 5px;
+    border-radius: 5px;
+    background: white;
+    width: 50px;
+    height: 20px;
+    
+  }
   .bc_boardName {
     color: black;
     font-size: 25px;
