@@ -5139,9 +5139,14 @@ let objectives = {
 }
 
 objectives.one.push({
-    //Give id When sending objective to user
-    //start_stat current users stat
-    display_tent: "Eat 15 Mice",
+    display_text: "Eat 15 Mice",
+    objective: "eat_item_1",
+    amt: 15,
+    completed: false,
+    difficlty: 1,
+});
+objectives.one.push({
+    display_text: "Eat 15 Mice",
     objective: "eat_item_1",
     amt: 15,
     completed: false,

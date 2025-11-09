@@ -393,10 +393,10 @@ function setScene(scene,lobby) {
     }
     if (scene == "mapEditor") {
         localAccount.isInMapEditor = true;
-        $(".objectiveCards").hide();
+        $(".objectiveCardsHolder").hide();
     }
     if (scene == "newMenu") {
-        $(".objectiveCards").show("flex");
+        $(".objectiveCardsHolder").show("flex");
         loadServersHTML();
         $(".account_name").innerHTML = localAccount.username + "#" + localAccount.tag; 
         $(".sc_bb_snakeImg").css({
@@ -2857,3 +2857,8 @@ function parseSize(value, size,boardSize,renderFrom = "zone") {
       return 0;
     }
   }
+
+
+  $(".objectiveCard").on("click",function() {
+    $(".objectiveChoice").style.width = "100%";
+  })
