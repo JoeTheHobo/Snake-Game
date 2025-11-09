@@ -414,6 +414,7 @@ socket.on("returningUserStats",(stats) => {
             let name = stat.stat_name.split("_")
   .map(word => word.charAt(0).toUpperCase() + word.slice(1))
   .join(" ");
+            if (stat.stat_name === "time_played") stat.stat_value = Math.round(stat.stat_value / 1000) + "s";
             correctStatList.unshift({
                 stat_name: name,
                 stat_value: stat.stat_value,

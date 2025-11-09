@@ -4962,11 +4962,11 @@ function helper_movePlayer(lobby,player,currentBoard,activePlayers,currentGameMo
         player.moveQueue.shift();
     }
 
-    let turned = true;
-    if (player.move === "left" && !["up","down"].includes(oldPlayerMoving)) turned = false;
-    if (player.move === "right" && !["up","down"].includes(oldPlayerMoving)) turned = false;
-    if (player.move === "up" && !["left","right"].includes(oldPlayerMoving)) turned = false;
-    if (player.move === "down" && !["left","right"].includes(oldPlayerMoving)) turned = false;
+    let turned = false;
+    if (player.move === "left" && ["up","down"].includes(oldPlayerMoving)) turned = true;
+    if (player.move === "right" && ["up","down"].includes(oldPlayerMoving)) turned = true;
+    if (player.move === "up" && ["left","right"].includes(oldPlayerMoving)) turned = true;
+    if (player.move === "down" && ["left","right"].includes(oldPlayerMoving)) turned = true;
     if (turned) {
         addPlayerStatus("turns_made",1,player);
     }
