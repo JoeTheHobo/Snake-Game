@@ -5485,7 +5485,7 @@ cursor: url('./img/pointer.cur'), auto;
   align-items: center;
 }
 .objectiveCards {
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
