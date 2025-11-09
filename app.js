@@ -574,20 +574,6 @@ io.on('connection', (socket) => {
             if (err) throw err;
         });
     });
-    socket.on("setOfficial",(value,boardID) => {
-        let account = onlineAccounts[socket.id];
-        if (!account?.loggedIn) return;
-        if (account.status !== "Admin") return;
-
-        const query = `
-            UPDATE boards
-            SET official = ?
-            WHERE id = ?
-        `
-        db.query(query,[value ? 1 : 0, boardID],(err) => {
-            if (err) throw err;
-        })
-    })
     socket.on("userDislikesBoard", (boardID) => {
         let account = onlineAccounts[socket.id];
         if (!account?.loggedIn) return;
@@ -1024,7 +1010,6 @@ io.on('connection', (socket) => {
                 lobbies[id].hostName = onlineAccounts[socket.id].username;
                 lobbies[id].hostTag = onlineAccounts[socket.id].tag;
                 lobbies[id].players = [socket.id];
-                lobbies[id].official = 1;
                 lobbies[id].chats = [{
                     account: null,
                     message: "Lobby Created",
@@ -1333,7 +1318,6 @@ io.on('connection', (socket) => {
 
                 lobby.board = goodBoard;
                 lobby.boardID = boardID;
-                lobby.official = board.official;
                 lobby.gameMode = lobby.board.gameModes[0]; 
                 io.to(lobby.id).emit("updateLobbyPage", lobby.board,"board",lobby.hostID);
                 io.to(lobby.id).emit("updateLobbyPage", lobby.gameMode,"gameMode",lobby.hostID);
@@ -3098,7 +3082,6 @@ function gatherBoardsForUser(socketID,sendType) {
                         c.username,
                         IFNULL(f.likeCount, 0) AS likeCount,
                         IFNULL(b.plays, 0) AS plays,
-                        b.official
                     FROM boards b
                     JOIN credentials c ON b.tag = c.tag
                     LEFT JOIN (
@@ -5156,10 +5139,24 @@ let objectives = {
 }
 
 objectives.one.push({
-    type: "grow",
-    amount: 15,
-    title: "Grow your snake 15",
+    //Give id When sending objective to user
+    //start_stat current users stat
+    display_tent: "Eat 15 Mice",
+    objective: "eat_item_1",
+    amt: 15,
+    completed: false,
+    difficlty: 1,
 });
+
+let rewards = {
+    one: {
+
+    },
+}
+
+
+
+
 function addPlayerStatus(stat,amt,player) {
     for (let i = 0; i < player.stats.length; i++) {
         if (player.stats[i].stat == stat) {
@@ -5173,7 +5170,6 @@ function addPlayerStatus(stat,amt,player) {
     })
 }
 function updateServerStats(lobby) {
-    if (lobby.official !== 1) return;
 
     for (let i = 0; i < lobby.inGamePlayers.length; i++) {
         let player = lobby.inGamePlayers[i];
