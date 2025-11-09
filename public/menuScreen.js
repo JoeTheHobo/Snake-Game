@@ -399,7 +399,6 @@ socket.on("returningUserStats",(stats) => {
             let type = stat.stat_name.format("<").subset("_\\after",true).subset(0,"_\\before").format("<");
             let id = Number(stat.stat_name.format("<").subset(0,"_\\before").format("<"));
             let item = getById(type,id);
-            console.log(id)
             let displayName = item?.displayName;
             let name = stat.stat_name.format("<").subset("_\\after",true).format("<") + "_" + displayName;
             name = name.split("_")
@@ -414,7 +413,11 @@ socket.on("returningUserStats",(stats) => {
             let name = stat.stat_name.split("_")
   .map(word => word.charAt(0).toUpperCase() + word.slice(1))
   .join(" ");
-            if (stat.stat_name === "time_played") stat.stat_value = Math.round(stat.stat_value / 1000) + "s";
+            if (stat.stat_name === "time_played") {
+                if (stat.stat_value < 60000) stat.stat_value = new _time(stat.stat_value,"duration").format("SS *s*");
+                else if (stat.stat_value < 3600000) stat.stat_value = new _time(stat.stat_value,"duration").format("MM *m* SS *s*");
+                else stat.stat_value = new _time(stat.stat_value,"duration").format("HH *h* MM *m*");
+            } 
             correctStatList.unshift({
                 stat_name: name,
                 stat_value: stat.stat_value,
