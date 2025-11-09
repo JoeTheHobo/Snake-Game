@@ -2330,7 +2330,7 @@ function specialItemManager(lobby) {
         lobby.specialItemIteration++;
     }
 }
-function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false){
+function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false,item = false){
     let currentGameMode = lobby.gameMode;
     let activePlayers = lobby.inGamePlayers;
     let playerCanRespawn = false;
@@ -2363,6 +2363,10 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
     }
 
     if (playerDied || instaKill){
+        if (item) {
+            addPlayerStatus(`died_by_${item.type}_${item.id}`,1,player);
+        }
+
         if (playerWhoKilled) {
             if (playerWhoKilled.name !== player.name) {
                 addPlayerStatus("died_by_snake",1,player);
@@ -2681,7 +2685,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
 
     if (on.dealDamage) {
         if (player)
-            deletePlayer(lobby,player,false,on.dealDamage);
+            deletePlayer(lobby,player,false,on.dealDamage,false,item);
         else if (settings.projectile) {
             projectileDealDamage(lobby,settings.projectile,on.dealDamage);
         }
@@ -4963,7 +4967,6 @@ function helper_movePlayer(lobby,player,currentBoard,activePlayers,currentGameMo
     }
 
     let turned = false;
-    console.log(player.moving,oldPlayerMoving);
     if (player.moving === "left" && ["up","down"].includes(oldPlayerMoving)) turned = true;
     if (player.moving === "right" && ["up","down"].includes(oldPlayerMoving)) turned = true;
     if (player.moving === "up" && ["left","right"].includes(oldPlayerMoving)) turned = true;
@@ -5192,7 +5195,7 @@ function updateServerStats(lobby) {
             if (stat.stat.startsWith("died_by")) {
                 total_deaths += stat.amt;
             }
-            if (stat.stat.startsWith("traveled")) {
+            if (stat.stat.startsWith("traverse")) {
                 total_tiles_traveled += stat.amt;
             }
 
