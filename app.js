@@ -1078,6 +1078,7 @@ io.on('connection', (socket) => {
             for (let i = 0; i < lobby.inGamePlayers.length; i++) {
                 if (lobby.inGamePlayers[i].accountID === socket.id) {
                     deletePlayer(lobby,lobby.inGamePlayers[i],false,false,true);
+                    lobby.inGamePlayers[i].leftGameAt = Date.now();
                 }
             }
         }
@@ -2360,29 +2361,34 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
             player.equiped.head = false;
         }
     }
-    console.log(playerWhoKilled)
+
     if (playerDied || instaKill){
-        if (playerWhoKilled) if (playerWhoKilled.name !== player.name) {
-            playerWhoKilled.playerKills++;
-            if (lobby.condition_kill.length > 0) {
-                for (let i = 0; i < lobby.condition_kill.length; i++) {
-                    let condition = lobby.condition_kill[i];
-                    if (condition.pullTeamStats) {
-                        let teamKills = 0;
-                        let team = playerWhoKilled.team;
-                        for (let j = 0; j < activePlayers.length; j++) {
-                            if (activePlayers[j].team == team) teamKills += activePlayers[j].playerKills;
+        if (playerWhoKilled) {
+            if (playerWhoKilled.name !== player.name) {
+                addPlayerStatus("died_by_snake",1,player);
+                playerWhoKilled.playerKills++;
+                if (lobby.condition_kill.length > 0) {
+                    for (let i = 0; i < lobby.condition_kill.length; i++) {
+                        let condition = lobby.condition_kill[i];
+                        if (condition.pullTeamStats) {
+                            let teamKills = 0;
+                            let team = playerWhoKilled.team;
+                            for (let j = 0; j < activePlayers.length; j++) {
+                                if (activePlayers[j].team == team) teamKills += activePlayers[j].playerKills;
+                            }
+                            if (teamKills >= condition.x) {
+                                triggerWinningCondition(lobby,condition,playerWhoKilled);
+                            }
+                        } else {
+                            if (playerWhoKilled.playerKills >= condition.x) {
+                                triggerWinningCondition(lobby,condition,playerWhoKilled);
+                            }
                         }
-                        if (teamKills >= condition.x) {
-                            triggerWinningCondition(lobby,condition,playerWhoKilled);
-                        }
-                    } else {
-                        if (playerWhoKilled.playerKills >= condition.x) {
-                            triggerWinningCondition(lobby,condition,playerWhoKilled);
-                        }
+                        
                     }
-                    
                 }
+            } else {
+                addPlayerStatus("died_by_self",1,player);
             }
         }
 
@@ -2428,7 +2434,7 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
                 player: player,
                 death: deathPoint,
             })
-                io.to(player.accountID).emit("startRespawnTimer",lobby.gameMode.respawnTimer,deathPoint);
+            io.to(player.accountID).emit("startRespawnTimer",lobby.gameMode.respawnTimer,deathPoint);
         }
         return;
     }
@@ -3723,9 +3729,17 @@ function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,condition
     lobby.isActiveGame = false;
     lobby.isInGame = false;
 
+    let lobbyEndTime = Date.now();
+
     //Kill Any Non Dead Snakes
     for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+        let timePlayed = lobbyEndTime - lobby.gameTimeStart;
+        if (lobby.inGamePlayers[i].leftGameAt) timePlayed = lobby.inGamePlayers[i].leftGameAt - lobby.gameTimeStart;
+        addPlayerStatus("time_played",timePlayed,lobby.inGamePlayers[i]);
         addPlayerStatus("games_played",1,lobby.inGamePlayers[i]);
+        if (lobby.inGamePlayers[i].timeAlive.length === 0) {
+            addPlayerStatus("perfect_run",1,lobby.inGamePlayers[i]);
+        }
         if (!lobby.inGamePlayers[i].isDead) {
             deletePlayer(lobby,lobby.inGamePlayers[i],false,false,true);
         }
@@ -4931,6 +4945,8 @@ function helper_manageTail(lobby,player,playerOldPos,currentBoard) {
 }
 function helper_movePlayer(lobby,player,currentBoard,activePlayers,currentGameMode) {
     //check the movement queue
+    let oldPlayerMoving = player.moving;
+
     if (player.moveQueue.length != 0){
         if(player.moving == "left" && player.moveQueue[0] != "right" || 
             player.moving == "right" && player.moveQueue[0] != "left" || 
@@ -4945,18 +4961,26 @@ function helper_movePlayer(lobby,player,currentBoard,activePlayers,currentGameMo
 
         player.moveQueue.shift();
     }
+
+    let turned = true;
+    if (player.move === "left" && !["up","down"].includes(oldPlayerMoving)) turned = false;
+    if (player.move === "right" && !["up","down"].includes(oldPlayerMoving)) turned = false;
+    if (player.move === "up" && !["left","right"].includes(oldPlayerMoving)) turned = false;
+    if (player.move === "down" && !["left","right"].includes(oldPlayerMoving)) turned = false;
+    if (turned) {
+        addPlayerStatus("turns_made",1,player);
+    }
     
 
     //Move Player and make sure he can't go back on himself
     if (player.canMove) {
-        addPlayerStatus("turns_made",1,player);
         switch (player.moving) {
             case "left": player.pos.x--; break;
             case "right": player.pos.x++; break;
             case "up": player.pos.y--; break;
             case "down": player.pos.y++; break;
         }        
-    }    
+    }
 
     //Teleport Player If Needed
     if (simple.type(player.justTeleported) == "object") {
@@ -5151,6 +5175,10 @@ function updateServerStats(lobby) {
         let player = lobby.inGamePlayers[i];
         let account = onlineAccounts[player.accountID];
         let tag = Number(account.tag);
+
+        let total_deaths = 0;
+        let total_tiles_traveled = 0;
+
         for (let j = 0; j < player.stats.length; j++) {
             /*
                 player.stat = {
@@ -5159,6 +5187,13 @@ function updateServerStats(lobby) {
                 }
             */
            let stat = player.stats[j];
+
+            if (stat.stat.startsWith("died_by")) {
+                total_deaths += stat.amt;
+            }
+            if (stat.stat.startsWith("traveled")) {
+                total_tiles_traveled += stat.amt;
+            }
 
             const query = `
                 INSERT INTO stats (tag, stat_name, stat_value)
@@ -5169,6 +5204,28 @@ function updateServerStats(lobby) {
                 if (err) throw err;
             })
 
+        }
+
+        // Insert or update total_deaths stat
+        if (total_deaths > 0) {
+            const totalQuery = `
+                INSERT INTO stats (tag, stat_name, stat_value)
+                VALUES (?, 'total_deaths', ?)
+                ON DUPLICATE KEY UPDATE stat_value = stat_value + VALUES(stat_value)
+            `;
+            db.query(totalQuery, [tag, total_deaths], (err) => {
+                if (err) throw err;
+            });
+        }
+        if (total_tiles_traveled > 0) {
+            const totalQuery = `
+                INSERT INTO stats (tag, stat_name, stat_value)
+                VALUES (?, 'total_tiles_traveled', ?)
+                ON DUPLICATE KEY UPDATE stat_value = stat_value + VALUES(stat_value)
+            `;
+            db.query(totalQuery, [tag, total_tiles_traveled], (err) => {
+                if (err) throw err;
+            });
         }
     }   
 }
