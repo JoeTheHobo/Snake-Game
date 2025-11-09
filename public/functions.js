@@ -2860,5 +2860,5 @@ function parseSize(value, size,boardSize,renderFrom = "zone") {
 
 
   $(".objectiveCard").on("click",function() {
-    $(".objectiveChoice").style.width = "100%";
+    $(".objectiveChoice").style.width = "95%";
   })
