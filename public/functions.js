@@ -396,7 +396,7 @@ function setScene(scene,lobby) {
         $(".objectiveCards").hide();
     }
     if (scene == "newMenu") {
-        $(".objectiveCards").show();
+        $(".objectiveCards").show("flex");
         loadServersHTML();
         $(".account_name").innerHTML = localAccount.username + "#" + localAccount.tag; 
         $(".sc_bb_snakeImg").css({
