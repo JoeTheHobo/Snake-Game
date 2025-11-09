@@ -2360,7 +2360,7 @@ function deletePlayer(lobby,player,playerWhoKilled,damage = 0,instaKill = false)
             player.equiped.head = false;
         }
     }
-
+    console.log(playerWhoKilled)
     if (playerDied || instaKill){
         if (playerWhoKilled) if (playerWhoKilled.name !== player.name) {
             playerWhoKilled.playerKills++;
@@ -2596,7 +2596,6 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         player.turboActive = true;
         player.turboDuration = Number(on.giveTurbo.duration);
         player.moveSpeed = Number(on.giveTurbo.moveSpeed);
-        addPlayerStatus("turbo_activated",1,player);
     }
     if (on.addStatus && player) {
         for (let i = 0; i < on.addStatus.length; i++) {
@@ -3723,10 +3722,10 @@ function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,condition
     lobby.gameEnd = true;
     lobby.isActiveGame = false;
     lobby.isInGame = false;
-    updateServerStats(lobby);
 
     //Kill Any Non Dead Snakes
     for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+        addPlayerStatus("games_played",1,lobby.inGamePlayers[i]);
         if (!lobby.inGamePlayers[i].isDead) {
             deletePlayer(lobby,lobby.inGamePlayers[i],false,false,true);
         }
@@ -3764,6 +3763,8 @@ function endLobbyGame(lobby,winningPlayers,winningTitle,conditionTitle,condition
         conditionTitle: conditionTitle,
         conditionImage: conditionImage,
     };
+    updateServerStats(lobby);
+    
     io.to(lobby.id).emit("endGame",obj)
     database_addPlaysToBoard(lobby.boardID,1);
     database_addTotalPlaysToBoard(lobby.boardID,lobby.inGamePlayers.length);
@@ -4948,6 +4949,7 @@ function helper_movePlayer(lobby,player,currentBoard,activePlayers,currentGameMo
 
     //Move Player and make sure he can't go back on himself
     if (player.canMove) {
+        addPlayerStatus("turns_made",1,player);
         switch (player.moving) {
             case "left": player.pos.x--; break;
             case "right": player.pos.x++; break;

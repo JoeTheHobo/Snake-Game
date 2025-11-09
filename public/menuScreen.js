@@ -414,7 +414,7 @@ socket.on("returningUserStats",(stats) => {
             let name = stat.stat_name.split("_")
   .map(word => word.charAt(0).toUpperCase() + word.slice(1))
   .join(" ");
-            correctStatList.push({
+            correctStatList.unshift({
                 stat_name: name,
                 stat_value: stat.stat_value,
             });
