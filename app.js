@@ -3081,7 +3081,7 @@ function gatherBoardsForUser(socketID,sendType) {
                         b.id, 
                         c.username,
                         IFNULL(f.likeCount, 0) AS likeCount,
-                        IFNULL(b.plays, 0) AS plays,
+                        IFNULL(b.plays, 0) AS plays
                     FROM boards b
                     JOIN credentials c ON b.tag = c.tag
                     LEFT JOIN (
