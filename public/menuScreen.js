@@ -399,7 +399,8 @@ socket.on("returningUserStats",(stats) => {
             let type = stat.stat_name.format("<").subset("_\\after",true).subset(0,"_\\before").format("<");
             let id = Number(stat.stat_name.format("<").subset(0,"_\\before"));
             let item = getById(type,id);
-            let name = stat.stat_name.format("<").subset("_\\after",true).format("<") + "_" + item.displayName;
+            let displayName = item?.displayName;
+            let name = stat.stat_name.format("<").subset("_\\after",true).format("<") + "_" + displayName;
             name = name.split("_")
   .map(word => word.charAt(0).toUpperCase() + word.slice(1))
   .join(" ");
