@@ -5528,6 +5528,7 @@ cursor: url('./img/pointer.cur'), auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: white;
 }
 .objectiveClose {
   width: 100%;
@@ -5535,6 +5536,16 @@ cursor: url('./img/pointer.cur'), auto;
   line-height: 50px;
   text-align: center;
   font-size: 20px;
+  cursor: url('./img/pointer.cur'), auto;
+  background-color: black;
+  border-bottom: 2px solid white;
+  transition: all .2s ease-in-out;
+
+}
+.objectiveClose:hover {
+  background-color: rgb(255, 255, 255);
+  font-size: 21px;
+  color: black;
 
 }
 .objectiveTitle {
