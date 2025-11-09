@@ -395,10 +395,11 @@ socket.on("returningUserStats",(stats) => {
     let correctStatList = [];
     for (let i = 0; i < stats.length; i++) {
         let stat = stats[i];
-        if (stat.stat_name.includes("_")) {
+        if (stat.stat_name.includes("item") || stat.stat_name.includes("title")) {
             let type = stat.stat_name.format("<").subset("_\\after",true).subset(0,"_\\before").format("<");
             let id = Number(stat.stat_name.format("<").subset(0,"_\\before"));
             let item = getById(type,id);
+            console.log(id)
             let displayName = item?.displayName;
             let name = stat.stat_name.format("<").subset("_\\after",true).format("<") + "_" + displayName;
             name = name.split("_")
