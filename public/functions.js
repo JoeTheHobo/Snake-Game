@@ -393,8 +393,10 @@ function setScene(scene,lobby) {
     }
     if (scene == "mapEditor") {
         localAccount.isInMapEditor = true;
+        $(".objectiveCards").hide();
     }
     if (scene == "newMenu") {
+        $(".objectiveCards").show();
         loadServersHTML();
         $(".account_name").innerHTML = localAccount.username + "#" + localAccount.tag; 
         $(".sc_bb_snakeImg").css({
