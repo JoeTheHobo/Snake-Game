@@ -4963,6 +4963,7 @@ function helper_movePlayer(lobby,player,currentBoard,activePlayers,currentGameMo
     }
 
     let turned = false;
+    console.log(player.move,oldPlayerMoving);
     if (player.move === "left" && ["up","down"].includes(oldPlayerMoving)) turned = true;
     if (player.move === "right" && ["up","down"].includes(oldPlayerMoving)) turned = true;
     if (player.move === "up" && ["left","right"].includes(oldPlayerMoving)) turned = true;
