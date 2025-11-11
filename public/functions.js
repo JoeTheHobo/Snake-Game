@@ -2890,7 +2890,7 @@ function generateObjectiveCard(card,challenge,type) {
 
     if (challenge.objective.includes("item") || (challenge.objective.includes("tile") && !challenge.objective.includes("tiles"))) {
         let id = Number(challenge.objective.format("<").subset(0,"_\\before").format("<"));
-        let item = getById(type,id);
+        let item = getByID(type,id);
         let objImageHolder = card.create("div.obj_objImgHolder");
         let objImg = objImageHolder.create("img.obj_objImg");
         objImg.src = getImage(item,"src");
@@ -2912,4 +2912,21 @@ function generateObjectiveCard(card,challenge,type) {
     if (challenge.completed) {
         card.create("div.obj_complete>Completed");
     }
+}
+
+function getById(type,id) {
+    if (type == "item") return getItemById(id);
+    if (type == "tile") return getTileById(id);
+}
+function getItemById(id) {
+    for (let i = 0;i < items.length; i++) {
+        if (items[i].id == id) return items[i];
+    }
+    return false;
+}
+function getTileById(id) {
+    for (let i = 0;i < tiles.length; i++) {
+        if (tiles[i].id == id) return tiles[i];
+    }
+    return false;
 }

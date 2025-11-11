@@ -2381,22 +2381,6 @@ function updateItemList(allowedIds,itemList,tagList) {
         })
     }
 }
-function getById(type,id) {
-    if (type == "item") return getItemById(id);
-    if (type == "tile") return getTileById(id);
-}
-function getItemById(id) {
-    for (let i = 0;i < items.length; i++) {
-        if (items[i].id == id) return items[i];
-    }
-    return false;
-}
-function getTileById(id) {
-    for (let i = 0;i < tiles.length; i++) {
-        if (tiles[i].id == id) return tiles[i];
-    }
-    return false;
-}
 function showStatusMenu(showing,funcs,defaults = {}) {
     //Showing can equal ["status","playerStatus"]
     $(".status_popup_option").hide();
