@@ -2890,7 +2890,7 @@ function generateObjectiveCard(card,challenge,type) {
 
     if (challenge.objective.includes("item") || (challenge.objective.includes("tile") && !challenge.objective.includes("tiles"))) {
         let id = Number(challenge.objective.format("<").subset(0,"_\\before").format("<"));
-        let item = getByID(type,id);
+        let item = getById(type,id);
         let objImageHolder = card.create("div.obj_objImgHolder");
         let objImg = objImageHolder.create("img.obj_objImg");
         objImg.src = getImage(item,"src");
