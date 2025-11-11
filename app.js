@@ -5278,6 +5278,7 @@ function gatherWeeklyChallenges(old) {
             if (firstChallengeChosen.length > 0) if (firstChallengeChosen[0].id === challenge.id) continue;
             findingFirstChallenge = challenge;
         }
+        firstChallengeChosen.push(findingFirstChallenge);
         obj.challenges.push(findingFirstChallenge);
     }
     
@@ -5290,6 +5291,7 @@ function gatherWeeklyChallenges(old) {
             if (secondChallengesChosen.length > 0) if (secondChallengesChosen[0].id === challenge.id) continue;
             findingSecondChallenge = challenge;
         }
+        secondChallengesChosen.push(findingSecondChallenge);
         obj.challenges.push(findingSecondChallenge);
     }
 
