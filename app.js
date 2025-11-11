@@ -4175,8 +4175,14 @@ function setSocketToUser(account,user,dbObj) {
     }
 
     //Handle Challenges
-    console.log(account.activeChallenges)
-
+    if (account.weeklyChallenges === null) {
+        account.weeklyChallenges = gatherWeeklyChallenges();
+        db.query("UPDATE inventory SET weekly_challenges = ? WHERE user_id = ?", [JSON.stringify(account.weeklyChallenges), user.tag]);
+    } else {
+        console.log(account.weeklyChallenges);
+    }
+    if (account.activeChallenges === null) account.activeChallenges = []; 
+    
     updateLobbies();
 
     io.to(account.id).emit('setPlayer', account.id, account,accessedBattlePasses);
@@ -5216,6 +5222,46 @@ let rewards = {
     one: {
         
     },
+}
+function gatherWeeklyChallenges(old) {
+    let obj = {
+        challenges: [],
+        startDate: Date.now(),
+    };
+
+    let firstChallengeChosen = [];
+    for (let i = 0; i < 2; i++) {
+        let findingFirstChallenge = false;
+        while (!findingFirstChallenge) {
+            challenge = simple.rnd(objectives.three);
+            if (old) if (challenge.id === old[4].id) continue;
+            if (firstChallengeChosen.length > 0) if (firstChallengeChosen[0].id === challenge.id) continue;
+            findingFirstChallenge = challenge;
+        }
+        obj.challenges.push(findingFirstChallenge);
+    }
+    
+    let secondChallengesChosen = [];
+    for (let i = 0; i < 2; i++) {
+        let findingSecondChallenge = false;
+        while (!findingSecondChallenge) {
+            challenge = simple.rnd(objectives.three);
+            if (old) if (challenge.id === old[4].id) continue;
+            if (secondChallengesChosen.length > 0) if (secondChallengesChosen[0].id === challenge.id) continue;
+            findingSecondChallenge = challenge;
+        }
+        obj.challenges.push(findingSecondChallenge);
+    }
+
+    let findingThirdChallenge = false;
+    while (!findingThirdChallenge) {
+        challenge = simple.rnd(objectives.three);
+        if (old) if (challenge.id === old[4].id) continue;
+        findingThirdChallenge = challenge;
+    }
+    obj.challenges.push(findingThirdChallenge);
+
+    return obj;
 }
 
 
