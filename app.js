@@ -4175,12 +4175,13 @@ function setSocketToUser(account,user,dbObj) {
     }
 
     //Handle Challenges
-    if (account.weeklyChallenges === null) {
+    if (account.weeklyChallenges === null || true) {
         account.weeklyChallenges = gatherWeeklyChallenges();
         db.query("UPDATE inventory SET weekly_challenges = ? WHERE tag = ?", [JSON.stringify(account.weeklyChallenges), user.tag]);
     } else {
         console.log(account.weeklyChallenges);
     }
+        console.log(account.weeklyChallenges);
     if (account.activeChallenges === null) account.activeChallenges = []; 
     
     updateLobbies();
@@ -5272,8 +5273,8 @@ function gatherWeeklyChallenges(old) {
     for (let i = 0; i < 2; i++) {
         let findingFirstChallenge = false;
         while (!findingFirstChallenge) {
-            challenge = simple.rnd(objectives.three);
-            if (old) if (challenge.id === old[4].id) continue;
+            challenge = simple.rnd(objectives.one);
+            if (old) if (challenge.id === old[0].id || challenge.id === old[1].id) continue;
             if (firstChallengeChosen.length > 0) if (firstChallengeChosen[0].id === challenge.id) continue;
             findingFirstChallenge = challenge;
         }
@@ -5284,8 +5285,8 @@ function gatherWeeklyChallenges(old) {
     for (let i = 0; i < 2; i++) {
         let findingSecondChallenge = false;
         while (!findingSecondChallenge) {
-            challenge = simple.rnd(objectives.three);
-            if (old) if (challenge.id === old[4].id) continue;
+            challenge = simple.rnd(objectives.two);
+            if (old) if (challenge.id === old[2].id || challenge.id === old[3].id) continue;
             if (secondChallengesChosen.length > 0) if (secondChallengesChosen[0].id === challenge.id) continue;
             findingSecondChallenge = challenge;
         }
