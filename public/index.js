@@ -52,6 +52,8 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,serv
     localAccount.status = account.status;
     localAccount.dateCreated = account.dateCreated;
     localAccount.boards = [];
+    localAccount.weeklyChallenges = account.weeklyChallenges;
+    localAccount.activeChallenges = account.activeChallenges;
     accessedBattlePasses = server_accessedBattlePasses;
 
     global_musicVolume = account.musicVolume;

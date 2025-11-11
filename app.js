@@ -4180,7 +4180,6 @@ function setSocketToUser(account,user,dbObj) {
         db.query("UPDATE inventory SET weekly_challenges = ? WHERE tag = ?", [JSON.stringify(account.weeklyChallenges), user.tag]);
     } else {
         let reset = shouldResetChallenges(account.weeklyChallenges.startDate);
-        console.log(reset);
         if (reset) {
             account.weeklyChallenges = gatherWeeklyChallenges();
             account.activeChallenges = [];

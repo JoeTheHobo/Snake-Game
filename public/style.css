@@ -5510,6 +5510,7 @@ cursor: url('./img/pointer.cur'), auto;
   justify-content: center;
   transition: all .2s ease-in-out;
   border-radius: 5px;
+  position: relative;
   cursor: url('./img/pointer.cur'), auto;
 }
 .objectiveCard:hover {
@@ -5553,4 +5554,36 @@ cursor: url('./img/pointer.cur'), auto;
   font-size: 25px;
   width: 100%;
   text-align: center;
+}
+
+.obj_displayText {
+  font-size: 25px;
+}
+.obj_starContainer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.obj_starHolder {
+  margin: 5px;
+  width: 10%;
+  aspect-ratio: 1/1;
+}
+.obj_starImg {
+  width: 100%;
+  height: 100%;
+}
+.obj_complete {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  background: rgba(137, 243, 137, 0.452);
+  font-size: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

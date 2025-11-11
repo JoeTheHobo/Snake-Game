@@ -2861,8 +2861,47 @@ function parseSize(value, size,boardSize,renderFrom = "zone") {
 
 $(".objectiveCard").on("click",function() {
     $(".objectiveChoice").style.width = "95%";
+    loadWeeklyChallenges();
 })
 $(".objectiveClose").on("click",function() {
     $(".objectiveChoice").style.width = "0px";
-
 })
+function loadWeeklyChallenges() {
+    let holder = $(".objectiveList");
+    holder.innerHTML = "";
+    for (let i = 0; i < localAccount.weeklyChallenges.length; i++) {
+        let card = holder.create("div.objectiveCard");
+        generateObjectiveCard(card,localAccount.weeklyChallenges[i],"weekly");
+    }   
+}
+function generateObjectiveCard(card,challenge,type) {
+    card.innerHTML = "";
+
+    /*
+        display_text "Eat 5 Mice"
+        objective 'eat_item_1'
+        amt 5
+        id 2
+        completed false
+        star "one"
+    */
+
+    let displayText = card.create("div.obj_displayText>" + card.display_text);
+
+    //Create Stars
+    let starContainer = card.create("div.obj_starContainer");
+    let ct;
+    if (challenge.star === "one") ct = 1;
+    if (challenge.star === "two") ct = 2;
+    if (challenge.star === "three") ct = 3;
+    for (let i = 0; i < ct; i++) {
+        let starHolder = starContainer.create("div.obj_starHolder");
+        let starImg = starHolder.create("img.obj_starImg");
+        starImg.src = "img/star.png";
+    }
+
+    //Completed Big Banner Over Everyting Saying Completed
+    if (challenge.completed) {
+        card.create("div.obj_complete>Completed");
+    }
+}
