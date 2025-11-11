@@ -5197,10 +5197,22 @@ newObjective("one",{
     amt: 2000,
 })
 newObjective("one",{
+    display_text: "Use Turbo 5 Times",
+    objective: "use_item_3",
+    amt: 5,
+})
+newObjective("one",{
+    display_text: "Eat Bunch O' Mice 10 Times",
+    objective: "eat_item_2",
+    amt: 10,
+})
+newObjective("one",{
     display_text: "Play 5 Games",
     objective: "games_played",
     amt: 5,
 })
+
+
 newObjective("two",{
     display_text: "Destroy 15 Rocks",
     objective: "destroy_item_4",
@@ -5212,10 +5224,37 @@ newObjective("two",{
     amt: 50,
     oneGame: true,
 })
+newObjective("two",{
+    display_text: "Paint 50 Tiles",
+    objective: "paint_tile_12",
+    amt: 50,
+})
+newObjective("two",{
+    display_text: "Teleport 50 Times",
+    objective: "teleport",
+    amt: 50,
+})
+newObjective("two",{
+    display_text: "Eat 200 Dead Snake Cells",
+    objective: "eat_item_34",
+    amt: 200,
+})
+
+
 newObjective("three",{
     display_text: "Capture The Flag 50 Times",
     objective: "activate_item_26",
     amt: 50,
+})
+newObjective("three",{
+    display_text: "Play 100 Games",
+    objective: "games_played",
+    amt: 100,
+})
+newObjective("three",{
+    display_text: "Collect 30 Coins",
+    objective: "collect_item_34",
+    amt: 30,
 })
 
 let rewards = {
