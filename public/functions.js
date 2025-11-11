@@ -2913,6 +2913,12 @@ function generateObjectiveCard(card,challenge,type) {
     if (challenge.completed) {
         card.create("div.obj_complete>Completed");
     }
+
+    if (type === "weekly") {
+        card.on("click",function() {
+            $(".objectiveChoice").style.width = "0px";
+        })
+    }
 }
 
 function getById(type,id) {
