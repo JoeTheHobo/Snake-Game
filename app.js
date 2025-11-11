@@ -4177,7 +4177,7 @@ function setSocketToUser(account,user,dbObj) {
     //Handle Challenges
     if (account.weeklyChallenges === null) {
         account.weeklyChallenges = gatherWeeklyChallenges();
-        db.query("UPDATE inventory SET weekly_challenges = ? WHERE user_id = ?", [JSON.stringify(account.weeklyChallenges), user.tag]);
+        db.query("UPDATE inventory SET weekly_challenges = ? WHERE tag = ?", [JSON.stringify(account.weeklyChallenges), user.tag]);
     } else {
         console.log(account.weeklyChallenges);
     }
