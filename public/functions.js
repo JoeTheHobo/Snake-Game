@@ -2869,9 +2869,9 @@ $(".objectiveClose").on("click",function() {
 function loadWeeklyChallenges() {
     let holder = $(".objectiveList");
     holder.innerHTML = "";
-    for (let i = 0; i < localAccount.weeklyChallenges.length; i++) {
+    for (let i = 0; i < localAccount.weeklyChallenges.challenges.length; i++) {
         let card = holder.create("div.objectiveCard");
-        generateObjectiveCard(card,localAccount.weeklyChallenges[i],"weekly");
+        generateObjectiveCard(card,localAccount.weeklyChallenges.challenges[i],"weekly");
     }   
 }
 function generateObjectiveCard(card,challenge,type) {
