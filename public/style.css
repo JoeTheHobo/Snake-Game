@@ -5573,9 +5573,10 @@ cursor: url('./img/pointer.cur'), auto;
   align-items: center;
 }
 .obj_starHolder {
-  margin: 5px;
+  margin: 1px;
   width: 10%;
   aspect-ratio: 1/1;
+  justify-content: end;
 }
 .obj_starImg {
   width: 100%;
