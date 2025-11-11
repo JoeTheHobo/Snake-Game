@@ -2476,6 +2476,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             addPlayerStatus(name,1,player);
         }
     }
+    //Start Checking Ons Here (Stat checking needs to happen first)
     if (on.forcePlayerMove && player) {
         let playerMoving = player.moving;
         let direction = on.forcePlayerMove;
@@ -2531,6 +2532,11 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         
     }
     if (on.switchBoardStatus && player) {
+        checkingIfToAddStats: for (let u = 0; u < addStatList.length; u++) {
+            let stat = addStatList[u];
+            if (!["activate"].includes(stat.ident)) continue checkingIfToAddStats;
+            addPlayerStatus(stat.name,stat.amt,stat.player);
+        }
         if (item.switchStatus === true) {
             addBoardStatus(lobby,on.switchBoardStatus,player);
         } else {
@@ -2538,9 +2544,19 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         }
     }
     if (on.addBoardStatus && player) {
+        checkingIfToAddStats: for (let u = 0; u < addStatList.length; u++) {
+            let stat = addStatList[u];
+            if (!["activate"].includes(stat.ident)) continue checkingIfToAddStats;
+            addPlayerStatus(stat.name,stat.amt,stat.player);
+        }
         addBoardStatus(lobby,on.addBoardStatus,player);
     }
     if (on.removeBoardStatus && player) {
+        checkingIfToAddStats: for (let u = 0; u < addStatList.length; u++) {
+            let stat = addStatList[u];
+            if (!["activate"].includes(stat.ident)) continue checkingIfToAddStats;
+            addPlayerStatus(stat.name,stat.amt,stat.player);
+        }
         removeBoardStatus(lobby,on.removeBoardStatus,player);
     }
     if (on.serverGiveCoin && player) {
@@ -2607,12 +2623,12 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         player.turboDuration = Number(on.giveTurbo.duration);
         player.moveSpeed = Number(on.giveTurbo.moveSpeed);
     }
-    if (on.addStatus && player) {
+    if (on.addStatus && player) { //I think this is outdated ?
         for (let i = 0; i < on.addStatus.length; i++) {
             addPlayerStatus(lobby,player,on.addStatus[i])
         }
     }
-    if (on.removeStatus && player) {
+    if (on.removeStatus && player) { //I think this one is outdated to
         for (let i = 0; i < on.removeStatus.length; i++) {
             removePlayerStatus(lobby,player,on.removeStatus[i])
         }
@@ -4134,6 +4150,8 @@ function setSocketToUser(account,user,dbObj) {
     account.musicVolume = dbObj.inventory.music_volume;
     account.sfxVolume = dbObj.inventory.sfx_volume;
     account.publishedBoardLimit = dbObj.inventory.published_board_limit;
+    account.activeChallenges = dbObj.inventory.active_challenges;
+    account.weeklyChallenges = dbObj.inventory.weekly_challenges;
 
     //allowed
     account.allowedNameColors = dbObj.allowed.nameColors;
@@ -4155,6 +4173,10 @@ function setSocketToUser(account,user,dbObj) {
     for (let i = 0; i < account.battlePasses.length; i++) {
         accessedBattlePasses[account.battlePasses[i].name] = allBattlePasses[account.battlePasses[i].name];
     }
+
+    //Handle Challenges
+    console.log(account.activeChallenges)
+
     updateLobbies();
 
     io.to(account.id).emit('setPlayer', account.id, account,accessedBattlePasses);
@@ -5247,6 +5269,8 @@ function updateServerStats(lobby) {
             })
 
         }
+
+        player.stats = [];
 
         // Insert or update total_deaths stat
         if (total_deaths > 0) {
