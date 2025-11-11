@@ -2456,6 +2456,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         item.switchStatus = false;
     }
 
+    let addStatList = [];
     if (on.addStat && player) {
         if (typeof on.addStat === "string") on.addStat = [on.addStat];
         for (let u = 0; u < on.addStat.length; u++) {
@@ -2463,6 +2464,15 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             let type = item.type;
             let id = item.id;
             let name = `${stat}_${type}_${id}`;
+            if (["paint","activate"].includes(stat)) {
+                addStatList.push({
+                    name: name,
+                    amt: 1,
+                    player: player,
+                    ident: stat,
+                })
+                continue;
+            }
             addPlayerStatus(name,1,player);
         }
     }
@@ -2540,7 +2550,13 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     setBoardStatus: if (on.setBoardStatus && player) {
         let status = on.setBoardStatus;
         if (on.setBoardStatus == "*P") status = player.team;
-        if (item.sendingBoardStatus === status) break setBoardStatus;
+        if (item.sendingBoardStatus === status) break setBoardStatus; //If already sending that status don't send it again.
+
+        checkingIfToAddStats: for (let u = 0; u < addStatList.length; u++) {
+            let stat = addStatList[u];
+            if (!["paint"].includes(stat.ident)) continue checkingIfToAddStats;
+            addPlayerStatus(stat.name,stat.amt,stat.player);
+        }
 
         if (item.sendingBoardStatus !== false) {
             removeBoardStatus(lobby,item.sendingBoardStatus,player);
@@ -5134,24 +5150,45 @@ let objectives = {
     one: [],
     two: [],
     three: [],
-    four: [],
-    five: [], 
 }
 
-objectives.one.push({
+function newObjective(cat,obj) {
+    obj.id = objectives[cat].length;
+    obj.completed = false;
+    obj.star = cat;
+    objectives[cat].push(obj);
+}
+newObjective("one",{
     display_text: "Eat 15 Mice",
     objective: "eat_item_1",
     amt: 15,
-    completed: false,
-    difficlty: 1,
-});
-objectives.one.push({
-    display_text: "Eat 15 Mice",
-    objective: "eat_item_1",
+})
+newObjective("one",{
+    display_text: "Travel 2000 Tiles",
+    objective: "total_tiles_traversed",
+    amt: 2000,
+})
+newObjective("one",{
+    display_text: "Play 5 Games",
+    objective: "games_played",
+    amt: 5,
+})
+newObjective("two",{
+    display_text: "Destroy 15 Rocks",
+    objective: "destroy_item_4",
     amt: 15,
-    completed: false,
-    difficlty: 1,
-});
+})
+newObjective("two",{
+    display_text: "Grow 50 In 1 Game",
+    objective: "grow",
+    amt: 50,
+    oneGame: true,
+})
+newObjective("three",{
+    display_text: "Capture The Flag 50 Times",
+    objective: "activate_item_26",
+    amt: 50,
+})
 
 let rewards = {
     one: {
