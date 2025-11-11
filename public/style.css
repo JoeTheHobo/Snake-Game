@@ -5571,12 +5571,12 @@ cursor: url('./img/pointer.cur'), auto;
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: end;
 }
 .obj_starHolder {
   margin: 1px;
   width: 10%;
   aspect-ratio: 1/1;
-  justify-content: end;
 }
 .obj_starImg {
   width: 100%;
@@ -5592,4 +5592,17 @@ cursor: url('./img/pointer.cur'), auto;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.obj_objImgHolder {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 20%;
+  aspect-ratio: 1/1;
+
+}
+.obj_objImg {
+  width: 100%;
+  height: 100%;
 }

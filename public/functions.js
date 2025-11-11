@@ -2888,6 +2888,14 @@ function generateObjectiveCard(card,challenge,type) {
 
     let displayText = card.create("div.obj_displayText>" + challenge.display_text);
 
+    if (challenge.objective.includes("item") || (challenge.objective.includes("tile") && !challenge.objective.includes("tiles"))) {
+        let id = Number(challenge.objective.format("<").subset(0,"_\\before").format("<"));
+        let item = getById(type,id);
+        let objImageHolder = card.create("div.obj_objImgHolder");
+        let objImg = objImageHolder.create("img.obj_objImg");
+        objImg.src = getImage(item,"src");
+    }
+
     //Create Stars
     let starContainer = card.create("div.obj_starContainer");
     let ct;
