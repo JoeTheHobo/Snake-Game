@@ -2885,6 +2885,7 @@ function generateObjectiveCard(card,challenge,type) {
         completed false
         star "one"
     */
+   console.log(challenge)
 
     let displayText = card.create("div.obj_displayText>" + card.display_text);
 

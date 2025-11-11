@@ -5555,7 +5555,12 @@ cursor: url('./img/pointer.cur'), auto;
   width: 100%;
   text-align: center;
 }
-
+.objectiveList {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
 .obj_displayText {
   font-size: 25px;
 }
