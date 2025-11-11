@@ -4175,13 +4175,22 @@ function setSocketToUser(account,user,dbObj) {
     }
 
     //Handle Challenges
-    if (account.weeklyChallenges === null || true) {
+    if (account.weeklyChallenges === null) {
         account.weeklyChallenges = gatherWeeklyChallenges();
         db.query("UPDATE inventory SET weekly_challenges = ? WHERE tag = ?", [JSON.stringify(account.weeklyChallenges), user.tag]);
     } else {
-        console.log(account.weeklyChallenges);
+        let reset = shouldResetChallenges(account.weeklyChallenges.startDate);
+        console.log(reset);
+        if (reset) {
+            account.weeklyChallenges = gatherWeeklyChallenges();
+            account.activeChallenges = [];
+            db.query(
+                "UPDATE inventory SET weekly_challenges = ? active_challenges WHERE tag = ?",
+                [JSON.stringify(account.weeklyChallenges),JSON.stringify(account.active_challenges), user.tag]
+            );
+
+        }
     }
-        console.log(account.weeklyChallenges);
     if (account.activeChallenges === null) account.activeChallenges = []; 
     
     updateLobbies();
@@ -5263,6 +5272,32 @@ let rewards = {
         
     },
 }
+function shouldResetChallenges(userStartDate) {
+  const userDate = new Date(userStartDate);
+  const mostRecentReset = getMostRecentResetTime();
+
+  return userDate < mostRecentReset;
+}
+function getMostRecentResetTime() {
+  const now = new Date();
+
+  // Start from current UTC date/time
+  const reset = new Date(now);
+
+  // Force to UTC (you can change to your preferred TZ offset)
+  const day = reset.getUTCDay(); // 0 = Sun, 1 = Mon, ...
+  const diffToMonday = (day + 6) % 7; // days since last Monday
+  reset.setUTCDate(reset.getUTCDate() - diffToMonday);
+  reset.setUTCHours(3, 0, 0, 0); // Monday 3 AM UTC
+
+  // If we haven't hit Monday 3 AM yet this week, go back one week
+  if (now < reset) {
+    reset.setUTCDate(reset.getUTCDate() - 7);
+  }
+
+  return reset;
+}
+
 function gatherWeeklyChallenges(old) {
     let obj = {
         challenges: [],
