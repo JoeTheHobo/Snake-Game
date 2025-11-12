@@ -2900,7 +2900,6 @@ function generateObjectiveCard(card,challenge,type) {
         let item = getById(type,id);
         let objImageHolder = card.create("div.obj_objImgHolder");
         let objImg = objImageHolder.create("img.obj_objImg");
-        console.log(id)
         objImg.src = getImage(item,"src");
     }
 
@@ -2932,7 +2931,6 @@ function generateObjectiveCard(card,challenge,type) {
 
 }
 socket.on("updateChallenges",(weekly,slot1,slot2,slot3) => {
-    console.log("recieved")
     localAccount.weeklyChallenges = weekly;
     localAccount.activeChallenge1 = slot1;
     localAccount.activeChallenge2 = slot2;

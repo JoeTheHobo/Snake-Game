@@ -807,6 +807,7 @@ io.on('connection', (socket) => {
                 account.weeklyChallenges.challenges[i].completed === false &&
                 account.weeklyChallenges.challenges[i].selected !== true) {
                     challenge = account.weeklyChallenges.challenges[i];
+                    account.weeklyChallenges.challenges[i].selected = true;
                 }
         }
 
@@ -823,9 +824,12 @@ io.on('connection', (socket) => {
             else challenge.startValue = res[0].stat_value;
             challenge.selected = true;
             usersSlot = challenge;
-            
+
+            if (slot === 1) account.activeChallenge1 = usersSlot;
+            if (slot === 2) account.activeChallenge2 = usersSlot;
+            if (slot === 3) account.activeChallenge3 = usersSlot;
+
             //EMIT
-            console.log("EMITING")
             socket.emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3);
 
             let setName = "active_challenge_" + slot;
