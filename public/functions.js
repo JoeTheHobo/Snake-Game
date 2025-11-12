@@ -2923,7 +2923,6 @@ function generateObjectiveCard(card,challenge,type) {
         card.create("div.obj_selected>Selected");
     }
 
-    console.log(challenge)
     if (type === "weekly") {
         if (!challenge.selected && !challenge.completed) {
             card.on("click",function() {

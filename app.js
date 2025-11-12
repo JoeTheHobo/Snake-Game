@@ -5292,7 +5292,7 @@ newObjective("one",{
 })
 newObjective("one",{
     display_text: "Travel 2000 Tiles",
-    objective: "total_tiles_traversed",
+    objective: "total_tiles_traveled",
     amt: 2000,
 })
 newObjective("one",{
@@ -5507,20 +5507,24 @@ function updateServerStats(lobby) {
         }
 
 
-        const query = `
-            SELECT stat_name, stat_value
-            FROM stats
-            WHERE tag = ?
-        `;
-
-        db.query(query, [tag], (err, results) => {
-            if (err) {
-                console.error("Error fetching stats:", err);
-                return;
-            }
-
-            // Send the results back to the client
-            io.to(player.accountID).emit("returningUserStats", results,true);
-        });
+        sendStatsIO(tag,player.accountID)
+        
     }   
+}
+function sendStatsIO(tag,emitTo) {
+    const query = `
+        SELECT stat_name, stat_value
+        FROM stats
+        WHERE tag = ?
+    `;
+
+    db.query(query, [tag], (err, results) => {
+        if (err) {
+            console.error("Error fetching stats:", err);
+            return;
+        }
+
+        // Send the results back to the client
+        io.to(emitTo).emit("returningUserStats", results,true);
+    });
 }
