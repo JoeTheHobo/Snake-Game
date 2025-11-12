@@ -4243,8 +4243,8 @@ function setSocketToUser(account,user,dbObj) {
             account.activeChallenge2 = null;
             account.activeChallenge3 = null;
             db.query(
-                "UPDATE inventory SET weekly_challenges = ? active_challenges WHERE tag = ?",
-                [JSON.stringify(account.weeklyChallenges),JSON.stringify(account.active_challenges), user.tag]
+                "UPDATE inventory SET weekly_challenges = ?, active_challenge_1 = null, active_challenge_2 = null, active_challenge_3 = null, WHERE tag = ?",
+                [JSON.stringify(account.weeklyChallenges), user.tag]
             );
 
         }
