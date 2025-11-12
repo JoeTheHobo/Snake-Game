@@ -788,6 +788,20 @@ io.on('connection', (socket) => {
             socket.emit("returningUserStats", results);
         });
     })
+    socket.on("checkObjectiveCompletion",(slot) => {
+        let account = onlineAccounts[socket.id];
+        if (!account.loggedIn) return;
+
+        let usersSlot = false;
+        if (slot === 1) usersSlot = account.activeChallenge1;
+        if (slot === 2) usersSlot = account.activeChallenge2;
+        if (slot === 3) usersSlot = account.activeChallenge3;
+        if (usersSlot === false) return;
+
+        console.log(usersSlot)
+        
+        
+    })
     socket.on("chooseObjective",(star,id,slot) => {
         let account = onlineAccounts[socket.id];
         if (!account.loggedIn) return;

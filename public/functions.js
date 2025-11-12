@@ -2861,7 +2861,7 @@ function parseSize(value, size,boardSize,renderFrom = "zone") {
 let challengeClicked = false;
 $(".objectiveCard").on("click",function() {
     if (this.completed) {
-
+        socket.emit("checkObjectiveCompletion",Number(this.id.subset("d\\after",true)));
         return;
     }
     $(".objectiveChoice").style.width = "95%";
