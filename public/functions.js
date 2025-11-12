@@ -2890,6 +2890,7 @@ function generateObjectiveCard(card,challenge,type) {
         return;
     }
 
+    console.log(challenge,card)
 
     if (challenge.objective.includes("item") || (challenge.objective.includes("tile") && !challenge.objective.includes("tiles"))) {
         let type = challenge.objective.format("<").subset("_\\after",true).subset(0,"_\\before").format("<");
