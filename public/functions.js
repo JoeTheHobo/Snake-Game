@@ -2938,10 +2938,10 @@ function generateObjectiveCard(card,challenge,type) {
         for (let i = 0; i < localAccount.stats.length; i++) {
             if (localAccount.stats[i].stat_name === challenge.objective) currentVal = localAccount.stats[i].stat_value;
         }
+        if (currentVal === undefined) currentVal = 0;
         let pointsHave = currentVal - startVal;
         if (pointsHave > pointsNeeded) pointsHave = pointsNeeded;
 
-        console.log(pointsNeeded,startVal,currentVal);
 
         let rect = card.getBoundingClientRect()
         let width = rect.width;
