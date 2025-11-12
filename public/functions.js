@@ -2900,7 +2900,6 @@ function generateObjectiveCard(card,challenge,type) {
         let item = getById(type,id);
         let objImageHolder = card.create("div.obj_objImgHolder");
         let objImg = objImageHolder.create("img.obj_objImg");
-        console.log(id)
         objImg.src = getImage(item,"src");
     }
 
@@ -2938,8 +2937,12 @@ function getById(type,id) {
     if (type == "tile") return getTileById(id);
 }
 function getItemById(id) {
+    console.log(id)
     for (let i = 0;i < items.length; i++) {
-        if (items[i].id == id) return items[i];
+        if (items[i].id == id) {
+            console.log(items[i].id,items[i])
+            return items[i];
+        }
     }
     return false;
 }
