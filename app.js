@@ -4237,7 +4237,7 @@ function setSocketToUser(account,user,dbObj) {
         db.query("UPDATE inventory SET weekly_challenges = ? WHERE tag = ?", [JSON.stringify(account.weeklyChallenges), user.tag]);
     } else {
         let reset = shouldResetChallenges(account.weeklyChallenges.startDate);
-        if (reset) {
+        if (reset || true) {
             account.weeklyChallenges = gatherWeeklyChallenges();
             account.activeChallenge1 = null;
             account.activeChallenge2 = null;
@@ -5321,7 +5321,7 @@ newObjective("three",{
 })
 newObjective("three",{
     display_text: "Collect 30 Coins",
-    objective: "collect_item_34",
+    objective: "collect_item_35",
     amt: 30,
 })
 
