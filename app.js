@@ -789,15 +789,17 @@ io.on('connection', (socket) => {
         });
     })
     socket.on("chooseObjective",(star,id,slot) => {
+        console.log("GET GOT")
         let account = onlineAccounts[socket.id];
         if (!account.loggedIn) return;
+        console.log(2,star,id,slot)
         
         let usersSlot = false;
         if (slot === 1 && account.activeChallenge1 === null) usersSlot = account.activeChallenge1;
         if (slot === 2 && account.activeChallenge2 === null) usersSlot = account.activeChallenge2;
         if (slot === 3 && account.activeChallenge3 === null) usersSlot = account.activeChallenge3;
 
-        if (!usersSlot) return;
+        if (usersSlot === false) return;
 
         let challenge;
 

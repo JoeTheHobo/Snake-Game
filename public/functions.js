@@ -2892,7 +2892,7 @@ function generateObjectiveCard(card,challenge,type) {
     }
     
     let displayText = card.create("div.obj_displayText>" + challenge.display_text);
-    
+
     console.log(challenge)
 
     if (challenge.objective.includes("item") || (challenge.objective.includes("tile") && !challenge.objective.includes("tiles"))) {
@@ -2925,6 +2925,7 @@ function generateObjectiveCard(card,challenge,type) {
         card.on("click",function() {
             $(".objectiveChoice").style.width = "0px";
             if (!challengeClicked) return;
+            console.log("CLICKED")
             socket.emit("chooseObjective",challenge.star,challenge.id,challengeClicked)
         })
     }
