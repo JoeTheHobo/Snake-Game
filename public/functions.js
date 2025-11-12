@@ -2937,6 +2937,7 @@ function generateObjectiveCard(card,challenge,type) {
         let pointsNeeded = challenge.amt;
         let startVal = challenge.startValue;
         let currentVal;
+        if (!localAccount.stats) localAccount.stats = [];
         for (let i = 0; i < localAccount.stats.length; i++) {
             if (localAccount.stats[i].stat_name === challenge.objective) currentVal = localAccount.stats[i].stat_value;
         }
