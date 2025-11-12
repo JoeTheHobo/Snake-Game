@@ -2858,9 +2858,10 @@ function parseSize(value, size,boardSize,renderFrom = "zone") {
     }
   }
 
-
+let challengeClicked = false;
 $(".objectiveCard").on("click",function() {
     $(".objectiveChoice").style.width = "95%";
+    challengeClicked = Number(this.id.subset("d\\after",true));
     loadWeeklyChallenges();
 })
 $(".objectiveClose").on("click",function() {
@@ -2889,6 +2890,8 @@ function generateObjectiveCard(card,challenge,type) {
         let displayText = card.create("div.obj_displayText>No Objective Selected");
         return;
     }
+
+    console.log(challenge)
 
     if (challenge.objective.includes("item") || (challenge.objective.includes("tile") && !challenge.objective.includes("tiles"))) {
         let type = challenge.objective.format("<").subset("_\\after",true).subset(0,"_\\before").format("<");
@@ -2919,6 +2922,8 @@ function generateObjectiveCard(card,challenge,type) {
     if (type === "weekly") {
         card.on("click",function() {
             $(".objectiveChoice").style.width = "0px";
+            if (!challengeClicked) return;
+            socket.emit("chooseObjective",challenge.star,challenge.id,challengeClicked)
         })
     }
 

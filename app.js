@@ -788,6 +788,59 @@ io.on('connection', (socket) => {
             socket.emit("returningUserStats", results);
         });
     })
+    socket.on("chooseObjective",(star,id,slot) => {
+        let account = onlineAccounts[socket.id];
+        if (!account.loggedIn) return;
+        
+        let usersSlot = false;
+        if (slot === 1 && account.activeChallenge1 === null) usersSlot = account.activeChallenge1;
+        if (slot === 2 && account.activeChallenge2 === null) usersSlot = account.activeChallenge2;
+        if (slot === 3 && account.activeChallenge3 === null) usersSlot = account.activeChallenge3;
+
+        if (!usersSlot) return;
+
+        let challenge;
+
+        for (let i = 0; i < account.weeklyChallenges.challenges.length; i++) {
+            if (account.weeklyChallenges.challenges[i].star === star &&
+                account.weeklyChallenges.challenges[i].id === id &&
+                account.weeklyChallenges.challenges[i].completed === false &&
+                account.weeklyChallenges.challenges[i].selected !== true) {
+                    challenge = account.weeklyChallenges.challenges[i];
+                }
+        }
+
+        if (!challenge) return;
+
+        //Figure out start AMT here
+        /*
+            objective: "collect_item_34", "total_deaths" "grow"
+            amt: 30,
+        */
+
+        /*
+            1. Grab their current stat if any. 
+            2. Mark stat on objective
+
+        */
+
+        const query = `SELECT stat_value FROM stats WHERE tag = ? AND stat_name = ?`;
+        db.query(query,[Number(account.tag),challenge.objective],(err,res) => {
+            if (err) {
+                console.log("Couldn't Get Stat",err)
+                return;
+            }
+
+            console.log(res)
+            return;
+            challenge.selected = true;
+            usersSlot = challenge;
+
+        })
+
+        
+
+    })
     socket.on("createNewBoard",(boardName,width,height,sentFrom) => {
         let account = onlineAccounts[socket.id];
         if (!account.loggedIn) return;
