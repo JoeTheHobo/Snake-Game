@@ -2919,7 +2919,7 @@ function generateObjectiveCard(card,challenge,type) {
     if (challenge.completed) {
         card.create("div.obj_complete>Completed");
     }
-    if (challenge.selected) {
+    if (challenge.selected && type === "weekly") {
         card.create("div.obj_selected>Selected");
     }
 
