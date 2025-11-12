@@ -2933,6 +2933,17 @@ function generateObjectiveCard(card,challenge,type) {
         let fullBar = barHolder.create("div.obj_statusBar");
 
         let pointsNeeded = challenge.amt;
+        let startVal = challenge.startValue;
+        let currentVal;
+        for (let i = 0; i < localAccount.stats.length; i++) {
+            if (localAccount.stats[i].stat_name === challenge.objective) currentVal = localAccount.stats[i].stat_value;
+        }
+        let pointsHave = currentVal - startVal;
+        if (pointsHave > pointsNeeded) pointsHave = pointsNeeded;
+
+        console.log(pointsNeeded,pointsHave)
+
+
     }
 
 
@@ -2942,10 +2953,6 @@ socket.on("updateChallenges",(weekly,slot1,slot2,slot3) => {
     localAccount.activeChallenge1 = slot1;
     localAccount.activeChallenge2 = slot2;
     localAccount.activeChallenge3 = slot3;
-
-    generateObjectiveCard($(".objCard1"),localAccount.activeChallenge1,"daily");
-    generateObjectiveCard($(".objCard2"),localAccount.activeChallenge2,"daily");
-    generateObjectiveCard($(".objCard3"),localAccount.activeChallenge3,"daily");
 })
 
 function getById(type,id) {

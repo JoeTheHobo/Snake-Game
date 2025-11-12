@@ -843,6 +843,22 @@ io.on('connection', (socket) => {
                 }
             );
 
+            const query = `
+                SELECT stat_name, stat_value
+                FROM stats
+                WHERE tag = ?
+            `;
+
+            db.query(query, [Number(account.tag)], (err, results) => {
+                if (err) {
+                    console.error("Error fetching stats:", err);
+                    return;
+                }
+
+                // Send the results back to the client
+                socket.emit("returningUserStats", results,true);
+            });
+
 
         })
     })
