@@ -2890,7 +2890,9 @@ function generateObjectiveCard(card,challenge,type) {
         let displayText = card.create("div.obj_displayText>No Objective Selected");
         return;
     }
-
+    
+    let displayText = card.create("div.obj_displayText>" + challenge.display_text);
+    
     console.log(challenge)
 
     if (challenge.objective.includes("item") || (challenge.objective.includes("tile") && !challenge.objective.includes("tiles"))) {
