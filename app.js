@@ -4194,6 +4194,7 @@ function setSocketToUser(account,user,dbObj) {
 
         }
     }
+    console.log(account.activeChallenge1)
     
     updateLobbies();
 
