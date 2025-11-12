@@ -2932,6 +2932,7 @@ function generateObjectiveCard(card,challenge,type) {
 
 }
 socket.on("updateChallenges",(weekly,slot1,slot2,slot3) => {
+    console.log("recieved")
     localAccount.weeklyChallenges = weekly;
     localAccount.activeChallenge1 = slot1;
     localAccount.activeChallenge2 = slot2;

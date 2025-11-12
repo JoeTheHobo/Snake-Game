@@ -823,6 +823,10 @@ io.on('connection', (socket) => {
             else challenge.startValue = res[0].stat_value;
             challenge.selected = true;
             usersSlot = challenge;
+            
+            //EMIT
+            console.log("EMITING")
+            socket.emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3);
 
             let setName = "active_challenge_" + slot;
             db.query(
@@ -835,8 +839,6 @@ io.on('connection', (socket) => {
                 }
             );
 
-            //EMIT
-            socket.emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3);
 
         })
     })
