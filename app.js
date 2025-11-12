@@ -793,9 +793,9 @@ io.on('connection', (socket) => {
         if (!account.loggedIn) return;
         
         let usersSlot = false;
-        if (slot === 1 && account.activeChallenge1 === null) usersSlot = account.activeChallenge1;
-        if (slot === 2 && account.activeChallenge2 === null) usersSlot = account.activeChallenge2;
-        if (slot === 3 && account.activeChallenge3 === null) usersSlot = account.activeChallenge3;
+        if (slot === 1) usersSlot = account.activeChallenge1;
+        if (slot === 2) usersSlot = account.activeChallenge2;
+        if (slot === 3) usersSlot = account.activeChallenge3;
 
         if (usersSlot === false) return;
 
@@ -1514,7 +1514,7 @@ io.on('connection', (socket) => {
             try {
                 if (!this.updateStatsTime) this.updateStatsTime = Date.now() + 30000;
                 else if (Date.now() >= this.updateStatsTime) {
-                    this.updateStatsTime = Date.now() + 30000;
+                    this.updateStatsTime = Date.now() + 3000; //Set time to whatever is less lagiest
                     updateServerStats(lobby);
                 }
                 if (this.gameStartedAt === false) {
@@ -5476,5 +5476,22 @@ function updateServerStats(lobby) {
                 if (err) throw err;
             });
         }
+
+
+        const query = `
+            SELECT stat_name, stat_value
+            FROM stats
+            WHERE tag = ?
+        `;
+
+        db.query(query, [tag], (err, results) => {
+            if (err) {
+                console.error("Error fetching stats:", err);
+                return;
+            }
+
+            // Send the results back to the client
+            io.to(player.accountID).emit("returningUserStats", results,true);
+        });
     }   
 }

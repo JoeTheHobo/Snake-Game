@@ -2927,6 +2927,13 @@ function generateObjectiveCard(card,challenge,type) {
             socket.emit("chooseObjective",challenge.star,challenge.id,challengeClicked)
         })
     }
+    console.log(challenge)
+    if (type === "daily") {
+        let barHolder = holder.create("div.obj_statusBarHolder");
+        let fullBar = barHolder.create("div.obj_statusBar");
+
+        let pointsNeeded = challenge.amt;
+    }
 
 
 }

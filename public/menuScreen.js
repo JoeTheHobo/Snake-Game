@@ -391,7 +391,14 @@ function loadProfileMenu() {
 
     socket.emit("gatherUserStats");
 }
-socket.on("returningUserStats",(stats) => {
+socket.on("returningUserStats",(stats,setOnly) => {
+    localAccount.stats = stats;
+    generateObjectiveCard($(".objCard1"),localAccount.activeChallenge1,"daily");
+    generateObjectiveCard($(".objCard2"),localAccount.activeChallenge2,"daily");
+    generateObjectiveCard($(".objCard3"),localAccount.activeChallenge3,"daily");
+    
+    if (setOnly) return;
+
     let correctStatList = [];
     for (let i = 0; i < stats.length; i++) {
         let stat = stats[i];
@@ -424,6 +431,7 @@ socket.on("returningUserStats",(stats) => {
             });
         }
     }
+
 
     //Organize stats accordinly
 
