@@ -803,15 +803,17 @@ io.on('connection', (socket) => {
         let challenge;
 
         for (let i = 0; i < account.weeklyChallenges.challenges.length; i++) {
+            let selected = false;
             if (account.weeklyChallenges.challenges[i].star === star &&
                 account.weeklyChallenges.challenges[i].id === id &&
                 account.weeklyChallenges.challenges[i].completed === false &&
                 account.weeklyChallenges.challenges[i].selected !== true) {
                     challenge = account.weeklyChallenges.challenges[i];
                     account.weeklyChallenges.challenges[i].selected = true;
+                    selected == true;
                 }
             
-            if (oldSlot) {
+            if (oldSlot && !selected) {
                 if (account.weeklyChallenges.challenges[i].star === oldSlot.star &&
                     account.weeklyChallenges.challenges[i].id === oldSlot.id) {
                     
