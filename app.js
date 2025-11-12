@@ -4269,7 +4269,7 @@ function setSocketToUser(account,user,dbObj) {
         db.query("UPDATE inventory SET weekly_challenges = ? WHERE tag = ?", [JSON.stringify(account.weeklyChallenges), user.tag]);
     } else {
         let reset = shouldResetChallenges(account.weeklyChallenges.startDate);
-        if (reset || true) {
+        if (reset) {
             account.weeklyChallenges = gatherWeeklyChallenges();
             account.activeChallenge1 = null;
             account.activeChallenge2 = null;

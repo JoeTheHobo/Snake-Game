@@ -2916,9 +2916,6 @@ function generateObjectiveCard(card,challenge,type) {
     }
 
     //Completed Big Banner Over Everyting Saying Completed
-    if (challenge.completed) {
-        card.create("div.obj_complete>Completed");
-    }
     if (challenge.selected && type === "weekly") {
         card.create("div.obj_selected>Selected");
     }
@@ -2945,7 +2942,12 @@ function generateObjectiveCard(card,challenge,type) {
         }
         if (currentVal === undefined) currentVal = 0;
         let pointsHave = currentVal - startVal;
-        if (pointsHave > pointsNeeded) pointsHave = pointsNeeded;
+        if (pointsHave > pointsNeeded) {
+            if (pointsHave > pointsNeeded) {
+                card.create("div.obj_complete>Completed");
+            }
+            pointsHave = pointsNeeded;
+        }
 
 
         let rect = card.getBoundingClientRect()
