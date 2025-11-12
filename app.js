@@ -4287,6 +4287,7 @@ function setSocketToUser(account,user,dbObj) {
     io.to(account.id).emit('setPlayer', account.id, account,accessedBattlePasses);
     io.to(account.id).emit("setScene","newMenu");
     sendBoardStats(account.id,"Set Player");
+    sendStatsIO(user.tag,account.id)
 }
 
 function generateRandomString(length = 10) {
