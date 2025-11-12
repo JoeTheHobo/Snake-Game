@@ -4150,8 +4150,10 @@ function setSocketToUser(account,user,dbObj) {
     account.musicVolume = dbObj.inventory.music_volume;
     account.sfxVolume = dbObj.inventory.sfx_volume;
     account.publishedBoardLimit = dbObj.inventory.published_board_limit;
-    account.activeChallenges = dbObj.inventory.active_challenges;
     account.weeklyChallenges = dbObj.inventory.weekly_challenges;
+    account.activeChallenge1 = dbObj.inventory.active_challenge_1;
+    account.activeChallenge2 = dbObj.inventory.active_challenge_2;
+    account.activeChallenge3 = dbObj.inventory.active_challenge_3;
 
     //allowed
     account.allowedNameColors = dbObj.allowed.nameColors;
@@ -4182,7 +4184,9 @@ function setSocketToUser(account,user,dbObj) {
         let reset = shouldResetChallenges(account.weeklyChallenges.startDate);
         if (reset) {
             account.weeklyChallenges = gatherWeeklyChallenges();
-            account.activeChallenges = [];
+            account.activeChallenge1 = null;
+            account.activeChallenge2 = null;
+            account.activeChallenge3 = null;
             db.query(
                 "UPDATE inventory SET weekly_challenges = ? active_challenges WHERE tag = ?",
                 [JSON.stringify(account.weeklyChallenges),JSON.stringify(account.active_challenges), user.tag]
@@ -4190,7 +4194,6 @@ function setSocketToUser(account,user,dbObj) {
 
         }
     }
-    if (account.activeChallenges === null) account.activeChallenges = []; 
     
     updateLobbies();
 

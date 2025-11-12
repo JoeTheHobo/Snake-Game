@@ -53,12 +53,18 @@ socket.on("setPlayer", (id,account,server_accessedBattlePasses,server_items,serv
     localAccount.dateCreated = account.dateCreated;
     localAccount.boards = [];
     localAccount.weeklyChallenges = account.weeklyChallenges;
-    localAccount.activeChallenges = account.activeChallenges;
+    localAccount.activeChallenge1 = account.activeChallenge1;
+    localAccount.activeChallenge2 = account.activeChallenge2;
+    localAccount.activeChallenge3 = account.activeChallenge3;
     accessedBattlePasses = server_accessedBattlePasses;
 
     global_musicVolume = account.musicVolume;
     global_sfxVolume = account.sfxVolume;
     adjustVolumeSliders();
+
+    generateObjectiveCard($(".objCard1"),localAccount.activeChallenge1,"daily");
+    generateObjectiveCard($(".objCard2"),localAccount.activeChallenge2,"daily");
+    generateObjectiveCard($(".objCard3"),localAccount.activeChallenge3,"daily");
 
 
     $(".newMenu_statPoints").innerHTML = localAccount.battlePassPoints;

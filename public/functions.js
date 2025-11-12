@@ -2886,7 +2886,11 @@ function generateObjectiveCard(card,challenge,type) {
         star "one"
     */
 
-    let displayText = card.create("div.obj_displayText>" + challenge.display_text);
+    if (card === null) {
+        let displayText = card.create("div.obj_displayText>No Objective Selected");
+        return;
+    }
+
 
     if (challenge.objective.includes("item") || (challenge.objective.includes("tile") && !challenge.objective.includes("tiles"))) {
         let type = challenge.objective.format("<").subset("_\\after",true).subset(0,"_\\before").format("<");
@@ -2919,6 +2923,8 @@ function generateObjectiveCard(card,challenge,type) {
             $(".objectiveChoice").style.width = "0px";
         })
     }
+
+
 }
 
 function getById(type,id) {
