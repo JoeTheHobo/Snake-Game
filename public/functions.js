@@ -2941,7 +2941,11 @@ function generateObjectiveCard(card,challenge,type) {
         let pointsHave = currentVal - startVal;
         if (pointsHave > pointsNeeded) pointsHave = pointsNeeded;
 
-        console.log(pointsNeeded,pointsHave)
+        let rect = card.getBoundingClientRect()
+        let width = rect.width;
+        let fillWidth = (pointsHave*width)/pointsNeeded;
+
+        fullBar.style.width = fillWidth + "px";
 
 
     }

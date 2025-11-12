@@ -5606,3 +5606,18 @@ cursor: url('./img/pointer.cur'), auto;
   width: 100%;
   height: 100%;
 }
+
+.obj_statusBarHolder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 10%;
+  background-color: white;
+}
+.obj_statusBar {
+  background-color: rgb(190, 59, 230);
+  transition: all .2s ease-in-out;
+  height: 100%;
+
+}
