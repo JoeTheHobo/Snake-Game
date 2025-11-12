@@ -5582,12 +5582,24 @@ cursor: url('./img/pointer.cur'), auto;
   width: 100%;
   height: 100%;
 }
+.obj_selected {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  background: rgba(198, 74, 236, 0.452);
+  font-size: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
 .obj_complete {
   position: absolute;
   width: 100%;
   height: 100%;
   border-radius: 5px;
-  background: rgba(137, 243, 137, 0.452);
+  background: rgba(223, 194, 32, 0.534);
   font-size: 35px;
   display: flex;
   align-items: center;

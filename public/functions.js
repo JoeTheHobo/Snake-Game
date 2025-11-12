@@ -2919,13 +2919,19 @@ function generateObjectiveCard(card,challenge,type) {
     if (challenge.completed) {
         card.create("div.obj_complete>Completed");
     }
+    if (challenge.selected) {
+        card.create("div.obj_selected>Selected");
+    }
 
+    console.log(challenge)
     if (type === "weekly") {
-        card.on("click",function() {
-            $(".objectiveChoice").style.width = "0px";
-            if (!challengeClicked) return;
-            socket.emit("chooseObjective",challenge.star,challenge.id,challengeClicked)
-        })
+        if (!challenge.selected && !challenge.completed) {
+            card.on("click",function() {
+                $(".objectiveChoice").style.width = "0px";
+                if (!challengeClicked) return;
+                socket.emit("chooseObjective",challenge.star,challenge.id,challengeClicked)
+            })
+        }
     }
 
     if (type === "daily") {
