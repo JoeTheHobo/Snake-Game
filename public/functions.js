@@ -2860,6 +2860,10 @@ function parseSize(value, size,boardSize,renderFrom = "zone") {
 
 let challengeClicked = false;
 $(".objectiveCard").on("click",function() {
+    if (this.completed) {
+
+        return;
+    }
     $(".objectiveChoice").style.width = "95%";
     challengeClicked = Number(this.id.subset("d\\after",true));
     loadWeeklyChallenges();
@@ -2946,8 +2950,11 @@ function generateObjectiveCard(card,challenge,type) {
         if (pointsHave > pointsNeeded) {
             if (pointsHave > pointsNeeded) {
                 card.create("div.obj_complete>Completed");
+                card.completed = true;
             }
             pointsHave = pointsNeeded;
+        } else {
+            card.completed = false;
         }
 
 
