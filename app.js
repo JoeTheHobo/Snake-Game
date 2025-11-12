@@ -789,10 +789,8 @@ io.on('connection', (socket) => {
         });
     })
     socket.on("chooseObjective",(star,id,slot) => {
-        console.log("GET GOT")
         let account = onlineAccounts[socket.id];
         if (!account.loggedIn) return;
-        console.log(2,star,id,slot)
         
         let usersSlot = false;
         if (slot === 1 && account.activeChallenge1 === null) usersSlot = account.activeChallenge1;
@@ -814,18 +812,6 @@ io.on('connection', (socket) => {
 
         if (!challenge) return;
 
-        //Figure out start AMT here
-        /*
-            objective: "collect_item_34", "total_deaths" "grow"
-            amt: 30,
-        */
-
-        /*
-            1. Grab their current stat if any. 
-            2. Mark stat on objective
-
-        */
-
         const query = `SELECT stat_value FROM stats WHERE tag = ? AND stat_name = ?`;
         db.query(query,[Number(account.tag),challenge.objective],(err,res) => {
             if (err) {
@@ -833,15 +819,26 @@ io.on('connection', (socket) => {
                 return;
             }
 
-            console.log(res)
-            return;
+            if (res.length === 0) challenge.startValue = 0;
+            else challenge.startValue = res[0].stat_value;
             challenge.selected = true;
             usersSlot = challenge;
 
+            let setName = "active_challenge_" + slot;
+            db.query(
+                `UPDATE inventory SET ${setName} = ?, weekly_challenges = ? WHERE tag = ?`,
+                [JSON.stringify(challenge), JSON.stringify(account.weeklyChallenges) , Number(account.tag)],(err) => {
+                    if (err) {
+                        console.log(43653245,err);
+                        return;
+                    }
+                }
+            );
+
+            //EMIT
+            socket.emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3);
+
         })
-
-        
-
     })
     socket.on("createNewBoard",(boardName,width,height,sentFrom) => {
         let account = onlineAccounts[socket.id];
@@ -4249,7 +4246,6 @@ function setSocketToUser(account,user,dbObj) {
 
         }
     }
-    console.log(account.activeChallenge1)
     
     updateLobbies();
 

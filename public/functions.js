@@ -2925,13 +2925,22 @@ function generateObjectiveCard(card,challenge,type) {
         card.on("click",function() {
             $(".objectiveChoice").style.width = "0px";
             if (!challengeClicked) return;
-            console.log("CLICKED")
             socket.emit("chooseObjective",challenge.star,challenge.id,challengeClicked)
         })
     }
 
 
 }
+socket.on("updateChallenges",(weekly,slot1,slot2,slot3) => {
+    localAccount.weeklyChallenges = weekly;
+    localAccount.activeChallenge1 = slot1;
+    localAccount.activeChallenge2 = slot2;
+    localAccount.activeChallenge3 = slot3;
+
+    generateObjectiveCard($(".objCard1"),localAccount.activeChallenge1,"daily");
+    generateObjectiveCard($(".objCard2"),localAccount.activeChallenge2,"daily");
+    generateObjectiveCard($(".objCard3"),localAccount.activeChallenge3,"daily");
+})
 
 function getById(type,id) {
     if (type == "item") return getItemById(id);
