@@ -799,6 +799,7 @@ io.on('connection', (socket) => {
 
         if (usersSlot === false) return;
 
+        let oldSlot = structuredClone(usersSlot);
         let challenge;
 
         for (let i = 0; i < account.weeklyChallenges.challenges.length; i++) {
@@ -809,6 +810,16 @@ io.on('connection', (socket) => {
                     challenge = account.weeklyChallenges.challenges[i];
                     account.weeklyChallenges.challenges[i].selected = true;
                 }
+            
+            if (oldSlot) {
+                if (account.weeklyChallenges.challenges[i].star === oldSlot.star &&
+                    account.weeklyChallenges.challenges[i].id === oldSlot.id) {
+                    
+                    account.weeklyChallenges.challenges[i].selected = false;
+                }
+
+            }
+
         }
 
         if (!challenge) return;
@@ -822,7 +833,6 @@ io.on('connection', (socket) => {
 
             if (res.length === 0) challenge.startValue = 0;
             else challenge.startValue = res[0].stat_value;
-            console.log(res[0].stat_value);
             challenge.selected = true;
             usersSlot = challenge;
 
