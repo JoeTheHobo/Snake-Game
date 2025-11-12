@@ -2885,7 +2885,7 @@ function generateObjectiveCard(card,challenge,type) {
         completed false
         star "one"
     */
-    if (challenge === null) {
+    if (challenge === null || challenge === undefined) {
         let displayText = card.create("div.obj_displayText>No Objective Selected");
         return;
     }
