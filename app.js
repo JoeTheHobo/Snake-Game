@@ -822,6 +822,7 @@ io.on('connection', (socket) => {
 
             if (res.length === 0) challenge.startValue = 0;
             else challenge.startValue = res[0].stat_value;
+            console.log(res[0].stat_value);
             challenge.selected = true;
             usersSlot = challenge;
 
