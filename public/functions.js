@@ -3081,7 +3081,7 @@ function handleResetTimer() {
         const diff = reset - now;
 
         if (diff <= 0) {
-            resetHTML.html("Resetting now…");
+            resetHTML.innerHTML = "Resetting now…";
             return;
         }
 
@@ -3090,9 +3090,7 @@ function handleResetTimer() {
         const mins = Math.floor((diff / (1000 * 60)) % 60);
         const secs = Math.floor((diff / 1000) % 60);
 
-        resetHTML.html(
-            `${days}d ${hours}h ${mins}m ${secs}s`
-        );
+        resetHTML.innerHTML = `${days}d ${hours}h ${mins}m ${secs}s`;
     }
 
     // Run immediately and every second
