@@ -3047,7 +3047,21 @@ function chestOpened() {
     $(".ps_close").show("flex");
     let reward = $(".ps_rewards");
     for (let i = 0; i < reward.loot.length; i++) {
-        console.log(reward.loot[i])
+        let loot = reward.loot[i];
+
+        let div = reward.create("div.rewardHolder");
+
+        let img = div.create("img.rewardIMG");
+
+        let amt = div.create("div.rewardAMT>" + loot.amt);
+
+        if (loot.reward === "coins") {
+            img.src = "img/items/item_coin_basic.png";
+        }
+        if (loot.reward === "battlePoints") {
+            img.src = "img/techTrees/battlePoints.png";
+        }
+
     }
 
 }
