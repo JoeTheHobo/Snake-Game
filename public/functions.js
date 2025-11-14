@@ -3010,6 +3010,7 @@ function loadPrizeScreen() {
 
 }
 $(".ps_chest").on("click",function() {
+    let chest = $(".ps_chest_img");
     if (chest.hits > chest.hitsNeeded) return;
     if (chest.hits == chest.hitsNeeded) {
         chest.src = "img/chest_open.png";
@@ -3021,7 +3022,6 @@ $(".ps_chest").on("click",function() {
         return;
     }
     $(".ps_chest").style.width = "250px";
-    let chest = $(".ps_chest_img");
     chest.hits++;
 
     let chestTimer = setTimeout(function() {
