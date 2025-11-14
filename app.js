@@ -799,6 +799,25 @@ io.on('connection', (socket) => {
         if (usersSlot === false) return;
 
         console.log(usersSlot)
+
+        const query = `SELECT stat_value FROM stats WHERE tag = ? AND stat_name = ?`;
+        db.query(query,[Number(account.tag),usersSlot.objective],(err,res) => {
+            if (err) {
+                console.log(12562434,err);
+                return; 
+            }
+            let pointsNeeded = usersSlot.amt;
+            let startVal = usersSlot.startValue;
+            let currentVal;
+            
+            if (res.length === 0) currentVal = 0;
+            else currentVal = res[0].stat_value;
+
+            if ((currentVal - startVal) < pointsNeeded) return;
+            
+            
+
+        });
         
         
     })
