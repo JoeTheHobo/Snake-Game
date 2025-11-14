@@ -3090,7 +3090,7 @@ function handleResetTimer() {
         const mins = Math.floor((diff / (1000 * 60)) % 60);
         const secs = Math.floor((diff / 1000) % 60);
 
-        resetHTML.innerHTML = `${days}d ${hours}h ${mins}m ${secs}s`;
+        resetHTML.innerHTML = `Time Remaining \n ${days}d ${hours}h ${mins}m ${secs}s`;
     }
 
     // Run immediately and every second

@@ -5689,3 +5689,6 @@ cursor: url('./img/pointer.cur'), auto;
   width: 210px;
   height: 60px;
 }
+.objectiveReset {
+  font-size: 20px;
+}
