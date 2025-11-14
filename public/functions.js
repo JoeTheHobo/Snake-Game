@@ -3004,7 +3004,7 @@ function loadPrizeScreen() {
     chest.hitsNeeded = rnd(5,10);
     let reward = $(".ps_rewards");
     reward.innerHTML = "";
-
+    $(".ps_close").hide();
 
 
 
@@ -3031,12 +3031,17 @@ $(".ps_chest").on("click",function() {
     },200);
 })
 function chestOpened() {
+    
+    $(".ps_close").show("flex");
     let reward = $(".ps_rewards");
     for (let i = 0; i < reward.loot.length; i++) {
         console.log(reward.loot[i])
     }
 
 }
+$(".ps_close").on("click",function() {
+    $(".prizeScreen").hide();
+})
 socket.on("completedObjective",(loot) => {
     $(".ps_rewards").loot = loot;
 })
