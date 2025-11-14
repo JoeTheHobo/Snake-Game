@@ -812,8 +812,27 @@ io.on('connection', (socket) => {
             else currentVal = res[0].stat_value;
 
             if ((currentVal - startVal) < pointsNeeded) return;
+
+            let loot = [];
+            for (let i = 0; i < rewards[usersSlot.star].length; i++) {
+                let reward = rewards[usersSlot.star][i];
+                if (simple.rnd(100) > reward.chance) continue;
+
+                let amt = simple.rnd(reward.min,reward.max);
+                loot.push({
+                    reward: reward.reward,
+                    amt: amt
+                })
+
+                if (reward.reward === "coins") {
+                    addToUser(amt,Number(account.tag),socket.id,"coins");
+                }
+                if (reward.reward === "battlePoints") {
+                    addToUser(amt,Number(account.tag),socket.id,"battle_pass_points");
+                }
+            }
             
-            socket.emit("completedObjective",2)
+            socket.emit("completedObjective",2,loot);
 
         });
         
@@ -3282,29 +3301,29 @@ function attempGiveCoin(lobby,player,itemPos) {
 
     if (!allowed) return;
     let account = onlineAccounts[player.accountID];
-    addCoinsToUser(1,Number(account.tag),player.accountID);
+    addToUser(1,Number(account.tag),player.accountID,"coins");
 
 }
-function addCoinsToUser(amt,userID,socket) {
+function addToUser(amt,userID,socket,type) {
      // Add coins first
-    const updateSql = `UPDATE inventory SET coins = coins + ? WHERE tag = ?`;
+    const updateSql = `UPDATE inventory SET ${type} = ${type} + ? WHERE tag = ?`;
 
     db.query(updateSql, [amt, userID], (err, result) => {
         if (err) {
-            console.log("Couldn't Give Coin", err);
+            console.log("Couldn't Give " + type, err);
             return;
         }
 
         // Now fetch the updated coin count
-        const selectSql = `SELECT coins FROM inventory WHERE tag = ?`;
+        const selectSql = `SELECT ${type} FROM inventory WHERE tag = ?`;
         db.query(selectSql, [userID], (err, rows) => {
             if (err) {
-                console.log("Couldn't fetch updated coins", err);
+                console.log("Couldn't fetch updated " + type, err);
                 return;
             }
 
-            const coins = rows[0]?.coins || 0;
-            io.to(socket).emit("updateCoins", coins);
+            const coins = rows[0][type] || 0;
+            io.to(socket).emit("update" + type, coins);
         });
     });
 }
@@ -5389,10 +5408,41 @@ newObjective("three",{
 })
 
 let rewards = {
-    one: {
-        
-    },
+    "one": [{
+        reward: "coins",
+        min: 4,
+        max: 10,
+        chance: 100,
+    },{
+        reward: "battlePoints",
+        min: 1,
+        max: 2,
+        chance: 100,
+    }],
+    "two": [{
+        reward: "coins",
+        min: 8,
+        max: 14,
+        chance: 100,
+    },{
+        reward: "battlePoints",
+        min: 2,
+        max: 4,
+        chance: 100,
+    }],
+    "three": [{
+        reward: "coins",
+        min: 11,
+        max: 20,
+        chance: 100,
+    },{
+        reward: "battlePoints",
+        min: 4,
+        max: 8,
+        chance: 100,
+    }]
 }
+    
 function shouldResetChallenges(userStartDate) {
   const userDate = new Date(userStartDate);
   const mostRecentReset = getMostRecentResetTime();

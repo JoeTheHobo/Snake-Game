@@ -3019,6 +3019,8 @@ $(".ps_chest").on("click",function() {
         let chestTimer = setTimeout(function() {
             $(".ps_chest").style.width = "200px";
         },200);
+
+        chestOpened();
         return;
     }
     $(".ps_chest").style.width = "250px";
@@ -3028,3 +3030,8 @@ $(".ps_chest").on("click",function() {
         $(".ps_chest").style.width = "200px";
     },200);
 })
+function chestOpened() {
+    let reward = $(".ps_rewards");
+    
+
+}

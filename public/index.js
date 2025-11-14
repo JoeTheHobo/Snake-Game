@@ -815,7 +815,11 @@ function handelRespawnTimer(time,deathPoint) {
 
 setScene("loading");
 
-socket.on("updateCoins",(amt) => {
+socket.on("updatecoins",(amt) => {
     localAccount.coins = amt;
     $(".newMenu_statGold").innerHTML = localAccount.coins;
+})
+socket.on("updatebattle_pass_points",(amt) => {
+    localAccount.battlePassPoints = amt;
+    $(".newMenu_statPoints").innerHTML = localAccount.battlePassPoints;
 })
