@@ -5673,6 +5673,8 @@ function resetObjective(tag,objective,slot,func,socketID) {
         if (res.length === 0) objective.startValue = 0;
         else objective.startValue = res[0].stat_value;
 
+        console.log(objective.startValue);
+
         let setName = "active_challenge_" + slot;
             db.query(
                 `UPDATE inventory SET ${setName} = ? WHERE tag = ?`,
