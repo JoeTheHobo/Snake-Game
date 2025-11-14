@@ -2933,6 +2933,10 @@ function generateObjectiveCard(card,challenge,type) {
                 socket.emit("chooseObjective",challenge.star,challenge.id,challengeClicked)
             })
         }
+
+        if (challenge.completed) {
+            card.create("div.obj_complete>Completed");
+        }
     }
 
     if (type === "daily") {

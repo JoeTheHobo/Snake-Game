@@ -5682,6 +5682,8 @@ cursor: url('./img/pointer.cur'), auto;
   width: 200px;
   height: 50px;
   transition: all .2s ease-in-out;
+  align-items: center;
+  justify-content: center;
 }
 .ps_close:hover {
   width: 210px;
