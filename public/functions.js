@@ -2878,7 +2878,8 @@ function loadWeeklyChallenges() {
     for (let i = 0; i < localAccount.weeklyChallenges.challenges.length; i++) {
         let card = holder.create("div.objectiveCard");
         generateObjectiveCard(card,localAccount.weeklyChallenges.challenges[i],"weekly");
-    }   
+    }
+
 }
 function generateObjectiveCard(card,challenge,type) {
     card.innerHTML = "";
@@ -3055,3 +3056,47 @@ $(".ps_close").on("click",function() {
 socket.on("completedObjective",(loot) => {
     $(".ps_rewards").loot = loot;
 })
+
+function handleResetTimer() {
+    
+    let resetHTML = $(".objectiveReset");
+    
+    const now = new Date();
+    // Start from current UTC date/time
+    const reset = new Date(now);
+
+    // Force to UTC (you can change to your preferred TZ offset)
+    const day = reset.getUTCDay(); // 0 = Sun, 1 = Mon, ...
+    const diffToMonday = (day + 6) % 7; // days since last Monday
+    reset.setUTCDate(reset.getUTCDate() - diffToMonday);
+    reset.setUTCHours(3, 0, 0, 0); // Monday 3 AM UTC
+
+    if (reset < now) {
+        reset.setUTCDate(reset.getUTCDate() + 7);
+    }
+        
+    // Countdown updater
+    function updateCountdown() {
+        const now = new Date();
+        const diff = reset - now;
+
+        if (diff <= 0) {
+            resetHTML.html("Resetting now…");
+            return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const mins = Math.floor((diff / (1000 * 60)) % 60);
+        const secs = Math.floor((diff / 1000) % 60);
+
+        resetHTML.html(
+            `${days}d ${hours}h ${mins}m ${secs}s`
+        );
+    }
+
+    // Run immediately and every second
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+}
+handleResetTimer();
