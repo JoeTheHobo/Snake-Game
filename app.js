@@ -850,7 +850,7 @@ io.on('connection', (socket) => {
                 [JSON.stringify(account.weeklyChallenges),
                     JSON.stringify(account.activeChallenge1),
                     JSON.stringify(account.activeChallenge2),
-                    JSON.stringify(account.activeChallenge3), user.tag]
+                    JSON.stringify(account.activeChallenge3), Number(account.tag)]
             );
 
             socket.emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3);
