@@ -5651,15 +5651,18 @@ function checkAndResetObjectives(accountID) {
     if (account.activeChallenge1?.oneGame) {
         resetObjective(Number(account.tag),account.activeChallenge1,1,function(res) {
             account.activeChallenge1 = res;
+            io.to(socketID).emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3,true);
         },accountID);
     }
     if (account.activeChallenge2?.oneGame) {
         resetObjective(Number(account.tag),account.activeChallenge2,2,function(res) {
             account.activeChallenge2 = res;
+            io.to(socketID).emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3,true);
         },accountID);    }
     if (account.activeChallenge3?.oneGame) {
         resetObjective(Number(account.tag),account.activeChallenge2,3,function(res) {
             account.activeChallenge3 = res;
+            io.to(socketID).emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3,true);
         },accountID);    }
 }
 function resetObjective(tag,objective,slot,func,socketID) {
@@ -5673,8 +5676,6 @@ function resetObjective(tag,objective,slot,func,socketID) {
         if (res.length === 0) objective.startValue = 0;
         else objective.startValue = res[0].stat_value;
 
-        console.log(objective.startValue);
-
         let setName = "active_challenge_" + slot;
             db.query(
                 `UPDATE inventory SET ${setName} = ? WHERE tag = ?`,
@@ -5687,23 +5688,6 @@ function resetObjective(tag,objective,slot,func,socketID) {
             );
 
         func(objective);
-
-        const query = `
-            SELECT stat_name, stat_value
-            FROM stats
-            WHERE tag = ?
-        `;
-
-        db.query(query, [tag], (err, results) => {
-            if (err) {
-                console.error("Error fetching stats:", err);
-                return;
-            }
-
-            // Send the results back to the client
-            io.to(socketID).emit("returningUserStats", results,true);
-        });
-
 
     })
 }
