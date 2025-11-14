@@ -5710,5 +5710,6 @@ cursor: url('./img/pointer.cur'), auto;
 
 }
 .rewardAMT {
-  font-size: 25px;
+  font-size: 45px;
+  color: white;
 }

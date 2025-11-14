@@ -2727,7 +2727,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
 
         checkingIfToAddStats: for (let u = 0; u < addStatList.length; u++) {
             let stat = addStatList[u];
-            if (!["paint"].includes(stat.ident)) continue checkingIfToAddStats;
+            if (!["paint","activate"].includes(stat.ident)) continue checkingIfToAddStats;
             addPlayerStatus(stat.name,stat.amt,stat.player);
         }
 
