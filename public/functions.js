@@ -2954,8 +2954,8 @@ function generateObjectiveCard(card,challenge,type) {
         }
         if (currentVal === undefined) currentVal = 0;
         let pointsHave = currentVal - startVal;
-        if (pointsHave > pointsNeeded) {
-            if (pointsHave > pointsNeeded) {
+        if (pointsHave >= pointsNeeded) {
+            if (pointsHave >= pointsNeeded) {
                 card.create("div.obj_complete>Completed");
                 card.completed = true;
             }
