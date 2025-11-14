@@ -3467,6 +3467,8 @@ function helper_resetLobby(lobby) {
     lobby.inGamePlayers = getPlayersList(lobby.players);
 
     for (let i = 0; i < lobby.inGamePlayers.length; i++) {
+        checkAndResetObjectives(lobby.inGamePlayers[i].accountID);
+
         let player = lobby.inGamePlayers[i];
         player.index = i;
         player.stats = [];
@@ -4339,7 +4341,7 @@ function setSocketToUser(account,user,dbObj) {
         db.query("UPDATE inventory SET weekly_challenges = ? WHERE tag = ?", [JSON.stringify(account.weeklyChallenges), user.tag]);
     } else {
         let reset = shouldResetChallenges(account.weeklyChallenges.startDate);
-        if (reset || true) {
+        if (reset) {
             account.weeklyChallenges = gatherWeeklyChallenges();
             account.activeChallenge1 = null;
             account.activeChallenge2 = null;
@@ -5641,4 +5643,65 @@ function sendStatsIO(tag,emitTo) {
         // Send the results back to the client
         io.to(emitTo).emit("returningUserStats", results,true);
     });
+}
+function checkAndResetObjectives(accountID) {
+    let account = onlineAccounts[accountID];
+    if (!account.loggedIn) return;
+
+    if (account.activeChallenge1?.oneGame) {
+        resetObjective(Number(account.tag),account.activeChallenge1,1,function(res) {
+            account.activeChallenge1 = res;
+        });
+    }
+    if (account.activeChallenge2?.oneGame) {
+        resetObjective(Number(account.tag),account.activeChallenge2,2,function(res) {
+            account.activeChallenge2 = res;
+        });    }
+    if (account.activeChallenge3?.oneGame) {
+        resetObjective(Number(account.tag),account.activeChallenge2,3,function(res) {
+            account.activeChallenge3 = res;
+        });    }
+}
+function resetObjective(tag,objective,slot,func) {
+    const query = `SELECT stat_value FROM stats WHERE tag = ? AND stat_name = ?`;
+    db.query(query,[tag,objective.objective],(err,res) => {
+        if (err) {
+            console.log("Couldn't Get Stat",err)
+            return;
+        }
+
+        if (res.length === 0) objective.startValue = 0;
+        else objective.startValue = res[0].stat_value;
+
+        let setName = "active_challenge_" + slot;
+            db.query(
+                `UPDATE inventory SET ${setName} = ? WHERE tag = ?`,
+                [JSON.stringify(objective) , tag],(err) => {
+                    if (err) {
+                        console.log(43653245,err);
+                        return;
+                    }
+                }
+            );
+
+        func(objective);
+
+        const query = `
+            SELECT stat_name, stat_value
+            FROM stats
+            WHERE tag = ?
+        `;
+
+        db.query(query, [Number(account.tag)], (err, results) => {
+            if (err) {
+                console.error("Error fetching stats:", err);
+                return;
+            }
+
+            // Send the results back to the client
+            socket.emit("returningUserStats", results,true);
+        });
+
+
+    })
 }
