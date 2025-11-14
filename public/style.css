@@ -5652,14 +5652,14 @@ cursor: url('./img/pointer.cur'), auto;
     justify-content: center;
     align-items: center;
                      /* hidden by default */
-    pointer-events: none;              /* disable clicks until shown */
     transition: opacity 0.4s ease;
     z-index: 9999;
-    cursor: url('./img/pointer.cur'), auto;
 }
 .ps_chest {
   width: 200px;
   aspect-ratio: 1/1;
+  cursor: url('./img/pointer.cur'), auto;
+  transition: all .2s ease-in-out;
 }
 .ps_chest > img {
   width: 100%;
