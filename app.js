@@ -5692,7 +5692,7 @@ function resetObjective(tag,objective,slot,func) {
             WHERE tag = ?
         `;
 
-        db.query(query, [Number(account.tag)], (err, results) => {
+        db.query(query, [tag], (err, results) => {
             if (err) {
                 console.error("Error fetching stats:", err);
                 return;
