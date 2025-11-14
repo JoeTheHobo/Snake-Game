@@ -3032,6 +3032,9 @@ $(".ps_chest").on("click",function() {
 })
 function chestOpened() {
     let reward = $(".ps_rewards");
-    
+
 
 }
+socket.on("completedObjective",(loot) => {
+    
+})

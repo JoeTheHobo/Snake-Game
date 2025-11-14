@@ -832,8 +832,28 @@ io.on('connection', (socket) => {
                 }
             }
             
-            socket.emit("completedObjective",2,loot);
+            socket.emit("completedObjective",loot);
+            
+            for (let i = 0; i < account.weeklyChallenges.challenges.length; i++) {
+                if (account.weeklyChallenges.challenges[i].star === usersSlot.star &&
+                    account.weeklyChallenges.challenges[i].id === usersSlot.id) {
+                        account.weeklyChallenges.challenges[i].selected = false;
+                        account.weeklyChallenges.challenges[i].completed = true;
+                }
 
+            }
+            if (slot === 1) account.activeChallenge1 = null;
+            if (slot === 2) account.activeChallenge2 = null;
+            if (slot === 3) account.activeChallenge3 = null;
+            db.query(
+                "UPDATE inventory SET weekly_challenges = ?, active_challenge_1 = ?, active_challenge_2 = ?, active_challenge_3 = ? WHERE tag = ?",
+                [JSON.stringify(account.weeklyChallenges),
+                    JSON.stringify(account.activeChallenge1),
+                    JSON.stringify(account.activeChallenge2),
+                    JSON.stringify(account.activeChallenge3), user.tag]
+            );
+
+            socket.emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3);
         });
         
         
