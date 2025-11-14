@@ -3033,6 +3033,7 @@ $(".ps_chest").on("click",function() {
         },200);
 
         chestOpened();
+        chest.hits++;
         return;
     }
     $(".ps_chest").style.width = "250px";

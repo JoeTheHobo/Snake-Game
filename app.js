@@ -4339,7 +4339,7 @@ function setSocketToUser(account,user,dbObj) {
         db.query("UPDATE inventory SET weekly_challenges = ? WHERE tag = ?", [JSON.stringify(account.weeklyChallenges), user.tag]);
     } else {
         let reset = shouldResetChallenges(account.weeklyChallenges.startDate);
-        if (reset) {
+        if (reset || true) {
             account.weeklyChallenges = gatherWeeklyChallenges();
             account.activeChallenge1 = null;
             account.activeChallenge2 = null;
@@ -5381,6 +5381,12 @@ newObjective("one",{
     objective: "games_played",
     amt: 5,
 })
+newObjective("one",{
+    display_text: "Grow 75 In 1 Game",
+    objective: "grow",
+    amt: 75,
+    oneGame: true,
+})
 
 
 newObjective("two",{
@@ -5389,9 +5395,9 @@ newObjective("two",{
     amt: 15,
 })
 newObjective("two",{
-    display_text: "Grow 50 In 1 Game",
+    display_text: "Grow 150 In 1 Game",
     objective: "grow",
-    amt: 50,
+    amt: 150,
     oneGame: true,
 })
 newObjective("two",{
@@ -5425,6 +5431,12 @@ newObjective("three",{
     display_text: "Collect 30 Coins",
     objective: "collect_item_35",
     amt: 30,
+})
+newObjective("three",{
+    display_text: "Grow 250 In 1 Game",
+    objective: "grow",
+    amt: 250,
+    oneGame: true,
 })
 
 let rewards = {
