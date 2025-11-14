@@ -5651,21 +5651,21 @@ function checkAndResetObjectives(accountID) {
     if (account.activeChallenge1?.oneGame) {
         resetObjective(Number(account.tag),account.activeChallenge1,1,function(res) {
             account.activeChallenge1 = res;
-            io.to(socketID).emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3,true);
-        },accountID);
+            io.to(accountID).emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3,true);
+        });
     }
     if (account.activeChallenge2?.oneGame) {
         resetObjective(Number(account.tag),account.activeChallenge2,2,function(res) {
             account.activeChallenge2 = res;
-            io.to(socketID).emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3,true);
-        },accountID);    }
+            io.to(accountID).emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3,true);
+        });    }
     if (account.activeChallenge3?.oneGame) {
         resetObjective(Number(account.tag),account.activeChallenge2,3,function(res) {
             account.activeChallenge3 = res;
-            io.to(socketID).emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3,true);
-        },accountID);    }
+            io.to(accountID).emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3,true);
+        });    }
 }
-function resetObjective(tag,objective,slot,func,socketID) {
+function resetObjective(tag,objective,slot,func) {
     const query = `SELECT stat_value FROM stats WHERE tag = ? AND stat_name = ?`;
     db.query(query,[tag,objective.objective],(err,res) => {
         if (err) {
