@@ -815,7 +815,7 @@ io.on('connection', (socket) => {
 
             if ((currentVal - startVal) < pointsNeeded) return;
             
-            
+            console.log("COMPLETED")
 
         });
         
