@@ -5632,3 +5632,28 @@ cursor: url('./img/pointer.cur'), auto;
   height: 100%;
 
 }
+.prizeScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    /* Opaque dark background */
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.25) 0%,   /* bright center glow */
+        rgba(0, 0, 0, 0.8) 70%          /* dark outer fade */
+    );
+
+    backdrop-filter: blur(6px);        /* optional: adds a premium blur look */
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 0;                        /* hidden by default */
+    pointer-events: none;              /* disable clicks until shown */
+    transition: opacity 0.4s ease;
+    z-index: 9999;
+}

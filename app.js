@@ -798,8 +798,6 @@ io.on('connection', (socket) => {
         if (slot === 3) usersSlot = account.activeChallenge3;
         if (usersSlot === false) return;
 
-        console.log(usersSlot)
-
         const query = `SELECT stat_value FROM stats WHERE tag = ? AND stat_name = ?`;
         db.query(query,[Number(account.tag),usersSlot.objective],(err,res) => {
             if (err) {
@@ -815,7 +813,7 @@ io.on('connection', (socket) => {
 
             if ((currentVal - startVal) < pointsNeeded) return;
             
-            console.log("COMPLETED")
+            socket.emit("completedObjective",2)
 
         });
         

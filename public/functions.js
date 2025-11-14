@@ -2862,6 +2862,7 @@ let challengeClicked = false;
 $(".objectiveCard").on("click",function() {
     if (this.completed) {
         socket.emit("checkObjectiveCompletion",Number(this.id.subset("d\\after",true)));
+        loadPrizeScreen();
         return;
     }
     $(".objectiveChoice").style.width = "95%";
@@ -2991,4 +2992,8 @@ function getTileById(id) {
         if (tiles[i].id == id) return tiles[i];
     }
     return false;
+}
+
+function loadPrizeScreen() {
+    $(".prizeScreen").show("flex");
 }
