@@ -3032,9 +3032,11 @@ $(".ps_chest").on("click",function() {
 })
 function chestOpened() {
     let reward = $(".ps_rewards");
-
+    for (let i = 0; i < reward.loot.length; i++) {
+        console.log(reward.loot[i])
+    }
 
 }
 socket.on("completedObjective",(loot) => {
-    
+    $(".ps_rewards").loot = loot;
 })
