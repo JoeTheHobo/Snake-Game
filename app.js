@@ -853,7 +853,7 @@ io.on('connection', (socket) => {
                     JSON.stringify(account.activeChallenge3), Number(account.tag)]
             );
 
-            socket.emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3);
+            socket.emit("updateChallenges",account.weeklyChallenges,account.activeChallenge1,account.activeChallenge2,account.activeChallenge3,true);
         });
         
         

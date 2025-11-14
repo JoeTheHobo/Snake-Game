@@ -2974,11 +2974,17 @@ function generateObjectiveCard(card,challenge,type) {
 
 
 }
-socket.on("updateChallenges",(weekly,slot1,slot2,slot3) => {
+socket.on("updateChallenges",(weekly,slot1,slot2,slot3,generate = false) => {
     localAccount.weeklyChallenges = weekly;
     localAccount.activeChallenge1 = slot1;
     localAccount.activeChallenge2 = slot2;
     localAccount.activeChallenge3 = slot3;
+
+    if (generate) {
+        generateObjectiveCard($(".objCard1"),localAccount.activeChallenge1,"daily");
+        generateObjectiveCard($(".objCard2"),localAccount.activeChallenge2,"daily");
+        generateObjectiveCard($(".objCard3"),localAccount.activeChallenge3,"daily");
+    }
 })
 
 function getById(type,id) {
