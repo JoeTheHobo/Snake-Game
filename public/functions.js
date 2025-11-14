@@ -2996,4 +2996,23 @@ function getTileById(id) {
 
 function loadPrizeScreen() {
     $(".prizeScreen").show("flex");
+
+    $(".ps_chest").style.width = "200px";
+    let chest = $(".ps_chest_img");
+    chest.src = "img/chest_closed.png";
+    chest.hits = 0;
+    chest.hitsNeeded = rnd(5,10);
+    let reward = $(".ps_rewards");
+    reward.innerHTML = "";
+
+
+
+
 }
+$(".ps_chest_img").on("click",function() {
+    $(".ps_chest").style.width = "250px";
+
+    let chestTimer = setTimeout(function() {
+        $(".ps_chest").style.width = "200px";
+    },500);
+})
