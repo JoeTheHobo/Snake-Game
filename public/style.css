@@ -5655,6 +5655,7 @@ cursor: url('./img/pointer.cur'), auto;
     pointer-events: none;              /* disable clicks until shown */
     transition: opacity 0.4s ease;
     z-index: 9999;
+    cursor: url('./img/pointer.cur'), auto;
 }
 .ps_chest {
   width: 200px;
@@ -5669,5 +5670,5 @@ cursor: url('./img/pointer.cur'), auto;
   display: flex;
   flex-direction: row;
   align-items: center;
-  
+
 }

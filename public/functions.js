@@ -3009,7 +3009,8 @@ function loadPrizeScreen() {
 
 
 }
-$(".ps_chest_img").on("click",function() {
+$(".ps_chest").on("click",function() {
+    console.log("clicked")
     $(".ps_chest").style.width = "250px";
 
     let chestTimer = setTimeout(function() {
