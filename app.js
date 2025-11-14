@@ -5651,18 +5651,18 @@ function checkAndResetObjectives(accountID) {
     if (account.activeChallenge1?.oneGame) {
         resetObjective(Number(account.tag),account.activeChallenge1,1,function(res) {
             account.activeChallenge1 = res;
-        });
+        },accountID);
     }
     if (account.activeChallenge2?.oneGame) {
         resetObjective(Number(account.tag),account.activeChallenge2,2,function(res) {
             account.activeChallenge2 = res;
-        });    }
+        },accountID);    }
     if (account.activeChallenge3?.oneGame) {
         resetObjective(Number(account.tag),account.activeChallenge2,3,function(res) {
             account.activeChallenge3 = res;
-        });    }
+        },accountID);    }
 }
-function resetObjective(tag,objective,slot,func) {
+function resetObjective(tag,objective,slot,func,socketID) {
     const query = `SELECT stat_value FROM stats WHERE tag = ? AND stat_name = ?`;
     db.query(query,[tag,objective.objective],(err,res) => {
         if (err) {
@@ -5699,7 +5699,7 @@ function resetObjective(tag,objective,slot,func) {
             }
 
             // Send the results back to the client
-            socket.emit("returningUserStats", results,true);
+            io.to(socketID).emit("returningUserStats", results,true);
         });
 
 
