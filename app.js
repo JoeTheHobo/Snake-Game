@@ -267,6 +267,9 @@ io.on('connection', (socket) => {
         })
 
     })
+    socket.on("pingTest",() => {
+        socket.emit("pingTest");
+    })
     socket.on("signInUsingToken",(token,email) => {
         const query = "SELECT * FROM credentials WHERE email = ?";
         db.query(query,[email],(err,results) => {

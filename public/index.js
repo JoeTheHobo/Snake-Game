@@ -823,3 +823,15 @@ socket.on("updatebattle_pass_points",(amt) => {
     localAccount.battlePassPoints = amt;
     $(".newMenu_statPoints").innerHTML = localAccount.battlePassPoints;
 })
+
+let pingStart;
+function requestPing() {
+    pingStart = Date.now();
+    socket.emit("pingTest");
+}
+socket.on("pingTest",() => {
+    let pingEnd = Date.now();
+    let latency = pingEnd - pingStart;
+    console.log("Server Latency:",latency)
+    setTimeout(requestPing,3000);
+})
