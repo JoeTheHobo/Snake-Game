@@ -12,6 +12,7 @@ const profanity = require("./profanity.js");
 const sanitize = require("./sanatize.js");
 //                         Guest   Account AdminPurple
 let server_nameColors = ["#a3a3a3","white","#C92FFD"];
+let lobbyBoard;
 
 //Account Libraries
 const bcrypt = require('bcryptjs');
@@ -1149,62 +1150,45 @@ io.on('connection', (socket) => {
     })
     socket.on("newLobby", (lobby) =>{
         if (!lobby) return;
+        let board = lobbyBoard;
 
-        let boardQuery = "SELECT board, id FROM boards WHERE published = 1";
-        db.query(boardQuery, (err,results) => {
-            if (err) {
-                console.log(62,err);
-                return;
-            }
+        let account = onlineAccounts[socket.id];
+        if (lobby.code == "") lobby.code = rnd(9999);
+        let id = Number(Date.now().toString() + simple.rnd(9999));
+        let serverType = lobby.serverType.toLowerCase();
+        if (!["public","hidden","private"]) serverType = "public";
+        if (!lobby.playerMax) lobby.playerMax = 8;
+        let playerMax = Number(lobby.playerMax);
+        if (!simple.type(playerMax,true).isWholeNumber) playerMax = 8;
+        if (playerMax < 1) playerMax = 1;
+        if (playerMax > 8) playerMax = 8;
+        onlineAccounts[socket.id].lobby = id;
+        onlineAccounts[socket.id].player = onlineAccounts[socket.id].serverSnake;
+        lobbies[id] = {
+            board: board,
+            boardID: results[0].id,
+            id: id,
+            hostID: socket.id,
+            hostName: account.username,
+            hostTag: account.tag,
+            players: [socket.id],
+            chats: [{account: null, message: "Lobby Created"}],
+            code: lobby.code + "",
+            serverType: serverType,
+            gameMode: board.gameMode[0],
+            playerMax: playerMax,
+            lobbyBoards: [],
+            isInGame: false,
+            lobbyName: account.username + "'s Lobby",
+            activePlayers: getPlayersList([socket.id])
 
-            decompressObject(results[0].board,(err,board) => {
-                if (err) {
-                    console.log(63,err)
-                    return;
-                }
+        };
 
-                let id = Number(Date.now().toString() + simple.rnd(9999));
-                lobbies[id] = {};
-                lobbies[id].board = board;
-                lobbies[id].boardID = results[0].id;
-                lobbies[id].id = id;
-                lobbies[id].hostID = socket.id;
-                lobbies[id].hostName = onlineAccounts[socket.id].username;
-                lobbies[id].hostTag = onlineAccounts[socket.id].tag;
-                lobbies[id].players = [socket.id];
-                lobbies[id].chats = [{
-                    account: null,
-                    message: "Lobby Created",
-                }];
-                if (lobby.code == "") lobby.code = rnd(9999);
-                lobbies[id].code = lobby.code + "";
-                let serverType = lobby.serverType.toLowerCase();
-                if (!["public","hidden","private"]) serverType = "public";
-                lobbies[id].serverType = serverType;
-                lobbies[id].gameMode = board.gameModes[0];
-                if (!lobby.playerMax) lobby.playerMax = 8;
-                let playerMax = Number(lobby.playerMax);
-                if (!simple.type(playerMax,true).isWholeNumber) playerMax = 8;
-                if (playerMax < 1) playerMax = 1;
-                if (playerMax > 8) playerMax = 8;
-                lobbies[id].playerMax = playerMax;
-                lobbies[id].lobbyBoards = [];
-                lobbies[id].isInGame = false;
-                lobbies[id].lobbyName = lobbies[id].hostName + "'s Lobby";
-                onlineAccounts[socket.id].lobby = id;
-                onlineAccounts[socket.id].player = structuredClone(onlineAccounts[socket.id].serverSnake);
-                lobbies[id].activePlayers = getPlayersList(lobbies[id].players);
-        
-                socket.join(id);
-                socket.leave("menuScreen")
-                io.to(socket.id).emit("setClientLobby",lobbies[id])
-                updateLobbies();
-                gatherBoardsForUser(socket.id,"SetBoards")
-                
-            })
-
-        })
-
+        socket.join(id);
+        socket.leave("menuScreen")
+        io.to(socket.id).emit("setClientLobby",lobbies[id])
+        updateLobbies();
+        setTimeout(() => gatherBoardsForUser(socket.id,"SetBoards"),0);
     })
     socket.on("quitServer",() => {
         let lobby = lobbies[onlineAccounts[socket.id].lobby];
@@ -5696,3 +5680,17 @@ function resetObjective(tag,objective,slot,func) {
 
     })
 }
+
+function gatherLobbyBoard() {
+    let boardQuery = "SELECT board, id FROM boards WHERE published = 1";
+    db.query(boardQuery, (err,results) => {
+        if (err) {
+            console.log(63,err)
+            return;
+        }
+        decompressObject(results[0].board,(err,board) => {
+            lobbyBoard = board;
+        });
+    });
+}
+gatherLobbyBoard();
