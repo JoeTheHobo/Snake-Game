@@ -1166,7 +1166,7 @@ io.on('connection', (socket) => {
         onlineAccounts[socket.id].player = onlineAccounts[socket.id].serverSnake;
         lobbies[id] = {
             board: board,
-            boardID: results[0].id,
+            boardID: board.id,
             id: id,
             hostID: socket.id,
             hostName: account.username,
