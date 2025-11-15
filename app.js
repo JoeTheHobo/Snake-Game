@@ -2829,15 +2829,14 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         }
     }
     if (on.giveInvincibility && player) {
-        player.invincibilityDuration = Number(on.giveInvincibility.duration);
-
+        player.invincibilityDuration = Number(on.giveInvincibility);
         player.invinsibleBodyEffect = 0; //Just rainbow display
-        //player.respawnProtected = true;
+        player.respawnProtected = true;
         let onGoingRespawnProtectedCode = simple.rnd(1000);
         player.onGoingRespawnProtectedTimer = onGoingRespawnProtectedCode;
         setTimeout(function() {
             if (player.onGoingRespawnProtectedTimer !== onGoingRespawnProtectedCode) return;
-
+            
             player.respawnProtected = false;
             player.invinsibleBodyEffect = false;
             rerenderSnake(lobby,player);
