@@ -2428,7 +2428,8 @@ function useItem(lobby,player) {
     let item = player.items[player.selectingItem];
     if (item == "empty") return;
     if (!item.onActivate) return;
-    let returnItem = runItemFunction(lobby,player,player.items[player.selectingItem],"onActivate",player.pos).returnItem;
+    console.log(item);
+    let returnItem = runItemFunction(lobby,player,item,"onActivate",player.pos).returnItem;
     player.items[player.selectingItem] = returnItem;
 }
 function specialItemManager(lobby) {
@@ -2584,9 +2585,10 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
         damageGiven: 0,
     }
     let currentBoard = lobby.board;
+    console.log(1)
     let currentGameMode = lobby.gameMode;
     if (!type) return toReturn;
-
+    console.log(2)
     let on;
     if (simple.type(type) == "object") on = type; 
     else {
@@ -2596,6 +2598,7 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     }
 
     if (!on) return toReturn;
+    console.log(3)
 
     if (item.switchStatus == false || item.switchStatus == undefined) {
         item.switchStatus = true;
@@ -2828,14 +2831,19 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
             break;
         }
     }
+    console.log(4);
     if (on.giveInvincibility) {
+        console.log(5);
         player.invincibilityDuration = Number(on.giveInvincibility.duration);
 
         player.invinsibleBodyEffect = 0; //Just rainbow display
         player.respawnProtected = true;
         let onGoingRespawnProtectedCode = simple.rnd(1000);
         player.onGoingRespawnProtectedTimer = onGoingRespawnProtectedCode;
+        console.log(6);
         setTimeout(function() {
+            //Check if the game is ended
+            
             if (player.onGoingRespawnProtectedTimer !== onGoingRespawnProtectedCode) return;
 
             player.respawnProtected = false;
