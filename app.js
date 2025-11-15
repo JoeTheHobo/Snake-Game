@@ -5690,6 +5690,7 @@ function gatherLobbyBoard() {
         }
         decompressObject(results[0].board,(err,board) => {
             lobbyBoard = board;
+            console.log(lobbyBoard)
         });
     });
 }
