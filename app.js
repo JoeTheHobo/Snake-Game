@@ -4344,7 +4344,7 @@ function setSocketToUser(account,user,dbObj) {
         }
     }
     
-    updateLobbies(socket.id);
+    updateLobbies(account.id);
 
     io.to(account.id).emit('setPlayer', account.id, account,accessedBattlePasses);
     io.to(account.id).emit("setScene","newMenu");
