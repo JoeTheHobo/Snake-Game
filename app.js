@@ -1175,7 +1175,7 @@ io.on('connection', (socket) => {
             chats: [{account: null, message: "Lobby Created"}],
             code: lobby.code + "",
             serverType: serverType,
-            gameMode: board.gameMode[0],
+            gameMode: board.gameModes[0],
             playerMax: playerMax,
             lobbyBoards: [],
             isInGame: false,
@@ -5690,7 +5690,6 @@ function gatherLobbyBoard() {
         }
         decompressObject(results[0].board,(err,board) => {
             lobbyBoard = board;
-            console.log(lobbyBoard)
         });
     });
 }
