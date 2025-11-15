@@ -835,3 +835,4 @@ socket.on("pingTest",() => {
     console.log("Server Latency:",latency)
     setTimeout(requestPing,3000);
 })
+requestPing();
