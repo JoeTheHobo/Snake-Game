@@ -13,6 +13,7 @@ const sanitize = require("./sanatize.js");
 //                         Guest   Account AdminPurple
 let server_nameColors = ["#a3a3a3","white","#C92FFD"];
 let lobbyBoard;
+let cachedDecompressedBoards = null;
 
 //Account Libraries
 const bcrypt = require('bcryptjs');
@@ -2830,18 +2831,18 @@ function runItemFunction(lobby,player,item,type,itemPos,settings = {playAudio: t
     if (on.giveInvincibility) {
         player.invincibilityDuration = Number(on.giveInvincibility.duration);
 
-        player.invinsibleBodyEffect = 0;
-
+        player.invinsibleBodyEffect = 0; //Just rainbow display
+        player.respawnProtected = true;
         let onGoingRespawnProtectedCode = simple.rnd(1000);
         player.onGoingRespawnProtectedTimer = onGoingRespawnProtectedCode;
         setTimeout(function() {
-            if (player.onGoingRespawnProtectedTimer === onGoingRespawnProtectedCode) {
-                player.respawnProtected = false;
-                player.invinsibleBodyEffect = false;
-                rerenderSnake(lobby,player);
-                updateClientPositions(lobby)
-            }
-        },lobby.gameMode.respawnProtection*1000);
+            if (player.onGoingRespawnProtectedTimer !== onGoingRespawnProtectedCode) return;
+
+            player.respawnProtected = false;
+            player.invinsibleBodyEffect = false;
+            rerenderSnake(lobby,player);
+            updateClientPositions(lobby)
+        },player.invincibilityDuration*1000);
         addPlayerStatus("invincibility_activated",1,player);
     }
 
@@ -4343,7 +4344,7 @@ function setSocketToUser(account,user,dbObj) {
         }
     }
     
-    updateLobbies();
+    updateLobbies(socket.id);
 
     io.to(account.id).emit('setPlayer', account.id, account,accessedBattlePasses);
     io.to(account.id).emit("setScene","newMenu");
@@ -4521,14 +4522,14 @@ function rerenderSnake(lobby,player) {
     }
     lobby.updateSnakeCells.push(lobby.snakeMap[player.pos.y][player.pos.x]);
 }
-function updateLobbies() {
+function updateLobbies(sendTo = "menuScreen") {
     let lobbyList = Object.values(lobbies)
         .filter(lobby => lobby.serverType.toLowerCase() !== "hidden")
         .reduce((acc, lobby) => {
             acc[lobby.id] = { ...lobby, code: "", gameLoop: "" };
             return acc;
         }, {});
-    io.to("menuScreen").emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
+    io.to(sendTo).emit("updateLobbies", lobbyList,Object.keys(onlineAccounts).length,Object.keys(lobbies).length);
 }
 setInterval(() => {
     io.emit("updateMemorry",process.memoryUsage());
